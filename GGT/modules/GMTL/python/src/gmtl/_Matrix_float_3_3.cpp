@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Matrix_float_3_3.cpp,v $
- * Date modified: $Date: 2003-08-16 05:11:46 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2003-08-16 05:28:23 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -47,8 +47,8 @@ void _Export_Matrix_float_3_3()
         .def("set", (void (gmtl::Matrix<float,3,3>::*)(float, float, float, float, float, float, float, float, float, float, float, float) )&gmtl::Matrix<float,3,3>::set)
         .def("set", (void (gmtl::Matrix<float,3,3>::*)(const float *) )&gmtl::Matrix<float,3,3>::set)
         .def("setTranspose", &gmtl::Matrix<float,3,3>::setTranspose)
-        .def("getData", (tuple (gmtlWrappers::*)(gmtl::Matrix<float,3,3>*)) &gmtlWrappers::Matrix_3_3_getData)
-        .add_property("data", (tuple (gmtlWrappers::*)(gmtl::Matrix<float,3,3>*)) &gmtlWrappers::Matrix_3_3_getData)
+        .def("getData", (tuple (*)(gmtl::Matrix<float,3,3>*)) &gmtlWrappers::Matrix_3_3_getData)
+        .add_property("data", (tuple (*)(gmtl::Matrix<float,3,3>*)) &gmtlWrappers::Matrix_3_3_getData)
         .def("isError", &gmtl::Matrix<float,3,3>::isError)
         .def("setError", &gmtl::Matrix<float,3,3>::setError)
         .def("__getitem__", (gmtl::Matrix<float,3,3>::RowAccessor (gmtl::Matrix<float,3,3>::*)(const unsigned) )&gmtl::Matrix<float,3,3>::operator[])

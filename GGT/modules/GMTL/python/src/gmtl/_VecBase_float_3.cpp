@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _VecBase_float_3.cpp,v $
- * Date modified: $Date: 2003-08-16 05:11:46 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2003-08-16 05:28:23 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -43,8 +43,8 @@ void _Export_VecBase_float_3()
         .def(init< const gmtl::VecBase<float,3> & >())
         .def(init< const float &, const float &, const float & >())
         .def("set", (void (gmtl::VecBase<float,3>::*)(const float &, const float &, const float &) )&gmtl::VecBase<float,3>::set)
-        .def("getData", (tuple (gmtlWrappers::*)(gmtl::VecBase<float,3>*)) &gmtlWrappers::VecBase_3_getData)
-        .add_property("data", (tuple (gmtlWrappers::*)(gmtl::VecBase<float,3>*)) &gmtlWrappers::VecBase_3_getData)
+        .def("getData", (tuple (*)(gmtl::VecBase<float,3>*)) &gmtlWrappers::VecBase_3_getData)
+        .add_property("data", (tuple (*)(gmtl::VecBase<float,3>*)) &gmtlWrappers::VecBase_3_getData)
         .def("__getitem__", (float& (gmtl::VecBase<float,3>::*)(const unsigned) ) &gmtl::VecBase<float,3>::operator[], return_value_policy<copy_non_const_reference>())
         .def("__setitem__", (void (*)(gmtl::VecBase<float,3>*, const unsigned, float)) &gmtlWrappers::setArrayElement)
         .def(-self)

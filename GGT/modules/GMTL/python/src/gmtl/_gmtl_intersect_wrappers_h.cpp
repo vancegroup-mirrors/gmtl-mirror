@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _gmtl_intersect_wrappers_h.cpp,v $
- * Date modified: $Date: 2003-05-20 18:57:15 $
- * Version:       $Revision: 1.1.1.1 $
+ * Date modified: $Date: 2003-08-16 05:28:23 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -36,28 +36,28 @@ using namespace boost::python;
 // Module ======================================================================
 void _Export_gmtl_intersect_wrappers_h()
 {
-   def("intersect", (tuple (gmtlWrappers::*)(const gmtl::AABox<float>&, const gmtl::AABox<float>&)) &gmtlWrappers::intersect);
-   def("intersect", (tuple (gmtlWrappers::*)(const gmtl::AABox<double>&, const gmtl::AABox<double>&)) &gmtlWrappers::intersect);
-   def("intersect", (tuple (gmtlWrappers::*)(const gmtl::AABox<float>&, const gmtl::Point<float,3>&)) &gmtlWrappers::intersect);
-   def("intersect", (tuple (gmtlWrappers::*)(const gmtl::AABox<double>&, const gmtl::Point<double,3>&)) &gmtlWrappers::intersect);
-   def("intersect", (tuple (gmtlWrappers::*)(const gmtl::AABox<float>&, const gmtl::Vec<float,3>&, const gmtl::AABox<float>&, const gmtl::Vec<float,3>&)) &gmtlWrappers::intersect);
-   def("intersect", (tuple (gmtlWrappers::*)(const gmtl::AABox<double>&, const gmtl::Vec<double,3>&, const gmtl::AABox<double>&, const gmtl::Vec<double,3>&)) &gmtlWrappers::intersect);
-   def("intersect", (tuple (gmtlWrappers::*)(const gmtl::Sphere<float>&, const gmtl::Vec<float,3>&, const gmtl::Sphere<float>&, const gmtl::Vec<float,3>&)) &gmtlWrappers::intersect);
-   def("intersect", (tuple (gmtlWrappers::*)(const gmtl::Sphere<double>&, const gmtl::Vec<double,3>&, const gmtl::Sphere<double>&, const gmtl::Vec<double,3>&)) &gmtlWrappers::intersect);
-   def("intersect", (tuple (gmtlWrappers::*)(const gmtl::AABox<float>&, const gmtl::Sphere<float>&)) &gmtlWrappers::intersect);
-   def("intersect", (tuple (gmtlWrappers::*)(const gmtl::AABox<double>&, const gmtl::Sphere<double>&)) &gmtlWrappers::intersect);
-   def("intersect", (tuple (gmtlWrappers::*)(const gmtl::Sphere<float>&, const gmtl::AABox<float>&)) &gmtlWrappers::intersect);
-   def("intersect", (tuple (gmtlWrappers::*)(const gmtl::Sphere<double>&, const gmtl::AABox<double>&)) &gmtlWrappers::intersect);
-   def("intersect", (tuple (gmtlWrappers::*)(const gmtl::Sphere<float>&, const gmtl::Point<float,3>&)) &gmtlWrappers::intersect);
-   def("intersect", (tuple (gmtlWrappers::*)(const gmtl::Sphere<double>&, const gmtl::Point<double,3>&)) &gmtlWrappers::intersect);
-   def("intersect", (tuple (gmtlWrappers::*)(const gmtl::Sphere<float>&, const gmtl::Ray<float>&)) &gmtlWrappers::intersect);
-   def("intersect", (tuple (gmtlWrappers::*)(const gmtl::Sphere<double>&, const gmtl::Ray<double>&)) &gmtlWrappers::intersect);
-   def("intersect", (tuple (gmtlWrappers::*)(const gmtl::Sphere<float>&, const gmtl::LineSeg<float>&)) &gmtlWrappers::intersect);
-   def("intersect", (tuple (gmtlWrappers::*)(const gmtl::Sphere<double>&, const gmtl::LineSeg<double>&)) &gmtlWrappers::intersect);
-   def("intersect", (tuple (gmtlWrappers::*)(const gmtl::Plane<float>&, const gmtl::Ray<float>&)) &gmtlWrappers::intersect);
-   def("intersect", (tuple (gmtlWrappers::*)(const gmtl::Plane<double>&, const gmtl::Ray<double>&)) &gmtlWrappers::intersect);
-   def("intersect", (tuple (gmtlWrappers::*)(const gmtl::Tri<float>&, const gmtl::Ray<float>&)) &gmtlWrappers::intersect);
-   def("intersect", (tuple (gmtlWrappers::*)(const gmtl::Tri<double>&, const gmtl::Ray<double>&)) &gmtlWrappers::intersect);
-   def("intersect", (tuple (gmtlWrappers::*)(const gmtl::Tri<float>&, const gmtl::LineSeg<float>&)) &gmtlWrappers::intersect);
-   def("intersect", (tuple (gmtlWrappers::*)(const gmtl::Tri<double>&, const gmtl::LineSeg<double>&)) &gmtlWrappers::intersect);
+   def("intersect", (tuple (*)(const gmtl::AABox<float>&, const gmtl::AABox<float>&)) &gmtlWrappers::intersect);
+   def("intersect", (tuple (*)(const gmtl::AABox<double>&, const gmtl::AABox<double>&)) &gmtlWrappers::intersect);
+   def("intersect", (tuple (*)(const gmtl::AABox<float>&, const gmtl::Point<float,3>&)) &gmtlWrappers::intersect);
+   def("intersect", (tuple (*)(const gmtl::AABox<double>&, const gmtl::Point<double,3>&)) &gmtlWrappers::intersect);
+   def("intersect", (tuple (*)(const gmtl::AABox<float>&, const gmtl::Vec<float,3>&, const gmtl::AABox<float>&, const gmtl::Vec<float,3>&)) &gmtlWrappers::intersect);
+   def("intersect", (tuple (*)(const gmtl::AABox<double>&, const gmtl::Vec<double,3>&, const gmtl::AABox<double>&, const gmtl::Vec<double,3>&)) &gmtlWrappers::intersect);
+   def("intersect", (tuple (*)(const gmtl::Sphere<float>&, const gmtl::Vec<float,3>&, const gmtl::Sphere<float>&, const gmtl::Vec<float,3>&)) &gmtlWrappers::intersect);
+   def("intersect", (tuple (*)(const gmtl::Sphere<double>&, const gmtl::Vec<double,3>&, const gmtl::Sphere<double>&, const gmtl::Vec<double,3>&)) &gmtlWrappers::intersect);
+   def("intersect", (tuple (*)(const gmtl::AABox<float>&, const gmtl::Sphere<float>&)) &gmtlWrappers::intersect);
+   def("intersect", (tuple (*)(const gmtl::AABox<double>&, const gmtl::Sphere<double>&)) &gmtlWrappers::intersect);
+   def("intersect", (tuple (*)(const gmtl::Sphere<float>&, const gmtl::AABox<float>&)) &gmtlWrappers::intersect);
+   def("intersect", (tuple (*)(const gmtl::Sphere<double>&, const gmtl::AABox<double>&)) &gmtlWrappers::intersect);
+   def("intersect", (tuple (*)(const gmtl::Sphere<float>&, const gmtl::Point<float,3>&)) &gmtlWrappers::intersect);
+   def("intersect", (tuple (*)(const gmtl::Sphere<double>&, const gmtl::Point<double,3>&)) &gmtlWrappers::intersect);
+   def("intersect", (tuple (*)(const gmtl::Sphere<float>&, const gmtl::Ray<float>&)) &gmtlWrappers::intersect);
+   def("intersect", (tuple (*)(const gmtl::Sphere<double>&, const gmtl::Ray<double>&)) &gmtlWrappers::intersect);
+   def("intersect", (tuple (*)(const gmtl::Sphere<float>&, const gmtl::LineSeg<float>&)) &gmtlWrappers::intersect);
+   def("intersect", (tuple (*)(const gmtl::Sphere<double>&, const gmtl::LineSeg<double>&)) &gmtlWrappers::intersect);
+   def("intersect", (tuple (*)(const gmtl::Plane<float>&, const gmtl::Ray<float>&)) &gmtlWrappers::intersect);
+   def("intersect", (tuple (*)(const gmtl::Plane<double>&, const gmtl::Ray<double>&)) &gmtlWrappers::intersect);
+   def("intersect", (tuple (*)(const gmtl::Tri<float>&, const gmtl::Ray<float>&)) &gmtlWrappers::intersect);
+   def("intersect", (tuple (*)(const gmtl::Tri<double>&, const gmtl::Ray<double>&)) &gmtlWrappers::intersect);
+   def("intersect", (tuple (*)(const gmtl::Tri<float>&, const gmtl::LineSeg<float>&)) &gmtlWrappers::intersect);
+   def("intersect", (tuple (*)(const gmtl::Tri<double>&, const gmtl::LineSeg<double>&)) &gmtlWrappers::intersect);
 }

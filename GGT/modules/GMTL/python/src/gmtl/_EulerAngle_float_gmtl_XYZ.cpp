@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _EulerAngle_float_gmtl_XYZ.cpp,v $
- * Date modified: $Date: 2003-08-16 05:11:46 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2003-08-16 05:28:23 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -44,8 +44,8 @@ void _Export_EulerAngle_float_gmtl_XYZ()
         .def(init< const gmtl::EulerAngle<float,gmtl::XYZ> & >())
         .def(init< float, float, float >())
         .def("set", &gmtl::EulerAngle<float,gmtl::XYZ>::set)
-        .def("getData", (tuple (gmtlWrappers::*)(gmtl::EulerAngle<float,gmtl::XYZ>*)) &gmtlWrappers::EulerAngle_getData)
-        .add_property("data", (tuple (gmtlWrappers::*)(gmtl::EulerAngle<float,gmtl::XYZ>*)) &gmtlWrappers::EulerAngle_getData)
+        .def("getData", (tuple (*)(gmtl::EulerAngle<float,gmtl::XYZ>*)) &gmtlWrappers::EulerAngle_getData)
+        .add_property("data", (tuple (*)(gmtl::EulerAngle<float,gmtl::XYZ>*)) &gmtlWrappers::EulerAngle_getData)
         .def("__getitem__", (float& (gmtl::EulerAngle<float,gmtl::XYZ>::*)(const unsigned) ) &gmtl::EulerAngle<float,gmtl::XYZ>::operator[], return_value_policy<copy_non_const_reference>())
         .def("__setitem__", (void (*)(gmtl::EulerAngle<float,gmtl::XYZ>*, const unsigned, float)) &gmtlWrappers::setArrayElement)
         .def(self == self)
