@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOpsTest.h,v $
- * Date modified: $Date: 2002-02-15 23:09:46 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-02-15 23:48:15 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -434,6 +434,26 @@ public:
                       (T)280.260,   (T)-112.530,   (T)1787.490 );
          CPPUNIT_ASSERT( isEqual( res_mat, mat3, eps ) );
 
+         // test post and pre mult operators...
+         {
+            gmtl::Matrix<T, 3, 3> m1( mat1 );
+            const gmtl::Matrix<T, 3, 3> m2( mat2 );
+            postMult( m1, m2 );
+            CPPUNIT_ASSERT( isEqual( res_mat, m1, eps ) );
+         }
+         {
+            gmtl::Matrix<T, 3, 3> m1( mat1 );
+            const gmtl::Matrix<T, 3, 3> m2( mat2 );
+            m1 *= m2;
+            CPPUNIT_ASSERT( isEqual( res_mat, m1, eps ) );
+         }
+         {
+            const gmtl::Matrix<T, 3, 3> m1( mat1 );
+            gmtl::Matrix<T, 3, 3> m2( mat2 );
+            preMult( m2, m1 );
+            CPPUNIT_ASSERT( isEqual( res_mat, m2, eps ) );
+         }
+         
          // make sure mult is not commutitive
          mult( mat3, mat2, mat1 );
          CPPUNIT_ASSERT( !isEqual( res_mat, mat3, eps ) );
@@ -443,6 +463,26 @@ public:
                      (T)859.1000,    (T)923.0000,   (T)1045.2200,
                      (T)816.2000,    (T)773.3000,   (T) 810.5900 );
          CPPUNIT_ASSERT( isEqual( res_mat, mat3, eps ) );
+         
+         // test post and pre mult operators...
+         {
+            const gmtl::Matrix<T, 3, 3> m1( mat1 );
+            gmtl::Matrix<T, 3, 3> m2( mat2 );
+            postMult( m2, m1 );
+            CPPUNIT_ASSERT( isEqual( res_mat, m2, eps ) );
+         }
+         {
+            const gmtl::Matrix<T, 3, 3> m1( mat1 );
+            gmtl::Matrix<T, 3, 3> m2( mat2 );
+            m2 *=m1;
+            CPPUNIT_ASSERT( isEqual( res_mat, m2, eps ) );
+         }
+         {
+            gmtl::Matrix<T, 3, 3> m1( mat1 );
+            const gmtl::Matrix<T, 3, 3> m2( mat2 );
+            preMult( m1, m2 );
+            CPPUNIT_ASSERT( isEqual( res_mat, m1, eps ) );
+         }
       }
    };
    
@@ -535,6 +575,26 @@ public:
                      (T)568.630,   (T)116.150,  (T)2804.770,   (T)631.250 );
          CPPUNIT_ASSERT( isEqual( res_mat, mat3, eps ) );
 
+         // test post and pre mult operators...
+         {
+            gmtl::Matrix<T, 4, 4> m1( mat1 );
+            const gmtl::Matrix<T, 4, 4> m2( mat2 );
+            postMult( m1, m2 );
+            CPPUNIT_ASSERT( isEqual( res_mat, m1, eps ) );
+         }
+         {
+            gmtl::Matrix<T, 4, 4> m1( mat1 );
+            const gmtl::Matrix<T, 4, 4> m2( mat2 );
+            m1 *= m2;
+            CPPUNIT_ASSERT( isEqual( res_mat, m1, eps ) );
+         }
+         {
+            const gmtl::Matrix<T, 4, 4> m1( mat1 );
+            gmtl::Matrix<T, 4, 4> m2( mat2 );
+            preMult( m2, m1 );
+            CPPUNIT_ASSERT( isEqual( res_mat, m2, eps ) );
+         }
+         
          // make sure mult is not commutitive
          mult( mat3, mat2, mat1 );
          CPPUNIT_ASSERT( !isEqual( res_mat, mat3, eps ) );
@@ -545,6 +605,26 @@ public:
                      (T) 185.960,  (T)  94.580,  (T)  83.390,  (T)  72.200,
                      (T) 545.440,  (T) 598.620,  (T) 668.810,  (T) 739.000 );
          CPPUNIT_ASSERT( isEqual( res_mat, mat3, eps ) );
+         
+         // test post and pre mult operators...
+         {
+            const gmtl::Matrix<T, 4, 4> m1( mat1 );
+            gmtl::Matrix<T, 4, 4> m2( mat2 );
+            postMult( m2, m1 );
+            CPPUNIT_ASSERT( isEqual( res_mat, m2, eps ) );
+         }
+         {
+            const gmtl::Matrix<T, 4, 4> m1( mat1 );
+            gmtl::Matrix<T, 4, 4> m2( mat2 );
+            m2 *= m1;
+            CPPUNIT_ASSERT( isEqual( res_mat, m2, eps ) );
+         }
+         {
+            gmtl::Matrix<T, 4, 4> m1( mat1 );
+            const gmtl::Matrix<T, 4, 4> m2( mat2 );
+            preMult( m1, m2 );
+            CPPUNIT_ASSERT( isEqual( res_mat, m1, eps ) );
+         }
       }
    };
 
@@ -556,6 +636,46 @@ public:
       matrixMult44<double>::go();
       matrixMultUnlike<float>::go();
       matrixMultUnlike<double>::go();
+   }
+   
+   class matrixScalarMult()
+   {
+   public:
+      void go()
+      {
+         gmtl::Matrix<T, 4, 4> mat1, mat3, res_mat;
+
+         T eps = (T)0.001;
+
+         mat1.set((T) 1.1000, (T)2.2000,  (T) 3.3000, (T) 4.4000,
+                  (T) 5.5000, (T)6.6000,  (T) 7.7000, (T) 8.8000,
+                  (T) 9.9000, (T)10.1000, (T)11.1100, (T)12.1200,
+                  (T)13.1300, (T)14.1400, (T)15.1500, (T)16.1600 );
+         expected_result.set(  3.3000,   6.6000,   9.9000,  13.2000,
+                              16.5000,  19.8000,  23.1000,  26.4000,
+                              29.7000,  30.3000,  33.3300,  36.3600,
+                              39.3900,  42.4200,  45.4500,  48.4800  );
+
+         // result = mat * scalar
+         mult( res_mat, mat1, (T)3 );
+         CPPUNIT_ASSERT( isEqual( expected_result, res_mat, eps ) );
+
+         // result *= scalar
+         res_mat = mat1;
+         mult( res_mat, (T)3 );
+         CPPUNIT_ASSERT( isEqual( expected_result, res_mat, eps ) );
+
+         // result *= scalar
+         res_mat = mat1;
+         res_mat *= (T)3;
+         CPPUNIT_ASSERT( isEqual( expected_result, res_mat, eps ) );
+      }
+   };
+      
+   void testMatrixScalarMult()
+   {
+      matrixScalarMult<float>::go();
+      matrixScalarMult<double>::go();
    }
    
    template <typename DATA_TYPE>
@@ -660,8 +780,8 @@ public:
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("MatrixOpsTest");
       test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixTranspose", &MatrixOpsTest::testMatrixTranspose ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixMult", &MatrixOpsTest::testMatrixMult ) );
-      test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixPostPreMult", &MatrixOpsTest::testMatrixMult ) );
-      test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixScalarMult", &MatrixOpsTest::testMatrixMult ) );
+      test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixPostPreMult", &MatrixOpsTest::testMatrixPostPreMult ) );
+      test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixScalarMult", &MatrixOpsTest::testMatrixScalarMult ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixAddSub", &MatrixOpsTest::testMatrixAddSub ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatInvert", &MatrixOpsTest::testMatInvert ) );
       //test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>("testGetSetAxes", &MatrixOpsTest::testGetSetAxes));
