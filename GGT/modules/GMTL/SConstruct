@@ -431,8 +431,7 @@ if not SCons.Script.options.help_msg:
 
    # Setup the builder for gmtl-config
    env = baseEnv.Copy(BUILDERS = builders)
-   env.ConfigBuilder('gmtl-config','gmtl-config.in',
-      submap = {
+   gmtl_config_submap = {
          '@prefix@'                    : PREFIX,
          '@exec_prefix@'               : '${prefix}',
          '@gmtl_cxxflags@'             : '',
@@ -443,8 +442,8 @@ if not SCons.Script.options.help_msg:
          '@VERSION_MINOR@'             : str(GMTL_VERSION[1]),
          '@VERSION_PATCH@'             : str(GMTL_VERSION[2]),
       }
-   )
-   env.Depends('gmtl-config', 'gmtl/Version.h')
+   env.ConfigBuilder('gmtl-config','gmtl-config.in',submap = gmtl_config_submap)
+   env.Depends('gmtl-config', Value(gmtl_config_submap))
    env.Install(pj(PREFIX, 'bin'), 'gmtl-config')
 
    pkg.build()
