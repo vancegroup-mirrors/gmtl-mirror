@@ -28,7 +28,7 @@
             <surname>Scott, </surname>
          </author>
       </authorgroup>
-      <pubdate>$Date: 2002-05-30 03:13:54 $</pubdate>
+      <pubdate>$Date: 2002-05-30 03:17:03 $</pubdate>
       <address><email>ggt-info@lists.sf.net</email></address>
    </articleinfo>
    <section>
@@ -236,6 +236,7 @@
                      <emphasis>temporary</emphasis> object and return it
                      "out the back".  
                      The "make" functions are convenient in certain cases. 
+                     </para>
                      <para>
                      For example to
                      construct a translation matrix on one line of code: Matrix44f mat( makeTrans&lt;Matrix44f&gt;( 1, 2, 3 ) ); See <xref linkend="Patterns"/> for discussion on Factory. 
