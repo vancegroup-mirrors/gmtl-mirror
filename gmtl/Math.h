@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Math.h,v $
- * Date modified: $Date: 2002-05-17 23:07:11 $
- * Version:       $Revision: 1.25 $
+ * Date modified: $Date: 2002-05-20 22:36:13 $
+ * Version:       $Revision: 1.26 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,9 +35,9 @@
 #ifndef _GMTL_MATH_H_
 #define _GMTL_MATH_H_
 
-#include <gmtl/Assert.h>
 #include <math.h>
 #include <stdlib.h>
+#include <gmtl/Assert.h>
 
 /** @defgroup Math C Math Abstraction: sin, cos, tan, Min, Max, PI
  *  We've abstracted C math to be cross platform and typesafe.
@@ -126,6 +126,7 @@ inline T zeroClamp( T value, T eps = T(0) )
 //      we'd need a float retval to do it right, but we can't specialize by ret
 template <typename T>
 inline T aCos( T fValue );
+#ifndef NO_ACOSF
 inline float aCos( float fValue )
 {
     if ( -1.0f < fValue )
@@ -140,6 +141,7 @@ inline float aCos( float fValue )
         return (float)gmtl::Math::PI;
     }
 }
+#endif
 inline double aCos( double fValue )
 {
     if ( -1.0 < fValue )
@@ -157,6 +159,7 @@ inline double aCos( double fValue )
 //----------------------------------------------------------------------------
 template <typename T>
 inline T aSin( T fValue );
+#ifndef NO_ASINF
 inline float aSin( float fValue )
 {
     if ( -1.0f < fValue )
@@ -171,6 +174,7 @@ inline float aSin( float fValue )
         return (float)gmtl::Math::PI_OVER_2;
     }
 }
+#endif
 inline double aSin( double fValue )
 {
     if ( -1.0 < fValue )
@@ -188,21 +192,25 @@ inline double aSin( double fValue )
 //----------------------------------------------------------------------------
 template <typename T>
 inline T aTan( T fValue );
-inline float aTan( float fValue )
-{
-    return float( ::atanf( fValue ) );
-}
 inline double aTan( double fValue )
 {
     return ::atan( fValue );
 }
+#ifndef NO_TANF
+inline float aTan( float fValue )
+{
+    return float( ::atanf( fValue ) );
+}
+#endif
 //----------------------------------------------------------------------------
 template <typename T>
 inline T atan2( T fY, T fX );
+#ifndef NO_ATAN2F
 inline float aTan2( float fY, float fX )
 {
     return float( ::atan2f( fY, fX ) );
 }
+#endif
 inline double aTan2( double fY, double fX )
 {
     return double( ::atan2( fY, fX ) );
@@ -210,10 +218,12 @@ inline double aTan2( double fY, double fX )
 //----------------------------------------------------------------------------
 template <typename T>
 inline T cos( T fValue );
+#ifndef NO_COSF
 inline float cos( float fValue )
 {
     return float( ::cosf( fValue ) );
 }
+#endif
 inline double cos( double fValue )
 {
     return double( ::cos( fValue ) );
@@ -256,10 +266,12 @@ inline double sin( double fValue )
 {
     return double( ::sin( fValue ) );
 }
+#ifndef NO_SINF
 inline float sin( float fValue )
 {
     return float( ::sinf( fValue ) );
 }
+#endif
 //----------------------------------------------------------------------------
 template <typename T>
 inline T tan( T fValue );
@@ -267,10 +279,12 @@ inline double tan( double fValue )
 {
     return double( ::tan( fValue ) );
 }
+#ifndef NO_TANF
 inline float tan( float fValue )
 {
     return float( ::tanf( fValue ) );
 }
+#endif
 //----------------------------------------------------------------------------
 template <typename T>
 inline T sqr( T fValue )
@@ -278,11 +292,13 @@ inline T sqr( T fValue )
     return T( fValue * fValue );
 }
 //----------------------------------------------------------------------------
+#ifndef NO_SQRTF
 template <typename T>
 inline T sqrt( T fValue )
 {
     return T( ::sqrtf( ((float)fValue) ) );
 }
+#endif
 inline double sqrt( double fValue )
 {
     return double( ::sqrt( fValue ) );
