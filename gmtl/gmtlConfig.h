@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtlConfig.h,v $
- * Date modified: $Date: 2002-03-15 03:26:57 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-05-20 21:40:15 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -127,18 +127,6 @@
 #endif
 
 #endif // if 0
-
-#define GMTL_EPS 1e-8
-#define GMTL_DEG2RAD(x) ((x)*M_PI/180.0)
-#define GMTL_RAD2DEG(x) ((x)*180.0/M_PI)
-#define GMTL_IS_ZERO(x) (fabs(x) < GMTL_EPS)
-#define GMTL_CLAMP(x,y) ((x>y)? y : x)
-#define GMTL_MIN2(x,y) ((x>y)? y : x)
-#define GMTL_MIN3(x,y,z) GMTL_MIN2(GMTL_MIN2(x,y),z)
-#define GMTL_MIN4(w,x,y,z) GMTL_MIN2(GMTL_MIN2(w,x), GMTL_MIN2(y,z))
-#define GMTL_MAX2(x,y) ((x>y)? x : y)
-#define GMTL_MAX3(x,y,z) GMTL_MAX2(GMTL_MAX2(x,y),z)
-#define GMTL_MAX4(w,x,y,z) GMTL_MAX2(GMTL_MAX2(w,x),GMTL_MAX2(y,z))
 
 // -- Common GMTL classes -- //
 #include <gmtl/gmtlTypes.h>
