@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Matrix.h,v $
- * Date modified: $Date: 2003-03-29 22:02:19 $
- * Version:       $Revision: 1.26 $
+ * Date modified: $Date: 2003-04-01 13:21:47 $
+ * Version:       $Revision: 1.27 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -89,6 +89,8 @@ public:
    class RowAccessor
    {
    public:
+      typedef DATA_TYPE DataType;
+
       RowAccessor(Matrix<DATA_TYPE,ROWS,COLS>* mat, const unsigned row)
          : mMat(mat), mRow(row)
       {
