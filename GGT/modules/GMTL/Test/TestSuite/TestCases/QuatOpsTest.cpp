@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatOpsTest.cpp,v $
- * Date modified: $Date: 2003-02-25 05:19:24 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2003-03-16 21:20:05 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -305,7 +305,7 @@ namespace gmtlTest
       gmtl::mult( q5, q3, q4 );
       gmtl::mult( q6, q4, q3 );
 
-      gmtl::Quat<float> expected_result1( 24, 48, 48, -6 ), expected_result2( 32, 32, 56, -6 );
+      gmtl::Quat<float> expected_result1( 32, 32, 56, -6 ), expected_result2( 24, 48, 48, -6 );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, q5, eps ) );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result2, q6, eps ) );
 
@@ -316,7 +316,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, q7, eps ) );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result2, q8, eps ) );
 
-      gmtl::Quat<float>  bokbokbok( 9, 10, 11, 12 ), expected_result3( 122, 476, 638, -1296 );
+      gmtl::Quat<float>  bokbokbok( 9, 10, 11, 12 ), expected_result3( 186, 348, 702, -1296 );
       q6 = q4 * q3 * bokbokbok;
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result3, q6, eps ) );
    }
