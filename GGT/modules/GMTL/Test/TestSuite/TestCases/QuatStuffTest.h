@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatStuffTest.h,v $
- * Date modified: $Date: 2002-02-25 20:39:19 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-02-25 20:42:07 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -213,12 +213,12 @@ namespace gmtlTest
       // just trying stuff out... TODO think of a good add test...
       void specialCases()
       {
-         gmtl::Quatf q( 0.0f, -0.000313354, 0.0f, 1.0f );
+         gmtl::Quatf q( 0.0f, -0.000313354f, 0.0f, 1.0f );
          float rad, x, y, z;
          gmtl::getRot( q, rad, x, y, z );
 
          // testing...
-         double half_angle = 0.000626708 * 0.5f;
+         double half_angle = 0.000626708f * 0.5f;
          double sin_half_angle = gmtl::Math::sin( half_angle );
          double w = gmtl::Math::cos( half_angle );
          
