@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatOps.h,v $
- * Date modified: $Date: 2002-05-20 22:39:22 $
- * Version:       $Revision: 1.17 $
+ * Date modified: $Date: 2003-01-23 21:09:03 $
+ * Version:       $Revision: 1.18 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -504,6 +504,8 @@ namespace gmtl
    /** spherical linear interpolation between two rotation quaternions.
     *  t is a value between 0 and 1 that interpolates between from and to.
     * @pre no aliasing problems to worry about ("result" can be "from" or "to" param).
+    * @param adjustSign - If true, then slerp will operate by adjusting the sign of the slerp to take shortest path
+    *
     * References:
     * <ul>
     * <li> From Adv Anim and Rendering Tech. Pg 364
@@ -511,7 +513,7 @@ namespace gmtl
     * @see Quat
     */
    template <typename DATA_TYPE>
-   Quat<DATA_TYPE>& slerp( Quat<DATA_TYPE>& result, const DATA_TYPE t, const Quat<DATA_TYPE>& from, const Quat<DATA_TYPE>& to)
+   Quat<DATA_TYPE>& slerp( Quat<DATA_TYPE>& result, const DATA_TYPE t, const Quat<DATA_TYPE>& from, const Quat<DATA_TYPE>& to, bool adjustSign=true)
    {
       const Quat<DATA_TYPE>& p = from; // just an alias to match q
 
@@ -520,7 +522,7 @@ namespace gmtl
 
       // adjust signs (if necessary)
       Quat<DATA_TYPE> q;
-      if (cosom < (DATA_TYPE)0.0)
+      if (adjustSign && (cosom < (DATA_TYPE)0.0))
       {
          cosom = -cosom;
          q[0] = -to[0];   // Reverse all signs
