@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: CoordGenTest.h,v $
- * Date modified: $Date: 2002-03-20 22:32:22 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-03-20 22:54:49 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -69,19 +69,21 @@ public:
    {
    }
 
-   void testCoordMakeRot();
-   void testCoordGetRot();
-   void testGenTimingMakeRot();
-   void testGenTimingSetRot();
+   void testCoordMakeCoord();
+   void testCoordGetMatrix();
+   void testGenTimingMakeCoord();
+   void testGenTimingMakeMatrix();
+   void testGenTimingSetCoord();
 
    /** @todo implement quat makeRot Euler */
    static CppUnit::Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite( "CoordGenTest" );
-      test_suite->addTest( new CppUnit::TestCaller<CoordGenTest>( "testCoordMakeRot", &CoordGenTest::testCoordMakeRot ) );
-      test_suite->addTest( new CppUnit::TestCaller<CoordGenTest>( "testCoordGetRot", &CoordGenTest::testCoordGetRot ) );
-      test_suite->addTest( new CppUnit::TestCaller<CoordGenTest>( "testGenTimingMakeRot", &CoordGenTest::testGenTimingMakeRot ) );
-      test_suite->addTest( new CppUnit::TestCaller<CoordGenTest>( "testGenTimingSetRot", &CoordGenTest::testGenTimingSetRot ) );
+      test_suite->addTest( new CppUnit::TestCaller<CoordGenTest>( "testCoordMakeCoord", &CoordGenTest::testCoordMakeCoord ) );
+      test_suite->addTest( new CppUnit::TestCaller<CoordGenTest>( "testCoordGetMatrix", &CoordGenTest::testCoordGetMatrix ) );
+      test_suite->addTest( new CppUnit::TestCaller<CoordGenTest>( "testGenTimingMakeCoord", &CoordGenTest::testGenTimingMakeCoord ) );
+      test_suite->addTest( new CppUnit::TestCaller<CoordGenTest>( "testGenTimingMakeMatrix", &CoordGenTest::testGenTimingMakeMatrix ) );
+      test_suite->addTest( new CppUnit::TestCaller<CoordGenTest>( "testGenTimingSetCoord", &CoordGenTest::testGenTimingSetCoord ) );
 
       return test_suite;
    }

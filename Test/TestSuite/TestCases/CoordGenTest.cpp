@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: CoordGenTest.cpp,v $
- * Date modified: $Date: 2002-03-20 22:32:22 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-03-20 22:54:49 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -40,7 +40,7 @@ Coord [] -km Transforcoordions XformInterface? Xform.h   Collision detection Col
 
 namespace gmtlTest
 {
-   void CoordGenTest::testCoordMakeRot()
+   void CoordGenTest::testCoordMakeCoord()
    {
       gmtl::RotationOrder order = gmtl::XYZ;
       gmtl::Matrix44f mat;
@@ -57,21 +57,30 @@ namespace gmtlTest
       CPPUNIT_ASSERT( q1.getPos()[0] == 4.0f );
       CPPUNIT_ASSERT( q1.getPos()[1] == 5.0f );
       CPPUNIT_ASSERT( q1.getPos()[2] == 6.0f );
-      
+
       /// @todo test rotation
+      
+      // make sure this compiles...
+      ///@todo testme
+      convert( q1, mat, order );
    }
 
-   void CoordGenTest::testCoordGetRot()
+   void CoordGenTest::testCoordGetMatrix()
    {
       gmtl::RotationOrder order = gmtl::XYZ;
       gmtl::Matrix44f mat;
       gmtl::Coord<float, 3, 3> q1;
     
-      /// @todo test me  
+      ///@todo testme
+      mat = gmtl::makeMatrix<gmtl::Matrix44f >( q1, order );
+      
+      // make sure this compiles...
+      ///@todo testme
+      convert( mat, q1, order );
    }
 
 
-   void CoordGenTest::testGenTimingMakeRot()
+   void CoordGenTest::testGenTimingMakeCoord()
    {
       gmtl::RotationOrder order = gmtl::XYZ;
       gmtl::Matrix44f mat;
@@ -85,14 +94,32 @@ namespace gmtlTest
          mat[3] += q1.getPos()[2];
       }
       CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE( "CoordGenTest/makeCoord(mat,XYZ)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT_METRIC_TIMING_LE( "CoordGenTest/makeCoord<33f>(mat,XYZ)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
 
       
       CPPUNIT_ASSERT( q1.pos()[1] != 10000.0f );
    }
+   
+   void CoordGenTest::testGenTimingMakeMatrix()
+   {
+      gmtl::RotationOrder order = gmtl::XYZ;
+      gmtl::Matrix44f mat;
+      gmtl::Coord<float, 3, 3> q1;
+      const long iters(25000);
+      CPPUNIT_METRIC_START_TIMING();
+
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         mat = gmtl::makeMatrix<gmtl::Matrix44f>( q1, order );
+         q1.pos()[2] += mat[3];
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE( "CoordGenTest/makeMatrix<44f>(q1,XYZ)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT( q1.pos()[1] != 10000.0f );
+   }
 
 
-   void CoordGenTest::testGenTimingSetRot()
+   void CoordGenTest::testGenTimingSetCoord()
    {
       gmtl::RotationOrder order = gmtl::XYZ;
       gmtl::Matrix44f mat;

@@ -8,8 +8,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: CoordCompareTest.cpp,v $
- * Date modified: $Date: 2002-03-20 21:43:36 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-03-20 22:54:49 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -44,7 +44,7 @@ namespace gmtlTest
    public:
       static void go()
       {
-         gmtl::Point<T, 3> p( 1, 2, 3 );
+         gmtl::Vec<T, 3> p( 1, 2, 3 );
          gmtl::Vec<T, 3> r( 4, 5, 6 );
          gmtl::Coord<T, 3, 3> coord1(p,r), coord2;
          coord1 = coord2;
