@@ -30,6 +30,7 @@ headers = Split("""
    Quat
    QuatOps
    Ray
+   RayOps
    Sphere
    SphereOps
    Tri
