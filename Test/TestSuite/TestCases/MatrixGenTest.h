@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixGenTest.h,v $
- * Date modified: $Date: 2002-02-19 18:00:55 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-02-19 22:35:15 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -64,6 +64,99 @@ public:
    {
    }
 
+   void testMatrixMakeTrans()
+   {
+      gmtl::Matrix33f mat33;
+      gmtl::Matrix34f mat34;
+      gmtl::Matrix44f mat44;
+      const long iters(100000);
+      CPPUNIT_METRIC_START_TIMING();
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         // 2D translation
+         gmtl::makeTrans( mat33, gmtl::Vec2f( 1, 2 ) );
+         gmtl::makeTrans( mat33, gmtl::Vec2f( 1, 2, 1.0f ) ); // homogeneous
+         
+         // 3D translation
+         gmtl::makeTrans( mat34, gmtl::Vec3f( 30, 32, 121 ) );
+         gmtl::makeTrans( mat44, gmtl::Vec3f( 30, 32, 121 ) );
+         gmtl::makeTrans( mat44, gmtl::Vec4f( 30, 32, 121, 1.0f ) ); // homogeneous
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeTrans", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+   /*
+   void testMatrixMakeTransStatic()
+   {
+      gmtl::Matrix22f mat22;
+      gmtl::Matrix33f mat33;
+      gmtl::Matrix34f mat34;
+      gmtl::Matrix44f mat44;
+      gmtl::Matrix43f mat43;
+      const long iters(100000);
+      CPPUNIT_METRIC_START_TIMING();
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         gmtl::makeTrans( mat22, Vec2f( 1, 2 ) );
+         gmtl::makeTrans( mat33, Vec3f( 30, 32, 121 ) );
+         gmtl::makeTrans( mat34, Vec3f( 30, 32, 121 ) );
+         gmtl::makeTrans( mat43, Vec3f( 30, 32, 121 ) );
+         gmtl::makeTrans( mat44, Vec3f( 30, 32, 121 ) );
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeScale", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+   */
+   
+   void testMatrixMakeScale()
+   {
+      gmtl::Matrix33f mat33;
+      gmtl::Matrix34f mat34;
+      gmtl::Matrix44f mat44;
+      gmtl::Matrix<float, 4, 3> mat43;
+      const long iters(100000);
+      CPPUNIT_METRIC_START_TIMING();
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         gmtl::makeScale( mat33, gmtl::Vec2f( 1, 2 ) );
+         gmtl::makeScale( mat34, gmtl::Vec3f( 30, 32, 121 ) );
+         gmtl::makeScale( mat43, gmtl::Vec3f( 30, 32, 121 ) );
+         gmtl::makeScale( mat44, gmtl::Vec3f( 30, 32, 121 ) );
+         gmtl::makeScale( mat33, 2.0f );
+         gmtl::makeScale( mat34, 3.0f );
+         gmtl::makeScale( mat43, 4.0f );
+         gmtl::makeScale( mat44, 5.0f );
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeScale", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+   /*
+   void testMatrixMakeScaleStatic()
+   {
+      gmtl::Matrix22f mat22;
+      gmtl::Matrix33f mat33;
+      gmtl::Matrix34f mat34;
+      gmtl::Matrix44f mat44;
+      gmtl::Matrix43f mat43;
+      const long iters(100000);
+      CPPUNIT_METRIC_START_TIMING();
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         gmtl::makeScale( mat22, Vec2f( 1, 2 ) );
+         gmtl::makeScale( mat33, Vec3f( 30, 32, 121 ) );
+         gmtl::makeScale( mat34, Vec3f( 30, 32, 121 ) );
+         gmtl::makeScale( mat43, Vec3f( 30, 32, 121 ) );
+         gmtl::makeScale( mat44, Vec3f( 30, 32, 121 ) );
+         gmtl::makeScale( mat33, 2.0f );
+         gmtl::makeScale( mat34, 3.0f );
+         gmtl::makeScale( mat43, 4.0f );
+         gmtl::makeScale( mat44, 5.0f );
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeScale", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+   */
+         
    void testMatrixMakeRot33()
    {
       gmtl::Matrix33f mat;
@@ -396,6 +489,17 @@ public:
    static Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("MatrixGenTest");
+      
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeTrans", &MatrixGenTest::testMatrixMakeTrans));
+      /*
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeTransStatic", &MatrixGenTest::testMatrixMakeTransStatic));
+      */
+            
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeScale", &MatrixGenTest::testMatrixMakeScale));
+      /*
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeScaleStatic", &MatrixGenTest::testMatrixMakeScaleStatic));
+      */
+      
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeRot33", &MatrixGenTest::testMatrixMakeRot33));
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeRot34", &MatrixGenTest::testMatrixMakeRot34));
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeRot44", &MatrixGenTest::testMatrixMakeRot44));
