@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOps.h,v $
- * Date modified: $Date: 2002-03-11 20:35:19 $
- * Version:       $Revision: 1.11 $
+ * Date modified: $Date: 2002-03-15 03:26:57 $
+ * Version:       $Revision: 1.12 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -70,9 +70,9 @@ namespace gmtl
     *  @POST: returns a m x n matrix
     */
    template <typename DATA_TYPE, unsigned ROWS, unsigned INTERNAL, unsigned COLS>
-   inline Matrix<DATA_TYPE, ROWS, COLS>& mult( Matrix<DATA_TYPE, ROWS, COLS>& result, 
-                 const Matrix<DATA_TYPE, ROWS, INTERNAL>& lhs, 
-                 const Matrix<DATA_TYPE, INTERNAL, COLS>& rhs ) 
+   inline Matrix<DATA_TYPE, ROWS, COLS>& mult( Matrix<DATA_TYPE, ROWS, COLS>& result,
+                 const Matrix<DATA_TYPE, ROWS, INTERNAL>& lhs,
+                 const Matrix<DATA_TYPE, INTERNAL, COLS>& rhs )
    {
       Matrix<DATA_TYPE, ROWS, COLS> ret_mat; // prevent aliasing
       zero( ret_mat );
@@ -80,79 +80,79 @@ namespace gmtl
       // p. 150 Numerical Analysis (second ed.)
       // if A is m x p, and B is p x n, then AB is m x n
       // (AB)ij  =  [k = 1 to p] (a)ik (b)kj     (where:  1 <= i <= m, 1 <= j <= n)
-      for (unsigned int i = 0; i < ROWS; ++i)           // 1 <= i <= m 
+      for (unsigned int i = 0; i < ROWS; ++i)           // 1 <= i <= m
       for (unsigned int j = 0; j < COLS; ++j)           // 1 <= j <= n
       for (unsigned int k = 0; k < INTERNAL; ++k)       // [k = 1 to p]
          ret_mat( i, j ) += lhs( i, k ) * rhs( k, j );
-      
+
       return result = ret_mat;
    }
-   
+
    /** matrix * matrix.
     *  @PRE: if lhs is m x p, and rhs is p x n, then result is m x n (mult func undefined otherwise)
     *  @POST: returns a m x n matrix == lhs * rhs
     *  returns a temporary, is slower.
     */
    template <typename DATA_TYPE, unsigned ROWS, unsigned INTERNAL, unsigned COLS>
-   inline Matrix<DATA_TYPE, ROWS, COLS> operator*( const Matrix<DATA_TYPE, ROWS, INTERNAL>& lhs, 
+   inline Matrix<DATA_TYPE, ROWS, COLS> operator*( const Matrix<DATA_TYPE, ROWS, INTERNAL>& lhs,
                                                    const Matrix<DATA_TYPE, INTERNAL, COLS>& rhs )
    {
       Matrix<DATA_TYPE, ROWS, COLS> temporary;
       return mult( temporary, lhs, rhs );
    }
-   
+
    /** matrix subtraction (algebraic operation for matrix).
     *  @PRE: if lhs is m x n, and rhs is m x n, then result is m x n (mult func undefined otherwise)
     *  @POST: returns a m x n matrix
     *  TODO: <B>enforce the sizes with templates...</b>
     */
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
-   inline Matrix<DATA_TYPE, ROWS, COLS>& sub( Matrix<DATA_TYPE, ROWS, COLS>& result, 
-                 const Matrix<DATA_TYPE, ROWS, COLS>& lhs, 
-                 const Matrix<DATA_TYPE, ROWS, COLS>& rhs ) 
+   inline Matrix<DATA_TYPE, ROWS, COLS>& sub( Matrix<DATA_TYPE, ROWS, COLS>& result,
+                 const Matrix<DATA_TYPE, ROWS, COLS>& lhs,
+                 const Matrix<DATA_TYPE, ROWS, COLS>& rhs )
    {
       // p. 150 Numerical Analysis (second ed.)
       // if A is m x n, and B is m x n, then AB is m x n
       // (A - B)ij  = (a)ij - (b)ij     (where:  1 <= i <= m, 1 <= j <= n)
-      for (unsigned int i = 0; i < ROWS; ++i)           // 1 <= i <= m 
+      for (unsigned int i = 0; i < ROWS; ++i)           // 1 <= i <= m
       for (unsigned int j = 0; j < COLS; ++j)           // 1 <= j <= n
          result( i, j ) = lhs( i, j ) - rhs( i, j );
-      
+
       return result;
    }
-   
+
    /** matrix addition (algebraic operation for matrix).
     *  @PRE: if lhs is m x n, and rhs is m x n, then result is m x n (mult func undefined otherwise)
     *  @POST: returns a m x n matrix
     *  TODO: <B>enforce the sizes with templates...</b>
     */
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
-   inline Matrix<DATA_TYPE, ROWS, COLS>& add( Matrix<DATA_TYPE, ROWS, COLS>& result, 
-                 const Matrix<DATA_TYPE, ROWS, COLS>& lhs, 
-                 const Matrix<DATA_TYPE, ROWS, COLS>& rhs ) 
+   inline Matrix<DATA_TYPE, ROWS, COLS>& add( Matrix<DATA_TYPE, ROWS, COLS>& result,
+                 const Matrix<DATA_TYPE, ROWS, COLS>& lhs,
+                 const Matrix<DATA_TYPE, ROWS, COLS>& rhs )
    {
       // p. 150 Numerical Analysis (second ed.)
       // if A is m x n, and B is m x n, then AB is m x n
       // (A - B)ij  = (a)ij + (b)ij     (where:  1 <= i <= m, 1 <= j <= n)
-      for (unsigned int i = 0; i < ROWS; ++i)           // 1 <= i <= m 
+      for (unsigned int i = 0; i < ROWS; ++i)           // 1 <= i <= m
       for (unsigned int j = 0; j < COLS; ++j)           // 1 <= j <= n
          result( i, j ) = lhs( i, j ) + rhs( i, j );
-      
+
       return result;
    }
 
-   /** matrix postmultiply. 
+   /** matrix postmultiply.
     * @PRE: args must both be n x n (this function is undefined otherwise)
     * @POST: result' = result * operand
     */
    template <typename DATA_TYPE, unsigned SIZE>
-   inline Matrix<DATA_TYPE, SIZE, SIZE>& postMult( Matrix<DATA_TYPE, SIZE, SIZE>& result, 
+   inline Matrix<DATA_TYPE, SIZE, SIZE>& postMult( Matrix<DATA_TYPE, SIZE, SIZE>& result,
                                                      const Matrix<DATA_TYPE, SIZE, SIZE>& operand )
    {
       return mult( result, result, operand );
    }
-   
-   /** matrix preMultiply. 
+
+   /** matrix preMultiply.
     * @PRE: args must both be n x n (this function is undefined otherwise)
     * @POST: result' = operand * result
     */
@@ -162,19 +162,19 @@ namespace gmtl
    {
       return mult( result, operand, result );
    }
-   
+
    /** matrix postmult (operator*=).
     * does a postmult on the matrix.
     * @PRE: args must both be n x n (this function is undefined otherwise)
     * @POST: result' = result * operand
     */
    template <typename DATA_TYPE, unsigned SIZE>
-   inline Matrix<DATA_TYPE, SIZE, SIZE>& operator*=( Matrix<DATA_TYPE, SIZE, SIZE>& result, 
+   inline Matrix<DATA_TYPE, SIZE, SIZE>& operator*=( Matrix<DATA_TYPE, SIZE, SIZE>& result,
                                                      const Matrix<DATA_TYPE, SIZE, SIZE>& operand )
    {
       return postMult( result, operand );
    }
-   
+
    /** matrix scalar mult.
     *  mult each elt in a matrix by a scalar value.
     *  @POST: result = mat * scalar
@@ -186,7 +186,7 @@ namespace gmtl
          result[i] = mat[i] * scalar;
       return result;
    }
-   
+
    /** matrix scalar mult.
     * mult each elt in a matrix by a scalar value.
     *  @POST: result *= scalar
@@ -198,7 +198,7 @@ namespace gmtl
          result[i] *= scalar;
       return result;
    }
-   
+
    /** matrix scalar mult (operator*=).
     * multiply matrix elements by a scalar
     * @POST: result *= scalar
@@ -208,7 +208,7 @@ namespace gmtl
    {
       return mult( result, scalar );
    }
-   
+
    /** matrix transpose in place.
     *  @PRE:  needs to be an N x N matrix
     *  @POST: flip along diagonal
@@ -223,8 +223,8 @@ namespace gmtl
 
       return result;
    }
-   
-   /** matrix transpose from one type to another (i.e. 3x4 to 4x3)  
+
+   /** matrix transpose from one type to another (i.e. 3x4 to 4x3)
     *  @PRE:  source needs to be an M x N matrix, while dest needs to be N x M
     *  @POST: flip along diagonal
     */
@@ -233,7 +233,7 @@ namespace gmtl
    {
       // in case result is == source... :(
       Matrix<DATA_TYPE, COLS, ROWS> temp = source;
-      
+
       // p. 149 Numerical Analysis (second ed.)
       for (unsigned i = 0; i < ROWS; ++i)
       {
@@ -245,12 +245,12 @@ namespace gmtl
 
       return result;
    }
-   
+
 
    /** full matrix inversion.
     *  Check for error with Matrix::isError().
     * @POST: result' = inv( result )
-    * @POST: If inversion failed, then error bit is set within the Matrix.  
+    * @POST: If inversion failed, then error bit is set within the Matrix.
     */
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
    inline Matrix<DATA_TYPE, ROWS, COLS>& invertFull( Matrix<DATA_TYPE, ROWS, COLS>& result, const Matrix<DATA_TYPE, ROWS, COLS>& src )
@@ -297,7 +297,7 @@ namespace gmtl
          /* Choosing the pivot */
          for ( i = 0, max_m = 0; i < n; i++ )
          {
-            if ( row[ i]  )      
+            if ( row[ i]  )
                continue;
             for ( j = 0; j < n; j++ )
             {
@@ -362,14 +362,14 @@ namespace gmtl
    }
 
    /** smart matrix inversion.
-    *  Does matrix inversion by intelligently selecting what type of inversion to use depending 
+    *  Does matrix inversion by intelligently selecting what type of inversion to use depending
     *  on the types of operations your Matrix has been through.
     *
     *  5 types of inversion: FULL, AFFINE, ORTHONORMAL, ORTHOGONAL, IDENTITY.
     *
     *  Check for error with Matrix::isError().
     * @POST: result' = inv( result )
-    * @POST: If inversion failed, then error bit is set within the Matrix.  
+    * @POST: If inversion failed, then error bit is set within the Matrix.
     */
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
    inline Matrix<DATA_TYPE, ROWS, COLS>& invert( Matrix<DATA_TYPE, ROWS, COLS>& result, const Matrix<DATA_TYPE, ROWS, COLS>& src )
@@ -379,23 +379,23 @@ namespace gmtl
       else
          return invertFull( result, src );
    }
-   
+
    /** smart matrix inversion (in place)
-    *  Does matrix inversion by intelligently selecting what type of inversion to use depending 
+    *  Does matrix inversion by intelligently selecting what type of inversion to use depending
     *  on the types of operations your Matrix has been through.
     *
     *  5 types of inversion: FULL, AFFINE, ORTHONORMAL, ORTHOGONAL, IDENTITY.
     *
     *  Check for error with Matrix::isError().
     * @POST: result' = inv( result )
-    * @POST: If inversion failed, then error bit is set within the Matrix.  
+    * @POST: If inversion failed, then error bit is set within the Matrix.
     */
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
    inline Matrix<DATA_TYPE, ROWS, COLS>& invert( Matrix<DATA_TYPE, ROWS, COLS>& result )
    {
       return invert( result, result );
-   }   
-         
+   }
+
    //: Clamps the values of the matrix to zero
    //!POST: Any values in matrix < GMTL_EPSILON are set to 0.0f
    /*
@@ -442,7 +442,7 @@ namespace gmtl
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
    inline bool isEqual( const Matrix<DATA_TYPE, ROWS, COLS>& lhs, const Matrix<DATA_TYPE, ROWS, COLS>& rhs, const DATA_TYPE& eps = (DATA_TYPE)0 )
    {
-      ggtASSERT( eps >= (DATA_TYPE)0 );
+      gmtlASSERT( eps >= (DATA_TYPE)0 );
 
       for (unsigned int i = 0; i < ROWS*COLS; ++i)
       {

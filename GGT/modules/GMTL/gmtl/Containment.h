@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Containment.h,v $
- * Date modified: $Date: 2002-03-10 03:56:23 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2002-03-15 03:26:56 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -172,7 +172,7 @@ template< class DATA_TYPE >
 void makeVolume( Sphere<DATA_TYPE>& container,
                  const std::vector< Point<DATA_TYPE, 3> >& pts )
 {
-   ggtASSERT( pts.size() > 0  && "pts must contain at least 1 point" );
+   gmtlASSERT( pts.size() > 0  && "pts must contain at least 1 point" );
 
    // Implementation based on the Sphere Centered at Average of Points algorithm
    // found in "3D Game Engine Design" by Devud G, Eberly (pg. 27)
@@ -206,7 +206,7 @@ template< class DATA_TYPE >
 void makeVolume( Sphere<DATA_TYPE>& container,
                  const std::vector< Point<DATA_TYPE, 3> >& pts )
 {
-   ggtASSERT( pts.size() > 1  && "pts must contain at least 2 points" );
+   gmtlASSERT( pts.size() > 1  && "pts must contain at least 2 points" );
 
    // make a sphere around the first 2 points and then extend the sphere by each
    // point thereafter. we could probably be smarter about this ...
@@ -220,7 +220,7 @@ void makeVolume( Sphere<DATA_TYPE>& container,
    const Vec<DATA_TYPE, 3> dir = second - first;
    container.mRadius = length(dir) * DATA_TYPE(0.5);
    container.mCenter = first + (dir * container.mRadius);
-   
+
    // iterate through the remaining points and extend the container to fit each
    // point. yay code reuse!
    while ( itr != pts.end() )
@@ -245,7 +245,7 @@ template< class DATA_TYPE >
 void makeVolume( Sphere<DATA_TYPE>& container,
                  const std::vector< Sphere<DATA_TYPE> >& spheres )
 {
-   ggtASSERT( spheres.size() > 1  && "spheres must contain at least 2 points" );
+   gmtlASSERT( spheres.size() > 1  && "spheres must contain at least 2 points" );
 
    // make a sphere around the first 2 points and then extend the sphere by each
    // point thereafter. we could probably be smarter about this ...
@@ -261,7 +261,7 @@ void makeVolume( Sphere<DATA_TYPE>& container,
                        DATA_TYPE(0.5);
    container.mCenter = first.mCenter +
                        (dir * (container.mRadius - first.mRadius));
-   
+
    // iterate through the remaining points and extend the container to fit each
    // point. yay code reuse!
    while ( itr != spheres.end() )
@@ -303,7 +303,7 @@ bool isOnVolume( const Sphere<DATA_TYPE>& container,
                  const Point<DATA_TYPE, 3>& pt,
                  const DATA_TYPE& tol )
 {
-   ggtASSERT( tol >= 0 && "tolerance must be positive" );
+   gmtlASSERT( tol >= 0 && "tolerance must be positive" );
 
    // abs( |center-pt| - radius ) < tol
    return ( Math::abs( length(container.mCenter - pt) - container.mRadius )
@@ -372,9 +372,9 @@ inline void computeContainment( OOBox& box, const std::vector<gmtl::Point3>& poi
    gmtl::Vec3 ax2 = box_test.axis(2);
 #endif
 
-    ggtASSERT(box.axis(0).isNormalized());
-    ggtASSERT(box.axis(1).isNormalized());
-    ggtASSERT(box.axis(2).isNormalized());
+    gmtlASSERT(box.axis(0).isNormalized());
+    gmtlASSERT(box.axis(1).isNormalized());
+    gmtlASSERT(box.axis(2).isNormalized());
 
     // XXX: Sign is sometimes wrong here
     // This is hack code to make it "work right"

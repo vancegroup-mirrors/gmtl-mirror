@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Math.h,v $
- * Date modified: $Date: 2002-03-10 03:58:08 $
- * Version:       $Revision: 1.15 $
+ * Date modified: $Date: 2002-03-15 03:26:56 $
+ * Version:       $Revision: 1.16 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -36,7 +36,7 @@
 #define _GMTL_MATH_H_
 
 #include <gmtl/gmtlConfig.h>
-#include <Util/Assert.h>
+#include <gmtl/Assert.h>
 #include <math.h>
 #include <stdlib.h>
 
@@ -103,7 +103,7 @@ inline T zeroClamp( T value, T eps = T(0) )
 
 //----------------------------------------------------------------------------
 // don't allow non-float types, because their ret val wont be correct
-// i.e. with int, the int retval will be rounded up or down.  
+// i.e. with int, the int retval will be rounded up or down.
 //      we'd need a float retval to do it right, but we can't specialize by ret
 template <typename T>
 inline T aCos( T fValue );
@@ -264,7 +264,7 @@ inline float unitRandom()
     //return float(random())/float(RAND_MAX);
    float ret_val;
    ret_val = ::drand48();
-   ggtASSERT((ret_val >= 0.0f) && (ret_val <= 1.0f));
+   gmtlASSERT((ret_val >= 0.0f) && (ret_val <= 1.0f));
    return ret_val;
 }
 
@@ -277,7 +277,7 @@ inline float rangeRandom( float x1, float x2 )
    float size = x2 - x1;
    return float( r * size + x1 );
 }
-   
+
 /*
 float SymmetricRandom ()
 {
@@ -312,7 +312,7 @@ inline double rad2Deg( double fVal )
 template <class T>
 inline bool isEqual( const T& a, const T& b, const T& tolerance )
 {
-   ggtASSERT( tolerance >= (T)0 );
+   gmtlASSERT( tolerance >= (T)0 );
    return bool( gmtl::Math::abs( a - b ) <= tolerance );
 }
 //----------------------------------------------------------------------------
@@ -397,7 +397,7 @@ inline T factorial(T rhs)
 }
 //----------------------------------------------------------------------------
 
-} // end namespace Math 
+} // end namespace Math
 } // end namespace gmtl
 
 #endif

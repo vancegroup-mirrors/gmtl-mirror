@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Matrix.h,v $
- * Date modified: $Date: 2002-03-11 00:29:32 $
- * Version:       $Revision: 1.12 $
+ * Date modified: $Date: 2002-03-15 03:26:56 $
+ * Version:       $Revision: 1.13 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -68,33 +68,33 @@ template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
 class Matrix
 {
 public:
-   /** use this to declare single value types of the same type as this matrix. 
+   /** use this to declare single value types of the same type as this matrix.
     */
    typedef DATA_TYPE DataType;
 
    /** describes the xforms that this matrix has been through. */
    enum XformState
    {
-      IDENTITY = 1, 
-      ORTHOGONAL = 2, 
-      ORTHONORMAL = 4, 
-      AFFINE = 8, 
+      IDENTITY = 1,
+      ORTHOGONAL = 2,
+      ORTHONORMAL = 4,
+      AFFINE = 8,
       FULL = 16,
       ERROR = 32 // error bit
    };
-      
+
    /** Default Constructor (Identity constructor) */
-   Matrix() 
+   Matrix()
    {
       // TODO: mp
       for (unsigned int r = 0; r < ROWS; ++r)
       for (unsigned int c = 0; c < COLS; ++c)
          this->operator()( r, c ) = (DATA_TYPE)0.0;
-      
+
       // TODO: mp
       for (unsigned int x = 0; x < Math::Min( COLS, ROWS ); ++x)
          this->operator()( x, x ) = (DATA_TYPE)1.0;
-      
+
       mState = IDENTITY;
    };
 
@@ -111,21 +111,21 @@ public:
    void set( DATA_TYPE v00, DATA_TYPE v01,
              DATA_TYPE v10, DATA_TYPE v11 )
    {
-      ggtASSERT( ROWS == 2 && COLS == 2 ); // could be at compile time...
+      gmtlASSERT( ROWS == 2 && COLS == 2 ); // could be at compile time...
       mData[0] = v00;
       mData[1] = v10;
       mData[2] = v01;
       mData[3] = v11;
       mState = FULL;
    }
-   
+
    /** element wise setter for 2x3.
     * TODO: needs mp!!
     */
    void set( DATA_TYPE v00, DATA_TYPE v01, DATA_TYPE v02,
              DATA_TYPE v10, DATA_TYPE v11, DATA_TYPE v12  )
    {
-      ggtASSERT( ROWS == 2 && COLS == 3 ); // could be at compile time...
+      gmtlASSERT( ROWS == 2 && COLS == 3 ); // could be at compile time...
       mData[0] = v00;
       mData[1] = v10;
       mData[2] = v01;
@@ -134,7 +134,7 @@ public:
       mData[5] = v12;
       mState = FULL;
    }
-   
+
    /** element wise setter for 3x3.
     * TODO: needs mp!!
     */
@@ -142,21 +142,21 @@ public:
              DATA_TYPE v10, DATA_TYPE v11, DATA_TYPE v12,
              DATA_TYPE v20, DATA_TYPE v21, DATA_TYPE v22)
    {
-      ggtASSERT( ROWS == 3 && COLS == 3 ); // could be at compile time...
+      gmtlASSERT( ROWS == 3 && COLS == 3 ); // could be at compile time...
       mData[0] = v00;
       mData[1] = v10;
       mData[2] = v20;
-      
+
       mData[3] = v01;
       mData[4] = v11;
       mData[5] = v21;
-      
+
       mData[6] = v02;
       mData[7] = v12;
       mData[8] = v22;
       mState = FULL;
    }
-   
+
    /** element wise setter for 3x4.
     * TODO: needs mp!!  currently no way for a 4x3, ....
     */
@@ -164,7 +164,7 @@ public:
              DATA_TYPE v10, DATA_TYPE v11, DATA_TYPE v12, DATA_TYPE v13,
              DATA_TYPE v20, DATA_TYPE v21, DATA_TYPE v22, DATA_TYPE v23)
    {
-      ggtASSERT( ROWS == 3 && COLS == 4 );// could be compile time...
+      gmtlASSERT( ROWS == 3 && COLS == 4 );// could be compile time...
       mData[0] = v00;
       mData[1] = v10;
       mData[2] = v20;
@@ -181,7 +181,7 @@ public:
       mData[11] = v23;
       mState = FULL;
    }
-   
+
    /** element wise setter for 4x4.
     * TODO: needs mp!!  currently no way for a 4x3, ....
     */
@@ -190,7 +190,7 @@ public:
              DATA_TYPE v20, DATA_TYPE v21, DATA_TYPE v22, DATA_TYPE v23,
              DATA_TYPE v30, DATA_TYPE v31, DATA_TYPE v32, DATA_TYPE v33 )
    {
-      ggtASSERT( ROWS == 4 && COLS == 4 );// could be compile time...
+      gmtlASSERT( ROWS == 4 && COLS == 4 );// could be compile time...
       mData[0]  = v00;
       mData[1]  = v10;
       mData[2]  = v20;
@@ -213,12 +213,12 @@ public:
       mData[15] = v33;
       mState = FULL;
    }
-   
-   /** comma operator 
+
+   /** comma operator
     *  @todo implement this!
     */
    //void operator,()( DATA_TYPE b ) {}
-   
+
    /** set the matrix to the given data.
     *  This function is useful to copy matrix data from another math library.
     *
@@ -231,9 +231,9 @@ public:
     *    mat.set( other_matrix.getFloatPtr() );
     * \endcode
     *
-    *  WARNING: this isn't really safe, size and datatype are not enforced by 
-    *           the compiler. 
-    * @pre data is in the native format of the gmtl::Matrix class, if not, 
+    *  WARNING: this isn't really safe, size and datatype are not enforced by
+    *           the compiler.
+    * @pre data is in the native format of the gmtl::Matrix class, if not,
     *      then you might be able to use the setTranspose function.
     * @pre i.e. in a 4x4 data[0-3] is the 1st column, data[4-7] is 2nd, etc...
     */
@@ -244,12 +244,12 @@ public:
          mData[x] = data[x];
       mState = FULL;
    }
-   
+
    /** set the matrix to the transpose of the given data.
     * normally set() takes raw matrix data in column by column order,
     * this function allows you to pass in row by row data.
     *
-    * Normally you'll use this function if you want to use a float array 
+    * Normally you'll use this function if you want to use a float array
     * to init the matrix (see code example).
     *
     * <h3> "Example (to set a [15 -4 20] translation using float array):" </h3>
@@ -262,8 +262,8 @@ public:
     *    mat.setTranspose( data );
     * \endcode
     *
-    *  WARNING: this isn't really safe, size and datatype are not enforced by 
-    *           the compiler. 
+    *  WARNING: this isn't really safe, size and datatype are not enforced by
+    *           the compiler.
     * @pre ptr is in the transpose of the native format of the Matrix class
     * @pre i.e. in a 4x4 data[0-3] is the 1st row, data[4-7] is 2nd, etc...
     */
@@ -278,32 +278,32 @@ public:
 
    /** access [row, col] in the matrix */
    DATA_TYPE& operator()( const unsigned row, const unsigned column )
-   { 
-      ggtASSERT( (row < ROWS) && (column < COLS) ); 
+   {
+      gmtlASSERT( (row < ROWS) && (column < COLS) );
       return mData[column*ROWS + row];
    }
-   
+
    /** access [row, col] in the matrix (const version) */
    const DATA_TYPE&  operator()( const unsigned row, const unsigned column ) const
-   { 
-      ggtASSERT( (row < ROWS) && (column < COLS) ); 
+   {
+      gmtlASSERT( (row < ROWS) && (column < COLS) );
       return mData[column*ROWS + row];
    }
-   
+
    /** bracket operator */
    DATA_TYPE& operator[]( const unsigned i )
-   { 
-      ggtASSERT( i < (ROWS*COLS) ); 
+   {
+      gmtlASSERT( i < (ROWS*COLS) );
       return mData[i];
    }
-   
+
    /** bracket operator */
    const DATA_TYPE& operator[]( const unsigned i ) const
-   { 
-      ggtASSERT( i < (ROWS*COLS) ); 
+   {
+      gmtlASSERT( i < (ROWS*COLS) );
       return mData[i];
    }
-   
+
    /** Get a DATA_TYPE pointer to the matrix data
     * RETVAL: Returns a ptr to the head of the matrix data
     */
@@ -317,7 +317,7 @@ public:
    {
       mState |= ERROR;
    }
-   
+
 public:
    /** Column major.  In other words {Column1, Column2, Column3, Column4} in memory
     * access element mData[column][row]
@@ -340,31 +340,31 @@ typedef Matrix<float, 4, 4> Matrix44f;
 typedef Matrix<double, 4, 4> Matrix44d;
 
 /** 32bit floating point 2x2 identity matrix */
-const Matrix22f MAT_IDENTITY22F = Matrix22f();  
+const Matrix22f MAT_IDENTITY22F = Matrix22f();
 
 /** 64bit floating point 2x2 identity matrix */
 const Matrix22d MAT_IDENTITY22D = Matrix22d();
 
 /** 32bit floating point 2x2 identity matrix */
-const Matrix23f MAT_IDENTITY23F = Matrix23f();  
+const Matrix23f MAT_IDENTITY23F = Matrix23f();
 
 /** 64bit floating point 2x2 identity matrix */
 const Matrix23d MAT_IDENTITY23D = Matrix23d();
 
 /** 32bit floating point 3x3 identity matrix */
-const Matrix33f MAT_IDENTITY33F = Matrix33f();  
+const Matrix33f MAT_IDENTITY33F = Matrix33f();
 
 /** 64bit floating point 3x3 identity matrix */
 const Matrix33d MAT_IDENTITY33D = Matrix33d();
 
 /** 32bit floating point 3x4 identity matrix */
-const Matrix34f MAT_IDENTITY34F = Matrix34f();  
+const Matrix34f MAT_IDENTITY34F = Matrix34f();
 
 /** 64bit floating point 3x4 identity matrix */
 const Matrix34d MAT_IDENTITY34D = Matrix34d();
 
 /** 32bit floating point 4x4 identity matrix */
-const Matrix44f MAT_IDENTITY44F = Matrix44f();  
+const Matrix44f MAT_IDENTITY44F = Matrix44f();
 
 /** 64bit floating point 4x4 identity matrix */
 const Matrix44d MAT_IDENTITY44D = Matrix44d();

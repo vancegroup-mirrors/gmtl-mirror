@@ -7,15 +7,15 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Tri.h,v $
- * Date modified: $Date: 2002-02-18 18:06:01 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-03-15 03:26:57 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
 /*************************************************************** ggt-cpr beg
 *
 * GGT: The Generic Graphics Toolkit
-* Copyright (C) 2001,2002 Allen Bierbaum 
+* Copyright (C) 2001,2002 Allen Bierbaum
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU Lesser General Public
@@ -96,12 +96,12 @@ public:
    //@{
    Point<DATA_TYPE, 3>& operator[]( int idx )
    {
-      ggtASSERT( (0 <= idx) && (idx <= 2) );
+      gmtlASSERT( (0 <= idx) && (idx <= 2) );
       return mVerts[idx];
    }
    const Point<DATA_TYPE, 3>& operator[]( int idx ) const
    {
-      ggtASSERT( (0 <= idx) && (idx <= 2) );
+      gmtlASSERT( (0 <= idx) && (idx <= 2) );
       return mVerts[idx];
    }
    //@}
@@ -118,7 +118,7 @@ public:
     */
    Vec<DATA_TYPE, 3> edge( int idx ) const
    {
-      ggtASSERT( (0 <= idx) && (idx <= 2) );
+      gmtlASSERT( (0 <= idx) && (idx <= 2) );
       int idx2 = ( idx == 2 ) ? 0 : idx + 1;
       return (mVerts[idx2] - mVerts[idx]);
    }

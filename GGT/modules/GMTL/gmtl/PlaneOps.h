@@ -7,15 +7,15 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PlaneOps.h,v $
- * Date modified: $Date: 2002-02-24 00:29:27 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-03-15 03:26:57 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
 /*************************************************************** ggt-cpr beg
 *
 * GGT: The Generic Graphics Toolkit
-* Copyright (C) 2001,2002 Allen Bierbaum 
+* Copyright (C) 2001,2002 Allen Bierbaum
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU Lesser General Public
@@ -123,7 +123,7 @@ DATA_TYPE findNearestPt( const Plane<DATA_TYPE>& plane,
 {
    // GGI:  p297
    // GGII: p223
-   ggtASSERT( isNormalized(plane.mNorm) );   // Assert: Normalized
+   gmtlASSERT( isNormalized(plane.mNorm) );   // Assert: Normalized
    DATA_TYPE dist_to_plane(0);
    dist_to_plane = plane.mOffset + dot( plane.mNorm, static_cast< Vec<DATA_TYPE, 3> >(pt) );
    result = pt - (plane.mNorm * dist_to_plane);
@@ -177,7 +177,7 @@ template< class DATA_TYPE >
 inline bool isEqual( const Plane<DATA_TYPE>& p1, const Plane<DATA_TYPE>& p2,
                      const DATA_TYPE& eps )
 {
-   ggtASSERT( eps >= 0 );
+   gmtlASSERT( eps >= 0 );
    return ( (isEqual(p1.mNorm, p2.mNorm, eps)) &&
             (Math::isEqual(p1.mOffset, p2.mOffset, eps)) );
 }

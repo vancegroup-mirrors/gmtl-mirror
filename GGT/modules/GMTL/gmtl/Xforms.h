@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Xforms.h,v $
- * Date modified: $Date: 2002-03-11 20:31:32 $
- * Version:       $Revision: 1.18 $
+ * Date modified: $Date: 2002-03-15 03:26:57 $
+ * Version:       $Revision: 1.19 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -52,31 +52,31 @@ namespace gmtl
     * @see game programming gems #1 p199
     * @see shoemake siggraph notes
     * @notes for the implementation, inv and conj should both work for the "q*" in "Rv = q P(v) q*"
-    *        but conj is actually faster so we usually choose that.  
-    * @notes also note, that if the input quat wasn't normalized (and thus isn't a rotation quat), 
+    *        but conj is actually faster so we usually choose that.
+    * @notes also note, that if the input quat wasn't normalized (and thus isn't a rotation quat),
     *        then this might not give the correct result, since conj and invert is only equiv when normalized...
     */
    template <typename DATA_TYPE>
    inline Vec<DATA_TYPE, 3>& xform( Vec<DATA_TYPE, 3>& result, const Quat<DATA_TYPE>& rot, const Vec<DATA_TYPE, 3>& vector )
    {
       // check preconditions...
-      ggtASSERT( Math::isEqual( length( rot ), (DATA_TYPE)1.0, (DATA_TYPE)0.0001 ) && "must pass a rotation quaternion to xform(result,quat,vec) - by definition, a rotation quaternion is normalized).  if you need non-rotation quaternion support, let us know." );
-      
+      gmtlASSERT( Math::isEqual( length( rot ), (DATA_TYPE)1.0, (DATA_TYPE)0.0001 ) && "must pass a rotation quaternion to xform(result,quat,vec) - by definition, a rotation quaternion is normalized).  if you need non-rotation quaternion support, let us know." );
+
       // easiest to write and understand (slowest too)
       //return result_vec = makeVec( rot * makePure( vector ) * makeConj( rot ) );
 
-      // completely hand expanded 
+      // completely hand expanded
       // (faster by 28% in gcc 2.96 debug mode.)
       // (faster by 35% in gcc 2.96 opt3 mode (78% for doubles))
-      Quat<DATA_TYPE> rot_conj( -rot[Xelt], -rot[Yelt], -rot[Zelt], rot[Welt] ); 
+      Quat<DATA_TYPE> rot_conj( -rot[Xelt], -rot[Yelt], -rot[Zelt], rot[Welt] );
       Quat<DATA_TYPE> pure( vector[0], vector[1], vector[2], (DATA_TYPE)0.0 );
-      Quat<DATA_TYPE> temp( 
+      Quat<DATA_TYPE> temp(
          pure[Welt]*rot_conj[Xelt] + pure[Xelt]*rot_conj[Welt] + pure[Yelt]*rot_conj[Zelt] - pure[Zelt]*rot_conj[Yelt],
          pure[Welt]*rot_conj[Yelt] + pure[Yelt]*rot_conj[Welt] + pure[Zelt]*rot_conj[Xelt] - pure[Xelt]*rot_conj[Zelt],
          pure[Welt]*rot_conj[Zelt] + pure[Zelt]*rot_conj[Welt] + pure[Xelt]*rot_conj[Yelt] - pure[Yelt]*rot_conj[Xelt],
          pure[Welt]*rot_conj[Welt] - pure[Xelt]*rot_conj[Xelt] - pure[Yelt]*rot_conj[Yelt] - pure[Zelt]*rot_conj[Zelt] );
-      
-      result.set( 
+
+      result.set(
          rot[Welt]*temp[Xelt] + rot[Xelt]*temp[Welt] + rot[Yelt]*temp[Zelt] - rot[Zelt]*temp[Yelt],
          rot[Welt]*temp[Yelt] + rot[Yelt]*temp[Welt] + rot[Zelt]*temp[Xelt] - rot[Xelt]*temp[Zelt],
          rot[Welt]*temp[Zelt] + rot[Zelt]*temp[Welt] + rot[Xelt]*temp[Yelt] - rot[Yelt]*temp[Xelt] );
@@ -94,12 +94,12 @@ namespace gmtl
       return xform( temporary, rot, vector );
    }
 
-   
-   
+
+
    /** xform a vector by a matrix.
     *  Transforms a vector with a matrix, uses multiplication of [m x k] matrix by a [k x 1] matrix (the later also known as a Vector...).
-    *  @post This results in a full matrix xform of the vector (assumes you know what you are doing - 
-    *  i.e. that you know that the last component of a vector by definition is 0.0, and changing 
+    *  @post This results in a full matrix xform of the vector (assumes you know what you are doing -
+    *  i.e. that you know that the last component of a vector by definition is 0.0, and changing
     *  this might make the xform different than what you may expect).
     *  @post returns a point same size as the matrix rows...  (v[r][1] = m[r][k] * v[k][1])
     */
@@ -107,22 +107,22 @@ namespace gmtl
    inline Vec<DATA_TYPE, COLS>& xform( Vec<DATA_TYPE, COLS>& result, const Matrix<DATA_TYPE, ROWS, COLS>& matrix, const Vec<DATA_TYPE, COLS>& vector )
    {
       // do a standard [m x k] by [k x n] matrix multiplication (where n == 0).
-      
+
       // reset vec to zero...
-      result = Vec<DATA_TYPE, COLS>(); 
-         
+      result = Vec<DATA_TYPE, COLS>();
+
       for (unsigned iRow = 0; iRow < ROWS; ++iRow)
       for (unsigned iCol = 0; iCol < COLS; ++iCol)
          result[iRow] += matrix( iRow, iCol ) * vector[iCol];
-      
+
       return result;
    }
-   
-         
+
+
    /** matrix * vector xform.
     *  multiplication of [m x k] matrix by a [k x 1] matrix (also known as a Vector...).
-    *  @post This results in a full matrix xform of the vector (assumes you know what you are doing - 
-    *  i.e. that you know that the last component of a vector by definition is 0.0, and changing 
+    *  @post This results in a full matrix xform of the vector (assumes you know what you are doing -
+    *  i.e. that you know that the last component of a vector by definition is 0.0, and changing
     *  this might make the xform different that what you may expect).
     *  @post returns a vec same size as the matrix rows...  (v[r][1] = m[r][k] * v[k][1])
     */
@@ -134,9 +134,9 @@ namespace gmtl
       return xform( temporary, matrix, vector );
    }
 
-   
-   
-   
+
+
+
    /** partially transform a partially specified vector by a matrix, assumes last elt of vector is 0 (the 0 makes it only partially transformed).
     *  Transforms a vector with a matrix, uses multiplication of [m x k] matrix by a [k-1 x 1] matrix (also known as a Vector [with w == 0 for vectors by definition] ).
     *  @post the [k-1 x 1] vector you pass in is treated as a [vector, 0.0]
@@ -145,9 +145,9 @@ namespace gmtl
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS, unsigned VEC_SIZE>
    inline Vec<DATA_TYPE, VEC_SIZE>& xform( Vec<DATA_TYPE, VEC_SIZE >& result, const Matrix<DATA_TYPE, ROWS, COLS>& matrix, const Vec<DATA_TYPE, VEC_SIZE >& vector )
    {
-      ggtASSERT( VEC_SIZE == COLS - 1 );
+      gmtlASSERT( VEC_SIZE == COLS - 1 );
       // do a standard [m x k] by [k x n] matrix multiplication (where n == 0).
-      
+
       // copy the point to the correct size.
       Point<DATA_TYPE, COLS> temp_vector, temp_result;
       for (unsigned x = 0; x < VEC_SIZE; ++x)
@@ -156,9 +156,9 @@ namespace gmtl
 
       // transform it.
       xform( temp_result, matrix, temp_vector );
-      
+
       // convert result back to vec<DATA_TYPE, VEC_SIZE>
-      // some matrices will make the W param large even if this is a true vector, 
+      // some matrices will make the W param large even if this is a true vector,
       // we'll need to redistribute it to the other elts if W param is non-zero
       if (Math::isEqual( temp_result[VEC_SIZE], (DATA_TYPE)0, (DATA_TYPE)0.0001 ) == false)
       {
@@ -171,7 +171,7 @@ namespace gmtl
          for (unsigned x = 0; x < VEC_SIZE; ++x)
             result[x] = temp_result[x];
       }
-      
+
       return result;
    }
 
@@ -186,10 +186,10 @@ namespace gmtl
       Vec<DATA_TYPE, COLS_MINUS_ONE> temporary;
       return xform( temporary, matrix, vector );
    }
-   
 
-   
-   
+
+
+
    /** transform point by a matrix.
     *  multiplication of [m x k] matrix by a [k x 1] matrix (also known as a Point...).
     *  @post This results in a full matrix xform of the point.
@@ -202,14 +202,14 @@ namespace gmtl
 
       // reset point to zero...
       result = Point<DATA_TYPE, COLS>();
-      
+
       for (unsigned iRow = 0; iRow < ROWS; ++iRow)
       for (unsigned iCol = 0; iCol < COLS; ++iCol)
          result[iRow] += matrix( iRow, iCol ) * point[iCol];
-      
+
       return result;
-   }   
-   
+   }
+
    /** matrix * point.
     *  multiplication of [m x k] matrix by a [k x 1] matrix (also known as a Point...).
     *  @post This results in a full matrix xform of the point.
@@ -222,9 +222,9 @@ namespace gmtl
       return xform( temporary, matrix, point );
    }
 
-   
-   
-   
+
+
+
    /** transform a partially specified point by a matrix, assumes last elt of point is 1.
     *  Transforms a point with a matrix, uses multiplication of [m x k] matrix by a [k-1 x 1] matrix (also known as a Point [with w == 1 for points by definition] ).
     *  @post the [k-1 x 1] point you pass in is treated as [point, 1.0]
@@ -234,7 +234,7 @@ namespace gmtl
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS, unsigned PNT_SIZE>
    inline Point<DATA_TYPE, PNT_SIZE>& xform( Point<DATA_TYPE, PNT_SIZE>& result, const Matrix<DATA_TYPE, ROWS, COLS>& matrix, const Point<DATA_TYPE, PNT_SIZE>& point )
    {
-      ggtASSERT( PNT_SIZE == COLS - 1 && "The precondition of this method is that the vector size must be one less than the number of columns in the matrix.  eg. if Mat<n,k>, then Vec<k-1>." );
+      gmtlASSERT( PNT_SIZE == COLS - 1 && "The precondition of this method is that the vector size must be one less than the number of columns in the matrix.  eg. if Mat<n,k>, then Vec<k-1>." );
 
       // copy the point to the correct size.
       Point<DATA_TYPE, PNT_SIZE+1> temp_point, temp_result;
@@ -244,9 +244,9 @@ namespace gmtl
 
       // transform it.
       xform( temp_result, matrix, temp_point );
-      
+
       // convert result back to pnt<DATA_TYPE, PNT_SIZE>
-      // some matrices will make the W param large even if this is a true vector, 
+      // some matrices will make the W param large even if this is a true vector,
       // we'll need to redistribute it to the other elts if W param is non-zero
       if (Math::isEqual( temp_result[PNT_SIZE], (DATA_TYPE)0, (DATA_TYPE)0.0001 ) == false)
       {
@@ -259,10 +259,10 @@ namespace gmtl
          for (unsigned x = 0; x < PNT_SIZE; ++x)
             result[x] = temp_result[x];
       }
-            
+
       return result;
    }
-         
+
    /** matrix * partially specified point.
     *  multiplication of [m x k] matrix by a [k-1 x 1] matrix (also known as a Point [with w == 1 for points by definition] ).
     *  @post the [k-1 x 1] vector you pass in is treated as a [point, 1.0]
@@ -274,14 +274,14 @@ namespace gmtl
       Point<DATA_TYPE, COLS_MINUS_ONE> temporary;
       return xform( temporary, matrix, point );
    }
-   
-   
-   
-   
-   
-   
-   
-   
+
+
+
+
+
+
+
+
    // old xform stuff...
 /*
 // XXX: Assuming that there is no projective portion to the matrix or homogeneous coord
