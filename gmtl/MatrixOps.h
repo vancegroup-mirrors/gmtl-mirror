@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOps.h,v $
- * Date modified: $Date: 2002-03-19 23:05:06 $
- * Version:       $Revision: 1.17 $
+ * Date modified: $Date: 2002-03-20 07:11:23 $
+ * Version:       $Revision: 1.18 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -89,58 +89,6 @@ namespace gmtl
       }
       return result;
    }
-
-   // ---------- Matrix set functions -------- //
-
-   // ---------- Matrix get functions -------- //
-   /** @name Matrix get functions */
-   //@{
-
-   /** Set matrix translation from vec.
-    * @pre if making an n x n matrix, then for
-    *    - <b>vector is homogeneous:</b> SIZE of vector needs to equal number of Matrix ROWS - 1
-    *    - <b>vector has scale component:</b> SIZE of vector needs to equal number of Matrix ROWS
-    * if making an n x n+1 matrix, then for
-    *    - <b>vector is homogeneous:</b> SIZE of vector needs to equal number of Matrix ROWS
-    *    - <b>vector has scale component:</b> SIZE of vector needs to equal number of Matrix ROWS + 1
-    * @post if preconditions are not met, then function is undefined (will not compile)
-    */
-   /*
-   template< typename DATA_TYPE, unsigned ROWS, unsigned COLS, typename VEC_TYPE >
-   inline VEC_TYPE getTrans( const Matrix<DATA_TYPE, ROWS, COLS>& arg, 
-                             Type2Type< VEC_TYPE > t = Type2Type< VEC_TYPE >()) const
-   {
-      // ASSERT: There are as many 
-      
-      // if n x n   then (homogeneous case) vecsize == rows-1 or (scale component case) vecsize == rows
-      // if n x n+1 then (homogeneous case) vecsize == rows   or (scale component case) vecsize == rows+1
-      gmtlASSERT( ((ROWS == COLS && (typename VEC_TYPE::Size == (ROWS-1) || typename VEC_TYPE::Size == ROWS)) ||
-               (COLS == (ROWS+1) && (typename VEC_TYPE::Size == ROWS || typename VEC_TYPE::Size == (ROWS+1)))) &&
-              "preconditions not met for vector size in call to makeTrans.  Read your documentation." );
-
-      VEC_TYPE ret_trans;
-
-      // homogeneous case...
-      if ((ROWS == COLS && typename VEC_TYPE::Size == ROWS)              // Square matrix and vec so assume homogeneous vector. ex. 4x4 with vec 4
-          || (COLS == (ROWS+1) && typename VEC_TYPE::Size == (ROWS+1)))  // ex: 3x4 with vec4 
-      {
-         ret_trans[typename VEC_TYPE::Size-1] = 1.0f;
-      }
-
-      // non-homogeneous case... (SIZE == ROWS), 
-      //else
-      //{}
-
-      for (unsigned x = 0; x < COLS - 1; ++x)
-      {
-         ret_trans[x] = result( x, COLS - 1 );
-      }
-
-      return ret_trans;
-   }
-*/
-
-   //@}
 
 
    /** matrix multiply.
