@@ -1,23 +1,38 @@
 // GGT dependencies
-// Run as: es.pl --cfg=deps.esrc
-GGT
-{
-   CVSROOT: allenb@cvs.ggt.sourceforge.net:/cvsroot/ggt;
-   #CVSROOT: :pserver:anonymous@cvs.subsynth.sourceforge.net:/cvsroot/subsynth;
+// Run as: cvs-gather.pl --cfg=deps.esrc
+//GGT
+//{
+//   CVSROOT: allenb@cvs.ggt.sourceforge.net:/cvsroot/ggt;
+//   #CVSROOT: :pserver:anonymous@cvs.subsynth.sourceforge.net:/cvsroot/subsynth;
 
-   Module: GGT;   # Blah blah
+//   Module: GGT;   # Blah blah
    //Tag: HEAD;
    
-   Path: ..;      // Put it overtop of me (since I am he)
+//   Path: ..;      // Put it overtop of me (since I am he)
    // Good good
 
-   # Stuff
-   include common-deps.esrc;     // Include the common Juggler project stuff
+   JugglerBaseStuff
+   {
+      CVSROOT: allenb@cvs.vrjuggler.sourceforge.net:/cvsroot/vrjuggler;
+      Module: juggler/external/boost   [external/boost];
+      Module: juggler/external/cppunit [external/cppunit];
+      Tag: HEAD;
+      Path: .;
+   };
+   
+   Doozer      // Get Doozer for makefiles
+   {
+      CVSROOT: allenb@cvs.doozer.sourceforge.net:/cvsroot/doozer;
+      Module: Doozer;
+      Tag: HEAD;
+	  Path: .;
+   }; 
 
    VPR      // Give me vapor for debug and assert :P
    {
       CVSROOT: allenb@cvs.vrjuggler.sourceforge.net:/cvsroot/vrjuggler;
-      Module: juggler/modules/vapor [modules/vapor];
+      Module: juggler/modules/vapor   [modules/vapor];
       Tag: HEAD;
-   } 
-};
+	  Path: .;
+   }; 
+//};
