@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: SphereTest.h,v $
- * Date modified: $Date: 2002-02-18 20:27:54 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-02-18 21:42:52 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -552,7 +552,7 @@ public:
       CPPUNIT_ASSERT( test_sph.mCenter == pt);
 
       // test makeVolume performance
-      const float iters(400000);
+      const float iters(10000);
       for ( unsigned i=0; i<100; ++i )
       {
          gmtl::Point<float, 3> pt;
