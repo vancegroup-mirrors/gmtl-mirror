@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecBase.h,v $
- * Date modified: $Date: 2002-03-15 03:26:57 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-04-22 18:17:48 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -41,35 +41,77 @@
 namespace gmtl
 {
 
+/**
+ * Base type for vector-like objects including Points and Vectors. It is
+ * templated on the component datatype as well as the number of components that
+ * make it up.
+ *
+ * @param DATA_TYPE  the datatype to use for the components
+ * @param SIZE       the number of components this VecBase has
+ */
 template<class DATA_TYPE, unsigned SIZE>
 class VecBase
 {
 public:
+   /// The datatype used for the components of this VecBase.
    typedef DATA_TYPE DataType;
+
+   /// The number of components this VecBase has.
    enum { Size = SIZE };
 
 public:
-   /** Default constructor.
-   * Does nothing, leaves data alone.
-   * This is for performance because this constructor is called by derived class constructors
-   * Even when they just want to set the data directly
-   */
-   VecBase() {;}
+   /**
+    * Default constructor.
+    * Does nothing, leaves data alone.
+    * This is for performance because this constructor is called by derived class constructors
+    * Even when they just want to set the data directly
+    */
+   VecBase() {}
+
+   /**
+    * Makes an exact copy of the given VecBase object.
+    *
+    * @param rVec    the VecBase object to copy
+    */
    VecBase(const VecBase<DATA_TYPE, SIZE>& rVec);
 
+   //@{
+   /**
+    * Creates a new VecBase initialized to the given values.
+    */
    VecBase(const DATA_TYPE& val0);
    VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1);
    VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2);
    VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2,const DATA_TYPE& val3);
+   //@}
 
-      // Setting
+   /**
+    * Sets the components in this VecBase using the given array.
+    *
+    * @param dataPtr    the array containing the values to copy
+    * @pre dataPtr has at least SIZE elements
+    */
    inline void set(const DATA_TYPE* dataPtr);
+
+   //@{
+   /**
+    * Sets the components in this VecBase to the given values.
+    */
    inline void set(const DATA_TYPE& val0);
    inline void set(const DATA_TYPE& val0,const DATA_TYPE& val1);
    inline void set(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2);
    inline void set(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2,const DATA_TYPE& val3);
+   //@}
 
-   // Member access
+   //@{
+   /**
+    * Gets the ith component in this VecBase.
+    *
+    * @param i    the zero-based index of the component to access.
+    * @pre i < SIZE
+    *
+    * @return  a reference to the ith component
+    */
    inline DATA_TYPE& operator [](const unsigned i)
    {
       gmtlASSERT(i < SIZE);
@@ -80,13 +122,22 @@ public:
       gmtlASSERT(i < SIZE);
       return mData[i];
    }
+   //@}
 
+   //@{
+   /**
+    * Gets the internal array of the components.
+    *
+    * @return  a pointer to the component array with length SIZE
+    */
    DATA_TYPE* getData()
    { return mData; }
    const DATA_TYPE* getData() const
    { return mData; }
+   //@}
 
 public:
+   /// The array of components.
    DATA_TYPE mData[SIZE];
 };
 
