@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: OOBoxTest.h,v $
- * Date modified: $Date: 2002-06-11 21:52:54 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-07-02 02:07:01 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -106,7 +106,7 @@ public:
    }
 
 
-   static Test* suite()
+   static CppUnit::Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("OOBoxTest");
       test_suite->addTest( new CppUnit::TestCaller<OOBoxTest>("testBoxCreation", &OOBoxTest::testBoxCreation));
@@ -115,13 +115,13 @@ public:
       return test_suite;
    }
 
-   static Test* perfSuite()
+   static CppUnit::Test* perfSuite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("OOBoxTiming");
       return test_suite;
    }
    
-   static Test* interactiveSuite()
+   static CppUnit::Test* interactiveSuite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("OOBoxTestInteractive");
       //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
