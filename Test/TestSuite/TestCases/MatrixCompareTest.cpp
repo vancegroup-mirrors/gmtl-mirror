@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixCompareTest.cpp,v $
- * Date modified: $Date: 2003-09-09 01:25:49 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2004-09-02 20:31:12 $
+ * Version:       $Revision: 1.5.2.1 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -299,7 +299,7 @@ namespace gmtlTest
             ++true_count;
          if (gmtl::isEqual( src_mat44,  test_mat44, 0.8f ))
             ++true_count;
-         if (gmtl::isEqual( src_mat101, test_mat101, 111.1 ))
+         if (gmtl::isEqual( src_mat101, test_mat101, double(111.1) ))
             ++true_count;
       }
       CPPUNIT_METRIC_STOP_TIMING();

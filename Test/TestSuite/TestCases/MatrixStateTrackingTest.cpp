@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixStateTrackingTest.cpp,v $
- * Date modified: $Date: 2004-08-30 14:53:40 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2004-09-02 20:31:13 $
+ * Version:       $Revision: 1.2.2.1 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -50,6 +50,7 @@ namespace gmtlTest
 
    void MatrixStateTrackingTest::testMatrixStateTracking()
    {
+      /*
       const int num_states = 7;
       gmtl::Matrix44f::XformState all_states[num_states] = {
          gmtl::Matrix44f::IDENTITY,
@@ -60,6 +61,7 @@ namespace gmtlTest
          gmtl::Matrix44f::FULL,
          gmtl::Matrix44f::XFORM_ERROR
       };
+      */
 
       const int num_teststates = 8;
       int test_states[num_teststates] = {
