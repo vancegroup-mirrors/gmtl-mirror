@@ -1,5 +1,7 @@
 DATE       AUTHOR       CHANGE
 ---------- --------     --------------------------------------------------------
+2002-07-04 allenb       Bump up version since it all seems to work well now.
+                        NEW VERSION: 0.1.0
 2002-06-23 subatomic    For safety, don't allow Quat(T,T,T,T) default 
                         constructor.  Added Quat(), and changed Quat(T,T,T,T)
                         which to not use defaults.
