@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Matrix.h,v $
- * Date modified: $Date: 2002-02-10 04:38:07 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-02-10 04:45:24 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -93,16 +93,16 @@ public:
    // ----- MEMBER ACCESS ---- //
    // Access operators
    inline float*        operator[]( unsigned i )
-      { gfxASSERT(i<4); return &mMat[i][0];}
+      { ggtASSERT(i<4); return &mMat[i][0];}
    inline const float*  operator[]( unsigned i ) const
-      { gfxASSERT(i<4); return &mMat[i][0];}
+      { ggtASSERT(i<4); return &mMat[i][0];}
    inline float&        operator()( const unsigned& row, const unsigned& column )
-      { gfxASSERT((row<4)&&(column<4)); return mMat[column][row];}
+      { ggtASSERT((row<4)&&(column<4)); return mMat[column][row];}
    inline const float&  operator()( const unsigned& row, const unsigned& column ) const
-      { gfxASSERT((row<4)&&(column<4)); return mMat[column][row];}
+      { ggtASSERT((row<4)&&(column<4)); return mMat[column][row];}
    // Return pointer to first element of the given column
    inline float* column(unsigned i)
-      { gfxASSERT((i<4)); return &mMat[i][0]; }
+      { ggtASSERT((i<4)); return &mMat[i][0]; }
 
 
    //: Get a float pointer to the matrix data

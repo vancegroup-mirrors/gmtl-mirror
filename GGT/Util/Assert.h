@@ -1,15 +1,15 @@
-#ifndef GFX_ASSERT_H
-#define GFX_ASSERT_H
+#ifndef GGT_ASSERT_H
+#define GGT_ASSERT_H
 
 #include <gmtl/gmtlConfig.h>
 
 
 // -- VERY simple assertion stuff -- //
-#ifdef GFX_DEBUG
+#ifdef _DEBUG
 #   include <assert.h>
-#   define gfxASSERT(val) assert((val))
+#   define ggtASSERT(val) assert((val))
 #else
-#   define gfxASSERT(val) ((void)0)
+#   define ggtASSERT(val) ((void)0)
 #endif
 
 

@@ -7,15 +7,15 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Containment.h,v $
- * Date modified: $Date: 2002-01-26 23:47:53 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-02-10 04:45:24 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
 /*************************************************************** ggt-cpr beg
 *
 * GGT: The Generic Graphics Toolkit
-* Copyright (C) 2001,2002 Allen Bierbaum 
+* Copyright (C) 2001,2002 Allen Bierbaum
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU Lesser General Public
@@ -94,7 +94,7 @@ inline void computeContainment( OOBox& box, const std::vector<gmtl::Point3>& poi
     // and max(y2).  The box center is then adjusted to be
     //   C' = C + 0.5*(min(y0)+max(y0))*U0 + 0.5*(min(y1)+max(y1))*U1 +
     //        0.5*(min(y2)+max(y2))*U2
-#ifdef GFX_DEBUG
+#ifdef GMTL_DEBUG
    gmtl::OOBox box_test;
    box_test = box;
    gmtl::Vec3 ax0 = box_test.axis(0);
@@ -102,9 +102,9 @@ inline void computeContainment( OOBox& box, const std::vector<gmtl::Point3>& poi
    gmtl::Vec3 ax2 = box_test.axis(2);
 #endif
 
-    gfxASSERT(box.axis(0).isNormalized());
-    gfxASSERT(box.axis(1).isNormalized());
-    gfxASSERT(box.axis(2).isNormalized());
+    ggtASSERT(box.axis(0).isNormalized());
+    ggtASSERT(box.axis(1).isNormalized());
+    ggtASSERT(box.axis(2).isNormalized());
 
     // XXX: Sign is sometimes wrong here
     // This is hack code to make it "work right"

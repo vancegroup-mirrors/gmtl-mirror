@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtlConfig.h,v $
- * Date modified: $Date: 2002-02-10 04:38:07 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-02-10 04:45:24 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -39,9 +39,9 @@
 //#include <gmtl/gmtlConfig.h>
 
 #ifdef _DEBUG
-#   define GFX_DEBUG
+#   define GMTL_DEBUG
 #else
-#   define GFX_OPT
+#   define GMTL_OPT
 #endif
 
 
@@ -128,18 +128,18 @@
 
 #endif // if 0
 
-#define GFX_EPS 1e-8
-#define GFX_DEG2RAD(x) ((x)*M_PI/180.0)
-#define GFX_RAD2DEG(x) ((x)*180.0/M_PI)
-#define GFX_ZERO_CLAMP(x) ((fabs(x) < GFX_EPS)? 0.0f : x)
-#define GFX_IS_ZERO(x) (fabs(x) < GFX_EPS)
-#define GFX_CLAMP(x,y) ((x>y)? y : x)
-#define GFX_MIN2(x,y) ((x>y)? y : x)
-#define GFX_MIN3(x,y,z) GFX_MIN2(GFX_MIN2(x,y),z)
-#define GFX_MIN4(w,x,y,z) GFX_MIN2(GFX_MIN2(w,x), GFX_MIN2(y,z))
-#define GFX_MAX2(x,y) ((x>y)? x : y)
-#define GFX_MAX3(x,y,z) GFX_MAX2(GFX_MAX2(x,y),z)
-#define GFX_MAX4(w,x,y,z) GFX_MAX2(GFX_MAX2(w,x),GFX_MAX2(y,z))
+#define GMTL_EPS 1e-8
+#define GMTL_DEG2RAD(x) ((x)*M_PI/180.0)
+#define GMTL_RAD2DEG(x) ((x)*180.0/M_PI)
+#define GMTL_ZERO_CLAMP(x) ((fabs(x) < GMTL_EPS)? 0.0f : x)
+#define GMTL_IS_ZERO(x) (fabs(x) < GMTL_EPS)
+#define GMTL_CLAMP(x,y) ((x>y)? y : x)
+#define GMTL_MIN2(x,y) ((x>y)? y : x)
+#define GMTL_MIN3(x,y,z) GMTL_MIN2(GMTL_MIN2(x,y),z)
+#define GMTL_MIN4(w,x,y,z) GMTL_MIN2(GMTL_MIN2(w,x), GMTL_MIN2(y,z))
+#define GMTL_MAX2(x,y) ((x>y)? x : y)
+#define GMTL_MAX3(x,y,z) GMTL_MAX2(GMTL_MAX2(x,y),z)
+#define GMTL_MAX4(w,x,y,z) GMTL_MAX2(GMTL_MAX2(w,x),GMTL_MAX2(y,z))
 
 // -- Common GMTL classes -- //
 #include <gmtl/gmtlTypes.h>
