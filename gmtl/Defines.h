@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Defines.h,v $
- * Date modified: $Date: 2002-07-09 21:28:11 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-07-11 23:40:02 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -79,7 +79,7 @@ namespace gmtl
 };
 
 // Platform-specific settings.
-#ifdef __sun__
+#if defined(__sun__) || defined(__APPLE__)
 #define NO_ACOSF 1
 #define NO_ASINF 1
 #define NO_TANF 1
