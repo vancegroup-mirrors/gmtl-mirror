@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PlaneOps.h,v $
- * Date modified: $Date: 2002-05-17 23:07:11 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2002-05-17 23:20:09 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -137,7 +137,7 @@ DATA_TYPE findNearestPt( const Plane<DATA_TYPE>& plane,
 /** @} */
 
 /** @ingroup Compare Plane
- * @name Plance Comparitors
+ * @name Plane Comparitors
  * @{
  */
 
