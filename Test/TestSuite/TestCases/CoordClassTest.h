@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: CoordClassTest.h,v $
- * Date modified: $Date: 2002-07-11 21:20:41 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2003-02-05 22:02:49 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -32,37 +32,47 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 *
  ************************************************************ ggt-cpr end */
-#include <iostream>
-#include <cppunit/TestCase.h>
-#include <cppunit/TestSuite.h>
-#include <cppunit/TestCaller.h>
+#ifndef _GMTL_COORD_CLASS_TEST_H_
+#define _GMTL_COORD_CLASS_TEST_H_
 
+#include <cppunit/extensions/HelperMacros.h>
 
 namespace gmtlTest
 {
-   class CoordClassTest : public CppUnit::TestCase
+   /**
+    * Functionality tests
+    */
+   class CoordClassTest : public CppUnit::TestFixture
    {
+      CPPUNIT_TEST_SUITE(CoordClassTest);
+
+      CPPUNIT_TEST(testCoordClassTestCreation);
+      CPPUNIT_TEST(testMultiArgConstructors);
+
+      CPPUNIT_TEST_SUITE_END();
+
    public:
-      CoordClassTest( std::string name = "CoordClassTest" )
-         : CppUnit::TestCase( name )
-      {
-      }
-
-      virtual ~CoordClassTest()
-      {}
-
-      virtual void setUp()
-      {
-      }
-
-      virtual void tearDown()
-      {
-      }
-
       // Correctness tests
       void testCoordClassTestCreation();
       void testMultiArgConstructors();
+   };
 
+   /**
+    * Metric tests.
+    */
+   class CoordClassMetricTest : public CppUnit::TestFixture
+   {
+      CPPUNIT_TEST_SUITE(CoordClassMetricTest);
+
+      CPPUNIT_TEST(testCoordTimingDefaultConstructor);
+      CPPUNIT_TEST(testCoordTimingElementConstructor);
+      CPPUNIT_TEST(testCoordTimingCopyConstructor);
+      CPPUNIT_TEST(testCoordTimingGet);
+      CPPUNIT_TEST(testCoordTimingOpEqual);
+
+      CPPUNIT_TEST_SUITE_END();
+
+   public:
       // Performance tests
       void testCoordTimingDefaultConstructor();
       void testCoordTimingElementConstructor();
@@ -70,35 +80,7 @@ namespace gmtlTest
       void testCoordTimingGet();
       void testCoordTimingOpEqual();
 
-      static CppUnit::Test* suite()
-      {
-         CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("CoordClassTest");
-         test_suite->addTest( new CppUnit::TestCaller<CoordClassTest>("testCoordClassTestCreation", &CoordClassTest::testCoordClassTestCreation));
-         return test_suite;
-      }
-
-      static CppUnit::Test* perfSuite()
-      {
-         CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("CoordClassPerfTest");
-
-         test_suite->addTest( new CppUnit::TestCaller<CoordClassTest>("testCoordTimingDefaultConstructor", &CoordClassTest::testCoordTimingDefaultConstructor));
-         test_suite->addTest( new CppUnit::TestCaller<CoordClassTest>("testCoordTimingElementConstructor", &CoordClassTest::testCoordTimingElementConstructor));
-         test_suite->addTest( new CppUnit::TestCaller<CoordClassTest>("testCoordTimingCopyConstructor", &CoordClassTest::testCoordTimingCopyConstructor));
-         test_suite->addTest( new CppUnit::TestCaller<CoordClassTest>("testCoordTimingGet", &CoordClassTest::testCoordTimingGet));
-         test_suite->addTest( new CppUnit::TestCaller<CoordClassTest>("testCoordTimingOpEqual", &CoordClassTest::testCoordTimingOpEqual));
-
-         return test_suite;
-      }
-
-      static CppUnit::Test* interactiveSuite()
-      {
-         CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveCoordClassTest");
-         //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
-         return test_suite;
-      }
-
-   protected:
-
    };
+}
 
-} // end namespace
+#endif

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: ConvertTest.cpp,v $
- * Date modified: $Date: 2002-07-02 03:09:21 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2003-02-05 22:02:48 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -18,8 +18,7 @@
 * Copyright (C) 2001,2002 Allen Bierbaum
 *
 * This library is free software; you can redistribute it and/or
-* modify it under th MathPrimitives  [PrimName]Ops.h  Vec & Point [100%] -ab
-Quat [] -km Transforquations XformInterface? Xform.h   Collision detection CollisionInterface? Intersection.h   Bounding volumes BoundingInterface? Containment.h   Math factories MathFactories Builder.h  e terms of the GNU Lesser General Public
+* modify it under the terms of the GNU Lesser General Public
 * License as published by the Free Software Foundation; either
 * version 2.1 of the License, or (at your option) any later version.
 *
@@ -34,12 +33,17 @@ Quat [] -km Transforquations XformInterface? Xform.h   Collision detection Colli
 *
  ************************************************************ ggt-cpr end */
 #include "ConvertTest.h"
+#include "../Suites.h"
+#include <cppunit/extensions/HelperMacros.h>
+
 #include <gmtl/QuatOps.h>
 #include <gmtl/MatrixOps.h>
 #include <gmtl/Generate.h>
 
 namespace gmtlTest
 {
+   CPPUNIT_TEST_SUITE_REGISTRATION(ConvertTest);
+
    void ConvertTest::testConvertVecToPureQuat()
    {
       const float eps = 0.0001f;

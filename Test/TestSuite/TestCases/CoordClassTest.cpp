@@ -1,4 +1,3 @@
-
 /************************************************************** ggt-head beg
  *
  * GGT: Generic Graphics Toolkit
@@ -8,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: CoordClassTest.cpp,v $
- * Date modified: $Date: 2002-09-11 07:03:22 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2003-02-05 22:02:49 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -34,13 +33,19 @@
 *
  ************************************************************ ggt-cpr end */
 #include "CoordClassTest.h"
+#include "../Suites.h"
+#include <cppunit/extensions/HelperMacros.h>
 #include <cppunit/extensions/MetricRegistry.h>
+
 #include <gmtl/Coord.h>
 #include <gmtl/CoordOps.h>
 #include <gmtl/EulerAngle.h>
 
 namespace gmtlTest
 {
+   CPPUNIT_TEST_SUITE_REGISTRATION(CoordClassTest);
+   CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(CoordClassMetricTest, Suites::metric());
+
    void CoordClassTest::testCoordClassTestCreation()
    {
       // test that it initializes to the multiplication identity
@@ -142,7 +147,7 @@ namespace gmtlTest
       gmtl::Coord4dAxisAngle Coord4dAxisAngle_test();
    }
 
-   void testMultiArgConstructors()
+   void CoordClassTest::testMultiArgConstructors()
    {
       {
          gmtl::Coord3fXYZ coord(1, 2, 3, 4, 5, 6);
@@ -179,7 +184,7 @@ namespace gmtlTest
 
    }
 
-   void CoordClassTest::testCoordTimingDefaultConstructor()
+   void CoordClassMetricTest::testCoordTimingDefaultConstructor()
    {
       const long iters( 400000 );
       float use_value(1);
@@ -197,7 +202,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( use_value != 0 );
    }
 
-   void CoordClassTest::testCoordTimingElementConstructor()
+   void CoordClassMetricTest::testCoordTimingElementConstructor()
    {
       const long iters( 400000 );
       float use_value(1);
@@ -217,7 +222,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( use_value != 0 );
    }
 
-   void CoordClassTest::testCoordTimingCopyConstructor()
+   void CoordClassMetricTest::testCoordTimingCopyConstructor()
    {
       const long iters( 400000 );
       float use_value(1);
@@ -237,7 +242,7 @@ namespace gmtlTest
    }
 
 
-   void CoordClassTest::testCoordTimingGet()
+   void CoordClassMetricTest::testCoordTimingGet()
    {
       const long iters( 400000 );
       float use_value(0);
@@ -257,7 +262,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( use_value != 8324908723.0f );
    }
 
-   void CoordClassTest::testCoordTimingOpEqual()
+   void CoordClassMetricTest::testCoordTimingOpEqual()
    {
       const long iters( 400000 );
       gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float, gmtl::XYZ> > q4, q2;

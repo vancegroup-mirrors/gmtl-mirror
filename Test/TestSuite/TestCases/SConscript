@@ -7,14 +7,14 @@ sources = Split("""
    AABoxTest
    AxisAngleClassTest
    AxisAngleCompareTest
+   ConvertTest
+   CoordClassTest
+   CoordCompareTest
    TriTest
    SphereTest
 """)
 
 #sources = Split("""
-#   ConvertTest
-#   CoordClassTest
-#   CoordCompareTest
 #   CoordGenTest
 #   EulerAngleClassTest
 #   EulerAngleCompareTest

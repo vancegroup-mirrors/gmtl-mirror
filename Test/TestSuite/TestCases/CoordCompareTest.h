@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: CoordCompareTest.h,v $
- * Date modified: $Date: 2002-05-20 22:39:23 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2003-02-05 22:02:50 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -32,73 +32,48 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 *
  ************************************************************ ggt-cpr end */
-#include <iostream>
+#ifndef _GMTL_COORD_COMPARE_TEST_
+#define _GMTL_COORD_COMPARE_TEST_
 
-#include <cppunit/TestCase.h>
-#include <cppunit/TestSuite.h>
-#include <cppunit/TestCaller.h>
-
-#include <gmtl/Coord.h>
-#include <gmtl/CoordOps.h>
+#include <cppunit/extensions/HelperMacros.h>
 
 namespace gmtlTest
 {
-
-class CoordCompareTest : public CppUnit::TestCase
-{
-public:
-   CoordCompareTest( std::string name = "CoordCompareTest" )
-      : CppUnit::TestCase (name)
-   {;}
-
-   virtual ~CoordCompareTest()
-   {}
-
-   virtual void setUp()
-   {;}
-
-   virtual void tearDown()
+   /**
+    * Functionality tests
+    */
+   class CoordCompareTest : public CppUnit::TestFixture
    {
-   }
+      CPPUNIT_TEST_SUITE(CoordCompareTest);
 
-   // Correctness tests
-   void testCoordEqualityFloatTest();
-   void testCoordEqualityDoubleTest();
+      CPPUNIT_TEST(testCoordEqualityFloatTest);
+      CPPUNIT_TEST(testCoordEqualityDoubleTest);
 
-   // Performance tests
-   void testCoordTimingOpEqualityTest();
-   void testCoordTimingOpNotEqualityTest();
-   void testCoordTimingIsEqualTest();
+      CPPUNIT_TEST_SUITE_END();
 
+   public:
+      void testCoordEqualityFloatTest();
+      void testCoordEqualityDoubleTest();
+   };
 
-   static CppUnit::Test* suite()
+   /**
+    * Metric tests.
+    */
+   class CoordCompareMetricTest : public CppUnit::TestFixture
    {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("CoordCompareTest");
-      test_suite->addTest( new CppUnit::TestCaller<CoordCompareTest>("testCoordEqualityFloatTest", &CoordCompareTest::testCoordEqualityFloatTest));
-      test_suite->addTest( new CppUnit::TestCaller<CoordCompareTest>("testCoordEqualityDoubleTest", &CoordCompareTest::testCoordEqualityDoubleTest));
-      return test_suite;
-   }
+      CPPUNIT_TEST_SUITE(CoordCompareMetricTest);
 
-   static CppUnit::Test* perfSuite()
-   {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("CoordComparePerfTest");
+      CPPUNIT_TEST(testCoordTimingOpEqualityTest);
+      CPPUNIT_TEST(testCoordTimingOpNotEqualityTest);
+      CPPUNIT_TEST(testCoordTimingIsEqualTest);
 
-      test_suite->addTest( new CppUnit::TestCaller<CoordCompareTest>("testCoordTimingOpEqualityTest", &CoordCompareTest::testCoordTimingOpEqualityTest));
-      test_suite->addTest( new CppUnit::TestCaller<CoordCompareTest>("testCoordTimingIsEqualTest", &CoordCompareTest::testCoordTimingIsEqualTest));
-      test_suite->addTest( new CppUnit::TestCaller<CoordCompareTest>("testCoordTimingOpNotEqualityTest", &CoordCompareTest::testCoordTimingOpNotEqualityTest));
+      CPPUNIT_TEST_SUITE_END();
 
-      return test_suite;
-   }
+   public:
+      void testCoordTimingOpEqualityTest();
+      void testCoordTimingOpNotEqualityTest();
+      void testCoordTimingIsEqualTest();
+   };
+}
 
-   static CppUnit::Test* interactiveSuite()
-   {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveThreadTest");
-      //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
-      return test_suite;
-   }
-
-protected:
-
-};
-
-};
+#endif

@@ -1,4 +1,3 @@
-
 /************************************************************** ggt-head beg
  *
  * GGT: Generic Graphics Toolkit
@@ -8,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: CoordCompareTest.cpp,v $
- * Date modified: $Date: 2002-06-12 19:38:53 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2003-02-05 22:02:50 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -34,7 +33,10 @@
 *
  ************************************************************ ggt-cpr end */
 #include "CoordCompareTest.h"
+#include "../Suites.h"
+#include <cppunit/extensions/HelperMacros.h>
 #include <cppunit/extensions/MetricRegistry.h>
+
 #include <gmtl/Coord.h>
 #include <gmtl/CoordOps.h>
 #include <gmtl/EulerAngle.h>
@@ -44,6 +46,9 @@
 
 namespace gmtlTest
 {
+   CPPUNIT_TEST_SUITE_REGISTRATION(CoordCompareTest);
+   CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(CoordCompareMetricTest, Suites::metric());
+
    template<typename T>
    class testEqual
    {
@@ -128,7 +133,7 @@ namespace gmtlTest
       testEqual<double>::go();
    }
 
-   void CoordCompareTest::testCoordTimingOpEqualityTest()
+   void CoordCompareMetricTest::testCoordTimingOpEqualityTest()
    {
       // Test overhead of creation
       const long iters(400000);
@@ -183,7 +188,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( true_count > 0 );
    }
 
-   void CoordCompareTest::testCoordTimingOpNotEqualityTest()
+   void CoordCompareMetricTest::testCoordTimingOpNotEqualityTest()
    {
       // Test overhead of creation
       const long iters(400000);
@@ -238,7 +243,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( true_count > 0 );
    }
 
-   void CoordCompareTest::testCoordTimingIsEqualTest()
+   void CoordCompareMetricTest::testCoordTimingIsEqualTest()
    {
       // Test overhead of creation
       const long iters(400000);

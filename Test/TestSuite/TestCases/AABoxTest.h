@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AABoxTest.h,v $
- * Date modified: $Date: 2003-02-05 02:21:17 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2003-02-05 22:02:48 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -74,6 +74,9 @@ namespace gmtlTest
       void testSetEmpty();
    };
 
+   /**
+    * Metric tests.
+    */
    class AABoxMetricTest : public CppUnit::TestFixture
    {
       CPPUNIT_TEST_SUITE(AABoxMetricTest);
