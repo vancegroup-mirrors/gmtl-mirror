@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: GenerateTest.h,v $
- * Date modified: $Date: 2002-03-09 21:05:34 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2002-03-11 02:20:20 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -45,6 +45,9 @@ Quat [] -km Transforquations XformInterface? Xform.h   Collision detection Colli
 #include <gmtl/Quat.h>
 #include <gmtl/QuatOps.h>
 #include <gmtl/Generate.h>
+
+
+// @todo test/timing on makeRot( quat ) (euler version)
 
 namespace gmtlTest
 {
@@ -295,7 +298,7 @@ public:
    void testGenTimingMakeNormalVec1()
    {
       gmtl::Vec<double, 4> vec4d;
-      const long iters(400000);
+      const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
@@ -312,7 +315,7 @@ public:
    void testGenTimingMakeNormalVec2()
    {
       gmtl::Vec<float, 4> vec4f;
-      const long iters(400000);
+      const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
@@ -328,7 +331,7 @@ public:
    void testGenTimingMakeNormalVec3()
    {
       gmtl::Vec<double, 3> vec3d;
-      const long iters(400000);
+      const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
@@ -345,7 +348,7 @@ public:
    void testGenTimingMakeNormalVec4()
    {
       gmtl::Vec<float, 3> vec3f;
-      const long iters(400000);
+      const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
@@ -363,7 +366,7 @@ public:
    void testGenTimingMakeInvert1()
    {
       gmtl::Quat<double> q1;
-      const long iters(400000);
+      const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
@@ -380,7 +383,7 @@ public:
    void testGenTimingMakeInvert2()
    {
       gmtl::Quat<float> q2;
-      const long iters(400000);
+      const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
@@ -397,7 +400,7 @@ public:
    void testGenTimingMakeConj()
    {
       gmtl::Quat<double> q1;
-      const long iters(400000);
+      const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
       
       for (long iter = 0; iter < iters; ++iter)
@@ -426,7 +429,7 @@ public:
    {
       gmtl::Quat<double> q1;
       gmtl::Vec<double, 3> v1;
-      const long iters(400000);
+      const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
       
       for (long iter = 0; iter < iters; ++iter)
@@ -458,7 +461,7 @@ public:
    {
       gmtl::Quat<double> q1;
       gmtl::Vec<double, 3> v1;
-      const long iters(400000);
+      const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
       
       for (long iter = 0; iter < iters; ++iter)
@@ -487,7 +490,7 @@ public:
    void testGenTimingMakeNormalQuat()
    {
       gmtl::Quat<double> q1;
-      const long iters(400000);
+      const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
       
       for (long iter = 0; iter < iters; ++iter)
@@ -517,7 +520,7 @@ public:
       double bokd = 1;
       float bokf = 1;
       gmtl::Quat<double> q1;
-      const long iters(400000);
+      const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
       
       for (long iter = 0; iter < iters; ++iter)
