@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.h,v $
- * Date modified: $Date: 2002-02-12 00:05:30 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2002-02-12 03:11:36 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -319,18 +319,18 @@ public:
       const float iters(400000);
       unsigned true_count(0);
       unsigned false_count(0);
-      
+
       // -- Equality
       CPPUNIT_METRIC_START_TIMING();
       test_vec1.set(0.0f, 0.0f, 0.0f, 2000.0f);
       test_vec2.set(0.0f, 0.0f, 0.0f, 1000.0f);
-      
+
       for( float iter=0;iter<iters; ++iter)
       {
          test_vec1[3] += 1.0f;
          test_vec2[3] += 2.0f;
          if(test_vec1 == test_vec2)
-            true_count++;         
+            true_count++;
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
@@ -340,7 +340,7 @@ public:
       CPPUNIT_METRIC_START_TIMING();
       test_vec1.set(0.0f, 0.0f, 0.0f, 2000.0f);
       test_vec2.set(0.0f, 0.0f, 0.0f, 1000.0f);
-      
+
       for( float iter=0;iter<iters; ++iter)
       {
          test_vec1[3] += 1.0f;
@@ -363,7 +363,7 @@ public:
 
       for(eps=0.0f;eps<10.0f;eps += 0.05f)
       {
-         CPPUNIT_ASSERT( gmtl::isEqual(test_vec1, test_vec2, eps) );                     
+         CPPUNIT_ASSERT( gmtl::isEqual(test_vec1, test_vec2, eps) );
       }
 
       test_vec1.set(1.0f, 1.0f, 1.0f, 1.0f);
@@ -382,12 +382,12 @@ public:
       const float iters(400000);
       unsigned true_count(0);
       unsigned false_count(0);
-      
+
       // -- Equality
       CPPUNIT_METRIC_START_TIMING();
       test_vec1.set(0.0f, 0.0f, 0.0f, 2000.0f);
       test_vec2.set(0.0f, 0.0f, 0.0f, 1000.0f);
-      
+
       for( float iter=0;iter<iters; ++iter)
       {
          test_vec1[3] += 1.0f;
@@ -402,7 +402,7 @@ public:
 
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/isEqualOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
-      
+
    }
 
    void testOpPlusEq()
@@ -423,7 +423,7 @@ public:
       for( float iter=0;iter<iters; ++iter)
       {
          test_vec3.set(iter, iter+1, iter+2);
-         test_vec1 += test_vec3;         
+         test_vec1 += test_vec3;
       }
 
       test_vec2 = test_vec1;
@@ -451,7 +451,7 @@ public:
       for( float iter=0;iter<iters; ++iter)
       {
          test_vec3.set(iter, iter+1, iter+2);
-         test_vec1 = (test_vec3 + test_vec2);         
+         test_vec1 = (test_vec3 + test_vec2);
       }
 
       test_vec2 = test_vec1;
@@ -478,7 +478,7 @@ public:
       for( float iter=0;iter<iters; ++iter)
       {
          test_vec3.set(iter, iter+1, iter+2);
-         test_vec1 -= test_vec3;         
+         test_vec1 -= test_vec3;
       }
 
       test_vec2 = test_vec1;
@@ -506,7 +506,7 @@ public:
       for( float iter=0;iter<iters; ++iter)
       {
          test_vec3.set(iter, iter+1, iter+2);
-         test_vec1 = (test_vec3 - test_vec2);         
+         test_vec1 = (test_vec3 - test_vec2);
       }
 
       test_vec2 = test_vec1;
@@ -518,7 +518,7 @@ public:
    void testOpMultScalarEq()
    {
       gmtl::Vec<float,3> test_vec1(1.0, 2.0, 3.0);
-         
+
       test_vec1 *= 4.0f;
       CPPUNIT_ASSERT( test_vec1[0] == 4.0f &&
                       test_vec1[1] == 8.0f &&
@@ -527,10 +527,10 @@ public:
       // -- test op-= performance
       const float iters(400000);
       CPPUNIT_METRIC_START_TIMING();
-            
+
       for( float iter=0;iter<iters; ++iter)
       {
-         test_vec1 *= 1.05f;         
+         test_vec1 *= 1.05f;
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
@@ -556,7 +556,7 @@ public:
       for( float iter=0;iter<iters; ++iter)
       {
          test_vec1 = test_vec3 * 1.05f;
-         test_vec3 = test_vec1;         
+         test_vec3 = test_vec1;
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
@@ -566,7 +566,7 @@ public:
    void testOpDivScalarEq()
    {
       gmtl::Vec<float,3> test_vec1(12.0, 8.0, 4.0);
-         
+
       test_vec1 /= 4.0f;
       CPPUNIT_ASSERT( test_vec1[0] == 3.0f &&
                       test_vec1[1] == 2.0f &&
@@ -575,10 +575,10 @@ public:
       // -- test op-= performance
       const float iters(400000);
       CPPUNIT_METRIC_START_TIMING();
-            
+
       for( float iter=0;iter<iters; ++iter)
       {
-         test_vec1 /= 0.95f;         
+         test_vec1 /= 0.95f;
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
@@ -604,12 +604,195 @@ public:
       for( float iter=0;iter<iters; ++iter)
       {
          test_vec1 = test_vec3 / 0.95f;
-         test_vec3 = test_vec1;         
+         test_vec3 = test_vec1;
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/OpDivScalarOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
+
+   void testGroupedOpsPerformance()
+   {
+      gmtl::Vec<float,4> const_vec1(4.0, 5.0, 6.0, 7.8);
+      gmtl::Vec<float,4> const_vec2(1.0, 2.0, 3.0, 4.8);
+      gmtl::Vec<float,4> const_vec3(7.0, 11.0, 12.0, 24.0);
+      gmtl::Vec<float,4> vec1, vec2, vec3;
+
+      gmtl::Vec<float,4> res_vec, total_vec;
+
+      const unsigned long iters(10000);
+
+      // -- test vec = vec+vec+vec
+      vec1.set(1.0, 2.0, 3.0, 4.0f);
+      vec2.set(3.0, 3.0, 3.0, 3.0);
+      vec3.set(12.0, 21.0, 75.0, 2.0f);
+      total_vec.set(0,0,0,0);
+
+      CPPUNIT_METRIC_START_TIMING();
+      for( unsigned iter=0;iter<iters; ++iter)
+      {
+         // Do some work to make the vectors change a little
+         vec1.set(iter, iter+1, iter+2, iter+3);
+         vec2 *= 0.00125f;
+         vec3 *= (-0.000345);
+
+         // Do the actually operation of interest
+         res_vec = vec1+vec2+vec3;
+         total_vec += res_vec;
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/vec+vec+vec:perf", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      // -- test vec = vec-vec-vec
+      vec1.set(1.0, 2.0, 3.0, 4.0f);
+      vec2.set(3.0, 3.0, 3.0, 3.0);
+      vec3.set(12.0, 21.0, 75.0, 2.0f);
+      total_vec.set(0,0,0,0);
+
+      CPPUNIT_METRIC_START_TIMING();
+      for( unsigned iter=0;iter<iters; ++iter)
+      {
+         // Do some work to make the vectors change a little
+         vec1.set(iter, iter+1, iter+2, iter+3);
+         vec2 *= 0.00125f;
+         vec3 *= (-0.000345);
+
+         // Do the actually operation of interest
+         res_vec = vec1-vec2-vec3;
+         total_vec += res_vec;
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/vec-vec-vec:perf", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      // -- test vec = const_vec1+const_vec2+const_vec3
+      // Should be able to unroll this quite a bit
+      total_vec.set(0,0,0,0);
+
+      CPPUNIT_METRIC_START_TIMING();
+      for( unsigned iter=0;iter<iters; ++iter)
+      {
+         // Do the actually operation of interest
+         res_vec = const_vec1+const_vec2+const_vec3;
+         total_vec += res_vec;
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/const_vec+const_vec+const_vec:perf", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      // -- test vec = const_vec1-const_vec2-const_vec3
+      total_vec.set(0,0,0,0);
+
+      CPPUNIT_METRIC_START_TIMING();
+      for( unsigned iter=0;iter<iters; ++iter)
+      {
+         // Do the actually operation of interest
+         res_vec = const_vec1-const_vec2-const_vec3;
+         total_vec += res_vec;
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/const_vec-const_vec-const_vec:perf", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      // -- test vec = (vec-const_vec)+(vec+const_vec)-(const_vec*scalar)
+      vec1.set(1.0, 2.0, 3.0, 4.0f);
+      vec2.set(3.0, 3.0, 3.0, 3.0);
+      vec3.set(12.0, 21.0, 75.0, 2.0f);
+      total_vec.set(0,0,0,0);
+
+      CPPUNIT_METRIC_START_TIMING();
+      for( unsigned iter=0;iter<iters; ++iter)
+      {
+         // Do some work to make the vectors change a little
+         vec1.set(iter, iter+1, iter+2, iter+3);
+         vec2 *= 0.00125f;
+
+         // Do the actually operation of interest
+         res_vec = (vec1-const_vec1)+(vec2+const_vec2)-(const_vec3*7.6f);
+         total_vec += res_vec;
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/(vec-const_vec)+(vec+const_vec)-(const_vec*scalar):perf", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      // -- test vec = (vec*scalar)+(vec*scalar)
+      vec1.set(1.0, 2.0, 3.0, 4.0f);
+      vec2.set(3.0, 3.0, 3.0, 3.0);
+      vec3.set(12.0, 21.0, 75.0, 2.0f);
+      total_vec.set(0,0,0,0);
+
+      CPPUNIT_METRIC_START_TIMING();
+      for( unsigned iter=0;iter<iters; ++iter)
+      {
+         // Do some work to make the vectors change a little
+         vec1.set(iter, iter+1, iter+2, iter+3);
+         vec2 *= 0.00125f;
+
+         // Do the actually operation of interest
+         res_vec = (vec1*7.0f)+(vec2*-1.0f);
+         total_vec += res_vec;
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/(vec*scalar)+(vec*scalar):perf", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      // -- test vec = (const_vec*scalar)
+      // Should be able to unroll this loop fairly well
+      vec1.set(1.0, 2.0, 3.0, 4.0f);
+      vec2.set(3.0, 3.0, 3.0, 3.0);
+      vec3.set(12.0, 21.0, 75.0, 2.0f);
+      total_vec.set(0,0,0,0);
+
+      CPPUNIT_METRIC_START_TIMING();
+      for( unsigned iter=0;iter<iters; ++iter)
+      {
+         // Do the actually operation of interest
+         res_vec = (const_vec1*3.0f);
+         total_vec += res_vec;
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/(const_vec*scalar):perf", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      // -- test vec = (vec*dot(const_vec,vec))
+      // Should be able to unroll this loop fairly well
+      vec1.set(1.0, 2.0, 3.0, 4.0f);
+      vec2.set(3.0, 3.0, 3.0, 3.0);
+      vec3.set(12.0, 21.0, 75.0, 2.0f);
+      total_vec.set(0,0,0,0);
+
+      CPPUNIT_METRIC_START_TIMING();
+      for( unsigned iter=0;iter<iters; ++iter)
+      {
+         // Do some work to make the vectors change a little
+         vec1.set(iter, iter+1, iter+2, iter+3);
+         vec2 *= 0.00125f;
+
+         // Do the actually operation of interest
+         res_vec = (vec1*gmtl::dot(const_vec1,vec2));
+         total_vec += res_vec;
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/(vec*dot(const_vec,vec)):perf", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      // -- test vec = (scalar*cross(vec,vec))
+      // Should be able to unroll this loop fairly well
+      gmtl::Vec<float,3> vec4(1.0, 2.0, 3.0);
+      gmtl::Vec<float,3> vec5(3.0, 3.0, 3.0);
+      gmtl::Vec<float,3> vec6(12.0, 21.0, 75.0);
+      gmtl::Vec<float,3> total_vec2(0,0,0);
+      gmtl::Vec<float,3> res_vec2;
+
+      CPPUNIT_METRIC_START_TIMING();
+      for( unsigned iter=0;iter<iters; ++iter)
+      {
+         // Do some work to make the vectors change a little
+         vec5.set(iter+1, iter+2, iter+3);
+         vec6 *= 0.00125f;
+
+         // Do the actually operation of interest
+         res_vec2 = (gmtl::cross(vec5,vec6)*21.0f);
+         total_vec2 += res_vec2;
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/(vec*cross(vec,vec)):perf", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+   }
+
 
 
    // ---- Vec specific functions --- //
@@ -646,12 +829,12 @@ public:
       // -- test op- performance
       const float iters(100000);
       CPPUNIT_METRIC_START_TIMING();
-      float val;      
-      
+      float val;
+
       for( float iter=0;iter<iters; ++iter)
       {
          val += gmtl::dot(v1,v2);
-         v1 *= 1.0025;                 // Make it grow a little         
+         v1 *= 1.0025;                 // Make it grow a little
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
@@ -676,7 +859,7 @@ public:
       // Other Vectors
       v1.set(2.0f, 4.0f, 5.0f);
       v2.set(12.0f, -2.0f, -4.0f);
-            
+
       ans = 4.0f + 16.0f + 25.0f;
       len = gmtl::lengthSquared(v1);
       CPPUNIT_ASSERT(GMTL_NEAR(len,ans,0.01));
@@ -684,7 +867,7 @@ public:
       ans = gmtl::Math::sqrt(ans);
       len = gmtl::length(v1);
       CPPUNIT_ASSERT(GMTL_NEAR(len,ans,0.01));
-      
+
       ans = 144.0f + 4.0f + 16.0f;
       len = gmtl::lengthSquared(v2);
       CPPUNIT_ASSERT(GMTL_NEAR(len,ans,0.01));
@@ -692,17 +875,17 @@ public:
       ans = gmtl::Math::sqrt(ans);
       len = gmtl::length(v2);
       CPPUNIT_ASSERT(GMTL_NEAR(len,ans,0.01));
-            
+
       // -- test length performance
       const float iters(100000);
-      float val(0.0f);      
+      float val(0.0f);
 
       CPPUNIT_METRIC_START_TIMING();
-      
+
       for( float iter=0;iter<iters; ++iter)
       {
          val += gmtl::length(v1);
-         v1 *= 1.0025f;                 // Make it grow a little         
+         v1 *= 1.0025f;                 // Make it grow a little
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
@@ -712,11 +895,11 @@ public:
       CPPUNIT_METRIC_START_TIMING();
       val = 0.0f;
       v1.set(1.0f, 2.0f, 4.0f);
-      
+
       for( float iter=0;iter<iters; ++iter)
       {
          val += gmtl::lengthSquared(v1);
-         v1 *= 1.0025f;                 // Make it grow a little         
+         v1 *= 1.0025f;                 // Make it grow a little
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
@@ -729,7 +912,7 @@ public:
       gmtl::Vec<float,3> v1(1,0,0);
       gmtl::Vec<float,3> v2(0,1,0);
       gmtl::Vec<float,3> v3(0,0,1);
-            
+
       // Other Vectors
       v1.set(2.0f, 4.0f, 5.0f);
       v2 = v1;
@@ -741,11 +924,11 @@ public:
       v2 = v1;
       gmtl::normalize(v1);
       CPPUNIT_ASSERT( gmtl::isEqual(v2, (v1*gmtl::length(v2)),0.01f ) );
-            
+
       // -- test performance
       const float iters(100000);
       CPPUNIT_METRIC_START_TIMING();
-      float val(0.0f);      
+      float val(0.0f);
       v1.set(12.0f, 21.0f, 75.0f);
 
       for( float iter=0;iter<iters; ++iter)
@@ -756,7 +939,7 @@ public:
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/NormalizeOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%      
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/NormalizeOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
 
 
@@ -785,18 +968,18 @@ public:
       // -- test performance
       const float iters(100000);
       CPPUNIT_METRIC_START_TIMING();
-      
+
       v1.set(12.0f, 21.0f, 75.0f);
 
       for( float iter=0;iter<iters; ++iter)
       {
          cross = gmtl::cross(v2,v1);
          v1 *= 1.0025f;
-         v3 += cross;         
+         v3 += cross;
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/CrossOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%      
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/CrossOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
 
 
@@ -816,17 +999,19 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpPlus", &VecTest::testOpPlus));
       test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpMinusEq", &VecTest::testOpMinusEq));
       test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpMinus", &VecTest::testOpMinus));
-      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpMultScalarEq", &VecTest::testOpMultScalarEq)); 
-      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpMultScalar", &VecTest::testOpMultScalar)); 
-      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpDivScalarEq", &VecTest::testOpDivScalarEq)); 
-      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpDivScalar", &VecTest::testOpDivScalar)); 
-      
-      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testDot", &VecTest::testDot)); 
-      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testLength", &VecTest::testLength)); 
-      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testNormalize", &VecTest::testNormalize)); 
-      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testCross", &VecTest::testCross)); 
+      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpMultScalarEq", &VecTest::testOpMultScalarEq));
+      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpMultScalar", &VecTest::testOpMultScalar));
+      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpDivScalarEq", &VecTest::testOpDivScalarEq));
+      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpDivScalar", &VecTest::testOpDivScalar));
 
-      
+      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testGroupedOpsPerformance", &VecTest::testGroupedOpsPerformance));
+
+      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testDot", &VecTest::testDot));
+      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testLength", &VecTest::testLength));
+      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testNormalize", &VecTest::testNormalize));
+      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testCross", &VecTest::testCross));
+
+
       return test_suite;
    }
 
