@@ -441,10 +441,12 @@ gfxn3/Debug/PlaneTest/CopyConstructOverhead                        0.08677
 gfxn3/Debug/PlaneTest/DefaultCreationOverhead                      0.070705
 gfxn3/Debug/PlaneTest/DistanceOverhead                             0.22065
 gfxn3/Debug/PlaneTest/EqualityCompareOverhead                      0.165912
+gfxn3/Debug/PlaneTest/FindNearestPtOverhead                        1.04372
 gfxn3/Debug/PlaneTest/InequalityCompareOverhead                    0.164977
 gfxn3/Debug/PlaneTest/NormOffsetCreationOverhead                   0.0887425
 gfxn3/Debug/PlaneTest/NormPtCreationOverhead                       0.295642
 gfxn3/Debug/PlaneTest/ThreePtCreationOverhead                      1.60001
+gfxn3/Debug/PlaneTest/WhichSideOverhead                            0.226112
 gfxn3/Debug/PlaneTest/isEqualOverhead                              0.681347
 gfxn3/Debug/PointTest/ConstructorsOverhead                         0.223708
 gfxn3/Debug/PointTest/CopyConstructOverhead                        0.252475
@@ -462,6 +464,14 @@ gfxn3/Debug/PointTest/SetOverhead                                  0.171
 gfxn3/Debug/PointTest/SetPtrOverhead                               0.26105
 gfxn3/Debug/PointTest/isEqualOverhead                              0.628578
 gfxn3/Debug/PointTest/pointCreationOverhead                        0.214007
+gfxn3/Debug/QuatTest/CopyConstructor                               0.0967025
+gfxn3/Debug/QuatTest/DefaultConstructor                            0.0682575
+gfxn3/Debug/QuatTest/ElementConstructor                            0.0705625
+gfxn3/Debug/QuatTest/get()                                         0.092005
+gfxn3/Debug/QuatTest/getData()                                     0.0264925
+gfxn3/Debug/QuatTest/operator=()                                   0.0353925
+gfxn3/Debug/QuatTest/operator[]()                                  0.124488
+gfxn3/Debug/QuatTest/set()                                         0.049885
 gfxn3/Debug/SphereTest/ConstructorsOverhead                        0.14113
 gfxn3/Debug/SphereTest/CopyConstructOverhead                       0.103445
 gfxn3/Debug/SphereTest/EqualityCompareOverhead                     0.17098
@@ -503,6 +513,8 @@ gfxn3/Debug/VecTest/CrossOverhead                                  1.66068
 gfxn3/Debug/VecTest/DotOverhead                                    0.99323
 gfxn3/Debug/VecTest/EqualityCompareOverhead                        0.21442
 gfxn3/Debug/VecTest/InequalityCompareOverhead                      0.243822
+gfxn3/Debug/VecTest/IsNormalizedEpsOverhead                        1.31331
+gfxn3/Debug/VecTest/IsNormalizedOverhead                           1.17075
 gfxn3/Debug/VecTest/LengthOverhead                                 1.24248
 gfxn3/Debug/VecTest/LengthSquaredOverhead                          1.06225
 gfxn3/Debug/VecTest/NormalizeOverhead                              1.69954

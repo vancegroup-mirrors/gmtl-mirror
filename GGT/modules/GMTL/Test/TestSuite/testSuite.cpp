@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: testSuite.cpp,v $
- * Date modified: $Date: 2002-02-18 21:56:11 $
- * Version:       $Revision: 1.17 $
+ * Date modified: $Date: 2002-02-20 21:59:45 $
+ * Version:       $Revision: 1.18 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -66,7 +66,7 @@
 //#include <TestCases/PlaneTest.h>
 //#include <TestCases/ContainmentTest.h>
 //#include <TestCases/IntersectionTest.h>
-//#include <TestCases/QuatTest.h>
+#include <TestCases/QuatClassTest.h>
 //#include <TestCases/TriTest.h>
 #include <TestCases/InfoTests/OptTest.h>
 
@@ -122,13 +122,13 @@ int main (int ac, char **av)
    gmtl_suite->addTest(gmtlTest::MatrixOpsTest::suite());
    gmtl_suite->addTest(gmtlTest::MatrixGenTest::suite());
    gmtl_suite->addTest(gmtlTest::Point3Test::suite());
+   gmtl_suite->addTest(gmtlTest::QuatClassTest::suite());
    /*
    gmtl_suite->addTest(gmtlTest::XformTest::suite());
    gmtl_suite->addTest(gmtlTest::OOBoxTest::suite());
    gmtl_suite->addTest(gmtlTest::PlaneTest::suite());
    gmtl_suite->addTest(gmtlTest::ContainmentTest::suite());
    gmtl_suite->addTest(gmtlTest::IntersectionTest::suite());
-   gmtl_suite->addTest(gmtlTest::QuatTest::suite());
    gmtl_suite->addTest(gmtlTest::TriTest::suite());
    */
    CppUnit::TestSuite* info_suite = new CppUnit::TestSuite("info_suite");
