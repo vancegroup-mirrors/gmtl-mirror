@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AABox.h,v $
- * Date modified: $Date: 2002-05-20 22:39:22 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2002-06-05 02:41:03 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -32,179 +32,137 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 *
  ************************************************************ ggt-cpr end */
-#ifndef _GMTL_AABox_H_
-#define _GMTL_AABox_H_
+#ifndef _GMTL_AABOX_H_
+#define _GMTL_AABOX_H_
 
-#include <gmtl/Vec3.h>
-
-#include <vector>
+#include <gmtl/Vec.h>
 
 namespace gmtl
 {
-
-/** AABox : Defines an axially aligned box
- * @todo this code needs to be updated...
- * @ingroup Types
- */
-class  AABox
-{
-
-public:
-   AABox()
-   { makeEmpty(); }
-
-   AABox(AABox& box)
+   /**
+    * Describes an axially aligned box in 3D space. This is usually used for
+    * graphics applications. It is defined by its minimum and maximum points.
+    *
+    * @param DATA_TYPE     the internal type used for the points
+    *
+    * @ingroup Types
+    */
+   template< class DATA_TYPE >
+   class AABox
    {
-      mMin = box.mMin;
-      mMax = box.mMax;
-      mEmpty = box.mEmpty;
-   }
+   public:
+      typedef DATA_TYPE DataType;
 
-public:
-   //CAPI:verb
-   void  makeEmpty()
-   {
-      mEmpty = 1;
-      mMin = ZeroVec3;
-      mMax = ZeroVec3;
-   }
+   public:
+      /**
+       * Creates a new empty box.
+       */
+      AABox()
+         : mMin(0,0,0), mMax(0,0,0), mEmpty(true)
+      {}
 
-   // Containment tests
-   bool  contains(const Point3& pt) const;
-   bool   contains(const AABox& box);
-   //int   contains(const sgSphere& sphere) const;
+      /**
+       * Creates a new box with the given min and max points.
+       *
+       * @param min     the minimum point on the box
+       * @param max     the maximum point on the box
+       *
+       * @pre  all elements of min are less than max
+       * @pre  bot min and max are not zero
+       */
+      AABox(const Vec<DATA_TYPE, 3>& min, const Vec<DATA_TYPE, 3>& max)
+         : mMin(min), mMax(max), mEmpty(false)
+      {}
 
-   // EXTEND box around the following
-   // POST: Box is set to one that contains all the given pts
-   void  around(std::vector<Point3>& pts);
-   void  around(std::vector<Vec3>& pts);
-   // POST: Box is set to a new one that contains all the passed boxes
-   void  around(std::vector<AABox>& boxes);
+      /**
+       * Construcst a duplicate of the given box.
+       *
+       * @param box     the box the make a copy of
+       */
+      AABox(const AABox<DATA_TYPE>& box)
+         : mMin(box.mMin), mMax(box.mMax), mEmpty(box.mEmpty)
+      {}
 
-   // Extends the box to contaian the given pt
-   inline void  extendBy(const Point3& pt);
+      /**
+       * Gets the minimum point of the box.
+       *
+       * @return  the min point
+       */
+      const Vec<DATA_TYPE, 3>& getMin() const
+      {
+         return mMin;
+      }
 
-   // POST: (This) contains everything it used to AND the passed box
-   inline void  extendBy(const AABox& box);
+      /**
+       * Gets the maximum point of the box.
+       *
+       * @return  the max point
+       */
+      const Vec<DATA_TYPE, 3>& getMax() const
+      {
+         return mMax;
+      }
 
-public:
-   Vec3  mMin;    // The min point
-   Vec3  mMax;    // The max point
-   bool  mEmpty;     // Is the box empty?
-};
+      /**
+       * Tests if this box is empty.
+       *
+       * @return  true if the box is empty, false otherwise
+       */
+      bool isEmpty() const
+      {
+         return mEmpty;
+      }
 
+      /**
+       * Sets the minimum point of the box.
+       *
+       * @param min     the min point
+       */
+      void setMin(const Vec<DATA_TYPE, 3>& min)
+      {
+         mMin = min;
+      }
 
-//---------------------------------------------------------------------
-//---------------------------------------------------------------------
-inline bool  AABox::contains(const Point3& pt) const
-{
-   if(!mEmpty)
-   {
-      return ( pt[0] >= mMin[0] &&
-               pt[1] >= mMin[1] &&
-               pt[2] >= mMin[2] &&
-               pt[0] <= mMax[0] &&
-               pt[1] <= mMax[1] &&
-               pt[2] <= mMax[2]);
-   }
-   else
-      return false;
+      /**
+       * Sets the maximum point of the box.
+       *
+       * @param max     the max point
+       */
+      void setMax(const Vec<DATA_TYPE, 3>& max)
+      {
+         mMax = max;
+      }
+
+      /**
+       * Sets the empty flag on this box.
+       *
+       * @param empty   true to make the box empty, false otherwise
+       */
+      void setEmpty(bool empty)
+      {
+         mEmpty = empty;
+      }
+
+   public:
+      /**
+       * The minimum point of the box.
+       */
+      Vec<DATA_TYPE, 3> mMin;
+
+      /**
+       * The maximum point on the box.
+       */
+      Vec<DATA_TYPE, 3> mMax;
+
+      /**
+       * Flag for empty box. True if the box is empty.
+       */
+      bool mEmpty;
+   };
+
+   // --- helper types --- //
+   typedef AABox<float>    AABoxf;
+   typedef AABox<double>   AABoxd;
 }
-
-
-   // retVal = 1.  There is an intersection
-   //       0.  There is NO intersection
-inline bool AABox::contains(const AABox& box)
-{
-      // Test for box not overlapping in any axis
-   if (mMax[0] < box.mMin[0] || mMin[0] > box.mMax[0] ||
-      mMax[1] < box.mMin[1] || mMin[1] > box.mMax[1] ||
-      mMax[2] < box.mMin[2] || mMin[2] > box.mMax[2] )
-   {
-      return false;
-   } else {
-      return true;
-   }
-}
-
-inline void  AABox::around(std::vector<Point3>& pts)
-{
-   for(unsigned i=0; i<pts.size(); i++)
-      extendBy(pts[i]);
-}
-
-inline void  AABox::around(std::vector<Vec3>& pts)
-{
-   for(unsigned i=0; i<pts.size(); i++)
-      extendBy(pts[i]);
-}
-
-
-
-// POST: Box is set to a new one that contains all the passed boxes
-inline void  AABox::around(std::vector<AABox>& boxes)
-{
-   for(unsigned i=0;i<boxes.size(); i++)
-      extendBy(boxes[i]);
-}
-
-
-inline void  AABox::extendBy(const Point3& pt)
-{
-   if(!mEmpty)
-   {
-      if(pt[0] > mMax[0])           // X coord
-         mMax[0] = pt[0];
-      else if(pt[0] < mMin[0])
-         mMin[0] = pt[0];
-      if(pt[1] > mMax[1])           // Y Coord
-         mMax[1] = pt[1];
-      else if(pt[1] < mMin[1])
-         mMin[1] = pt[1];
-      if(pt[2] > mMax[2])           // Z Coord
-         mMax[2] = pt[2];
-      else if(pt[2] < mMin[2])
-         mMin[2] = pt[2];
-
-   } else {
-      mMin = pt;
-      mMax = pt;
-      mEmpty = false;      // We are not empty anymore
-   }
-}
-
-// POST: (This) contains everything it used to AND the passed box
-inline void  AABox::extendBy(const AABox& box)
-{
-   extendBy(box.mMin);     // Just extend by the coords of the box
-   extendBy(box.mMax);
-}
-
-/*
-// Sends the GL_LINE commands to draw the box
-   // PRE: State is set and color is set to draw
-   void draw()
-   {
-      glBegin(GL_LINES);
-      glVertex3f(min[0], min[1], min[2]); glVertex3f(max[0], min[1], min[2]); // 000 100  Bottom
-      glVertex3f(max[0], min[1], min[2]); glVertex3f(max[0], min[1], max[2]); // 100 101
-      glVertex3f(max[0], min[1], max[2]); glVertex3f(min[0], min[1], max[2]); // 101 001
-      glVertex3f(min[0], min[1], max[2]); glVertex3f(min[0], min[1], min[2]); // 001 000
-
-      glVertex3f(min[0], max[1], min[2]); glVertex3f(max[0], max[1], min[2]); // 010 110  top
-      glVertex3f(max[0], max[1], min[2]); glVertex3f(max[0], max[1], max[2]); // 110 111
-      glVertex3f(max[0], max[1], max[2]); glVertex3f(min[0], max[1], max[2]); // 111 011
-      glVertex3f(min[0], max[1], max[2]); glVertex3f(min[0], max[1], min[2]); // 011 010
-
-      glVertex3f(min[0], min[1], min[2]); glVertex3f(min[0], max[1], min[2]); // 000 010  sides
-      glVertex3f(max[0], min[1], min[2]); glVertex3f(max[0], max[1], min[2]); // 100 110
-      glVertex3f(max[0], min[1], max[2]); glVertex3f(max[0], max[1], max[2]); // 101 111
-      glVertex3f(min[0], min[1], max[2]); glVertex3f(min[0], max[1], max[2]); // 001 011
-      glEnd();
-   }
-   */
-
-
-};
 
 #endif
