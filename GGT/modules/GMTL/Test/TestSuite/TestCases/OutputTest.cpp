@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: OutputTest.cpp,v $
- * Date modified: $Date: 2002-03-20 20:06:35 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-03-20 21:47:33 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -36,6 +36,13 @@
 #include <sstream>
 #include "OutputTest.h"
 
+#include <gmtl/Vec.h>
+#include <gmtl/Tri.h>
+#include <gmtl/Matrix.h>
+#include <gmtl/Plane.h>
+#include <gmtl/Point.h>
+#include <gmtl/Quat.h>
+#include <gmtl/Sphere.h>
 #include <gmtl/Output.h>
 
 namespace gmtlTest
