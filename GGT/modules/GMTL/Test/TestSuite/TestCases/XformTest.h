@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: XformTest.h,v $
- * Date modified: $Date: 2002-02-22 20:12:58 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-02-22 22:33:58 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -32,13 +32,13 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 *
  ************************************************************ ggt-cpr end */
-#include <gmtl/gmtlConfig.h>
 #include <iostream>
-
+#include <stdio.h>
 #include <cppunit/TestCase.h>
 #include <cppunit/TestSuite.h>
 #include <cppunit/TestCaller.h>
 
+#include <gmtl/gmtlConfig.h>
 #include <gmtl/Xforms.h>
 //#include <gmtl/gmtlOutput.h>
 
@@ -62,6 +62,232 @@ public:
    {
    }
 
+   template <typename T>
+   class XformQuatVec3
+   {
+   public:
+      static void go( char* name )
+      {
+         std::string n = "XformTest/operator*(quat4,vec3)";
+         n += name;
+         gmtl::Quatf<T> q1( (T)1, (T)2, (T)3, (T)4 );
+         gmtl::Vec<T, 3> v1( (T)8, (T)9, (T)10 ), v2( (T)5, (T)6, (T)7 );
+         const long iters(400000);
+         CPPUNIT_METRIC_START_TIMING();
+         bool result = false;
+         for (long iter = 0; iter < iters; ++iter)
+         {
+            v1 = q1 * v2;
+         }
+         CPPUNIT_METRIC_STOP_TIMING();
+         CPPUNIT_ASSERT_METRIC_TIMING_LE( n.c_str(), iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      }   
+   };
+
+   void xformQuatVec3()
+   {
+      XformQuatVec3<float>::go( "f" );
+      XformQuatVec3<double>::go( "d" );
+      XformQuatVec3<short>::go( "s" );
+      XformQuatVec3<int>::go( "i" );
+      XformQuatVec3<long>::go( "l" );
+   }   
+   
+   
+   template <typename T, unsigned ROWS, unsigned COLS>
+   class XformMatVecComplete
+   {
+   public:
+      static void go( char* name )
+      {
+         char buf[20]; int rows( ROWS ), cols( COLS );
+         std::string n = "XformTest/operator*(mat";
+         sprintf( buf, "%d", rows ); n += buf;
+         sprintf( buf, "%d", cols ); n += buf;
+         n += ",vec";
+         sprintf( buf, "%d", cols ); n += buf;
+         n += ")";
+         //n += name;
+         gmtl::Matrix<T, ROWS, COLS> q1;
+         gmtl::Vec<T, COLS> v1, v2; // last component is 0.0 by definition
+         const long iters(400000);
+         CPPUNIT_METRIC_START_TIMING();
+         bool result = false;
+         for (long iter = 0; iter < iters; ++iter)
+         {
+            v1 = q1 * v2;
+         }
+         CPPUNIT_METRIC_STOP_TIMING();
+         CPPUNIT_ASSERT_METRIC_TIMING_LE( n.c_str(), iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      }   
+   };
+   void xformMatVecComplete()
+   {
+      XformMatVecComplete<float, 2, 2>::go( "f" );
+      XformMatVecComplete<double, 2, 2>::go( "d" );
+      XformMatVecComplete<float, 2, 3>::go( "f" );
+      XformMatVecComplete<double, 2, 3>::go( "d" );
+      XformMatVecComplete<float, 3, 3>::go( "f" );
+      XformMatVecComplete<double, 3, 3>::go( "d" );
+      XformMatVecComplete<float, 3, 4>::go( "f" );
+      XformMatVecComplete<double, 3, 4>::go( "d" );
+      XformMatVecComplete<float, 4, 4>::go( "f" );
+      XformMatVecComplete<double, 4, 4>::go( "d" );
+      XformMatVecComplete<short, 4, 4>::go( "s" );
+      XformMatVecComplete<int, 4, 4>::go( "i" );
+      XformMatVecComplete<long, 4, 4>::go( "l" );
+   }
+
+   /*
+   template <typename T, unsigned ROWS, unsigned COLS>
+   class XformMatVecPartial
+   {
+   public:
+      static void go( char* name )
+      {
+         char buf[20];
+         std::string n = "XformTest/operator*(mat";
+         sprintf( buf, "%d", ROWS ); n += buf;
+         sprintf( buf, "%d", COLS ); n += buf;
+         n += ",vec";
+         sprintf( buf, "%d", COLS-1 ); n += buf;
+         n += ")";
+         n += name;
+         gmtl::Matrix<T, ROWS, COLS> q1;
+         gmtl::Vec<T, COLS-1> v1, v2;
+         const long iters(400000);
+         CPPUNIT_METRIC_START_TIMING();
+         bool result = false;
+         for (long iter = 0; iter < iters; ++iter)
+         {
+            v1 = q1 * v2;
+         }
+         CPPUNIT_METRIC_STOP_TIMING();
+         CPPUNIT_ASSERT_METRIC_TIMING_LE( n.c_str(), iters, 0.075f, 0.1f );  // warn at 7.5%, error at 10%
+      }
+   };
+   void xformMatVecPartial() 
+   {
+      XformMatVecPartial<float, 2, 3>::go( "f" );
+      XformMatVecPartial<double, 2, 3>::go( "d" );
+      XformMatVecPartial<float, 3, 3>::go( "f" );
+      XformMatVecPartial<double, 3, 3>::go( "d" );
+      XformMatVecPartial<float, 3, 4>::go( "f" );
+      XformMatVecPartial<double, 3, 4>::go( "d" );
+      XformMatVecPartial<float, 4, 4>::go( "f" );
+      XformMatVecPartial<double, 4, 4>::go( "d" );
+      XformMatVecPartial<short, 4, 4>::go( "s" );
+      XformMatVecPartial<int, 4, 4>::go( "i" );
+      XformMatVecPartial<long, 4, 4>::go( "l" );
+   }
+   */
+   
+   
+   
+   template <typename T, unsigned ROWS, unsigned COLS>
+   class XformMatPointComplete
+   {
+   public:
+      static void go( char* name )
+      {
+         char buf[20]; int rows( ROWS ), cols( COLS );
+         std::string n = "XformTest/operator*(mat";
+         sprintf( buf, "%d", rows ); n += buf;
+         sprintf( buf, "%d", cols ); n += buf;
+         n += ",pnt";
+         sprintf( buf, "%d", cols ); n += buf;
+         n += ")";
+         n += name;
+         gmtl::Matrix<T, ROWS, COLS> q1;
+         gmtl::Point<T, COLS> v1, v2; // last component is 1.0 by definition
+         const long iters(400000);
+         CPPUNIT_METRIC_START_TIMING();
+         bool result = false;
+         for (long iter = 0; iter < iters; ++iter)
+         {
+            v1 = q1 * v2;
+         }
+         CPPUNIT_METRIC_STOP_TIMING();
+         CPPUNIT_ASSERT_METRIC_TIMING_LE( n.c_str(), iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      }   
+   };
+   void xformMatPointComplete()
+   {
+      XformMatPointComplete<float, 2, 2>::go( "f" );
+      XformMatPointComplete<double, 2, 2>::go( "d" );
+      XformMatPointComplete<float, 2, 3>::go( "f" );
+      XformMatPointComplete<double, 2, 3>::go( "d" );
+      XformMatPointComplete<float, 3, 3>::go( "f" );
+      XformMatPointComplete<double, 3, 3>::go( "d" );
+      XformMatPointComplete<float, 3, 4>::go( "f" );
+      XformMatPointComplete<double, 3, 4>::go( "d" );
+      XformMatPointComplete<float, 4, 4>::go( "f" );
+      XformMatPointComplete<double, 4, 4>::go( "d" );
+      XformMatPointComplete<short, 4, 4>::go( "s" );
+      XformMatPointComplete<int, 4, 4>::go( "i" );
+      XformMatPointComplete<long, 4, 4>::go( "l" );
+   }
+   
+   /*
+   template <typename T, unsigned ROWS, unsigned COLS>
+   class XformMatPointPartial
+   {
+   public:
+      static void go( char* name )
+      {
+         char buf[20];
+         std::string n = "XformTest/operator*(mat";
+         sprintf( buf, "%d", ROWS ); n += buf;
+         sprintf( buf, "%d", COLS ); n += buf;
+         n += ",vec";
+         sprintf( buf, "%d", COLS-1 ); n += buf;
+         n += ")";
+         n += name;
+         gmtl::Matrix<T, ROWS, COLS> q1;
+         gmtl::Point<T, COLS-1> v1, v2;
+         const long iters(400000);
+         CPPUNIT_METRIC_START_TIMING();
+         bool result = false;
+         for (long iter = 0; iter < iters; ++iter)
+         {
+            v1 = q1 * v2;
+         }
+         CPPUNIT_METRIC_STOP_TIMING();
+         CPPUNIT_ASSERT_METRIC_TIMING_LE( n.c_str(), iters, 0.075f, 0.1f );  // warn at 7.5%, error at 10%
+      }
+   };
+   void xformMatPointPartial()
+   {
+      XformMatPointPartial<float, 2, 2>::go( "f" );
+      XformMatPointPartial<double, 2, 2>::go( "d" );
+      XformMatPointPartial<float, 2, 3>::go( "f" );
+      XformMatPointPartial<double, 2, 3>::go( "d" );
+      XformMatPointPartial<float, 3, 3>::go( "f" );
+      XformMatPointPartial<double, 3, 3>::go( "d" );
+      XformMatPointPartial<float, 3, 4>::go( "f" );
+      XformMatPointPartial<double, 3, 4>::go( "d" );
+      XformMatPointPartial<float, 4, 4>::go( "f" );
+      XformMatPointPartial<double, 4, 4>::go( "d" );
+      XformMatPointPartial<short, 4, 4>::go( "s" );
+      XformMatPointPartial<int, 4, 4>::go( "i" );
+      XformMatPointPartial<long, 4, 4>::go( "l" );
+   }
+   */
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   ///  old tests....
+   
    /*
    void testVec4_Mat_Xform()
    {
@@ -153,7 +379,12 @@ public:
       //test_suite->addTest( new CppUnit::TestCaller<XformTest>("testVec4_Mat_Xform", &XformTest::testVec4_Mat_Xform));
       //test_suite->addTest( new CppUnit::TestCaller<XformTest>("testVec3_Mat_Xform", &XformTest::testVec3_Mat_Xform));
       //test_suite->addTest( new CppUnit::TestCaller<XformTest>("testPoint3_Mat_Xform", &XformTest::testPoint3_Mat_Xform));
+     //// test_suite->addTest( new CppUnit::TestCaller<XformTest>("xformMatPointComplete", &XformTest::xformMatPointComplete));
+      //test_suite->addTest( new CppUnit::TestCaller<XformTest>("xformMatPointPartial", &XformTest::xformMatPointPartial));
+     //// test_suite->addTest( new CppUnit::TestCaller<XformTest>("xformMatVecComplete", &XformTest::xformMatVecComplete));
+      //test_suite->addTest( new CppUnit::TestCaller<XformTest>("xformMatVecPartial", &XformTest::xformMatVecPartial));
       test_suite->addTest( new CppUnit::TestCaller<XformTest>("testQuatVecXform", &XformTest::testQuatVecXform));
+      test_suite->addTest( new CppUnit::TestCaller<XformTest>("xformQuatVec3", &XformTest::xformQuatVec3));
 
       return test_suite;
    }

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: testSuite.cpp,v $
- * Date modified: $Date: 2002-02-22 22:28:35 $
- * Version:       $Revision: 1.25 $
+ * Date modified: $Date: 2002-02-22 22:33:58 $
+ * Version:       $Revision: 1.26 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -143,9 +143,8 @@ int main (int ac, char **av)
    gmtl_suite->addTest( gmtlTest::QuatStuffTest::suite() );
    
    gmtl_suite->addTest( gmtlTest::GenerateTest::suite() );
-   
+   gmtl_suite->addTest( gmtlTest::XformTest::suite() );   
    gmtl_suite->addTest( gmtlTest::ConvertTest::suite() );
-   gmtl_suite->addTest( gmtlTest::XformTest::suite() );
    
    /*
    gmtl_suite->addTest( gmtlTest::Point3Test::suite() );
