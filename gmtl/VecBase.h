@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecBase.h,v $
- * Date modified: $Date: 2004-08-30 14:54:39 $
- * Version:       $Revision: 1.15 $
+ * Date modified: $Date: 2004-09-01 15:57:33 $
+ * Version:       $Revision: 1.15.2.1 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -37,6 +37,9 @@
 
 #include <gmtl/Util/Assert.h>
 #include <gmtl/Util/Meta.h>
+#include <gmtl/Config.h>
+#include <gmtl/Helpers.h>
+
 
 namespace gmtl
 {
@@ -67,7 +70,12 @@ public:
     * This is for performance because this constructor is called by derived class constructors
     * Even when they just want to set the data directly
     */
-   VecBase() {}
+   VecBase()
+   {
+#ifdef GMTL_COUNT_CONSTRUCT_CALLS
+      gmtl::helpers::VecCtrCounterInstance()->inc();
+#endif
+   }
 
 
    /**
@@ -77,6 +85,9 @@ public:
     */
    VecBase(const VecBase<DATA_TYPE, SIZE>& rVec)
    {
+#ifdef GMTL_COUNT_CONSTRUCT_CALLS
+      gmtl::helpers::VecCtrCounterInstance()->inc();
+#endif
       /*
       for(unsigned i=0;i<SIZE;++i)
          mData[i] = rVec.mData[i];
@@ -154,6 +165,10 @@ public:
 template<class DATA_TYPE, unsigned SIZE>
 VecBase<DATA_TYPE,SIZE>::VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1)
 {
+#ifdef GMTL_COUNT_CONSTRUCT_CALLS
+   gmtl::helpers::VecCtrCounterInstance()->inc();
+#endif
+
    // @todo need compile time assert
    gmtlASSERT( SIZE == 2 && "out of bounds element access in VecBase" );
    mData[0] = val0;
@@ -163,6 +178,9 @@ VecBase<DATA_TYPE,SIZE>::VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1)
 template<class DATA_TYPE, unsigned SIZE>
 VecBase<DATA_TYPE,SIZE>::VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2)
 {
+#ifdef GMTL_COUNT_CONSTRUCT_CALLS
+   gmtl::helpers::VecCtrCounterInstance()->inc();
+#endif
    // @todo need compile time assert
    gmtlASSERT( SIZE == 3 && "out of bounds element access in VecBase" );
    mData[0] = val0;
@@ -173,6 +191,9 @@ VecBase<DATA_TYPE,SIZE>::VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1,con
 template<class DATA_TYPE, unsigned SIZE>
 VecBase<DATA_TYPE,SIZE>::VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2,const DATA_TYPE& val3)
 {
+#ifdef GMTL_COUNT_CONSTRUCT_CALLS
+   gmtl::helpers::VecCtrCounterInstance()->inc();
+#endif
    // @todo need compile time assert
    gmtlASSERT( SIZE == 4 && "out of bounds element access in VecBase" );
    mData[0] = val0;

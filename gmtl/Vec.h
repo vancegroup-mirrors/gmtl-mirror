@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Vec.h,v $
- * Date modified: $Date: 2003-09-05 20:02:41 $
- * Version:       $Revision: 1.18 $
+ * Date modified: $Date: 2004-09-01 15:57:33 $
+ * Version:       $Revision: 1.18.2.1 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,8 +35,9 @@
 #ifndef _GMTL_VEC_H_
 #define _GMTL_VEC_H_
 
+#include <gmtl/Config.h>
 #include <gmtl/VecBase.h>
- 
+
 namespace gmtl
 {
 
@@ -86,7 +87,7 @@ public:
       : BaseType( static_cast<BaseType>( rVec ) )
    {
    }
-   
+
    Vec( const VecBase<DATA_TYPE, SIZE>& rVec )
       : BaseType( rVec )
    {
