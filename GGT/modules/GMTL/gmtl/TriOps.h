@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: TriOps.h,v $
- * Date modified: $Date: 2002-02-18 21:07:38 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-02-18 23:22:16 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -67,6 +67,60 @@ Vec<DATA_TYPE, 3> normal( const Tri<DATA_TYPE>& tri )
    Vec<DATA_TYPE, 3> normal = cross( tri[1] - tri[0], tri[2] - tri[0] );
    normalize( normal );
    return normal;
+}
+
+// --- Triangle comparisons -- //
+/**
+ * Compare two triangles to see if they are EXACTLY the same. In other words,
+ * this comparison is done with zero tolerance.
+ * 
+ * @param tri1    the first triangle to compare
+ * @param tri2    the second triangle to compare
+ *
+ * @return  true if they are equal, false otherwise
+ */
+template< class DATA_TYPE >
+bool operator==( const Tri<DATA_TYPE>& tri1, const Tri<DATA_TYPE>& tri2 )
+{
+   return ( (tri1[0] == tri2[0]) &&
+            (tri1[1] == tri2[1]) &&
+            (tri1[2] == tri2[2]) );
+}
+
+/**
+ * Compare two triangle to see if they are not EXACTLY the same. In other words,
+ * this comparison is done with zero tolerance.
+ *
+ * @param tri1    the first triangle to compare
+ * @param tri2    the second triangle to compare
+ *
+ * @return  true if they are not equal, false otherwise
+ */
+template< class DATA_TYPE >
+bool operator!=( const Tri<DATA_TYPE>& tri1, const Tri<DATA_TYPE>& tri2 )
+{
+   return (! (tri1 == tri2));
+}
+
+/**
+ * Compare two triangles to see if they are the same within the given tolerance.
+ *
+ * @param tri1    the first triangle to compare
+ * @param tri2    the second triangle to compare
+ * @param eps     the tolerance value to use
+ *
+ * @pre  eps must be >= 0
+ *
+ * @return  true if they are equal, false otherwise
+ */
+template< class DATA_TYPE >
+bool isEqual( const Tri<DATA_TYPE>& tri1, const Tri<DATA_TYPE>& tri2,
+              const DATA_TYPE& eps )
+{
+   ggtASSERT( eps >= 0 );
+   return ( isEqual(tri1[0], tri2[0], eps) &&
+            isEqual(tri1[1], tri2[1], eps) &&
+            isEqual(tri1[2], tri2[2], eps) );
 }
 
 } // namespace gmtl

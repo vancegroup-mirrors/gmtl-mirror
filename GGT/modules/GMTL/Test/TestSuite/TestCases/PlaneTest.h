@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PlaneTest.h,v $
- * Date modified: $Date: 2002-02-18 23:08:45 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2002-02-18 23:22:15 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -40,6 +40,7 @@
 #include <cppunit/TestCaller.h>
 
 #include <gmtl/Plane.h>
+#include <gmtl/PlaneOps.h>
 
 namespace gmtlTest
 {

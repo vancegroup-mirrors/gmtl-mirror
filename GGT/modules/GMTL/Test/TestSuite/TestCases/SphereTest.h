@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: SphereTest.h,v $
- * Date modified: $Date: 2002-02-18 21:42:52 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-02-18 23:22:15 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -40,9 +40,8 @@
 #include <cppunit/TestCaller.h>
 
 #include <gmtl/Sphere.h>
-#include <gmtl/Compare.h>
+#include <gmtl/SphereOps.h>
 #include <gmtl/Containment.h>
-#include <gmtl/Math.h>
 
 namespace gmtlTest
 {

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOps.h,v $
- * Date modified: $Date: 2002-02-18 21:21:48 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-02-18 23:22:15 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -37,6 +37,7 @@
 
 #include <gmtl/gmtlConfig.h>
 #include <gmtl/Matrix.h>
+#include <gmtl/Math.h>
 
 namespace gmtl
 {
@@ -411,6 +412,52 @@ namespace gmtl
             mData[i][j] = GMTL_ZERO_CLAMP(mData[i][j]);
    }
    */
+
+   // --- MATRIX comparisons -- //
+
+   /** Compare two mats */
+   template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
+   inline bool operator==( const Matrix<DATA_TYPE, ROWS, COLS>& lhs, const Matrix<DATA_TYPE, ROWS, COLS>& rhs )
+   {
+      for (unsigned int i = 0; i < ROWS*COLS; ++i)
+      {
+         if (lhs[i] != rhs[i])
+         {
+            return false;
+         }
+      }
+
+      return true;
+
+      /*  Would like this
+      return( lhs[0] == rhs[0] &&
+              lhs[1] == rhs[1] &&
+              lhs[2] == rhs[2] );
+      */
+   }
+
+   template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
+   inline bool operator!=( const Matrix<DATA_TYPE, ROWS, COLS>& lhs, const Matrix<DATA_TYPE, ROWS, COLS>& rhs )
+   {
+      return bool( !(lhs == rhs) );
+   }
+
+   /** Compare two vectors with a tolerance
+   * @pre eps must be >= 0
+   */
+   template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
+   inline bool isEqual( const Matrix<DATA_TYPE, ROWS, COLS>& lhs, const Matrix<DATA_TYPE, ROWS, COLS>& rhs, const DATA_TYPE& eps = (DATA_TYPE)0 )
+   {
+      ggtASSERT( eps >= (DATA_TYPE)0 );
+
+      for (unsigned int i = 0; i < ROWS*COLS; ++i)
+      {
+         if (!Math::isEqual( lhs[i], rhs[i], eps ))
+            return false;
+      }
+      return true;
+   }
+
 } // end of namespace gmtl
 
 #endif
