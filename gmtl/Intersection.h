@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Intersection.h,v $
- * Date modified: $Date: 2003-09-06 21:58:48 $
- * Version:       $Revision: 1.17 $
+ * Date modified: $Date: 2003-09-07 18:05:51 $
+ * Version:       $Revision: 1.18 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -299,7 +299,8 @@ namespace gmtl
    }
 
    /**
-    * intersect ray/sphere.
+    * intersect ray/sphere-shell (not volume).
+    * only register hits with the surface of the sphere.
     * note: after calling this, you can find the intersection point with: ray.getOrigin() + ray.getDir() * t
     *
     * @param ray     the ray to test
@@ -313,25 +314,19 @@ namespace gmtl
       numhits = -1;
 
       // set up quadratic Q(t) = a*t^2 + 2*b*t + c
-      Vec<T, 3> offset = ray.getOrigin() - sphere.getCenter();
-      T a = lengthSquared( ray.getDir() );
-      T b = dot( offset, ray.getDir() );
-      T c = lengthSquared( offset ) - sphere.getRadius() * sphere.getRadius();
+      const Vec<T, 3> offset = ray.getOrigin() - sphere.getCenter();
+      const T a = lengthSquared( ray.getDir() );
+      const T b = dot( offset, ray.getDir() );
+      const T c = lengthSquared( offset ) - sphere.getRadius() * sphere.getRadius();
+
+
 
       // no intersection if Q(t) has no real roots
-      T discriminant = b * b - a * c;
+      const T discriminant = b * b - a * c;
       if (discriminant < 0.0f)
       {
          numhits = 0;
          return false;
-      }
-      else if (a < 0.0001f) // zero length, just do a point test.
-      {
-         t0 = T( 0 );
-         t1 = T( 1 );
-         bool ret = intersect( sphere, ray.getOrigin() );
-         numhits = (ret) ? 2 : numhits;
-         return ret;
       }
       else if (discriminant > 0.0f)
       {
@@ -375,11 +370,12 @@ namespace gmtl
       }
    }
 
-   // intersect LineSeg/Sphere.
-   // does intersection on sphere surface, point inside sphere doesn't count as an intersection
-   // returns intersection point(s) in t
-   // find intersection point(s) with: ray.getOrigin() + ray.getDir() * t
-   // numhits, t0, t1 are undefined if return value is false
+   /** intersect LineSeg/Sphere-shell (not volume).
+    * does intersection on sphere surface, point inside sphere doesn't count as an intersection
+    * returns intersection point(s) in t
+    * find intersection point(s) with: ray.getOrigin() + ray.getDir() * t
+    * numhits, t0, t1 are undefined if return value is false
+    */
    template<typename T>
    inline bool intersect( const Sphere<T>& sphere, const LineSeg<T>& lineseg, int& numhits, float& t0, float& t1 )
    {
@@ -401,6 +397,101 @@ namespace gmtl
       {
          return false;
       }
+   }
+
+   /**
+    * intersect lineseg/sphere-volume.
+    * register hits with both the surface and when end points land on the interior of the sphere.
+    * note: after calling this, you can find the intersection point with: ray.getOrigin() + ray.getDir() * t
+    *
+    * @param ray     the lineseg to test
+    * @param sphere  the sphere to test
+    * @return returns intersection point in t, and the number of hits
+    * @return numhits, t0, t1 are undefined if return value is false
+    */
+   template<typename T>
+   inline bool intersectVolume( const Sphere<T>& sphere, const LineSeg<T>& ray, int& numhits, float& t0, float& t1 )
+   {
+      bool result = intersect( sphere, ray, numhits, t0, t1 );
+      if (result && numhits == 2)
+      {
+         return true;
+      }
+      // todo: make this faster (find an early out) since 1 or 0 hits is the common case.
+      // volume test has some additional checks before we can throw it out because 
+      // one of both points may be inside the volume, so we want to return hits for those as well...
+      else // 1 or 0 hits.
+      {
+         const T rsq = sphere.getRadius() * sphere.getRadius();
+         const Vec<T, 3> dist = ray.getOrigin() - sphere.getCenter();
+         const T a = lengthSquared( dist ) - rsq;
+         const T b = lengthSquared( gmtl::Vec<T,3>(dist + ray.getDir()) ) - rsq;
+
+         bool inside1 = a <= T( 0 );
+         bool inside2 = b <= T( 0 );
+
+         // one point is inside
+         if (numhits == 1 && inside1 && !inside2)
+         {
+            t1 = t0;
+            t0 = T(0);
+            numhits = 2;
+            return true;
+         }
+         else if (numhits == 1 && !inside1 && inside2)
+         {
+            t1 = T(1);
+            numhits = 2;
+            return true;
+         }
+         // maybe both points are inside?
+         else if (inside1 && inside2) // 0 hits.
+         {
+            t0 = T(0); 
+            t1 = T(1);
+            numhits = 2;
+            return true;
+         }
+      }
+      return result;
+   }
+
+   /**
+    * intersect ray/sphere-volume.
+    * register hits with both the surface and when the origin lands in the interior of the sphere.
+    * note: after calling this, you can find the intersection point with: ray.getOrigin() + ray.getDir() * t
+    *
+    * @param ray     the ray to test
+    * @param sphere  the sphere to test
+    * @return returns intersection point in t, and the number of hits
+    * @return numhits, t0, t1 are undefined if return value is false
+    */
+   template<typename T>
+   inline bool intersectVolume( const Sphere<T>& sphere, const Ray<T>& ray, int& numhits, float& t0, float& t1 )
+   {
+      bool result = intersect( sphere, ray, numhits, t0, t1 );
+      if (result && numhits == 2)
+      {
+         return true;
+      }
+      else 
+      {
+         const T rsq = sphere.getRadius() * sphere.getRadius();
+         const Vec<T, 3> dist = ray.getOrigin() - sphere.getCenter();
+         const T a = lengthSquared( dist ) - rsq;
+         
+         bool inside = a <= T( 0 );
+         
+         // start point is inside
+         if (inside)
+         {
+            t1 = t0;
+            t0 = T(0);
+            numhits = 2;
+            return true;
+         }
+      }
+      return result;
    }
    
    /**

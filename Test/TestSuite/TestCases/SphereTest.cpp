@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: SphereTest.cpp,v $
- * Date modified: $Date: 2003-09-06 21:53:16 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2003-09-07 18:07:14 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -692,22 +692,25 @@ namespace gmtlTest
          gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
          gmtl::Point3f point( x, y, z );
          bool result = gmtl::intersect( sphere, point );
-         assert( result == true );
+         CPPUNIT_ASSERT( result == true );
       }
       // out
       {
          gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
          gmtl::Point3f point( 1.0001f+x, y, z );
          bool result = gmtl::intersect( sphere, point );
-         assert( result == false );
+         CPPUNIT_ASSERT( result == false );
       }
       // on
       {
          gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
          gmtl::Point3f point( x, y, z-1.0f );
          bool result = gmtl::intersect( sphere, point );
-         assert( result == true );
+         CPPUNIT_ASSERT( result == true );
       }
+
+
+      // shell tests, only register hits with the surface of the sphere.
 
       // Ray
       // origin to out
@@ -715,9 +718,9 @@ namespace gmtlTest
          gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
          gmtl::Rayf ray( gmtl::Point3f( x, y, z ), gmtl::Vec3f( 1, 0, 0 ) );
          bool result = gmtl::intersect( sphere, ray,  hits, t0, t1 );
-         assert( result == true );
-         assert( hits == 1 );
-         assert( t0 == 1.0 );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 1 );
+         CPPUNIT_ASSERT( t0 == 1.0 );
       }
       // interior point to out
       {
@@ -728,78 +731,63 @@ namespace gmtlTest
          int hits;
          bool result = gmtl::intersect( sphere, ray,  hits, t0, t1 );
          
-         assert( result == true );
-         assert( hits == 1 );
-         assert( t0 == 0.5 );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 1 );
+         CPPUNIT_ASSERT( t0 == 0.5 );
       }
       // edge to in
       {
          gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
          gmtl::Rayf ray( gmtl::Point3f( 1.0f+x, y, z ), gmtl::Vec3f( -1, 0, 0 ) );
          bool result = gmtl::intersect( sphere, ray,  hits, t0, t1 );
-         assert( result == true );
-         assert( hits == 2 );
-         assert( t0 == 0.0 );
-         assert( t1 == 2.0 );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 2 );
+         CPPUNIT_ASSERT( t0 == 0.0 );
+         CPPUNIT_ASSERT( t1 == 2.0 );
       }
       // edge to out
       {
          gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
          gmtl::Rayf ray( gmtl::Point3f( 1.0f+x, y, z ), gmtl::Vec3f( 1, 0, 0 ) );
          bool result = gmtl::intersect( sphere, ray,  hits, t0, t1 );
-         assert( result == true );
-         assert( hits == 1 );
-         assert( t0 == 0.0 );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 1 );
+         CPPUNIT_ASSERT( t0 == 0.0 );
       }
       // outside through 1 edge (tangent surface)
       {
          gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
          gmtl::Rayf ray( gmtl::Point3f( 1.0f+x, -1.0f+y, z ), gmtl::Vec3f( 0, 1, 0 ) );
          bool result = gmtl::intersect( sphere, ray,  hits, t0, t1 );
-         assert( result == true );
-         assert( hits == 1 );
-         assert( t0 == 1.0 );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 1 );
+         CPPUNIT_ASSERT( t0 == 1.0 );
       }
       // outside through 2 edges
       {
          gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
          gmtl::Rayf ray( gmtl::Point3f( 0.0f+x, -4.0f+y, 0.0f+z ), gmtl::Vec3f( 0, 1, 0 ) );
          bool result = gmtl::intersect( sphere, ray,  hits, t0, t1 );
-         assert( result == true );
-         assert( hits == 2 );
-         assert( t0 == 3.0 );
-         assert( t1 == 5.0 );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 2 );
+         CPPUNIT_ASSERT( t0 == 3.0 );
+         CPPUNIT_ASSERT( t1 == 5.0 );
       }
       // outside to near miss
       {
          gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
          gmtl::Rayf ray( gmtl::Point3f( 1.0001f+x, -1.0f+y, z ), gmtl::Vec3f( 0, 1, 0 ) );
          bool result = gmtl::intersect( sphere, ray,  hits, t0, t1 );
-         assert( result == false );
+         CPPUNIT_ASSERT( result == false );
       }
       // outside to away
       {
          gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
          gmtl::Rayf ray( gmtl::Point3f( x, 6.0f+y, z ), gmtl::Vec3f( 0, 1, 0 ) );
          bool result = gmtl::intersect( sphere, ray,  hits, t0, t1 );
-         assert( result == false );
+         CPPUNIT_ASSERT( result == false );
       }
-      // zero length ray inside sphere
-      {
-         gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
-         gmtl::Rayf ray( gmtl::Point3f( x, y, z ), gmtl::Vec3f( 0, 0, 0 ) );
-         bool result = gmtl::intersect( sphere, ray,  hits, t0, t1 );
-         assert( result == true );
-      }
-      // zero length seg inside sphere
-      // test other branch of the if (inside intersect)
-      {
-         gmtl::Spheref sphere( gmtl::Point3f( 0,0,0 ), 2 );
-         gmtl::Rayf ray( gmtl::Point3f( -0.143958f,-0.229931f,-0.013235f ),
-                   gmtl::Vec3f( 0, .000000119209f, 0 ) );
-         bool result = gmtl::intersect( sphere, ray, hits, t0, t1 );
-         assert( result == true );
-      }
+
       
 
       
@@ -810,157 +798,157 @@ namespace gmtlTest
          gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
          gmtl::LineSegf ray( gmtl::Point3f( x, y, z ), gmtl::Vec3f( 0.5f, 0.0f, 0.0f ) );
          bool result = gmtl::intersect( sphere, ray,  hits, t0, t1 );
-         assert( result == false );
+         CPPUNIT_ASSERT( result == false );
       }
       // origin to edge
       {
          gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
          gmtl::LineSegf ray( gmtl::Point3f( x, y, z ), gmtl::Vec3f( 1.0f, 0.0f, 0.0f ) );
          bool result = gmtl::intersect( sphere, ray,  hits, t0, t1 );
-         assert( result == true );
-         assert( hits == 1 );
-         assert( t0 == 1.0 );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 1 );
+         CPPUNIT_ASSERT( t0 == 1.0 );
       }
       // origin to outside
       {
          gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
          gmtl::LineSegf ray( gmtl::Point3f( x, y, z ), gmtl::Vec3f( 4.0f, 0.0f, 0.0f ) );
          bool result = gmtl::intersect( sphere, ray,  hits, t0, t1 );
-         assert( result == true );
-         assert( hits == 1 );
-         assert( t0 == 0.25 );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 1 );
+         CPPUNIT_ASSERT( t0 == 0.25 );
       }
       // interior point to origin
       {
          gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
          gmtl::LineSegf ray( gmtl::Point3f( 0.5f+x, y, z ), gmtl::Vec3f( -0.5f, 0.0f, 0.0f ) );
          bool result = gmtl::intersect( sphere, ray,  hits, t0, t1 );
-         assert( result == false );
+         CPPUNIT_ASSERT( result == false );
       }
       // interior point to interior point
       {
          gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
          gmtl::LineSegf ray( gmtl::Point3f( 0.5f+x, y, z ), gmtl::Vec3f( -1.0f, 0.0f, 0.0f ) );
          bool result = gmtl::intersect( sphere, ray,  hits, t0, t1 );
-         assert( result == false );
+         CPPUNIT_ASSERT( result == false );
       }
       // interior point to edge
       {
          gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
          gmtl::LineSegf ray( gmtl::Point3f( x, 0.5f+y, z ), gmtl::Vec3f( 0.0f, -1.5f, 0.0f ) );
          bool result = gmtl::intersect( sphere, ray,  hits, t0, t1 );
-         assert( result == true );
-         assert( hits == 1 );
-         assert( t0 == 1.0 );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 1 );
+         CPPUNIT_ASSERT( t0 == 1.0 );
       }
       // interior point to outside
       {
          gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
          gmtl::LineSegf ray( gmtl::Point3f( x, y, z+0.5f ), gmtl::Vec3f( 0.0f, 0.0f, -2.0f ) );
          bool result = gmtl::intersect( sphere, ray,  hits, t0, t1 );
-         assert( result == true );
-         assert( hits == 1 );
-         assert( gmtl::Math::isEqual( t0, 0.75f, 0.0001f ) );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 1 );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( t0, 0.75f, 0.0001f ) );
       }
       // edge to origin
       {
          gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
          gmtl::LineSegf ray( gmtl::Point3f( 1.0f+x, y, z ), gmtl::Vec3f( -1.0f, 0.0f, 0.0f ) );
          bool result = gmtl::intersect( sphere, ray,  hits, t0, t1 );
-         assert( result == true );
-         assert( hits == 1 );
-         assert( t0 == 0.0 );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 1 );
+         CPPUNIT_ASSERT( t0 == 0.0 );
       }
       // edge to interior point
       {
          gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
          gmtl::LineSegf ray( gmtl::Point3f( 1.0f+x, y, z ), gmtl::Vec3f( -1.5f, 0.2f, 0.0f ) );
          bool result = gmtl::intersect( sphere, ray,  hits, t0, t1 );
-         assert( result == true );
-         assert( hits == 1 );
-         assert( t0 == 0.0 );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 1 );
+         CPPUNIT_ASSERT( t0 == 0.0 );
       }
       // edge to edge
       {
          gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
          gmtl::LineSegf ray( gmtl::Point3f( 1.0f+x, y, z ), gmtl::Vec3f( -2.0f, 0.0f, 0.0f ) );
          bool result = gmtl::intersect( sphere, ray,  hits, t0, t1 );
-         assert( result == true );
-         assert( hits == 2 );
-         assert( t0 == 0.0 );
-         assert( t1 == 1.0 );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 2 );
+         CPPUNIT_ASSERT( t0 == 0.0 );
+         CPPUNIT_ASSERT( t1 == 1.0 );
       }
       // edge through edge to outside
       {
          gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
          gmtl::LineSegf ray( gmtl::Point3f( 1.0f+x, y, z ), gmtl::Vec3f( -4.0f, 0.0f, 0.0f ) );
          bool result = gmtl::intersect( sphere, ray,  hits, t0, t1 );
-         assert( result == true );
-         assert( hits == 2 );
-         assert( t0 == 0.0 );
-         assert( t1 == 0.5 );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 2 );
+         CPPUNIT_ASSERT( t0 == 0.0 );
+         CPPUNIT_ASSERT( t1 == 0.5 );
       }
       // edge to outside
       {
          gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
          gmtl::LineSegf ray( gmtl::Point3f( 1.0f+x, y, z ), gmtl::Vec3f( 45.0f, 0.0f, 0.0f ) );
          bool result = gmtl::intersect( sphere, ray,  hits, t0, t1 );
-         assert( result == true );
-         assert( hits == 1 );
-         assert( t0 == 0.0 );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 1 );
+         CPPUNIT_ASSERT( t0 == 0.0 );
       }
       // outside to origin
       {
          gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
          gmtl::LineSegf ray( gmtl::Point3f( 2.0f+x, y, z ), gmtl::Vec3f( -2.0f, 0.0f, 0.0f ) );
          bool result = gmtl::intersect( sphere, ray,  hits, t0, t1 );
-         assert( result == true );
-         assert( hits == 1 );
-         assert( t0 == 0.5 );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 1 );
+         CPPUNIT_ASSERT( t0 == 0.5 );
       }
       // outside to interior point
       {
          gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
          gmtl::LineSegf ray( gmtl::Point3f( x, 1.5f+y, z ), gmtl::Vec3f( 0.0f, -2.0f, 0.0f ) );
          bool result = gmtl::intersect( sphere, ray,  hits, t0, t1 );
-         assert( result == true );
-         assert( hits == 1 );
-         assert( t0 == 0.25 );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 1 );
+         CPPUNIT_ASSERT( t0 == 0.25 );
       }
       // outside to edge
       {
          gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
          gmtl::LineSegf ray( gmtl::Point3f( x, y, 45.0f+z ), gmtl::Vec3f( 0.0f, 0.0f, -44.0f ) );
          bool result = gmtl::intersect( sphere, ray,  hits, t0, t1 );
-         assert( result == true );
-         assert( hits == 1 );
-         assert( gmtl::Math::isEqual( t0, 1.0f, 0.00001f ) );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 1 );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( t0, 1.0f, 0.00001f ) );
       }
       // outside through 1 edge (tangent surface) to outside
       {
          gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
          gmtl::LineSegf ray( gmtl::Point3f( x, -2.0f+y, 1.0f+z ), gmtl::Vec3f( 0.0f, 4.0f, 0.0f ) );
          bool result = gmtl::intersect( sphere, ray,  hits, t0, t1 );
-         assert( result == true );
-         assert( hits == 1 );
-         assert( t0 == 0.5f );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 1 );
+         CPPUNIT_ASSERT( t0 == 0.5f );
       }
       // outside through 2 edges to outside
       {
          gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
          gmtl::LineSegf ray( gmtl::Point3f( x, -2.0f+y, z ), gmtl::Vec3f( 0.0f, 4.0f, 0.0f ) );
          bool result = gmtl::intersect( sphere, ray,  hits, t0, t1 );
-         assert( result == true );
-         assert( hits == 2 );
-         assert( t0 == 0.25f );
-         assert( t1 == 0.75f );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 2 );
+         CPPUNIT_ASSERT( t0 == 0.25f );
+         CPPUNIT_ASSERT( t1 == 0.75f );
       }
       // outside to outside near miss
       {
          gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
          gmtl::LineSegf ray( gmtl::Point3f( x, y-2.0f, z+1.0001f ), gmtl::Vec3f( 0.0f, 4.0f, 0.0f ) );
          bool result = gmtl::intersect( sphere, ray,  hits, t0, t1 );
-         assert( result == false );
+         CPPUNIT_ASSERT( result == false );
       }
 
       // outside to outside away from sphere
@@ -968,7 +956,7 @@ namespace gmtlTest
          gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
          gmtl::LineSegf ray( gmtl::Point3f( 2.0f+x, y, z ), gmtl::Vec3f( 2.0f, 0.0f, 0.0f ) );
          bool result = gmtl::intersect( sphere, ray,  hits, t0, t1 );
-         assert( result == false );
+         CPPUNIT_ASSERT( result == false );
       }
 
       // outside to outside towards sphere
@@ -976,31 +964,306 @@ namespace gmtlTest
          gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
          gmtl::LineSegf ray( gmtl::Point3f( 3.0f+x, y, z ), gmtl::Vec3f( -1.0f, 0.0f, 0.0f ) );
          bool result = gmtl::intersect( sphere, ray,  hits, t0, t1 );
-         assert( result == false );
+         CPPUNIT_ASSERT( result == false );
       }
-      // zero length seg inside sphere
+
+
+
+      // volume tests (points ending inside the sphere will register a hit now)
+
+
+
+
+      // Ray
+      // origin to out
       {
          gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
-         gmtl::LineSegf seg( gmtl::Point3f( x, y, z ), gmtl::Vec3f( 0, 0, 0 ) );
-         bool result = gmtl::intersect( sphere, seg,  hits, t0, t1 );
-         assert( result == true );
+         gmtl::Rayf ray( gmtl::Point3f( x, y, z ), gmtl::Vec3f( 1, 0, 0 ) );
+         bool result = gmtl::intersectVolume( sphere, ray,  hits, t0, t1 );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 2 );
+         CPPUNIT_ASSERT( t0 == 0.0 );
+         CPPUNIT_ASSERT( t1 == 1.0 );
+      }
+      // interior point to out
+      {
+         gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
+         gmtl::Rayf ray( gmtl::Point3f( 0.5f+x, y, z ), gmtl::Vec3f( 1, 0, 0 ) );
+
+         float t0, t1;
+         int hits;
+         bool result = gmtl::intersectVolume( sphere, ray,  hits, t0, t1 );
+         
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 2 );
+         CPPUNIT_ASSERT( t0 == 0.0 );
+         CPPUNIT_ASSERT( t1 == 0.5 );
+      }
+      // edge to in
+      {
+         gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
+         gmtl::Rayf ray( gmtl::Point3f( 1.0f+x, y, z ), gmtl::Vec3f( -1, 0, 0 ) );
+         bool result = gmtl::intersectVolume( sphere, ray,  hits, t0, t1 );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 2 );
+         CPPUNIT_ASSERT( t0 == 0.0 );
+         CPPUNIT_ASSERT( t1 == 2.0 );
+      }
+      // edge to out
+      {
+         gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
+         gmtl::Rayf ray( gmtl::Point3f( 1.0f+x, y, z ), gmtl::Vec3f( 1, 0, 0 ) );
+         bool result = gmtl::intersectVolume( sphere, ray,  hits, t0, t1 );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 2 );
+         CPPUNIT_ASSERT( t0 == 0.0 );
+         CPPUNIT_ASSERT( t1 == 0.0 );
+      }
+      // outside through 1 edge (tangent surface)
+      {
+         gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
+         gmtl::Rayf ray( gmtl::Point3f( 1.0f+x, -1.0f+y, z ), gmtl::Vec3f( 0, 1, 0 ) );
+         bool result = gmtl::intersectVolume( sphere, ray,  hits, t0, t1 );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 1 );
+         CPPUNIT_ASSERT( t0 == 1.0 );
+      }
+      // outside through 2 edges
+      {
+         gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
+         gmtl::Rayf ray( gmtl::Point3f( 0.0f+x, -4.0f+y, 0.0f+z ), gmtl::Vec3f( 0, 1, 0 ) );
+         bool result = gmtl::intersectVolume( sphere, ray,  hits, t0, t1 );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 2 );
+         CPPUNIT_ASSERT( t0 == 3.0 );
+         CPPUNIT_ASSERT( t1 == 5.0 );
+      }
+      // outside to near miss
+      {
+         gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
+         gmtl::Rayf ray( gmtl::Point3f( 1.0001f+x, -1.0f+y, z ), gmtl::Vec3f( 0, 1, 0 ) );
+         bool result = gmtl::intersectVolume( sphere, ray,  hits, t0, t1 );
+         CPPUNIT_ASSERT( result == false );
+      }
+      // outside to away
+      {
+         gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
+         gmtl::Rayf ray( gmtl::Point3f( x, 6.0f+y, z ), gmtl::Vec3f( 0, 1, 0 ) );
+         bool result = gmtl::intersectVolume( sphere, ray,  hits, t0, t1 );
+         CPPUNIT_ASSERT( result == false );
+      }
+      // zero length ray inside sphere
+      {
+         gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
+         gmtl::Rayf ray( gmtl::Point3f( x, y, z ), gmtl::Vec3f( 0, 0, 0 ) );
+         bool result = gmtl::intersectVolume( sphere, ray,  hits, t0, t1 );
+         CPPUNIT_ASSERT( result == true );
       }
       // zero length seg inside sphere
-      // test other branch of the if (inside intersect)
+      // test other branch of the if (inside intersectVolume)
       {
          gmtl::Spheref sphere( gmtl::Point3f( 0,0,0 ), 2 );
-         gmtl::LineSegf ray( gmtl::Point3f( -0.143958f,-0.229931f,-0.013235f ),
-                             gmtl::Vec3f( 0, .000000119209f, 0 ) );
-         bool result = gmtl::intersect( sphere, ray, hits, t0, t1 );
-         assert( result == true );
+         gmtl::Rayf ray( gmtl::Point3f( -0.143958f,-0.229931f,-0.013235f ),
+                     gmtl::Vec3f( 0, .000000119209f, 0 ) );
+         bool result = gmtl::intersectVolume( sphere, ray, hits, t0, t1 );
+         CPPUNIT_ASSERT( result == true );
       }
-      // another that brought up a different bug
+      
+
+      
+
+      // LineSeg
+      // origin to interior point
       {
-         gmtl::Spheref sphere( gmtl::Point3f( 0,0,0 ), 2 );
-         gmtl::LineSegf ray( gmtl::Point3f( -0.054072f,-0.22992f,-0.120733f ),
-                         gmtl::Vec3f( 0, -.000000119209f, 0 ) );
-         bool result = gmtl::intersect( sphere, ray, hits, t0, t1 );
-         assert( result == true );
+         gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
+         gmtl::LineSegf ray( gmtl::Point3f( x, y, z ), gmtl::Vec3f( 0.5f, 0.0f, 0.0f ) );
+         bool result = gmtl::intersectVolume( sphere, ray,  hits, t0, t1 );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 2 );
+         CPPUNIT_ASSERT( t0 == 0.0 );
+         CPPUNIT_ASSERT( t1 == 1.0 );
+      }
+      // origin to edge
+      {
+         gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
+         gmtl::LineSegf ray( gmtl::Point3f( x, y, z ), gmtl::Vec3f( 1.0f, 0.0f, 0.0f ) );
+         bool result = gmtl::intersectVolume( sphere, ray,  hits, t0, t1 );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 2 );
+         CPPUNIT_ASSERT( t0 == 0.0 );
+         CPPUNIT_ASSERT( t1 == 1.0 );
+      }
+      // origin to outside
+      {
+         gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
+         gmtl::LineSegf ray( gmtl::Point3f( x, y, z ), gmtl::Vec3f( 4.0f, 0.0f, 0.0f ) );
+         bool result = gmtl::intersectVolume( sphere, ray,  hits, t0, t1 );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 2 );
+         CPPUNIT_ASSERT( t0 == 0.0 );
+         CPPUNIT_ASSERT( t1 == 0.25 );
+      }
+      // interior point to origin
+      {
+         gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
+         gmtl::LineSegf ray( gmtl::Point3f( 0.5f+x, y, z ), gmtl::Vec3f( -0.5f, 0.0f, 0.0f ) );
+         bool result = gmtl::intersectVolume( sphere, ray,  hits, t0, t1 );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 2 );
+         CPPUNIT_ASSERT( t0 == 0.0 );
+         CPPUNIT_ASSERT( t1 == 1.0 );
+      }
+      // interior point to interior point
+      {
+         gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
+         gmtl::LineSegf ray( gmtl::Point3f( 0.5f+x, y, z ), gmtl::Vec3f( -1.0f, 0.0f, 0.0f ) );
+         bool result = gmtl::intersectVolume( sphere, ray,  hits, t0, t1 );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 2 );
+         CPPUNIT_ASSERT( t0 == 0.0 );
+         CPPUNIT_ASSERT( t1 == 1.0 );
+      }
+      // interior point to edge
+      {
+         gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
+         gmtl::LineSegf ray( gmtl::Point3f( x, 0.5f+y, z ), gmtl::Vec3f( 0.0f, -1.5f, 0.0f ) );
+         bool result = gmtl::intersectVolume( sphere, ray,  hits, t0, t1 );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 2 );
+         CPPUNIT_ASSERT( t0 == 0.0 );
+         CPPUNIT_ASSERT( t1 == 1.0 );
+      }
+      // interior point to outside
+      {
+         gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
+         gmtl::LineSegf ray( gmtl::Point3f( x, y, z+0.5f ), gmtl::Vec3f( 0.0f, 0.0f, -2.0f ) );
+         bool result = gmtl::intersectVolume( sphere, ray,  hits, t0, t1 );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 2 );
+         CPPUNIT_ASSERT( t0 == 0.0 );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( t1, 0.75f, 0.0001f ) );
+      }
+      // edge to origin
+      {
+         gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
+         gmtl::LineSegf ray( gmtl::Point3f( 1.0f+x, y, z ), gmtl::Vec3f( -1.0f, 0.0f, 0.0f ) );
+         bool result = gmtl::intersectVolume( sphere, ray,  hits, t0, t1 );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 2 );
+         CPPUNIT_ASSERT( t0 == 0.0 );
+         CPPUNIT_ASSERT( t1 == 1.0 );
+      }
+      // edge to interior point
+      {
+         gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
+         gmtl::LineSegf ray( gmtl::Point3f( 1.0f+x, y, z ), gmtl::Vec3f( -1.5f, 0.2f, 0.0f ) );
+         bool result = gmtl::intersectVolume( sphere, ray,  hits, t0, t1 );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 2 );
+         CPPUNIT_ASSERT( t0 == 0.0 );
+         CPPUNIT_ASSERT( t1 == 1.0 );
+      }
+      // edge to edge
+      {
+         gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
+         gmtl::LineSegf ray( gmtl::Point3f( 1.0f+x, y, z ), gmtl::Vec3f( -2.0f, 0.0f, 0.0f ) );
+         bool result = gmtl::intersectVolume( sphere, ray,  hits, t0, t1 );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 2 );
+         CPPUNIT_ASSERT( t0 == 0.0 );
+         CPPUNIT_ASSERT( t1 == 1.0 );
+      }
+      // edge through edge to outside
+      {
+         gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
+         gmtl::LineSegf ray( gmtl::Point3f( 1.0f+x, y, z ), gmtl::Vec3f( -4.0f, 0.0f, 0.0f ) );
+         bool result = gmtl::intersectVolume( sphere, ray,  hits, t0, t1 );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 2 );
+         CPPUNIT_ASSERT( t0 == 0.0 );
+         CPPUNIT_ASSERT( t1 == 0.5 );
+      }
+      // edge to outside
+      {
+         gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
+         gmtl::LineSegf ray( gmtl::Point3f( 1.0f+x, y, z ), gmtl::Vec3f( 45.0f, 0.0f, 0.0f ) );
+         bool result = gmtl::intersectVolume( sphere, ray,  hits, t0, t1 );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 2 );
+         CPPUNIT_ASSERT( t0 == 0.0 );
+         CPPUNIT_ASSERT( t1 == 0.0 );
+      }
+      // outside to origin
+      {
+         gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
+         gmtl::LineSegf ray( gmtl::Point3f( 2.0f+x, y, z ), gmtl::Vec3f( -2.0f, 0.0f, 0.0f ) );
+         bool result = gmtl::intersectVolume( sphere, ray,  hits, t0, t1 );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 2 );
+         CPPUNIT_ASSERT( t0 == 0.5 );
+         CPPUNIT_ASSERT( t1 == 1.0 );
+      }
+      // outside to interior point
+      {
+         gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
+         gmtl::LineSegf ray( gmtl::Point3f( x, 1.5f+y, z ), gmtl::Vec3f( 0.0f, -2.0f, 0.0f ) );
+         bool result = gmtl::intersectVolume( sphere, ray,  hits, t0, t1 );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 2 );
+         CPPUNIT_ASSERT( t0 == 0.25 );
+         CPPUNIT_ASSERT( t1 == 1.0 );
+      }
+      // outside to edge
+      {
+         gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
+         gmtl::LineSegf ray( gmtl::Point3f( x, y, 45.0f+z ), gmtl::Vec3f( 0.0f, 0.0f, -44.0f ) );
+         bool result = gmtl::intersectVolume( sphere, ray,  hits, t0, t1 );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 2 );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( t0, 1.0f, 0.00001f ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( t1, 1.0f, 0.00001f ) );
+      }
+      // outside through 1 edge (tangent surface) to outside
+      {
+         gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
+         gmtl::LineSegf ray( gmtl::Point3f( x, -2.0f+y, 1.0f+z ), gmtl::Vec3f( 0.0f, 4.0f, 0.0f ) );
+         bool result = gmtl::intersectVolume( sphere, ray,  hits, t0, t1 );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 1 );
+         CPPUNIT_ASSERT( t0 == 0.5f );
+      }
+      // outside through 2 edges to outside
+      {
+         gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
+         gmtl::LineSegf ray( gmtl::Point3f( x, -2.0f+y, z ), gmtl::Vec3f( 0.0f, 4.0f, 0.0f ) );
+         bool result = gmtl::intersectVolume( sphere, ray,  hits, t0, t1 );
+         CPPUNIT_ASSERT( result == true );
+         CPPUNIT_ASSERT( hits == 2 );
+         CPPUNIT_ASSERT( t0 == 0.25f );
+         CPPUNIT_ASSERT( t1 == 0.75f );
+      }
+      // outside to outside near miss
+      {
+         gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
+         gmtl::LineSegf ray( gmtl::Point3f( x, y-2.0f, z+1.0001f ), gmtl::Vec3f( 0.0f, 4.0f, 0.0f ) );
+         bool result = gmtl::intersectVolume( sphere, ray,  hits, t0, t1 );
+         CPPUNIT_ASSERT( result == false );
+      }
+
+      // outside to outside away from sphere
+      {
+         gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
+         gmtl::LineSegf ray( gmtl::Point3f( 2.0f+x, y, z ), gmtl::Vec3f( 2.0f, 0.0f, 0.0f ) );
+         bool result = gmtl::intersectVolume( sphere, ray,  hits, t0, t1 );
+         CPPUNIT_ASSERT( result == false );
+      }
+
+      // outside to outside towards sphere
+      {
+         gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
+         gmtl::LineSegf ray( gmtl::Point3f( 3.0f+x, y, z ), gmtl::Vec3f( -1.0f, 0.0f, 0.0f ) );
+         bool result = gmtl::intersectVolume( sphere, ray,  hits, t0, t1 );
+         CPPUNIT_ASSERT( result == false );
       }
    }
 
@@ -1010,5 +1273,41 @@ namespace gmtlTest
       for (float y = -20; y < 20; y+= 1.25f)
       for (float z = -20; z < 20; z+= 0.75f)
          SphereTest::testSphereIntersect( x*10.0f, y*10.0f, z*10.0f );
+
+      int hits;
+      float x = 0, y = 0, z = 0, t0, t1;
+      
+      // other misc tests...
+      for (float g = -2; g < 2; g+=0.001f)
+      {
+         // zero length ray inside sphere
+         gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
+         gmtl::Rayf ray( gmtl::Point3f( x, y, z ), gmtl::Vec3f( 0, g, 0 ) );
+         bool result = gmtl::intersect( sphere, ray, hits, t0, t1 );
+         CPPUNIT_ASSERT( result == true );
+      }
+
+      // some real world data sampled from a game while an actor was standing still inside a sphere.
+      {
+         gmtl::Spheref sphere( gmtl::Point3f( 0,0,0 ), 2 );
+         gmtl::LineSegf ray( gmtl::Point3f( -0.054072f,-0.22992f,-0.120733f ),
+         gmtl::Vec3f( 0, -.000000119209f, 0 ) );
+         bool result = gmtl::intersectVolume( sphere, ray, hits, t0, t1 );
+         CPPUNIT_ASSERT( result == true );
+      }  
+      
+      {
+         gmtl::Spheref sphere( gmtl::Point3f( 0,0,0 ), 2 );
+         gmtl::LineSegf ray( gmtl::Point3f( -0.143958f,-0.229931f,-0.013235f ),
+         gmtl::Vec3f( 0, .000000119209f, 0 ) );
+         bool result = gmtl::intersectVolume( sphere, ray, hits, t0, t1 );
+         CPPUNIT_ASSERT( result == true );
+      }  
+      {
+         gmtl::Spheref sphere( gmtl::Point3f( 0,0,0 ), 2 );
+         gmtl::LineSegf ray( gmtl::Point3f( 0, 0, 0 ), gmtl::Vec3f( 0, 0, 0.105271 ) );
+         bool result = gmtl::intersectVolume( sphere, ray, hits, t0, t1 );
+         CPPUNIT_ASSERT( result == true );
+      }  
    }
 }

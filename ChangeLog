@@ -1,8 +1,8 @@
 DATE       AUTHOR       CHANGE
 ---------- ------------ -------------------------------------------------------
-2003-09-06 subatomic    added fix for degenerate case.  intersect of
-                        sphere and ray or seg now passes when ray or 
-                        seg length is 0, no interface changes.
+2003-09-07 subatomic    added new intersectVolume for sphere/linetype
+                        this is separate from intersect, which only 
+                        intersects with the surface of the sphere.
 2003-05-15 subatomic    added lineseg/plane version of intersect. 
                         fixed ray/plane version of intersect
 2003-05-13 subatomic    added reflect() for point about a plane
