@@ -2,7 +2,7 @@ import os
 pj = os.path.join
 
 Import('baseEnv PREFIX')
-Import('GetPlatform SetupCppUnit')
+Import('GetPlatform ApplyCppUnitOptions')
 
 sources = Split("""
    runner.cpp
@@ -15,7 +15,7 @@ sources.extend(testcases_sources)
 
 # Setup the runtests executable target
 env = baseEnv.Copy()
-SetupCppUnit(env)
+ApplyCppUnitOptions(env)
 env.Append(CPPPATH = Split('#Test/TestSuite #'))
 
 # Win32 doesn't have libdl

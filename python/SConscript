@@ -3,7 +3,17 @@ import os
 pj = os.path.join
 
 Import('baseEnv pkg')
-Import('SetupPython SetupBoostPython')
+Import('ApplyBoostOptions ApplyPythonOptions')
+
+
+subdirs = Split("""
+   pyste
+   src
+   test
+""")
+
+for s in subdirs:
+   SConscript(dirs = s)
 
 sources = glob.glob(pj(str(Dir('#python/src/gmtl')), '*.cpp'))
 sources = map(lambda n: pj('src', 'gmtl', os.path.basename(n)), sources)
@@ -11,7 +21,7 @@ sources = map(lambda n: pj('src', 'gmtl', os.path.basename(n)), sources)
 
 # Define the Python module
 env = baseEnv.Copy()
+ApplyBoostOptions(env)
+ApplyPythonOptions(env)
 env.Append(CPPPATH   = ['#', '#python/src'])
-SetupPython(env, 2.2)
-SetupBoostPython(env)
 env.SharedLibrary('gmtl', sources, SHLIBPREFIX='')
