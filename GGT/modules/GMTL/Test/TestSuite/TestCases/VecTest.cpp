@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.cpp,v $
- * Date modified: $Date: 2002-04-11 00:02:10 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-06-13 14:03:34 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -126,7 +126,8 @@ namespace gmtlTest
       CPPUNIT_ASSERT( test_vec2[0] == 1.0f);
       CPPUNIT_ASSERT( test_vec2[1] == 2.0f);
 
-      gmtl::Vec<float, 1> test_vec1(1.0f);
+      gmtl::Vec<float, 1> test_vec1;
+      test_vec1.set(1.0f);
       CPPUNIT_ASSERT( test_vec1[0] == 1.0f);
 
       // Test constructor
@@ -140,7 +141,8 @@ namespace gmtlTest
          gmtl::Vec<float, 4> test_vec4(1.0f, 2.0f, 3.0f, 4.0f);
          gmtl::Vec<float, 3> test_vec3(1.0f, 2.0f, 3.0f);
          gmtl::Vec<float, 2> test_vec2(1.0f, 2.0f);
-         gmtl::Vec<float, 1> test_vec1(1.0f);
+         gmtl::Vec<float, 1> test_vec1;
+         test_vec1.set(1.0f);
 
          use_value = use_value + test_vec4[3] + test_vec3[2] + test_vec2[1] + test_vec1[0];
       }

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PointTest.cpp,v $
- * Date modified: $Date: 2002-03-18 22:24:17 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-06-13 14:03:34 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -130,7 +130,8 @@ namespace gmtlTest
       CPPUNIT_ASSERT( test_point2[0] == 1.0f);
       CPPUNIT_ASSERT( test_point2[1] == 2.0f);
 
-      gmtl::Point<float, 1> test_point1(1.0f);
+      gmtl::Point<float, 1> test_point1;
+      test_point1.set(1.0f);
       CPPUNIT_ASSERT( test_point1[0] == 1.0f);
 
       // Test constructor
@@ -144,7 +145,8 @@ namespace gmtlTest
          gmtl::Point<float, 4> test_point4(1.0f, 2.0f, 3.0f, 4.0f);
          gmtl::Point<float, 3> test_point3(1.0f, 2.0f, 3.0f);
          gmtl::Point<float, 2> test_point2(1.0f, 2.0f);
-         gmtl::Point<float, 1> test_point1(1.0f);
+         gmtl::Point<float, 1> test_point1;
+         test_point1.set(1.0f);
 
          use_value = use_value + test_point4[3] + test_point3[2] + test_point2[1] + test_point1[0];
       }

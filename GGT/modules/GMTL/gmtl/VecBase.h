@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecBase.h,v $
- * Date modified: $Date: 2002-06-13 13:55:45 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2002-06-13 14:03:34 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -145,13 +145,6 @@ VecBase<DATA_TYPE,SIZE>::VecBase(const VecBase<DATA_TYPE, SIZE>& rVec)
 {
    for(unsigned i=0;i<SIZE;++i)
       mData[i] = rVec.mData[i];
-}
-
-template<class DATA_TYPE, unsigned SIZE>
-VecBase<DATA_TYPE,SIZE>::VecBase(const DATA_TYPE& val0)
-{
-   gmtlASSERT( SIZE >= 1 && "out of bounds element access in VecBase" );
-   mData[0] = val0;
 }
 
 template<class DATA_TYPE, unsigned SIZE>
