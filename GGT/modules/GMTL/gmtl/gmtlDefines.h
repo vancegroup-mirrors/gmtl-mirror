@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtlDefines.h,v $
- * Date modified: $Date: 2002-02-24 00:29:27 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-05-17 20:01:30 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -34,6 +34,8 @@
  ************************************************************ ggt-cpr end */
 #ifndef _GMTL_DEFINES_H
 #define _GMTL_DEFINES_H
+
+/** @defgroup Types Graphics Math Abstract Data Types: Matrix, Vec, Quat, Coord, Sphere */
 
 namespace gmtl
 {

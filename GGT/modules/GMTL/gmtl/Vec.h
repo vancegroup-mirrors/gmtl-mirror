@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Vec.h,v $
- * Date modified: $Date: 2002-04-25 23:43:23 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-05-17 20:01:30 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -47,6 +47,7 @@ namespace gmtl
  *
  * @param DATA_TYPE     the datatype to use for the components
  * @param SIZE          the number of components this VecBase has
+ * @addtogroup Types
  */
 template<class DATA_TYPE, unsigned SIZE>
 class Vec : public VecBase<DATA_TYPE, SIZE>
