@@ -7,8 +7,8 @@
 #
 # -----------------------------------------------------------------
 # File:          $RCSfile: Makefile.in,v $
-# Date modified: $Date: 2002-04-24 16:21:48 $
-# Version:       $Revision: 1.5 $
+# Date modified: $Date: 2002-05-04 15:37:30 $
+# Version:       $Revision: 1.6 $
 # -----------------------------------------------------------------
 #
 # ********************************************************** ggt-head end
@@ -56,10 +56,17 @@ MKINSTALLDIRS=	$(top_srcdir)/mkinstalldirs
 all buildworld debug optim profiled dbg dbg-dso opt opt-dso prof prof-dso:
 	@$(MAKE) devinst
 
+# NOTE: The installation of gmtl-config into $(instlinks)/bin is pretty much
+# a hack.
 devinst links:
 	@echo "------------------------------------------------"
 	@echo "Setting up developer installation"
 	@echo "------------------------------------------------"
+	$(SHELL) $(MKINSTALLDIRS) $(instlinks)/bin
+	cp $(topdir)/gmtl-config $(instlinks)/bin
+	cd $(instlinks)/bin &&						\
+          sed -e 's/^#%{/use_base_dir=yes/' gmtl-config > gmtl-config.tmp && \
+          mv gmtl-config.tmp gmtl-config && chmod 755 gmtl-config
 	$(SHELL) $(MKINSTALLDIRS) $(instlinks)/include
 	$(MAKE) prefix=$(instlinks) install
 	@echo "\n\n"
