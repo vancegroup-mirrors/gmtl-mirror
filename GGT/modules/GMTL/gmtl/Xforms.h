@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Xforms.h,v $
- * Date modified: $Date: 2002-03-10 19:04:59 $
- * Version:       $Revision: 1.17 $
+ * Date modified: $Date: 2002-03-11 20:31:32 $
+ * Version:       $Revision: 1.18 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -111,8 +111,8 @@ namespace gmtl
       // reset vec to zero...
       result = Vec<DATA_TYPE, COLS>(); 
          
-      for (int iRow = 0; iRow < ROWS; ++iRow)
-      for (int iCol = 0; iCol < COLS; ++iCol)
+      for (unsigned iRow = 0; iRow < ROWS; ++iRow)
+      for (unsigned iCol = 0; iCol < COLS; ++iCol)
          result[iRow] += matrix( iRow, iCol ) * vector[iCol];
       
       return result;
@@ -150,7 +150,7 @@ namespace gmtl
       
       // copy the point to the correct size.
       Point<DATA_TYPE, COLS> temp_vector, temp_result;
-      for (int x = 0; x < VEC_SIZE; ++x)
+      for (unsigned x = 0; x < VEC_SIZE; ++x)
          temp_vector[x] = vector[x];
       temp_vector[COLS-1] = (DATA_TYPE)0.0; // by definition of a vector, set the last unspecified elt to 0.0
 
@@ -163,12 +163,12 @@ namespace gmtl
       if (Math::isEqual( temp_result[VEC_SIZE], (DATA_TYPE)0, (DATA_TYPE)0.0001 ) == false)
       {
          DATA_TYPE w_coord_div = DATA_TYPE( 1.0 ) / temp_result[VEC_SIZE];
-         for (int x = 0; x < VEC_SIZE; ++x)
+         for (unsigned x = 0; x < VEC_SIZE; ++x)
             result[x] = temp_result[x] * w_coord_div;
       }
       else
       {
-         for (int x = 0; x < VEC_SIZE; ++x)
+         for (unsigned x = 0; x < VEC_SIZE; ++x)
             result[x] = temp_result[x];
       }
       
@@ -203,8 +203,8 @@ namespace gmtl
       // reset point to zero...
       result = Point<DATA_TYPE, COLS>();
       
-      for (int iRow = 0; iRow < ROWS; ++iRow)
-      for (int iCol = 0; iCol < COLS; ++iCol)
+      for (unsigned iRow = 0; iRow < ROWS; ++iRow)
+      for (unsigned iCol = 0; iCol < COLS; ++iCol)
          result[iRow] += matrix( iRow, iCol ) * point[iCol];
       
       return result;
@@ -238,7 +238,7 @@ namespace gmtl
 
       // copy the point to the correct size.
       Point<DATA_TYPE, PNT_SIZE+1> temp_point, temp_result;
-      for (int x = 0; x < PNT_SIZE; ++x)
+      for (unsigned x = 0; x < PNT_SIZE; ++x)
          temp_point[x] = point[x];
       temp_point[PNT_SIZE] = (DATA_TYPE)1.0; // by definition of a point, set the last unspecified elt to 1.0
 
@@ -251,12 +251,12 @@ namespace gmtl
       if (Math::isEqual( temp_result[PNT_SIZE], (DATA_TYPE)0, (DATA_TYPE)0.0001 ) == false)
       {
          DATA_TYPE w_coord_div = DATA_TYPE( 1.0 ) / temp_result[PNT_SIZE];
-         for (int x = 0; x < PNT_SIZE; ++x)
+         for (unsigned x = 0; x < PNT_SIZE; ++x)
             result[x] = temp_result[x] * w_coord_div;
       }
       else
       {
-         for (int x = 0; x < PNT_SIZE; ++x)
+         for (unsigned x = 0; x < PNT_SIZE; ++x)
             result[x] = temp_result[x];
       }
             
