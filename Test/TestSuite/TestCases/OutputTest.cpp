@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: OutputTest.cpp,v $
- * Date modified: $Date: 2002-03-20 19:49:12 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-03-20 20:06:35 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -124,10 +124,21 @@ namespace gmtlTest
    {
       std::stringstream out1;
       gmtl::Plane<int> p1(
-            gmtl::Point<int, 3>(1, 2, 3),
+            gmtl::Vec<int, 3>(1, 2, 3),
             4
       );
       out1 << p1;
+      CPPUNIT_ASSERT( out1.str() == "(1, 2, 3), 4" );
+   }
+
+   void OutputTest::testSphere()
+   {
+      std::stringstream out1;
+      gmtl::Sphere<int> s1(
+            gmtl::Point<int, 3>(1, 2, 3),
+            4
+      );
+      out1 << s1;
       CPPUNIT_ASSERT( out1.str() == "(1, 2, 3), 4" );
    }
 }

@@ -1,5 +1,6 @@
 DATE       AUTHOR       CHANGE
 ---------- --------     -----------------------------------------------------------
+2002-03-20 nonchocoboy  Added overloaded operator<< functions.
 2002-03-15 allenb       Added makeRot<mat>(rad,axis) function
 2002-03-15 allenb       Added makeTrans<mat>(trans) function.
 2002-03-15 allenb       Added makeRot<mat>(val,val,val,method) function.
