@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: EulerAngle.h,v $
- * Date modified: $Date: 2002-06-12 19:51:57 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2002-06-13 20:44:40 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -74,8 +74,8 @@ public:
    /** default constructor. initializes to identity rotation (no rotation). */
    EulerAngle()
    {
-      assert( ROTATION_ORDER::IS_ROTORDER == 1 && 
-            "you must specify a RotatoinOrder derived type for the rotationorder in euler angle." );
+      gmtlASSERT( ROTATION_ORDER::IS_ROTORDER == 1 && 
+            "you must specify a RotationOrder derived type for the rotationorder in euler angle." );
       mData[0] = DATA_TYPE( 0 );
       mData[1] = DATA_TYPE( 0 );
       mData[2] = DATA_TYPE( 0 );
