@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatOps.h,v $
- * Date modified: $Date: 2002-03-20 21:25:23 $
- * Version:       $Revision: 1.11 $
+ * Date modified: $Date: 2002-03-21 16:05:51 $
+ * Version:       $Revision: 1.12 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -443,10 +443,10 @@ namespace gmtl
       Quat<DATA_TYPE> q;
       if (cosom < (DATA_TYPE)0.0)
       {
-         q.vec[0] = -to.vec[0];   // Reverse all signs
-         q.vec[1] = -to.vec[1];
-         q.vec[2] = -to.vec[2];
-         q.vec[3] = -to.vec[3];
+         q[0] = -to[0];   // Reverse all signs
+         q[1] = -to[1];
+         q[2] = -to[2];
+         q[3] = -to[3];
       }
       else
       {
