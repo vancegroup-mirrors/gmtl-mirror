@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-Generate.h,v $
- * Date modified: $Date: 2003-09-24 05:29:11 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2004-09-16 21:22:09 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -124,8 +124,10 @@ namespace gmtl
    template gmtl::Matrix44d& setPerspective(gmtl::Matrix44d&, double,
                                             double, double, double);
 
-   template gmtl::Matrix44f& setTrans(gmtl::Matrix44f&, const gmtl::Vec3f&);
-   template gmtl::Matrix44d& setTrans(gmtl::Matrix44d&, const gmtl::Vec3d&);
+   template gmtl::Matrix44f& setTrans(gmtl::Matrix44f&,
+                                      const gmtl::VecBase<float, 3>&);
+   template gmtl::Matrix44d& setTrans(gmtl::Matrix44d&,
+                                      const gmtl::VecBase<double, 3>&);
 
    template gmtl::Matrix44f& setScale(gmtl::Matrix44f&, const gmtl::Vec3f&);
    template gmtl::Matrix44d& setScale(gmtl::Matrix44d&, const gmtl::Vec3d&);

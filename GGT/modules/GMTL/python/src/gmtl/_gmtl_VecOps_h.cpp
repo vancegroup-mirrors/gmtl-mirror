@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _gmtl_VecOps_h.cpp,v $
- * Date modified: $Date: 2004-05-25 17:00:23 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2004-09-16 21:22:10 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -58,10 +58,10 @@ void _Export_gmtl_VecOps_h()
     def("cross", (gmtl::Vec<int,3> & (*)(gmtl::Vec<int,3> &, const gmtl::Vec<int,3> &, const gmtl::Vec<int,3> &))&gmtl::cross, return_internal_reference< 1 >());
     def("cross", (gmtl::Vec<float,3> & (*)(gmtl::Vec<float,3> &, const gmtl::Vec<float,3> &, const gmtl::Vec<float,3> &))&gmtl::cross, return_internal_reference< 1 >());
     def("cross", (gmtl::Vec<double,3> & (*)(gmtl::Vec<double,3> &, const gmtl::Vec<double,3> &, const gmtl::Vec<double,3> &))&gmtl::cross, return_internal_reference< 1 >());
-    def("dot", (double (*)(const gmtl::Vec<double,4> &, const gmtl::Vec<double,4> &))&gmtl::dot);
-    def("dot", (float (*)(const gmtl::Vec<float,3> &, const gmtl::Vec<float,3> &))&gmtl::dot);
-    def("dot", (double (*)(const gmtl::Vec<double,3> &, const gmtl::Vec<double,3> &))&gmtl::dot);
-    def("dot", (float (*)(const gmtl::Vec<float,4> &, const gmtl::Vec<float,4> &))&gmtl::dot);
+    def("dot", (double (*)(const gmtl::VecBase<double,4> &, const gmtl::VecBase<double,4> &))&gmtl::dot);
+    def("dot", (float (*)(const gmtl::VecBase<float,3> &, const gmtl::VecBase<float,3> &))&gmtl::dot);
+    def("dot", (double (*)(const gmtl::VecBase<double,3> &, const gmtl::VecBase<double,3> &))&gmtl::dot);
+    def("dot", (float (*)(const gmtl::VecBase<float,4> &, const gmtl::VecBase<float,4> &))&gmtl::dot);
     def("isNormalized", (bool (*)(const gmtl::Vec<float,3> &, const float))&gmtl::isNormalized, isNormalized_overloads_1_2());
     def("isNormalized", (bool (*)(const gmtl::Vec<float,4> &, const float))&gmtl::isNormalized, isNormalized_overloads_1_2());
     def("length", (float (*)(const gmtl::Vec<float,4> &))&gmtl::length);
