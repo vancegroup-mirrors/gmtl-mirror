@@ -2,7 +2,7 @@ gfxn3/Debug/CoordCompareTest/isEqual(...)                          2.15404
 gfxn3/Debug/CoordCompareTest/operator!=                            1.4234
 gfxn3/Debug/CoordCompareTest/operator==                            1.30259
 gfxn3/Debug/CoordGenTest/makeCoord(mat,XYZ)                        1.00636
-gfxn3/Debug/CoordGenTest/makeCoord<33f>(mat,XYZ)                   1.11052
+gfxn3/Debug/CoordGenTest/makeCoord<33f>(mat,XYZ)                   1.01888
 gfxn3/Debug/CoordGenTest/makeMatrix<44f>(q1,XYZ)                   1.77696
 gfxn3/Debug/CoordGenTest/setCoord(coord,mat,XYZ)                   0.70776
 gfxn3/Debug/CoordTest/CopyConstructor                              0.163675
@@ -156,7 +156,7 @@ gfxn3/Debug/QuatTest/get()                                         0.09124
 gfxn3/Debug/QuatTest/getData()                                     0.02676
 gfxn3/Debug/QuatTest/operator=()                                   0.0958075
 gfxn3/Debug/QuatTest/operator[]()                                  0.128617
-gfxn3/Debug/QuatTest/set()                                         0.0838875
+gfxn3/Debug/QuatTest/set()                                         0.0772375
 gfxn3/Debug/SphereTest/ConstructorsOverhead                        0.134733
 gfxn3/Debug/SphereTest/CopyConstructOverhead                       0.0935075
 gfxn3/Debug/SphereTest/EqualityCompareOverhead                     0.162582
@@ -195,7 +195,7 @@ gfxn3/Debug/VecGenTest/makeVec(quatd)                              0.18136
 gfxn3/Debug/VecGenTest/makeVec(quatf)                              0.1632
 gfxn3/Debug/VecTest/(const_vec*scalar):perf                        0.5325
 gfxn3/Debug/VecTest/(vec*cross(vec,vec)):perf                      0.7929
-gfxn3/Debug/VecTest/(vec*dot(const_vec,vec)):perf                  0.931
+gfxn3/Debug/VecTest/(vec*dot(const_vec,vec)):perf                  0.8565
 gfxn3/Debug/VecTest/(vec*scalar)+(vec*scalar):perf                 1.2706
 gfxn3/Debug/VecTest/(vec-const_vec)+(vec+const_vec)-(const_vec*scalar):perf 1.8764
 gfxn3/Debug/VecTest/ConstructorsOverhead                           0.217975
@@ -318,7 +318,7 @@ gfxn3/Debug/XformTest/xform(vec3,mat44,vec3)d                      1.5322
 gfxn3/Debug/XformTest/xform(vec3,mat44,vec3)f                      1.475
 gfxn3/Debug/XformTest/xform(vec3,mat44,vec3)i                      1.46728
 gfxn3/Debug/XformTest/xform(vec3,mat44,vec3)l                      1.45412
-gfxn3/Debug/XformTest/xform(vec3,mat44,vec3)s                      1.55168
+gfxn3/Debug/XformTest/xform(vec3,mat44,vec3)s                      1.43348
 gfxn3/Debug/XformTest/xform(vec4,mat34,vec4)d                      0.82468
 gfxn3/Debug/XformTest/xform(vec4,mat34,vec4)f                      0.86224
 gfxn3/Debug/XformTest/xform(vec4,mat44,vec4)d                      1.06148
