@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Math.h,v $
- * Date modified: $Date: 2002-03-15 15:28:49 $
- * Version:       $Revision: 1.17 $
+ * Date modified: $Date: 2002-03-15 19:25:50 $
+ * Version:       $Revision: 1.18 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -43,7 +43,9 @@
 namespace gmtl
 {
 
-/** Rotation order enums */
+/** Rotation order enums
+* @todo Use tag dispatching here to optimize functions better.
+*/
 enum RotationOrder
 {
    XYZ, ZYX, ZXY
