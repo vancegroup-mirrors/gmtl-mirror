@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: OptTest.h,v $
- * Date modified: $Date: 2002-02-22 20:12:58 $
- * Version:       $Revision: 1.12 $
+ * Date modified: $Date: 2002-03-10 20:39:26 $
+ * Version:       $Revision: 1.13 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -160,12 +160,22 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<OptTest>("testLoopUnrolling", &OptTest::testLoopUnrolling));
 
       // passing primitives
+// work around buggy VC7
+#ifndef _WIN32
       test_suite->addTest( new CppUnit::TestCaller<OptTest>("testPassPrimitiveTypes<char>", &OptTest::testPassPrimitiveTypes<char>));
       test_suite->addTest( new CppUnit::TestCaller<OptTest>("testPassPrimitiveTypes<short>", &OptTest::testPassPrimitiveTypes<short>));
       test_suite->addTest( new CppUnit::TestCaller<OptTest>("testPassPrimitiveTypes<int>", &OptTest::testPassPrimitiveTypes<int>));
       test_suite->addTest( new CppUnit::TestCaller<OptTest>("testPassPrimitiveTypes<long>", &OptTest::testPassPrimitiveTypes<long>));
       test_suite->addTest( new CppUnit::TestCaller<OptTest>("testPassPrimitiveTypes<float>", &OptTest::testPassPrimitiveTypes<float>));
       test_suite->addTest( new CppUnit::TestCaller<OptTest>("testPassPrimitiveTypes<double>", &OptTest::testPassPrimitiveTypes<double>));
+#else
+      test_suite->addTest( new CppUnit::TestCaller<OptTest>("testPassPrimitiveTypes<char>", OptTest::testPassPrimitiveTypes<char>));
+      test_suite->addTest( new CppUnit::TestCaller<OptTest>("testPassPrimitiveTypes<short>", OptTest::testPassPrimitiveTypes<short>));
+      test_suite->addTest( new CppUnit::TestCaller<OptTest>("testPassPrimitiveTypes<int>", OptTest::testPassPrimitiveTypes<int>));
+      test_suite->addTest( new CppUnit::TestCaller<OptTest>("testPassPrimitiveTypes<long>", OptTest::testPassPrimitiveTypes<long>));
+      test_suite->addTest( new CppUnit::TestCaller<OptTest>("testPassPrimitiveTypes<float>", OptTest::testPassPrimitiveTypes<float>));
+      test_suite->addTest( new CppUnit::TestCaller<OptTest>("testPassPrimitiveTypes<double>", OptTest::testPassPrimitiveTypes<double>));
+#endif // ! _WIN32
       return test_suite;
    }
 
