@@ -1,5 +1,6 @@
 DATE       AUTHOR       CHANGE
 ---------- --------     --------------------------------------------------------
+2002-11-26 nonchocoboy  Added ability to make a AABox from a Sphere.
 2002-11-26 nonchocoboy  Added AABox-Sphere intersection test.
 2002-11-26 nonchocoboy  Added Sphere-Sphere sweep test.
 2002-11-25 nonchocoboy  Added a quadratic formula solver to the Math lib.

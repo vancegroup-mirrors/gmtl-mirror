@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Containment.h,v $
- * Date modified: $Date: 2002-11-02 22:40:07 $
- * Version:       $Revision: 1.12 $
+ * Date modified: $Date: 2002-11-26 07:41:17 $
+ * Version:       $Revision: 1.13 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -455,6 +455,30 @@ void extendVolume(AABox<DATA_TYPE>& container,
    // Just extend by the corners of the box
    extendVolume(container, box.getMin());
    extendVolume(container, box.getMax());
+}
+
+/**
+ * Creates an AABox that tightly encloses the given Sphere.
+ *
+ * @param box     set to the box
+ */
+template< class DATA_TYPE >
+void makeVolume(AABox<DATA_TYPE>& box, const Sphere<DATA_TYPE>& sph)
+{
+   const gmtl::Point<DATA_TYPE, 3>& center = sph.getCenter();
+   const DATA_TYPE& radius = sph.getRadius();
+
+   // Calculate the min and max points for the box
+   gmtl::Point<DATA_TYPE, 3> min_pt(center[0] - radius,
+                                    center[1] - radius,
+                                    center[2] - radius);
+   gmtl::Point<DATA_TYPE, 3> max_pt(center[0] + radius,
+                                    center[1] + radius,
+                                    center[2] + radius);
+
+   box.setMin(min_pt);
+   box.setMax(max_pt);
+   box.setEmpty(radius == DATA_TYPE(0));
 }
 
 /*

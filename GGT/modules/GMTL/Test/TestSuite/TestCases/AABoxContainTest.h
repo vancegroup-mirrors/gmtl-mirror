@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AABoxContainTest.h,v $
- * Date modified: $Date: 2002-06-24 05:48:24 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-11-26 07:41:17 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -57,6 +57,7 @@ public:
    void testIsInVolumeAABox();
    void testExtendVolumePt();
    void testExtendVolumeAABox();
+   void testMakeVolumeSphere();
 
    //---------------------------------------------------------------------------
    // Performance tests
@@ -74,6 +75,7 @@ public:
       ADD_TEST(IsInVolumeAABox);
       ADD_TEST(ExtendVolumePt);
       ADD_TEST(ExtendVolumeAABox);
+      ADD_TEST(MakeVolumeSphere);
 #undef ADD_TEST
       return test_suite;
    }
