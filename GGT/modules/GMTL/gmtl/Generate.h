@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-02-20 17:22:22 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2002-02-20 21:39:40 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -67,7 +67,7 @@ namespace gmtl
       /* @todo make this a compile time assert... */
       // if n x n   then (homogeneous case) vecsize == rows-1 or (scale component case) vecsize == rows 
       // if n x n+1 then (homogeneous case) vecsize == rows   or (scale component case) vecsize == rows+1
-      assert( ((ROWS == COLS && (SIZE == (ROWS-1) || SIZE == ROWS)) || 
+      ggtASSERT( ((ROWS == COLS && (SIZE == (ROWS-1) || SIZE == ROWS)) || 
                (COLS == (ROWS+1) && (SIZE == ROWS || SIZE == (ROWS+1)))) && 
               "preconditions not met for vector size in call to makeTrans.  Read your documentation." );
       result = Matrix<DATA_TYPE, ROWS, COLS>(); // set to ident - this could be faster...
@@ -93,7 +93,7 @@ namespace gmtl
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS, unsigned SIZE >
    inline Matrix<DATA_TYPE, ROWS, COLS>& makeScale( Matrix<DATA_TYPE, ROWS, COLS>& result, const Vec<DATA_TYPE, SIZE>& scale )
    {
-      assert( ((SIZE == (ROWS-1) && SIZE == (COLS-1)) || (SIZE == (ROWS-1) && SIZE == COLS) || (SIZE == (COLS-1) && SIZE == ROWS)) && "the scale params must fit within the matrix, check your sizes." );
+      ggtASSERT( ((SIZE == (ROWS-1) && SIZE == (COLS-1)) || (SIZE == (ROWS-1) && SIZE == COLS) || (SIZE == (COLS-1) && SIZE == ROWS)) && "the scale params must fit within the matrix, check your sizes." );
       result = Matrix<DATA_TYPE, ROWS, COLS>(); // set to ident - this could be faster...
       for (int x = 0; x < SIZE; ++x)
          result( x, x ) = scale[x];
@@ -119,8 +119,8 @@ namespace gmtl
    inline Matrix<DATA_TYPE, ROWS, COLS>& makeRot( Matrix<DATA_TYPE, ROWS, COLS>& result, const DATA_TYPE radians, const Vec<DATA_TYPE, 3>& vec )
    {
       /* @todo make this a compile time assert... */
-      assert( ROWS >= 3 && COLS >= 3 && ROWS <= 4 && COLS <= 4 && "this func is undefined for Matrix smaller than 3x3 or bigger than 4x4" );
-      assert( Math::isEqual( lengthSquared( vec ), (DATA_TYPE)1.0, (DATA_TYPE)0.001 ) && "you must pass in a normalized vector to makeRot( rad, vec )" );
+      ggtASSERT( ROWS >= 3 && COLS >= 3 && ROWS <= 4 && COLS <= 4 && "this func is undefined for Matrix smaller than 3x3 or bigger than 4x4" );
+      ggtASSERT( Math::isEqual( lengthSquared( vec ), (DATA_TYPE)1.0, (DATA_TYPE)0.001 ) && "you must pass in a normalized vector to makeRot( rad, vec )" );
       
       // GGI: pg 466
       DATA_TYPE s = Math::sin( radians );
@@ -185,7 +185,7 @@ namespace gmtl
                                                  Type2Type<Matrix<DATA_TYPE, ROWS, COLS> > t = Type2Type<Matrix<DATA_TYPE, ROWS, COLS> >() )
    {
       // @todo make this a compile time assert...
-      assert( ROWS >= 3 && COLS >= 3 && ROWS <= 4 && COLS <= 4 && "this is undefined for Matrix smaller than 3x3 or bigger than 4x4" );
+      ggtASSERT( ROWS >= 3 && COLS >= 3 && ROWS <= 4 && COLS <= 4 && "this is undefined for Matrix smaller than 3x3 or bigger than 4x4" );
 
       // this might be faster if put into the switch statement... (testme)
       const float xRot = (order == XYZ) ? param0 : ((order == ZXY) ? param1 : param2);
@@ -218,7 +218,7 @@ namespace gmtl
          result( 2, 0 ) = -cx*sy;           result( 2, 1 ) = sx;     result( 2, 2 ) = cx*cy;
          break;
       default:
-         assert( false && "unknown rotation order passed to makeRot" );
+         ggtASSERT( false && "unknown rotation order passed to makeRot" );
          break;
       }
          
@@ -266,7 +266,7 @@ namespace gmtl
          const Vec<DATA_TYPE, 3>& xSrcAxis = Vec<DATA_TYPE, 3>(1,0,0), const Vec<DATA_TYPE, 3>& ySrcAxis = Vec<DATA_TYPE, 3>(0,1,0), const Vec<DATA_TYPE, 3>& zSrcAxis = Vec<DATA_TYPE, 3>(0,0,1) )
    {
       // @todo make this a compile time assert...
-      assert( ROWS >= 3 && COLS >= 3 && ROWS <= 4 && COLS <= 4 && "this is undefined for Matrix smaller than 3x3 or bigger than 4x4" );
+      ggtASSERT( ROWS >= 3 && COLS >= 3 && ROWS <= 4 && COLS <= 4 && "this is undefined for Matrix smaller than 3x3 or bigger than 4x4" );
 
       DATA_TYPE Xa, Xb, Xy;    // Direction cosines of the secondary x-axis
       DATA_TYPE Ya, Yb, Yy;    // Direction cosines of the secondary y-axis
@@ -313,7 +313,7 @@ namespace gmtl
       return makeAxes( temporary, xDestAxis, yDestAxis, zDestAxis );
    }
    */
-         
+
    /** make the matrix given the raw coordinate axes.
     * @post this function only produces 3x3, 3x4, 4x3, and 4x4 matrices, and is undefined otherwise
     * @post these axes are copied direct to the 3x3 in the matrix
@@ -322,7 +322,7 @@ namespace gmtl
    inline Matrix<DATA_TYPE, ROWS, COLS>& makeAxes( Matrix<DATA_TYPE, ROWS, COLS>& result, const Vec<DATA_TYPE, 3>& xAxis, const Vec<DATA_TYPE, 3>& yAxis, const Vec<DATA_TYPE, 3>& zAxis )
    {
       // @todo make this a compile time assert...
-      assert( ROWS >= 3 && COLS >= 3 && ROWS <= 4 && COLS <= 4 && "this is undefined for Matrix smaller than 3x3 or bigger than 4x4" );
+      ggtASSERT( ROWS >= 3 && COLS >= 3 && ROWS <= 4 && COLS <= 4 && "this is undefined for Matrix smaller than 3x3 or bigger than 4x4" );
 
       result( 0, 0 ) = xAxis[0];
       result( 1, 0 ) = xAxis[1];
