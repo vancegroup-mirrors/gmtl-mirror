@@ -1,2 +1,2 @@
 #!/bin/sh
-./cvs-gather.pl --limit=JugglerBaseStuff --limit=Doozer --limit=Boost_cppcompat
+./cvs-gather.pl --target=JugglerBaseStuff --target=Doozer --target=Boost_cppcompat
