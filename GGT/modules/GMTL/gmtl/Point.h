@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Point.h,v $
- * Date modified: $Date: 2002-06-13 14:16:06 $
- * Version:       $Revision: 1.10 $
+ * Date modified: $Date: 2002-06-13 14:19:04 $
+ * Version:       $Revision: 1.11 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -87,21 +87,21 @@ public:
    : BaseType(val0, val1)
    {
       // @todo need compile time assert
-      gmtlASSERT( SIZE = 2 && "out of bounds element access in Point" );
+      gmtlASSERT( SIZE == 2 && "out of bounds element access in Point" );
    }
 
    Point(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2)
    : BaseType(val0, val1, val2)
    {
       // @todo need compile time assert
-      gmtlASSERT( SIZE = 3 && "out of bounds element access in Point" );
+      gmtlASSERT( SIZE == 3 && "out of bounds element access in Point" );
    }
 
    Point(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2,const DATA_TYPE& val3)
    : BaseType(val0, val1, val2, val3)
    {
       // @todo need compile time assert
-      gmtlASSERT( SIZE = 4 && "out of bounds element access in Point" );
+      gmtlASSERT( SIZE == 4 && "out of bounds element access in Point" );
    }
    //@}
 
