@@ -44,7 +44,7 @@ def GetPlatform():
    elif string.find(sys.platform, 'darwin') != -1:
       return 'darwin'
    elif string.find(sys.platform, 'cygwin') != -1:
-      return 'win32'
+      return 'cygwin'
    elif string.find(os.name, 'win32') != -1:
       return 'win32'
    else:
@@ -105,6 +105,30 @@ def BuildLinuxEnvironment():
       LIBPATH     = [],
       LIBS        = [],
    )
+
+def BuildCygwinEnvironment():
+   "Builds a base environment for other modules to build on set up for Cygwin"
+   global optimize, profile, builders
+
+   CXX = 'g++'
+   LINK = CXX
+   CXXFLAGS = ['-ftemplate-depth-256', '-Wall', '-pipe']
+   LINKFLAGS = []
+
+   # Enable profiling?
+   if profile != 'no':
+      CXXFLAGS.extend(['-pg'])
+      LINKFLAGS.extend(['-pg'])
+
+   # Debug or optimize build?
+   if optimize != 'no':
+      CXXFLAGS.extend(['-DNDEBUG', '-g', '-O3'])
+   else:
+      CXXFLAGS.extend(['-D_DEBUG', '-g'])
+
+   env = Environment(ENV=os.environ, CXX=CXX, LINK=LINK)
+   env.Append(CXXFLAGS=CXXFLAGS, LINKFLAGS=LINKFLAGS)
+   return env
 
 def BuildDarwinEnvironment():
    "Builds a base environment for other modules to build on set up for Darwin."
@@ -275,6 +299,9 @@ def ValidateBoostOption(key, value, environ):
          elif platform == 'darwin':
             shlib_prefix = 'lib'
             shlib_ext = 'dylib'
+         elif platform == 'cygwin':
+            shlib_prefix = 'lib'
+            shlib_ext = 'dll'
          else:
             shlib_prefix = 'lib'
             shlib_ext = 'so'
@@ -462,6 +489,8 @@ elif GetPlatform() == 'darwin':
    baseEnv = BuildDarwinEnvironment()
 elif GetPlatform() == 'win32':
    baseEnv = BuildWin32Environment()
+elif GetPlatform() == 'cygwin':
+   baseEnv = BuildCygwinEnvironment()
 else:
    print 'Unsupported build environment: ' + GetPlatform()
    sys.exit(-1)
