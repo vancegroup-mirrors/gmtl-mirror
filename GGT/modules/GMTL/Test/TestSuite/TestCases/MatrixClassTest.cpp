@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixClassTest.cpp,v $
- * Date modified: $Date: 2002-03-18 21:57:53 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-03-18 23:40:46 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -590,7 +590,7 @@ namespace gmtlTest {
       matrixSetTransposePtr<short>::go();
    }
 
-   void MatrixClassTest::MatrixClassTest::testMatrix44Creation()
+   void MatrixClassTest::testMatrix44Creation()
    {
       // make sure setter and getters work (float* setter tested in a different test)
       gmtl::Matrix44f src_mat;
