@@ -7,8 +7,8 @@
 #
 # -----------------------------------------------------------------
 # File:          $RCSfile: Makefile.in,v $
-# Date modified: $Date: 2002-05-04 15:37:30 $
-# Version:       $Revision: 1.6 $
+# Date modified: $Date: 2002-05-09 17:36:31 $
+# Version:       $Revision: 1.7 $
 # -----------------------------------------------------------------
 #
 # ********************************************************** ggt-head end
@@ -50,6 +50,7 @@ sysconfdir=	@sysconfdir@
 topdir=		@topdir@
 top_srcdir=	@top_srcdir@
 GMTLROOT_ABS=	@GMTLROOT_ABS@
+LN_S= @LN_S@
 
 MKINSTALLDIRS=	$(top_srcdir)/mkinstalldirs
 
@@ -68,7 +69,7 @@ devinst links:
           sed -e 's/^#%{/use_base_dir=yes/' gmtl-config > gmtl-config.tmp && \
           mv gmtl-config.tmp gmtl-config && chmod 755 gmtl-config
 	$(SHELL) $(MKINSTALLDIRS) $(instlinks)/include
-	$(MAKE) prefix=$(instlinks) install
+	cd $(instlinks)/include && rm -rf gmtl && $(LN_S) $(GMTLROOT_ABS)/gmtl gmtl
 	@echo "\n\n"
 	@echo "---------------------------------------------------------------"
 	@echo 'You should now set $$GMTL_BASE_DIR to:'

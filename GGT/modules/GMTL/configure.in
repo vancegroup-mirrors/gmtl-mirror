@@ -7,8 +7,8 @@
 #
 # -----------------------------------------------------------------
 # File:          $RCSfile: configure.in,v $
-# Date modified: $Date: 2002-04-24 15:12:11 $
-# Version:       $Revision: 1.2 $
+# Date modified: $Date: 2002-05-09 17:36:31 $
+# Version:       $Revision: 1.3 $
 # -----------------------------------------------------------------
 #
 # ********************************************************** ggt-head end
@@ -33,8 +33,21 @@
 #
 # *********************************************************** ggt-cpr end
 
-AC_REVISION($Revision: 1.2 $)
+AC_REVISION($Revision: 1.3 $)
 AC_INIT(gmtl/gmtlConfig.h)
+AC_CANONICAL_SYSTEM
+case $target_os in
+  cygwin*)
+     OS=WIN32
+     ;;
+esac
+
+AC_PROG_LN_S
+
+if test "X$OS" = "XWIN32"
+then
+   LN_S="cp -r"
+fi
 
 # $srcdir is the root directory of the GMTL source tree.  To get a value for
 # $GMTLROOT_ABS, we cd there and save the value of running pwd.  Then return
