@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixCompareTest.h,v $
- * Date modified: $Date: 2002-02-18 20:39:59 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-02-18 23:22:15 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -41,7 +41,7 @@ Matrix [] -km Transformations XformInterface? Xform.h   Collision detection Coll
 #include <cppunit/TestCaller.h>
 
 #include <gmtl/Matrix.h>
-#include <gmtl/Compare.h>
+#include <gmtl/MatrixOps.h>
 
 namespace gmtlTest
 {

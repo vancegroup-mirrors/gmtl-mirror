@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.h,v $
- * Date modified: $Date: 2002-02-16 00:37:09 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2002-02-18 23:22:15 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -40,7 +40,6 @@
 #include <cppunit/TestCaller.h>
 
 #include <gmtl/Vec.h>
-#include <gmtl/Compare.h>
 #include <gmtl/VecOps.h>
 
 namespace gmtlTest
