@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatClassTest.h,v $
- * Date modified: $Date: 2002-03-18 22:35:15 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-05-20 22:39:23 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -36,8 +36,6 @@
 #include <cppunit/TestCase.h>
 #include <cppunit/TestSuite.h>
 #include <cppunit/TestCaller.h>
-
-#include <gmtl/gmtlConfig.h>
 
 namespace gmtlTest
 {

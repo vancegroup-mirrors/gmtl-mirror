@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOps.h,v $
- * Date modified: $Date: 2002-05-17 23:07:11 $
- * Version:       $Revision: 1.22 $
+ * Date modified: $Date: 2002-05-20 22:39:22 $
+ * Version:       $Revision: 1.23 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -36,7 +36,6 @@
 #define _GMTL_MATRIXOPS_H_
 
 #include <algorithm>        // needed for std::swap
-#include <gmtl/gmtlConfig.h>
 #include <gmtl/Matrix.h>
 #include <gmtl/Math.h>
 #include <gmtl/Vec.h>

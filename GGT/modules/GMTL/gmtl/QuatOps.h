@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatOps.h,v $
- * Date modified: $Date: 2002-05-17 23:07:11 $
- * Version:       $Revision: 1.16 $
+ * Date modified: $Date: 2002-05-20 22:39:22 $
+ * Version:       $Revision: 1.17 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,8 +35,8 @@
 #ifndef _GMTL_QUAT_OPS_H_
 #define _GMTL_QUAT_OPS_H_
 
-#include <gmtl/gmtlConfig.h>
-#include <gmtl/Quat.h>
+#include "gmtl/Math.h"
+#include "gmtl/Quat.h"
 
 namespace gmtl
 {

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: CoordClassTest.h,v $
- * Date modified: $Date: 2002-03-21 20:58:34 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-05-20 22:39:23 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -37,7 +37,6 @@
 #include <cppunit/TestSuite.h>
 #include <cppunit/TestCaller.h>
 
-#include <gmtl/gmtlConfig.h>
 
 namespace gmtlTest
 {

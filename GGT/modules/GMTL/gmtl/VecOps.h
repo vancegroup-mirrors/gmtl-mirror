@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecOps.h,v $
- * Date modified: $Date: 2002-05-17 23:07:11 $
- * Version:       $Revision: 1.15 $
+ * Date modified: $Date: 2002-05-20 22:39:22 $
+ * Version:       $Revision: 1.16 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,10 +35,9 @@
 #ifndef _GMTL_VEC_OPS_H_
 #define _GMTL_VEC_OPS_H_
 
-#include <gmtl/gmtlConfig.h>
-
-// Core types
-#include <gmtl/Vec.h>
+#include "gmtl/gmtlDefines.h"
+#include "gmtl/Math.h"
+#include "gmtl/Vec.h"
 
 namespace gmtl
 {

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Plane.h,v $
- * Date modified: $Date: 2002-05-17 23:07:11 $
- * Version:       $Revision: 1.11 $
+ * Date modified: $Date: 2002-05-20 22:39:22 $
+ * Version:       $Revision: 1.12 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,7 +35,6 @@
 #ifndef _GMTL_PLANE_H
 #define _GMTL_PLANE_H
 
-#include <gmtl/gmtlConfig.h>
 #include <gmtl/Vec.h>
 #include <gmtl/Point.h>
 #include <gmtl/VecOps.h>
