@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: IntersectionTest.cpp,v $
- * Date modified: $Date: 2002-11-01 12:01:18 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-11-26 06:04:52 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -239,6 +239,47 @@ namespace gmtlTest
 
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("IntersectionTest/IntersectAABoxSweep", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      CPPUNIT_ASSERT(true_count > 0);
+   }
+
+   void IntersectionTest::testIntersectSphereSweep()
+   {
+      gmtl::Spheref sph1(gmtl::Point3f(-3,1,-3), 2);
+      gmtl::Spheref sph2(gmtl::Point3f( 2,1,-3), 1);
+      gmtl::Vec3f path1(5,0,0);
+      gmtl::Vec3f path2(-5,0,0);
+
+      float first, second;
+      bool result = gmtl::intersect(sph1, path1, sph2, path2, first, second);
+      CPPUNIT_ASSERT(result);
+      CPPUNIT_ASSERT(gmtl::Math::isEqual(first, 0.2f, 0.001f));
+      CPPUNIT_ASSERT(gmtl::Math::isEqual(second, 0.8f, 0.001f));
+   }
+
+   void IntersectionTest::testTimingIntersectSphereSweep()
+   {
+      gmtl::Spheref sph1(gmtl::Point3f(-3,1,-3), 2);
+      gmtl::Spheref sph2(gmtl::Point3f( 2,1,-3), 1);
+      gmtl::Vec3f path1(1,0,0);
+      gmtl::Vec3f path2(-5,0,0);
+      float first, second;
+
+      const long iters(400000);
+      unsigned true_count(0);
+      CPPUNIT_METRIC_START_TIMING();
+
+      for(long iter=0;iter<iters; ++iter)
+      {
+         if (gmtl::intersect(sph1, path1, sph2, path2, first, second))
+         {
+            ++true_count;
+         }
+         path1[0] += 0.1f;
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("IntersectionTest/IntersectSphereSweep", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
 
       CPPUNIT_ASSERT(true_count > 0);
    }
