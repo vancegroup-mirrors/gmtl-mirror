@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl.cpp,v $
- * Date modified: $Date: 2003-08-17 06:32:59 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2003-08-18 22:51:35 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -97,6 +97,7 @@ void _Export_gmtl_TriOps_h();
 void _Export_gmtl_QuatOps_h();
 void _Export_gmtl_VecOps_h();
 void _Export_gmtl_functions_h();
+void _Export_gmtl_intersect_wrappers_h();
 void _Export_gmtl_LineSegOps_h();
 void _Export_gmtl_Containment_h();
 void _Export_gmtl_Generate_h();
@@ -175,6 +176,7 @@ BOOST_PYTHON_MODULE(gmtl)
     _Export_gmtl_QuatOps_h();
     _Export_gmtl_VecOps_h();
     _Export_gmtl_functions_h();
+    _Export_gmtl_intersect_wrappers_h();
     _Export_gmtl_LineSegOps_h();
     _Export_gmtl_Containment_h();
     _Export_gmtl_Generate_h();
