@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: EulerAngle.h,v $
- * Date modified: $Date: 2002-06-12 19:46:51 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-06-12 19:51:57 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -36,7 +36,6 @@
 #define _GMTL_EULERANGLE_H_
 
 #include <gmtl/Math.h>     // for rotation order
-#include <gmtl/VecBase.h>  // base class of EulerAngle
  
 namespace gmtl
 {
@@ -67,17 +66,19 @@ namespace gmtl
  *         works, when it shouldn't even compile...
  */
 template <typename DATA_TYPE, typename ROTATION_ORDER>
-class EulerAngle : public VecBase<DATA_TYPE, 3>
+class EulerAngle
 {
 public:
    enum { Size = 3, Order = ROTATION_ORDER::ID };
 
    /** default constructor. initializes to identity rotation (no rotation). */
-   EulerAngle() : 
-      VecBase<DATA_TYPE, 3>( (DATA_TYPE)0.0, (DATA_TYPE)0.0, (DATA_TYPE)0.0 )
+   EulerAngle()
    {
       assert( ROTATION_ORDER::IS_ROTORDER == 1 && 
             "you must specify a RotatoinOrder derived type for the rotationorder in euler angle." );
+      mData[0] = DATA_TYPE( 0 );
+      mData[1] = DATA_TYPE( 0 );
+      mData[2] = DATA_TYPE( 0 );
    }
 
    /** copy constructor. */
@@ -89,8 +90,7 @@ public:
    }
 
    /** data constructor.   angles are in radians. */
-   EulerAngle( DATA_TYPE p0, DATA_TYPE p1, DATA_TYPE p2 ) :
-            VecBase<DATA_TYPE, 3>( p0, p1, p2 )
+   EulerAngle( DATA_TYPE p0, DATA_TYPE p1, DATA_TYPE p2 )
    {
       mData[0] = p0;
       mData[1] = p1;
