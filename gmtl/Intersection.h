@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Intersection.h,v $
- * Date modified: $Date: 2002-07-28 23:55:18 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-08-06 21:08:49 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -36,6 +36,7 @@
 #define _GMTL_INTERSECTION_H_
 
 #include <gmtl/AABox.h>
+#include <gmtl/Point.h>
 
 namespace gmtl
 {
@@ -61,6 +62,31 @@ namespace gmtl
       if (box2.getMin()[2] > box1.getMax()[2])  return false;
 
       // No separating axis ... they must intersect
+      return true;
+   }
+   
+   /**
+    * Tests if the given AABoxe and point intersect with each other. On an edge IS
+    * considered intersection by this algorithm.
+    *
+    * @param box    the box to test
+    * @param point  the point to test
+    *
+    * @return  true if the items intersect; false otherwise
+    */
+   template<class DATA_TYPE>
+   bool intersect( const AABox<DATA_TYPE>& box, const Point<DATA_TYPE, 3>& point )
+   {
+      // Look for a separating axis on each box for each axis
+      if (box.getMin()[0] > point[0])  return false;
+      if (box.getMin()[1] > point[1])  return false;
+      if (box.getMin()[2] > point[2])  return false;
+
+      if (point[0] > box.getMax()[0])  return false;
+      if (point[1] > box.getMax()[1])  return false;
+      if (point[2] > box.getMax()[2])  return false;
+
+      // they must intersect
       return true;
    }
 }

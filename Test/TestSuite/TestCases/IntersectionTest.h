@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: IntersectionTest.h,v $
- * Date modified: $Date: 2002-07-28 23:55:18 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2002-08-06 21:08:48 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -54,17 +54,20 @@ public:
    // Functionality tests
    //---------------------------------------------------------------------------
    void testIntersectAABoxAABox();
+   void testIntersectAABoxPoint();
 
    //---------------------------------------------------------------------------
    // Performance tests
    //---------------------------------------------------------------------------
    void testTimingIntersectAABoxAABox();
+   void testTimingIntersectAABoxPoint();
 
    static CppUnit::Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("IntersectionTest");
 #define ADD_TEST(x) test_suite->addTest(new CppUnit::TestCaller<IntersectionTest>( "test" #x, &IntersectionTest::test ## x))
       ADD_TEST(IntersectAABoxAABox);
+      ADD_TEST(IntersectAABoxPoint);
 #undef ADD_TEST
       return test_suite;
    }
@@ -74,6 +77,7 @@ public:
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("IntersectionPerfTest");
 #define ADD_TEST(x) test_suite->addTest(new CppUnit::TestCaller<IntersectionTest>( "testTiming" #x, &IntersectionTest::testTiming ## x))
       ADD_TEST(IntersectAABoxAABox);
+      ADD_TEST(IntersectAABoxPoint);
 #undef ADD_TEST
       return test_suite;
    }
