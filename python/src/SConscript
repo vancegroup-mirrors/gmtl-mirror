@@ -32,6 +32,6 @@ for s in subdirs:
    SConscript(dirs = s)
 
 for h in headers:
-   baseEnv.Install(pj(PREFIX, 'python', 'src'), h)
+#   baseEnv.Install(pj(PREFIX, 'python', 'src'), h)
    pkg.addExtraDist([File(h)])
 
