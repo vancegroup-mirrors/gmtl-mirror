@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixGenTest.h,v $
- * Date modified: $Date: 2002-03-21 22:13:33 $
- * Version:       $Revision: 1.22 $
+ * Date modified: $Date: 2002-04-10 14:39:01 $
+ * Version:       $Revision: 1.23 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -72,7 +72,8 @@ public:
    void testMatrixsetScale();
    void testMatrixsetRot();
    void testMatrixsetRotEuler();
-
+   void testMatrixgetRotEuler();
+   
    // performance tests
    void testTimingsetTrans();
    void testTimingsetScale();
@@ -80,8 +81,6 @@ public:
    void testTimingsetRot34();
    void testTimingsetRot44();
    void testTimingGetRot();
-
-   // makeRot Euler tests...
    void testTimingsetRotEuler33();
    void testTimingsetRotEuler34();
    void testTimingsetRotEuler44();
@@ -92,11 +91,12 @@ public:
    void testTimingsetAxes34();
    void testTimingsetAxes44();
    void testTimingsetAxes();
-
+   
    static CppUnit::Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("MatrixGenTest");
 
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testMatrixgetRotEuler", &MatrixGenTest::testMatrixgetRotEuler ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testMatrixsetTrans", &MatrixGenTest::testMatrixsetTrans ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testMatrixsetAxes", &MatrixGenTest::testMatrixsetAxes ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testMatrixsetDirCos", &MatrixGenTest::testMatrixsetDirCos ) );
