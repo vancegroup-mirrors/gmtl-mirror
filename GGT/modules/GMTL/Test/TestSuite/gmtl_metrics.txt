@@ -391,7 +391,7 @@ simba/Debug/PlaneTest/NormPtCreationOverhead                       0.210673
 simba/Debug/PlaneTest/ThreePtCreationOverhead                      1.11301
 simba/Debug/PlaneTest/WhichSideOverhead                            0.15632
 simba/Debug/PlaneTest/isEqualOverhead                              0.516735
-simba/Debug/PointTest/ConstructorsOverhead                         0.161205
+simba/Debug/PointTest/ConstructorsOverhead                         0.144382
 simba/Debug/PointTest/CopyConstructOverhead                        0.18153
 simba/Debug/PointTest/EqualityCompareOverhead                      0.150815
 simba/Debug/PointTest/InequalityCompareOverhead                    0.162265
