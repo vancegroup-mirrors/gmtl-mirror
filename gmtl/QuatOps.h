@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatOps.h,v $
- * Date modified: $Date: 2002-02-28 15:06:29 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-03-09 21:16:44 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -296,20 +296,18 @@ namespace gmtl
    Quat<DATA_TYPE>& invert( Quat<DATA_TYPE>& result )
    {
       // do result = conj( q ) / norm( q )
-
+      conj( result );
+      
+      // return if norm() is near 0 (divide by 0 would result in NaN)
       DATA_TYPE l = lengthSquared( result );
-
-      // return if near 0 (divide by 0 would result in NaN)
       if (l < (DATA_TYPE)0.0001)
          return result;
 
       DATA_TYPE l_inv = ((DATA_TYPE)1.0) / l;
-      DATA_TYPE l_inv_neg = -l_inv;
-      result[Xelt] *= l_inv_neg;
-      result[Yelt] *= l_inv_neg;
-      result[Zelt] *= l_inv_neg;
+      result[Xelt] *= l_inv;
+      result[Yelt] *= l_inv;
+      result[Zelt] *= l_inv;
       result[Welt] *= l_inv;
-
       return result;
    }
    
