@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-wrappers.h,v $
- * Date modified: $Date: 2003-08-30 17:16:10 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2004-04-21 22:05:54 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -210,10 +210,18 @@ namespace gmtlWrappers
       return gmtl::makeTrans< gmtl::Vec<DATA_TYPE, 3> >(m);
    }
 
+   template<typename DATA_TYPE, unsigned ROW, unsigned COL>
+   gmtl::Point<DATA_TYPE, 3> makeTransPoint3(const gmtl::Matrix<DATA_TYPE, ROW, COL>& m)
+   {
+      return gmtl::makeTrans< gmtl::Point<DATA_TYPE, 3> >(m);
+   }
+
    template gmtl::Matrix44f makeTransMatrix44(const gmtl::Vec3f&);
    template gmtl::Matrix44d makeTransMatrix44(const gmtl::Vec3d&);
    template gmtl::Vec3f     makeTransVec3(const gmtl::Matrix44f&);
    template gmtl::Vec3d     makeTransVec3(const gmtl::Matrix44d&);
+   template gmtl::Point3f   makeTransPoint3(const gmtl::Matrix44f&);
+   template gmtl::Point3d   makeTransPoint3(const gmtl::Matrix44d&);
 
    template<typename DATA_TYPE, unsigned SIZE>
    gmtl::Matrix<DATA_TYPE, 4, 4> makeScaleMatrix44(const gmtl::Vec<DATA_TYPE, SIZE>& scale)
