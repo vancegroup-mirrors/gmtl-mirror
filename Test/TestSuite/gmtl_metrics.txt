@@ -343,7 +343,7 @@ simba/Debug/MathTest/ZeroClamp[f]                                  0.0516225
 simba/Debug/MatrixCompareTest/IsEqualTest                          2.86616
 simba/Debug/MatrixCompareTest/OpEqualityTest                       1.29208
 simba/Debug/MatrixCompareTest/OpNotEqualityTest                    1.32104
-simba/Debug/MatrixGenTest/setAxes33f                               0.30112
+simba/Debug/MatrixGenTest/setAxes33f                               0.27728
 simba/Debug/MatrixGenTest/setAxes34f                               0.2822
 simba/Debug/MatrixGenTest/setAxes44f                               0.2752
 simba/Debug/MatrixGenTest/setDirCos33f                             1.00256
@@ -444,13 +444,13 @@ simba/Debug/QuatGenTest/makeRot(quatd,d,vecd)                      0.98992
 simba/Debug/QuatGenTest/makeRot(quatd,vec3d,vec3d)                 1.48888
 simba/Debug/QuatGenTest/makeRot(quatf,f,f,f,f)                     0.99536
 simba/Debug/QuatGenTest/makeRot(quatf,f,vecf)                      1.03492
-simba/Debug/QuatGenTest/makeRot(quatf,vec3f,vec3f)                 1.34816
+simba/Debug/QuatGenTest/makeRot(quatf,vec3f,vec3f)                 1.24544
 simba/Debug/QuatGenTest/setRot(quatd,d,d,d,d)                      1.00876
 simba/Debug/QuatGenTest/setRot(quatd,d,vecd)                       0.83168
-simba/Debug/QuatGenTest/setRot(quatd,vec3d,vec3d)                  1.4346
+simba/Debug/QuatGenTest/setRot(quatd,vec3d,vec3d)                  1.31012
 simba/Debug/QuatGenTest/setRot(quatf,f,f,f,f)                      0.84088
 simba/Debug/QuatGenTest/setRot(quatf,f,vecf)                       0.86828
-simba/Debug/QuatGenTest/setRot(quatf,vec3f,vec3f)                  1.2096
+simba/Debug/QuatGenTest/setRot(quatf,vec3f,vec3f)                  1.11876
 simba/Debug/QuatOpsTest/add(r,q1,q2)                               0.2289
 simba/Debug/QuatOpsTest/conj(q)                                    0.1151
 simba/Debug/QuatOpsTest/dot(q1,q2)                                 0.1789
@@ -505,7 +505,7 @@ simba/Debug/VecBaseTest/SetPtrOverhead                             0.167073
 simba/Debug/VecBaseTest/VecCreationOverhead                        0.09756
 simba/Debug/VecGenTest/makeNormal(vec3d)                           0.25168
 simba/Debug/VecGenTest/makeNormal(vec3f)                           0.238
-simba/Debug/VecGenTest/makeNormal(vec4d)                           0.35824
+simba/Debug/VecGenTest/makeNormal(vec4d)                           0.30368
 simba/Debug/VecGenTest/makeNormal(vec4f)                           0.28124
 simba/Debug/VecGenTest/makeVec(quatd)                              0.10936
 simba/Debug/VecGenTest/makeVec(quatf)                              0.10512
@@ -545,7 +545,7 @@ simba/Debug/VecTest/vec-vec-vec:perf                               0.7703
 simba/Debug/XformTest/operator*(mat22,pnt2)d                       0.32548
 simba/Debug/XformTest/operator*(mat22,pnt2)f                       0.27964
 simba/Debug/XformTest/operator*(mat22,vec2)d                       0.32084
-simba/Debug/XformTest/operator*(mat22,vec2)f                       0.35276
+simba/Debug/XformTest/operator*(mat22,vec2)f                       0.2674
 simba/Debug/XformTest/operator*(mat23,pnt2)d                       0.68428
 simba/Debug/XformTest/operator*(mat23,pnt2)f                       0.61904
 simba/Debug/XformTest/operator*(mat23,pnt3)d                       0.44048
@@ -602,7 +602,7 @@ simba/Debug/XformTest/xform(pnt3,mat23,pnt3)d                      0.31132
 simba/Debug/XformTest/xform(pnt3,mat23,pnt3)f                      0.32612
 simba/Debug/XformTest/xform(pnt3,mat33,pnt3)d                      0.4414
 simba/Debug/XformTest/xform(pnt3,mat33,pnt3)f                      0.41044
-simba/Debug/XformTest/xform(pnt3,mat34,pnt3)d                      0.90208
+simba/Debug/XformTest/xform(pnt3,mat34,pnt3)d                      0.82696
 simba/Debug/XformTest/xform(pnt3,mat34,pnt3)f                      0.82468
 simba/Debug/XformTest/xform(pnt3,mat44,pnt3)d                      1.05884
 simba/Debug/XformTest/xform(pnt3,mat44,pnt3)f                      0.984

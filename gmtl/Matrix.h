@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Matrix.h,v $
- * Date modified: $Date: 2002-03-20 19:11:08 $
- * Version:       $Revision: 1.15 $
+ * Date modified: $Date: 2002-03-20 23:21:53 $
+ * Version:       $Revision: 1.16 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -71,7 +71,7 @@ public:
    /** use this to declare single value types of the same type as this matrix.
     */
    typedef DATA_TYPE DataType;
-   enum 
+   enum
    {
       Rows = ROWS, Cols = COLS
    };
@@ -99,7 +99,8 @@ public:
       for (unsigned int x = 0; x < Math::Min( COLS, ROWS ); ++x)
          this->operator()( x, x ) = (DATA_TYPE)1.0;
 
-      mState = IDENTITY;
+      /** @todo Set initial state to IDENTITY and test other stuff */
+      mState = FULL;
    };
 
    /** copy constructor */
