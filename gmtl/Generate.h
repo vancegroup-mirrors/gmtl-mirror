@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-04-10 14:07:00 $
- * Version:       $Revision: 1.40 $
+ * Date modified: $Date: 2002-04-10 14:16:08 $
+ * Version:       $Revision: 1.41 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -609,9 +609,9 @@ namespace gmtl
     */
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
    inline void getRot(  const Matrix<DATA_TYPE, ROWS, COLS>& mat, 
-                        DATA_TYPE param0,
-                        DATA_TYPE param1, 
-                        DATA_TYPE param2, 
+                        DATA_TYPE& param0,
+                        DATA_TYPE& param1, 
+                        DATA_TYPE& param2, 
                         const RotationOrder order )
    {
       // @todo set this a compile time assert...
@@ -689,9 +689,9 @@ namespace gmtl
       }
 
       // this might be faster if put into the switch statement... (testme)
-      ((order == XYZ) ? param0 : ((order == ZXY) ? param1 : param2)) = xRot;
-      ((order == XYZ) ? param1 : ((order == ZXY) ? param2 : param1)) = yRot;
-      ((order == XYZ) ? param2 : ((order == ZXY) ? param0 : param0)) = zRot;
+      ((order == XYZ) ? param0 = xRot : ((order == ZXY) ? param1 = xRot : param2 = xRot));
+      ((order == XYZ) ? param1 = yRot : ((order == ZXY) ? param2 = yRot : param1 = yRot));
+      ((order == XYZ) ? param2 = zRot : ((order == ZXY) ? param0 = zRot : param0 = zRot));
    }
    //*/
 
