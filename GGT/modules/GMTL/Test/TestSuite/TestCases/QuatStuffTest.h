@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatStuffTest.h,v $
- * Date modified: $Date: 2002-03-11 00:34:34 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-03-11 20:12:24 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -222,6 +222,8 @@ namespace gmtlTest
          double half_angle = 0.000626708f * 0.5f;
          double sin_half_angle = gmtl::Math::sin( half_angle );
          double w = gmtl::Math::cos( half_angle );
+         sin_half_angle += 1; // use sin_half_angle
+         w += 1; // use w
          
 
          //gmtl::Quatf qq( 0,0,0,0 );
@@ -322,6 +324,8 @@ namespace gmtlTest
 
          float w = w1 * w2 - gmtl::dot( v1, v2 );
          gmtl::Vec3f v = (v2 * w1) + (v1 * w2) + gmtl::cross( v1, v2 );
+         w += 1; // use w
+         v[0] += 1; // use v
       }
 
 
