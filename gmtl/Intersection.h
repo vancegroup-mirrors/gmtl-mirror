@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Intersection.h,v $
- * Date modified: $Date: 2004-07-21 18:53:20 $
- * Version:       $Revision: 1.21 $
+ * Date modified: $Date: 2004-08-03 04:19:12 $
+ * Version:       $Revision: 1.22 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -624,13 +624,12 @@ namespace gmtl
       DATA_TYPE l = length( lineseg.getDir() );
       if (eps < l)
       {
-         Ray<DATA_TYPE> temp( lineseg.getOrigin(), lineseg.getDir() / l );
+         Ray<DATA_TYPE> temp( lineseg.getOrigin(), lineseg.getDir() );
          bool result = intersect( tri, temp, u, v, t );
-         t /= lineseg.getLength(); // need to normalize the result
          return result && t <= (DATA_TYPE)1.0;
       }
       else
-         return false;
+      {  return false; }
    }
 }
 
