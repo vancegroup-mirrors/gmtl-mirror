@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatClassTest.cpp,v $
- * Date modified: $Date: 2002-03-20 21:43:36 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2003-02-06 01:12:27 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -33,11 +33,17 @@
 *
  ************************************************************ ggt-cpr end */
 #include "QuatClassTest.h"
+#include "../Suites.h"
+#include <cppunit/extensions/HelperMacros.h>
 #include <cppunit/extensions/MetricRegistry.h>
+
 #include <gmtl/Quat.h>
 
 namespace gmtlTest
 {
+   CPPUNIT_TEST_SUITE_REGISTRATION(QuatClassTest);
+   CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(QuatClassMetricTest, Suites::metric());
+
    void QuatClassTest::testQuatClassTestCreation()
    {
       // test that it initializes to the multiplication identity
@@ -123,7 +129,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( q11[gmtl::Welt] == 0.0f );
    }
 
-   void QuatClassTest::testQuatTimingDefaultConstructor()
+   void QuatClassMetricTest::testQuatTimingDefaultConstructor()
    {
       const long iters( 400000 );
       float use_value(1);
@@ -141,7 +147,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( use_value != 0 );
    }
 
-   void QuatClassTest::testQuatTimingElementConstructor()
+   void QuatClassMetricTest::testQuatTimingElementConstructor()
    {
       const long iters( 400000 );
       float use_value(1);
@@ -159,7 +165,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( use_value != 0 );
    }
 
-   void QuatClassTest::testQuatTimingCopyConstructor()
+   void QuatClassMetricTest::testQuatTimingCopyConstructor()
    {
       const long iters( 400000 );
       float use_value(1);
@@ -179,7 +185,7 @@ namespace gmtlTest
    }
 
 
-   void QuatClassTest::testQuatTimingGet()
+   void QuatClassMetricTest::testQuatTimingGet()
    {
       const long iters( 400000 );
       float use_value(0);
@@ -198,7 +204,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( use_value > 0.0f );
    }
 
-   void QuatClassTest::testQuatTimingSet()
+   void QuatClassMetricTest::testQuatTimingSet()
    {
       const long iters( 400000 );
       float use_value(0);
@@ -216,7 +222,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( use_value >= 0.0f );
    }
 
-   void QuatClassTest::testQuatTimingOpBracket()
+   void QuatClassMetricTest::testQuatTimingOpBracket()
    {
       const long iters( 400000 );
       float use_value(0);
@@ -238,7 +244,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( use_value > 0.0f );
    }
 
-   void QuatClassTest::testQuatTimingGetData()
+   void QuatClassMetricTest::testQuatTimingGetData()
    {
       const long iters( 400000 );
       float use_value(0);
@@ -256,7 +262,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( use_value > 0.0f );
    }
 
-   void QuatClassTest::testQuatTimingOpEqual()
+   void QuatClassMetricTest::testQuatTimingOpEqual()
    {
       const long iters( 400000 );
       gmtl::Quat<float> q4, q2( 0, 2, 1, 3 );

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatStuffTest.h,v $
- * Date modified: $Date: 2002-07-02 02:07:02 $
- * Version:       $Revision: 1.12 $
+ * Date modified: $Date: 2003-02-06 01:12:27 $
+ * Version:       $Revision: 1.13 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -32,98 +32,65 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 *
  ************************************************************ ggt-cpr end */
-#include <iostream>
-#include <cppunit/TestCase.h>
-#include <cppunit/TestSuite.h>
-#include <cppunit/TestCaller.h>
+#ifndef _GMTL_QUAT_STUFF_TEST_H_
+#define _GMTL_QUAT_STUFF_TEST_H_
 
-#include <gmtl/Quat.h>
-#include <gmtl/QuatOps.h>
-#include <gmtl/Generate.h>
-#include <gmtl/Xforms.h>
+#include <cppunit/extensions/HelperMacros.h>
 
 namespace gmtlTest
 {
-
    /** a hodge podge of tests.  stuff that is a little higher level, some real world tests, etc... */
-   class QuatStuffTest : public CppUnit::TestCase
+   class QuatStuffTest : public CppUnit::TestFixture
    {
+      CPPUNIT_TEST_SUITE(QuatStuffTest);
+
+      CPPUNIT_TEST(makeRotTest);
+      CPPUNIT_TEST(xformVecSweepTest);
+      CPPUNIT_TEST(makeRotGetRotSanityTest);
+      CPPUNIT_TEST(simpleQuatProductTest);
+      CPPUNIT_TEST(secondQuatProductTest);
+      CPPUNIT_TEST(xformVecTest);
+      CPPUNIT_TEST(specialCases);
+      CPPUNIT_TEST(vectorScaleTest);
+      CPPUNIT_TEST(quatAdd);
+      CPPUNIT_TEST(pureQuatMultTest);
+
+      CPPUNIT_TEST_SUITE_END();
+
    public:
-      QuatStuffTest( std::string name = "QuatStuffTest" )
-         : CppUnit::TestCase( name )
-      {
-      }
-
-      virtual ~QuatStuffTest()
-      {}
-
-      virtual void setUp()
-      {
-      }
-
-      virtual void tearDown()
-      {
-      }
-
-
       void makeRotTest();
       void xformVecSweepTest();
       void makeRotGetRotSanityTest();
 
-   //   for (int x = 0; x < 4; ++x)
-   //             std::cout<<q[x]<<" "<<q2[x]<<std::endl;
-
       void simpleQuatProductTest();
-      // another quaternion product test
+
+      /// another quaternion product test
       void secondQuatProductTest();
       void xformVecTest();
 
-      // just trying stuff out... TODO think of a good add test...
+      /// just trying stuff out... TODO think of a good add test...
       void specialCases();
 
-      // just trying stuff out... TODO think of a good way to test this ability...
-      // TODO: could we use a vector (pure quat) to scale a quat in a
-      //        more robust way?  pretty sure we can... rewrite scaleAngle to use this
-      //        method instead....
+      /**
+       * just trying stuff out... TODO think of a good way to test this ability...
+       * TODO: could we use a vector (pure quat) to scale a quat in a
+       *        more robust way?  pretty sure we can... rewrite scaleAngle to use this
+       *        method instead....
+       */
       void vectorScaleTest();
 
-      // just trying stuff out... TODO think of a good add test...
+      /// just trying stuff out... TODO think of a good add test...
       void quatAdd();
 
-      // using a vector to increment rotation, much like angular velocity
-      // here angular velocity is defined as a gmtl::Vec3f "w", using right hand rule
-      // things spin at |w| speed and on the w vector.
-      //
-      // just trying stuff out... TODO think of a good way to test this ability...
+      /**
+       * using a vector to increment rotation, much like angular velocity
+       * here angular velocity is defined as a gmtl::Vec3f "w", using right hand rule
+       * things spin at |w| speed and on the w vector.
+       *
+       * just trying stuff out... TODO think of a good way to test this ability...
+       */
       void pureQuatMultTest();
-
-      static CppUnit::Test* suite()
-      {
-         CppUnit::TestSuite* test_suite = new CppUnit::TestSuite( "QuatStuffTest" );
-         test_suite->addTest( new CppUnit::TestCaller<QuatStuffTest>( "xformVecTest", &QuatStuffTest::xformVecTest));
-         test_suite->addTest( new CppUnit::TestCaller<QuatStuffTest>( "xformVecSweepTest", &QuatStuffTest::xformVecSweepTest));
-         test_suite->addTest( new CppUnit::TestCaller<QuatStuffTest>( "makeRotGetRotSanityTest", &QuatStuffTest::makeRotGetRotSanityTest));
-         test_suite->addTest( new CppUnit::TestCaller<QuatStuffTest>( "simpleQuatProductTest", &QuatStuffTest::simpleQuatProductTest));
-         test_suite->addTest( new CppUnit::TestCaller<QuatStuffTest>( "secondQuatProductTest", &QuatStuffTest::secondQuatProductTest));
-         test_suite->addTest( new CppUnit::TestCaller<QuatStuffTest>( "makeRotTest", &QuatStuffTest::makeRotTest));
-         return test_suite;
-      }
-
-      static CppUnit::Test* perfSuite()
-   {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("QuatStuffTiming");
-      return test_suite;
-   }
-   
-      static CppUnit::Test* interactiveSuite()
-      {
-         CppUnit::TestSuite* test_suite = new CppUnit::TestSuite( "InteractiveQuatStuffTest" );
-         //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>( "interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind ) );
-         return test_suite;
-      }
-
-   protected:
-
    };
+}
 
-} // end namespace
+#endif

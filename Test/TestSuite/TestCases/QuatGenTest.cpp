@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatGenTest.cpp,v $
- * Date modified: $Date: 2002-07-02 03:09:21 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2003-02-06 01:12:27 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -18,8 +18,7 @@
 * Copyright (C) 2001,2002 Allen Bierbaum
 *
 * This library is free software; you can redistribute it and/or
-* modify it under th MathPrimitives  [PrimName]Ops.h  Vec & Point [100%] -ab
-Quat [] -km Transforquations XformInterface? Xform.h   Collision detection CollisionInterface? Intersection.h   Bounding volumes BoundingInterface? Containment.h   Math factories MathFactories Builder.h  e terms of the GNU Lesser General Public
+* modify it under the terms of the GNU Lesser General Public
 * License as published by the Free Software Foundation; either
 * version 2.1 of the License, or (at your option) any later version.
 *
@@ -34,14 +33,24 @@ Quat [] -km Transforquations XformInterface? Xform.h   Collision detection Colli
 *
  ************************************************************ ggt-cpr end */
 #include "QuatGenTest.h"
+#include "../Suites.h"
+#include <cppunit/extensions/HelperMacros.h>
 #include <cppunit/extensions/MetricRegistry.h>
+
+#include <gmtl/Vec.h>
+#include <gmtl/VecOps.h>
+#include <gmtl/Quat.h>
+#include <gmtl/QuatOps.h>
+#include <gmtl/Generate.h>
 #include <gmtl/AxisAngle.h>
 #include <gmtl/AxisAngleOps.h>
 
 namespace gmtlTest
 {
-   //-- quat tests --//
+   CPPUNIT_TEST_SUITE_REGISTRATION(QuatGenTest);
+   CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(QuatGenMetricTest, Suites::metric());
 
+   //-- quat tests --//
    void QuatGenTest::testQuatMakePure()
    {
       gmtl::Vec<float, 3> vec( 121, 232, 343 );
@@ -246,7 +255,7 @@ namespace gmtlTest
 
 
    //-- timing tests --//
-   void QuatGenTest::testGenTimingMakeInvert1()
+   void QuatGenMetricTest::testGenTimingMakeInvert1()
    {
       gmtl::Quat<double> q1;
       const long iters(25000);
@@ -263,7 +272,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( q1[0] != 10000.0f );
    }
 
-   void QuatGenTest::testGenTimingMakeInvert2()
+   void QuatGenMetricTest::testGenTimingMakeInvert2()
    {
       gmtl::Quat<float> q2;
       const long iters(25000);
@@ -280,7 +289,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( q2[0] != 10000.0f );
    }
 
-   void QuatGenTest::testGenTimingMakeConj()
+   void QuatGenMetricTest::testGenTimingMakeConj()
    {
       gmtl::Quat<double> q1;
       const long iters(50000);
@@ -308,7 +317,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( q1[0] != 10000.0f );
    }
 
-   void QuatGenTest::testGenTimingMakePure()
+   void QuatGenMetricTest::testGenTimingMakePure()
    {
       gmtl::Quat<double> q1;
       gmtl::Vec<double, 3> v1;
@@ -340,7 +349,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( q1[0] != 10000.0f );
    }
 
-   void QuatGenTest::testGenTimingMakeNormalQuat()
+   void QuatGenMetricTest::testGenTimingMakeNormalQuat()
    {
       gmtl::Quat<double> q1;
       const long iters(25000);
@@ -368,7 +377,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( q1[0] != 10000.0f );
    }
 
-   void QuatGenTest::testGenTimingMakeRot()
+   void QuatGenMetricTest::testGenTimingMakeRot()
    {
       double bokd = 1;
       float bokf = 1;
@@ -467,7 +476,7 @@ namespace gmtlTest
    }
 
 
-   void QuatGenTest::testGenTimingSetRot()
+   void QuatGenMetricTest::testGenTimingSetRot()
    {
       double bokd = 1;
       float bokf = 1;

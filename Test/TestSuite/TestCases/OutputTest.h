@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: OutputTest.h,v $
- * Date modified: $Date: 2002-10-11 10:34:22 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2003-02-06 01:12:27 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -32,31 +32,32 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 *
  ************************************************************ ggt-cpr end */
-#ifndef _GMTL_OUTPUTTEST_H_
-#define _GMTL_OUTPUTTEST_H_
+#ifndef _GMTL_OUTPUT_TEST_H_
+#define _GMTL_OUTPUT_TEST_H_
 
-#include <cppunit/TestCase.h>
-#include <cppunit/TestSuite.h>
-#include <cppunit/TestCaller.h>
+#include <cppunit/extensions/HelperMacros.h>
 
 namespace gmtlTest
 {
-   class OutputTest : public CppUnit::TestCase
+   /**
+    * Functionality tests
+    */
+   class OutputTest : public CppUnit::TestFixture
    {
+      CPPUNIT_TEST_SUITE(OutputTest);
+
+      CPPUNIT_TEST(testVec);
+      CPPUNIT_TEST(testPoint);
+      CPPUNIT_TEST(testMatrix);
+      CPPUNIT_TEST(testQuat);
+      CPPUNIT_TEST(testTri);
+      CPPUNIT_TEST(testPlane);
+      CPPUNIT_TEST(testSphere);
+      CPPUNIT_TEST(testAABox);
+
+      CPPUNIT_TEST_SUITE_END();
+
    public:
-      OutputTest( std::string name = "OutputTest" )
-         : CppUnit::TestCase( name )
-      {}
-
-      virtual ~OutputTest()
-      {}
-
-      virtual void setUp()
-      {}
-
-      virtual void tearDown()
-      {}
-
       void testVec();
       void testPoint();
       void testMatrix();
@@ -65,29 +66,7 @@ namespace gmtlTest
       void testPlane();
       void testSphere();
       void testAABox();
-
-      static CppUnit::Test* suite()
-      {
-         CppUnit::TestSuite* test_suite = new CppUnit::TestSuite( "OutputTest" );
-         test_suite->addTest( new CppUnit::TestCaller<OutputTest>("testVec", &OutputTest::testVec) );
-         test_suite->addTest( new CppUnit::TestCaller<OutputTest>("testPoint", &OutputTest::testPoint) );
-         test_suite->addTest( new CppUnit::TestCaller<OutputTest>("testMatrix", &OutputTest::testMatrix) );
-         test_suite->addTest( new CppUnit::TestCaller<OutputTest>("testQuat", &OutputTest::testQuat) );
-         test_suite->addTest( new CppUnit::TestCaller<OutputTest>("testTri", &OutputTest::testTri) );
-         test_suite->addTest( new CppUnit::TestCaller<OutputTest>("testPlane", &OutputTest::testPlane) );
-         test_suite->addTest( new CppUnit::TestCaller<OutputTest>("testSphere", &OutputTest::testSphere) );
-         test_suite->addTest( new CppUnit::TestCaller<OutputTest>("testAABox", &OutputTest::testAABox) );
-
-         return test_suite;
-      }
-
-      static CppUnit::Test* perfSuite()
-      {
-         CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("OutputTiming");
-         return test_suite;
-      }
    };
-
 }
 
 #endif

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatOpsTest.h,v $
- * Date modified: $Date: 2002-07-02 02:07:02 $
- * Version:       $Revision: 1.15 $
+ * Date modified: $Date: 2003-02-06 01:12:27 $
+ * Version:       $Revision: 1.16 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -32,127 +32,96 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 *
  ************************************************************ ggt-cpr end */
-#include <iostream>
+#ifndef _GMTL_QUAT_OPS_TEST_H_
+#define _GMTL_QUAT_OPS_TEST_H_
 
-#include <cppunit/TestCase.h>
-#include <cppunit/TestSuite.h>
-#include <cppunit/TestCaller.h>
-
-#include <gmtl/Quat.h>
-#include <gmtl/QuatOps.h>
-#include <gmtl/Generate.h>
+#include <cppunit/extensions/HelperMacros.h>
 
 namespace gmtlTest
 {
-
-class QuatOpsTest : public CppUnit::TestCase
-{
-public:
-   QuatOpsTest( std::string name = "QuatOpsTest" )
-   : CppUnit::TestCase( name )
-   {;}
-
-   virtual ~QuatOpsTest()
-   {}
-
-   virtual void setUp()
-   {;}
-
-   virtual void tearDown()
+   /**
+    * Functionality tests
+    */
+   class QuatOpsTest : public CppUnit::TestFixture
    {
-   }
+      CPPUNIT_TEST_SUITE(QuatOpsTest);
 
-   void output( gmtl::Quat<float> q )
+      CPPUNIT_TEST(testQuatMult);
+      CPPUNIT_TEST(testQuatDiv);
+      CPPUNIT_TEST(testQuatVectorMult);
+      CPPUNIT_TEST(testQuatVectorAdd);
+      CPPUNIT_TEST(testQuatVectorSub);
+      CPPUNIT_TEST(testQuatVectorDot);
+      CPPUNIT_TEST(testQuatNorm);
+      CPPUNIT_TEST(testQuatMag);
+      CPPUNIT_TEST(testQuatNormalize);
+      CPPUNIT_TEST(testQuatConj);
+      CPPUNIT_TEST(testQuatNegate);
+      CPPUNIT_TEST(testQuatInvert);
+      CPPUNIT_TEST(testQuatSlerp);
+      CPPUNIT_TEST(testQuatLerp);
+
+      CPPUNIT_TEST_SUITE_END();
+
+   public:
+      void testQuatMult();
+      void testQuatDiv();
+      void testQuatVectorMult();
+      void testQuatVectorAdd();
+      void testQuatVectorSub();
+      void testQuatVectorDot();
+      void testQuatNorm();
+      void testQuatMag();
+      void testQuatNormalize();
+      void testQuatConj();
+      void testQuatNegate();
+      void testQuatInvert();
+      void testQuatSlerp();
+      void testQuatLerp();
+   };
+
+   /**
+    * Metric tests.
+    */
+   class QuatOpsMetricTest : public CppUnit::TestFixture
    {
-      std::cout<<q[0]<<" "<<q[1]<<" "<<q[2]<<" "<<q[3]<<std::endl;
-   } 
-   
+      CPPUNIT_TEST_SUITE(QuatOpsMetricTest);
 
-   void testQuatTimingNegate();
-   void testQuatTimingOperatorMinus();
-   void testQuatTimingMult();
-   void testQuatTimingOperatorMult();
-   void testQuatTimingDiv();
-   void testQuatTimingLerp();
-   void testQuatTimingVectorMult();
-   void testQuatTimingVectorAdd();
-   void testQuatTimingVectorSub();
-   void testQuatTimingVectorDot();
-   void testQuatTimingNorm();
-   void testQuatTimingMag();
-   void testQuatTimingNormalize();
-   void testQuatTimingConj();
-   void testQuatTimingInvert();
-   
-   
-   
-   void testQuatMult();
-   void testQuatDiv();
-   void testQuatVectorMult();
-   void testQuatVectorAdd();
-   void testQuatVectorSub();
-   void testQuatVectorDot();
-   void testQuatNorm();
-   void testQuatMag();
-   void testQuatNormalize();
-   void testQuatConj();
-   void testQuatNegate();
-   void testQuatInvert();
-   void testQuatSlerp();
-   void testQuatLerp();
-   
+      CPPUNIT_TEST(testQuatTimingNegate);
+      CPPUNIT_TEST(testQuatTimingOperatorMinus);
+      CPPUNIT_TEST(testQuatTimingMult);
+      CPPUNIT_TEST(testQuatTimingOperatorMult);
+      CPPUNIT_TEST(testQuatTimingDiv);
+      CPPUNIT_TEST(testQuatTimingLerp);
+      CPPUNIT_TEST(testQuatTimingVectorMult);
+      CPPUNIT_TEST(testQuatTimingVectorAdd);
+      CPPUNIT_TEST(testQuatTimingVectorSub);
+      CPPUNIT_TEST(testQuatTimingVectorDot);
+      CPPUNIT_TEST(testQuatTimingNorm);
+      CPPUNIT_TEST(testQuatTimingMag);
+      CPPUNIT_TEST(testQuatTimingNormalize);
+      CPPUNIT_TEST(testQuatTimingConj);
+      CPPUNIT_TEST(testQuatTimingInvert);
 
-   static CppUnit::Test* suite()
-   {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite( "QuatOpsTest" );
-      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>( "testQuatMult", &QuatOpsTest::testQuatMult ));
-      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>( "testQuatVectorMult", &QuatOpsTest::testQuatVectorMult ));
-      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>( "testQuatDiv", &QuatOpsTest::testQuatDiv ));
-      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>( "testQuatVectorAdd", &QuatOpsTest::testQuatVectorAdd ));
-      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>( "testQuatVectorSub", &QuatOpsTest::testQuatVectorSub ));
-      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>( "testQuatVectorDot", &QuatOpsTest::testQuatVectorDot ));
-      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>( "testQuatNorm", &QuatOpsTest::testQuatNorm ));
-      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>( "testQuatMag", &QuatOpsTest::testQuatMag ));
-      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>( "testQuatNormalize", &QuatOpsTest::testQuatNormalize ));
-      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>( "testQuatConj", &QuatOpsTest::testQuatConj ));
-      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>( "testQuatInvert", &QuatOpsTest::testQuatInvert ));
-      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>( "testQuatNegate", &QuatOpsTest::testQuatNegate ));
-      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>( "testQuatSlerp", &QuatOpsTest::testQuatSlerp ));
-      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>( "testQuatLerp", &QuatOpsTest::testQuatLerp ));
- 
-      return test_suite;
-   }
+      CPPUNIT_TEST_SUITE_END();
 
-   static CppUnit::Test* perfSuite()
-   {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("QuatTiming");
-      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>( "testQuatTimingOperatorMinus", &QuatOpsTest::testQuatTimingOperatorMinus ));
-      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>( "testQuatTimingNegate", &QuatOpsTest::testQuatTimingNegate ));
-      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>( "testQuatTimingMult", &QuatOpsTest::testQuatTimingMult ));
-      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>( "testQuatTimingLerp", &QuatOpsTest::testQuatTimingLerp ));
-      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>( "testQuatTimingOperatorMult", &QuatOpsTest::testQuatTimingOperatorMult ));
-      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>( "testQuatTimingVectorMult", &QuatOpsTest::testQuatTimingVectorMult ));
-      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>( "testQuatTimingDiv", &QuatOpsTest::testQuatTimingDiv ));
-      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>( "testQuatTimingVectorAdd", &QuatOpsTest::testQuatTimingVectorAdd ));
-      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>( "testQuatTimingVectorSub", &QuatOpsTest::testQuatTimingVectorSub ));
-      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>( "testQuatTimingVectorDot", &QuatOpsTest::testQuatTimingVectorDot ));
-      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>( "testQuatTimingNorm", &QuatOpsTest::testQuatTimingNorm ));
-      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>( "testQuatTimingMag", &QuatOpsTest::testQuatTimingMag ));
-      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>( "testQuatTimingNormalize", &QuatOpsTest::testQuatTimingNormalize ));
-      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>( "testQuatTimingConj", &QuatOpsTest::testQuatTimingConj ));
-      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>( "testQuatTimingInvert", &QuatOpsTest::testQuatTimingInvert ));
-      return test_suite;
-   }
-   
-   static CppUnit::Test* interactiveSuite()
-   {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite( "InteractiveThreadTest" );
-      //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>( "interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind ));
-      return test_suite;
-   }
+   public:
+      void testQuatTimingNegate();
+      void testQuatTimingOperatorMinus();
+      void testQuatTimingMult();
+      void testQuatTimingOperatorMult();
+      void testQuatTimingDiv();
+      void testQuatTimingLerp();
+      void testQuatTimingVectorMult();
+      void testQuatTimingVectorAdd();
+      void testQuatTimingVectorSub();
+      void testQuatTimingVectorDot();
+      void testQuatTimingNorm();
+      void testQuatTimingMag();
+      void testQuatTimingNormalize();
+      void testQuatTimingConj();
+      void testQuatTimingInvert();
+   };
+}
 
-protected:
-
-};
-
-};
+#endif

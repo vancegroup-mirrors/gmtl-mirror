@@ -19,20 +19,20 @@ sources = Split("""
    MatrixCompareTest
    MatrixGenTest
    MatrixOpsTest
+   OutputTest
+   PlaneTest
+   PointTest
+   QuatClassTest
+   QuatCompareTest
+   QuatGenTest
+   QuatOpsTest
+   QuatStuffTest
 
    TriTest
    SphereTest
 """)
 
 #sources = Split("""
-#   OutputTest
-#   PlaneTest
-#   PointTest
-#   QuatClassTest
-#   QuatCompareTest
-#   QuatGenTest
-#   QuatOpsTest
-#   QuatStuffTest
 #   VecBaseTest
 #   VecGenTest
 #   VecTest

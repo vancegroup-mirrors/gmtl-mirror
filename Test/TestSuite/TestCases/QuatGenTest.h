@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatGenTest.h,v $
- * Date modified: $Date: 2002-07-02 02:07:02 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2003-02-06 01:12:27 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -18,8 +18,7 @@
 * Copyright (C) 2001,2002 Allen Bierbaum
 *
 * This library is free software; you can redistribute it and/or
-* modify it under th MathPrimitives  [PrimName]Ops.h  Vec & Point [100%] -ab
-Quat [] -km Transforquations XformInterface? Xform.h   Collision detection CollisionInterface? Intersection.h   Bounding volumes BoundingInterface? Containment.h   Math factories MathFactories Builder.h  e terms of the GNU Lesser General Public
+* modify it under the terms of the GNU Lesser General Public
 * License as published by the Free Software Foundation; either
 * version 2.1 of the License, or (at your option) any later version.
 *
@@ -33,99 +32,66 @@ Quat [] -km Transforquations XformInterface? Xform.h   Collision detection Colli
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 *
  ************************************************************ ggt-cpr end */
-#include <iostream>
+#ifndef _GMTL_QUAT_GEN_TEST_H_
+#define _GMTL_QUAT_GEN_TEST_H_
 
-#include <cppunit/TestCase.h>
-#include <cppunit/TestSuite.h>
-#include <cppunit/TestCaller.h>
-
-#include <gmtl/Vec.h>
-#include <gmtl/VecOps.h>
-#include <gmtl/Quat.h>
-#include <gmtl/QuatOps.h>
-#include <gmtl/Generate.h>
-
+#include <cppunit/extensions/HelperMacros.h>
 
 /// @todo test/timing on makeRot( quat ) (euler version)
 
 namespace gmtlTest
 {
-
-class QuatGenTest : public CppUnit::TestCase
-{
-public:
-   QuatGenTest( std::string name = "QuatGenTest" )
-   : CppUnit::TestCase (name)
-   {;}
-
-   virtual ~QuatGenTest()
-   {}
-
-   virtual void setUp()
-   {;}
-
-   virtual void tearDown()
+   /**
+    * Functionality tests
+    */
+   class QuatGenTest : public CppUnit::TestCase
    {
-   }
+      CPPUNIT_TEST_SUITE(QuatGenTest);
 
-   void output( gmtl::Quat<float> q )
+      CPPUNIT_TEST(testQuatMakePure);
+      CPPUNIT_TEST(testQuatMakeConj);
+      CPPUNIT_TEST(testQuatMakeInvert);
+      CPPUNIT_TEST(testQuatMakeRot);
+      CPPUNIT_TEST(testQuatGetRot);
+      CPPUNIT_TEST(testQuatMakeGetMakeRot);
+
+      CPPUNIT_TEST_SUITE_END();
+
+   public:
+      void testQuatMakePure();
+      void testQuatMakeConj();
+      void testQuatMakeInvert();
+      void testQuatMakeRot();
+      void testQuatGetRot();
+      void testQuatMakeGetMakeRot();
+   };
+
+   /**
+    * Metric tests.
+    */
+   class QuatGenMetricTest : public CppUnit::TestCase
    {
-      std::cout<<q[0]<<" "<<q[1]<<" "<<q[2]<<" "<<q[3]<<std::endl;
-   }
+      CPPUNIT_TEST_SUITE(QuatGenMetricTest);
 
-   //-- quat tests --//
-   void testQuatMakePure();
-   void testQuatMakeConj();
-   void testQuatMakeInvert();
-   void testQuatMakeRot();
-   void testQuatGetRot();
-   void testQuatMakeGetMakeRot();
+      CPPUNIT_TEST(testGenTimingMakeInvert1);
+      CPPUNIT_TEST(testGenTimingMakeInvert2);
+      CPPUNIT_TEST(testGenTimingMakeConj);
+      CPPUNIT_TEST(testGenTimingMakePure);
+      CPPUNIT_TEST(testGenTimingMakeNormalQuat);
+      CPPUNIT_TEST(testGenTimingMakeRot);
+      CPPUNIT_TEST(testGenTimingSetRot);
 
-   //-- timing tests --//
-   void testGenTimingMakeInvert1();
-   void testGenTimingMakeInvert2();
-   void testGenTimingMakeConj();
-   void testGenTimingMakePure();
-   void testGenTimingMakeNormalQuat();
-   void testGenTimingMakeRot();
-   void testGenTimingSetRot();
+      CPPUNIT_TEST_SUITE_END();
 
-   /** @todo implement quat makeRot Euler */
-   static CppUnit::Test* suite()
-   {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite( "QuatGenTest" );
-      test_suite->addTest( new CppUnit::TestCaller<QuatGenTest>( "testQuatMakePure", &QuatGenTest::testQuatMakePure ) );
-      test_suite->addTest( new CppUnit::TestCaller<QuatGenTest>( "testQuatMakeConj", &QuatGenTest::testQuatMakeConj ) );
-      test_suite->addTest( new CppUnit::TestCaller<QuatGenTest>( "testQuatMakeInvert", &QuatGenTest::testQuatMakeInvert ) );
-      test_suite->addTest( new CppUnit::TestCaller<QuatGenTest>( "testQuatMakeRot", &QuatGenTest::testQuatMakeRot ) );
-      test_suite->addTest( new CppUnit::TestCaller<QuatGenTest>( "testQuatGetRot", &QuatGenTest::testQuatGetRot ) );
-      test_suite->addTest( new CppUnit::TestCaller<QuatGenTest>( "testQuatMakeGetMakeRot", &QuatGenTest::testQuatMakeGetMakeRot ) );
-      
-      return test_suite;
-   }
+   public:
+      void testGenTimingMakeInvert1();
+      void testGenTimingMakeInvert2();
+      void testGenTimingMakeConj();
+      void testGenTimingMakePure();
+      void testGenTimingMakeNormalQuat();
+      void testGenTimingMakeRot();
+      void testGenTimingSetRot();
+   };
+}
 
-   static CppUnit::Test* perfSuite()
-   {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("QuatGenTiming");
-      test_suite->addTest( new CppUnit::TestCaller<QuatGenTest>( "testGenTimingMakeInvert1", &QuatGenTest::testGenTimingMakeInvert1 ) );
-      test_suite->addTest( new CppUnit::TestCaller<QuatGenTest>( "testGenTimingMakeInvert2", &QuatGenTest::testGenTimingMakeInvert2 ) );
-      test_suite->addTest( new CppUnit::TestCaller<QuatGenTest>( "testGenTimingMakeConj", &QuatGenTest::testGenTimingMakeConj ) );
-      test_suite->addTest( new CppUnit::TestCaller<QuatGenTest>( "testGenTimingMakePure", &QuatGenTest::testGenTimingMakePure ) );
-      test_suite->addTest( new CppUnit::TestCaller<QuatGenTest>( "testGenTimingMakeNormalQuat", &QuatGenTest::testGenTimingMakeNormalQuat ) );
-      test_suite->addTest( new CppUnit::TestCaller<QuatGenTest>( "testGenTimingMakeRot", &QuatGenTest::testGenTimingMakeRot ) );
-      test_suite->addTest( new CppUnit::TestCaller<QuatGenTest>( "testGenTimingSetRot", &QuatGenTest::testGenTimingSetRot ) );
-      return test_suite;
-   }
-   
-   static CppUnit::Test* interactiveSuite()
-   {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite( "InteractiveThreadTest" );
-      //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>( "interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
-      return test_suite;
-   }
-
-protected:
-
-};
-
-};
+#endif

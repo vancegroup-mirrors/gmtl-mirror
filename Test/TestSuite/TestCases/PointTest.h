@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PointTest.h,v $
- * Date modified: $Date: 2002-07-02 02:07:02 $
- * Version:       $Revision: 1.12 $
+ * Date modified: $Date: 2003-02-06 01:12:27 $
+ * Version:       $Revision: 1.13 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -32,96 +32,64 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 *
  ************************************************************ ggt-cpr end */
-#include <iostream>
+#ifndef _GMTL_POINT_TEST_H_
+#define _GMTL_POINT_TEST_H_
 
-#include <cppunit/TestCase.h>
-#include <cppunit/TestSuite.h>
-#include <cppunit/TestCaller.h>
+#include <cppunit/extensions/HelperMacros.h>
 
 namespace gmtlTest
 {
-
-class PointTest : public CppUnit::TestCase
-{
-public:
-   PointTest( std::string name = "PointTest" )
-   : CppUnit::TestCase (name)
-   {;}
-
-   virtual ~PointTest()
-   {}
-
-   virtual void setUp()
-   {;}
-
-   virtual void tearDown()
+   /**
+    * Functionality tests
+    */
+   class PointTest : public CppUnit::TestFixture
    {
-   }
+      CPPUNIT_TEST_SUITE(PointTest);
 
-   void testCreation();
-   void testCopyConstruct();
-   void testConstructors();
+      CPPUNIT_TEST(testCreation);
+      CPPUNIT_TEST(testCopyConstruct);
+      CPPUNIT_TEST(testConstructors);
+      CPPUNIT_TEST(testSet);
+      CPPUNIT_TEST(testSetPtr);
+      CPPUNIT_TEST(testGetData);
+      CPPUNIT_TEST(testEqualityCompare);
+      CPPUNIT_TEST(testIsEqual);
+      CPPUNIT_TEST(testOpPlusEq);
+      CPPUNIT_TEST(testOpPlus);
+      CPPUNIT_TEST(testOpMinusEq);
+      CPPUNIT_TEST(testOpMinus);
+      CPPUNIT_TEST(testOpMultScalarEq);
+      CPPUNIT_TEST(testOpMultScalar);
+      CPPUNIT_TEST(testOpDivScalarEq);
+      CPPUNIT_TEST(testOpDivScalar);
 
-   void testSet();
-   void testSetPtr();
-   void testGetData();
+      CPPUNIT_TEST_SUITE_END();
 
-   // -- Test comparison -- //
-   void testEqualityCompare();
-   void testIsEqual();
+   public:
+      void testCreation();
+      void testCopyConstruct();
+      void testConstructors();
 
-   // ---------------------------------- //
-   // ---------- Math ops -------------- //
-   // ---------------------------------- //
-   void testOpPlusEq();
-   void testOpPlus();
-   void testOpMinusEq();
-   void testOpMinus();
-   void testOpMultScalarEq();
-   void testOpMultScalar();
-   void testOpDivScalarEq();
-   void testOpDivScalar();
+      void testSet();
+      void testSetPtr();
+      void testGetData();
 
-   static CppUnit::Test* suite()
-   {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("PointTest");
-      test_suite->addTest( new CppUnit::TestCaller<PointTest>("testCreation", &PointTest::testCreation));
-      test_suite->addTest( new CppUnit::TestCaller<PointTest>("testCopyConstruct", &PointTest::testCopyConstruct));
-      test_suite->addTest( new CppUnit::TestCaller<PointTest>("testConstructors", &PointTest::testConstructors));
-      test_suite->addTest( new CppUnit::TestCaller<PointTest>("testSet", &PointTest::testSet));
-      test_suite->addTest( new CppUnit::TestCaller<PointTest>("testSetPtr", &PointTest::testSetPtr));
-      test_suite->addTest( new CppUnit::TestCaller<PointTest>("testGetData", &PointTest::testGetData));
-      test_suite->addTest( new CppUnit::TestCaller<PointTest>("testEqualityCompare", &PointTest::testEqualityCompare));
-      test_suite->addTest( new CppUnit::TestCaller<PointTest>("testIsEqual", &PointTest::testIsEqual));
+      // -- Test comparison -- //
+      void testEqualityCompare();
+      void testIsEqual();
 
-      test_suite->addTest( new CppUnit::TestCaller<PointTest>("testOpPlusEq", &PointTest::testOpPlusEq));
-      test_suite->addTest( new CppUnit::TestCaller<PointTest>("testOpPlus", &PointTest::testOpPlus));
-      test_suite->addTest( new CppUnit::TestCaller<PointTest>("testOpMinusEq", &PointTest::testOpMinusEq));
-      test_suite->addTest( new CppUnit::TestCaller<PointTest>("testOpMinus", &PointTest::testOpMinus));
-      test_suite->addTest( new CppUnit::TestCaller<PointTest>("testOpMultScalarEq", &PointTest::testOpMultScalarEq)); 
-      test_suite->addTest( new CppUnit::TestCaller<PointTest>("testOpMultScalar", &PointTest::testOpMultScalar)); 
-      test_suite->addTest( new CppUnit::TestCaller<PointTest>("testOpDivScalarEq", &PointTest::testOpDivScalarEq)); 
-      test_suite->addTest( new CppUnit::TestCaller<PointTest>("testOpDivScalar", &PointTest::testOpDivScalar)); 
+      // ---------------------------------- //
+      // ---------- Math ops -------------- //
+      // ---------------------------------- //
+      void testOpPlusEq();
+      void testOpPlus();
+      void testOpMinusEq();
+      void testOpMinus();
+      void testOpMultScalarEq();
+      void testOpMultScalar();
+      void testOpDivScalarEq();
+      void testOpDivScalar();
+   };
+}
 
-
-      return test_suite;
-   }
-
-   static CppUnit::Test* perfSuite()
-   {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("PointTiming");
-      return test_suite;
-   }
-   
-   static CppUnit::Test* interactiveSuite()
-   {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractivePointTest");
-      //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
-      return test_suite;
-   }
-
-protected:
-
-};
-
-};
+#endif
