@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Math.h,v $
- * Date modified: $Date: 2002-03-15 03:26:56 $
- * Version:       $Revision: 1.16 $
+ * Date modified: $Date: 2002-03-15 15:28:49 $
+ * Version:       $Revision: 1.17 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -42,6 +42,13 @@
 
 namespace gmtl
 {
+
+/** Rotation order enums */
+enum RotationOrder
+{
+   XYZ, ZYX, ZXY
+};
+
 
 namespace Math
 {
