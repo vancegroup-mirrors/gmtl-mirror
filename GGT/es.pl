@@ -1,5 +1,7 @@
 #!/usr/bin/perl -w
 
+# $Id: es.pl,v 1.2 2002-01-18 22:27:39 allenb Exp $
+
 require 5.004;
 
 use Cwd qw(chdir getcwd);
@@ -10,10 +12,11 @@ use Getopt::Long;
 use strict 'vars';
 use vars qw($indent $log_file $full_path $debug_level);
 use vars qw($CRITICAL_LVL $WARNING_LVL $CONFIG_LVL $STATE_LVL $VERB_LVL
-            $HVERB_LVL);
+            $HVERB_LVL $HEX_LVL);
 
 # Subroutine prototypes.
 sub printHelp();
+sub printVersion();
 sub parse($$);
 sub parseModule($$$;$);
 sub handleInclude($$$);
@@ -26,9 +29,19 @@ sub checkoutModule($$$$$$$);
 sub expandEnvVars($);
 sub printDebug($@);
 
-my ($cfg_file, $help) = ('', '');
-my (@overrides)       = ();
-my (%cmd_overrides)   = ();
+# *********************************************************************
+# Here is the version for this script!
+
+my $VERSION = '0.0.2';
+# *********************************************************************
+
+my $cfg_file      = '';
+my $help          = 0;
+my $print_version = 0;
+my $verbose       = 0;
+
+my (@overrides)     = ();
+my (%cmd_overrides) = ();
 
 $CRITICAL_LVL = 0;
 $WARNING_LVL  = 1;
@@ -36,12 +49,22 @@ $CONFIG_LVL   = 2;
 $STATE_LVL    = 3;
 $VERB_LVL     = 4;
 $HVERB_LVL    = 5;
+$HEX_LVL      = 6;
 
 $debug_level = $CRITICAL_LVL;
 GetOptions('cfg=s' => \$cfg_file, 'help' => \$help, 'override=s' => \@overrides,
-           'debug=i' => \$debug_level, 'set=s' => \%cmd_overrides);
+           'debug=i' => \$debug_level, 'set=s' => \%cmd_overrides,
+           'version' => \$print_version, 'verbose' => \$verbose);
 
+# Print the help output and exit if --help was on the command line.
 printHelp() && exit(0) if $help;
+
+# Print the version number and exit if --version was on the command line.
+printVersion() && exit(0) if $print_version;
+
+# If we are doing verbose output and the user did not change the debug level,
+# then we push the debug level up to the max.
+$debug_level = $HVERB_LVL if $verbose && $debug_level <= $CRITICAL_LVL;
 
 if ( ! $cfg_file )
 {
@@ -164,6 +187,52 @@ exit 0;
 
 sub printHelp ()
 {
+   print <<EOF;
+Usage:
+    $0
+        [ --cfg=<filename> ] [ --override=<filename> ... ] [ --debug=<level> ]
+        [ --set <key>=<value> ... ] [ --verbose ]
+
+For application makefiles:
+
+    --help
+        Print usage information.
+
+    --cfg=<filename>
+        Specify the name of the module configuration to load. If not given,
+        the current directory is searched for a .esrc file. If one is not
+        found, the user's home directory is searched for the same file.
+
+    --debug=<level>
+        Set the debug output level (0-5).
+
+    --override=<filename>
+        Specify the name of an an override file used to override values set
+        by the loaded module configuration file. There may be zero or more of
+        these. If not specified, the current directory is searched for the
+        file .esrc-override. If not found, the user's home directory is
+        searched for the same file.
+
+    --set <key1>=<value1> --set <key2>=<value2> ... --set <keyN>=<valueN>
+        Override the setting for "key" with "value". This supercedes any
+        settings in the module configuration file and any loaded override
+        file. There may be zero or more of these.
+
+    --verbose
+        Turn on verbose output.  This basically makes the log file useless.
+
+    --version
+        Print the version number and exit.
+EOF
+
+   return 1;
+}
+
+sub printVersion ()
+{
+   print "$VERSION\n";
+
+   return 1;
 }
 
 sub parse ($$)
@@ -186,14 +255,16 @@ sub parse ($$)
    $cfg_data =~ s/#.*$//gm;      # Strip out shell-style comments
    $cfg_data =~ s|//.*$||gm;     # Strip out C++-style comments 
 
-   if ( $cfg_data =~ /\s*(\w.*?\w?)\s*{\s*(.*)\s*}\s*$/s )
+   while ( $cfg_data =~ /\s*(\w.*?\w?)\s*{\s*(.*?)\s*}\s*;\s*/s )
    {
       my $module_name = "$1";
       my $module_body = "$2";
+      $cfg_data       = $';
 
       local $indent = 0;
       print "Loading $module_name from $file ...\n";
-      parseModule("$module_body", "$module_name", $module_ref) or return 0;
+      my $parse_stat = parseModule("$module_body", "$module_name", $module_ref);
+      return 0 if $parse_stat == -1;
    }
 
    return $status;
@@ -223,6 +294,9 @@ sub parseModule ($$$;$)
 
    while ( "$module_body" ne "" && $status == 1 )
    {
+      printDebug $HEX_LVL, ">" x 78, "\nNew module body:\n$module_body\n",
+                           "<" x 78, "\n";
+
       SWITCH:
       {
          # Matched an include.
@@ -313,8 +387,8 @@ sub parseModule ($$$;$)
             return $';
          }
 
-         warn "Parse error";
-         $status = 0;
+         warn "Parse error\n";
+         $status = -1;
       }
 
       $module_body =~ s/^\s+(\S*)/$1/s;
@@ -624,7 +698,15 @@ sub checkoutModule ($$$$$$$)
       my $cwd = getcwd();
       mkdir("$path", 0755) unless -d "$path";
       chdir("$path") if $path;
-      print LOG_FILE `$cmd_line 2>&1`;
+
+      if ( $verbose )
+      {
+         print `$cmd_line 2>&1`;
+      }
+      else
+      {
+         print LOG_FILE `$cmd_line 2>&1`;
+      }
 
       if ( $install_name )
       {
@@ -667,8 +749,16 @@ sub checkoutModule ($$$$$$$)
          }
 
          printDebug $VERB_LVL, "$orig_module_name --> $co_dir/$install_name\n";
-         rename("$orig_module_name", "$co_dir/$install_name")
-            or warn "    WARNING: Module renaming failed: $!\n";
+
+         if ( -d "$co_dir/$install_name" )
+         {
+            warn "    WARNING: Module renaming failed--target directory already exists!\n";
+         }
+         else
+         {
+            rename("$orig_module_name", "$co_dir/$install_name")
+               or warn "    WARNING: Module renaming failed: $!\n";
+         }
       }
 
       print "Done\n";
@@ -694,5 +784,5 @@ sub expandEnvVars ($)
 sub printDebug ($@)
 {
    my $level = shift;
-   print STDERR @_ if $debug_level > $level;
+   print STDERR @_ if $debug_level >= $level;
 }
