@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# $Id: cvs-gather.pl,v 1.1 2002-02-01 17:22:13 patrickh Exp $
+# Id: cvs-gather.pl,v 1.12 2002/02/07 18:53:21 patrick Exp
 
 require 5.004;
 
@@ -32,13 +32,14 @@ sub printDebug($@);
 # *********************************************************************
 # Here is the version for this script!
 
-my $VERSION = '0.0.3';
+my $VERSION = '0.0.4';
 # *********************************************************************
 
 my $cfg_file      = '';
 my $help          = 0;
 my $print_version = 0;
 my $verbose       = 0;
+my $force_install = 0;
 
 my (@overrides)     = ();
 my (%cmd_overrides) = ();
@@ -54,7 +55,8 @@ $HEX_LVL      = 6;
 $debug_level = $CRITICAL_LVL;
 GetOptions('cfg=s' => \$cfg_file, 'help' => \$help, 'override=s' => \@overrides,
            'debug=i' => \$debug_level, 'set=s' => \%cmd_overrides,
-           'version' => \$print_version, 'verbose' => \$verbose);
+           'version' => \$print_version, 'verbose' => \$verbose,
+           'force-install' => \$force_install);
 
 # Print the help output and exit if --help was on the command line.
 printHelp() && exit(0) if $help;
@@ -217,6 +219,11 @@ For application makefiles:
         Override the setting for "key" with "value". This supercedes any
         settings in the module configuration file and any loaded override
         file. There may be zero or more of these.
+
+    --force-install
+        When re-downloading a module, force removal of the existing
+        directory.  Without this option, a warning is printed, and the
+        existing directory is not removed.
 
     --verbose
         Turn on verbose output.  This basically makes the log file useless.
@@ -785,12 +792,13 @@ sub checkoutModule ($$$$$$$)
 
          printDebug $VERB_LVL, "$orig_module_name --> $co_dir/$install_name\n";
 
-         if ( -d "$co_dir/$install_name" )
+         if ( -d "$co_dir/$install_name" && ! $force_install )
          {
             warn "    WARNING: Module renaming failed--target directory already exists!\n";
          }
          else
          {
+            rmtree("$co_dir/$install_name") if $force_install;
             printDebug $STATE_LVL, "Moving $orig_module_name to " .
                                    "$co_dir/$install_name\n";
             rename("$orig_module_name", "$co_dir/$install_name")
