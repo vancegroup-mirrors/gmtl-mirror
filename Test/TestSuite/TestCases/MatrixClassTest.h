@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixClassTest.h,v $
- * Date modified: $Date: 2002-03-21 21:38:52 $
- * Version:       $Revision: 1.13 $
+ * Date modified: $Date: 2002-03-21 21:43:33 $
+ * Version:       $Revision: 1.14 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -61,17 +61,7 @@ public:
    {
    }
 
-   void testTimingDefaultConstructor();
-   void testTimingCopyConstructor();
-
-   void testTimingOpEqual();
-   void testTimingOpParen();
-   void testTimingOpBracket();
-
-   void testTimingSetPtr();
-   void testTimingSetTransposePtr();
-   void testTimingGetData();
-   void testTimingSet();
+   // correctness tests
 
    // test out operations using identity matrix
    void testMatrixIdentity();
@@ -91,18 +81,23 @@ public:
    void testMatrix23Creation();
    void testMatrix22Creation();
 
+   // performance tests
+   void testTimingDefaultConstructor();
+   void testTimingCopyConstructor();
+
+   void testTimingOpEqual();
+   void testTimingOpParen();
+   void testTimingOpBracket();
+
+   void testTimingSetPtr();
+   void testTimingSetTransposePtr();
+   void testTimingGetData();
+   void testTimingSet();
+
+
    static CppUnit::Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("MatrixClassTest");
-      test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testTimingDefaultConstructor", &MatrixClassTest::testTimingDefaultConstructor));
-      test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testTimingCopyConstructor", &MatrixClassTest::testTimingCopyConstructor));
-      test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testTimingOpEqual", &MatrixClassTest::testTimingOpEqual));
-      test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testTimingOpParen", &MatrixClassTest::testTimingOpParen));
-      test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testTimingOpBracket", &MatrixClassTest::testTimingOpBracket));
-      test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testTimingSetPtr", &MatrixClassTest::testTimingSetPtr));
-      test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testTimingSetTransposePtr", &MatrixClassTest::testTimingSetTransposePtr));
-      test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testTimingGetData", &MatrixClassTest::testTimingGetData));
-      test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testTimingSet", &MatrixClassTest::testTimingSet));
       test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testMatrixIdentity", &MatrixClassTest::testMatrixIdentity));
       test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testMatrixSetPtr", &MatrixClassTest::testMatrixSetPtr));
       test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testMatrixSetTransposePtr", &MatrixClassTest::testMatrixSetTransposePtr));
@@ -112,6 +107,23 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testMatrix23Creation", &MatrixClassTest::testMatrix23Creation));
       test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testMatrix22Creation", &MatrixClassTest::testMatrix22Creation));
       
+      return test_suite;
+   }
+
+   static CppUnit::Test* perfSuite()
+   {
+      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("MatrixClassPerfTest");
+
+      test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testTimingDefaultConstructor", &MatrixClassTest::testTimingDefaultConstructor));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testTimingCopyConstructor", &MatrixClassTest::testTimingCopyConstructor));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testTimingOpEqual", &MatrixClassTest::testTimingOpEqual));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testTimingOpParen", &MatrixClassTest::testTimingOpParen));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testTimingOpBracket", &MatrixClassTest::testTimingOpBracket));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testTimingSetPtr", &MatrixClassTest::testTimingSetPtr));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testTimingSetTransposePtr", &MatrixClassTest::testTimingSetTransposePtr));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testTimingGetData", &MatrixClassTest::testTimingGetData));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testTimingSet", &MatrixClassTest::testTimingSet));
+
       return test_suite;
    }
 
