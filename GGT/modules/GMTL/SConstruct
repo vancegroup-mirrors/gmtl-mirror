@@ -126,7 +126,10 @@ def BuildIRIXEnvironment():
 def BuildWin32Environment():
    env = Environment(ENV = os.environ)
    for t in ['msvc', 'mslink']:
-      Tool(i)(env)
+      Tool(t)(env)
+
+   # We need exception handling support turned on for Boost.Python.
+   env['CXXFLAGS'] += '/EHsc'
 
    return env
 
@@ -160,7 +163,11 @@ def ValidateBoostOption(key, value, environ):
 
       # Check on the libraries that I need to use
       if enable_python:
-         boost_python_lib_name = pj(value, 'lib', 'libboost_python.a')
+         if GetPlatform() == 'win32':
+            boost_python_lib_name = pj(value, 'lib', 'boost_python.dll')
+         else:
+            boost_python_lib_name = pj(value, 'lib', 'libboost_python.a')
+
          if not os.path.isfile(boost_python_lib_name):
             print "[%s] not found."%boost_python_lib_name
             Exit()
@@ -202,15 +209,29 @@ def ValidatePythonOption(key, value, environ):
             return False
 
          py_cmd = python + ' -c \'import sys; print sys.prefix; print sys.version[:3]\''
-         (prefix, py_ver) = string.split(os.popen(py_cmd).read())
+         prefix = ''
+         py_ver = ''
+
+         # XXX: Something is broken with trying to use os.popen() on Windows.
+         # This is a hack to work around that until something real can be
+         # found to fix it.  Basically, this makes the assumption that the
+         # Python installation being used to invoke scons is the same as the
+         # one against which PyGMTL will be compiled.
+         if GetPlatform() == 'win32':
+            (prefix, py_ver) = (sys.prefix, sys.version[:3])
+         else:
+            (prefix, py_ver) = string.split(os.popen(py_cmd).read())
 
          # Version must match
-         if py_ver != str(required_version):
+         if float(py_ver) < required_version:
             print 'WARNING: Python version ' + py_ver + ' != ' + str(required_version)
             enable_python = False
          else:
             # Build up the env information
-            environ.Append(PythonCPPPATH = [pj(prefix, 'include', 'python'+py_ver)])
+            if GetPlatform() == 'win32':
+               environ.Append(PythonCPPPATH = [pj(prefix, 'include')])
+            else:
+               environ.Append(PythonCPPPATH = [pj(prefix, 'include', 'python'+py_ver)])
    else:
       assert False, "Invalid Python key"
 
