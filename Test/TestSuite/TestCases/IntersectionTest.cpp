@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: IntersectionTest.cpp,v $
- * Date modified: $Date: 2003-05-15 16:53:14 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2003-09-09 01:25:49 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -194,21 +194,21 @@ namespace gmtlTest
 	   {
 		   gmtl::LineSegf seg( gmtl::Point3f( 0,-1,0 ), gmtl::Vec3f( 0,-1,0 ) );
 		   res = gmtl::intersect( plane, seg, d );
-		   assert( res == false );
+		   CPPUNIT_ASSERT( res == false );
 	   }
 	   // not long enough
 	   {
 		   gmtl::LineSegf seg( gmtl::Point3f( 0,5,0 ), gmtl::Vec3f( 0,-2.5,0 ) );
 		   res = gmtl::intersect( plane, seg, d );
-		   assert( res == false );
-		   assert( d == 2.0f );
+		   CPPUNIT_ASSERT( res == false );
+		   CPPUNIT_ASSERT( d == 2.0f );
 	   }
 	   // through
 	   {
 		   gmtl::LineSegf seg( gmtl::Point3f( 0,5,0 ), gmtl::Vec3f( 0,-10,0 ) );
 		   res = gmtl::intersect( plane, seg, d );
-		   assert( res == true );
-		   assert( d == 0.5f );
+		   CPPUNIT_ASSERT( res == true );
+		   CPPUNIT_ASSERT( d == 0.5f );
 	   }
    }
    
@@ -222,14 +222,14 @@ namespace gmtlTest
 	   {
 		   gmtl::Rayf ray( gmtl::Point3f( 0,5,0 ), gmtl::Vec3f( 0,-1,0 ) );
 		   res = gmtl::intersect( plane, ray, d );
-		   assert( res == true );
-		   assert( d == 5.0f );
+		   CPPUNIT_ASSERT( res == true );
+		   CPPUNIT_ASSERT( d == 5.0f );
 	   }
 	   // behind
 	   {
 		   gmtl::Rayf ray( gmtl::Point3f( 0,-1,0 ), gmtl::Vec3f( 0,-1,0 ) );
 		   res = gmtl::intersect( plane, ray, d );
-		   assert( res == false );
+		   CPPUNIT_ASSERT( res == false );
 	   }
    }
 

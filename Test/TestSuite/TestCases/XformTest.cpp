@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: XformTest.cpp,v $
- * Date modified: $Date: 2003-05-10 21:18:54 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2003-09-09 01:25:49 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -347,16 +347,16 @@ namespace gmtlTest
       // test xform
       gmtl::LineSegf result;
       gmtl::xform( result, matrix, seg );
-      assert( gmtl::isEqual( expected, result, 0.0001f ) );
+      CPPUNIT_ASSERT( gmtl::isEqual( expected, result, 0.0001f ) );
       
       // test operator*
       result = matrix * seg;
-      assert( gmtl::isEqual( expected, result, 0.0001f ) );
+      CPPUNIT_ASSERT( gmtl::isEqual( expected, result, 0.0001f ) );
       
       // test operator*=
       result = seg;
       result *= matrix;
-      assert( gmtl::isEqual( expected, result, 0.0001f ) );
+      CPPUNIT_ASSERT( gmtl::isEqual( expected, result, 0.0001f ) );
    }
    
    void XformTest::testMatRayXform()
@@ -373,16 +373,16 @@ namespace gmtlTest
       // test xform
       gmtl::Rayf result;
       gmtl::xform( result, matrix, seg );
-      assert( gmtl::isEqual( expected, result, 0.0001f ) );
+      CPPUNIT_ASSERT( gmtl::isEqual( expected, result, 0.0001f ) );
       
       // test operator*
       result = matrix * seg;
-      assert( gmtl::isEqual( expected, result, 0.0001f ) );
+      CPPUNIT_ASSERT( gmtl::isEqual( expected, result, 0.0001f ) );
       
       // test operator*=
       result = seg;
       result *= matrix;
-      assert( gmtl::isEqual( expected, result, 0.0001f ) );
+      CPPUNIT_ASSERT( gmtl::isEqual( expected, result, 0.0001f ) );
    }
 
    void XformTest::testMatVecXform()
