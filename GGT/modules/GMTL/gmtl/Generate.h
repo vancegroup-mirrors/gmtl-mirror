@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-05-06 06:25:42 $
- * Version:       $Revision: 1.47 $
+ * Date modified: $Date: 2002-05-09 19:19:32 $
+ * Version:       $Revision: 1.48 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -64,6 +64,22 @@ namespace gmtl
 {
    /** @addtogroup Generate */
    //@{
+   
+   /** @name Matrix makers */
+   //@{
+   /** Make a matrix from another matrix type using convert
+   * This allows us to automatically convert from gmtl::matrix to any
+   * other matrix type that has a convert function defined
+   * @see OpenSGGenerate.h for an example
+   */
+   template <typename TARGET_MATRIX_TYPE, typename SOURCE_MATRIX_TYPE>
+   inline TARGET_MATRIX_TYPE makeMatrix( const SOURCE_MATRIX_TYPE& src_mat, Type2Type< TARGET_MATRIX_TYPE > t = Type2Type< TARGET_MATRIX_TYPE >() )
+   {
+      TARGET_MATRIX_TYPE target_mat;
+      return convert( target_mat, src_mat );
+   }
+   //@}
+
    
    /** @name Vec Generators */
    //@{
