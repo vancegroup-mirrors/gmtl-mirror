@@ -1,5 +1,6 @@
 DATE       AUTHOR       CHANGE
 ---------- --------     --------------------------------------------------------
+2002-11-25 nonchocoboy  Added a quadratic formula solver to the Math lib.
 2002-11-02 nonchocoboy  Compile fix for Containment.h - missing <vector> include
 2002-11-01 nonchocoboy  Added sweep test for AABox.
                         NEW VERSION: 0.1.12

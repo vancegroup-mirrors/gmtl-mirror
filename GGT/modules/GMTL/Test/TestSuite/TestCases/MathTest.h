@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MathTest.h,v $
- * Date modified: $Date: 2002-07-02 02:07:01 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-11-26 05:10:28 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -63,6 +63,23 @@ public:
    {
    }
 
+   void testQuadraticFormula()
+   {
+      float r1, r2;
+
+      // Real roots
+      CPPUNIT_ASSERT(gmtl::Math::quadraticFormula(r1, r2, 1.0f, 3.0f, 2.0f));
+      CPPUNIT_ASSERT(r1 == -1);
+      CPPUNIT_ASSERT(r2 == -2);
+
+      CPPUNIT_ASSERT(gmtl::Math::quadraticFormula(r1, r2, 1.0f, 5.0f, 6.0f));
+      CPPUNIT_ASSERT(r1 == -2);
+      CPPUNIT_ASSERT(r2 == -3);
+
+      // Imaginary roots
+      CPPUNIT_ASSERT(! gmtl::Math::quadraticFormula(r1, r2, 1.0f, 2.0f, 3.0f));
+   }
+
    template< class T >
    void testZeroClamp()
    {
@@ -104,6 +121,7 @@ public:
    static CppUnit::Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("MathTest");
+      test_suite->addTest(new CppUnit::TestCaller<MathTest>("testQuadraticFormula", &MathTest::testQuadraticFormula));
 // work around buggy VC7
 #ifndef _WIN32
       test_suite->addTest(new CppUnit::TestCaller<MathTest>("testZeroClampFloat", &MathTest::testZeroClamp<float>));
