@@ -9,11 +9,15 @@ usage u help h:
 	@echo "- gmake guide-txt  (for gmtl programmer guide: txt)"
 	@echo "- gmake man        (for man page reference)"
 	@echo "- gmake ref        (for html reference manual)"
+	@echo "- gmake ref-pdf    (for html reference manual)"
 	@echo "- gmake clean      (remove everything that was built)"
 	@echo ""
 
-reference ref r html:
+reference ref r rh:
 	doxygen gmtl.doxy
+
+ref-pdf rp:
+	doxygen gmtl.latex.doxy
 
 manpage man m:
 	doxygen gmtl.man.doxy
