@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Output.h,v $
- * Date modified: $Date: 2002-08-23 23:09:22 $
- * Version:       $Revision: 1.12 $
+ * Date modified: $Date: 2002-10-11 10:34:23 $
+ * Version:       $Revision: 1.13 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -44,6 +44,7 @@
 #include <gmtl/Plane.h>
 #include <gmtl/Sphere.h>
 #include <gmtl/EulerAngle.h>
+#include <gmtl/AABox.h>
 
 namespace gmtl
 {
@@ -51,7 +52,7 @@ namespace gmtl
     *  @name Output Stream Operators
     */
    //@{
-   
+
    /**
     * Outputs a string representation of the given VecBase type to the given
     * output stream. This works for both Point and Vec types. The output is
@@ -153,7 +154,7 @@ namespace gmtl
     *       Point<int, 3>(4,5,6),
     *       Point<int, 3>(7,8,9)
     *    )
-    * will appear as "(1, 2, 3), (4, 5, 6), (7, 8, 9)". 
+    * will appear as "(1, 2, 3), (4, 5, 6), (7, 8, 9)".
     *
     * @param out     the stream to write to
     * @param t       the Tri to output
@@ -206,6 +207,28 @@ namespace gmtl
    std::ostream& operator<<( std::ostream& out, const Sphere<DATA_TYPE> &s )
    {
       out << s.mCenter << ", " << s.mRadius;
+      return out;
+   }
+
+   /**
+    * Outputs a string representation of the given AABox to the given output
+    * stream. The output is formatted such that
+    *    AABox<int>(
+    *       Point<int, 3>(1,2,3),
+    *       Point<int, 3>(4,5,6)
+    *    )
+    * will appear as "(1,2,3) (4,5,6) false".
+    *
+    * @param out     the stream to write to
+    * @param b       the AABox to output
+    *
+    * @return  out after it has been written to
+    */
+   template< typename DATA_TYPE >
+   std::ostream& operator<<( std::ostream& out, const AABox<DATA_TYPE>& b)
+   {
+      out << b.mMin << " " << b.mMax << " ";
+      out << (b.mEmpty ? "true" : "false");
       return out;
    }
    //@}
