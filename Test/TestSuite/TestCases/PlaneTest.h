@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PlaneTest.h,v $
- * Date modified: $Date: 2002-03-10 04:00:39 $
- * Version:       $Revision: 1.14 $
+ * Date modified: $Date: 2002-03-11 18:20:09 $
+ * Version:       $Revision: 1.15 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -89,7 +89,7 @@ public:
       for( long iter=0;iter<iters; ++iter)
       {
          gmtl::Plane<float> test_plane2;
-         test_plane.mOffset = 1.0f;
+         test_plane2.mOffset = 1.0f;
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
@@ -156,7 +156,7 @@ public:
       for( long iter=0;iter<iters; ++iter)
       {
          gmtl::Plane<float> test_plane2( x1_v, z1_pt );
-         test_plane.mOffset = 1.0f;
+         test_plane2.mOffset = 1.0f;
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
@@ -176,7 +176,7 @@ public:
       for( long iter=0;iter<iters; ++iter)
       {
          gmtl::Plane<float> test_plane2( x1_v, 25.0f );
-         test_plane.mOffset = 1.0f;
+         test_plane2.mOffset = 1.0f;
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
@@ -196,7 +196,7 @@ public:
       for( long iter=0;iter<iters; ++iter)
       {
          gmtl::Plane<float> test_plane2( test_plane );
-         test_plane.mOffset = 1.0f;
+         test_plane2.mOffset = 1.0f;
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
