@@ -7,8 +7,8 @@ dnl   Allen Bierbaum
 dnl
 dnl -----------------------------------------------------------------
 dnl File:          $RCSfile: gmtl.m4,v $
-dnl Date modified: $Date: 2002-06-04 21:23:55 $
-dnl Version:       $Revision: 1.8 $
+dnl Date modified: $Date: 2002-06-04 21:31:47 $
+dnl Version:       $Revision: 1.9 $
 dnl -----------------------------------------------------------------
 dnl
 dnl ************************************************************** ggt-head end
@@ -62,7 +62,7 @@ AC_DEFUN(GMTL_PATH,
    AC_ARG_WITH(gmtl-prefix,
                [  --with-gmtl-prefix=<PATH>
                           Prefix where GMTL is installed  [default=$2]],
-               [GMTL_ROOT="$withval"], [GMTL_ROOT=""])
+               [GMTL_ROOT="$withval"], [GMTL_ROOT=$2])
    AC_ARG_WITH(gmtl-includes,
                [  --with-gmtl-includes=<DIR>
                           GMTL header file directory      [default=$2/include]],
