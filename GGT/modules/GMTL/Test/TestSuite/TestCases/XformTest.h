@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: XformTest.h,v $
- * Date modified: $Date: 2002-02-22 22:33:58 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-02-25 19:06:06 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -72,7 +72,7 @@ public:
          n += name;
          gmtl::Quatf<T> q1( (T)1, (T)2, (T)3, (T)4 );
          gmtl::Vec<T, 3> v1( (T)8, (T)9, (T)10 ), v2( (T)5, (T)6, (T)7 );
-         const long iters(400000);
+         const long iters(50000);
          CPPUNIT_METRIC_START_TIMING();
          bool result = false;
          for (long iter = 0; iter < iters; ++iter)
@@ -81,7 +81,20 @@ public:
          }
          CPPUNIT_METRIC_STOP_TIMING();
          CPPUNIT_ASSERT_METRIC_TIMING_LE( n.c_str(), iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
-      }   
+         duh1 = v1[2];
+         
+         n = "XformTest/xform(vec,quat4,vec3)";
+         n += name;
+         CPPUNIT_METRIC_START_TIMING();
+         for (long iter = 0; iter < iters; ++iter)
+         {
+            gmtl::xform( v1, q1, v2 );
+         }
+         CPPUNIT_METRIC_STOP_TIMING();
+         CPPUNIT_ASSERT_METRIC_TIMING_LE( n.c_str(), iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+         duh2 = v1[0];
+      }
+      static T duh1, duh2;
    };
 
    void xformQuatVec3()
