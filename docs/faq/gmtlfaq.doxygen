@@ -15,13 +15,14 @@
  *
  *
  *
- *  <b>Why do you use namespaces?</b>
+ *  <b>What's with these namespaces?</b>
+ *  
  *
  *
  *
- *
- *  <b>Why would I want to use your C math abstraction rather than the regular C math headers?
- *
+ *  <b>Why would I want to use GMTL's C math abstraction rather than the regular 
+ *  C math headers?</b>
+ *  
  *
  *
  *
@@ -104,6 +105,9 @@
  *  mathematical properties of quaternions, including the ability of spherical
  *  interpolation.  
  *  
+ *  <b>How is data represented in a matrix?</b>
+ *  GMTL matrices are represented in the same way that OpenGL represents data
+ *  in a matrix, in column major order. 
  *
  *  @section Howto How Do I ...?
  *
@@ -111,26 +115,177 @@
  *  <b>How do I rotate a vector?</b>
  *  <b>How do I find the cross product of 2 vectors?</b>
  *  <b>How do I find the dot product of 2 vectors?</b>
+ *  <b>How do I normalize a vector?</b>
+ *  <b>How do I find the length of a vector?</b>
  *
  *  @subsection Matrices Matrices
  *  <b>How do I multiply matrices?</b>
+ *
+ *
+ *
+ *
+ *
+ *
  *  <b>How do I create a matrix?</b>
+ *
+ *
+ *
+ *
+ *
+ *
  *  <b>How do I create a matrix from a vector?</b>
+ *  Using the makeTrans function, you can create a purely translational matrix 
+ *  from a vector. 
+ *
+ *  gmtl::Vec3f myVec;
+ *  gmtl::Matrix44f myMat = gmtl::makeTrans< gmtl::Matrix44f >( myVec );
+ *
+ *
  *  <b>How do I create a matrix from a point?</b>
+ *  Using the make function, you can create a purely translational matrix from a
+ *  point. 
+ *
+ *  gmtl::Point3f myPoint;
+ *  gmtl::Matrix44f myMat = gmtl::make< gmtl::Matrix44f >( myPoint );
+ *
+ *
  *  <b>How do I create a matrix from a quaterion?</b>
+ *  Using the make function, you can create a purely rotational matrix from a
+ *  quaternion object. 
+ *
+ *  gmtl::Quatf myQuat;
+ *  gmtl::Matrix44f myMat = gmtl::make< gmtl::Matrix44f >( myQuat );
+ *
+ *
  *  <b>How do I create a matrix from an Euler angle?</b>
+ *  Using the make function, you can create a purely rotational matrix from an
+ *  EulerAngle object. 
+ *
+ *  gmtl::EulerAngleXYZf myEulerAngle;
+ *  gmtl::Matrix44f myMat = gmtl::make< gmtl::Matrix44f >( myEulerAngle );
+ *
+ *
+ *
  *  <b>How do I create a matrix from an axis angle?</b>
+ *  Using the make function, you can create a purely rotational matrix from an
+ *  AxisAngle object. 
+ *
+ *  gmtl::AxisAnglef myAxisAngle;
+ *  gmtl::Matrix44f myMat = gmtl::make< gmtl::Matrix44f >( myAxisAngle );
+ *
+ *
  *  <b>How do I scale a matrix?</b>
+ *  gmtl::Matrix44f myMat;
+ *  float scale = 0.5;
+ *
+ *  gmtl::setScale( myMat, scale );
+ *
+ *
+ *
+ *
+ *
  *  <b>How do I copy a matrix?</b>
+ *  You can simply use the '=' operator to copy from one matrix to another.
+ * 
+ *  gmtl::Matrix44f matA, matB;
+ *  matA = matB;
+ *
+ *
  *  <b>How do I extract just the rotation data from a matrix?</b>
+ *  You can extract the rotational data as any of GMTL's rotation data types.
+ *  In any case, you need to use the makeRot templated function. Note that you
+ *  need to specify which rotation data type you want to extract.
+ *
+ *  gmtl::Matrix44f myMat;
+ *  gmtl::EulerAngleXYZf myEuler;
+ *  gmtl::AxisAnglef myAxisAngle;
+ *  gmtl::Quatf myQuat;
+ *  gmtl::Matrix44f myRotationMat;
+ *
+ *  myEuler = gmtl::makeRot< gmtl::EulerAngleXYZf >( myMat );
+ *  myAxisAngle = gmtl::makeRot< gmtl::AxisAnglef >( myMat );
+ *  myQuat = gmtl::makeRot< gmtl::Quatf >( myMat );
+ *  myRotationMat = gmtl::makeRot< gmtl::EulerAngleXYZf >( myMat );
+ *
+ * 
  *  <b>How do I extract just the translation data from a matrix?</b>
+ *  You can extract the translational data as either a vector or a point.
+ *  You need to use the templated makeTrans function.
+ *
+ *  gmtl::Matrix44f myMat;
+ *  gmtl::Point3f myPoint;
+ *  gmtl::Vec3f myVec;
+ * 
+ *  myVec = gmtl::makeTrans< gmtl::Vec3f >( myMat );
+ *  myPoint = gmtl::makeTrans< gmtl::Point3f >( myMat );
+ *
+ *
  *  <b>How do I extract the scale from a matrix?</b>
+ *
+ *
+ *
+ *
+ *
+ *
  *  <b>How do I set a matrix to be the identity matrix?</b>
+ *  Matrices will automatically be identity matrices upon creation. If you
+ *  want to set them to the identity later, use the identity function.
+ *  
+ *  gmtl::Matrix44f myMat;
+ *  gmtl::identity( myMat );
+ *
+ *  <b>How do I set a matrix to contain all zeros?</b>
+ *  gmtl::Matrix44f myMat;
+ *  gmtl::zero( myMat );
+ *
+ *  <b>How do I invert a matrix?</b>
+ *  In most cases you can simply use the invert function. This will perform a
+ *  "smart" inversion that selects an inversion method (full, affine, 
+ *  orthonormal, orthogonal, or identity) based on the kinds of transformations
+ *  it has been through.
+ * 
+ *  gmtl::Matrix44f myMat;
+ *  gmtl::invert( myMat );
+ *
+ *  You can optionally force a full inversion by using the invertFull function.
+ * 
+ *  gmtl::invertFull( myMat );
+ *
+ * 
  *  <b>How do I transform a point using a matrix?</b>
+ *  This will perform a full transformation on the point.
+ *
+ *  gmtl::Point3f myPoint;
+ *  gmtl::Matrix44f myMat;
+ *  gmtl::xform( myPoint, myMat, myPoint );
+ *
+ *
  *  <b>How do I transform a vector using a matrix?</b>
+ *  It is important to note that a vector will only be modified by the
+ *  rotational transformation contained in a matrix.
+ *
+ *  gmtl::Vec3f myVec;
+ *  gmtl::Matrix44f myMat;
+ *  gmtl::xform( myVec, myMat, myVec ); 
+ *
+ *
+ *
  *  <b>How do I use my matrix data with OpenGL?</b>
+ *  You can access the raw matrix data for use with OpenGL using the getData()
+ *  function.  For instance, you may want to multiply the OpenGL matrix stack
+ *  by a GMTL matrix.
+ *  
+ *  gmtl::Matrix44f myMat;
+ *  glMultMatrixf( myMat.getData() );
+ *
+ *
  *  <b>How do I use my matrix data with DirectX?</b>
-
+ *
+ *
+ *
+ *
+ *
+ *
  *  @subsection Quaternions Quaternions
  *
  *  @subsection General General Math
@@ -138,5 +293,12 @@
  *  <b>What operations does GMTL's C math abstraction have?</b>
  *  <b>What about PI?</b>
  *  <b>How do I get the ceiling of a floating point number?</b>
+
  *  <b>How do I convert from degrees to radians?</b>
+ *  float degrees = 90;
+ *  float radians = gmtl::Math::deg2Rad( degrees );
+ *
  *  <b>How do I convert from radians to degrees?</b>
+ *  float radians = 1.57;
+ *  float degrees = gmtl::Math::rad2Deg( radians );
+ * 
