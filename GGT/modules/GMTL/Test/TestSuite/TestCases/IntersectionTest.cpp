@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: IntersectionTest.cpp,v $
- * Date modified: $Date: 2003-09-09 01:25:49 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2004-07-21 18:44:19 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -90,9 +90,9 @@ namespace gmtlTest
 
       CPPUNIT_ASSERT(true_count > 0.0f);
    }
-   
-   
-   
+
+
+
    void IntersectionTest::testIntersectAABoxPoint()
    {
       // Test point in box
@@ -103,7 +103,7 @@ namespace gmtlTest
       }
 
       //////////
-      
+
       // test point on edge (bottom face)
       {
          gmtl::AABoxf box1(gmtl::Point3f(-1,-1,-1), gmtl::Point3f(0,0,0));
@@ -140,7 +140,7 @@ namespace gmtlTest
          gmtl::Point3f point(gmtl::Point3f(-0.5f,-0.5,-1.0f));
          CPPUNIT_ASSERT(gmtl::intersect(box1, point));
       }
-      
+
       /////////
 
       // test point outside (bottom face)
@@ -179,58 +179,111 @@ namespace gmtlTest
          gmtl::Point3f point(gmtl::Point3f(-0.5f,-0.5,-1.01f));
          CPPUNIT_ASSERT(!gmtl::intersect(box1, point));
       }
-      
-      // @todo, could use more rigorous testing here, test all sides of the box, 
+
+      // @todo, could use more rigorous testing here, test all sides of the box,
       //        in and out and on the edges...
    }
 
    void IntersectionTest::testIntersectLineSegPlane()
    {
-	   gmtl::Planef plane( gmtl::Vec3f( 0,1,0 ), 0 );
-	   
-	   float d;
-	   bool res;
-	   // behind
-	   {
-		   gmtl::LineSegf seg( gmtl::Point3f( 0,-1,0 ), gmtl::Vec3f( 0,-1,0 ) );
-		   res = gmtl::intersect( plane, seg, d );
-		   CPPUNIT_ASSERT( res == false );
-	   }
-	   // not long enough
-	   {
-		   gmtl::LineSegf seg( gmtl::Point3f( 0,5,0 ), gmtl::Vec3f( 0,-2.5,0 ) );
-		   res = gmtl::intersect( plane, seg, d );
-		   CPPUNIT_ASSERT( res == false );
-		   CPPUNIT_ASSERT( d == 2.0f );
-	   }
-	   // through
-	   {
-		   gmtl::LineSegf seg( gmtl::Point3f( 0,5,0 ), gmtl::Vec3f( 0,-10,0 ) );
-		   res = gmtl::intersect( plane, seg, d );
-		   CPPUNIT_ASSERT( res == true );
-		   CPPUNIT_ASSERT( d == 0.5f );
-	   }
+      gmtl::Planef plane( gmtl::Vec3f( 0,1,0 ), 0 );
+      
+      float d;
+      bool res;
+      const float eps(0.0001f);
+      // behind
+      {
+         gmtl::LineSegf seg( gmtl::Point3f( 0,-1,0 ), gmtl::Vec3f( 0,-1,0 ) );
+         res = gmtl::intersect( plane, seg, d );
+         CPPUNIT_ASSERT( res == false );
+      }
+      // not long enough
+      {
+         gmtl::LineSegf seg( gmtl::Point3f( 0,5,0 ), gmtl::Vec3f( 0,-2.5,0 ) );
+         res = gmtl::intersect( plane, seg, d );
+         CPPUNIT_ASSERT( res == false );
+         CPPUNIT_ASSERT( d == 2.0f );
+      }
+      // through
+      {
+         gmtl::LineSegf seg( gmtl::Point3f( 0,5,0 ), gmtl::Vec3f( 0,-10,0 ) );
+         res = gmtl::intersect( plane, seg, d );
+         CPPUNIT_ASSERT( res == true );
+         CPPUNIT_ASSERT( d == 0.5f );
+      }
+      // parallel - Shoot seg parallel to plane
+      {
+         gmtl::Rayf ray( gmtl::Point3f(0,1,0), gmtl::Vec3f(1,0,0));
+         res = gmtl::intersect(plane, ray, d);
+         CPPUNIT_ASSERT( res == false);
+         CPPUNIT_ASSERT_DOUBLES_EQUAL(d,0,eps);
+      }
+      // parallel - On plane - Shoot ray parallel to plane on plane
+      {
+         gmtl::LineSegf seg( gmtl::Point3f(0,0,0), gmtl::Vec3f(1,0,0));
+         res = gmtl::intersect(plane, seg, d);
+         CPPUNIT_ASSERT( res == true);
+         CPPUNIT_ASSERT_DOUBLES_EQUAL(d,0,eps);
+      }
    }
-   
+
    void IntersectionTest::testIntersectRayPlane()
    {
-	   gmtl::Planef plane( gmtl::Vec3f( 0,1,0 ), 0 );
+      float d(0.0f);
+      const float eps(0.0001f);
+      bool res(false);
 
-	   float d;
-	   bool res;
-	   // through
-	   {
-		   gmtl::Rayf ray( gmtl::Point3f( 0,5,0 ), gmtl::Vec3f( 0,-1,0 ) );
-		   res = gmtl::intersect( plane, ray, d );
-		   CPPUNIT_ASSERT( res == true );
-		   CPPUNIT_ASSERT( d == 5.0f );
-	   }
-	   // behind
-	   {
-		   gmtl::Rayf ray( gmtl::Point3f( 0,-1,0 ), gmtl::Vec3f( 0,-1,0 ) );
-		   res = gmtl::intersect( plane, ray, d );
-		   CPPUNIT_ASSERT( res == false );
-	   }
+      // Plane at origin
+      {
+         gmtl::Planef plane( gmtl::Vec3f( 0,1,0 ), 0 );     // Define plane on origin pointing up
+
+         // through - Shoot ray from +5y straight down at plane
+         //       should hit with t = 5
+         {
+            gmtl::Rayf ray( gmtl::Point3f( 0,5,0 ), gmtl::Vec3f( 0,-1,0 ) );
+            res = gmtl::intersect( plane, ray, d );
+            CPPUNIT_ASSERT( res == true );
+            CPPUNIT_ASSERT( d == 5.0f );
+         }
+         // behind - Shoot ray from -1y straight down.  Should miss
+         {
+            gmtl::Rayf ray( gmtl::Point3f( 0,-1,0 ), gmtl::Vec3f( 0,-1,0 ) );
+            res = gmtl::intersect( plane, ray, d );
+            CPPUNIT_ASSERT( res == false );
+         }
+         // parallel - Shoot ray parallel to plane
+         {
+            gmtl::Rayf ray( gmtl::Point3f(0,1,0), gmtl::Vec3f(1,0,0));
+            res = gmtl::intersect(plane, ray, d);
+            CPPUNIT_ASSERT( res == false);
+            CPPUNIT_ASSERT_DOUBLES_EQUAL(d,0,eps);
+         }
+         // parallel - On plane - Shoot ray parallel to plane on plane
+         {
+            gmtl::Rayf ray( gmtl::Point3f(0,0,0), gmtl::Vec3f(1,0,0));
+            res = gmtl::intersect(plane, ray, d);
+            CPPUNIT_ASSERT( res == true);
+            CPPUNIT_ASSERT_DOUBLES_EQUAL(d,0,eps);
+         }
+      }
+
+      // Plane off origin - 45 degree angle off
+      {
+         gmtl::Planef plane( gmtl::Point3f(1,0,0), gmtl::Point3f(0,1,0), gmtl::Point3f(0,0,1));
+
+         // send ray from origin orthogonal
+         {
+            gmtl::Rayf ray( gmtl::Point3f(0,0,0), gmtl::Vec3f(1,1,1));
+            res = gmtl::intersect( plane, ray, d);
+            CPPUNIT_ASSERT( res == true);
+            CPPUNIT_ASSERT_DOUBLES_EQUAL(d,0.3333, 0.01);
+
+            gmtl::Rayf miss_ray(gmtl::Point3f(0,0,0), gmtl::Vec3f(-1,-1,-1));
+            res = gmtl::intersect( plane, miss_ray, d);
+            CPPUNIT_ASSERT( res == false);
+         }
+      }
+
    }
 
    void IntersectionMetricTest::testTimingIntersectAABoxPoint()
