@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecB.h,v $
- * Date modified: $Date: 2004-09-01 15:56:42 $
- * Version:       $Revision: 1.1.2.1 $
+ * Date modified: $Date: 2004-09-01 19:26:37 $
+ * Version:       $Revision: 1.1.2.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -44,155 +44,6 @@
 namespace gmtl
 {
 
-namespace meta
-{
-// Expression templates for vectors
-//
-// NOTE: These could probably be optimized more in the future
-
-// Concepts:
-//
-// VectorExpression:
-//    types:
-//    interface:
-//       TYPE eval(unsigned i):  Returns evaluation of expression at elt i
-
-template<typename T>
-struct VecArgTraits
-{
-   typedef T const& ExprRef;
-};
-
-
-/** template to hold argument reference that is a vector. */
-template <typename VEC_TYPE>
-struct VecArg
-{
-   typedef typename VEC_TYPE::DataType DataType;
-   const VEC_TYPE& mVecArg;
-
-   inline VecArg(const VEC_TYPE& vArg) : mVecArg(vArg) {}
-   inline DataType eval(const unsigned i) const
-   {  return mVecArg[i]; }
-};
-
-template <typename VEC_TYPE>
-inline VecArg<VEC_TYPE> makeVecArg(VEC_TYPE vec)
-{ return VecArg<VEC_TYPE>(vec); }
-
-/** template to hold a scalar argument. */
-template <typename T>
-struct ScalarArg
-{
-   typedef T DataType;
-
-   const T mScalar;
-
-   inline ScalarArg(const T scalar) : mScalar(scalar) {}
-   inline T eval(const unsigned i) const
-   { return mScalar; }
-};
-
-template <typename T>
-inline ScalarArg<T> makeScalarArg(T val)
-{ return ScalarArg<T>(val); }
-
-// -- Expressions -- //
-/** Base expression.  Used for Barton-Nackman style trick.
-* It allows other methods to be parameterized for only Expressions instead of every
-* type under the sun.
-*/
-/*
-template <typename EXP_TYPE>
-struct VecExpr
-{
-   typedef EXP_TYPE ExpressionType;
-
-   inline const ExpressionType& impl() const
-   { return *static_cast<const ExpressionType *> (this); }
-
-   ExpressionType& impl()
-   { return *static_cast<ExpressionType*> (this); }
-};
-*/
-
-/** Binary vector expression.
-*/
-template <typename EXP1_T, typename EXP2_T, typename OP>
-struct VecBinaryExpr //: public VecExpr< VecBinaryExpr<EXP1_T, EXP2_T, OP> >
-{
-   typedef typename EXP1_T::DataType DataType;
-
-   const EXP1_T Exp1;
-   const EXP2_T Exp2;
-
-   inline VecBinaryExpr(const EXP1_T& e1, const EXP2_T& e2) : Exp1(e1), Exp2(e2) {;}
-   inline DataType eval(const unsigned i) const
-   { return OP::eval(Exp1.eval(i), Exp2.eval(i)); }
-};
-
-/** Unary vector expression.
-*/
-template <typename EXP1_T, typename OP>
-struct VecUnaryExpr //: public VecExpr< VecUnaryExpr<EXP1_T, OP> >
-{
-   typedef typename EXP1_T::DataType DataType;
-
-   const EXP1_T Exp1;
-
-   inline VecUnaryExpr(const EXP1_T& e1) : Exp1(e1) {;}
-   inline DataType eval(const unsigned i) const
-   { return OP::eval(Exp1.eval(i)); }
-};
-
-// --- Operations --- //
-struct VecPlusBinary
-{
-   template <typename T>
-   static inline T eval(const T& a1, const T& a2)
-   { return a1+a2; }
-};
-
-
-template<typename VEC_TYPE, typename EXP1_T, typename EXP2_T, typename OP>
-inline void AssignVec(VEC_TYPE& vec, const VecBinaryExpr<EXP1_T,EXP2_T,OP>& exp)
-{
-   for(unsigned i=0;i<unsigned(VEC_TYPE::Size);++i)
-   { vec[i] = exp.eval(i); }
-}
-
-template<typename VEC_TYPE, typename EXP1_T, typename OP>
-inline void AssignVec(VEC_TYPE& vec, const VecUnaryExpr<EXP1_T,OP>& exp)
-{
-   for(unsigned i=0;i<unsigned(VEC_TYPE::Size);++i)
-   {  vec[i] = exp.eval(i); }
-}
-
-
-template<typename EXP1_T, typename EXP2_T>
-inline VecBinaryExpr<EXP1_T, EXP2_T, VecPlusBinary >
-SumVec(const EXP1_T& e1, const EXP2_T& e2)
-{
-   return VecBinaryExpr<EXP1_T, EXP2_T, VecPlusBinary >(e1, e2);
-}
-
-template<typename T, unsigned SIZE>
-inline VecBinaryExpr< VecArg<gmtl::Vec<T,SIZE> >, VecArg<gmtl::Vec<T,SIZE> >, VecPlusBinary>
-SumVec(const gmtl::Vec<T,SIZE>& v1, const gmtl::Vec<T,SIZE>& v2)
-{
-   return VecBinaryExpr< VecArg<gmtl::Vec<T,SIZE> >,
-                         VecArg<gmtl::Vec<T,SIZE> >,
-                         VecPlusBinary>(makeVecArg(v1), makeVecArg(v2));
-}
-
-} // meta
-} // gmtl
-
-namespace gm = gmtl::meta;
-
-namespace gmtl
-{
-
 struct DefaultVecTag
 {;};
 
@@ -208,6 +59,9 @@ struct DefaultVecTag
 template<class DATA_TYPE, unsigned SIZE, typename REP=DefaultVecTag>
 class VecB
 {
+protected:
+   const REP  expRep;      // The expression rep
+
 public:
    /// The datatype used for the components of this VecB.
    typedef DATA_TYPE DataType;
@@ -216,60 +70,25 @@ public:
    enum Params { Size = SIZE };
 
 public:
-   /**
-    * Default constructor.
-    * Does nothing, leaves data alone.
-    * This is for performance because this constructor is called by derived class constructors
-    * Even when they just want to set the data directly
-    */
    VecB()
-   {
-#ifdef GMTL_COUNT_CONSTRUCT_CALLS
-      gmtl::helpers::VecCtrCounterInstance()->inc();
-#endif
-   }
+   {;}
+
+   VecB(const REP& rep)
+      : expRep(rep)
+   {;}
 
 
-   /**
-    * Makes an exact copy of the given VecB object.
-    *
-    * @param rVec    the VecB object to copy
-    */
-   VecB(const VecB<DATA_TYPE, SIZE>& rVec)
-   {
-#ifdef GMTL_COUNT_CONSTRUCT_CALLS
-      gmtl::helpers::VecCtrCounterInstance()->inc();
-#endif
-      /*
-      for(unsigned i=0;i<SIZE;++i)
-         mData[i] = rVec.mData[i];
-      */
-      gmtl::meta::AssignVecUnrolled<SIZE-1, VecB<DATA_TYPE,SIZE> >::func(*this, rVec);
-   }
-
-
-   //@{
-   /**
-    * Gets the ith component in this VecB.
-    *
-    * @param i    the zero-based index of the component to access.
-    * @pre i < SIZE
-    *
-    * @return  a reference to the ith component
-    */
-   inline DATA_TYPE& operator [](const unsigned i)
+   /** Return the value at given location. */
+   inline DATA_TYPE operator [](const unsigned i)
    {
       gmtlASSERT(i < SIZE);
-      //return mData[i];
+      return expRep[i];
    }
-   inline const DATA_TYPE&  operator [](const unsigned i) const
+   inline const DATA_TYPE  operator [](const unsigned i) const
    {
       gmtlASSERT(i < SIZE);
-      //return mData[i];
+      return expRep[i];
    }
-   //@}
-
-public:
 };
 
 
@@ -283,6 +102,7 @@ class VecB<DATA_TYPE, SIZE, DefaultVecTag>
 public:
    /// The datatype used for the components of this VecB.
    typedef DATA_TYPE DataType;
+   typedef VecB<DATA_TYPE, SIZE, DefaultVecTag> VecType;
 
    /// The number of components this VecB has.
    enum Params { Size = SIZE };
@@ -410,6 +230,28 @@ public:
    }
    //@}
 
+   /** Assign from another of same type. */
+   inline VecType& operator=(const VecType&  rhs)
+   {
+      for(unsigned i=0;i<SIZE;++i)
+      {
+         mData[i] = rhs[i];
+      }
+      return *this;
+   }
+
+   /** Assign from different rep. */
+   template<typename REP2>
+   inline VecType& operator=(const VecB<DATA_TYPE,SIZE,REP2>& rhs)
+   {
+      for(unsigned i=0;i<SIZE;++i)
+      {
+         mData[i] = rhs[i];
+      }
+      return *this;
+   }
+
+
    //@{
    /**
     * Gets the internal array of the components.
@@ -430,5 +272,152 @@ public:
 
 
 };
+
+namespace gmtl
+{
+
+namespace meta
+{
+// Expression templates for vectors
+//
+// NOTE: These could probably be optimized more in the future
+
+// Concepts:
+//
+// VectorExpression:
+//    types:
+//    interface:
+//       TYPE eval(unsigned i):  Returns evaluation of expression at elt i
+
+template<typename T>
+struct VecArgTraits
+{
+   typedef T const& ExprRef;
+};
+
+
+/** template to hold argument reference that is a vector. */
+/*
+template <typename VEC_TYPE>
+struct VecArg
+{
+   typedef typename VEC_TYPE::DataType DataType;
+   const VEC_TYPE& mVecArg;
+
+   inline VecArg(const VEC_TYPE& vArg) : mVecArg(vArg) {}
+   inline DataType operator[](const unsigned i) const
+   {  return mVecArg[i]; }
+};
+
+template <typename VEC_TYPE>
+inline VecArg<VEC_TYPE> makeVecArg(VEC_TYPE vec)
+{ return VecArg<VEC_TYPE>(vec); }
+*/
+
+/** template to hold a scalar argument. */
+template <typename T>
+struct ScalarArg
+{
+   typedef T DataType;
+
+   const T mScalar;
+
+   inline ScalarArg(const T scalar) : mScalar(scalar) {}
+   inline T operator[](const unsigned i) const
+   { return mScalar; }
+};
+
+template <typename T>
+inline ScalarArg<T> makeScalarArg(T val)
+{ return ScalarArg<T>(val); }
+
+// -- Expressions -- //
+/** Binary vector expression.
+*/
+template <typename EXP1_T, typename EXP2_T, typename OP>
+struct VecBinaryExpr //: public VecExpr< VecBinaryExpr<EXP1_T, EXP2_T, OP> >
+{
+   typedef typename EXP1_T::DataType DataType;
+
+   const EXP1_T& Exp1;
+   const EXP2_T& Exp2;
+
+   inline VecBinaryExpr(const EXP1_T& e1, const EXP2_T& e2) : Exp1(e1), Exp2(e2) {;}
+   inline DataType operator[](const unsigned i) const
+   { return OP::eval(Exp1[i], Exp2[i]); }
+};
+
+/** Unary vector expression.
+*/
+template <typename EXP1_T, typename OP>
+struct VecUnaryExpr //: public VecExpr< VecUnaryExpr<EXP1_T, OP> >
+{
+   typedef typename EXP1_T::DataType DataType;
+
+   const EXP1_T& Exp1;
+
+   inline VecUnaryExpr(const EXP1_T& e1) : Exp1(e1) {;}
+   inline DataType operator[](const unsigned i) const
+   { return OP::eval(Exp1[i]); }
+};
+
+// --- Operations --- //
+struct VecPlusBinary
+{
+   template <typename T>
+   static inline T eval(const T& a1, const T& a2)
+   { return a1+a2; }
+};
+
+template<typename T, unsigned SIZE, typename R1, typename R2>
+inline VecB<T,SIZE, VecBinaryExpr<VecB<T,SIZE,R1>, VecB<T,SIZE,R2>, VecPlusBinary> >
+sum(const VecB<T,SIZE,R1>& v1, const VecB<T,SIZE,R2>& v2)
+{
+   return VecB<T,SIZE,
+               VecBinaryExpr<VecB<T,SIZE,R1>,
+                             VecB<T,SIZE,R2>,
+                             VecPlusBinary> >( VecBinaryExpr<VecB<T,SIZE,R1>,
+                                                             VecB<T,SIZE,R2>,
+                                                             VecPlusBinary>(v1,v2) );
+}
+
+template<typename T, unsigned SIZE, typename R1>
+inline VecB<T,SIZE, VecBinaryExpr<VecB<T,SIZE,R1>, VecB<T,SIZE,ScalarArg<T> >, VecPlusBinary> >
+sum(const VecB<T,SIZE,R1>& v1, const T& arg)
+{
+   return VecB<T,SIZE,
+               VecBinaryExpr<VecB<T,SIZE,R1>,
+                             ScalarArg<T>,
+                             VecPlusBinary> >( VecBinaryExpr<VecB<T,SIZE,R1>,
+                                                             ScalarArg<T>,
+                                                             VecPlusBinary>(v1,ScalarArg<T>(arg)) );
+}
+
+
+
+
+/*
+template<typename EXP1_T, typename EXP2_T>
+inline VecBinaryExpr<EXP1_T, EXP2_T, VecPlusBinary >
+SumVec(const EXP1_T& e1, const EXP2_T& e2)
+{
+   return VecBinaryExpr<EXP1_T, EXP2_T, VecPlusBinary >(e1, e2);
+}
+
+
+template<typename T, unsigned SIZE>
+inline VecBinaryExpr< VecArg<gmtl::Vec<T,SIZE> >, VecArg<gmtl::Vec<T,SIZE> >, VecPlusBinary>
+SumVec(const gmtl::Vec<T,SIZE>& v1, const gmtl::Vec<T,SIZE>& v2)
+{
+   return VecBinaryExpr< VecArg<gmtl::Vec<T,SIZE> >,
+                         VecArg<gmtl::Vec<T,SIZE> >,
+                         VecPlusBinary>(makeVecArg(v1), makeVecArg(v2));
+}
+*/
+
+} // meta
+} // gmtl
+
+namespace gm = gmtl::meta;
 
 #endif

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.cpp,v $
- * Date modified: $Date: 2004-09-01 15:57:32 $
- * Version:       $Revision: 1.13.2.1 $
+ * Date modified: $Date: 2004-09-01 19:26:37 $
+ * Version:       $Revision: 1.13.2.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -54,7 +54,7 @@ namespace gmtlTest
    {
       gmtl::VecB<float,3>  vecb_1;
       gmtl::VecB<float,3>  vecb_2;
-      vecb_1[0] = 5.0f;    // assign
+      vecb_2[0] = 5.0f;    // assign
 
       gmtl::VecB<float,3>  vecb_3(vecb_2);   // Copy construct
       CPPUNIT_ASSERT(vecb_3[0] == 5.0f);
@@ -65,24 +65,53 @@ namespace gmtlTest
       vecb_2.mData[0] = 10;                  // Access data directly
       vecb_2.mData[1] = 12;
 
-      CPPUNIT_ASSERT(vecb_1[0] == 5.0f);
       CPPUNIT_ASSERT(vecb_2[1] == 12.0f);
 
+      vecb_1 = vecb_2;
+      CPPUNIT_ASSERT(vecb_1[1] == 12.0f);
 
+      gmtl::VecB<float,3,
+                 gm::VecBinaryExpr<gmtl::VecB<float,3>,
+                                   gmtl::VecB<float,3>,
+                                   gm::VecPlusBinary> > b_vec(gm::sum(vecb_1, vecb_2));
+
+      //unsigned ctr_count;
+
+      vecb_2[0] = 10.0f;
+      vecb_3[0] = 12.0f;
+      vecb_4[0] = 15.0f;
+
+      std::cout << "ctr cnt before v2+v3: " << gmtl::helpers::VecCtrCounterInstance()->get() << std::endl;
+
+      vecb_1 = gm::sum(vecb_2, vecb_3);
+      CPPUNIT_ASSERT(22.0f == vecb_1[0]);
+      std::cout << "ctr cnt after v2+v3: " << gmtl::helpers::VecCtrCounterInstance()->get() << std::endl;
+
+      std::cout << "ctr cnt before v2+v3+v4: " << gmtl::helpers::VecCtrCounterInstance()->get() << std::endl;
+      vecb_1 = gm::sum(gm::sum(vecb_2,vecb_3), vecb_4);
+      CPPUNIT_ASSERT(37.0f == vecb_1[0]);
+      std::cout << "ctr cnt after v2+v3+v4: " << gmtl::helpers::VecCtrCounterInstance()->get() << std::endl;
+
+      vecb_2.set(1,2,3);
+      vecb_1 = gm::sum(vecb_2, 10.0f);
+
+      CPPUNIT_ASSERT(11.0f == vecb_1[0]);
+      CPPUNIT_ASSERT(12.0f == vecb_1[1]);
+      CPPUNIT_ASSERT(13.0f == vecb_1[2]);
 
       /*
       gmtl::meta::VecArg<gmtl::Vec<float,3> > va1(test_vec1);
-         gmtl::meta::VecArg<gmtl::Vec<float,3> > va2(test_vec2);
-         gmtl::meta::SumVec(va1, va2);
+      gmtl::meta::VecArg<gmtl::Vec<float,3> > va2(test_vec2);
+      gmtl::meta::SumVec(va1, va2);
 
-         gmtl::meta::AssignVec(test_vec3, gmtl::meta::SumVec(va1, va2) );
+      gmtl::meta::AssignVec(test_vec3, gmtl::meta::SumVec(va1, va2) );
 
-         gmtl::meta::AssignVec(test_vec4, gmtl::meta::SumVec(
-                                                gmtl::meta::makeVecArg(test_vec1),
-                                                gmtl::meta::makeVecArg(test_vec2)) );
+      gmtl::meta::AssignVec(test_vec4, gmtl::meta::SumVec(
+                                             gmtl::meta::makeVecArg(test_vec1),
+                                             gmtl::meta::makeVecArg(test_vec2)) );
 
-         gmtl::meta::AssignVec(test_vec1, gmtl::meta::SumVec(test_vec2, test_vec3));
-         */
+      gmtl::meta::AssignVec(test_vec1, gmtl::meta::SumVec(test_vec2, test_vec3));
+      */
 
    }
 
