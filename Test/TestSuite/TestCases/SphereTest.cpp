@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: SphereTest.cpp,v $
- * Date modified: $Date: 2003-03-17 00:41:17 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2003-09-06 20:22:30 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -784,6 +784,14 @@ namespace gmtlTest
          bool result = gmtl::intersect( sphere, ray,  hits, t0, t1 );
          assert( result == false );
       }
+      // zero length ray inside sphere
+      {
+         gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
+         gmtl::Rayf ray( gmtl::Point3f( x, y, z ), gmtl::Vec3f( 0, 0, 0 ) );
+         bool result = gmtl::intersect( sphere, ray,  hits, t0, t1 );
+         assert( result == true );
+      }
+      
       
 
       
@@ -962,6 +970,14 @@ namespace gmtlTest
          bool result = gmtl::intersect( sphere, ray,  hits, t0, t1 );
          assert( result == false );
       }
+      // zero length seg inside sphere
+      {
+         gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
+         gmtl::LineSegf seg( gmtl::Point3f( x, y, z ), gmtl::Vec3f( 0, 0, 0 ) );
+         bool result = gmtl::intersect( sphere, seg,  hits, t0, t1 );
+         assert( result == true );
+      }
+ 
    }
 
    void SphereTest::testSphereIntersections()
