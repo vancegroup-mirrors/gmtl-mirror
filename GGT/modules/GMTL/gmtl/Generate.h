@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2003-04-01 15:34:28 $
- * Version:       $Revision: 1.71 $
+ * Date modified: $Date: 2003-04-02 13:59:50 $
+ * Version:       $Revision: 1.72 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -739,7 +739,7 @@ namespace gmtl
       float right = top * aspect; // aspect determines the fieald of view in the x-axis
       
       // TODO: args need to match...
-      setFrustum( result, -right, top, right, -top, nr, fr );
+      return setFrustum( result, -right, top, right, -top, nr, fr );
    }
 
 
