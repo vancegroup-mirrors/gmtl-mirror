@@ -239,5 +239,7 @@ env.ConfigBuilder('gmtl-config','gmtl-config.in',
 env.Depends('gmtl-config', 'gmtl/Version.h')
 env.Install(pj(PREFIX, 'bin'), 'gmtl-config')
 
+pkg.build()
+
 # Build everything by default
 Default('.')
