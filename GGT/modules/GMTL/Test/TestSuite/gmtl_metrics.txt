@@ -45,6 +45,17 @@ gfxn0/Debug/Main/MetricTest                                        1221.75
 gfxn0/Debug/MatrixCompareTest/IsEqualTest                          3.80046
 gfxn0/Debug/MatrixCompareTest/OpEqualityTest                       2.05208
 gfxn0/Debug/MatrixCompareTest/OpNotEqualityTest                    2.15451
+gfxn0/Debug/MatrixGenTest/MakeAxes33                               0.50865
+gfxn0/Debug/MatrixGenTest/MakeAxes34                               0.57219
+gfxn0/Debug/MatrixGenTest/MakeAxes44                               0.65857
+gfxn0/Debug/MatrixGenTest/MakeDirCos33                             1.71085
+gfxn0/Debug/MatrixGenTest/MakeDirCos34                             1.75774
+gfxn0/Debug/MatrixGenTest/MakeDirCos44                             1.89462
+gfxn0/Debug/MatrixGenTest/MakeRot33                                0.77808
+gfxn0/Debug/MatrixGenTest/MakeRot34                                0.84649
+gfxn0/Debug/MatrixGenTest/MakeRot44                                0.92081
+gfxn0/Debug/MatrixGenTest/MakeScale                                8.02954
+gfxn0/Debug/MatrixGenTest/MakeTrans                                4.47511
 gfxn0/Debug/MatrixOpsTest/Add44                                    1.23436
 gfxn0/Debug/MatrixOpsTest/Mult44                                   6.20366
 gfxn0/Debug/MatrixOpsTest/Mult44operatorStar                       7.26933
@@ -58,6 +69,7 @@ gfxn0/Debug/MatrixTest/OpEqualOverhead                             0.311412
 gfxn0/Debug/MatrixTest/OpParenOverhead                             0.137483
 gfxn0/Debug/MatrixTest/SetOverhead                                 0.24604
 gfxn0/Debug/MatrixTest/SetPtrOverhead                              0.704867
+gfxn0/Debug/MatrixTest/SetTransposePtrOverhead                     1.56801
 gfxn0/Debug/PlaneTest/CopyConstructOverhead                        0.0864825
 gfxn0/Debug/PlaneTest/DefaultCreationOverhead                      0.0672975
 gfxn0/Debug/PlaneTest/DistanceOverhead                             0.21783
@@ -66,6 +78,7 @@ gfxn0/Debug/PlaneTest/InequalityCompareOverhead                    0.164525
 gfxn0/Debug/PlaneTest/NormOffsetCreationOverhead                   0.0888325
 gfxn0/Debug/PlaneTest/NormPtCreationOverhead                       0.303055
 gfxn0/Debug/PlaneTest/ThreePtCreationOverhead                      1.61749
+gfxn0/Debug/PlaneTest/WhichSideOverhead                            0.223972
 gfxn0/Debug/PlaneTest/isEqualOverhead                              0.684995
 gfxn0/Debug/PointTest/ConstructorsOverhead                         0.229405
 gfxn0/Debug/PointTest/CopyConstructOverhead                        0.250337

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PlaneTest.h,v $
- * Date modified: $Date: 2002-02-18 23:53:19 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2002-02-20 20:30:47 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -348,30 +348,43 @@ public:
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("PlaneTest/DistanceOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
-/*
-   // --------------------------
-   // Dist and side tests
-   // --------------------------
+
    void testWhichSide()
    {
-      gmtl::Plane::Side answer;
+      gmtl::Plane<float>::Side answer;
 
-      answer = xy_plane.whichSide(gmtl::Point3(0.0,0.0,1.0));
-      CPPUNIT_ASSERT(answer == gmtl::Plane::POS_SIDE);
+      answer = gmtl::whichSide(xy_plane, gmtl::Point<float, 3>(0.0,0.0,1.0));
+      CPPUNIT_ASSERT( answer == gmtl::Plane<float>::POS_SIDE );
 
-      answer = xy_plane.whichSide(gmtl::Point3(0.0,0.0,-12.0f));
-      CPPUNIT_ASSERT(answer == gmtl::Plane::NEG_SIDE);
+      answer = gmtl::whichSide(xy_plane, gmtl::Point<float, 3>(0.0,0.0,-12.0f));
+      CPPUNIT_ASSERT( answer == gmtl::Plane<float>::NEG_SIDE );
 
-      answer = zx_plane.whichSide(gmtl::Point3(0.0,1e-10f,0.0f));
-      CPPUNIT_ASSERT(answer == gmtl::Plane::POS_SIDE);
+      answer = gmtl::whichSide(zx_plane, gmtl::Point<float, 3>(0.0,1e-10f,0.0f));
+      CPPUNIT_ASSERT( answer == gmtl::Plane<float>::POS_SIDE );
 
-      answer = zx_plane.whichSide(gmtl::Point3(0.0,-1e-10f,0.0f));
-      CPPUNIT_ASSERT(answer == gmtl::Plane::NEG_SIDE);
+      answer = gmtl::whichSide(zx_plane, gmtl::Point<float, 3>(0.0,-1e-10f,0.0f));
+      CPPUNIT_ASSERT( answer == gmtl::Plane<float>::NEG_SIDE );
 
-      answer = xy_plane.whichSide(gmtl::Point3(0.0,0.0,0.0));
-      CPPUNIT_ASSERT(answer == gmtl::Plane::ON_PLANE);
+      answer = gmtl::whichSide(xy_plane, gmtl::Point<float, 3>(0.0,0.0,0.0));
+      CPPUNIT_ASSERT( answer == gmtl::Plane<float>::ON_PLANE );
+
+      // Test whichSide performance
+      const long iters(400000);
+      bool true_count(0);
+
+      // -- Equality
+      CPPUNIT_METRIC_START_TIMING();
+
+      for( long iter=0; iter<iters; ++iter)
+      {
+         if ( gmtl::distance(xy_plane, y1_pt) == gmtl::Plane<float>::POS_SIDE )
+            ++true_count;
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("PlaneTest/WhichSideOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
-
+/*
    void testFindNearestPt()
    {
       gmtl::Point3 answer, test_point;
@@ -405,8 +418,7 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testEqualityCompare", &PlaneTest::testEqualityCompare));
       test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testIsEqual", &PlaneTest::testIsEqual));
       test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testDistance", &PlaneTest::testDistance));
-//      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testDistToPt", &PlaneTest::testDistToPt));
-//      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testWhichSide", &PlaneTest::testWhichSide));
+      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testWhichSide", &PlaneTest::testWhichSide));
 //      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testFindNearestPt", &PlaneTest::testFindNearestPt));
 
       return test_suite;
