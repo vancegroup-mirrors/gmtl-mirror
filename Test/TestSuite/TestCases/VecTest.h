@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.h,v $
- * Date modified: $Date: 2002-02-18 23:22:15 $
- * Version:       $Revision: 1.10 $
+ * Date modified: $Date: 2002-02-20 21:23:06 $
+ * Version:       $Revision: 1.11 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -942,6 +942,71 @@ public:
    }
 
 
+   void testIsNormalized()
+   {
+      gmtl::Vec<float,3> v1(1,0,0);
+      gmtl::Vec<float,3> v2(0,1,0);
+      gmtl::Vec<float,3> v3(0,0,1);
+      gmtl::Vec<float,3> v4(2,4,5);
+
+      // no tolerance
+      CPPUNIT_ASSERT( isNormalized(v1) );
+      CPPUNIT_ASSERT( isNormalized(v2) );
+      CPPUNIT_ASSERT( isNormalized(v3) );
+      
+      CPPUNIT_ASSERT( ! isNormalized(v4) );
+
+      // test performance
+      const long iters(100000);
+      long true_count(0);
+      v4.set( 0.5f, 0.5f, 0.5f );
+      
+      CPPUNIT_METRIC_START_TIMING();
+      for ( unsigned long iter=0; iter<iters; ++iter )
+      {
+         v4 *= 1.0025f;
+         if ( isNormalized(v4) )
+            ++true_count;
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/IsNormalizedOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+
+   void testIsNormalizedEps()
+   {
+      gmtl::Vec<float,3> v1(1,0,0);
+      gmtl::Vec<float,3> v2(v1);
+
+      // epsilon tolerance
+      for ( float eps=0; eps<10; eps+=0.5 )
+      {
+         CPPUNIT_ASSERT( isNormalized(v1, eps) );
+      }
+
+      v2.set(21,0,0);
+      CPPUNIT_ASSERT( ! isNormalized(v2, 15.0f) );
+      CPPUNIT_ASSERT( ! isNormalized(v2, 19.9f) );
+      CPPUNIT_ASSERT( isNormalized(v2, 20.1f) );
+      CPPUNIT_ASSERT( isNormalized(v2, 25.0f) );
+
+      // test performance
+      const long iters(100000);
+      long true_count(0);
+      v2.set( 0.5f, 0.5f, 0.5f );
+      float tol = 0.25f;
+      
+      CPPUNIT_METRIC_START_TIMING();
+      for ( unsigned long iter=0; iter<iters; ++iter )
+      {
+         v2 *= 1.0025f;
+         if ( isNormalized(v2, tol) )
+            ++true_count;
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/IsNormalizedEpsOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+
+
    void testCross()
    {
       gmtl::Vec<float,3> v1(1,0,0);
@@ -1012,6 +1077,8 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<VecTest>("testDot", &VecTest::testDot));
       test_suite->addTest( new CppUnit::TestCaller<VecTest>("testLength", &VecTest::testLength));
       test_suite->addTest( new CppUnit::TestCaller<VecTest>("testNormalize", &VecTest::testNormalize));
+      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testIsNormalized", &VecTest::testIsNormalized));
+      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testIsNormalizedEps", &VecTest::testIsNormalizedEps));
       test_suite->addTest( new CppUnit::TestCaller<VecTest>("testCross", &VecTest::testCross));
 
 
