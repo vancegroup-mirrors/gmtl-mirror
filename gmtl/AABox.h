@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AABox.h,v $
- * Date modified: $Date: 2003-03-03 00:54:04 $
- * Version:       $Revision: 1.10 $
+ * Date modified: $Date: 2004-10-27 18:59:51 $
+ * Version:       $Revision: 1.11 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -50,6 +50,13 @@ namespace gmtl
    template< class DATA_TYPE >
    class AABox
    {
+      // This is a hack to work around a bug with GCC 3.3 on Mac OS X
+      // where boost::is_polymorphic returns a false positive.  The details
+      // can be found in the Boost.Python FAQ:
+      //    http://www.boost.org/libs/python/doc/v2/faq.html#macosx
+#if defined(__MACH__) && defined(__APPLE_CC__) && __APPLE_CC__ <= 1666
+      bool dummy_;
+#endif
    public:
       typedef DATA_TYPE DataType;
 
