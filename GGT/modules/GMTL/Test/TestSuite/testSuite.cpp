@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: testSuite.cpp,v $
- * Date modified: $Date: 2002-02-11 05:40:51 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2002-02-11 20:48:55 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -112,14 +112,27 @@ int main (int ac, char **av)
    gmtl_suite->addTest(gmtlTest::IntersectionTest::suite());
    gmtl_suite->addTest(gmtlTest::QuatTest::suite());
    gmtl_suite->addTest(gmtlTest::TriTest::suite());
-   gmtl_suite->addTest(gmtlTest::OptTest::suite());
+   
+   CppUnit::TestSuite* info_suite = new CppUnit::TestSuite("info_suite");
+   info_suite->addTest(gmtlTest::OptTest::suite());
 
    // Add the tests
-   runner.addTest(gmtl_suite);
+   runner.addTest( gmtl_suite );
+   runner.addTest( info_suite );
 
    // --- RUN THEM --- //
-   //runner.run( ac, av );
-   runner.run("gmtl_suite");
+   if (ac > 1)
+   {
+      std::string arg = av[1];
+      if (arg.size() > 0 && (arg[0] == 'i' || arg[0] == 'a'))
+         runner.run("info_suite");
+      if (arg.size() > 0 && (arg[0] == 'g' || arg[0] == 'a'))
+         runner.run("gmtl_suite");
+   }
+   else
+   {
+      std::cout << "usage: " << av[0] << " [gmtl|info|all]" << std::endl;
+   }   
 
    return 0;
 }
