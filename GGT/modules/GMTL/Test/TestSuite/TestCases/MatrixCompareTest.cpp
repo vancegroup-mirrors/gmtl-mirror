@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixCompareTest.cpp,v $
- * Date modified: $Date: 2003-02-25 05:19:24 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2003-09-09 01:25:49 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -48,7 +48,7 @@ namespace gmtlTest
    public:
       static void go()
       {
-         assert( ROWS <= 5 &&  COLS <= 5 );
+         CPPUNIT_ASSERT( ROWS <= 5 &&  COLS <= 5 );
          gmtl::Matrix<T, ROWS, COLS> mat1, mat2;
          T array[] = { (T)0.78, (T) 1.4,   (T) 2.9,  (T)3.45,
                        (T)4.21, (T)57.9,  (T) 65.9,  (T)74.6,
