@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatOps.h,v $
- * Date modified: $Date: 2003-03-03 00:54:05 $
- * Version:       $Revision: 1.20 $
+ * Date modified: $Date: 2003-03-13 17:19:33 $
+ * Version:       $Revision: 1.21 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -78,10 +78,10 @@ namespace gmtl
 
       // Here is the same, only expanded... (grassman product)
       Quat<DATA_TYPE> temporary; // avoid aliasing problems...
-      temporary[Xelt] = q1[Welt]*q2[Xelt] + q1[Xelt]*q2[Welt] + q1[Yelt]*q2[Zelt] - q1[Zelt]*q2[Yelt];
-      temporary[Yelt] = q1[Welt]*q2[Yelt] + q1[Yelt]*q2[Welt] + q1[Zelt]*q2[Xelt] - q1[Xelt]*q2[Zelt];
-      temporary[Zelt] = q1[Welt]*q2[Zelt] + q1[Zelt]*q2[Welt] + q1[Xelt]*q2[Yelt] - q1[Yelt]*q2[Xelt];
-      temporary[Welt] = q1[Welt]*q2[Welt] - q1[Xelt]*q2[Xelt] - q1[Yelt]*q2[Yelt] - q1[Zelt]*q2[Zelt];
+      temporary[Xelt] = q2[Welt]*q1[Xelt] + q2[Xelt]*q1[Welt] + q2[Yelt]*q1[Zelt] - q2[Zelt]*q1[Yelt];
+      temporary[Yelt] = q2[Welt]*q1[Yelt] + q2[Yelt]*q1[Welt] + q2[Zelt]*q1[Xelt] - q2[Xelt]*q1[Zelt];
+      temporary[Zelt] = q2[Welt]*q1[Zelt] + q2[Zelt]*q1[Welt] + q2[Xelt]*q1[Yelt] - q2[Yelt]*q1[Xelt];
+      temporary[Welt] = q2[Welt]*q1[Welt] - q2[Xelt]*q1[Xelt] - q2[Yelt]*q1[Yelt] - q2[Zelt]*q1[Zelt];
 
       // use a temporary, in case q1 or q2 is the same as self.
       result[Xelt] = temporary[Xelt];
@@ -105,10 +105,10 @@ namespace gmtl
       // (grassman product - see mult() for discussion)
       // don't normalize, because it might not be rotation arithmetic we're doing
       // (only rotation quats have unit length)
-      return Quat<DATA_TYPE>( q1[Welt]*q2[Xelt] + q1[Xelt]*q2[Welt] + q1[Yelt]*q2[Zelt] - q1[Zelt]*q2[Yelt],
-                              q1[Welt]*q2[Yelt] + q1[Yelt]*q2[Welt] + q1[Zelt]*q2[Xelt] - q1[Xelt]*q2[Zelt],
-                              q1[Welt]*q2[Zelt] + q1[Zelt]*q2[Welt] + q1[Xelt]*q2[Yelt] - q1[Yelt]*q2[Xelt],
-                              q1[Welt]*q2[Welt] - q1[Xelt]*q2[Xelt] - q1[Yelt]*q2[Yelt] - q1[Zelt]*q2[Zelt] );
+      return Quat<DATA_TYPE>( q2[Welt]*q1[Xelt] + q2[Xelt]*q1[Welt] + q2[Yelt]*q1[Zelt] - q2[Zelt]*q1[Yelt],
+                              q2[Welt]*q1[Yelt] + q2[Yelt]*q1[Welt] + q2[Zelt]*q1[Xelt] - q2[Xelt]*q1[Zelt],
+                              q2[Welt]*q1[Zelt] + q2[Zelt]*q1[Welt] + q2[Xelt]*q1[Yelt] - q2[Yelt]*q1[Xelt],
+                              q2[Welt]*q1[Welt] - q2[Xelt]*q1[Xelt] - q2[Yelt]*q1[Yelt] - q2[Zelt]*q1[Zelt] );
    }
 
    /** quaternion postmult
