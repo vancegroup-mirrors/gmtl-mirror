@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AABoxTest.h,v $
- * Date modified: $Date: 2002-06-24 03:11:43 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2003-02-05 02:21:17 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -32,104 +32,79 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 *
  ************************************************************ ggt-cpr end */
-#ifndef _GMTL_AABOXTEST_H_
-#define _GMTL_AABOXTEST_H_
-#include <iostream>
+#ifndef _GMTL_AABOX_TEST_H_
+#define _GMTL_AABOX_TEST_H_
 
-#include <cppunit/TestCase.h>
-#include <cppunit/TestSuite.h>
-#include <cppunit/TestCaller.h>
+#include <cppunit/extensions/HelperMacros.h>
 
 namespace gmtlTest
 {
-
-class AABoxTest : public CppUnit::TestCase
-{
-public:
-   AABoxTest( std::string name = "AABoxTest" )
-      : CppUnit::TestCase (name)
-   {}
-
-   //---------------------------------------------------------------------------
-   // Functionality tests
-   //---------------------------------------------------------------------------
-   void testCreation();
-   void testCopyConstruct();
-   void testConstructors();
-
-   // -- Test accessors --//
-   void testGetMin();
-   void testGetMax();
-   void testIsEmpty();
-
-   // -- Test setters --//
-   void testSetMin();
-   void testSetMax();
-   void testSetEmpty();
-
-   //---------------------------------------------------------------------------
-   // Performance tests
-   //---------------------------------------------------------------------------
-   void testTimingCreation();
-   void testTimingCopyConstruct();
-   void testTimingConstructors();
-
-   // -- Test accessors --//
-   void testTimingGetMin();
-   void testTimingGetMax();
-   void testTimingIsEmpty();
-
-   // -- Test setters --//
-   void testTimingSetMin();
-   void testTimingSetMax();
-   void testTimingSetEmpty();
-
-
-   static CppUnit::Test* suite()
+   /**
+    * Functionality tests
+    */
+   class AABoxTest : public CppUnit::TestFixture
    {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("AABoxTest");
-#define ADD_TEST(x) test_suite->addTest(new CppUnit::TestCaller<AABoxTest>( "test" #x, &AABoxTest::test ## x))
-      ADD_TEST(Creation);
-      ADD_TEST(CopyConstruct);
-      ADD_TEST(Constructors);
-      ADD_TEST(GetMin);
-      ADD_TEST(GetMax);
-      ADD_TEST(SetMin);
-      ADD_TEST(SetMax);
-      ADD_TEST(IsEmpty);
-      ADD_TEST(SetEmpty);
-#undef ADD_TEST
-      return test_suite;
-   }
+      CPPUNIT_TEST_SUITE(AABoxTest);
 
-   static CppUnit::Test* perfSuite()
+      CPPUNIT_TEST(testCreation);
+      CPPUNIT_TEST(testCopyConstruct);
+      CPPUNIT_TEST(testConstructors);
+      CPPUNIT_TEST(testGetMin);
+      CPPUNIT_TEST(testGetMax);
+      CPPUNIT_TEST(testIsEmpty);
+      CPPUNIT_TEST(testSetMin);
+      CPPUNIT_TEST(testSetMax);
+      CPPUNIT_TEST(testSetEmpty);
+
+      CPPUNIT_TEST_SUITE_END();
+
+   public:
+      void testCreation();
+      void testCopyConstruct();
+      void testConstructors();
+
+      // -- Test accessors --//
+      void testGetMin();
+      void testGetMax();
+      void testIsEmpty();
+
+      // -- Test setters --//
+      void testSetMin();
+      void testSetMax();
+      void testSetEmpty();
+   };
+
+   class AABoxMetricTest : public CppUnit::TestFixture
    {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("AABoxPerfTest");
-#define ADD_TEST(x) test_suite->addTest(new CppUnit::TestCaller<AABoxTest>( "testTiming" #x, &AABoxTest::testTiming ## x))
-      ADD_TEST(Creation);
-      ADD_TEST(CopyConstruct);
-      ADD_TEST(Constructors);
-      ADD_TEST(GetMin);
-      ADD_TEST(GetMax);
-      ADD_TEST(SetMin);
-      ADD_TEST(SetMax);
-      ADD_TEST(IsEmpty);
-      ADD_TEST(SetEmpty);
-#undef ADD_TEST
-      return test_suite;
-   }
+      CPPUNIT_TEST_SUITE(AABoxMetricTest);
 
-   static CppUnit::Test* interactiveSuite()
-   {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveAABoxTest");
-      //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
-      return test_suite;
-   }
+      CPPUNIT_TEST(testTimingCreation);
+      CPPUNIT_TEST(testTimingCopyConstruct);
+      CPPUNIT_TEST(testTimingConstructors);
+      CPPUNIT_TEST(testTimingGetMin);
+      CPPUNIT_TEST(testTimingGetMax);
+      CPPUNIT_TEST(testTimingIsEmpty);
+      CPPUNIT_TEST(testTimingSetMin);
+      CPPUNIT_TEST(testTimingSetMax);
+      CPPUNIT_TEST(testTimingSetEmpty);
 
-protected:
+      CPPUNIT_TEST_SUITE_END();
 
-};
+   public:
+      void testTimingCreation();
+      void testTimingCopyConstruct();
+      void testTimingConstructors();
 
+      // -- Test accessors --//
+      void testTimingGetMin();
+      void testTimingGetMax();
+      void testTimingIsEmpty();
+
+      // -- Test setters --//
+      void testTimingSetMin();
+      void testTimingSetMax();
+      void testTimingSetEmpty();
+   };
 }
 
 #endif

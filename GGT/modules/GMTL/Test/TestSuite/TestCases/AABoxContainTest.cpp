@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AABoxContainTest.cpp,v $
- * Date modified: $Date: 2002-11-26 07:41:17 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2003-02-05 02:21:17 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -33,12 +33,17 @@
 *
  ************************************************************ ggt-cpr end */
 #include "AABoxContainTest.h"
+#include "../Suites.h"
+#include <cppunit/extensions/HelperMacros.h>
 #include <cppunit/extensions/MetricRegistry.h>
 
 #include <gmtl/Containment.h>
 
 namespace gmtlTest
 {
+   CPPUNIT_TEST_SUITE_REGISTRATION(AABoxContainTest);
+   CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(AABoxContainMetricTest, Suites::metric());
+
    void AABoxContainTest::testIsInVolumePt()
    {
       // Test empty box
@@ -55,7 +60,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT(gmtl::isInVolume(box2, origin));
    }
 
-   void AABoxContainTest::testTimingIsInVolumePt()
+   void AABoxContainMetricTest::testTimingIsInVolumePt()
    {
       gmtl::AABoxf box(gmtl::Point3f(-1,-1,-1), gmtl::Point3f(1,1,1));
       gmtl::Point3f origin;
@@ -97,7 +102,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT(gmtl::isInVolume(box, box));
    }
 
-   void AABoxContainTest::testTimingIsInVolumeAABox()
+   void AABoxContainMetricTest::testTimingIsInVolumeAABox()
    {
       gmtl::AABoxf box(gmtl::Point3f(-1,-1,-1), gmtl::Point3f(1,1,1));
       gmtl::AABoxf box2(gmtl::Point3f(0,0,0), gmtl::Point3f(-0.5f, -0.5f, -0.5f));
@@ -148,7 +153,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT(result.getMax() == expMax);
    }
 
-   void AABoxContainTest::testTimingExtendVolumePt()
+   void AABoxContainMetricTest::testTimingExtendVolumePt()
    {
       gmtl::AABoxf box(gmtl::Point3f(-1,-1,-1), gmtl::Point3f(1,1,1));
       gmtl::Point3f origin;
@@ -214,7 +219,7 @@ namespace gmtlTest
       }
    }
 
-   void AABoxContainTest::testTimingExtendVolumeAABox()
+   void AABoxContainMetricTest::testTimingExtendVolumeAABox()
    {
       gmtl::AABoxf box(gmtl::Point3f(-1,-1,-1), gmtl::Point3f(1,1,1));
       gmtl::AABoxf box2(gmtl::Point3f(0,0,0), gmtl::Point3f(2,2,2));

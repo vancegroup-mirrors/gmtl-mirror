@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AABoxTest.cpp,v $
- * Date modified: $Date: 2002-07-02 03:09:21 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2003-02-05 02:21:17 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -33,6 +33,8 @@
 *
  ************************************************************ ggt-cpr end */
 #include "AABoxTest.h"
+#include "../Suites.h"
+#include <cppunit/extensions/HelperMacros.h>
 #include <cppunit/extensions/MetricRegistry.h>
 
 #include <gmtl/AABox.h>
@@ -40,6 +42,9 @@
 
 namespace gmtlTest
 {
+   CPPUNIT_TEST_SUITE_REGISTRATION(AABoxTest);
+   CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(AABoxMetricTest, Suites::metric());
+
    void AABoxTest::testCreation()
    {
       gmtl::AABox<float> box;
@@ -50,7 +55,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( box.mEmpty == true );
    }
 
-   void AABoxTest::testTimingCreation()
+   void AABoxMetricTest::testTimingCreation()
    {
       // Test overhead of creation
       const long iters(400000);
@@ -84,7 +89,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( box_copy.mEmpty == false );
    }
 
-   void AABoxTest::testTimingCopyConstruct()
+   void AABoxMetricTest::testTimingCopyConstruct()
    {
       // Test copy construction overhead
       const long iters(400000);
@@ -114,7 +119,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( box.mEmpty == false );
    }
 
-   void AABoxTest::testTimingConstructors()
+   void AABoxMetricTest::testTimingConstructors()
    {
       // Test constructor
       const long iters(400000);
@@ -143,7 +148,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( box.getMin() == amin );
    }
 
-   void AABoxTest::testTimingGetMin()
+   void AABoxMetricTest::testTimingGetMin()
    {
       gmtl::Point3f amin( -1.0f, -2.0f, -3.0f );
       gmtl::AABox<float> box( amin, gmtl::Point3f() );
@@ -173,7 +178,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( box.getMax() == amax );
    }
 
-   void AABoxTest::testTimingGetMax()
+   void AABoxMetricTest::testTimingGetMax()
    {
       gmtl::Point3f amax( 1.0f, 2.0f, 3.0f );
       gmtl::AABox<float> box( gmtl::Point3f(0,0,0), amax );
@@ -204,7 +209,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( box2.isEmpty() == false );
    }
 
-   void AABoxTest::testTimingIsEmpty()
+   void AABoxMetricTest::testTimingIsEmpty()
    {
       gmtl::AABox<float> box;
 
@@ -238,7 +243,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( box.getMin() == amin );
    }
 
-   void AABoxTest::testTimingSetMin()
+   void AABoxMetricTest::testTimingSetMin()
    {
       gmtl::AABox<float> box;
       gmtl::Point3f amin;
@@ -266,7 +271,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( box.getMax() == amax );
    }
 
-   void AABoxTest::testTimingSetMax()
+   void AABoxMetricTest::testTimingSetMax()
    {
       gmtl::AABox<float> box;
       gmtl::Point3f amax;
@@ -293,7 +298,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( box.isEmpty() == false );
    }
 
-   void AABoxTest::testTimingSetEmpty()
+   void AABoxMetricTest::testTimingSetEmpty()
    {
       gmtl::AABox<float> box;
 

@@ -7,39 +7,42 @@ sources = Split("""
    AABoxTest
    AxisAngleClassTest
    AxisAngleCompareTest
-   ConvertTest
-   CoordClassTest
-   CoordCompareTest
-   CoordGenTest
-   EulerAngleClassTest
-   EulerAngleCompareTest
-   IntersectionTest
-   LineSegTest
-   MatrixClassTest
-   MatrixCompareTest
-   MatrixGenTest
-   MatrixOpsTest
-   OutputTest
-   PlaneTest
-   PointTest
-   QuatClassTest
-   QuatCompareTest
-   QuatGenTest
-   QuatOpsTest
-   QuatStuffTest
-   SphereTest
    TriTest
-   VecBaseTest
-   VecGenTest
-   VecTest
-   XformTest
+   SphereTest
 """)
+
+#sources = Split("""
+#   ConvertTest
+#   CoordClassTest
+#   CoordCompareTest
+#   CoordGenTest
+#   EulerAngleClassTest
+#   EulerAngleCompareTest
+#   IntersectionTest
+#   LineSegTest
+#   MatrixClassTest
+#   MatrixCompareTest
+#   MatrixGenTest
+#   MatrixOpsTest
+#   OutputTest
+#   PlaneTest
+#   PointTest
+#   QuatClassTest
+#   QuatCompareTest
+#   QuatGenTest
+#   QuatOpsTest
+#   QuatStuffTest
+#   VecBaseTest
+#   VecGenTest
+#   VecTest
+#   XformTest
+#""")
 
 sources = map(lambda n: n + '.cpp', sources)
 
 # Get sources in the InfoTests dir
-infotests_sources = SConscript(dirs = 'InfoTests')
-infotests_sources = map(lambda n: pj('InfoTests', n), infotests_sources)
-sources.extend(infotests_sources)
+#infotests_sources = SConscript(dirs = 'InfoTests')
+#infotests_sources = map(lambda n: pj('InfoTests', n), infotests_sources)
+#sources.extend(infotests_sources)
 
 Return('sources')
