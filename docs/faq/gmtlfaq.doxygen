@@ -1456,13 +1456,15 @@
  *  @subsection General General Math
  *  <b>How do I use GMTL's C math abstraction?</b>
  *
- *  In your application, you simply include the 
+ *  In your application, you simply include the gmtl/Math.h header file. Then
+ *  you can use any of the functions by appending the gmtl::Math:: namespace
+ *  prefix onto the function name.
  *
  *  <b>What operations does GMTL's C math abstraction have?</b>
  *
  *  GMTL provides function calls for everything that the standard C math
  *  library has. But they are templated functions, so you don't have to worry
- *  about what data types you are providing for argments.
+ *  about what data types you are providing for arguments.
  *
  *  
  *  <b>What about PI?</b>
