@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2004-02-23 17:10:12 $
- * Version:       $Revision: 1.82 $
+ * Date modified: $Date: 2004-04-13 19:50:53 $
+ * Version:       $Revision: 1.83 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -1297,8 +1297,8 @@ namespace gmtl
       const DATA_TYPE epsilon = (DATA_TYPE)0.00001;
 
       gmtlASSERT( gmtl::Math::isEqual( gmtl::length( from ), (DATA_TYPE)1.0, epsilon ) &&
-                  gmtl::Math::isEqual( gmtl::length( to ), (DATA_TYPE)1.0, epsilon ) &&
-                  "input params not normalized" );
+                  gmtl::Math::isEqual( gmtl::length( to ), (DATA_TYPE)1.0, epsilon ) /* &&
+                  "input params not normalized" */);
 
       DATA_TYPE cosangle = dot( from, to );
 
