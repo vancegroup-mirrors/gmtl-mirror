@@ -4,6 +4,6 @@ pj = os.path.join
 Import('GetPlatform')
 
 builddir = 'build.' + GetPlatform()
-BuildDir(builddir, 'TestSuite')
+BuildDir(builddir, 'TestSuite', duplicate=0)
 
 SConscript(dirs = builddir)
