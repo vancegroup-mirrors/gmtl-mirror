@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecOps.h,v $
- * Date modified: $Date: 2004-05-25 16:36:28 $
- * Version:       $Revision: 1.27 $
+ * Date modified: $Date: 2004-07-21 22:31:44 $
+ * Version:       $Revision: 1.28 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -314,7 +314,7 @@ DATA_TYPE lengthSquared(const Vec<DATA_TYPE, SIZE>& v1)
  * original length of the vector is returned.
  *
  * @post length(v1) == 1.0 unless length(v1) is originally 0.0, in which case it is unchanged
- * 
+ *
  * @param v1   the vector to normalize
  *
  * @return  the length of v1 before it was normalized
@@ -378,6 +378,19 @@ Vec<DATA_TYPE,3>& cross( Vec<DATA_TYPE,3>& result, const Vec<DATA_TYPE, 3>& v1,
 
 /**
  * Reflect a vector about a normal.
+ *
+ * This method reflects the given vector around the normal vector given.  It is similar to if the normal vector was
+ * for a plane that you wanted to reflect about.  v going into the plane, n normal to the plane, and r coming back out
+ * of the plane. (see below)
+ *
+ * |   v
+ * | /
+ * |/
+ * |------> n
+ * |\
+ * | \
+ * |  r
+ *
  * @param result     the vector to store the result i
  * @param vec        the original vector that we want to reflect
  * @param normal     the normal vector
@@ -389,7 +402,7 @@ VecBase<DATA_TYPE, SIZE>& reflect( VecBase<DATA_TYPE, SIZE>& result, const
                            VecBase<DATA_TYPE, SIZE>& vec,
                            const Vec<DATA_TYPE, SIZE>& normal )
 {
-   result = vec - DATA_TYPE( 2.0 ) * dot( (Vec<DATA_TYPE, SIZE>)vec, normal ) * normal;
+   result = vec - (DATA_TYPE( 2.0 ) * (dot( (Vec<DATA_TYPE, SIZE>)vec, normal ) * normal));
    return result;
 }
 
