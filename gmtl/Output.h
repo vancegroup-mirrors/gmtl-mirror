@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Output.h,v $
- * Date modified: $Date: 2002-07-11 21:17:37 $
- * Version:       $Revision: 1.10 $
+ * Date modified: $Date: 2002-08-23 18:48:35 $
+ * Version:       $Revision: 1.11 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -77,6 +77,25 @@ namespace gmtl
       out << ")";
       return out;
    }
+
+   /**
+    * Outputs a string representation of the given EulerAngle type to the given
+    * output stream.  Format is {ang1,ang2,ang3}
+    *
+    * @param out     the stream to write to
+    * @param e       the EulerAngle type to output
+    *
+    * @return  out after it has been written to
+    */
+   template< class DATA_TYPE, typename ROTATION_ORDER>
+   std::ostream& operator<<( std::ostream& out,
+                             const EulerAngle<DATA_TYPE, ROTATION_ORDER>& e )
+   {
+      const DATA_TYPE* angle_data(e.getData());
+      out << "{" << angle_data[0] << ", " << angle_data[1] << ", " << angle_data[2] << "}";
+      return out;
+   }
+
 
    /**
     * Outputs a string representation of the given Matrix to the given output
