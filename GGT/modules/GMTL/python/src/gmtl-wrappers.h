@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-wrappers.h,v $
- * Date modified: $Date: 2003-08-17 14:26:40 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2003-08-17 15:04:36 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -142,9 +142,9 @@ namespace gmtlWrappers
    gmtl::Matrix<DATA_TYPE, 3, 3> makeDirCosMatrix33(const gmtl::Vec<DATA_TYPE, 3>& xDestAxis,
                                                     const gmtl::Vec<DATA_TYPE, 3>& yDestAxis,
                                                     const gmtl::Vec<DATA_TYPE, 3>& zDestAxis,
-                                                    const gmtl::Vec<typename DATA_TYPE, 3>& xSrcAxis = gmtl::Vec<DATA_TYPE, 3>(1, 0, 0),
-                                                    const gmtl::Vec<typename DATA_TYPE, 3>& ySrcAxis = gmtl::Vec<DATA_TYPE, 3>(0, 1, 0),
-                                                    const gmtl::Vec<typename DATA_TYPE, 3>& zSrcAxis = gmtl::Vec<DATA_TYPE, 3>(0, 0, 1))
+                                                    const gmtl::Vec<DATA_TYPE, 3>& xSrcAxis = gmtl::Vec<DATA_TYPE, 3>(1, 0, 0),
+                                                    const gmtl::Vec<DATA_TYPE, 3>& ySrcAxis = gmtl::Vec<DATA_TYPE, 3>(0, 1, 0),
+                                                    const gmtl::Vec<DATA_TYPE, 3>& zSrcAxis = gmtl::Vec<DATA_TYPE, 3>(0, 0, 1))
    {
       return gmtl::makeDirCos< gmtl::Matrix<DATA_TYPE, 3, 3> >(xDestAxis,
                                                                yDestAxis,
@@ -158,9 +158,9 @@ namespace gmtlWrappers
    gmtl::Matrix<DATA_TYPE, 4, 4> makeDirCosMatrix44(const gmtl::Vec<DATA_TYPE, 3>& xDestAxis,
                                                     const gmtl::Vec<DATA_TYPE, 3>& yDestAxis,
                                                     const gmtl::Vec<DATA_TYPE, 3>& zDestAxis,
-                                                    const gmtl::Vec<typename DATA_TYPE, 3>& xSrcAxis = gmtl::Vec<DATA_TYPE, 3>(1, 0, 0),
-                                                    const gmtl::Vec<typename DATA_TYPE, 3>& ySrcAxis = gmtl::Vec<DATA_TYPE, 3>(0, 1, 0),
-                                                    const gmtl::Vec<typename DATA_TYPE, 3>& zSrcAxis = gmtl::Vec<DATA_TYPE, 3>(0, 0, 1))
+                                                    const gmtl::Vec<DATA_TYPE, 3>& xSrcAxis = gmtl::Vec<DATA_TYPE, 3>(1, 0, 0),
+                                                    const gmtl::Vec<DATA_TYPE, 3>& ySrcAxis = gmtl::Vec<DATA_TYPE, 3>(0, 1, 0),
+                                                    const gmtl::Vec<DATA_TYPE, 3>& zSrcAxis = gmtl::Vec<DATA_TYPE, 3>(0, 0, 1))
    {
       return gmtl::makeDirCos< gmtl::Matrix<DATA_TYPE, 4, 4> >(xDestAxis,
                                                                yDestAxis,
@@ -219,19 +219,19 @@ namespace gmtlWrappers
       return gmtl::makeScale< gmtl::Matrix<DATA_TYPE, 4, 4> >(scale);
    }
 
+   template gmtl::Matrix44f makeScaleMatrix44<float, 3>(const gmtl::Vec3f&);
+   template gmtl::Matrix44d makeScaleMatrix44<double, 3>(const gmtl::Vec3d&);
+   template gmtl::Matrix44f makeScaleMatrix44<float, 4>(const gmtl::Vec4f&);
+   template gmtl::Matrix44d makeScaleMatrix44<double, 4>(const gmtl::Vec4d&);
+
    template<typename DATA_TYPE>
-   gmtl::Matrix<DATA_TYPE, 4, 4> makeScaleMatrix44(const DATA_TYPE scale)
+   gmtl::Matrix<DATA_TYPE, 4, 4> makeScaleMatrix44(const DATA_TYPE& scale)
    {
       return gmtl::makeScale< gmtl::Matrix<DATA_TYPE, 4, 4> >(scale);
    }
 
-   template gmtl::Matrix44f makeScaleMatrix44(const gmtl::Vec3f&);
-   template gmtl::Matrix44d makeScaleMatrix44(const gmtl::Vec3d&);
-   template gmtl::Matrix44f makeScaleMatrix44(const gmtl::Vec4f&);
-   template gmtl::Matrix44d makeScaleMatrix44(const gmtl::Vec4d&);
-
-   template gmtl::Matrix44f makeScaleMatrix44(const float);
-   template gmtl::Matrix44d makeScaleMatrix44(const double);
+   template gmtl::Matrix44f makeScaleMatrix44<float>(const float&);
+   template gmtl::Matrix44d makeScaleMatrix44<double>(const double&);
 
    template<typename DATA_TYPE>
    gmtl::Matrix<DATA_TYPE, 4, 4> makeAxesMatrix44(const gmtl::Vec<DATA_TYPE, 3>& xAxis,
