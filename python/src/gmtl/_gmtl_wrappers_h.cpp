@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _gmtl_wrappers_h.cpp,v $
- * Date modified: $Date: 2003-08-30 17:16:10 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2004-04-24 14:25:58 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -91,4 +91,6 @@ void _Export_gmtl_wrappers_h()
     def("makeTransMatrix44", (gmtl::Matrix<float,4,4> (*)(const gmtl::Vec<float,3> &))&gmtlWrappers::makeTransMatrix44);
     def("makeTransVec3", (gmtl::Vec<double,3> (*)(const gmtl::Matrix<double,4,4> &))&gmtlWrappers::makeTransVec3);
     def("makeTransVec3", (gmtl::Vec<float,3> (*)(const gmtl::Matrix<float,4,4> &))&gmtlWrappers::makeTransVec3);
+    def("makeTransPoint3", (gmtl::Point<double,3> (*)(const gmtl::Matrix<double,4,4> &))&gmtlWrappers::makeTransPoint3);
+    def("makeTransPoint3", (gmtl::Point<float,3> (*)(const gmtl::Matrix<float,4,4> &))&gmtlWrappers::makeTransPoint3);
 }
