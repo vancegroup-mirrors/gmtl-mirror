@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AABoxOpsTest.cpp,v $
- * Date modified: $Date: 2003-02-05 02:21:17 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2003-03-17 02:16:43 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -135,7 +135,14 @@ namespace gmtlTest
 
    void AABoxOpsTest::testIsEqual()
    {
-      CPPUNIT_ASSERT(false);
+      gmtl::AABoxf box( gmtl::Point3f( -1,-2,-3 ), gmtl::Point3f( 4,5,6 ) ), 
+                  bok( gmtl::Point3f( -1,-2,-3 ), gmtl::Point3f( 4,5,6 ) ), 
+                  mok( gmtl::Point3f( -1,-2,-3 ), gmtl::Point3f( 4,5,7 ) );
+      CPPUNIT_ASSERT( gmtl::isEqual( bok, box, 0.0001f ) );
+      CPPUNIT_ASSERT( bok == box );
+      CPPUNIT_ASSERT( bok != mok );
+      CPPUNIT_ASSERT( !gmtl::isEqual( bok, mok, 0.0001f ) );
+      CPPUNIT_ASSERT( gmtl::isEqual( bok, mok, 1.0001f ) );
    }
 
    void AABoxOpsMetricTest::testTimingIsEqual()
