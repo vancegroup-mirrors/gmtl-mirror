@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Matrix.h,v $
- * Date modified: $Date: 2002-03-20 23:21:53 $
- * Version:       $Revision: 1.16 $
+ * Date modified: $Date: 2002-04-23 19:10:09 $
+ * Version:       $Revision: 1.17 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -84,7 +84,7 @@ public:
       ORTHONORMAL = 4,
       AFFINE = 8,
       FULL = 16,
-      ERROR = 32 // error bit
+      XFORM_ERROR = 32 // error bit
    };
 
    /** Default Constructor (Identity constructor) */
@@ -316,11 +316,11 @@ public:
 
    bool isError()
    {
-      return mState & ERROR;
+      return mState & XFORM_ERROR;
    }
    void setError()
    {
-      mState |= ERROR;
+      mState |= XFORM_ERROR;
    }
 
 public:
