@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MathTest.h,v $
- * Date modified: $Date: 2003-02-06 02:09:15 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2003-02-23 06:53:52 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -44,6 +44,8 @@ namespace gmtlTest
       CPPUNIT_TEST_SUITE(MathTest);
 
       CPPUNIT_TEST(testQuadraticFormula);
+      CPPUNIT_TEST(testSigni);
+      CPPUNIT_TEST(testSignf);
       CPPUNIT_TEST(testZeroClampf);
       CPPUNIT_TEST(testZeroClampd);
 
@@ -51,6 +53,8 @@ namespace gmtlTest
 
    public:
       void testQuadraticFormula();
+      void testSigni();
+      void testSignf();
       void testZeroClampf();
       void testZeroClampd();
    };
