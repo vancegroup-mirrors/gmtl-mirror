@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Matrix_float_4_4.cpp,v $
- * Date modified: $Date: 2003-08-16 05:11:46 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2003-08-16 05:24:38 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -48,6 +48,8 @@ void _Export_Matrix_float_4_4()
         .def("set", (void (gmtl::Matrix<float,4,4>::*)(float, float, float, float, float, float, float, float, float, float, float, float) )&gmtl::Matrix<float,4,4>::set)
         .def("set", (void (gmtl::Matrix<float,4,4>::*)(const float *) )&gmtl::Matrix<float,4,4>::set)
         .def("setTranspose", &gmtl::Matrix<float,4,4>::setTranspose)
+//        .def("getData", (tuple (*)(gmtl::Matrix<float,4,4>*)) &gmtlWrappers::Matrix_4_4_getData)
+//        .add_property("data", (tuple (*)(gmtl::Matrix<float,4,4>*)) &gmtlWrappers::Matrix_4_4_getData)
         .def("isError", &gmtl::Matrix<float,4,4>::isError)
         .def("setError", &gmtl::Matrix<float,4,4>::setError)
         .def("__getitem__", (gmtl::Matrix<float,4,4>::RowAccessor (gmtl::Matrix<float,4,4>::*)(const unsigned) )&gmtl::Matrix<float,4,4>::operator[])
