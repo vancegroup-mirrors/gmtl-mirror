@@ -19,7 +19,7 @@ SetupCppUnit(env)
 env.Append(CPPPATH = Split('#Test/TestSuite #'))
 
 # Win32 doesn't have libdl
-if GetPlatform != 'win32':
+if GetPlatform() != 'win32':
    env.Append(LIBS = Split('dl'))
 
 if GetPlatform() == 'linux':
