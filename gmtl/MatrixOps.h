@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOps.h,v $
- * Date modified: $Date: 2002-03-11 20:20:43 $
- * Version:       $Revision: 1.10 $
+ * Date modified: $Date: 2002-03-11 20:35:19 $
+ * Version:       $Revision: 1.11 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -182,7 +182,7 @@ namespace gmtl
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
    inline Matrix<DATA_TYPE, ROWS, COLS>& mult( Matrix<DATA_TYPE, ROWS, COLS>& result, const Matrix<DATA_TYPE, ROWS, COLS>& mat, float scalar )
    {
-      for (int i = 0; i < ROWS * COLS; ++i)
+      for (unsigned i = 0; i < ROWS * COLS; ++i)
          result[i] = mat[i] * scalar;
       return result;
    }
@@ -194,7 +194,7 @@ namespace gmtl
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
    inline Matrix<DATA_TYPE, ROWS, COLS>& mult( Matrix<DATA_TYPE, ROWS, COLS>& result, DATA_TYPE scalar )
    {
-      for (int i = 0; i < ROWS * COLS; ++i)
+      for (unsigned i = 0; i < ROWS * COLS; ++i)
          result[i] *= scalar;
       return result;
    }
