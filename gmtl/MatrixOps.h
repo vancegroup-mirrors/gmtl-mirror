@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOps.h,v $
- * Date modified: $Date: 2002-02-28 14:19:58 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2002-03-09 21:19:22 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -76,7 +76,7 @@ namespace gmtl
    {
       Matrix<DATA_TYPE, ROWS, COLS> ret_mat; // prevent aliasing
       zero( ret_mat );
-      
+
       // p. 150 Numerical Analysis (second ed.)
       // if A is m x p, and B is p x n, then AB is m x n
       // (AB)ij  =  [k = 1 to p] (a)ik (b)kj     (where:  1 <= i <= m, 1 <= j <= n)
