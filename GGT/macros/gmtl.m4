@@ -7,8 +7,8 @@ dnl   Allen Bierbaum
 dnl
 dnl -----------------------------------------------------------------
 dnl File:          $RCSfile: gmtl.m4,v $
-dnl Date modified: $Date: 2002-04-24 15:10:52 $
-dnl Version:       $Revision: 1.5 $
+dnl Date modified: $Date: 2002-05-04 15:25:15 $
+dnl Version:       $Revision: 1.6 $
 dnl -----------------------------------------------------------------
 dnl
 dnl ************************************************************** ggt-head end
@@ -100,7 +100,7 @@ dnl                         test GMTL program], , enable_gmtltest=yes)
       if test "$GMTL_CONFIG" = "no" ; then
          echo "*** The gmtl-config script installed by GMTL could not be found"
          echo "*** If GMTL was installed in PREFIX, make sure"
-         ehco "*** PREFIX/include/gmtl exists." 
+         echo "*** PREFIX/include/gmtl exists." 
       fi
       GMTL_VERSION='-1'
       ifelse([$3], , :, [$3])
