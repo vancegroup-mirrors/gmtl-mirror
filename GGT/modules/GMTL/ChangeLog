@@ -1,5 +1,8 @@
 DATE       AUTHOR       CHANGE
 ---------- --------     --------------------------------------------------------
+2003-01-10 subatomic    Added new Ray.h
+                        added Ray/Plane Ray/Tri intersect functions
+                        added LineSeg/Plane LineSeg/Tri intersect functions
 2002-12-22 nonchocoboy  NEW VERSION: 0.1.13
 2002-12-22 nonchocoboy  Added random number generator seed function.
 2002-12-22 nonchocoboy  Added PointNi and VecNi convenience typedefs.
