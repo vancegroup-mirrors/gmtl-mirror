@@ -1,10 +1,52 @@
+/************************************************************** ggt-head beg
+ *
+ * GGT: Generic Graphics Toolkit
+ *
+ * Original Authors:
+ *   Allen Bierbaum
+ *
+ * -----------------------------------------------------------------
+ * File:          $RCSfile: QuatOpsTest.cpp,v $
+ * Date modified: $Date: 2003-02-06 01:12:27 $
+ * Version:       $Revision: 1.8 $
+ * -----------------------------------------------------------------
+ *
+ *********************************************************** ggt-head end */
+/*************************************************************** ggt-cpr beg
+*
+* GGT: The Generic Graphics Toolkit
+* Copyright (C) 2001,2002 Allen Bierbaum
+*
+* This library is free software; you can redistribute it and/or
+* modify it under the terms of the GNU Lesser General Public
+* License as published by the Free Software Foundation; either
+* version 2.1 of the License, or (at your option) any later version.
+*
+* This library is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+* Lesser General Public License for more details.
+*
+* You should have received a copy of the GNU Lesser General Public
+* License along with this library; if not, write to the Free Software
+* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+*
+ ************************************************************ ggt-cpr end */
+#include "QuatOpsTest.h"
+#include "../Suites.h"
+#include <cppunit/extensions/HelperMacros.h>
 #include <cppunit/extensions/MetricRegistry.h>
 
-#include "QuatOpsTest.h"
+#include <gmtl/Quat.h>
+#include <gmtl/QuatOps.h>
+#include <gmtl/Generate.h>
 
 namespace gmtlTest
 {
-   void QuatOpsTest::testQuatTimingNegate()
+   CPPUNIT_TEST_SUITE_REGISTRATION(QuatOpsTest);
+   CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(QuatOpsMetricTest, Suites::metric());
+
+   void QuatOpsMetricTest::testQuatTimingNegate()
    {
       gmtl::Quat<float> q4;
       const long iters(25000);
@@ -20,7 +62,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( q4[2] != 1234.5f );
    }
    
-   void QuatOpsTest::testQuatTimingOperatorMinus()
+   void QuatOpsMetricTest::testQuatTimingOperatorMinus()
    {
       gmtl::Quat<float> q4;
       const long iters(25000);
@@ -36,7 +78,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( q4[2] != 1234.5f );
    }
    
-   void QuatOpsTest::testQuatTimingMult()
+   void QuatOpsMetricTest::testQuatTimingMult()
    {
       gmtl::Quat<float> q2, q4;
       const long iters(25000);
@@ -50,7 +92,7 @@ namespace gmtlTest
       // Make sure the compiler doesn't optimize out
       CPPUNIT_ASSERT( q4[2] != 1234.5f );
    }
-   void QuatOpsTest::testQuatTimingOperatorMult()
+   void QuatOpsMetricTest::testQuatTimingOperatorMult()
    {
       gmtl::Quat<float> q2, q4;
       const long iters(10000);
@@ -65,7 +107,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( q4[2] != 1234.5f );
    }
    
-   void QuatOpsTest::testQuatTimingDiv()
+   void QuatOpsMetricTest::testQuatTimingDiv()
    {
       gmtl::Quat<float> q3, q4;
       const long iters(10000);
@@ -80,7 +122,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( q4[2] != 1234.5f );
    }
    
-   void QuatOpsTest::testQuatTimingLerp()
+   void QuatOpsMetricTest::testQuatTimingLerp()
    {
       gmtl::Quat<float> from, result;
       const long iters(10000);
@@ -105,7 +147,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( result[2] != 1234.5f );
    }
    
-   void QuatOpsTest::testQuatTimingVectorMult()
+   void QuatOpsMetricTest::testQuatTimingVectorMult()
    {
       gmtl::Quat<float> q3, q4;
       const long iters(10000);
@@ -120,7 +162,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( q4[2] != 1234.5f );
    }
    
-   void QuatOpsTest::testQuatTimingVectorAdd()
+   void QuatOpsMetricTest::testQuatTimingVectorAdd()
    {
       gmtl::Quat<float> q3, q4;
       const long iters(10000);
@@ -135,7 +177,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( q4[2] != 1234.5f );
    }
    
-   void QuatOpsTest::testQuatTimingVectorSub()
+   void QuatOpsMetricTest::testQuatTimingVectorSub()
    {
       gmtl::Quat<float> q3, q4;
       const long iters(10000);
@@ -150,7 +192,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( q4[2] != 1234.5f );
    }
    
-   void QuatOpsTest::testQuatTimingVectorDot()
+   void QuatOpsMetricTest::testQuatTimingVectorDot()
    {
       gmtl::Quat<float> q1, q2;
       const long iters(10000);
@@ -166,7 +208,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( q1[2] != 1234.5f );
    }
    
-   void QuatOpsTest::testQuatTimingNorm()
+   void QuatOpsMetricTest::testQuatTimingNorm()
    {
       gmtl::Quat<float> q1;
       const long iters(10000);
@@ -182,7 +224,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( q1[2] != 1234.5f );
    }
    
-   void QuatOpsTest::testQuatTimingMag()
+   void QuatOpsMetricTest::testQuatTimingMag()
    {
       gmtl::Quat<float> q1;
       const long iters(10000);
@@ -198,7 +240,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( q1[2] != 1234.5f );
    }
    
-   void QuatOpsTest::testQuatTimingNormalize()
+   void QuatOpsMetricTest::testQuatTimingNormalize()
    {
       gmtl::Quat<float> q4;
       const long iters(10000);
@@ -213,7 +255,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( q4[2] != 1234.5f );
    }
      
-   void QuatOpsTest::testQuatTimingConj()
+   void QuatOpsMetricTest::testQuatTimingConj()
    {
       gmtl::Quat<float> q4;
       const long iters(10000);
@@ -228,7 +270,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( q4[2] != 1234.5f );
    }
 
-   void QuatOpsTest::testQuatTimingInvert()
+   void QuatOpsMetricTest::testQuatTimingInvert()
    {
       gmtl::Quat<float> q4;
       const long iters(10000);

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PointTest.cpp,v $
- * Date modified: $Date: 2002-07-02 03:09:21 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2003-02-06 01:12:27 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -33,6 +33,8 @@
 *
  ************************************************************ ggt-cpr end */
 #include "PointTest.h"
+#include "../Suites.h"
+#include <cppunit/extensions/HelperMacros.h>
 #include <cppunit/extensions/MetricRegistry.h>
 
 #include <gmtl/Point.h>
@@ -41,6 +43,8 @@
 
 namespace gmtlTest
 {
+   CPPUNIT_TEST_SUITE_REGISTRATION(PointTest);
+
    void PointTest::testCreation()
    {
       gmtl::Point<double, 3> point;

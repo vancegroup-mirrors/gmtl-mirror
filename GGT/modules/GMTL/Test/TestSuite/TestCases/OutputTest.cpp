@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: OutputTest.cpp,v $
- * Date modified: $Date: 2002-10-11 10:34:22 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2003-02-06 01:12:27 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -32,8 +32,9 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 *
  ************************************************************ ggt-cpr end */
-#include <iostream>
 #include <sstream>
+#include "../Suites.h"
+#include <cppunit/extensions/HelperMacros.h>
 #include "OutputTest.h"
 
 #include <gmtl/Vec.h>
@@ -47,6 +48,8 @@
 
 namespace gmtlTest
 {
+   CPPUNIT_TEST_SUITE_REGISTRATION(OutputTest);
+
    void OutputTest::testVec()
    {
       std::ostringstream out1;

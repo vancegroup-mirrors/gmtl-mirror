@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatClassTest.h,v $
- * Date modified: $Date: 2002-07-02 02:07:02 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2003-02-06 01:12:27 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -32,33 +32,41 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 *
  ************************************************************ ggt-cpr end */
-#include <iostream>
-#include <cppunit/TestCase.h>
-#include <cppunit/TestSuite.h>
-#include <cppunit/TestCaller.h>
+#ifndef _GMTL_QUAT_CLASS_TEST_H_
+#define _GMTL_QUAT_CLASS_TEST_H_
+
+#include <cppunit/extensions/HelperMacros.h>
 
 namespace gmtlTest
 {
-   class QuatClassTest : public CppUnit::TestCase
+   class QuatClassTest : public CppUnit::TestFixture
    {
+      CPPUNIT_TEST_SUITE(QuatClassTest);
+
+      CPPUNIT_TEST(testQuatClassTestCreation);
+
+      CPPUNIT_TEST_SUITE_END();
+
    public:
-      QuatClassTest( std::string name = "QuatClassTest" )
-         : CppUnit::TestCase( name )
-      {
-      }
-
-      virtual ~QuatClassTest()
-      {}
-
-      virtual void setUp()
-      {
-      }
-
-      virtual void tearDown()
-      {
-      }
-
       void testQuatClassTestCreation();
+   };
+
+   class QuatClassMetricTest : public CppUnit::TestFixture
+   {
+      CPPUNIT_TEST_SUITE(QuatClassMetricTest);
+
+      CPPUNIT_TEST(testQuatTimingDefaultConstructor);
+      CPPUNIT_TEST(testQuatTimingElementConstructor);
+      CPPUNIT_TEST(testQuatTimingCopyConstructor);
+      CPPUNIT_TEST(testQuatTimingGet);
+      CPPUNIT_TEST(testQuatTimingSet);
+      CPPUNIT_TEST(testQuatTimingOpBracket);
+      CPPUNIT_TEST(testQuatTimingGetData);
+      CPPUNIT_TEST(testQuatTimingOpEqual);
+
+      CPPUNIT_TEST_SUITE_END();
+
+   public:
       void testQuatTimingDefaultConstructor();
       void testQuatTimingElementConstructor();
       void testQuatTimingCopyConstructor();
@@ -67,37 +75,7 @@ namespace gmtlTest
       void testQuatTimingOpBracket();
       void testQuatTimingGetData();
       void testQuatTimingOpEqual();
-
-      static CppUnit::Test* suite()
-      {
-         CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("QuatClassTest");
-         test_suite->addTest( new CppUnit::TestCaller<QuatClassTest>("testQuatClassTestCreation", &QuatClassTest::testQuatClassTestCreation));
-         return test_suite;
-      }
-
-      static CppUnit::Test* perfSuite()
-   {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("QuatClassTiming");
-      test_suite->addTest( new CppUnit::TestCaller<QuatClassTest>("testQuatTimingDefaultConstructor", &QuatClassTest::testQuatTimingDefaultConstructor));
-         test_suite->addTest( new CppUnit::TestCaller<QuatClassTest>("testQuatTimingElementConstructor", &QuatClassTest::testQuatTimingElementConstructor));
-         test_suite->addTest( new CppUnit::TestCaller<QuatClassTest>("testQuatTimingCopyConstructor", &QuatClassTest::testQuatTimingCopyConstructor));
-         test_suite->addTest( new CppUnit::TestCaller<QuatClassTest>("testQuatTimingGet", &QuatClassTest::testQuatTimingGet));
-         test_suite->addTest( new CppUnit::TestCaller<QuatClassTest>("testQuatTimingSet", &QuatClassTest::testQuatTimingSet));
-         test_suite->addTest( new CppUnit::TestCaller<QuatClassTest>("testQuatTimingOpBracket", &QuatClassTest::testQuatTimingOpBracket));
-         test_suite->addTest( new CppUnit::TestCaller<QuatClassTest>("testQuatTimingGetData", &QuatClassTest::testQuatTimingGetData));
-         test_suite->addTest( new CppUnit::TestCaller<QuatClassTest>("testQuatTimingOpEqual", &QuatClassTest::testQuatTimingOpEqual));
-         return test_suite;
-   }
-   
-      static CppUnit::Test* interactiveSuite()
-      {
-         CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveQuatClassTest");
-         //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
-         return test_suite;
-      }
-
-   protected:
-
    };
+}
 
-} // end namespace
+#endif

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatStuffTest.cpp,v $
- * Date modified: $Date: 2002-07-02 03:09:21 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2003-02-06 01:12:27 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -33,12 +33,21 @@
 *
  ************************************************************ ggt-cpr end */
 #include "QuatStuffTest.h"
+#include "../Suites.h"
+#include <cppunit/extensions/HelperMacros.h>
 #include <cppunit/extensions/MetricRegistry.h>
+
+#include <gmtl/Quat.h>
+#include <gmtl/QuatOps.h>
+#include <gmtl/Generate.h>
+#include <gmtl/Xforms.h>
 #include <gmtl/AxisAngle.h>
 #include <gmtl/AxisAngleOps.h>
 
 namespace gmtlTest
 {
+   CPPUNIT_TEST_SUITE_REGISTRATION(QuatStuffTest);
+
    void QuatStuffTest::makeRotTest()
    {
       // make sure make rot produces a normalized quat (if not normalized, then it isn't a rotation)

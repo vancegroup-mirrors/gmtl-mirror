@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PlaneTest.cpp,v $
- * Date modified: $Date: 2002-03-18 22:11:14 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2003-02-06 01:12:27 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -33,11 +33,28 @@
 *
  ************************************************************ ggt-cpr end */
 #include "PlaneTest.h"
+#include "../Suites.h"
+#include <cppunit/extensions/HelperMacros.h>
 #include <cppunit/extensions/MetricRegistry.h>
+
 #include <gmtl/PlaneOps.h>
 
 namespace gmtlTest
 {
+   void PlaneTest::setUp()
+   {
+      origin.set( 0,0,0 );
+      x1_v.set( 1,0,0 );
+      y1_v.set( 0,1,0 );
+      z1_v.set( 0,0,1 );
+      x1_pt.set( 1,0,0 );
+      y1_pt.set( 0,1,0 );
+      z1_pt.set( 0,0,1 );
+      xy_plane = gmtl::Plane<float>(origin,x1_pt,y1_pt);
+      zx_plane = gmtl::Plane<float>(origin,z1_pt,x1_pt);
+      yz_plane = gmtl::Plane<float>(origin,y1_pt,z1_pt);
+   }
+
    // ------------------------
    // CREATION TESTS
    // ------------------------

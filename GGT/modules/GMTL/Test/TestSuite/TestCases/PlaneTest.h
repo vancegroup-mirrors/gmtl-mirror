@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PlaneTest.h,v $
- * Date modified: $Date: 2002-07-02 02:07:02 $
- * Version:       $Revision: 1.20 $
+ * Date modified: $Date: 2003-02-06 01:12:27 $
+ * Version:       $Revision: 1.21 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -32,109 +32,70 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 *
  ************************************************************ ggt-cpr end */
-#include <iostream>
+#ifndef _GMTL_PLANE_TEST_H_
+#define _GMTL_PLANE_TEST_H_
 
-#include <cppunit/TestCase.h>
-#include <cppunit/TestSuite.h>
-#include <cppunit/TestCaller.h>
+#include <cppunit/extensions/HelperMacros.h>
 
 #include <gmtl/Plane.h>
 
 namespace gmtlTest
 {
-
-class PlaneTest : public CppUnit::TestCase
-{
-public:
-   PlaneTest( std::string name = "PlaneTest")
-   : CppUnit::TestCase (name)
-   {;}
-
-   virtual ~PlaneTest()
-   {}
-
-   virtual void setUp()
+   class PlaneTest : public CppUnit::TestFixture
    {
-      origin.set( 0,0,0 );
-      x1_v.set( 1,0,0 );
-      y1_v.set( 0,1,0 );
-      z1_v.set( 0,0,1 );
-      x1_pt.set( 1,0,0 );
-      y1_pt.set( 0,1,0 );
-      z1_pt.set( 0,0,1 );
-      xy_plane = gmtl::Plane<float>(origin,x1_pt,y1_pt);
-      zx_plane = gmtl::Plane<float>(origin,z1_pt,x1_pt);
-      yz_plane = gmtl::Plane<float>(origin,y1_pt,z1_pt);
-   }
+      CPPUNIT_TEST_SUITE(PlaneTest);
 
-   virtual void tearDown()
-   {;}
+      CPPUNIT_TEST(testCreation);
+      CPPUNIT_TEST(testThreePtCreation);
+      CPPUNIT_TEST(testNormPtCreation);
+      CPPUNIT_TEST(testNormOffsetCreation);
+      CPPUNIT_TEST(testCopyConstruct);
+      CPPUNIT_TEST(testEqualityCompare);
+      CPPUNIT_TEST(testIsEqual);
+      CPPUNIT_TEST(testDistance);
+      CPPUNIT_TEST(testWhichSide);
+      CPPUNIT_TEST(testFindNearestPt);
 
-   // ------------------------
-   // CREATION TESTS
-   // ------------------------
-   void testCreation();
-   void testThreePtCreation();
-   void testNormPtCreation();
-   void testNormOffsetCreation();
-   void testCopyConstruct();
+      CPPUNIT_TEST_SUITE_END();
 
-   // --------------------------
-   // Comparison tests
-   // --------------------------
-   void testEqualityCompare();
-   void testIsEqual();
+   public:
+      void setUp();
 
-   // --------------------------
-   // Operations tests
-   // --------------------------
-   void testDistance();
-   void testWhichSide();
-   void testFindNearestPt();
+      // ------------------------
+      // CREATION TESTS
+      // ------------------------
+      void testCreation();
+      void testThreePtCreation();
+      void testNormPtCreation();
+      void testNormOffsetCreation();
+      void testCopyConstruct();
 
+      // --------------------------
+      // Comparison tests
+      // --------------------------
+      void testEqualityCompare();
+      void testIsEqual();
 
-   static CppUnit::Test* suite()
-   {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("PlaneTest");
-      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testCreation", &PlaneTest::testCreation));
-      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testThreePtCreation", &PlaneTest::testThreePtCreation));
-      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testNormPtCreation", &PlaneTest::testNormPtCreation));
-      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testNormOffsetCreation", &PlaneTest::testNormOffsetCreation));
-      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testCopyConstruct", &PlaneTest::testCopyConstruct));
-      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testEqualityCompare", &PlaneTest::testEqualityCompare));
-      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testIsEqual", &PlaneTest::testIsEqual));
-      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testDistance", &PlaneTest::testDistance));
-      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testWhichSide", &PlaneTest::testWhichSide));
-      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testFindNearestPt", &PlaneTest::testFindNearestPt));
+      // --------------------------
+      // Operations tests
+      // --------------------------
+      void testDistance();
+      void testWhichSide();
+      void testFindNearestPt();
 
-      return test_suite;
-   }
+   protected:
+      gmtl::Point<float, 3> origin;
+      gmtl::Point<float, 3> x1_pt;
+      gmtl::Point<float, 3> y1_pt;
+      gmtl::Point<float, 3> z1_pt;
+      gmtl::Vec<float, 3> x1_v;
+      gmtl::Vec<float, 3> y1_v;
+      gmtl::Vec<float, 3> z1_v;
 
-   static CppUnit::Test* perfSuite()
-   {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("PlaneTiming");
-      return test_suite;
-   }
-   
-   static CppUnit::Test* interactiveSuite()
-   {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("PlaneTestInteractive");
-      //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
-      return test_suite;
-   }
+      gmtl::Plane<float> xy_plane;
+      gmtl::Plane<float> zx_plane;
+      gmtl::Plane<float> yz_plane;
+   };
+}
 
-protected:
-   gmtl::Point<float, 3> origin;
-   gmtl::Point<float, 3> x1_pt;
-   gmtl::Point<float, 3> y1_pt;
-   gmtl::Point<float, 3> z1_pt;
-   gmtl::Vec<float, 3> x1_v;
-   gmtl::Vec<float, 3> y1_v;
-   gmtl::Vec<float, 3> z1_v;
-
-   gmtl::Plane<float> xy_plane;
-   gmtl::Plane<float> zx_plane;
-   gmtl::Plane<float> yz_plane;
-};
-
-} // namespace gmtlTest
+#endif
