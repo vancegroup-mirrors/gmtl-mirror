@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixGenTest.cpp,v $
- * Date modified: $Date: 2002-05-17 20:04:49 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2002-06-06 17:08:48 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -507,11 +507,11 @@ namespace gmtlTest
    {
       float eps = 0.0001f;
       float a = 999, b = 999, c = 999;
-      gmtl::Matrix44f hi;
+      gmtl::Matrix44f matrix;
       // XYZ
       {
-         gmtl::setRot( hi, gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f );
-         gmtl::getRot( hi, a, b, c, gmtl::XYZ );
+         gmtl::setRot( matrix, gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f );
+         gmtl::setRot( a, b, c, gmtl::XYZ, matrix );
          std::cout<<gmtl::Math::rad2Deg( a )<<" "
             <<gmtl::Math::rad2Deg( b )<<" "
             <<gmtl::Math::rad2Deg( c )<<" "<<std::endl;
@@ -519,8 +519,8 @@ namespace gmtlTest
          CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( b ), 0.0f, eps ) );
          CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( c ), 0.0f, eps ) );
 
-         gmtl::setRot( hi, gmtl::Math::deg2Rad( -90.0f ), 1.0f, 0.0f, 0.0f );
-         gmtl::getRot( hi, a, b, c, gmtl::XYZ );
+         gmtl::setRot( matrix, gmtl::Math::deg2Rad( -90.0f ), 1.0f, 0.0f, 0.0f );
+         gmtl::setRot( a, b, c, gmtl::XYZ, matrix );
          std::cout<<gmtl::Math::rad2Deg( a )<<" "
             <<gmtl::Math::rad2Deg( b )<<" "
             <<gmtl::Math::rad2Deg( c )<<" "<<std::endl;
@@ -528,8 +528,8 @@ namespace gmtlTest
          CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( b ), 0.0f, eps ) );
          CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( c ), 0.0f, eps ) );
 
-         gmtl::setRot( hi, gmtl::Math::deg2Rad( 35.0f ), 0.0f, 1.0f, 0.0f );
-         gmtl::getRot( hi, a, b, c, gmtl::XYZ );
+         gmtl::setRot( matrix, gmtl::Math::deg2Rad( 35.0f ), 0.0f, 1.0f, 0.0f );
+         gmtl::setRot( a, b, c, gmtl::XYZ, matrix );
          std::cout<<gmtl::Math::rad2Deg( a )<<" "
             <<gmtl::Math::rad2Deg( b )<<" "
             <<gmtl::Math::rad2Deg( c )<<" "<<std::endl;
@@ -538,8 +538,8 @@ namespace gmtlTest
          CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( c ), 0.0f, eps ) );
 
          // test cos y = 0 singularity
-         gmtl::setRot( hi, gmtl::Math::deg2Rad( 90.0f ), 0.0f, 1.0f, 0.0f );
-         gmtl::getRot( hi, a, b, c, gmtl::XYZ );
+         gmtl::setRot( matrix, gmtl::Math::deg2Rad( 90.0f ), 0.0f, 1.0f, 0.0f );
+         gmtl::setRot( a, b, c, gmtl::XYZ, matrix );
          std::cout<<gmtl::Math::rad2Deg( a )<<" "
             <<gmtl::Math::rad2Deg( b )<<" "
             <<gmtl::Math::rad2Deg( c )<<" "<<std::endl;
@@ -548,8 +548,8 @@ namespace gmtlTest
          CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( c ), 0.0f, eps ) );
 
          // test cos z = 0 singularity
-         gmtl::setRot( hi, gmtl::Math::deg2Rad( 90.0f ), 0.0f, 0.0f, 1.0f );
-         gmtl::getRot( hi, a, b, c, gmtl::XYZ );
+         gmtl::setRot( matrix, gmtl::Math::deg2Rad( 90.0f ), 0.0f, 0.0f, 1.0f );
+         gmtl::setRot( a, b, c, gmtl::XYZ, matrix );
          std::cout<<gmtl::Math::rad2Deg( a )<<" "
             <<gmtl::Math::rad2Deg( b )<<" "
             <<gmtl::Math::rad2Deg( c )<<" "<<std::endl;
@@ -560,8 +560,8 @@ namespace gmtlTest
       
       // ZYX
       {
-         gmtl::setRot( hi, gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f );
-         gmtl::getRot( hi, a, b, c, gmtl::ZYX );
+         gmtl::setRot( matrix, gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f );
+         gmtl::setRot( a, b, c, gmtl::ZYX, matrix );
          std::cout<<gmtl::Math::rad2Deg( a )<<" "
             <<gmtl::Math::rad2Deg( b )<<" "
             <<gmtl::Math::rad2Deg( c )<<" "<<std::endl;
@@ -569,8 +569,8 @@ namespace gmtlTest
          CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( b ), 0.0f, eps ) );
          CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( c ), 90.0f, eps ) );
 
-         gmtl::setRot( hi, gmtl::Math::deg2Rad( -90.0f ), 1.0f, 0.0f, 0.0f );
-         gmtl::getRot( hi, a, b, c, gmtl::ZYX );
+         gmtl::setRot( matrix, gmtl::Math::deg2Rad( -90.0f ), 1.0f, 0.0f, 0.0f );
+         gmtl::setRot( a, b, c, gmtl::ZYX, matrix );
          std::cout<<gmtl::Math::rad2Deg( a )<<" "
             <<gmtl::Math::rad2Deg( b )<<" "
             <<gmtl::Math::rad2Deg( c )<<" "<<std::endl;
@@ -579,8 +579,8 @@ namespace gmtlTest
          CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( c ), -90.0f, eps ) );
 
          // test sin x = 0 singularity
-         gmtl::setRot( hi, gmtl::Math::deg2Rad( 35.0f ), 0.0f, 1.0f, 0.0f );
-         gmtl::getRot( hi, a, b, c, gmtl::ZYX );
+         gmtl::setRot( matrix, gmtl::Math::deg2Rad( 35.0f ), 0.0f, 1.0f, 0.0f );
+         gmtl::setRot( a, b, c, gmtl::ZYX, matrix );
          std::cout<<gmtl::Math::rad2Deg( a )<<" "
             <<gmtl::Math::rad2Deg( b )<<" "
             <<gmtl::Math::rad2Deg( c )<<" "<<std::endl;
@@ -589,8 +589,8 @@ namespace gmtlTest
          CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( c ), 0.0f, eps ) );
 
          // test cos y = 0 singularity
-         gmtl::setRot( hi, gmtl::Math::deg2Rad( 35.0f ), 0.0f, 1.0f, 0.0f );
-         gmtl::getRot( hi, a, b, c, gmtl::ZYX );
+         gmtl::setRot( matrix, gmtl::Math::deg2Rad( 35.0f ), 0.0f, 1.0f, 0.0f );
+         gmtl::setRot( a, b, c, gmtl::ZYX, matrix );
          std::cout<<gmtl::Math::rad2Deg( a )<<" "
             <<gmtl::Math::rad2Deg( b )<<" "
             <<gmtl::Math::rad2Deg( c )<<" "<<std::endl;
@@ -1271,7 +1271,7 @@ namespace gmtlTest
 
    void MatrixGenTest::testTimingGetRot()
    {
-      /// @todo ... write a getRot( mat, rad, axis ) test here....
+      /// @todo ... write a setRot( rad, axis, mat ) test here....
    }
 
 

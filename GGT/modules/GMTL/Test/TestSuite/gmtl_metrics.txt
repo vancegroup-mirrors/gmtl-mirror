@@ -911,7 +911,7 @@ gfxn3/Debug/MatrixTest/OpParenOverhead                             0.12584
 gfxn3/Debug/MatrixTest/SetOverhead                                 0.22152
 gfxn3/Debug/MatrixTest/SetPtrOverhead                              0.67264
 gfxn3/Debug/MatrixTest/SetTransposePtrOverhead                     1.3016
-gfxn3/Debug/PlaneTest/CopyConstructOverhead                        0.08352
+gfxn3/Debug/PlaneTest/CopyConstructOverhead                        0.0768375
 gfxn3/Debug/PlaneTest/DefaultCreationOverhead                      0.0743025
 gfxn3/Debug/PlaneTest/DistanceOverhead                             0.211647
 gfxn3/Debug/PlaneTest/EqualityCompareOverhead                      0.152415
@@ -957,6 +957,7 @@ gfxn3/Debug/QuatGenTest/makeRot(quatd,vec3d,vec3d)                 2.00708
 gfxn3/Debug/QuatGenTest/makeRot(quatf,f,f,f,f)                     1.39072
 gfxn3/Debug/QuatGenTest/makeRot(quatf,f,vecf)                      1.43472
 gfxn3/Debug/QuatGenTest/makeRot(quatf,vec3f,vec3f)                 1.83832
+gfxn3/Debug/QuatGenTest/setRot(f,f,f,f,quatf)                      1.52588
 gfxn3/Debug/QuatGenTest/setRot(quatd,d,d,d,d)                      1.29912
 gfxn3/Debug/QuatGenTest/setRot(quatd,d,vecd)                       1.11016
 gfxn3/Debug/QuatGenTest/setRot(quatd,vec3d,vec3d)                  1.84612

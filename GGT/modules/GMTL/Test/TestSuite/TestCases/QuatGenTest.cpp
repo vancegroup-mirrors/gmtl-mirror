@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatGenTest.cpp,v $
- * Date modified: $Date: 2002-03-20 16:06:50 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-06-06 17:08:48 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -219,7 +219,7 @@ namespace gmtlTest
       for (int x = -360; x <= 360; x += 20)
       {
          q2 = gmtl::makeRot<gmtl::Quat<float> >( gmtl::Math::deg2Rad( float(x) ), 0.0f, 1.0f, 0.0f );
-         gmtl::getRot( q2, fg, a, b, c );
+         gmtl::setRot( fg, a, b, c, q2 );
          CPPUNIT_ASSERT( gmtl::isEqual( quats[count], gmtl::Vec4f( fg, a, b, c ), eps ) );
          ++count;
       }
@@ -233,9 +233,9 @@ namespace gmtlTest
       for (int x = -360; x <= 360; x += 20)
       {
          q2 = gmtl::makeRot<gmtl::Quat<float> >( gmtl::Math::deg2Rad( float(x) ), 0.0f, 1.0f, 0.0f );
-         gmtl::getRot( q2, fg, a, b, c );
+         gmtl::setRot( fg, a, b, c, q2 );
          q3 = gmtl::makeRot<gmtl::Quat<float> >( fg, a, b, c );
-         gmtl::getRot( q3, fg1, a1, b1, c1 );
+         gmtl::setRot( fg1, a1, b1, c1, q3 );
          CPPUNIT_ASSERT( gmtl::isEqual( q3, q2, eps ) );
 
          CPPUNIT_ASSERT( gmtl::Math::isEqual( fg1, fg, eps ) );
@@ -445,7 +445,7 @@ namespace gmtlTest
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
-         gmtl::getRot( q6, a, b, c, d );
+         gmtl::setRot( a, b, c, d, q6 );
          q6[0] = a + b - c - d;
          a += q6[1];
          b -= q6[2] * -0.22;
@@ -453,7 +453,7 @@ namespace gmtlTest
          d -= q6[2] - 0.99;
       }
       CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/getRot(quatf,f,f,f,f)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/setRot(f,f,f,f,quatf)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
 
       // force intelligent compilers to do all the iterations (ie. to not optimize them out),
       // by using the variables computed...

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatStuffTest.cpp,v $
- * Date modified: $Date: 2002-03-19 23:06:50 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-06-06 17:08:48 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -41,6 +41,7 @@ namespace gmtlTest
    {
       // make sure make rot produces a normalized quat (if not normalized, then it isn't a rotation)
       gmtl::Quatf q1, q2, q3, q4;
+      // set the quat from the given euler params.
       q3 = gmtl::setRot( q1, gmtl::Math::deg2Rad( 45.0f ), 0.0f, 1.0f, 0.0f );
       q4 = gmtl::setRot( q2, gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f );
       gmtl::normalize( q3 );
@@ -53,15 +54,15 @@ namespace gmtlTest
       CPPUNIT_ASSERT( gmtl::isEqual( q1, gmtl::makeRot<gmtl::Quatf>( gmtl::Math::deg2Rad( 45.0f ), 0.0f, 1.0f, 0.0f ), 0.0001f ) );
       CPPUNIT_ASSERT( gmtl::isEqual( q2, gmtl::makeRot<gmtl::Quatf>( gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f ), 0.0001f ) );
 
-      
+      // set the euler params from the given quat.
       float a, b, c, d;
-      gmtl::getRot( q1, a, b, c, d );
+      gmtl::setRot( a, b, c, d, q1 );
       CPPUNIT_ASSERT( gmtl::Math::isEqual( a, gmtl::Math::deg2Rad( 45.0f ), 0.0001f ) );
       CPPUNIT_ASSERT( gmtl::Math::isEqual( b, 0.0f, 0.0001f ) );
       CPPUNIT_ASSERT( gmtl::Math::isEqual( c, 1.0f, 0.0001f ) );
       CPPUNIT_ASSERT( gmtl::Math::isEqual( d, 0.0f, 0.0001f ) );
 
-      gmtl::getRot( q2, a, b, c, d );
+      gmtl::setRot( a, b, c, d, q2 );
       CPPUNIT_ASSERT( gmtl::Math::isEqual( a, gmtl::Math::deg2Rad( 90.0f ), 0.0001f ) );
       CPPUNIT_ASSERT( gmtl::Math::isEqual( b, 1.0f, 0.0001f ) );
       CPPUNIT_ASSERT( gmtl::Math::isEqual( c, 0.0f, 0.0001f ) );
@@ -103,8 +104,12 @@ namespace gmtlTest
          gmtl::Quatf sanity = gmtl::makeRot<gmtl::Quatf>( gmtl::Math::deg2Rad(i), 1.0f, 0.0f, 0.0f );
          CPPUNIT_ASSERT( q == sanity );
       
-         gmtl::getRot( q, rad, x, y, z );
+         // set euler params from quat
+         gmtl::setRot( rad, x, y, z, q );
+         
+         // set quat from euler params
          gmtl::setRot( q2, rad, x, y, z );
+         
          sanity = gmtl::makeRot<gmtl::Quatf>( rad, x, y, z );
          CPPUNIT_ASSERT( q2 == sanity );
       
@@ -201,7 +206,7 @@ namespace gmtlTest
    {
       gmtl::Quatf q( 0.0f, -0.000313354f, 0.0f, 1.0f );
       float rad, x, y, z;
-      gmtl::getRot( q, rad, x, y, z );
+      gmtl::setRot( rad, x, y, z, q  );
 
       // testing...
       double half_angle = 0.000626708f * 0.5f;
@@ -242,7 +247,7 @@ namespace gmtlTest
          CPPUNIT_ASSERT( !gmtl::isNormalized( q2 ) );
 
          float rad, i,j,k;
-         gmtl::getRot( q2, rad, i,j,k );
+         gmtl::setRot( rad, i,j,k, q2 );
       }
 
       // If normalized, then the scaled quat is equal to the original.
