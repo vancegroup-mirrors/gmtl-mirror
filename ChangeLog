@@ -1,5 +1,6 @@
 DATE       AUTHOR    CHANGE
 ---------- --------  -----------------------------------------------------------
+2002-02-18 bscott    Added Tri class, comparison and ops
 2002-02-15 subatomic Added Matrix class, comparison and math ops
 2002-02-15 bscott    Added Sphere class and comparisons.
 2002-02-11 subatomic Added Math abstraction for sin, cos, etc...

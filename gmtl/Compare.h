@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Compare.h,v $
- * Date modified: $Date: 2002-02-15 21:47:49 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-02-18 18:06:01 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -41,6 +41,7 @@
 #include <gmtl/Vec.h>
 #include <gmtl/Point.h>
 #include <gmtl/Sphere.h>
+#include <gmtl/Tri.h>
 #include <gmtl/Matrix.h>
 
 namespace gmtl
@@ -137,6 +138,59 @@ inline bool isEqual(const VecBase<DATA_TYPE, SIZE>& v1, const VecBase<DATA_TYPE,
   return true;
 }
 
+// --- Triangle comparisons -- //
+/**
+ * Compare two triangles to see if they are EXACTLY the same. In other words,
+ * this comparison is done with zero tolerance.
+ * 
+ * @param tri1    the first triangle to compare
+ * @param tri2    the second triangle to compare
+ *
+ * @return  true if they are equal, false otherwise
+ */
+template< class DATA_TYPE >
+bool operator==( const Tri<DATA_TYPE>& tri1, const Tri<DATA_TYPE>& tri2 )
+{
+   return ( (tri1[0] == tri2[0]) &&
+            (tri1[1] == tri2[1]) &&
+            (tri1[2] == tri2[2]) );
+}
+
+/**
+ * Compare two triangle to see if they are not EXACTLY the same. In other words,
+ * this comparison is done with zero tolerance.
+ *
+ * @param tri1    the first triangle to compare
+ * @param tri2    the second triangle to compare
+ *
+ * @return  true if they are not equal, false otherwise
+ */
+template< class DATA_TYPE >
+bool operator!=( const Tri<DATA_TYPE>& tri1, const Tri<DATA_TYPE>& tri2 )
+{
+   return (! (tri1 == tri2));
+}
+
+/**
+ * Compare two triangles to see if they are the same within the given tolerance.
+ *
+ * @param tri1    the first triangle to compare
+ * @param tri2    the second triangle to compare
+ * @param eps     the tolerance value to use
+ *
+ * @pre  eps must be >= 0
+ *
+ * @return  true if they are equal, false otherwise
+ */
+template< class DATA_TYPE >
+bool isEqual( const Tri<DATA_TYPE>& tri1, const Tri<DATA_TYPE>& tri2,
+              const DATA_TYPE& eps )
+{
+   ggtASSERT( eps >= 0 );
+   return ( isEqual(tri1[0], tri2[0], eps) &&
+            isEqual(tri1[1], tri2[1], eps) &&
+            isEqual(tri1[2], tri2[2], eps) );
+}
 
 // --- Sphere comparisons -- //
 
