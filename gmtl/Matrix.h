@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Matrix.h,v $
- * Date modified: $Date: 2003-04-01 13:21:47 $
- * Version:       $Revision: 1.27 $
+ * Date modified: $Date: 2003-04-11 04:16:08 $
+ * Version:       $Revision: 1.28 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -43,7 +43,9 @@ namespace gmtl
 {
 
 /**
- * Matrix: 4x4 Matrix class (OpenGL ordering)
+ * Matrix: 4x4 Matrix class (Column major ordering)
+ * 
+ * 
  *
  * C/C++ uses matrices in row major order.  In other words the access
  * indices look like: mat[row][col] <br>
@@ -108,15 +110,63 @@ public:
       unsigned                      mRow;    /** The row being accessed */
    };
 
+   /** Helper class for Matrix op[] const.
+   * This class encapsulates the row that the user is accessing
+   * and implements a new op[] that passes the column to use
+   */
+   class ConstRowAccessor
+   {
+   public:
+      typedef DATA_TYPE DataType;
+
+      ConstRowAccessor( const Matrix<DATA_TYPE,ROWS,COLS>* mat, 
+                        const unsigned row )
+         : mMat( mat ), mRow( row )
+      {
+         gmtlASSERT( row < ROWS );
+         gmtlASSERT( NULL != mat );
+      }
+
+      const DATA_TYPE& operator[](const unsigned column) const
+      {
+         gmtlASSERT(column < COLS);
+         return (*mMat)(mRow,column);
+      }
+
+      const Matrix<DATA_TYPE,ROWS,COLS>*  mMat;
+      unsigned                      mRow;    /** The row being accessed */
+   };
+
    /** describes the xforms that this matrix has been through. */
    enum XformState
    {
+      // identity matrix.
       IDENTITY = 1,
-      ORTHOGONAL = 2,
-      ORTHONORMAL = 4,
-      AFFINE = 8,
-      FULL = 16,
-      XFORM_ERROR = 32 // error bit
+
+      // only translation, can simply negate that column
+      TRANS = 2,
+
+      // able to tranpose to get the inverse.  only rotation component is set
+      ORTHOGONAL = 4, 
+
+      // orthogonal, and normalized axes.
+      //ORTHONORMAL = 8,
+
+      // leaves the homogeneous coordinate unchanged - that is, in which the last column is (0,0,0,s).
+      // can include rotation, uniform scale, and translation, but no shearing or nonuniform scaling
+      // This can optionally be combined with the NON_UNISCALE state to indicate there is also non-uniform scale
+      AFFINE = 16,
+
+      // AFFINE matrix with non-uniform scale, a matrix cannot 
+      // have this state without also having AFFINE (must be or'd together).
+      NON_UNISCALE = 32, 
+
+      // fully set matrix containing more information than the above, or state is unknown, 
+      // or unclassifiable in terms of the above.
+      FULL = 64,
+
+      // error bit
+      XFORM_ERROR = 128 
    };
 
    /** Default Constructor (Identity constructor) */
@@ -132,7 +182,7 @@ public:
          this->operator()( x, x ) = (DATA_TYPE)1.0;
 
       /** @todo Set initial state to IDENTITY and test other stuff */
-      mState = FULL;
+      mState = IDENTITY;
    };
 
    /** copy constructor */
@@ -314,7 +364,14 @@ public:
       mState = FULL;
    }
 
-   /** access [row, col] in the matrix */
+   /** access [row, col] in the matrix 
+    *  WARNING: If you set data in the matrix (using this interface), 
+    *  you are required to set mState 
+    *  appropriately, failure to do so will result in incorrect 
+    *  calculations by other functions in GMTL.  If you are unsure 
+    *  about how to set mState, set it to FULL and you will be sure 
+    *  to get the correct result at the cost of some performance.
+    */
    DATA_TYPE& operator()( const unsigned row, const unsigned column )
    {
       gmtlASSERT( (row < ROWS) && (column < COLS) );
@@ -328,10 +385,23 @@ public:
       return mData[column*ROWS + row];
    }
 
-   /** bracket operator */
+   /** bracket operator 
+    *  WARNING: If you set data in the matrix (using this interface), 
+    *  you are required to set mState 
+    *  appropriately, failure to do so will result in incorrect 
+    *  calculations by other functions in GMTL.  If you are unsure 
+    *  about how to set mState, set it to FULL and you will be sure 
+    *  to get the correct result at the cost of some performance.
+    */
    RowAccessor operator[]( const unsigned row )
    {
       return RowAccessor(this, row);
+   }
+
+   /** bracket operator (const version) */
+   ConstRowAccessor operator[]( const unsigned row ) const
+   {
+      return ConstRowAccessor( this, row );
    }
 
    /*
@@ -360,11 +430,17 @@ public:
 public:
    /** Column major.  In other words {Column1, Column2, Column3, Column4} in memory
     * access element mData[column][row]
+    *  WARNING: If you set data in the matrix (using this interface), 
+    *  you are required to set mState appropriately, 
+    *  failure to do so will result in incorrect 
+    *  calculations by other functions in GMTL.  If you are unsure 
+    *  about how to set mState, set it to FULL and you will be sure 
+    *  to get the correct result at the cost of some performance.
     */
    DATA_TYPE mData[COLS*ROWS];
 
    /** describes what xforms are in this matrix */
-   char mState;
+   int mState;
 };
 
 typedef Matrix<float, 2, 2> Matrix22f;
@@ -408,6 +484,69 @@ const Matrix44f MAT_IDENTITY44F = Matrix44f();
 /** 64bit floating point 4x4 identity matrix */
 const Matrix44d MAT_IDENTITY44D = Matrix44d();
 
+/** utility function for use by matrix operations.  
+ *  given two matrices, when combined with set(..) or xform(..) types of operations, 
+ *  compute what matrixstate will the resulting matrix have?
+ */
+inline int combineMatrixStates( int state1, int state2 )
+{
+   switch (state1)
+   {
+   case Matrix44f::IDENTITY: 
+      switch (state2)
+      {
+      case Matrix44f::XFORM_ERROR: return state2;
+      case Matrix44f::NON_UNISCALE: return Matrix44f::XFORM_ERROR;
+      default: return state2;
+      }
+   case Matrix44f::TRANS: 
+      switch (state2)
+      {
+      case Matrix44f::IDENTITY: return state1;
+      case Matrix44f::ORTHOGONAL: return Matrix44f::AFFINE;
+      case Matrix44f::NON_UNISCALE: return Matrix44f::XFORM_ERROR;
+      default: return state2;
+      }
+   case Matrix44f::ORTHOGONAL:  
+      switch (state2)
+      {
+      case Matrix44f::IDENTITY: return state1;
+      case Matrix44f::TRANS: return Matrix44f::AFFINE;
+      case Matrix44f::NON_UNISCALE: return Matrix44f::XFORM_ERROR;
+      default: return state2;
+      }
+   case Matrix44f::AFFINE:
+      switch (state2)
+      {
+      case Matrix44f::IDENTITY: 
+      case Matrix44f::TRANS: 
+      case Matrix44f::ORTHOGONAL:  return state1;
+      case Matrix44f::NON_UNISCALE: return Matrix44f::XFORM_ERROR;
+      case Matrix44f::AFFINE | Matrix44f::NON_UNISCALE:
+      default: return state2;
+      }
+   case Matrix44f::AFFINE | Matrix44f::NON_UNISCALE:
+      switch (state2)
+      {
+      case Matrix44f::IDENTITY: 
+      case Matrix44f::TRANS: 
+      case Matrix44f::ORTHOGONAL:
+      case Matrix44f::AFFINE:  return state1;
+      case Matrix44f::NON_UNISCALE: return Matrix44f::XFORM_ERROR;
+      default: return state2;
+      }
+   case Matrix44f::FULL:
+      switch (state2)
+      {
+      case Matrix44f::XFORM_ERROR: return state2;
+      case Matrix44f::NON_UNISCALE: return Matrix44f::XFORM_ERROR;
+      default: return state1;
+      }
+      break;
+   default:
+      return Matrix44f::XFORM_ERROR;
+   }
+}
 
 } // end namespace gmtl
 

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2003-04-02 13:59:50 $
- * Version:       $Revision: 1.72 $
+ * Date modified: $Date: 2003-04-11 04:16:06 $
+ * Version:       $Revision: 1.73 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -707,6 +707,8 @@ namespace gmtl
       result.mData[14] = -( T( 2.0 ) * fr * nr ) / ( fr - nr );
       result.mData[15] = T( 0.0 );
 
+      result.mState = Matrix<T, ROWS, COLS>::FULL; // track state
+      
       return result;
    }
 
@@ -777,6 +779,12 @@ namespace gmtl
          for (unsigned x = 0; x < COLS - 1; ++x)
             result( x, COLS - 1 ) = trans[x];
       }
+      // track state, only override identity
+      switch (result.mState)
+      {
+      case Matrix<DATA_TYPE, ROWS, COLS>::ORTHOGONAL: result.mState = Matrix<DATA_TYPE, ROWS, COLS>::AFFINE; break;
+      case Matrix<DATA_TYPE, ROWS, COLS>::IDENTITY:   result.mState = Matrix<DATA_TYPE, ROWS, COLS>::TRANS; break;
+      }
       return result;
    }
 
@@ -787,22 +795,14 @@ namespace gmtl
    {
       gmtlASSERT( ((SIZE == (ROWS-1) && SIZE == (COLS-1)) || (SIZE == (ROWS-1) && SIZE == COLS) || (SIZE == (COLS-1) && SIZE == ROWS)) && "the scale params must fit within the matrix, check your sizes." );
       for (unsigned x = 0; x < SIZE; ++x)
+      {
          result( x, x ) = scale[x];
+      }
+      // track state: affine matrix with non-uniform scale now.
+      result.mState = Matrix<DATA_TYPE, ROWS, COLS>::AFFINE;
+      result.mState |= Matrix<DATA_TYPE, ROWS, COLS>::NON_UNISCALE;
       return result;
    }
-
-   /** Create a scale matrix.
-    */
-   template <typename MATRIX_TYPE, unsigned SIZE>
-   inline MATRIX_TYPE makeScale( const Vec<typename MATRIX_TYPE::DataType, SIZE>& scale,
-                               Type2Type< MATRIX_TYPE > t = Type2Type< MATRIX_TYPE >() )
-   {
-      gmtl::ignore_unused_variable_warning(t);
-      MATRIX_TYPE temporary;
-      return setScale( temporary, scale );
-   }
-
-
 
    /** Sets the scale part of a matrix.
     */
@@ -810,22 +810,27 @@ namespace gmtl
    inline Matrix<DATA_TYPE, ROWS, COLS>& setScale( Matrix<DATA_TYPE, ROWS, COLS>& result, const DATA_TYPE scale )
    {
       for (unsigned x = 0; x < Math::Min( ROWS, COLS, Math::Max( ROWS, COLS ) - 1 ); ++x) // account for 2x4 or other weird sizes...
+      {
          result( x, x ) = scale;
+      }
+      // track state: affine matrix with non-uniform scale now.
+      result.mState = Matrix<DATA_TYPE, ROWS, COLS>::AFFINE;
+      result.mState |= Matrix<DATA_TYPE, ROWS, COLS>::NON_UNISCALE;
       return result;
    }
 
    /** Create a scale matrix.
+    *  @param scale  You'll typically pass in a Vec or a float here.  
+    *  @seealso      setScale() for all possible argument types for this function.
     */
-   template <typename MATRIX_TYPE>
-   inline MATRIX_TYPE makeScale( const typename MATRIX_TYPE::DataType scale,
+   template <typename MATRIX_TYPE, typename INPUT_TYPE>
+   inline MATRIX_TYPE makeScale( const INPUT_TYPE& scale,
                                Type2Type< MATRIX_TYPE > t = Type2Type< MATRIX_TYPE >() )
    {
       gmtl::ignore_unused_variable_warning(t);
       MATRIX_TYPE temporary;
       return setScale( temporary, scale );
    }
-
-
 
    /** Set the rotation portion of a rotation matrix using an axis and an angle (in radians).
     *  Only writes to the rotation matrix (3x3) defined by the rotation part of M
@@ -854,6 +859,12 @@ namespace gmtl
       result( 1, 0 ) = (t*x*y)+(s*z); result( 1, 1 ) = (t*y*y)+c;     result( 1, 2 ) = (t*y*z)-(s*x);
       result( 2, 0 ) = (t*x*z)-(s*y); result( 2, 1 ) = (t*y*z)+(s*x); result( 2, 2 ) = (t*z*z)+c;
 
+      // track state
+      switch (result.mState)
+      {
+      case Matrix<DATA_TYPE, ROWS, COLS>::TRANS:    result.mState = Matrix<DATA_TYPE, ROWS, COLS>::AFFINE; break;
+      case Matrix<DATA_TYPE, ROWS, COLS>::IDENTITY: result.mState = Matrix<DATA_TYPE, ROWS, COLS>::ORTHOGONAL; break;
+      }
       return result;
    }
 
@@ -915,6 +926,12 @@ namespace gmtl
          break;
       }
 
+      // track state
+      switch (result.mState)
+      {
+      case Matrix<DATA_TYPE, ROWS, COLS>::TRANS:    result.mState = Matrix<DATA_TYPE, ROWS, COLS>::AFFINE; break;
+      case Matrix<DATA_TYPE, ROWS, COLS>::IDENTITY: result.mState = Matrix<DATA_TYPE, ROWS, COLS>::ORTHOGONAL; break;
+      }
       return result;
    }
 
@@ -1061,6 +1078,13 @@ namespace gmtl
       result( 1, 0 ) = Xb; result( 1, 1 ) = Yb; result( 1, 2 ) = Zb;
       result( 2, 0 ) = Xc; result( 2, 1 ) = Yc; result( 2, 2 ) = Zc;
 
+      // track state
+      switch (result.mState)
+      {
+      case Matrix<DATA_TYPE, ROWS, COLS>::TRANS:    result.mState = Matrix<DATA_TYPE, ROWS, COLS>::AFFINE; break;
+      case Matrix<DATA_TYPE, ROWS, COLS>::IDENTITY: result.mState = Matrix<DATA_TYPE, ROWS, COLS>::ORTHOGONAL; break;
+      }
+
       return result;
    }
 
@@ -1089,6 +1113,12 @@ namespace gmtl
       result( 1, 2 ) = zAxis[1];
       result( 2, 2 ) = zAxis[2];
 
+      // track state
+      switch (result.mState)
+      {
+      case Matrix<DATA_TYPE, ROWS, COLS>::TRANS:    result.mState = Matrix<DATA_TYPE, ROWS, COLS>::AFFINE; break;
+      case Matrix<DATA_TYPE, ROWS, COLS>::IDENTITY: result.mState = Matrix<DATA_TYPE, ROWS, COLS>::ORTHOGONAL; break;
+      }
       return result;
    }
 
@@ -1185,6 +1215,12 @@ namespace gmtl
       mat( 1, 2 ) = yz - wx;
       mat( 2, 2 ) = DATA_TYPE(1.0) - (xx + yy);
 
+      // track state
+      switch (mat.mState)
+      {
+      case Matrix<DATA_TYPE, ROWS, COLS>::TRANS:    mat.mState = Matrix<DATA_TYPE, ROWS, COLS>::AFFINE; break;
+      case Matrix<DATA_TYPE, ROWS, COLS>::IDENTITY: mat.mState = Matrix<DATA_TYPE, ROWS, COLS>::ORTHOGONAL; break;
+      }
       return mat;
    }
 
@@ -1196,8 +1232,6 @@ namespace gmtl
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
    Matrix<DATA_TYPE, ROWS, COLS>& set( Matrix<DATA_TYPE, ROWS, COLS>& mat, const Quat<DATA_TYPE>& q )
    {
-      setRot( mat, q );
-
       if (ROWS == 4)
       {
          mat( 3, 0 ) = DATA_TYPE(0.0);
@@ -1215,7 +1249,10 @@ namespace gmtl
       if (ROWS == 4 && COLS == 4)
          mat( 3, 3 ) = DATA_TYPE(1.0);
 
-      return mat;
+      // track state
+      mat.mState = Matrix<DATA_TYPE, ROWS, COLS>::IDENTITY;
+
+      return setRot( mat, q );
    }
 
    /** @} */
