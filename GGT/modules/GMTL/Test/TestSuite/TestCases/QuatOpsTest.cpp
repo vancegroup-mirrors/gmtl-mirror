@@ -87,7 +87,7 @@ namespace gmtlTest
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
-         lerp( result, ((float)iter) / ((float)iters), from, result );
+         gmtl::lerp( result, ((float)iter) / ((float)iters), from, result );
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatOpsTest/lerp()", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
@@ -97,7 +97,7 @@ namespace gmtlTest
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
-         slerp( result, ((float)iter) / ((float)iters), from, result );
+         gmtl::slerp( result, ((float)iter) / ((float)iters), from, result );
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatOpsTest/slerp()", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%

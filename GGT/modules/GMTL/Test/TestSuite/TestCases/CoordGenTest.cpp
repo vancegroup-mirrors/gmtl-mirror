@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: CoordGenTest.cpp,v $
- * Date modified: $Date: 2002-03-20 23:35:43 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-05-05 21:14:41 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -66,7 +66,7 @@ namespace gmtlTest
       
       // make sure this compiles...
       ///@todo testme
-      convert( q1, mat, order );
+      gmtl::convert( q1, mat, order );
    }
 
    void CoordGenTest::testCoordGetMatrix()
@@ -87,7 +87,7 @@ namespace gmtlTest
       
       // make sure this compiles...
       ///@todo testme
-      convert( mat, q1, order );
+      gmtl::convert( mat, q1, order );
 
             
       // do some of the euler tests to test out rotation...
