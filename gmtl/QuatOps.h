@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatOps.h,v $
- * Date modified: $Date: 2002-03-20 07:50:25 $
- * Version:       $Revision: 1.10 $
+ * Date modified: $Date: 2002-03-20 21:25:23 $
+ * Version:       $Revision: 1.11 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -486,7 +486,7 @@ namespace gmtl
    /** Compare two quaternions for equality.
     * @see isEqual( Quat, Quat )
     */
-   template <class DATA_TYPE>
+   template <typename DATA_TYPE>
    inline bool operator==( const Quat<DATA_TYPE>& q1, const Quat<DATA_TYPE>& q2 )
    {
       return bool( q1[0] == q2[0] &&
@@ -498,7 +498,7 @@ namespace gmtl
    /** Compare two quaternions for not-equality.
     * @see isEqual( Quat, Quat )
     */
-   template <class DATA_TYPE>
+   template <typename DATA_TYPE>
    inline bool operator!=( const Quat<DATA_TYPE>& q1, const Quat<DATA_TYPE>& q2 )
    {
       return !operator==( q1, q2 );
