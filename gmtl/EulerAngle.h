@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: EulerAngle.h,v $
- * Date modified: $Date: 2002-06-06 19:30:25 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-06-10 18:28:15 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -56,42 +56,36 @@ namespace gmtl
  * @see Matrix, Quat, EulerParam
  * @ingroup Types
  */
-template <typename DATA_TYPE, unsigned SIZE>
-class EulerAngle : public VecBase<DATA_TYPE, SIZE>
+template <typename DATA_TYPE>
+class EulerAngle : public VecBase<DATA_TYPE, 3>
 {
 public:
    /** default constructor. initializes to identity rotation (no rotation). */
-   EulerAngle() : mOrder( gmtl::XYZ )
+   EulerAngle() : 
+      VecBase<DATA_TYPE, 3>( (DATA_TYPE)0.0, (DATA_TYPE)0.0, (DATA_TYPE)0.0 ),
+      mOrder( gmtl::XYZ )
    {
-      // @todo metaprogramming
-      for (unsigned int x = 0; x < SIZE; ++x)
-      {
-         // init to identity.
-         this->operator[]( x ) = (DATA_TYPE)0;
-      }
    }
    
    /** copy constructor. */
-   EulerAngle( const EulerAngle& e ) : VecBase<DATA_TYPE, SIZE>( e ),
+   EulerAngle( const EulerAngle& e ) : VecBase<DATA_TYPE, 3>( e ),
          mOrder( e.getOrder() )
    {
    }
    
    /** data constructor.   angles are in radians. */
-   EulerAngle( DATA_TYPE p0, DATA_TYPE p1, DATA_TYPE p2, RotationOrder order )
+   EulerAngle( DATA_TYPE p0, DATA_TYPE p1, DATA_TYPE p2, 
+               RotationOrder order ) :
+            VecBase<DATA_TYPE, 3>( p0, p1, p2 ), 
+            mOrder( order )
    {
-      gmtlASSERT( SIZE == 3 && "this EulerAngle constructor can't be used when SIZE != 3" );
-      this->operator[]( 0 ) = p0;
-      this->operator[]( 1 ) = p1;
-      this->operator[]( 2 ) = p2;
-      mOrder = order;
    }
    
    /** set data.   angles are in radians. */
-   void set( const DATA_TYPE& p0, const DATA_TYPE& p1, const DATA_TYPE& p2, const RotationOrder& order )
+   void set( const DATA_TYPE& p0, const DATA_TYPE& p1, 
+             const DATA_TYPE& p2, const RotationOrder& order )
    {
-      gmtlASSERT( SIZE == 3 && "set(x,y,z,o) can't be used when SIZE != 3" );
-      VecBase<DATA_TYPE, SIZE>::set( p0, p1, p2 );
+      VecBase<DATA_TYPE, 3>::set( p0, p1, p2 );
       mOrder = order;
    }
 
@@ -113,11 +107,11 @@ private:
    RotationOrder mOrder;
 };
 
-const EulerAngle<float, 3> EULERANGLE_IDENTITY3F( 0.0f, 0.0f, 0.0f, gmtl::XYZ );
-const EulerAngle<double, 3> EULERANGLE_IDENTITY3D( 0.0, 0.0, 0.0, gmtl::XYZ );
+const EulerAngle<float> EULERANGLE_IDENTITYF( 0.0f, 0.0f, 0.0f, gmtl::XYZ );
+const EulerAngle<double> EULERANGLE_IDENTITYD( 0.0, 0.0, 0.0, gmtl::XYZ );
 
-typedef EulerAngle<float, 3> EulerAngle3f;
-typedef EulerAngle<double, 3> EulerAngle3d;
+typedef EulerAngle<float> EulerAnglef;
+typedef EulerAngle<double> EulerAngled;
 
 } // end of namespace gmtl
 
