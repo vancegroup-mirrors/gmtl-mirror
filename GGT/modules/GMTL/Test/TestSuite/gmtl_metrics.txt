@@ -464,6 +464,9 @@ gfxn3/Debug/PointTest/SetOverhead                                  0.171
 gfxn3/Debug/PointTest/SetPtrOverhead                               0.26105
 gfxn3/Debug/PointTest/isEqualOverhead                              0.628578
 gfxn3/Debug/PointTest/pointCreationOverhead                        0.214007
+gfxn3/Debug/QuatCompareTest/isEqual(...)                           2.30833
+gfxn3/Debug/QuatCompareTest/operator!=                             1.4649
+gfxn3/Debug/QuatCompareTest/operator==                             1.29394
 gfxn3/Debug/QuatTest/CopyConstructor                               0.0967025
 gfxn3/Debug/QuatTest/DefaultConstructor                            0.0682575
 gfxn3/Debug/QuatTest/ElementConstructor                            0.0705625
