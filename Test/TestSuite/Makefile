@@ -29,8 +29,8 @@
 #
 # -----------------------------------------------------------------
 # File:          $RCSfile: Makefile,v $
-# Date modified: $Date: 2002-07-04 20:14:18 $
-# Version:       $Revision: 1.41 $
+# Date modified: $Date: 2002-07-06 19:35:54 $
+# Version:       $Revision: 1.42 $
 # -----------------------------------------------------------------
 # *************** <auto-copyright.pl END do not edit this line> ***************
 
@@ -38,7 +38,7 @@
 # Advanced template makefile for VR Juggler applications.  This is intended
 # for "power users" who really know what they are doing and want to abuse
 # Doozer's flexibility.  :)
-# $Id: Makefile,v 1.41 2002-07-04 20:14:18 nonchocoboy Exp $
+# $Id: Makefile,v 1.42 2002-07-06 19:35:54 allenb Exp $
 #
 # *** IMPORTANT NOTES -- READ THESE FIRST ***
 #     1) This file _requires_ the use of GNU make (gmake).
@@ -61,7 +61,7 @@ CPPUNIT_DIR = $(GGT_ROOT)/external/cppunit
 # Specify the directory containing the Doozer .mk files that will be used.
 # Users are encouraged to include files relative to this variable in this file
 # so that the include path can be changed easily.
-DZR_BASE_DIR	= $(GGT_ROOT)/Doozer
+DZR_BASE_DIR	?= $(GGT_ROOT)/Doozer
 
 # Get the name of the host platform early.
 include $(DZR_BASE_DIR)/mk/dzr.hosttype.mk
