@@ -1,32 +1,33 @@
 DATE       AUTHOR       CHANGE
 ---------- --------     -----------------------------------------------------------
+2002-05-10 subatomic    Added typedefs for Planef and Planed
 2002-05-10 allenb       Added gmtl::ignore_unused_variable_warning to get rid
                         of unused variable warnings for Type2Type<> usage.
 2002-05-09 allenb       Configure and make now make link in instlinks instead
                         of copying all the headers over.
 2002-05-09 allenb       Added OpenSG conversion functions.
-2002-03-20 subatomic    Added Coord and all ops, gens, converts, compares.
+2002-03-20 subatomic    Authored Coord and all ops, gens, converts, compares.
 2002-03-20 nonchocoboy  Added overloaded operator<< functions.
 2002-03-15 allenb       Added makeRot<mat>(rad,axis) function
-2002-03-15 allenb       Added makeTrans<mat>(trans) function.
-2002-03-15 allenb       Added makeRot<mat>(val,val,val,method) function.
-2002-03-15 allenb       Added setTrans(matrix) function.
+                        Added makeTrans<mat>(trans) function.
+                        Added makeRot<mat>(val,val,val,method) function.
+                        Added setTrans(matrix) function.
 2002-03-14 allenb       Added identity(matrix) function.
 2002-03-14 allenb       Added gmtlASSERT macro to make gmtl more standalone
-2002-02-24 subatomic    Added Quat and all ops, gens, converts, compares.
-2002-02-24 nonchocoboy  Added LineSeg class and comparitors.
+2002-02-24 subatomic    Authored Quat and all ops, gens, converts, compares.
+2002-02-24 nonchocoboy  Authored LineSeg class and comparitors.
 2002-02-20 nonchocoboy  Added Plane math functions.
-2002-02-19 subatomic    Added Matrix gen funcs
+2002-02-19 subatomic    Authored Matrix gen funcs
 2002-02-18 nonchocoboy  Added Plane comparison functions.
-2002-02-18 nonchocoboy  Added Plane class.
-2002-02-18 nonchocoboy  Added Tri class, comparison and ops
-2002-02-15 subatomic    Added Matrix class, comparison and math ops
-2002-02-15 nonchocoboy  Added Sphere class and comparisons.
-2002-02-11 subatomic    Added Math abstraction for sin, cos, etc...
+2002-02-18 nonchocoboy  Authored Plane class.
+2002-02-18 nonchocoboy  Authored Tri class, comparison and ops
+2002-02-15 subatomic    Authored Matrix class, comparison and math ops
+2002-02-15 nonchocoboy  Authored Sphere class and comparisons.
+2002-02-11 subatomic    Authored Math abstraction for sin, cos, etc...
 2002-02-11 allenb       Added Vec and Point ops.
 2002-02-11 allenb       Vector comparisons added.
-2002-02-10 allenb       Added Vec and Point classes.
-2002-02-10 allenb       Added VecBase class.
+2002-02-10 allenb       Authored Vec and Point classes.
+2002-02-10 allenb       Authored VecBase class.
 2002-02-09 allenb       Remove old GFX traces.
 2002-02-09 allenb       Created gmtlConfig.h file and removed gfxConfig.h
 2002-01-30 allenb       Moved all code to header files to prepare the way for
