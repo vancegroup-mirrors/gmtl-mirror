@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-03-15 03:26:56 $
- * Version:       $Revision: 1.24 $
+ * Date modified: $Date: 2002-03-15 15:29:24 $
+ * Version:       $Revision: 1.25 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -41,6 +41,7 @@
 #include <gmtl/QuatOps.h>
 #include <gmtl/Matrix.h>
 #include <gmtl/Meta.h>
+#include <gmtl/Math.h>
 
 // @todo Vec& makeNormal( Vec&, scalar, scalar, scalar ) (and other dimensions)  (might not need, use this instead - makeNormal( Vec( scal, scal, scal ) ))
 // @todo getRot euler for quat
@@ -77,7 +78,8 @@ namespace gmtl
 
 
 
-   //-- QUATERNION GENERATORS --//
+   /** @name QUATERNION GENERATORS */
+   //@{
 
    /** create a pure quaternion
     * @post quat = [v,0] = [v0,v1,v2,0]
@@ -232,11 +234,6 @@ namespace gmtl
       }
    }
 
-   enum RotationOrder
-   {
-      XYZ, ZYX, ZXY
-   };
-
    /** Create a rotation quaternion using euler angles (each in radians)
     * @pre pass in your angles in the same order as the RotationOrder you specify
     */
@@ -291,22 +288,19 @@ namespace gmtl
       return result;
    }
 
+   //@}
 
 
-   //-- MATRIX GENERATORS --//
-
+   /** @name MATRIX GENERATORS */
+   //@{
 
    /** Create a translation matrix from vec.
     * @pre if making an n x n matrix, then for
-    * <ul>
-    *  <li><b>vector is homogeneous:</b> SIZE of vector needs to equal number of Matrix ROWS - 1
-    *  <li><b>vector has scale component:</b> SIZE of vector needs to equal number of Matrix ROWS
-    * </ul>
+    *    - <b>vector is homogeneous:</b> SIZE of vector needs to equal number of Matrix ROWS - 1
+    *    - <b>vector has scale component:</b> SIZE of vector needs to equal number of Matrix ROWS
     * if making an n x n+1 matrix, then for
-    * <ul>
-    *  <li><b>vector is homogeneous:</b> SIZE of vector needs to equal number of Matrix ROWS
-    *  <li><b>vector has scale component:</b> SIZE of vector needs to equal number of Matrix ROWS + 1
-    * </ul>
+    *    - <b>vector is homogeneous:</b> SIZE of vector needs to equal number of Matrix ROWS
+    *    - <b>vector has scale component:</b> SIZE of vector needs to equal number of Matrix ROWS + 1
     * @post if preconditions are not met, then function is undefined (will not compile)
     */
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS, unsigned SIZE >
@@ -634,6 +628,9 @@ namespace gmtl
       return makeAxes( temporary, xAxis, yAxis, zAxis );
    }
    */
+
+   //@}
+
 
 } // end gmtl namespace.
 
