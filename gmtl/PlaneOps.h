@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PlaneOps.h,v $
- * Date modified: $Date: 2002-05-20 22:39:22 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2002-05-21 14:58:55 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,7 +35,7 @@
 #ifndef _GMTL_PLANEOPS_H_
 #define _GMTL_PLANEOPS_H_
 
-#include <gmtl/gmtlDefines.h>
+#include <gmtl/Defines.h>
 #include <gmtl/Plane.h>
 #include <gmtl/Math.h>
 

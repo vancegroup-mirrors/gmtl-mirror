@@ -6,9 +6,9 @@
  *   Allen Bierbaum
  *
  * -----------------------------------------------------------------
- * File:          $RCSfile: gmtlDefines.h,v $
- * Date modified: $Date: 2002-05-17 23:20:09 $
- * Version:       $Revision: 1.9 $
+ * File:          $RCSfile: Defines.h,v $
+ * Date modified: $Date: 2002-05-21 14:58:55 $
+ * Version:       $Revision: 1.1 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
