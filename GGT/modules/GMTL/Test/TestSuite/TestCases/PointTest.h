@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PointTest.h,v $
- * Date modified: $Date: 2002-02-22 21:48:34 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-03-11 18:16:38 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -500,8 +500,6 @@ public:
                       vec_ans[1] == 0.0f &&
                       vec_ans[2] == 1.0f );
 
-      float len = gmtl::length( test_point2 - test_point1);
-
       // -- test op- performance
       const float iters(400000);
       CPPUNIT_METRIC_START_TIMING();
@@ -544,7 +542,6 @@ public:
    void testOpMultScalar()
    {
       gmtl::Point<float,3> test_point1(1.0, 2.0, 3.0);
-      gmtl::Point<float,3> test_point2(2.0, 2.0, 2.0);
       gmtl::Point<float,3> test_point3(1.0, 2.0, 3.0);
 
       test_point1 = test_point3 * 4.0f;
@@ -592,7 +589,6 @@ public:
    void testOpDivScalar()
    {
       gmtl::Point<float,3> test_point1(1.0, 2.0, 3.0);
-      gmtl::Point<float,3> test_point2(2.0, 2.0, 2.0);
       gmtl::Point<float,3> test_point3(12.0, 8.0, 4.0);
 
       test_point1 = test_point3 / 4.0f;
