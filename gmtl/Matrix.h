@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Matrix.h,v $
- * Date modified: $Date: 2003-04-11 05:45:16 $
- * Version:       $Revision: 1.32 $
+ * Date modified: $Date: 2003-04-11 05:46:41 $
+ * Version:       $Revision: 1.33 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -94,7 +94,7 @@ namespace gmtl
  *             cmat[row][col] = mat[row][col] = some_values[x];            <br>
  *         Then reading values from the matrix array:                      <br>
  *             ((float*)cmat)   and    mat.getData()                       <br>
- *         Will yield pointers to memory containing matrices that are the transpose of each other.
+ *         <i>Will yield pointers to memory containing matrices that are the transpose of each other.</i>
  * </ul>
  * <li> In practice, the differences between GMTL and C/C++ defined matrices
  *      all depends how you iterate over your matrix.                                              <br>
