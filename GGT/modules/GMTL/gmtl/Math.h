@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Math.h,v $
- * Date modified: $Date: 2002-12-23 01:19:13 $
- * Version:       $Revision: 1.33 $
+ * Date modified: $Date: 2002-12-23 01:23:21 $
+ * Version:       $Revision: 1.34 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -350,6 +350,16 @@ inline double sqrt( double fValue )
 }
 
 //----------------------------------------------------------------------------
+/**
+ * Seeds the pseudorandom number generator with the given seed.
+ *
+ * @param seed  the seed for the pseudorandom number generator.
+ */
+inline void seedRandom(unsigned int seed)
+{
+   ::srand(seed);
+}
+
 /** get a random number between 0 and 1
  * @post returns number between 0 and 1
  */

@@ -1,5 +1,6 @@
 DATE       AUTHOR       CHANGE
 ---------- --------     --------------------------------------------------------
+2002-12-22 nonchocoboy  Added random number generator seed function.
 2002-12-22 nonchocoboy  Added PointNi and VecNi convenience typedefs.
 2002-11-26 subatomic    Added VecBase reflect(...) function.
 2002-11-26 nonchocoboy  Added ability to make a AABox from a Sphere.
