@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: testSuite.cpp,v $
- * Date modified: $Date: 2002-05-25 20:21:42 $
- * Version:       $Revision: 1.42 $
+ * Date modified: $Date: 2002-06-04 00:05:14 $
+ * Version:       $Revision: 1.43 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -43,6 +43,8 @@
 #include <cppunit/TestSuite.h>
 #include <cppunit/TextTestRunner.h>
 #include <cppunit/extensions/MetricRegistry.h>
+
+#include <gmtl/Version.h>
 
 // GMTL tests
 #include <TestCases/MathTest.h>
@@ -119,6 +121,10 @@ int main (int ac, char **av)
    metric_reg->setFilename("gmtl_metrics.txt");
    metric_reg->setMetric("Main/MetricTest", 1221.75f);
 
+   // Print out what version of GMTL we're testing.
+   std::cout<<std::endl;
+   std::cout<<"GMTL Version: "<<gmtl::version<<std::endl;
+   std::cout<<std::endl;
 
    //------------------------------------
    //  GMTL Tests
