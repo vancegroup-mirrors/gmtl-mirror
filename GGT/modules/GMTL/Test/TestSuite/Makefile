@@ -29,8 +29,8 @@
 #
 # -----------------------------------------------------------------
 # File:          $RCSfile: Makefile,v $
-# Date modified: $Date: 2002-02-24 22:10:54 $
-# Version:       $Revision: 1.10 $
+# Date modified: $Date: 2002-02-28 16:50:47 $
+# Version:       $Revision: 1.11 $
 # -----------------------------------------------------------------
 # *************** <auto-copyright.pl END do not edit this line> ***************
 
@@ -38,7 +38,7 @@
 # Advanced template makefile for VR Juggler applications.  This is intended
 # for "power users" who really know what they are doing and want to abuse
 # Doozer's flexibility.  :)
-# $Id: Makefile,v 1.10 2002-02-24 22:10:54 patrickh Exp $
+# $Id: Makefile,v 1.11 2002-02-28 16:50:47 subatomic Exp $
 #
 # *** IMPORTANT NOTES -- READ THESE FIRST ***
 #     1) This file _requires_ the use of GNU make (gmake).
@@ -96,15 +96,23 @@ srcdir  	= $(shell pwd)
 #    EXTRA_UI_LIBS     - Extra user interface libraries needed for linking.
 #    PF_PATH           - Path (including -L option) to the Performer libraries
 #
-#CXX        = g++3
-DEBUG_APP		= TRUE
-OPTIM_APP		= FALSE
-#DEBUG_FLAGS		=
-OPTIM_FLAGS		= -O3 $(EXTRA_OPTIM_FLAGS)
-EXTRA_CFLAGS		=
-EXTRA_CXXFLAGS		=
+#CXX              = g++3
+USE_OPT?=           N
+#DEBUG_FLAGS      =
+OPTIM_FLAGS       = -O3 $(EXTRA_OPTIM_FLAGS)
+EXTRA_CFLAGS      =
+EXTRA_CXXFLAGS    = -pipe
 EXTRA_DEBUG_FLAGS	= -D_DEBUG
 EXTRA_OPTIM_FLAGS	= -D_OPT
+ifeq (${USE_OPT},Y)
+   DEBUG_APP		= FALSE
+   OPTIM_APP		= TRUE
+endif
+ifneq (${USE_OPT},Y)
+   DEBUG_APP		= TRUE
+   OPTIM_APP		= FALSE
+endif
+
 
 GMTL_INCLUDES  = -I$(GGT_ROOT)/modules/GMTL/ -I$(GGT_ROOT)/
 SUITE_INCLUDES = -I$(CPPUNIT_DIR)/include
