@@ -1,5 +1,7 @@
 DATE       AUTHOR       CHANGE
 ---------- ------------ -------------------------------------------------------
+2004-10-11 allenb       Added static assert capabilities from John.
+                        Fixed compile warnings from Dan.
 2004-10-30 patrickh     Allow GMTL to be compiled with Visual C++ 7.0 again.
                         NEW VERSION: 0.4.3
 2004-10-27 patrickh     PyGMTL data types can now be pickled.
