@@ -7,8 +7,8 @@ dnl   Allen Bierbaum
 dnl
 dnl -----------------------------------------------------------------
 dnl File:          $RCSfile: gmtl.m4,v $
-dnl Date modified: $Date: 2002-04-04 22:44:12 $
-dnl Version:       $Revision: 1.4 $
+dnl Date modified: $Date: 2002-04-24 15:10:52 $
+dnl Version:       $Revision: 1.5 $
 dnl -----------------------------------------------------------------
 dnl
 dnl ************************************************************** ggt-head end
@@ -36,58 +36,76 @@ dnl *************************************************************** ggt-cpr end
 dnl ---------------------------------------------------------------------------
 dnl GMTL_PATH([MINIMUM-VERSION, [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND [, MODULES]]]])
 dnl
-dnl Test for GMTL and then define GMTL_CXXFLAGS, GMTL_INCLUDES, and
-dnl GMTL_VERSION.
+dnl Test for GMTL and then define GMTL_CXXFLAGS and GMTL_VERSION.
 dnl ---------------------------------------------------------------------------
 AC_DEFUN(GMTL_PATH,
 [
    dnl Get the cflags and libraries from the gmtl-config script
-   AC_ARG_WITH(gmtl-include,
-               [  --with-gmtl-include=<PATH>
-                          Path to GMTL headers (optional) [No default]],
-               gmtl_include="$withval", gmtl_include="")
-dnl   AC_ARG_WITH(gmtl-exec-prefix,
-dnl               [  --with-gmtl-exec-prefix=<PATH>
-dnl                          Exec prefix where GMTL is
-dnl                          installed (optional)            [No default]],
-dnl               gmtl_config_exec_prefix="$withval", gmtl_config_exec_prefix="")
+   AC_ARG_WITH(gmtl-prefix,
+               [  --with-gmtl-prefix=<PATH>
+                          Prefix where GMTL is installed
+                          (optional)                      [No default]],
+               gmtl_config_prefix="$withval", gmtl_config_prefix="")
+   AC_ARG_WITH(gmtl-exec-prefix,
+               [  --with-gmtl-exec-prefix=<PATH>
+                          Exec prefix where GMTL is
+                          installed (optional)            [No default]],
+               gmtl_config_exec_prefix="$withval", gmtl_config_exec_prefix="")
 dnl   AC_ARG_ENABLE(gmtltest,
 dnl                 [  --disable-gmtltest       Do not try to compile and run a
 dnl                         test GMTL program], , enable_gmtltest=yes)
 
+   if test "x$gmtl_config_exec_prefix" != "x" ; then
+      gmtl_config_args="$gmtl_config_args --exec-prefix=$gmtl_config_exec_prefix"
+
+      if test x${GMTL_CONFIG+set} != xset ; then
+         GMTL_CONFIG="$gmtl_config_exec_prefix/bin/gmtl-config"
+      fi
+   fi
+
+   if test "x$gmtl_config_prefix" != "x" ; then
+      gmtl_config_args="$gmtl_config_args --prefix=$gmtl_config_prefix"
+
+      if test x${GMTL_CONFIG+set} != xset ; then
+         GMTL_CONFIG="$gmtl_config_prefix/bin/gmtl-config"
+      fi
+   fi
+
    if test "x$GMTL_BASE_DIR" != "x" ; then
-      gmtl_include="$GMTL_BASE_DIR/include"
+      gmtl_config_args="$gmtl_config_args --prefix=$GMTL_BASE_DIR"
+
+      if test x${GMTL_CONFIG+set} != xset ; then
+         GMTL_CONFIG="$GMTL_BASE_DIR/bin/gmtl-config"
+      fi
    fi
 
-   no_gmtl=''
-   GMTL_INCLUDES=''
+   AC_PATH_PROG(GMTL_CONFIG, gmtl-config, no)
+   min_gmtl_version=ifelse([$1], ,0.0.1,$1)
 
-   if test "x$gmtl_include" != "x" ; then
-      gmtl_save_CPPFLAGS="$CPPFLAGS"
-      CPPFLAGS="$CPPFLAGS -I$gmtl_include"
-
-      AC_LANG_SAVE
-      AC_LANG_CPLUSPLUS
-      AC_CHECK_HEADER(gmtl/Tri.h,
-         GMTL_INCLUDES="-I$gmtl_include"
-         no_gmtl='no')
-      AC_LANG_RESTORE
-
-      CPPFLAGS="$gmtl_save_CPPFLAGS"
+   dnl Do a sanity check to ensure that $GMTL_CONFIG actually works.
+   if ! (eval $GMTL_CONFIG --cxxflags >/dev/null 2>&1) 2>&1 ; then
+      GMTL_CONFIG='no'
    fi
 
-   if test "x$no_gmtl" = "x" ; then
+   GMTL_CXXFLAGS=''
+
+   no_gmtl='no'
+   if test "x$GMTL_CONFIG" = "xno" ; then
+      no_gmtl='yes'
+   else
+      GMTL_CXXFLAGS=`$GMTL_CONFIG $gmtl_config_args --cxxflags`
+   fi
+
+   if test "x$no_gmtl" = "xyes" ; then
       if test "$GMTL_CONFIG" = "no" ; then
          echo "*** The gmtl-config script installed by GMTL could not be found"
          echo "*** If GMTL was installed in PREFIX, make sure"
          ehco "*** PREFIX/include/gmtl exists." 
       fi
-      GMTL_CXXFLAGS=''
       GMTL_VERSION='-1'
       ifelse([$3], , :, [$3])
    fi
 
    AC_SUBST(GMTL_CXXFLAGS)
-   AC_SUBST(GMTL_INCLUDES)
    AC_SUBST(GMTL_VERSION)
 ])
