@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecOps.h,v $
- * Date modified: $Date: 2002-03-15 03:26:57 $
- * Version:       $Revision: 1.10 $
+ * Date modified: $Date: 2002-03-20 16:06:20 $
+ * Version:       $Revision: 1.11 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -100,6 +100,16 @@ VecBase<DATA_TYPE, SIZE>& operator *=(VecBase<DATA_TYPE, SIZE>& v1, const SCALAR
 
 template<class DATA_TYPE, unsigned SIZE, class SCALAR_TYPE>
 VecBase<DATA_TYPE, SIZE> operator *(const VecBase<DATA_TYPE, SIZE>& v1, const SCALAR_TYPE& scalar)
+{
+   VecBase<DATA_TYPE, SIZE> ret_val(v1);
+   ret_val *= scalar;
+   return ret_val;
+
+   //return VecBase<DATA_TYPE, SIZE>(v1) *= scalar;
+}
+
+template<class DATA_TYPE, unsigned SIZE, class SCALAR_TYPE>
+VecBase<DATA_TYPE, SIZE> operator *(const SCALAR_TYPE& scalar, const VecBase<DATA_TYPE, SIZE>& v1)
 {
    VecBase<DATA_TYPE, SIZE> ret_val(v1);
    ret_val *= scalar;
