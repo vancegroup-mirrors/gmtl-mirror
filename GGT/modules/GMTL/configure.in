@@ -7,8 +7,8 @@
 #
 # -----------------------------------------------------------------
 # File:          $RCSfile: configure.in,v $
-# Date modified: $Date: 2002-06-03 22:11:49 $
-# Version:       $Revision: 1.6 $
+# Date modified: $Date: 2002-06-04 00:03:31 $
+# Version:       $Revision: 1.7 $
 # -----------------------------------------------------------------
 #
 # ********************************************************** ggt-head end
@@ -33,7 +33,7 @@
 #
 # *********************************************************** ggt-cpr end
 
-AC_REVISION($Revision: 1.6 $)
+AC_REVISION($Revision: 1.7 $)
 AC_INIT(gmtl/gmtl.h)
 AC_CANONICAL_SYSTEM
 case $target_os in
@@ -62,7 +62,9 @@ gmtl_extra_cxxflags=''
 gmtl_extra_include_dirs=''
 
 # Pick out the GMTL version from gmtl/Version.h
-VERSION_STRING=`grep '^#define *GMTL_VERSION *' "$srcdir/gmtl/Version.h" | sed -e 's/.*GMTL_VERSION *\([0-9]*\.[0-9]*\.[0-9]*\)$/\1/'`
+VERSION_MAJOR=`grep '^#define *GMTL_VERSION_MAJOR *' "$srcdir/gmtl/Version.h" | sed -e 's/.*GMTL_VERSION_MAJOR *\([0-9][0-9]*\)$/\1/'`
+VERSION_MINOR=`grep '^#define *GMTL_VERSION_MINOR *' "$srcdir/gmtl/Version.h" | sed -e 's/.*GMTL_VERSION_MINOR *\([0-9][0-9]*\)$/\1/'`
+VERSION_PATCH=`grep '^#define *GMTL_VERSION_PATCH *' "$srcdir/gmtl/Version.h" | sed -e 's/.*GMTL_VERSION_PATCH *\([0-9][0-9]*\)$/\1/'`
 
 
 AC_SUBST(GMTLROOT_ABS)
@@ -71,7 +73,9 @@ AC_SUBST(gmtl_cxxflags)
 AC_SUBST(gmtl_extra_cxxflags)
 AC_SUBST(gmtl_extra_include_dirs)
 
-AC_SUBST(VERSION_STRING)
+AC_SUBST(VERSION_MAJOR)
+AC_SUBST(VERSION_MINOR)
+AC_SUBST(VERSION_PATCH)
 
 AC_OUTPUT(gmtl-config
           Makefile,
