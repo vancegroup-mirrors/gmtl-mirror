@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOpsTest.h,v $
- * Date modified: $Date: 2002-02-15 21:49:41 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-02-15 23:09:46 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -181,6 +181,12 @@ public:
          transpose( res_mat );
          if (TEST == true)
          { CPPUNIT_ASSERT( res_mat == test_mat ); }
+         transpose( res_mat );
+         
+         // test the other transpose op
+         transpose( res_mat, res_mat );
+         if (TEST == true)
+         { CPPUNIT_ASSERT( res_mat == test_mat ); }
       }      
    };   
    
@@ -196,6 +202,11 @@ public:
                       1,   5 );
          transpose( res_mat );
          CPPUNIT_ASSERT( res_mat == test_mat );
+         transpose( res_mat );
+         
+         // test the other transpose op
+         transpose( res_mat, res_mat );
+         CPPUNIT_ASSERT( res_mat == test_mat );
       }
       
       {
@@ -207,6 +218,11 @@ public:
                       1,   5,   9,
                       2,   6,  10 );
          transpose( res_mat );
+         CPPUNIT_ASSERT( res_mat == test_mat );
+         transpose( res_mat );
+         
+         // test the other transpose op
+         transpose( res_mat, res_mat );
          CPPUNIT_ASSERT( res_mat == test_mat );
       }
       {
@@ -220,6 +236,11 @@ public:
                       2,   6,  10,  14,
                       3,   7,  11,  15 );
          transpose( res_mat );
+         CPPUNIT_ASSERT( res_mat == test_mat );
+         transpose( res_mat );
+         
+         // test the other transpose op
+         transpose( res_mat, res_mat );
          CPPUNIT_ASSERT( res_mat == test_mat );
       }
       
@@ -639,6 +660,8 @@ public:
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("MatrixOpsTest");
       test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixTranspose", &MatrixOpsTest::testMatrixTranspose ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixMult", &MatrixOpsTest::testMatrixMult ) );
+      test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixPostPreMult", &MatrixOpsTest::testMatrixMult ) );
+      test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixScalarMult", &MatrixOpsTest::testMatrixMult ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixAddSub", &MatrixOpsTest::testMatrixAddSub ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatInvert", &MatrixOpsTest::testMatInvert ) );
       //test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>("testGetSetAxes", &MatrixOpsTest::testGetSetAxes));
