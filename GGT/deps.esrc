@@ -23,8 +23,8 @@
    Doozer      // Get Doozer for makefiles
    {
       CVSROOT: allenb@cvs.doozer.sourceforge.net:/cvsroot/doozer;
-      Module: Doozer;
-      Tag: RELENG_1;
+      Module: Doozer/mk;
+      Date: 2/24/2002 22:00:00 GMT;
 	  Path: .;
    }; 
 
