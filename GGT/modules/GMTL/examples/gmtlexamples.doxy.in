@@ -61,4 +61,9 @@ int main()
 And then we have some more later that we don't show
 */
 
+/** @page gmtlexampletest Test of doing an example with processing code
+*
+* @exincludeexample faqexample.cpp
+*/
+
    
