@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MathTest.cpp,v $
- * Date modified: $Date: 2003-02-23 06:53:52 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2003-02-26 20:13:48 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -42,6 +42,7 @@
 namespace gmtlTest
 {
    CPPUNIT_TEST_SUITE_REGISTRATION(MathTest);
+   CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(MathMetricTest, Suites::metric());
 
    void MathTest::testQuadraticFormula()
    {
@@ -91,11 +92,15 @@ namespace gmtlTest
       CPPUNIT_ASSERT( gmtl::Math::zeroClamp(val, T(24.9)) == val );
       CPPUNIT_ASSERT( gmtl::Math::zeroClamp(val, T(25.0)) == T(0) );
       CPPUNIT_ASSERT( gmtl::Math::zeroClamp(val, T(25.1)) == T(0) );
+   }
 
+   template< class T >
+   void testTimingZeroClamp()
+   {
       // test performance
       const long iters(400000);
       T use_val(0);
-      val = T(0);
+      T val = T(0);
 
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
@@ -131,5 +136,15 @@ namespace gmtlTest
    void MathTest::testZeroClampd()
    {
       testZeroClamp<double>();
+   }
+
+   void MathMetricTest::testTimingZeroClampf()
+   {
+      testTimingZeroClamp<float>();
+   }
+
+   void MathMetricTest::testTimingZeroClampd()
+   {
+      testTimingZeroClamp<double>();
    }
 }
