@@ -2,7 +2,7 @@
 // Run as: es.pl --cfg=deps.esrc
 GGT
 {
-   CVSROOT: allenb@cvs.ggt.sourceforge.net:/cvsroot/ggt
+   CVSROOT: allenb@cvs.ggt.sourceforge.net:/cvsroot/ggt;
    #CVSROOT: :pserver:anonymous@cvs.subsynth.sourceforge.net:/cvsroot/subsynth;
 
    Module: GGT;   # Blah blah
