@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: runner.cpp,v $
- * Date modified: $Date: 2003-03-15 21:19:37 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2003-09-24 00:02:16 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -134,6 +134,10 @@ int main(int argc, char** argv)
       success = false;
    }
 
+#ifdef WIN32
+   std::cin.get();
+#endif
+
    return (success ? 0 : 1);
 }
 
@@ -163,5 +167,12 @@ std::string getHostname(void)
    {
       return std::string("<hostname-lookup failed>");
    }
+}
+
+#else
+
+std::string getHostname(void)
+{
+   return std::string("<hostname-lookup failed>");
 }
 #endif
