@@ -7,8 +7,8 @@ dnl   Allen Bierbaum
 dnl
 dnl -----------------------------------------------------------------
 dnl File:          $RCSfile: gmtl.m4,v $
-dnl Date modified: $Date: 2002-04-02 21:36:13 $
-dnl Version:       $Revision: 1.1 $
+dnl Date modified: $Date: 2002-04-02 22:12:15 $
+dnl Version:       $Revision: 1.2 $
 dnl -----------------------------------------------------------------
 dnl
 dnl ************************************************************** ggt-head end
@@ -44,7 +44,7 @@ AC_DEFUN(GMTL_PATH,
    dnl Get the cflags and libraries from the gmtl-config script
    AC_ARG_WITH(gmtl-prefix,
                [  --with-gmtl-prefix=<PATH> Prefix where GMTL is installed
-                         (optional)                      [No default]],
+                          (optional)                      [No default]],
                gmtl_prefix="$withval", gmtl_prefix="")
 dnl   AC_ARG_WITH(gmtl-exec-prefix,
 dnl               [  --with-gmtl-exec-prefix=<PATH>
@@ -79,7 +79,7 @@ dnl                         test GMTL program], , enable_gmtltest=yes)
    if test "x$no_gmtl" != "x" ; then
       if test "$GMTL_CONFIG" = "no" ; then
          echo "*** The gmtl-config script installed by GMTL could not be found"
-         echo "*** If GMTL was installed in PREFIX, make sure
+         echo "*** If GMTL was installed in PREFIX, make sure"
          ehco "*** PREFIX/include/gmtl exists." 
       fi
       GMTL_CXXFLAGS=''
