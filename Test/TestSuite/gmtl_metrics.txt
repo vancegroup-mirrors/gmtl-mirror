@@ -659,7 +659,7 @@ gfxn3/Debug/TriTest/NormalOverhead                                 1.44706
 gfxn3/Debug/TriTest/TriCreationOverhead                            0.26111
 gfxn3/Debug/TriTest/edgeOverhead                                   0.41576
 gfxn3/Debug/TriTest/operator[]Overhead                             0.0722
-gfxn3/Debug/VecBaseTest/ConstructorsOverhead                       0.165327
+gfxn3/Debug/VecBaseTest/ConstructorsOverhead                       0.15223
 gfxn3/Debug/VecBaseTest/CopyConstructOverhead                      0.220095
 gfxn3/Debug/VecBaseTest/SetOverhead                                0.171145
 gfxn3/Debug/VecBaseTest/SetPtrOverhead                             0.26219
