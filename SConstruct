@@ -1,5 +1,7 @@
 import os, string, sys
 import re
+import distutils.sysconfig
+
 pj = os.path.join
 
 # Bring in the AutoDist build helper
@@ -232,6 +234,8 @@ def ValidatePythonOption(key, value, environ):
          else:
             (prefix, py_ver) = string.split(os.popen(py_cmd).read())
 
+         environ.Append(PythonSHLIBSUFFIX = distutils.sysconfig.get_config_var('SO'))
+
          # Version must match
          if float(py_ver) < required_version:
             print 'WARNING: Python version ' + py_ver + ' != ' + str(required_version)
@@ -252,6 +256,7 @@ def ValidatePythonOption(key, value, environ):
 def ApplyPythonOptions(env):
    env.Append(CPPPATH = env["PythonCPPPATH"])
    env.Append(LIBPATH = env["PythonLIBPATH"])
+   env['SHLIBSUFFIX'] = env["PythonSHLIBSUFFIX"]
 
 def AddPythonOptions(opts):
    opts.Add('EnablePython',
