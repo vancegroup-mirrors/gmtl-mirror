@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: IntersectionTest.cpp,v $
- * Date modified: $Date: 2002-07-28 23:55:18 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-08-06 21:08:48 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -82,6 +82,122 @@ namespace gmtlTest
 
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("IntersectionTest/IntersectAABoxAABox", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      CPPUNIT_ASSERT(true_count > 0.0f);
+   }
+   
+   
+   
+   void IntersectionTest::testIntersectAABoxPoint()
+   {
+      // Test point in box
+      {
+         gmtl::AABoxf box1(gmtl::Point3f(-1,-1,-1), gmtl::Point3f(1,1,1));
+         gmtl::Point3f point(gmtl::Point3f(0,0,0));
+         CPPUNIT_ASSERT(gmtl::intersect(box1, point));
+      }
+
+      //////////
+      
+      // test point on edge (bottom face)
+      {
+         gmtl::AABoxf box1(gmtl::Point3f(-1,-1,-1), gmtl::Point3f(0,0,0));
+         gmtl::Point3f point(gmtl::Point3f(-0.5f,-1,-0.5f));
+         CPPUNIT_ASSERT(gmtl::intersect(box1, point));
+      }
+      // test point on edge (top face)
+      {
+         gmtl::AABoxf box1(gmtl::Point3f(-1,-1,-1), gmtl::Point3f(0,0,0));
+         gmtl::Point3f point(gmtl::Point3f(-0.5f,0,-0.5f));
+         CPPUNIT_ASSERT(gmtl::intersect(box1, point));
+      }
+      // test point on edge (left face)
+      {
+         gmtl::AABoxf box1(gmtl::Point3f(-1,-1,-1), gmtl::Point3f(0,0,0));
+         gmtl::Point3f point(gmtl::Point3f(-1.0f,-0.5,-0.5f));
+         CPPUNIT_ASSERT(gmtl::intersect(box1, point));
+      }
+      // test point on edge (right face)
+      {
+         gmtl::AABoxf box1(gmtl::Point3f(-1,-1,-1), gmtl::Point3f(0,0,0));
+         gmtl::Point3f point(gmtl::Point3f(0.0f,-0.5,-0.5f));
+         CPPUNIT_ASSERT(gmtl::intersect(box1, point));
+      }
+      // test point on edge (near face)
+      {
+         gmtl::AABoxf box1(gmtl::Point3f(-1,-1,-1), gmtl::Point3f(0,0,0));
+         gmtl::Point3f point(gmtl::Point3f(-0.5f,-0.5,0.0f));
+         CPPUNIT_ASSERT(gmtl::intersect(box1, point));
+      }
+      // test point on edge (far face)
+      {
+         gmtl::AABoxf box1(gmtl::Point3f(-1,-1,-1), gmtl::Point3f(0,0,0));
+         gmtl::Point3f point(gmtl::Point3f(-0.5f,-0.5,-1.0f));
+         CPPUNIT_ASSERT(gmtl::intersect(box1, point));
+      }
+      
+      /////////
+
+      // test point outside (bottom face)
+      {
+         gmtl::AABoxf box1(gmtl::Point3f(-1,-1,-1), gmtl::Point3f(0,0,0));
+         gmtl::Point3f point(gmtl::Point3f(-0.5f,-1.01,-0.5f));
+         CPPUNIT_ASSERT(!gmtl::intersect(box1, point));
+      }
+      // test point outside (top face)
+      {
+         gmtl::AABoxf box1(gmtl::Point3f(-1,-1,-1), gmtl::Point3f(0,0,0));
+         gmtl::Point3f point(gmtl::Point3f(-0.5f,0.01,-0.5f));
+         CPPUNIT_ASSERT(!gmtl::intersect(box1, point));
+      }
+      // test point outside (left face)
+      {
+         gmtl::AABoxf box1(gmtl::Point3f(-1,-1,-1), gmtl::Point3f(0,0,0));
+         gmtl::Point3f point(gmtl::Point3f(-1.01f,-0.5,-0.5f));
+         CPPUNIT_ASSERT(!gmtl::intersect(box1, point));
+      }
+      // test point outside (right face)
+      {
+         gmtl::AABoxf box1(gmtl::Point3f(-1,-1,-1), gmtl::Point3f(0,0,0));
+         gmtl::Point3f point(gmtl::Point3f(0.01f,-0.5,-0.5f));
+         CPPUNIT_ASSERT(!gmtl::intersect(box1, point));
+      }
+      // test point outside (near face)
+      {
+         gmtl::AABoxf box1(gmtl::Point3f(-1,-1,-1), gmtl::Point3f(0,0,0));
+         gmtl::Point3f point(gmtl::Point3f(-0.5f,-0.5,0.01f));
+         CPPUNIT_ASSERT(!gmtl::intersect(box1, point));
+      }
+      // test point outside (far face)
+      {
+         gmtl::AABoxf box1(gmtl::Point3f(-1,-1,-1), gmtl::Point3f(0,0,0));
+         gmtl::Point3f point(gmtl::Point3f(-0.5f,-0.5,-1.01f));
+         CPPUNIT_ASSERT(!gmtl::intersect(box1, point));
+      }
+      
+      // @todo, could use more rigorous testing here, test all sides of the box, 
+      //        in and out and on the edges...
+   }
+
+   void IntersectionTest::testTimingIntersectAABoxPoint()
+   {
+      gmtl::AABoxf box1(gmtl::Point3f(-1,-1,-1), gmtl::Point3f(1,1,1));
+      gmtl::Point3f point(gmtl::Point3f(-0.5f,-0.5,-1.01f));
+      const long iters(400000);
+      unsigned true_count(0);
+      CPPUNIT_METRIC_START_TIMING();
+
+      for(long iter=0;iter<iters; ++iter)
+      {
+         if (gmtl::intersect(box1, point))
+         {
+            ++true_count;
+         }
+         point[0] += 0.01;
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("IntersectionTest/IntersectAABoxPoint", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
 
       CPPUNIT_ASSERT(true_count > 0.0f);
    }
