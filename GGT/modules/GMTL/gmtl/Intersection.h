@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Intersection.h,v $
- * Date modified: $Date: 2002-11-01 12:01:18 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-11-26 06:04:52 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,8 +35,10 @@
 #ifndef _GMTL_INTERSECTION_H_
 #define _GMTL_INTERSECTION_H_
 
+#include <algorithm>
 #include <gmtl/AABox.h>
 #include <gmtl/Point.h>
+#include <gmtl/Sphere.h>
 #include <gmtl/Vec.h>
 #include <gmtl/VecOps.h>
 #include <gmtl/Math.h>
@@ -96,7 +98,7 @@ namespace gmtl
    /**
     * Tests if the given AABoxes intersect if moved along the given paths. Using
     * the AABox sweep test, the normalized time of the first and last points of
-    * contact.
+    * contact are found.
     *
     * @param box1          the first box to test
     * @param path1         the path the first box should travel along
@@ -164,6 +166,69 @@ namespace gmtl
       // There could only have been a collision if the first overlap time
       // occurred before the second overlap time
       return firstContact <= secondContact;
+   }
+
+   /**
+    * Tests if the given Spheres intersect if moved along the given paths. Using
+    * the Sphere sweep test, the normalized time of the first and last points of
+    * contact are found.
+    *
+    * @param sph1          the first sphere to test
+    * @param path1         the path the first sphere should travel along
+    * @param sph2          the second sphere to test
+    * @param path2         the path the second sphere should travel along
+    * @param firstContact  set to the normalized time of the first point of contact
+    * @param secondContact set to the normalized time of the second point of contact
+    *
+    * @return  true if the items intersect; false otherwise
+    */
+   template<class DATA_TYPE>
+   bool intersect(const Sphere<DATA_TYPE>& sph1, const Vec<DATA_TYPE, 3>& path1,
+                  const Sphere<DATA_TYPE>& sph2, const Vec<DATA_TYPE, 3>& path2,
+                  DATA_TYPE& firstContact, DATA_TYPE& secondContact)
+   {
+      // Algorithm taken from Gamasutra's article, "Simple Intersection Test for
+      // Games" - http://www.gamasutra.com/features/19991018/Gomez_2.htm
+      //
+      // This algorithm is solved from the frame of reference of sph1
+
+      // Get the relative path (in normalized time)
+      const Vec<DATA_TYPE, 3> path = path2 - path1;
+
+      // Get the vector from sph1's starting point to sph2's starting point
+      const Vec<DATA_TYPE, 3> start_offset = sph2.getCenter() - sph1.getCenter();
+
+      // Compute the sum of the radii
+      const DATA_TYPE radius_sum = sph1.getRadius() + sph2.getRadius();
+
+      // u*u coefficient
+      const DATA_TYPE a = dot(path, path);
+
+      // u coefficient
+      const DATA_TYPE b = DATA_TYPE(2) * dot(path, start_offset);
+
+      // constant term
+      const DATA_TYPE c = dot(start_offset, start_offset) - radius_sum * radius_sum;
+
+      // Check if they're already overlapping
+      if (dot(start_offset, start_offset) <= radius_sum * radius_sum)
+      {
+         firstContact = secondContact = DATA_TYPE(0);
+         return true;
+      }
+
+      // Find the first and last points of intersection
+      if (Math::quadraticFormula(firstContact, secondContact, a, b, c))
+      {
+         // Swap first and second contacts if necessary
+         if (firstContact > secondContact)
+         {
+            std::swap(firstContact, secondContact);
+            return true;
+         }
+      }
+
+      return false;
    }
 }
 
