@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatOpsTest.cpp,v $
- * Date modified: $Date: 2003-02-06 01:12:27 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2003-02-25 05:19:24 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -61,7 +61,7 @@ namespace gmtlTest
       // Make sure the compiler doesn't optimize out
       CPPUNIT_ASSERT( q4[2] != 1234.5f );
    }
-   
+
    void QuatOpsMetricTest::testQuatTimingOperatorMinus()
    {
       gmtl::Quat<float> q4;
@@ -77,7 +77,7 @@ namespace gmtlTest
       // Make sure the compiler doesn't optimize out
       CPPUNIT_ASSERT( q4[2] != 1234.5f );
    }
-   
+
    void QuatOpsMetricTest::testQuatTimingMult()
    {
       gmtl::Quat<float> q2, q4;
@@ -106,7 +106,7 @@ namespace gmtlTest
       // Make sure the compiler doesn't optimize out
       CPPUNIT_ASSERT( q4[2] != 1234.5f );
    }
-   
+
    void QuatOpsMetricTest::testQuatTimingDiv()
    {
       gmtl::Quat<float> q3, q4;
@@ -121,7 +121,7 @@ namespace gmtlTest
       // Make sure the compiler doesn't optimize out
       CPPUNIT_ASSERT( q4[2] != 1234.5f );
    }
-   
+
    void QuatOpsMetricTest::testQuatTimingLerp()
    {
       gmtl::Quat<float> from, result;
@@ -135,7 +135,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatOpsTest/lerp()", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
       // Make sure the compiler doesn't optimize out
       CPPUNIT_ASSERT( result[2] != 1234.5f );
-      
+
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
@@ -146,7 +146,7 @@ namespace gmtlTest
       // Make sure the compiler doesn't optimize out
       CPPUNIT_ASSERT( result[2] != 1234.5f );
    }
-   
+
    void QuatOpsMetricTest::testQuatTimingVectorMult()
    {
       gmtl::Quat<float> q3, q4;
@@ -161,7 +161,7 @@ namespace gmtlTest
       // Make sure the compiler doesn't optimize out
       CPPUNIT_ASSERT( q4[2] != 1234.5f );
    }
-   
+
    void QuatOpsMetricTest::testQuatTimingVectorAdd()
    {
       gmtl::Quat<float> q3, q4;
@@ -176,7 +176,7 @@ namespace gmtlTest
       // Make sure the compiler doesn't optimize out
       CPPUNIT_ASSERT( q4[2] != 1234.5f );
    }
-   
+
    void QuatOpsMetricTest::testQuatTimingVectorSub()
    {
       gmtl::Quat<float> q3, q4;
@@ -191,7 +191,7 @@ namespace gmtlTest
       // Make sure the compiler doesn't optimize out
       CPPUNIT_ASSERT( q4[2] != 1234.5f );
    }
-   
+
    void QuatOpsMetricTest::testQuatTimingVectorDot()
    {
       gmtl::Quat<float> q1, q2;
@@ -207,7 +207,7 @@ namespace gmtlTest
       // Make sure the compiler doesn't optimize out
       CPPUNIT_ASSERT( q1[2] != 1234.5f );
    }
-   
+
    void QuatOpsMetricTest::testQuatTimingNorm()
    {
       gmtl::Quat<float> q1;
@@ -223,7 +223,7 @@ namespace gmtlTest
       // Make sure the compiler doesn't optimize out
       CPPUNIT_ASSERT( q1[2] != 1234.5f );
    }
-   
+
    void QuatOpsMetricTest::testQuatTimingMag()
    {
       gmtl::Quat<float> q1;
@@ -239,7 +239,7 @@ namespace gmtlTest
       // Make sure the compiler doesn't optimize out
       CPPUNIT_ASSERT( q1[2] != 1234.5f );
    }
-   
+
    void QuatOpsMetricTest::testQuatTimingNormalize()
    {
       gmtl::Quat<float> q4;
@@ -254,7 +254,7 @@ namespace gmtlTest
       // Make sure the compiler doesn't optimize out
       CPPUNIT_ASSERT( q4[2] != 1234.5f );
    }
-     
+
    void QuatOpsMetricTest::testQuatTimingConj()
    {
       gmtl::Quat<float> q4;
@@ -284,19 +284,19 @@ namespace gmtlTest
       // Make sure the compiler doesn't optimize out
       CPPUNIT_ASSERT( q4[2] != 1234.5f );
    }
-   
-   
-   
-   
-   
+
+
+
+
+
    ///////////////////////////////////////////////
    // real tests...
    ///////////////////////////////////////////////
-   
-   
-   
-   
-   
+
+
+
+
+
    void QuatOpsTest::testQuatMult()
    {
       // test out mult( result, quat, quat )
@@ -304,23 +304,23 @@ namespace gmtlTest
       gmtl::Quat<float> q3( 1, 2, 3, 4 ), q4( 5, 6, 7, 8 ), q5, q6;
       gmtl::mult( q5, q3, q4 );
       gmtl::mult( q6, q4, q3 );
-      
+
       gmtl::Quat<float> expected_result1( 24, 48, 48, -6 ), expected_result2( 32, 32, 56, -6 );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, q5, eps ) );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result2, q6, eps ) );
-      
+
       // operator* should be same
       gmtl::Quat<float> q7, q8;
       q7 = q3 * q4;
       q8 = q4 * q3;
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, q7, eps ) );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result2, q8, eps ) );
-      
+
       gmtl::Quat<float>  bokbokbok( 9, 10, 11, 12 ), expected_result3( 122, 476, 638, -1296 );
       q6 = q4 * q3 * bokbokbok;
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result3, q6, eps ) );
    }
-   
+
    void QuatOpsTest::testQuatDiv()
    {
       // test out mult( result, quat, quat )
@@ -328,34 +328,34 @@ namespace gmtlTest
       gmtl::Quat<float> q3( 1, 2, 3, 4 ), q4( 5, 6, 7, 8 ), q5, q6;
       gmtl::div( q5, q3, q4 );
       gmtl::div( q6, q4, q3 );
-      
+
       gmtl::Quat<float> expected_result1( 0.173913f, 0.347826f, -0.0f, -1.52174f ), expected_result2( 4, 8, 0, 35 );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, q5, eps ) );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result2, q6, eps ) );
    }
-   
+
    void QuatOpsTest::testQuatVectorMult()
    {
       // test out mult( result, quat, quat )
       const float eps = 0.0001f;
       gmtl::Quat<float> q3( 1, 2, 3, 4 ), q5;
       gmtl::mult( q5, q3, 23.0f );
-      
+
       gmtl::Quat<float> expected_result1( 1 * 23.0f, 2 * 23.0f, 3 * 23.0f, 4 * 23.0f );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, q5, eps ) );
    }
-   
+
    void QuatOpsTest::testQuatVectorAdd()
    {
       // test out mult( result, quat, quat )
       const float eps = 0.0001f;
       gmtl::Quat<float> q3( 1, 2, 3, 4 ), q5, q6( 2, 3, 4, 5 );
       gmtl::add( q5, q3, q6 );
-      
+
       gmtl::Quat<float> expected_result1( 3, 5, 7, 9 );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, q5, eps ) );
    }
-   
+
    void QuatOpsTest::testQuatVectorSub()
    {
       // test out mult( result, quat, quat )
@@ -366,7 +366,7 @@ namespace gmtlTest
       gmtl::Quat<float> expected_result1( -1, -1, -1, -1 );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, q5, eps ) );
    }
-   
+
    void QuatOpsTest::testQuatVectorDot()
    {
       // test out mult( result, quat, quat )
@@ -376,21 +376,21 @@ namespace gmtlTest
       CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::dot( gmtl::Quat<float>( 1, 0, 0, 0 ), gmtl::Quat<float>( 1, 1, 0, 0 ) ), 1.0f, eps ) );
       CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::dot( gmtl::Quat<float>( 1, 0, 0, 10 ), gmtl::Quat<float>( 1, 0, 0, 223 ) ), 2231.0f, eps ) );
    }
-   
+
    void QuatOpsTest::testQuatNorm()
    {
       const float eps = 0.0001f;
       gmtl::Quat<float> q1( 1,1,1,1 );
       CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::lengthSquared( q1 ), 4.0f, eps ) );
    }
-   
+
    void QuatOpsTest::testQuatMag()
    {
       const float eps = 0.0001f;
       gmtl::Quat<float> q1( 1,1,1,1 );
       CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::length( q1 ), 2.0f, eps ) );
    }
-   
+
    void QuatOpsTest::testQuatNormalize()
    {
       const float eps = 0.0001f;
@@ -401,11 +401,11 @@ namespace gmtlTest
       gmtl::Quat<float> expected_result1( 0, 0, 1, 0 ), expected_result2( 0.5, -0.5, 0.5, -0.5 );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, q3, eps ) );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result2, q5, eps ) );
-      
+
       CPPUNIT_ASSERT( gmtl::isNormalized( expected_result1 ) );
       CPPUNIT_ASSERT( gmtl::isNormalized( expected_result2 ) );
    }
-   
+
    void QuatOpsTest::testQuatConj()
    {
       const float eps = 0.0001f;
@@ -417,7 +417,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, q3, eps ) );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result2, q5, eps ) );
    }
-   
+
    void QuatOpsTest::testQuatNegate()
    {
       const float eps = 0.0001f;
@@ -428,7 +428,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, -q3, eps ) );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result2, -q5, eps ) );
 
-      // test negate(quat)      
+      // test negate(quat)
       gmtl::negate( q3 );
       gmtl::negate( q5 );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, q3, eps ) );
@@ -444,11 +444,11 @@ namespace gmtlTest
       gmtl::Quat<float> q3( gmtl::invert( q2 ) );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result, q3, eps ) );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result, q2, eps ) );
-      
+
       gmtl::Quat<float> q4( gmtl::makeInvert( q ) );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result, q4, eps ) );
    }
-   
+
    void QuatOpsTest::testQuatLerp()
    {
       const float eps = 0.0001f;
@@ -457,7 +457,7 @@ namespace gmtlTest
       gmtl::normalize( q2 );
       gmtl::Quat<float> expected_result1( q1 ), res1;
       gmtl::Quat<float> expected_result2( q2 ), res2;
-      
+
       gmtl::lerp( res1, 0.0f, q1, q2 );
       gmtl::lerp( res2, 1.0f, q1, q2 );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, res1, eps ) );
@@ -465,7 +465,7 @@ namespace gmtlTest
 
       /// @todo, test interpolated values...
    }
-   
+
    void QuatOpsTest::testQuatSlerp()
    {
       const float eps = 0.0001f;
@@ -474,12 +474,12 @@ namespace gmtlTest
       gmtl::normalize( q2 );
       gmtl::Quat<float> expected_result1( q1 ), res1;
       gmtl::Quat<float> expected_result2( q2 ), res2;
-      
+
       gmtl::slerp( res1, 0.0f, q1, q2 );
       gmtl::slerp( res2, 1.0f, q1, q2 );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, res1, eps ) );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result2, res2, eps ) );
-      
+
       /// test interpolated values...
       gmtl::Vec3f quadrant[8];
       quadrant[0].set(  1.0f,  1.0f,  1.0f );
@@ -491,8 +491,8 @@ namespace gmtlTest
       quadrant[6].set( -1.0f, -1.0f,  1.0f );
       quadrant[7].set( -1.0f, -1.0f, -1.0f );
 
-      gmtl::Quatf expected_result0, expected_result180, expected_result90, expected_result_0001;
-         
+      //gmtl::Quatf expected_result0, expected_result180, expected_result90, expected_result_0001;
+
       // create one quat for each of the 8 quadrants...
       gmtl::Quatf q0[8], q180[8], q90[8], q_0001[8];
       for (unsigned int x = 0; x < 8; ++x)
@@ -510,7 +510,7 @@ namespace gmtlTest
          // gmtl::slerp( result, 0.5f, q0[x], q0[x] ); // yields q0
          // gmtl::slerp( result, 1.0f, q0[x], q0[x] ); // yields q0
 
-         // 180 deg - there is more than one valid path to take, 
+         // 180 deg - there is more than one valid path to take,
          // gmtl::slerp( result, 0.0f, q0[x], q180[x] ); // yields q0
          // gmtl::slerp( result, 0.5f, q0[x], q180[x] ); // not sure what to test here...
          // gmtl::slerp( result, 1.0f, q0[x], q180[x] ); // yields q180
@@ -531,5 +531,5 @@ namespace gmtlTest
    }
 
    /** @todo, squad, meantangent, exp, log */
-   
+
 }
