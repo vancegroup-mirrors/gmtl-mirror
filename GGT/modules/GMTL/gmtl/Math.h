@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Math.h,v $
- * Date modified: $Date: 2002-02-21 20:50:02 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2002-02-22 17:06:34 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -54,35 +54,35 @@ namespace Math
 
 //----------------------------------------------------------------------------
 template <typename T>
-inline T Math::abs( T iValue )
+inline T abs( T iValue )
 {
     return T( iValue >= ((T)0) ? iValue : -iValue );
 }
 //----------------------------------------------------------------------------
 template <typename T>
-inline T Math::ceil( T fValue );
-inline float Math::ceil( float fValue )
+inline T ceil( T fValue );
+inline float ceil( float fValue )
 {
     return float( ::ceilf( fValue ) );
 }
-inline double Math::ceil( double fValue )
+inline double ceil( double fValue )
 {
     return double( ::ceil( fValue ) );
 }
 //----------------------------------------------------------------------------
 template <typename T>
-inline T Math::floor( T fValue ); // why do a floor of int?  shouldn't compile...
-inline float Math::floor( float fValue )
+inline T floor( T fValue ); // why do a floor of int?  shouldn't compile...
+inline float floor( float fValue )
 {
     return float( ::floorf( fValue ) );
 }
-inline double Math::floor( double fValue )
+inline double floor( double fValue )
 {
     return double( ::floor( fValue ) );
 }
 //----------------------------------------------------------------------------
 template <typename T>
-inline T Math::sign( int iValue )
+inline T sign( int iValue )
 {
     return ( iValue > ((T)0) ? ((T)+1) : ( iValue < ((T)0) ? ((T)-1) : ((T)0) ) );
 }
@@ -91,8 +91,8 @@ inline T Math::sign( int iValue )
 // i.e. with int, the int retval will be rounded up or down.  
 //      we'd need a float retval to do it right, but we can't specialize by ret
 template <typename T>
-inline T Math::aCos( T fValue );
-inline float Math::aCos( float fValue )
+inline T aCos( T fValue );
+inline float aCos( float fValue )
 {
     if ( -1.0f < fValue )
     {
@@ -103,10 +103,10 @@ inline float Math::aCos( float fValue )
     }
     else
     {
-        return (float)Math::PI;
+        return (float)PI;
     }
 }
-inline double Math::aCos( double fValue )
+inline double aCos( double fValue )
 {
     if ( -1.0 < fValue )
     {
@@ -117,134 +117,134 @@ inline double Math::aCos( double fValue )
     }
     else
     {
-        return (double)Math::PI;
+        return (double)PI;
     }
 }
 //----------------------------------------------------------------------------
 template <typename T>
-inline T Math::aSin( T fValue );
-inline float Math::aSin( float fValue )
+inline T aSin( T fValue );
+inline float aSin( float fValue )
 {
     if ( -1.0f < fValue )
     {
         if ( fValue < 1.0f )
             return float( ::asinf( fValue ) );
         else
-            return (float)-Math::PI_OVER_2;
+            return (float)-PI_OVER_2;
     }
     else
     {
-        return (float)Math::PI_OVER_2;
+        return (float)PI_OVER_2;
     }
 }
-inline double Math::aSin( double fValue )
+inline double aSin( double fValue )
 {
     if ( -1.0 < fValue )
     {
         if ( fValue < 1.0 )
             return double( ::asin( fValue ) );
         else
-            return (double)-Math::PI_OVER_2;
+            return (double)-PI_OVER_2;
     }
     else
     {
-        return (double)Math::PI_OVER_2;
+        return (double)PI_OVER_2;
     }
 }
 //----------------------------------------------------------------------------
 template <typename T>
-inline T Math::aTan( T fValue );
-inline float Math::aTan( float fValue )
+inline T aTan( T fValue );
+inline float aTan( float fValue )
 {
     return float( ::atanf( fValue ) );
 }
-inline double Math::aTan( double fValue )
+inline double aTan( double fValue )
 {
     return ::atan( fValue );
 }
 //----------------------------------------------------------------------------
 template <typename T>
-inline T Math::atan2( T fY, T fX );
-inline float Math::aTan2( float fY, float fX )
+inline T atan2( T fY, T fX );
+inline float aTan2( float fY, float fX )
 {
     return float( ::atan2f( fY, fX ) );
 }
-inline double Math::aTan2( double fY, double fX )
+inline double aTan2( double fY, double fX )
 {
     return double( ::atan2( fY, fX ) );
 }
 //----------------------------------------------------------------------------
 template <typename T>
-inline T Math::cos( T fValue );
-inline float Math::cos( float fValue )
+inline T cos( T fValue );
+inline float cos( float fValue )
 {
     return float( ::cosf( fValue ) );
 }
-inline double Math::cos( double fValue )
+inline double cos( double fValue )
 {
     return double( ::cos( fValue ) );
 }
 //----------------------------------------------------------------------------
 template <typename T>
-inline T Math::exp( T fValue );
-inline float Math::exp( float fValue )
+inline T exp( T fValue );
+inline float exp( float fValue )
 {
     return float( ::expf( fValue ) );
 }
-inline double Math::exp( double fValue )
+inline double exp( double fValue )
 {
     return double( ::exp( fValue ) );
 }
 //----------------------------------------------------------------------------
 template <typename T>
-inline T Math::log( T fValue );
-inline double Math::log( double fValue )
+inline T log( T fValue );
+inline double log( double fValue )
 {
     return double( ::log( fValue ) );
 }
-inline float Math::log( float fValue )
+inline float log( float fValue )
 {
     return float( ::logf( fValue ) );
 }
 //----------------------------------------------------------------------------
-inline double Math::pow( double fBase, double fExponent)
+inline double pow( double fBase, double fExponent)
 {
     return double( ::pow( fBase, fExponent ) );
 }
-inline float Math::pow( float fBase, float fExponent)
+inline float pow( float fBase, float fExponent)
 {
     return float( ::powf( fBase, fExponent ) );
 }
 //----------------------------------------------------------------------------
 template <typename T>
-inline T Math::sin( T fValue );
-inline double Math::sin( double fValue )
+inline T sin( T fValue );
+inline double sin( double fValue )
 {
     return double( ::sin( fValue ) );
 }
-inline float Math::sin( float fValue )
+inline float sin( float fValue )
 {
     return float( ::sinf( fValue ) );
 }
 //----------------------------------------------------------------------------
 template <typename T>
-inline T Math::sqr( T fValue )
+inline T sqr( T fValue )
 {
     return T( fValue * fValue );
 }
 //----------------------------------------------------------------------------
 template <typename T>
-inline T Math::sqrt( T fValue )
+inline T sqrt( T fValue )
 {
     return T( ::sqrtf( ((float)fValue) ) );
 }
-inline double Math::sqrt( double fValue )
+inline double sqrt( double fValue )
 {
     return double( ::sqrt( fValue ) );
 }
 
 //----------------------------------------------------------------------------
-inline float Math::unitRandom()
+inline float unitRandom()
 {
     //return float(random())/float(RAND_MAX);
    float ret_val;
@@ -258,35 +258,35 @@ inline float Math::unitRandom()
  */
 inline float rangeRandom( float x1, float x2 )
 {
-   float r = Math::unitRandom();
+   float r = unitRandom();
    float size = x2 - x1;
    return float( r * size + x1 );
 }
    
 /*
-float Math::SymmetricRandom ()
+float SymmetricRandom ()
 {
     return 2.0*float(rand())/float(RAND_MAX) - 1.0;
 }
 */
 //----------------------------------------------------------------------------
 
-inline float Math::deg2Rad( float fVal )
+inline float deg2Rad( float fVal )
 {
-   return float( fVal * (float)(Math::PI/180.0) );
+   return float( fVal * (float)(PI/180.0) );
 }
-inline double Math::deg2Rad( double fVal )
+inline double deg2Rad( double fVal )
 {
-   return double( fVal * (double)(Math::PI/180.0) );
+   return double( fVal * (double)(PI/180.0) );
 }
 
-inline float Math::rad2Deg( float fVal )
+inline float rad2Deg( float fVal )
 {
-   return float( fVal * (float)(180.0/Math::PI) );
+   return float( fVal * (float)(180.0/PI) );
 }
-inline double Math::rad2Deg( double fVal )
+inline double rad2Deg( double fVal )
 {
-   return double( fVal * (double)(180.0/Math::PI) );
+   return double( fVal * (double)(180.0/PI) );
 }
 //----------------------------------------------------------------------------
 
@@ -298,20 +298,20 @@ template <class T>
 inline bool isEqual( const T& a, const T& b, const T& tolerance )
 {
    ggtASSERT( tolerance >= (T)0 );
-   return bool( Math::abs( a - b ) <= tolerance );
+   return bool( abs( a - b ) <= tolerance );
 }
 //----------------------------------------------------------------------------
 /** cut off the digits after the decimal place */
 template <class T>
 inline T trunc( T val )
 {
-   return T( (val < ((T)0)) ? Math::ceil( val ) : Math::floor( val ) );
+   return T( (val < ((T)0)) ? ceil( val ) : floor( val ) );
 }
 /** round to nearest integer */
 template <class T>
 inline T round( T p )
 {
-   return T( Math::floor( p + (T)0.5 ) );
+   return T( floor( p + (T)0.5 ) );
 }
 //----------------------------------------------------------------------------
 /** Linear Interpolation between number [a] and [b]
@@ -335,13 +335,13 @@ inline T Min( const T& x, const T& y )
 template <class T>
 inline T Min( const T& x, const T& y, const T& z )
 {
-   return Math::Min( Math::Min( x, y ), z );
+   return Min( Min( x, y ), z );
 }
 /** min returns the minimum of 4 values */
 template <class T>
 inline T Min( const T& w, const T& x, const T& y, const T& z )
 {
-   return Math::Min( Math::Min( w, x ), Math::Min( y, z ) );
+   return Min( Min( w, x ), Min( y, z ) );
 }
 
 /** max returns the maximum of 2 values */
@@ -354,13 +354,13 @@ inline T Max( const T& x, const T& y )
 template <class T>
 inline T Max( const T& x, const T& y, const T& z )
 {
-   return Math::Max( Math::Max( x, y ), z );
+   return Max( Max( x, y ), z );
 }
 /** max returns the maximum of 4 values */
 template <class T>
 inline T Max( const T& w, const T& x, const T& y, const T& z )
 {
-   return Math::Max( Math::Max( w, x ), Math::Max( y, z ) );
+   return Max( Max( w, x ), Max( y, z ) );
 }
 //----------------------------------------------------------------------------
 template <class T>
