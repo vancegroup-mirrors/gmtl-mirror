@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Vec.h,v $
- * Date modified: $Date: 2002-06-13 14:19:04 $
- * Version:       $Revision: 1.13 $
+ * Date modified: $Date: 2002-12-23 01:18:09 $
+ * Version:       $Revision: 1.14 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -119,10 +119,13 @@ public:
 };
 
 // --- helper types --- //
+typedef Vec<int, 2> Vec2i;
 typedef Vec<float,2> Vec2f;
 typedef Vec<double,2> Vec2d;
+typedef Vec<int, 3> Vec3i;
 typedef Vec<float,3> Vec3f;
 typedef Vec<double,3> Vec3d;
+typedef Vec<int, 4> Vec4i;
 typedef Vec<float,4> Vec4f;
 typedef Vec<double,4> Vec4d;
 
