@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecBase.h,v $
- * Date modified: $Date: 2002-02-11 05:55:42 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-02-11 18:56:01 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -85,7 +85,6 @@ public:
    { return mData; }
    const DATA_TYPE* getData() const
    { return mData; }
-
 
 public:
    DATA_TYPE mData[SIZE];

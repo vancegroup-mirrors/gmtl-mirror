@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.h,v $
- * Date modified: $Date: 2002-02-11 05:40:51 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-02-11 18:56:00 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -40,6 +40,7 @@
 #include <cppunit/TestCaller.h>
 
 #include <gmtl/Vec.h>
+#include <gmtl/Compare.h>
 
 namespace gmtlTest
 {
@@ -282,6 +283,128 @@ public:
       CPPUNIT_ASSERT( data[1] == 2.0f);
    }
 
+
+   // -- Test comparison -- //
+   void testEqualityCompare()
+   {
+      gmtl::Vec<float, 4> test_vec1(1.0f, 2.0f, 3.0f, 4.0f);
+      gmtl::Vec<float, 4> test_vec2(test_vec1);
+
+      CPPUNIT_ASSERT( test_vec1 == test_vec2);
+      CPPUNIT_ASSERT(! (test_vec1 != test_vec2));
+
+      test_vec2 = test_vec1;     // Set equal, vary elt 0
+      test_vec2[0] = 21.10f;
+      CPPUNIT_ASSERT( test_vec1 != test_vec2);
+      CPPUNIT_ASSERT(! (test_vec1 == test_vec2));
+
+      test_vec2 = test_vec1;     // Set equal, vary elt 0
+      test_vec2[1] = 21.10f;
+      CPPUNIT_ASSERT( test_vec1 != test_vec2);
+      CPPUNIT_ASSERT(! (test_vec1 == test_vec2));
+
+      test_vec2 = test_vec1;     // Set equal, vary elt 0
+      test_vec2[2] = 21.10f;
+      CPPUNIT_ASSERT( test_vec1 != test_vec2);
+      CPPUNIT_ASSERT(! (test_vec1 == test_vec2));
+
+      test_vec2 = test_vec1;     // Set equal, vary elt 0
+      test_vec2[3] = 21.10f;
+      CPPUNIT_ASSERT( test_vec1 != test_vec2);
+      CPPUNIT_ASSERT(! (test_vec1 == test_vec2));
+
+      // Test comparison performance
+      // Test constructor
+      const float iters(400000);
+      unsigned true_count(0);
+      unsigned false_count(0);
+      
+      // -- Equality
+      CPPUNIT_METRIC_START_TIMING();
+      test_vec1.set(0.0f, 0.0f, 0.0f, 2000.0f);
+      test_vec2.set(0.0f, 0.0f, 0.0f, 1000.0f);
+      
+      for( float iter=0;iter<iters; ++iter)
+      {
+         test_vec1[3] += 1.0f;
+         test_vec2[3] += 2.0f;
+         if(test_vec1 == test_vec2)
+            true_count++;         
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/EqualityCompareOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      // -- Inequality
+      CPPUNIT_METRIC_START_TIMING();
+      test_vec1.set(0.0f, 0.0f, 0.0f, 2000.0f);
+      test_vec2.set(0.0f, 0.0f, 0.0f, 1000.0f);
+      
+      for( float iter=0;iter<iters; ++iter)
+      {
+         test_vec1[3] += 1.0f;
+         test_vec2[3] += 2.0f;
+         if(test_vec1 != test_vec2)
+            false_count++;
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/InequalityCompareOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+   }
+
+   // -- Test comparison -- //
+   void testIsEqual()
+   {
+      gmtl::Vec<float, 4> test_vec1(1.0f, 2.0f, 3.0f, 4.0f);
+      gmtl::Vec<float, 4> test_vec2(test_vec1);
+      float eps(0.0f);
+
+      for(eps=0.0f;eps<10.0f;eps += 0.05f)
+      {
+         CPPUNIT_ASSERT( gmtl::isEqual(test_vec1, test_vec2, eps) );                     
+      }
+
+      test_vec1.set(1.0f, 1.0f, 1.0f, 1.0f);
+      for(unsigned elt=0; elt<4; elt++)
+      {
+         test_vec2 = test_vec1;     // Set equal, vary elt 0
+         test_vec2[elt] = 21.0f;
+         CPPUNIT_ASSERT( !gmtl::isEqual(test_vec1, test_vec2, 10.0f) );
+         CPPUNIT_ASSERT( !gmtl::isEqual(test_vec1, test_vec2, 19.9f) );
+         CPPUNIT_ASSERT( gmtl::isEqual(test_vec1, test_vec2, 20.1f) );
+         CPPUNIT_ASSERT( gmtl::isEqual(test_vec1, test_vec2, 22.0f) );
+      }
+
+      // Test comparison performance
+      // Test constructor
+      const float iters(400000);
+      unsigned true_count(0);
+      unsigned false_count(0);
+      
+      // -- Equality
+      CPPUNIT_METRIC_START_TIMING();
+      test_vec1.set(0.0f, 0.0f, 0.0f, 2000.0f);
+      test_vec2.set(0.0f, 0.0f, 0.0f, 1000.0f);
+      
+      for( float iter=0;iter<iters; ++iter)
+      {
+         test_vec1[3] += 1.0f;
+         test_vec2[3] += 2.0f;
+         if(gmtl::isEqual(test_vec1, test_vec2, 1.0f) )
+            true_count++;
+         if(gmtl::isEqual(test_vec1, test_vec2, 0.1f) )
+            true_count++;
+         if(gmtl::isEqual(test_vec1, test_vec2, 100000.0f) )
+            true_count++;
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/isEqualOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      
+   }
+
+
    static Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("VecTest");
@@ -291,7 +414,9 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<VecTest>("testSet", &VecTest::testSet));
       test_suite->addTest( new CppUnit::TestCaller<VecTest>("testSetPtr", &VecTest::testSetPtr));
       test_suite->addTest( new CppUnit::TestCaller<VecTest>("testGetData", &VecTest::testGetData));
-
+      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testEqualityCompare", &VecTest::testEqualityCompare));
+      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testIsEqual", &VecTest::testIsEqual));
+      
       return test_suite;
    }
 
