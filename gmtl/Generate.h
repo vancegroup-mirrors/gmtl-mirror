@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-02-21 21:37:08 $
- * Version:       $Revision: 1.11 $
+ * Date modified: $Date: 2002-02-22 10:42:52 $
+ * Version:       $Revision: 1.12 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -49,6 +49,17 @@ namespace gmtl
    // TODO: Vec& makeNormalized( Vec&, x, y, z )
    // TODO: Vec& makeNormalized( Vec&, x, y, z, w )
 
+   /** create a vector from the vector component of a quaternion
+    * @post quat = [v,0] = [v0,v1,v2,0]
+    */
+   template <typename DATA_TYPE>
+   inline Vec<DATA_TYPE, 3> makeVec( const Quat<DATA_TYPE>& quat )
+   {
+      return Vec<DATA_TYPE, 3>( quat[Xelt], quat[Yelt], quat[Zelt] );
+   }
+   
+   
+   
    
    
    //-- QUATERNION GENERATORS --//
@@ -57,21 +68,43 @@ namespace gmtl
     * @post quat = [v,0] = [v0,v1,v2,0]
     */
    template <typename DATA_TYPE>
-   Quat<DATA_TYPE> makePure( const Vec<DATA_TYPE, 3>& vec )
+   inline Quat<DATA_TYPE> makePure( const Vec<DATA_TYPE, 3>& vec )
    {
       return Quat<DATA_TYPE>( vec[0], vec[1], vec[2], 0 );
    }
    
-   /** create quaternion from the complex conjugate (invers) of another quaternion.
-    *  When quat is a rotation, this is also the same as the inverse of the rotation.
+   /** create a pure quaternion
+    * @post quat = [v,0] = [v0,v1,v2,0]
+    */
+   template <typename DATA_TYPE>
+   inline Quat<DATA_TYPE> makeNormal( const Quat<DATA_TYPE>& quat )
+   {
+      Quat<DATA_TYPE> temporary( quat );
+      return normalize( temporary );
+   }
+   
+   /** quaternion complex conjugate.
     *  @post set result to the complex conjugate of result.
     *  @post result'[x,y,z,w] == result[-x,-y,-z,w]
     *  @see Quat
     */
    template <typename DATA_TYPE>
-   Quat<DATA_TYPE> makeInvert( const Quat<DATA_TYPE>& quat )
+   inline Quat<DATA_TYPE> makeConj( const Quat<DATA_TYPE>& quat )
    {
-      return Quat<DATA_TYPE>( -result[Xelt], -result[Yelt], -result[Zelt], result[Welt] );
+      Quat<DATA_TYPE> temporary( quat );
+      return conj( temporary );
+   }
+   
+   /** create quaternion from the inverse of another quaternion.
+    *  @post returns the multiplicative inverse of quat
+    *  @see Quat
+    */
+   template <typename DATA_TYPE>
+   inline Quat<DATA_TYPE> makeInvert( const Quat<DATA_TYPE>& quat )
+   {
+      Quat<DATA_TYPE> temporary( quat );
+      conj( temporary );
+      return normalizeFast( temporary );
    }
 
    /** make a rotation quaternion from an angle and an axis (fast).
@@ -79,17 +112,24 @@ namespace gmtl
     * @post q = [ cos(rad/2), sin(rad/2) * [x,y,z] ]
     */
    template <typename DATA_TYPE>
-   Quat<DATA_TYPE>& makeRot( Quat<DATA_TYPE>& result, const DATA_TYPE rad, const Vec<DATA_TYPE, 3>& axis )
+   inline Quat<DATA_TYPE>& makeRot( Quat<DATA_TYPE>& result, const DATA_TYPE rad, Vec<DATA_TYPE, 3> axis )
    {
-      ggtASSERT( isNormalized( axis ) && "preconditions not met for makeRot, axis must be normalized" );
-
+      // normalize if possible...
+      float l = length( axis );
+      if (l > 0.0001f)
+      {
+         l = 1.0f / l;
+         axis *= l;
+      }   
+      
+      // do it...
       DATA_TYPE half_angle = rad * 0.5f;
       DATA_TYPE sin_half_angle = Math::sin( half_angle );
 
       result[Welt] = Math::cos( half_angle );
-      result[Xelt] = sin_half_angle * axis[0];
-      result[Yelt] = sin_half_angle * axis[1];
-      result[Zelt] = sin_half_angle * axis[2];
+      result[Xelt] = sin_half_angle * axis[0] * l;
+      result[Yelt] = sin_half_angle * axis[1] * l;
+      result[Zelt] = sin_half_angle * axis[2] * l;
 
       // should automagically be normalized (unit magnitude) now...
       return result;
@@ -100,21 +140,16 @@ namespace gmtl
     * @post q = [ cos(rad/2), sin(rad/2) * [x,y,z] ]
     */
    template <typename DATA_TYPE>
-   Quat<DATA_TYPE>& makeRot( Quat<DATA_TYPE>& result, const DATA_TYPE rad, const DATA_TYPE x, const DATA_TYPE y, const DATA_TYPE z )
+   inline Quat<DATA_TYPE>& makeRot( Quat<DATA_TYPE>& result, const DATA_TYPE rad, const DATA_TYPE x, const DATA_TYPE y, const DATA_TYPE z )
    {
-      Vec<DATA_TYPE, 3> vec_normalized( x, y, z );
-      if (isNormalized( vec_normalized ))
-      {
-         normalize( vec_normalized );
-      }
-      return makeRot( result, rad, vec_normalized );
+      return makeRot( result, rad, Vec<DATA_TYPE, 3>( x, y, z ) );
    }
    
    /** make a rotation quaternion that will xform first vector to the second.
     *  @post generate rotation quaternion that is the rotation between the vectors.
     */
    template <typename DATA_TYPE>
-   Quat<DATA_TYPE>& makeRot( Quat<DATA_TYPE>& result, const Vec<DATA_TYPE, 3>& from, const Vec<DATA_TYPE, 3>& to )
+   inline Quat<DATA_TYPE>& makeRot( Quat<DATA_TYPE>& result, const Vec<DATA_TYPE, 3>& from, const Vec<DATA_TYPE, 3>& to )
    {
       const DATA_TYPE epsilon = 0.00001;
       DATA_TYPE cosangle = dot( from * to );
@@ -157,25 +192,25 @@ namespace gmtl
     * </ul>
     */
    template <typename DATA_TYPE>
-   void getRot( DATA_TYPE& rad, DATA_TYPE& x, DATA_TYPE& y, DATA_TYPE& z, Quat<DATA_TYPE> quat ) 
+   inline void getRot( Quat<DATA_TYPE> quat, DATA_TYPE& rad, DATA_TYPE& x, DATA_TYPE& y, DATA_TYPE& z ) 
    {
       // make sure we don't get a NaN result from acos...
-      if (Math::abs( quat[Welt] ) > 1.0f)
+      if (Math::abs( quat[Welt] ) > (DATA_TYPE)1.0)
       {
          normalize( quat );
       }
-      ggtASSERT( Math::abs( quat[Welt] ) <= 1.0f && "acos returns NaN when quat[Welt] > 1, try normalizing your quat." );
+      ggtASSERT( Math::abs( quat[Welt] ) <= (DATA_TYPE)1.0 && "acos returns NaN when quat[Welt] > 1, try normalizing your quat." );
 
       // [acos( w ) * 2.0, v / (asin( w ) * 2.0)]
 
       // get the angle:
-      rad = Math::acos( quat[Welt] ) * 2.0f;
+      rad = Math::aCos( quat[Welt] ) * (DATA_TYPE)2.0;
 
       // get the axis: (use sin(rad) instead of asin(w))
-      DATA_TYPE sin_half_angle = Math::sin( rad * 0.5f );
-      if (sin_half_angle >= 0.0001f)  // some arbitrary epsillon close to zero
+      DATA_TYPE sin_half_angle = Math::sin( rad * (DATA_TYPE)0.5 );
+      if (sin_half_angle >= (DATA_TYPE)0.0001)  // some arbitrary epsillon close to zero
       {
-         DATA_TYPE sin_half_angle_inv = 1.0f / sin_half_angle;
+         DATA_TYPE sin_half_angle_inv = DATA_TYPE(1.0) / sin_half_angle;
          x = quat[Xelt] * sin_half_angle_inv;
          y = quat[Yelt] * sin_half_angle_inv;
          z = quat[Zelt] * sin_half_angle_inv;
@@ -185,8 +220,8 @@ namespace gmtl
       else 
       {
          x = 1.0f - quat[Welt]; // one of the terms should be a 1,
-         y = 0.0f;                  // so we can maintain unit-ness
-         z = 0.0f;                  // in case w is 0 (which here w is 0)
+         y = 0.0f;              // so we can maintain unit-ness
+         z = 0.0f;              // in case w is 0 (which here w is 0)
       }
    }
    
@@ -199,7 +234,7 @@ namespace gmtl
     * @pre pass in your angles in the same order as the RotationOrder you specify
     */
    template <typename DATA_TYPE>
-   void makeRot( Quat<DATA_TYPE>& result, const DATA_TYPE param0, 
+   inline void makeRot( Quat<DATA_TYPE>& result, const DATA_TYPE param0, 
                  const DATA_TYPE param1, const DATA_TYPE param2, const RotationOrder order )
    {
       // this might be faster if put into the switch statement... (testme)
