@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: testSuite.cpp,v $
- * Date modified: $Date: 2002-01-26 23:55:36 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-02-09 22:24:50 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -55,6 +55,7 @@
 #include <TestCases/IntersectionTest.h>
 #include <TestCases/QuatTest.h>
 #include <TestCases/TriTest.h>
+#include <TestCases/InfoTests/OptTest.h>
 
 int main (int ac, char **av)
 {
@@ -76,6 +77,7 @@ int main (int ac, char **av)
    gmtl_suite->addTest(gmtlTest::IntersectionTest::suite());
    gmtl_suite->addTest(gmtlTest::QuatTest::suite());
    gmtl_suite->addTest(gmtlTest::TriTest::suite());
+   gmtl_suite->addTest(gmtlTest::OptTest::suite());
 
    // Add the tests
    runner.addTest(gmtl_suite);
