@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOpsTest.h,v $
- * Date modified: $Date: 2002-03-15 04:23:55 $
- * Version:       $Revision: 1.12 $
+ * Date modified: $Date: 2002-03-15 15:29:48 $
+ * Version:       $Revision: 1.13 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -40,8 +40,10 @@ Matrix [] -km Transformations XformInterface? Xform.h   Collision detection Coll
 #include <cppunit/TestSuite.h>
 #include <cppunit/TestCaller.h>
 
+#include <gmtl/Math.h>
 #include <gmtl/Matrix.h>
 #include <gmtl/MatrixOps.h>
+#include <gmtl/Generate.h>
 
 namespace gmtlTest
 {
@@ -100,6 +102,128 @@ public:
       // force intelligent compilers to do all the iterations (ie. to not optimize them out),
       // by using the variables computed...
       CPPUNIT_ASSERT_DOUBLES_EQUAL( bogus_value, iters, 0.5f);
+   }
+
+   void testMatrixSetTrans()
+   {
+      float eps = 0.01f;
+
+      // 3D trans
+      {
+         gmtl::Matrix34f mat34, expected_result34;
+         gmtl::makeRot(expected_result34, 0.5f, 1.0f, -1.0f, gmtl::XYZ);
+         expected_result34(0,3) = 21;
+         expected_result34(1,3) = 22;
+         expected_result34(2,3) = 23;
+
+         gmtl::makeRot(mat34, 0.5f, 1.0f, -1.0f, gmtl::XYZ);
+         gmtl::setTrans( mat34, gmtl::Vec3f( 21, 22, 23 ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result34, mat34, eps ) );
+      }
+      // 3D rot/trans set by homogeneous vector
+      {
+         gmtl::Matrix34f mat34, expected_result34;
+         gmtl::makeRot(expected_result34, 0.5f, 1.0f, -1.0f, gmtl::XYZ);
+         expected_result34(0,3) = 42;
+         expected_result34(1,3) = 44;
+         expected_result34(2,3) = 46;
+
+         gmtl::makeRot(mat34, 0.5f, 1.0f, -1.0f, gmtl::XYZ);
+         gmtl::setTrans( mat34, gmtl::Vec4f( 21, 22, 23, 0.5f ) );
+
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result34, mat34, eps ) );
+      }
+      // 3D trans
+      {
+         gmtl::Matrix44f mat44, expected_result44;
+         gmtl::makeRot(expected_result44, 0.5f, 1.0f, -1.0f, gmtl::XYZ);
+         expected_result44(0,3) = 21;
+         expected_result44(1,3) = 22;
+         expected_result44(2,3) = 23;
+
+         gmtl::makeRot(expected_result44, 0.5f, 1.0f, -1.0f, gmtl::XYZ);
+         gmtl::setTrans( mat44, gmtl::Vec3f( 21.0f, 22.0f, 23.0f ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result44, mat44, eps ) );
+      }
+      // 3D rot/trans/skew set by homogeneous vector...
+      {
+         gmtl::Matrix44f mat44, expected_result44;
+
+         gmtl::makeRot(expected_result44, 0.5f, 1.0f, -1.0f, gmtl::XYZ);
+         expected_result44(0,3) = 42;
+         expected_result44(1,3) = 44;
+         expected_result44(2,3) = 46;
+
+         gmtl::makeRot(expected_result44, 0.5f, 1.0f, -1.0f, gmtl::XYZ);
+         gmtl::setTrans( mat44, gmtl::Vec4f( 21, 22, 23, 0.5f ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result44, mat44, eps ) );
+      }
+   }
+
+   void testTimingMakeTrans()
+   {
+      gmtl::Matrix33f mat33;
+      gmtl::Matrix34f mat34;
+      gmtl::Matrix44f mat44;
+      float a = 1.0f;
+
+      const long iters(100000);
+
+      // 2D translation
+      CPPUNIT_METRIC_START_TIMING();
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         gmtl::setTrans( mat33, gmtl::Vec2f( a, 2 ) );
+         a += mat33[3];
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/setTrans(mat33f,vec2f)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT( mat33[3] != 1234.0456f && a != 987654.321f  );
+
+
+      CPPUNIT_METRIC_START_TIMING();
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         gmtl::setTrans( mat33, gmtl::Vec3f( 1, a, 1.0f ) ); // homogeneous
+         a += mat33[3];
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/setTrans(mat33f,vec3f)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT( mat33[3] != 1234.0456f && a != 987654.321f  );
+
+
+      // 3D translation
+      CPPUNIT_METRIC_START_TIMING();
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         gmtl::setTrans( mat34, gmtl::Vec3f( a, 32, 121 ) );
+         a += mat34[3];
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/setTrans(mat34f,vec3f)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT( mat34[3] != 1234.0456f && a != 987654.321f  );
+
+
+      CPPUNIT_METRIC_START_TIMING();
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         gmtl::setTrans( mat44, gmtl::Vec3f( 30, a, 121 ) );
+         a += mat44[3];
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/setTrans(mat44f,vec3f)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT( mat44[3] != 1234.0456f && a != 987654.321f  );
+
+
+      CPPUNIT_METRIC_START_TIMING();
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         gmtl::setTrans( mat44, gmtl::Vec4f( 30, 32, a, 1.0f ) ); // homogeneous
+         a += mat44[3];
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/setTrans(mat44f,vec4f)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT( mat44[3] != 1234.0456f && a != 987654.321f  );
    }
 
 
@@ -1004,6 +1128,8 @@ public:
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite( "MatrixOpsTest" );
 
       test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixIdentity", &MatrixOpsTest::testMatrixIdentity ) );
+      test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixSetTrans", &MatrixOpsTest::testMatrixSetTrans ) );
+
       test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixTranspose", &MatrixOpsTest::testMatrixTranspose ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixMult", &MatrixOpsTest::testMatrixMult ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixScalarMult", &MatrixOpsTest::testMatrixScalarMult ) );
@@ -1011,7 +1137,9 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatInvert", &MatrixOpsTest::testMatInvert ) );
       //test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testGetSetAxes", &MatrixOpsTest::testGetSetAxes ) );
 
+
       test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixTimeIdentity44f", &MatrixOpsTest::testMatrixTimeIdentity44f ) );
+      test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testTimingMakeTrans", &MatrixOpsTest::testTimingMakeTrans ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixTimeTranspose44f", &MatrixOpsTest::testMatrixTimeTranspose44f ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixTimeTranspose33d", &MatrixOpsTest::testMatrixTimeTranspose33d ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixTimeMult44_mult", &MatrixOpsTest::testMatrixTimeMult44_mult ) );
