@@ -3,12 +3,14 @@ pj = os.path.join
 
 Import('pkg baseEnv PREFIX')
 
+# XXX: Can't this be constructed automatically by scanning?  -PH 9/19/2004
 headers = Split("""
    AABox
    AABoxOps
    AxisAngle
    AxisAngleOps
    Comparitors
+   Config
    Containment
    Coord
    CoordOps
@@ -17,12 +19,14 @@ headers = Split("""
    EulerAngleOps
    Generate
    gmtl
+   Helpers
    Intersection
    LineSeg
    LineSegOps
    Math
    Matrix
    MatrixOps
+   OOBox
    Output
    Plane
    PlaneOps
@@ -36,6 +40,7 @@ headers = Split("""
    Tri
    TriOps
    Vec
+   VecB
    VecBase
    VecExprMeta
    VecOps
