@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatClassTest.cpp,v $
- * Date modified: $Date: 2002-03-18 22:35:15 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-03-20 21:43:36 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -259,14 +259,17 @@ namespace gmtlTest
    void QuatClassTest::testQuatTimingOpEqual()
    {
       const long iters( 400000 );
-      CPPUNIT_METRIC_START_TIMING();
       gmtl::Quat<float> q4, q2( 0, 2, 1, 3 );
+      CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
          // performance of operator=() function
          q4 = q2;
+         q2[0] += q4[2];
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatTest/operator=()", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      CPPUNIT_ASSERT( q4[0] != 3498.0f );
    }
 }
