@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Output.h,v $
- * Date modified: $Date: 2003-04-03 15:22:55 $
- * Version:       $Revision: 1.14 $
+ * Date modified: $Date: 2004-09-03 14:07:34 $
+ * Version:       $Revision: 1.14.4.1 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -50,11 +50,46 @@
 
 namespace gmtl
 {
+   namespace output
+   {
+      /** Outputters for vector types. */
+
+      template<typename DATA_TYPE, unsigned SIZE, typename REP>
+      struct VecOutputter
+      {
+         static std::ostream& outStream(std::ostream& out, const VecBase<DATA_TYPE,SIZE,REP>& v)
+         {
+            VecBase<DATA_TYPE,SIZE, gmtl::meta::DefaultVecTag> temp_vec(v);
+            VecOutputter<DATA_TYPE,SIZE,gmtl::meta::DefaultVecTag>::outStream(out,v);
+            return out;
+         }
+      };
+
+      template<typename DATA_TYPE, unsigned SIZE>
+      struct VecOutputter<DATA_TYPE,SIZE,gmtl::meta::DefaultVecTag>
+      {
+         static std::ostream& outStream(std::ostream& out, const VecBase<DATA_TYPE,SIZE,gmtl::meta::DefaultVecTag>& v)
+         {
+            out << "(";
+            for ( unsigned i=0; i<SIZE; ++i )
+            {
+               if ( i != 0 )
+               {
+                  out << ", ";
+               }
+               out << v[i];
+            }
+            out << ")";
+            return out;
+         }
+      };
+
+   }
+
    /** @ingroup Output
     *  @name Output Stream Operators
     */
    //@{
-
    /**
     * Outputs a string representation of the given VecBase type to the given
     * output stream. This works for both Point and Vec types. The output is
@@ -65,21 +100,10 @@ namespace gmtl
     *
     * @return  out after it has been written to
     */
-   template< class DATA_TYPE, unsigned SIZE >
-   std::ostream& operator<<( std::ostream& out,
-                             const VecBase<DATA_TYPE, SIZE>& v )
+   template<typename DATA_TYPE, unsigned SIZE, typename REP>
+   std::ostream& operator<<(std::ostream& out, const VecBase<DATA_TYPE, SIZE, REP>& v)
    {
-      out << "(";
-      for ( unsigned i=0; i<SIZE; ++i )
-      {
-         if ( i != 0 )
-         {
-            out << ", ";
-         }
-         out << v[i];
-      }
-      out << ")";
-      return out;
+      return output::VecOutputter<DATA_TYPE,SIZE,REP>::outStream(out,v);
    }
 
    /**
