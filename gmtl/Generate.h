@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-02-19 23:39:12 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-02-20 00:29:35 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -99,7 +99,7 @@ namespace gmtl
    inline Matrix<DATA_TYPE, ROWS, COLS>& makeScale( Matrix<DATA_TYPE, ROWS, COLS>& result, const DATA_TYPE scale )
    {
       result = Matrix<DATA_TYPE, ROWS, COLS>();
-      for (int x = 0; x < Math::Min( ROWS, COLS ); ++x)
+      for (int x = 0; x < Math::Min( ROWS, COLS, Math::Max( ROWS, COLS ) - 1 ); ++x) // account for 2x4 or other weird sizes...
          result( x, x ) = scale;
       return result;
    }
