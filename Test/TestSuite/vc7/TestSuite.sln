@@ -1,15 +1,17 @@
-Microsoft Visual Studio Solution File, Format Version 7.00
+Microsoft Visual Studio Solution File, Format Version 8.00
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestSuite", "TestSuite.vcproj", "{AB9F8995-728B-473E-8F39-D94BC64847AB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{58EB116B-8F99-48DF-B8E0-060372DDF14B} = {58EB116B-8F99-48DF-B8E0-060372DDF14B}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cppunit", "cppunit.vcproj", "{58EB116B-8F99-48DF-B8E0-060372DDF14B}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
-		ConfigName.0 = Debug
-		ConfigName.1 = Release
-	EndGlobalSection
-	GlobalSection(ProjectDependencies) = postSolution
-		{AB9F8995-728B-473E-8F39-D94BC64847AB}.0 = {58EB116B-8F99-48DF-B8E0-060372DDF14B}
+		Debug = Debug
+		Release = Release
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
 		{AB9F8995-728B-473E-8F39-D94BC64847AB}.Debug.ActiveCfg = Debug|Win32

@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding = "Windows-1252"?>
+<?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.00"
+	Version="7.10"
 	Name="TestSuite"
 	ProjectGUID="{AB9F8995-728B-473E-8F39-D94BC64847AB}"
 	Keyword="Win32Proj">
@@ -52,7 +52,13 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
 				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
@@ -97,15 +103,26 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
 				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 	</Configurations>
+	<References>
+	</References>
 	<Files>
 		<Filter
 			Name="Source Files"
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm">
 			<File
 				RelativePath="..\TestCases\AABoxContainTest.cpp">
+			</File>
+			<File
+				RelativePath="..\TestCases\AABoxOpsTest.cpp">
 			</File>
 			<File
 				RelativePath="..\TestCases\AABoxTest.cpp">
@@ -135,7 +152,13 @@
 				RelativePath="..\TestCases\EulerAngleCompareTest.cpp">
 			</File>
 			<File
+				RelativePath="..\TestCases\IntersectionTest.cpp">
+			</File>
+			<File
 				RelativePath="..\TestCases\LineSegTest.cpp">
+			</File>
+			<File
+				RelativePath="..\TestCases\MathTest.cpp">
 			</File>
 			<File
 				RelativePath="..\TestCases\MatrixClassTest.cpp">
@@ -148,6 +171,9 @@
 			</File>
 			<File
 				RelativePath="..\TestCases\MatrixOpsTest.cpp">
+			</File>
+			<File
+				RelativePath="..\TestCases\MatrixStateTrackingTest.cpp">
 			</File>
 			<File
 				RelativePath="..\TestCases\InfoTests\OptTest.cpp">
@@ -177,6 +203,9 @@
 				RelativePath="..\TestCases\QuatStuffTest.cpp">
 			</File>
 			<File
+				RelativePath="..\runner.cpp">
+			</File>
+			<File
 				RelativePath="..\TestCases\SphereTest.cpp">
 			</File>
 			<File
@@ -194,21 +223,15 @@
 			<File
 				RelativePath="..\TestCases\XformTest.cpp">
 			</File>
-			<File
-				RelativePath="..\testSuite.cpp">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)/$(InputName)1.obj"/>
-				</FileConfiguration>
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc">
 			<File
 				RelativePath="..\TestCases\AABoxContainTest.h">
+			</File>
+			<File
+				RelativePath="..\TestCases\AABoxOpsTest.h">
 			</File>
 			<File
 				RelativePath="..\TestCases\AABoxTest.h">
@@ -262,7 +285,13 @@
 				RelativePath="..\TestCases\MatrixOpsTest.h">
 			</File>
 			<File
+				RelativePath="..\TestCases\MatrixStateTrackingTest.h">
+			</File>
+			<File
 				RelativePath="..\TestCases\MatrixTest.h">
+			</File>
+			<File
+				RelativePath="..\TestCases\MetaTest.h">
 			</File>
 			<File
 				RelativePath="..\TestCases\OOBoxTest.h">
@@ -356,6 +385,9 @@
 				RelativePath="..\..\..\gmtl\Generate.h">
 			</File>
 			<File
+				RelativePath="..\..\..\gmtl\gmtl.h">
+			</File>
+			<File
 				RelativePath="..\..\..\gmtl\Intersection.h">
 			</File>
 			<File
@@ -423,9 +455,6 @@
 			</File>
 			<File
 				RelativePath="..\..\..\gmtl\Xforms.h">
-			</File>
-			<File
-				RelativePath="..\..\..\gmtl\gmtl.h">
 			</File>
 		</Filter>
 	</Files>
