@@ -29,8 +29,8 @@
 #
 # -----------------------------------------------------------------
 # File:          $RCSfile: Makefile,v $
-# Date modified: $Date: 2002-02-10 05:03:59 $
-# Version:       $Revision: 1.3 $
+# Date modified: $Date: 2002-02-11 20:38:11 $
+# Version:       $Revision: 1.4 $
 # -----------------------------------------------------------------
 # *************** <auto-copyright.pl END do not edit this line> ***************
 
@@ -38,7 +38,7 @@
 # Advanced template makefile for VR Juggler applications.  This is intended
 # for "power users" who really know what they are doing and want to abuse
 # Doozer's flexibility.  :)
-# $Id: Makefile,v 1.3 2002-02-10 05:03:59 allenb Exp $
+# $Id: Makefile,v 1.4 2002-02-11 20:38:11 subatomic Exp $
 #
 # *** IMPORTANT NOTES -- READ THESE FIRST ***
 #     1) This file _requires_ the use of GNU make (gmake).
@@ -96,10 +96,10 @@ srcdir  	= $(shell pwd)
 #    EXTRA_UI_LIBS     - Extra user interface libraries needed for linking.
 #    PF_PATH           - Path (including -L option) to the Performer libraries
 #
-DEBUG_APP		= TRUE
-OPTIM_APP		= FALSE
+DEBUG_APP		= FALSE
+OPTIM_APP		= TRUE
 #DEBUG_FLAGS		=
-#OPTIM_FLAGS		=
+OPTIM_FLAGS		= -O3
 EXTRA_CFLAGS		=
 EXTRA_CXXFLAGS		=
 EXTRA_DEBUG_FLAGS	= -D_DEBUG
@@ -107,9 +107,9 @@ EXTRA_OPTIM_FLAGS	= -D_OPT
 
 GMTL_INCLUDES  = -I$(GGT_ROOT)/modules/GMTL/ -I$(GGT_ROOT)/
 SUITE_INCLUDES = -I$(CPPUNIT_DIR)/include
-EXTRA_INCLUDES	= $(GMTL_INCLUDES) $(SUITE_INCLUDES)
+EXTRA_INCLUDES = $(GMTL_INCLUDES) $(SUITE_INCLUDES) -ITestCases/InfoTests
 
-EXTRA_UI_FLAGS		=
+EXTRA_UI_FLAGS =
 
 # The list of all source files needed for this application.  Based on this,
 # a list of object files is put in $(OBJS) automatically.
@@ -133,7 +133,8 @@ CPPUNIT_SRCS	= Exception.cpp		\
                   TestFailure.cpp	\
                   TestSuite.cpp \
                   $(CPPUNIT_UI_SRCS) \
-                  $(CPPUNIT_EXTS)
+                  $(CPPUNIT_EXTS) \
+                  OptTest.cpp
 
 EXTRA_CPPUNIT_SRCS_PATH	= $(CPPUNIT_DIR)/src/cppunit $(CPPUNIT_DIR)/src/cppunit/extensions
 
@@ -151,7 +152,7 @@ EXTRA_SYS_LIBS	=
 # Extend this as necessary to find source files that are not in the current
 # directory.  Set EXTRA_PATH_FOR_SOURCES to all the directories that you
 # have sources in. (current dir is already included by default)
-EXTRA_PATH_FOR_SOURCES = $(EXTRA_CPPUNIT_SRCS_PATH)
+EXTRA_PATH_FOR_SOURCES = $(EXTRA_CPPUNIT_SRCS_PATH):TestCases/InfoTests
 
 # Additional files and directories besides the standard ones that need to be
 # removed by the 'clean' target.
