@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: SphereTest.cpp,v $
- * Date modified: $Date: 2002-03-18 22:58:00 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-07-02 03:09:21 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -87,7 +87,7 @@ namespace gmtlTest
       const long iters(400000);
       gmtl::Sphere<float> test_sph2;
       test_sph2.mCenter[0] = 2.0f;
-      float use_value;     // A temp just here to use the objs so the copiler (hopefully) does not opt them out
+      float use_value(0);     // A temp just here to use the objs so the copiler (hopefully) does not opt them out
 
       CPPUNIT_METRIC_START_TIMING();
 
@@ -188,7 +188,7 @@ namespace gmtlTest
 
       for( long iter=0;iter<iters; ++iter)
       {
-         center.set( iter, iter, iter );
+         center.set( (float)iter, (float)iter, (float)iter );
          test_sph.setCenter( center );
       }
 
@@ -210,7 +210,7 @@ namespace gmtlTest
 
       for( long iter=0;iter<iters; ++iter)
       {
-         test_sph.setRadius( iter );
+         test_sph.setRadius( (float)iter );
          use_value = use_value + test_sph.mRadius;
       }
 

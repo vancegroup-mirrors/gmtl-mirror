@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatGenTest.cpp,v $
- * Date modified: $Date: 2002-06-11 21:23:33 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-07-02 03:09:21 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -88,7 +88,7 @@ namespace gmtlTest
    {
       // test out mult( result, quat, quat )
       const float eps = 0.0001f;
-      gmtl::Quat<float> q( 0.2, 0.33, 0.44, 0.101 ), expected_result( -0.567053, -0.935637, -1.24752, 0.286362 );
+      gmtl::Quat<float> q( 0.2f, 0.33f, 0.44f, 0.101f ), expected_result( -0.567053f, -0.935637f, -1.24752f, 0.286362f );
       gmtl::Quat<float> q4( gmtl::makeInvert( q ) );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result, q4, eps ) );
 
@@ -105,8 +105,8 @@ namespace gmtlTest
       gmtl::Quat<float> q1, q2;
       q1 = gmtl::make<gmtl::Quat<float> >( gmtl::AxisAnglef( gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f ) );
       q2 = gmtl::make<gmtl::Quat<float> >( gmtl::AxisAnglef( gmtl::Math::deg2Rad( 32.0f ), 0.0f, 1.0f, 0.0f ) );
-      gmtl::Quat<float> expected_result1( 0.707107, 0, 0, 0.707107 );
-      gmtl::Quat<float> expected_result2( 0, 0.275637, 0, 0.961262 );
+      gmtl::Quat<float> expected_result1( 0.707107f, 0, 0, 0.707107f );
+      gmtl::Quat<float> expected_result2( 0, 0.275637f, 0, 0.961262f );
 
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, q1, eps ) );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result2, q2, eps ) );
@@ -116,41 +116,41 @@ namespace gmtlTest
       // values from VR Juggler math lib...
       std::vector< gmtl::Quat<float> > quats;
       quats.push_back( gmtl::Quat<float>( 0, 0, 0, -1       ) );
-      quats.push_back( gmtl::Quat<float>( -0, -0.173648, -0, -0.984808) );
-      quats.push_back( gmtl::Quat<float>( -0, -0.34202, -0, -0.939693 ) );
-      quats.push_back( gmtl::Quat<float>( -0, -0.5, -0, -0.866025     ) );
-      quats.push_back( gmtl::Quat<float>( -0, -0.642788, -0, -0.766044) );
-      quats.push_back( gmtl::Quat<float>( -0, -0.766044, -0, -0.642788) );
-      quats.push_back( gmtl::Quat<float>( -0, -0.866025, -0, -0.5     ) );
-      quats.push_back( gmtl::Quat<float>( -0, -0.939693, -0, -0.34202 ) );
-      quats.push_back( gmtl::Quat<float>( -0, -0.984808, -0, -0.173648) );
+      quats.push_back( gmtl::Quat<float>( -0, -0.173648f, -0, -0.984808f) );
+      quats.push_back( gmtl::Quat<float>( -0, -0.34202f, -0, -0.939693f ) );
+      quats.push_back( gmtl::Quat<float>( -0, -0.5f, -0, -0.866025f     ) );
+      quats.push_back( gmtl::Quat<float>( -0, -0.642788f, -0, -0.766044f) );
+      quats.push_back( gmtl::Quat<float>( -0, -0.766044f, -0, -0.642788f) );
+      quats.push_back( gmtl::Quat<float>( -0, -0.866025f, -0, -0.5f     ) );
+      quats.push_back( gmtl::Quat<float>( -0, -0.939693f, -0, -0.34202f ) );
+      quats.push_back( gmtl::Quat<float>( -0, -0.984808f, -0, -0.173648f) );
       quats.push_back( gmtl::Quat<float>( -0, -1, -0, 0    ) );
-      quats.push_back( gmtl::Quat<float>( -0, -0.984808, -0, 0.173648 ) );
-      quats.push_back( gmtl::Quat<float>( -0, -0.939693, -0, 0.34202  ) );
-      quats.push_back( gmtl::Quat<float>( -0, -0.866025, -0, 0.5      ) );
-      quats.push_back( gmtl::Quat<float>( -0, -0.766044, -0, 0.642788 ) );
-      quats.push_back( gmtl::Quat<float>( -0, -0.642788, -0, 0.766044 ) );
-      quats.push_back( gmtl::Quat<float>( -0, -0.5, -0, 0.866025      ) );
-      quats.push_back( gmtl::Quat<float>( -0, -0.34202, -0, 0.939693  ) );
-      quats.push_back( gmtl::Quat<float>( -0, -0.173648, -0, 0.984808 ) );
+      quats.push_back( gmtl::Quat<float>( -0, -0.984808f, -0, 0.173648f ) );
+      quats.push_back( gmtl::Quat<float>( -0, -0.939693f, -0, 0.34202f  ) );
+      quats.push_back( gmtl::Quat<float>( -0, -0.866025f, -0, 0.5f      ) );
+      quats.push_back( gmtl::Quat<float>( -0, -0.766044f, -0, 0.642788f ) );
+      quats.push_back( gmtl::Quat<float>( -0, -0.642788f, -0, 0.766044f ) );
+      quats.push_back( gmtl::Quat<float>( -0, -0.5f, -0, 0.866025f      ) );
+      quats.push_back( gmtl::Quat<float>( -0, -0.34202f, -0, 0.939693f  ) );
+      quats.push_back( gmtl::Quat<float>( -0, -0.173648f, -0, 0.984808f ) );
       quats.push_back( gmtl::Quat<float>( 0, 0, 0, 1                  ) );
-      quats.push_back( gmtl::Quat<float>( 0, 0.173648, 0, 0.984808    ) );
-      quats.push_back( gmtl::Quat<float>( 0, 0.34202, 0, 0.939693     ) );
-      quats.push_back( gmtl::Quat<float>( 0, 0.5, 0, 0.866025         ) );
-      quats.push_back( gmtl::Quat<float>( 0, 0.642788, 0, 0.766044    ) );
-      quats.push_back( gmtl::Quat<float>( 0, 0.766044, 0, 0.642788    ) );
-      quats.push_back( gmtl::Quat<float>( 0, 0.866025, 0, 0.5         ) );
-      quats.push_back( gmtl::Quat<float>( 0, 0.939693, 0, 0.34202     ) );
-      quats.push_back( gmtl::Quat<float>( 0, 0.984808, 0, 0.173648    ) );
+      quats.push_back( gmtl::Quat<float>( 0, 0.173648f, 0, 0.984808f    ) );
+      quats.push_back( gmtl::Quat<float>( 0, 0.34202f, 0, 0.939693f     ) );
+      quats.push_back( gmtl::Quat<float>( 0, 0.5f, 0, 0.866025f         ) );
+      quats.push_back( gmtl::Quat<float>( 0, 0.642788f, 0, 0.766044f    ) );
+      quats.push_back( gmtl::Quat<float>( 0, 0.766044f, 0, 0.642788f    ) );
+      quats.push_back( gmtl::Quat<float>( 0, 0.866025f, 0, 0.5f         ) );
+      quats.push_back( gmtl::Quat<float>( 0, 0.939693f, 0, 0.34202f     ) );
+      quats.push_back( gmtl::Quat<float>( 0, 0.984808f, 0, 0.173648f    ) );
       quats.push_back( gmtl::Quat<float>( 0, 1, 0, 0       ) );
-      quats.push_back( gmtl::Quat<float>( 0, 0.984808, 0, -0.173648   ) );
-      quats.push_back( gmtl::Quat<float>( 0, 0.939693, 0, -0.34202    ) );
-      quats.push_back( gmtl::Quat<float>( 0, 0.866025, 0, -0.5        ) );
-      quats.push_back( gmtl::Quat<float>( 0, 0.766044, 0, -0.642788   ) );
-      quats.push_back( gmtl::Quat<float>( 0, 0.642788, 0, -0.766044   ) );
-      quats.push_back( gmtl::Quat<float>( 0, 0.5, 0, -0.866025        ) );
-      quats.push_back( gmtl::Quat<float>( 0, 0.34202, 0, -0.939693    ) );
-      quats.push_back( gmtl::Quat<float>( 0, 0.173648, 0, -0.984808   ) );
+      quats.push_back( gmtl::Quat<float>( 0, 0.984808f, 0, -0.173648f   ) );
+      quats.push_back( gmtl::Quat<float>( 0, 0.939693f, 0, -0.34202f    ) );
+      quats.push_back( gmtl::Quat<float>( 0, 0.866025f, 0, -0.5f        ) );
+      quats.push_back( gmtl::Quat<float>( 0, 0.766044f, 0, -0.642788f   ) );
+      quats.push_back( gmtl::Quat<float>( 0, 0.642788f, 0, -0.766044f   ) );
+      quats.push_back( gmtl::Quat<float>( 0, 0.5f, 0, -0.866025f        ) );
+      quats.push_back( gmtl::Quat<float>( 0, 0.34202f, 0, -0.939693f    ) );
+      quats.push_back( gmtl::Quat<float>( 0, 0.173648f, 0, -0.984808f   ) );
       quats.push_back( gmtl::Quat<float>( -0, 0, -0, -1    ) );
 
       /// @todo check this against another math lib other than VR Juggler...
@@ -176,43 +176,43 @@ namespace gmtlTest
    {
       const float eps = 0.0001f;
       std::vector<gmtl::Vec4f> quats;
-      quats.push_back( gmtl::Vec4f( 6.28319, 1, 0, 0           ) );
-      quats.push_back( gmtl::Vec4f( 5.93412, -0, -1, -0        ) );
-      quats.push_back( gmtl::Vec4f( 5.58505, -0, -1, -0        ) );
-      quats.push_back( gmtl::Vec4f( 5.23599, -0, -1, -0        ) );
-      quats.push_back( gmtl::Vec4f( 4.88692, -0, -1, -0        ) );
-      quats.push_back( gmtl::Vec4f( 4.53786, -0, -1, -0        ) );
-      quats.push_back( gmtl::Vec4f( 4.18879, -0, -1, -0        ) );
-      quats.push_back( gmtl::Vec4f( 3.83972, -0, -1, -0        ) );
-      quats.push_back( gmtl::Vec4f( 3.49066, -0, -1, -0        ) );
-      quats.push_back( gmtl::Vec4f( 3.14159, -0, -1, -0        ) );
-      quats.push_back( gmtl::Vec4f( 2.79253, -0, -1, -0        ) );
-      quats.push_back( gmtl::Vec4f( 2.44346, -0, -1, -0        ) );
-      quats.push_back( gmtl::Vec4f( 2.0944, -0, -1, -0         ) );
-      quats.push_back( gmtl::Vec4f( 1.74533, -0, -1, -0        ) );
-      quats.push_back( gmtl::Vec4f( 1.39626, -0, -1, -0        ) );
-      quats.push_back( gmtl::Vec4f( 1.0472, -0, -1, -0         ) );
-      quats.push_back( gmtl::Vec4f( 0.698132, -0, -1, -0       ) );
-      quats.push_back( gmtl::Vec4f( 0.349066, -0, -0.999999, -0 ) );
+      quats.push_back( gmtl::Vec4f( 6.28319f, 1, 0, 0           ) );
+      quats.push_back( gmtl::Vec4f( 5.93412f, -0, -1, -0        ) );
+      quats.push_back( gmtl::Vec4f( 5.58505f, -0, -1, -0        ) );
+      quats.push_back( gmtl::Vec4f( 5.23599f, -0, -1, -0        ) );
+      quats.push_back( gmtl::Vec4f( 4.88692f, -0, -1, -0        ) );
+      quats.push_back( gmtl::Vec4f( 4.53786f, -0, -1, -0        ) );
+      quats.push_back( gmtl::Vec4f( 4.18879f, -0, -1, -0        ) );
+      quats.push_back( gmtl::Vec4f( 3.83972f, -0, -1, -0        ) );
+      quats.push_back( gmtl::Vec4f( 3.49066f, -0, -1, -0        ) );
+      quats.push_back( gmtl::Vec4f( 3.14159f, -0, -1, -0        ) );
+      quats.push_back( gmtl::Vec4f( 2.79253f, -0, -1, -0        ) );
+      quats.push_back( gmtl::Vec4f( 2.44346f, -0, -1, -0        ) );
+      quats.push_back( gmtl::Vec4f( 2.0944f, -0, -1, -0         ) );
+      quats.push_back( gmtl::Vec4f( 1.74533f, -0, -1, -0        ) );
+      quats.push_back( gmtl::Vec4f( 1.39626f, -0, -1, -0        ) );
+      quats.push_back( gmtl::Vec4f( 1.0472f, -0, -1, -0         ) );
+      quats.push_back( gmtl::Vec4f( 0.698132f, -0, -1, -0       ) );
+      quats.push_back( gmtl::Vec4f( 0.349066f, -0, -0.999999f, -0 ) );
       quats.push_back( gmtl::Vec4f( 0, 1, 0, 0                 ) );
-      quats.push_back( gmtl::Vec4f( 0.349066, 0, 0.999999, 0   ) );
-      quats.push_back( gmtl::Vec4f( 0.698132, 0, 1, 0          ) );
-      quats.push_back( gmtl::Vec4f( 1.0472, 0, 1, 0            ) );
-      quats.push_back( gmtl::Vec4f( 1.39626, 0, 1, 0           ) );
-      quats.push_back( gmtl::Vec4f( 1.74533, 0, 1, 0           ) );
-      quats.push_back( gmtl::Vec4f( 2.0944, 0, 1, 0            ) );
-      quats.push_back( gmtl::Vec4f( 2.44346, 0, 1, 0           ) );
-      quats.push_back( gmtl::Vec4f( 2.79253, 0, 1, 0           ) );
-      quats.push_back( gmtl::Vec4f( 3.14159, 0, 1, 0           ) );
-      quats.push_back( gmtl::Vec4f( 3.49066, 0, 1, 0           ) );
-      quats.push_back( gmtl::Vec4f( 3.83972, 0, 1, 0           ) );
-      quats.push_back( gmtl::Vec4f( 4.18879, 0, 1, 0           ) );
-      quats.push_back( gmtl::Vec4f( 4.53786, 0, 1, 0           ) );
-      quats.push_back( gmtl::Vec4f( 4.88692, 0, 1, 0           ) );
-      quats.push_back( gmtl::Vec4f( 5.23599, 0, 1, 0           ) );
-      quats.push_back( gmtl::Vec4f( 5.58505, 0, 1, 0           ) );
-      quats.push_back( gmtl::Vec4f( 5.93412, 0, 1, 0           ) );
-      quats.push_back( gmtl::Vec4f( 6.28319, 1, 0, 0           ) );
+      quats.push_back( gmtl::Vec4f( 0.349066f, 0, 0.999999f, 0   ) );
+      quats.push_back( gmtl::Vec4f( 0.698132f, 0, 1, 0          ) );
+      quats.push_back( gmtl::Vec4f( 1.0472f, 0, 1, 0            ) );
+      quats.push_back( gmtl::Vec4f( 1.39626f, 0, 1, 0           ) );
+      quats.push_back( gmtl::Vec4f( 1.74533f, 0, 1, 0           ) );
+      quats.push_back( gmtl::Vec4f( 2.0944f, 0, 1, 0            ) );
+      quats.push_back( gmtl::Vec4f( 2.44346f, 0, 1, 0           ) );
+      quats.push_back( gmtl::Vec4f( 2.79253f, 0, 1, 0           ) );
+      quats.push_back( gmtl::Vec4f( 3.14159f, 0, 1, 0           ) );
+      quats.push_back( gmtl::Vec4f( 3.49066f, 0, 1, 0           ) );
+      quats.push_back( gmtl::Vec4f( 3.83972f, 0, 1, 0           ) );
+      quats.push_back( gmtl::Vec4f( 4.18879f, 0, 1, 0           ) );
+      quats.push_back( gmtl::Vec4f( 4.53786f, 0, 1, 0           ) );
+      quats.push_back( gmtl::Vec4f( 4.88692f, 0, 1, 0           ) );
+      quats.push_back( gmtl::Vec4f( 5.23599f, 0, 1, 0           ) );
+      quats.push_back( gmtl::Vec4f( 5.58505f, 0, 1, 0           ) );
+      quats.push_back( gmtl::Vec4f( 5.93412f, 0, 1, 0           ) );
+      quats.push_back( gmtl::Vec4f( 6.28319f, 1, 0, 0           ) );
 
       /// @todo check this against another math lib other than VR Juggler...   (all the vals above look sane, but... )
       gmtl::Quat<float> q2;
@@ -410,7 +410,7 @@ namespace gmtlTest
       for (long iter = 0; iter < iters; ++iter)
       {
          q4 = gmtl::make<gmtl::Quat<float> >( gmtl::makeNormal( gmtl::AxisAnglef( bokf, gmtl::Vec<float, 3>( bokf, bokf, bokf ) ) ) );
-         bokf += q4[1] + 1.234;
+         bokf += q4[1] + 1.234f;
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/make<quatf>(axisanglef(r,vec))", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
@@ -434,8 +434,8 @@ namespace gmtlTest
       for (long iter = 0; iter < iters; ++iter)
       {
          q6 = gmtl::makeRot<gmtl::Quat<float> >( gmtl::makeNormal(v6), gmtl::makeNormal(v7) );
-         v6[2] += q6[1] + 1.234;
-         v7[0] -= q6[2] + 1.234;
+         v6[2] += q6[1] + 1.234f;
+         v7[0] -= q6[2] + 1.234f;
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/make<quatf>(vec3f,vec3f)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
@@ -446,10 +446,10 @@ namespace gmtlTest
       {
          gmtl::set( axisAngle, q6 );
          q6[0] = axisAngle[0] + axisAngle[1] - axisAngle[2] - axisAngle[3];
-         axisAngle[0] += q6[1] + 1.234;
-         axisAngle[1] -= q6[2] * -0.22 + 1.234;
+         axisAngle[0] += q6[1] + 1.234f;
+         axisAngle[1] -= q6[2] * -0.22f + 1.234f;
          axisAngle[2] += q6[1] + 0.1f;
-         axisAngle[3] -= q6[2] - 0.99;
+         axisAngle[3] -= q6[2] - 0.99f;
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/set(axisangle,quatf)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.cpp,v $
- * Date modified: $Date: 2002-06-13 14:03:34 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-07-02 03:09:21 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -90,7 +90,7 @@ namespace gmtlTest
       test_vec2[0] = 3.0f;
       gmtl::Vec<float, 4> test_vec4;
       test_vec2[0] = 4.0f;
-      float use_value;     // A temp just here to use the objs so the copiler (hopefully) does not opt them out
+      float use_value(0);     // A temp just here to use the objs so the copiler (hopefully) does not opt them out
 
       CPPUNIT_METRIC_START_TIMING();
 
@@ -673,9 +673,9 @@ namespace gmtlTest
       for( unsigned iter=0;iter<iters; ++iter)
       {
          // Do some work to make the vectors change a little
-         vec1.set(iter, iter+1, iter+2, iter+3);
+         vec1.set((float)iter, (float)iter+1, (float)iter+2, (float)iter+3);
          vec2 *= 0.00125f;
-         vec3 *= (-0.000345);
+         vec3 *= (-0.000345f);
 
          // Do the actually operation of interest
          res_vec = vec1+vec2+vec3;
@@ -694,7 +694,7 @@ namespace gmtlTest
       for( unsigned iter=0;iter<iters; ++iter)
       {
          // Do some work to make the vectors change a little
-         vec1.set(iter, iter+1, iter+2, iter+3);
+         vec1.set((float)iter, (float)iter+1, (float)iter+2, (float)iter+3);
          vec2 *= 0.00125f;
          vec3 *= (-0.000345);
 
@@ -742,7 +742,7 @@ namespace gmtlTest
       for( unsigned iter=0;iter<iters; ++iter)
       {
          // Do some work to make the vectors change a little
-         vec1.set(iter, iter+1, iter+2, iter+3);
+         vec1.set((float)iter, (float)iter+1, (float)iter+2, (float)iter+3);
          vec2 *= 0.00125f;
 
          // Do the actually operation of interest
@@ -762,7 +762,7 @@ namespace gmtlTest
       for( unsigned iter=0;iter<iters; ++iter)
       {
          // Do some work to make the vectors change a little
-         vec1.set(iter, iter+1, iter+2, iter+3);
+         vec1.set((float)iter, (float)iter+1, (float)iter+2, (float)iter+3);
          vec2 *= 0.00125f;
 
          // Do the actually operation of interest
@@ -800,7 +800,7 @@ namespace gmtlTest
       for( unsigned iter=0;iter<iters; ++iter)
       {
          // Do some work to make the vectors change a little
-         vec1.set(iter, iter+1, iter+2, iter+3);
+         vec1.set((float)iter, (float)iter+1, (float)iter+2, (float)iter+3);
          vec2 *= 0.00125f;
 
          // Do the actually operation of interest
@@ -821,7 +821,7 @@ namespace gmtlTest
       for( unsigned iter=0;iter<iters; ++iter)
       {
          // Do some work to make the vectors change a little
-         vec5.set(iter+1, iter+2, iter+3);
+         vec5.set((float)iter+1, (float)iter+2, (float)iter+3);
          vec6 *= 0.00125f;
 
          // Do the actually operation of interest
@@ -869,7 +869,7 @@ namespace gmtlTest
       // -- test op- performance
       const float iters(100000);
       CPPUNIT_METRIC_START_TIMING();
-      float val;
+      float val(0);
 
       for( float iter=0;iter<iters; ++iter)
       {
@@ -1109,7 +1109,7 @@ namespace gmtlTest
    {
       const float eps = 0.0001f;
       {
-         gmtl::Vec<float, 2> q1( 2, 3 ), q2( 9.01, 8.4 );
+         gmtl::Vec<float, 2> q1( 2, 3 ), q2( 9.01f, 8.4f );
          gmtl::Vec<float, 2> expected_result1( q1 ), res1;
          gmtl::Vec<float, 2> expected_result2( q2 ), res2;
 
@@ -1120,8 +1120,8 @@ namespace gmtlTest
 
          // test interpolated values...
          gmtl::Vec<float, 2> q3( 0, 0 ), q4( 1, 1 );
-         gmtl::Vec<float, 2> expected_result3( 0.35, 0.35 ), res3;
-         gmtl::Vec<float, 2> expected_result4( 0.69, 0.69 ), res4;
+         gmtl::Vec<float, 2> expected_result3( 0.35f, 0.35f ), res3;
+         gmtl::Vec<float, 2> expected_result4( 0.69f, 0.69f ), res4;
 
          gmtl::lerp( res3, 0.35f, q3, q4 );
          gmtl::lerp( res4, 0.69f, q3, q4 );
@@ -1129,7 +1129,7 @@ namespace gmtlTest
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result4, res4, eps ) );
       }
       {
-         gmtl::Vec<float, 3> q1( 2, 3, 4 ), q2( 9.01, 8.4, 7.1 );
+         gmtl::Vec<float, 3> q1( 2, 3, 4 ), q2( 9.01f, 8.4f, 7.1f );
          gmtl::Vec<float, 3> expected_result1( q1 ), res1;
          gmtl::Vec<float, 3> expected_result2( q2 ), res2;
 
@@ -1140,8 +1140,8 @@ namespace gmtlTest
 
          // test interpolated values...
          gmtl::Vec<float, 3> q3( 0, 0, 0 ), q4( 1, 1, 1 );
-         gmtl::Vec<float, 3> expected_result3( 0.35, 0.35, 0.35 ), res3;
-         gmtl::Vec<float, 3> expected_result4( 0.69, 0.69, 0.69 ), res4;
+         gmtl::Vec<float, 3> expected_result3( 0.35f, 0.35f, 0.35f ), res3;
+         gmtl::Vec<float, 3> expected_result4( 0.69f, 0.69f, 0.69f ), res4;
 
          gmtl::lerp( res3, 0.35f, q3, q4 );
          gmtl::lerp( res4, 0.69f, q3, q4 );
@@ -1149,7 +1149,7 @@ namespace gmtlTest
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result4, res4, eps ) );
       }
       {
-         gmtl::Vec<float, 4> q1( 2, 3, 4, 5 ), q2( 9.01, 8.4, 7.1, 10009 );
+         gmtl::Vec<float, 4> q1( 2, 3, 4, 5 ), q2( 9.01f, 8.4f, 7.1f, 10009 );
          gmtl::Vec<float, 4> expected_result1( q1 ), res1;
          gmtl::Vec<float, 4> expected_result2( q2 ), res2;
 
@@ -1160,8 +1160,8 @@ namespace gmtlTest
 
          // test interpolated values...
          gmtl::Vec<float, 4> q3( 0, 0, 0, 0 ), q4( 1, 1, 1, 1 );
-         gmtl::Vec<float, 4> expected_result3( 0.35, 0.35, 0.35, 0.35 ), res3;
-         gmtl::Vec<float, 4> expected_result4( 0.69, 0.69, 0.69, 0.69 ), res4;
+         gmtl::Vec<float, 4> expected_result3( 0.35f, 0.35f, 0.35f, 0.35f ), res3;
+         gmtl::Vec<float, 4> expected_result4( 0.69f, 0.69f, 0.69f, 0.69f ), res4;
 
          gmtl::lerp( res3, 0.35f, q3, q4 );
          gmtl::lerp( res4, 0.69f, q3, q4 );
