@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: testSuite.cpp,v $
- * Date modified: $Date: 2002-06-06 19:30:25 $
- * Version:       $Revision: 1.46 $
+ * Date modified: $Date: 2002-06-10 20:16:39 $
+ * Version:       $Revision: 1.47 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -79,6 +79,9 @@
 
 #include <TestCases/OutputTest.h>
 #include <TestCases/EulerAngleClassTest.h>
+#include <TestCases/EulerAngleCompareTest.h>
+#include <TestCases/AxisAngleClassTest.h>
+//#include <TestCases/AxisAngleCompareTest.h>
 
 #include <TestCases/AABoxTest.h>
 
@@ -171,6 +174,9 @@ int main (int ac, char **av)
    gmtl_suite->addTest( gmtlTest::OutputTest::suite() );
    gmtl_suite->addTest( gmtlTest::AABoxTest::suite() );
    gmtl_suite->addTest( gmtlTest::EulerAngleClassTest::suite() );
+   gmtl_suite->addTest( gmtlTest::EulerAngleCompareTest::suite() );
+   gmtl_suite->addTest( gmtlTest::AxisAngleClassTest::suite() );
+   //gmtl_suite->addTest( gmtlTest::AxisAngleCompareTest::suite() );
 
    /*
    gmtl_suite->addTest( gmtlTest::Point3Test::suite() );
