@@ -1,5 +1,7 @@
 DATE       AUTHOR       CHANGE
 ---------- --------     -----------------------------------------------------------
+2002-05-10 allenb       Added gmtl::ignore_unused_variable_warning to get rid
+                        of unused variable warnings for Type2Type<> usage.
 2002-05-09 allenb       Configure and make now make link in instlinks instead
                         of copying all the headers over.
 2002-05-09 allenb       Added OpenSG conversion functions.
