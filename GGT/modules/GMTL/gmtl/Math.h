@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Math.h,v $
- * Date modified: $Date: 2003-05-16 19:39:43 $
- * Version:       $Revision: 1.36 $
+ * Date modified: $Date: 2004-07-21 18:39:21 $
+ * Version:       $Revision: 1.37 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -83,6 +83,16 @@ inline T abs( T iValue )
 {
     return T( iValue >= ((T)0) ? iValue : -iValue );
 }
+
+inline float abs(float iValue)
+{  return fabsf(iValue); }
+inline double abs(double iValue)
+{  return fabs(iValue); }
+inline int abs(int iValue)
+{  return ::abs(iValue); }
+inline long abs(long iValue)
+{  return labs(iValue); }
+
 //----------------------------------------------------------------------------
 template <typename T>
 inline T ceil( T fValue );
