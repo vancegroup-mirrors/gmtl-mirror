@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: XformTest.h,v $
- * Date modified: $Date: 2002-03-09 19:54:00 $
- * Version:       $Revision: 1.12 $
+ * Date modified: $Date: 2002-03-09 20:28:21 $
+ * Version:       $Revision: 1.13 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -361,7 +361,7 @@ public:
          float eps = 0.001f;
          const gmtl::Vec3f vec( 10,100,200 ), expected( 10, -200, 100 );
          gmtl::Quatf rot;
-         gmtl::makeRot( rot, gmtl::Math::deg2Rad( 90.0f ), gmtl::makeNormalize( gmtl::Vec3f( 1,0,0 ) ) );
+         gmtl::makeRot( rot, gmtl::Math::deg2Rad( 90.0f ), gmtl::makeNormal( gmtl::Vec3f( 1,0,0 ) ) );
          
          gmtl::Vec3f result;
          gmtl::xform( result, rot, vec );
@@ -377,7 +377,7 @@ public:
          float eps = 0.001f;
          const gmtl::Vec3f vec( 10,-100,-2000 ), expected( 10, 2000, -100 );
          gmtl::Quatf rot;
-         gmtl::makeRot( rot, gmtl::Math::deg2Rad( 90.0f ), gmtl::makeNormalize( gmtl::Vec3f( 1,0,0 ) ) );
+         gmtl::makeRot( rot, gmtl::Math::deg2Rad( 90.0f ), gmtl::makeNormal( gmtl::Vec3f( 1,0,0 ) ) );
          
          gmtl::Vec3f result1, result2;
          result1 = makeVec( rot * makePure( vec ) * makeConj( rot ) );
@@ -392,7 +392,7 @@ public:
          float eps = 0.001f;
          const gmtl::Vec3f vec( 123, -4.56, 78.910 );
          gmtl::Quatf rot;
-         gmtl::makeRot( rot, gmtl::Math::deg2Rad( 123.4556f ), gmtl::makeNormalize( gmtl::Vec3f( -79,1000,234 ) ) );
+         gmtl::makeRot( rot, gmtl::Math::deg2Rad( 123.4556f ), gmtl::makeNormal( gmtl::Vec3f( -79,1000,234 ) ) );
          
          gmtl::Vec3f result1, result2;
          result1 = makeVec( rot * makePure( vec ) * makeConj( rot ) );
