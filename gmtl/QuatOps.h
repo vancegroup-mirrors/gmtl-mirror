@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatOps.h,v $
- * Date modified: $Date: 2003-03-17 18:29:50 $
- * Version:       $Revision: 1.23 $
+ * Date modified: $Date: 2003-03-29 23:22:17 $
+ * Version:       $Revision: 1.24 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -476,7 +476,7 @@ namespace gmtl
 
       // avoid divide by 0
       if (Math::isEqual( result[Welt], (DATA_TYPE)0.0, (DATA_TYPE)0.00001 ) == false)
-         length = Math::atan( length / result[Welt] );
+         length = Math::aTan( length / result[Welt] );
       else
          length = Math::PI_OVER_2;
 
