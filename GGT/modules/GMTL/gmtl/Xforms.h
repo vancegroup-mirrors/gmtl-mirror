@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Xforms.h,v $
- * Date modified: $Date: 2003-04-24 19:08:46 $
- * Version:       $Revision: 1.32 $
+ * Date modified: $Date: 2003-05-10 21:18:38 $
+ * Version:       $Revision: 1.33 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -41,6 +41,8 @@
 #include <gmtl/MatrixOps.h>
 #include <gmtl/Quat.h>
 #include <gmtl/QuatOps.h>
+#include <gmtl/Ray.h>
+#include <gmtl/LineSeg.h>
 
 namespace gmtl
 {
@@ -371,7 +373,7 @@ namespace gmtl
     *  @post This results in a full matrix xform of the point.
     */
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS, unsigned COLS_MINUS_ONE>
-   inline Point<DATA_TYPE, COLS_MINUS_ONE> operator*=(Point<DATA_TYPE, COLS_MINUS_ONE>& point, const Matrix<DATA_TYPE, ROWS, COLS>& matrix)
+   inline Point<DATA_TYPE, COLS_MINUS_ONE>& operator*=( Point<DATA_TYPE, COLS_MINUS_ONE>& point, const Matrix<DATA_TYPE, ROWS, COLS>& matrix )
    {
       Point<DATA_TYPE, COLS_MINUS_ONE> temporary = point;
       return xform( point, matrix, temporary);
@@ -379,7 +381,103 @@ namespace gmtl
 
 
    /** @} */
-   
+
+   /** transform ray by a matrix.
+    *  multiplication of [m x k] matrix by two [k x 1] matrices (also known as a ray...).
+    *  @param result        the ray to write the result in
+    *  @param matrix        the transform matrix
+    *  @param ray           the original ray
+    *  @post This results in a full matrix xform of the ray.
+    *  @post returns a ray same size as the matrix rows...  (p[r][1] = m[r][k] * p[k][1])
+    */
+   template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
+   inline Ray<DATA_TYPE>& xform( Ray<DATA_TYPE>& result, const Matrix<DATA_TYPE, ROWS, COLS>& matrix, const Ray<DATA_TYPE>& ray )
+   {
+      gmtl::Point<DATA_TYPE, 3> pos;
+      gmtl::Vec<DATA_TYPE, 3> dir;
+      result.setOrigin( xform( pos, matrix, ray.getOrigin() ) );
+      result.setDir( xform( dir, matrix, ray.getDir() ) );
+      return result;
+   }
+
+   /** ray * a matrix
+    *  multiplication of [m x k] matrix by a ray.
+    *  @param matrix        the transform matrix
+    *  @param ray           the original ray
+    *  @return  the ray transformed by the matrix
+    *  @post This results in a full matrix xform of the ray.
+    */
+   template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
+   inline Ray<DATA_TYPE> operator*( const Matrix<DATA_TYPE, ROWS, COLS>& matrix, const Ray<DATA_TYPE>& ray )
+   {
+      Ray<DATA_TYPE> temporary;
+      return xform( temporary, matrix, ray );
+   }
+
+
+   /** ray *= a matrix
+    *  multiplication of [m x k] matrix by a ray.
+    *  @param matrix        the transform matrix
+    *  @param ray           the original ray
+    *  @return  the ray transformed by the matrix
+    *  @post This results in a full matrix xform of the ray.
+    */
+   template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
+   inline Ray<DATA_TYPE>& operator*=( Ray<DATA_TYPE>& ray, const Matrix<DATA_TYPE, ROWS, COLS>& matrix )
+   {
+      Ray<DATA_TYPE> temporary = ray;
+      return xform( ray, matrix, temporary);
+   }
+
+   /** transform seg by a matrix.
+    *  multiplication of [m x k] matrix by two [k x 1] matrices (also known as a seg...).
+    *  @param result        the seg to write the result in
+    *  @param matrix        the transform matrix
+    *  @param seg           the original seg
+    *  @post This results in a full matrix xform of the seg.
+    *  @post returns a seg same size as the matrix rows...  (p[r][1] = m[r][k] * p[k][1])
+    */
+   template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
+   inline LineSeg<DATA_TYPE>& xform( LineSeg<DATA_TYPE>& result, const Matrix<DATA_TYPE, ROWS, COLS>& matrix, const LineSeg<DATA_TYPE>& seg )
+   {
+      gmtl::Point<DATA_TYPE, 3> pos;
+      gmtl::Vec<DATA_TYPE, 3> dir;
+      result.setOrigin( xform( pos, matrix, seg.getOrigin() ) );
+      result.setDir( xform( dir, matrix, seg.getDir() ) );
+      return result;
+   }
+
+   /** seg * a matrix
+    *  multiplication of [m x k] matrix by a seg.
+    *  @param matrix        the transform matrix
+    *  @param seg         the original ray
+    *  @return  the seg transformed by the matrix
+    *  @post This results in a full matrix xform of the seg.
+    */
+   template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
+   inline LineSeg<DATA_TYPE> operator*( const Matrix<DATA_TYPE, ROWS, COLS>& matrix, const LineSeg<DATA_TYPE>& seg )
+   {
+      LineSeg<DATA_TYPE> temporary;
+      return xform( temporary, matrix, seg );
+   }
+
+
+   /** seg *= a matrix
+    *  multiplication of [m x k] matrix by a seg.
+    *  @param matrix        the transform matrix
+    *  @param seg         the original point
+    *  @return  the point transformed by the matrix
+    *  @post This results in a full matrix xform of the point.
+    */
+   template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
+   inline LineSeg<DATA_TYPE>& operator*=( LineSeg<DATA_TYPE>& seg, const Matrix<DATA_TYPE, ROWS, COLS>& matrix )
+   {
+      LineSeg<DATA_TYPE> temporary = seg;
+      return xform( seg, matrix, temporary);
+   }
+
+
+
 
    // old xform stuff...
 /*
