@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecB.h,v $
- * Date modified: $Date: 2004-09-01 19:26:37 $
- * Version:       $Revision: 1.1.2.2 $
+ * Date modified: $Date: 2004-09-01 21:54:36 $
+ * Version:       $Revision: 1.1.2.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -289,30 +289,6 @@ namespace meta
 //    interface:
 //       TYPE eval(unsigned i):  Returns evaluation of expression at elt i
 
-template<typename T>
-struct VecArgTraits
-{
-   typedef T const& ExprRef;
-};
-
-
-/** template to hold argument reference that is a vector. */
-/*
-template <typename VEC_TYPE>
-struct VecArg
-{
-   typedef typename VEC_TYPE::DataType DataType;
-   const VEC_TYPE& mVecArg;
-
-   inline VecArg(const VEC_TYPE& vArg) : mVecArg(vArg) {}
-   inline DataType operator[](const unsigned i) const
-   {  return mVecArg[i]; }
-};
-
-template <typename VEC_TYPE>
-inline VecArg<VEC_TYPE> makeVecArg(VEC_TYPE vec)
-{ return VecArg<VEC_TYPE>(vec); }
-*/
 
 /** template to hold a scalar argument. */
 template <typename T>
@@ -331,16 +307,35 @@ template <typename T>
 inline ScalarArg<T> makeScalarArg(T val)
 { return ScalarArg<T>(val); }
 
+// --- TRAITS --- //
+/** Traits class for expression template parameters.
+* NOTE: These types are VERY important to the performance of the code.
+*    They allow the compiler to optimize (ie. eliminate) much code.
+*/
+template<typename T>
+struct ExprTraits
+{
+   typedef T const& ExprRef;     // Refer using a constant reference
+};
+
+template<typename T, unsigned SIZE>
+struct ExprTraits< VecB<T, SIZE, ScalarArg<T> > >
+{
+   typedef VecB<T,SIZE,ScalarArg<T> > ExprRef;
+};
+
 // -- Expressions -- //
 /** Binary vector expression.
+*
+* Stores the two vector expressions to process.
 */
 template <typename EXP1_T, typename EXP2_T, typename OP>
-struct VecBinaryExpr //: public VecExpr< VecBinaryExpr<EXP1_T, EXP2_T, OP> >
+struct VecBinaryExpr
 {
    typedef typename EXP1_T::DataType DataType;
 
-   const EXP1_T& Exp1;
-   const EXP2_T& Exp2;
+   typename ExprTraits<EXP1_T>::ExprRef Exp1;
+   typename ExprTraits<EXP2_T>::ExprRef Exp2;
 
    inline VecBinaryExpr(const EXP1_T& e1, const EXP2_T& e2) : Exp1(e1), Exp2(e2) {;}
    inline DataType operator[](const unsigned i) const
@@ -348,13 +343,14 @@ struct VecBinaryExpr //: public VecExpr< VecBinaryExpr<EXP1_T, EXP2_T, OP> >
 };
 
 /** Unary vector expression.
+* Holds the vector expression and unary operation to apply to it.
 */
 template <typename EXP1_T, typename OP>
-struct VecUnaryExpr //: public VecExpr< VecUnaryExpr<EXP1_T, OP> >
+struct VecUnaryExpr
 {
    typedef typename EXP1_T::DataType DataType;
 
-   const EXP1_T& Exp1;
+   typename ExprTraits<EXP1_T>::ExprRef Exp1;
 
    inline VecUnaryExpr(const EXP1_T& e1) : Exp1(e1) {;}
    inline DataType operator[](const unsigned i) const
@@ -362,6 +358,7 @@ struct VecUnaryExpr //: public VecExpr< VecUnaryExpr<EXP1_T, OP> >
 };
 
 // --- Operations --- //
+/* Binary operations to add two vector expressions. */
 struct VecPlusBinary
 {
    template <typename T>
@@ -387,33 +384,12 @@ sum(const VecB<T,SIZE,R1>& v1, const T& arg)
 {
    return VecB<T,SIZE,
                VecBinaryExpr<VecB<T,SIZE,R1>,
-                             ScalarArg<T>,
+                             VecB<T,SIZE,ScalarArg<T> >,
                              VecPlusBinary> >( VecBinaryExpr<VecB<T,SIZE,R1>,
-                                                             ScalarArg<T>,
+                                                             VecB<T,SIZE,ScalarArg<T> >,
                                                              VecPlusBinary>(v1,ScalarArg<T>(arg)) );
 }
 
-
-
-
-/*
-template<typename EXP1_T, typename EXP2_T>
-inline VecBinaryExpr<EXP1_T, EXP2_T, VecPlusBinary >
-SumVec(const EXP1_T& e1, const EXP2_T& e2)
-{
-   return VecBinaryExpr<EXP1_T, EXP2_T, VecPlusBinary >(e1, e2);
-}
-
-
-template<typename T, unsigned SIZE>
-inline VecBinaryExpr< VecArg<gmtl::Vec<T,SIZE> >, VecArg<gmtl::Vec<T,SIZE> >, VecPlusBinary>
-SumVec(const gmtl::Vec<T,SIZE>& v1, const gmtl::Vec<T,SIZE>& v2)
-{
-   return VecBinaryExpr< VecArg<gmtl::Vec<T,SIZE> >,
-                         VecArg<gmtl::Vec<T,SIZE> >,
-                         VecPlusBinary>(makeVecArg(v1), makeVecArg(v2));
-}
-*/
 
 } // meta
 } // gmtl
