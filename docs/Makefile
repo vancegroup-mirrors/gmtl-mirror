@@ -41,6 +41,9 @@ guide-txt gt:
 
 # useful for creating a tree that can be tarred up and posted to a 
 # website for download.
+#
+# prefix: Specify the dir you want the docs dumped into, can be a 
+#         new dir one level deep.  Defaults to "./installed"
 prefix ?=./installed
 version ?=0.0.1
 install:
