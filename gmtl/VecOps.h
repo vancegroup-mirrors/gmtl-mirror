@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecOps.h,v $
- * Date modified: $Date: 2004-09-02 15:57:06 $
- * Version:       $Revision: 1.29.2.2 $
+ * Date modified: $Date: 2004-09-02 20:30:16 $
+ * Version:       $Revision: 1.29.2.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -88,9 +88,9 @@ operator-(const VecBase<T,SIZE,R1>& v1)
  *
  * @return  v1 after v2 has been added to it
  */
-template<class DATA_TYPE, unsigned SIZE>
+template<class DATA_TYPE, unsigned SIZE, typename REP2>
 VecBase<DATA_TYPE, SIZE>& operator +=(VecBase<DATA_TYPE, SIZE>& v1,
-                                      const VecBase<DATA_TYPE, SIZE>& v2)
+                                      const VecBase<DATA_TYPE, SIZE, REP2>& v2)
 {
    for(unsigned i=0;i<SIZE;++i)
    {
@@ -99,7 +99,6 @@ VecBase<DATA_TYPE, SIZE>& operator +=(VecBase<DATA_TYPE, SIZE>& v1,
 
    return v1;
 }
-
 
 /**
  * Adds v2 to v1 and returns the result. Thus result = v1 + v2.
@@ -142,9 +141,9 @@ operator+(const VecBase<T,SIZE,R1>& v1, const VecBase<T,SIZE,R2>& v2)
  *
  * @return  v1 after v2 has been subtracted from it
  */
-template<class DATA_TYPE, unsigned SIZE>
+template<class DATA_TYPE, unsigned SIZE, typename REP2>
 VecBase<DATA_TYPE, SIZE>& operator -=(VecBase<DATA_TYPE, SIZE>& v1,
-                                      const VecBase<DATA_TYPE, SIZE>& v2)
+                                      const VecBase<DATA_TYPE, SIZE, REP2>& v2)
 {
    for(unsigned i=0;i<SIZE;++i)
    {
@@ -353,8 +352,8 @@ operator/(const VecBase<T,SIZE,R1>& v1, const T scalar)
  *
  * @return the dotproduct of v1 and v2
  */
-template<class DATA_TYPE, unsigned SIZE>
-DATA_TYPE dot(const Vec<DATA_TYPE, SIZE>& v1, const Vec<DATA_TYPE, SIZE>& v2)
+template<class DATA_TYPE, unsigned SIZE, typename REP1, typename REP2>
+DATA_TYPE dot(const VecBase<DATA_TYPE, SIZE, REP1>& v1, const VecBase<DATA_TYPE, SIZE, REP2>& v2)
 {
    /*
    DATA_TYPE ret_val(0);
@@ -364,7 +363,9 @@ DATA_TYPE dot(const Vec<DATA_TYPE, SIZE>& v1, const Vec<DATA_TYPE, SIZE>& v2)
    }
    return ret_val;
    */
-   return gmtl::meta::DotVecUnrolled<SIZE-1,Vec<DATA_TYPE,SIZE> >::func(v1,v2);
+   return gmtl::meta::DotVecUnrolled<SIZE-1,
+                                     VecBase<DATA_TYPE,SIZE,REP1>,
+                                     VecBase<DATA_TYPE,SIZE,REP2> >::func(v1,v2);
 }
 
 /**
