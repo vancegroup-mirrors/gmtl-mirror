@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _VecBase_int_2.cpp,v $
- * Date modified: $Date: 2003-05-20 18:57:15 $
- * Version:       $Revision: 1.1.1.1 $
+ * Date modified: $Date: 2003-08-16 05:11:46 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -46,7 +46,7 @@ void _Export_VecBase_int_2()
         .def("getData", (tuple (gmtlWrappers::*)(gmtl::VecBase<int,2>*)) &gmtlWrappers::VecBase_2_getData)
         .add_property("data", (tuple (gmtlWrappers::*)(gmtl::VecBase<int,2>*)) &gmtlWrappers::VecBase_2_getData)
         .def("__getitem__", (int& (gmtl::VecBase<int,2>::*)(const unsigned) ) &gmtl::VecBase<int,2>::operator[], return_value_policy<copy_non_const_reference>())
-        .def("__setitem__", (void (*)(gmtl::VecBase<int,2>*, const unsigned, int)) &gmtlWrapper::setArrayElement)
+        .def("__setitem__", (void (*)(gmtl::VecBase<int,2>*, const unsigned, int)) &gmtlWrappers::setArrayElement)
         .def(-self)
         .def(self += self)
         .def(self += self)

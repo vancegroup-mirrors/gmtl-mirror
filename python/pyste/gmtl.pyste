@@ -19,8 +19,8 @@
 #
 # -----------------------------------------------------------------
 # File:          $RCSfile: gmtl.pyste,v $
-# Date modified: $Date: 2003-05-20 18:57:15 $
-# Version:       $Revision: 1.1.1.1 $
+# Date modified: $Date: 2003-08-16 05:11:45 $
+# Version:       $Revision: 1.2 $
 # -----------------------------------------------------------------
 #
 # *************** <auto-copyright.pl END do not edit this line> ***************
@@ -475,22 +475,22 @@ Function('gmtl::Math::rad2Deg', 'gmtl/Math.h')
 # ============================================================= Math operations
 
 # Generator operations ========================================================
-Function('gmtlWrapper::makeRotMatrix33', 'gmtl-wrappers.h')
-Function('gmtlWrapper::makeRotMatrix44', 'gmtl-wrappers.h')
-Function('gmtlWrapper::makeRotQuat', 'gmtl-wrappers.h')
-Function('gmtlWrapper::makeRotEulerAngleXYZ', 'gmtl-wrappers.h')
-Function('gmtlWrapper::makeRotEulerAngleZYX', 'gmtl-wrappers.h')
-Function('gmtlWrapper::makeRotEulerAngleZXY', 'gmtl-wrappers.h')
+Function('gmtlWrappers::makeRotMatrix33', 'gmtl-wrappers.h')
+Function('gmtlWrappers::makeRotMatrix44', 'gmtl-wrappers.h')
+Function('gmtlWrappers::makeRotQuat', 'gmtl-wrappers.h')
+Function('gmtlWrappers::makeRotEulerAngleXYZ', 'gmtl-wrappers.h')
+Function('gmtlWrappers::makeRotEulerAngleZYX', 'gmtl-wrappers.h')
+Function('gmtlWrappers::makeRotEulerAngleZXY', 'gmtl-wrappers.h')
 
-Function('gmtlWrapper::makeDirCosMatrix33', 'gmtl-wrappers.h')
-Function('gmtlWrapper::makeDirCosMatrix44', 'gmtl-wrappers.h')
+Function('gmtlWrappers::makeDirCosMatrix33', 'gmtl-wrappers.h')
+Function('gmtlWrappers::makeDirCosMatrix44', 'gmtl-wrappers.h')
 
-Function('gmtlWrapper::makeTransMatrix44', 'gmtl-wrappers.h')
-Function('gmtlWrapper::makeTransVec3', 'gmtl-wrappers.h')
+Function('gmtlWrappers::makeTransMatrix44', 'gmtl-wrappers.h')
+Function('gmtlWrappers::makeTransVec3', 'gmtl-wrappers.h')
 
-Function('gmtlWrapper::makeScaleMatrix44', 'gmtl-wrappers.h')
+Function('gmtlWrappers::makeScaleMatrix44', 'gmtl-wrappers.h')
 
-Function('gmtlWrapper::makeAxesMatrix44', 'gmtl-wrappers.h')
+Function('gmtlWrappers::makeAxesMatrix44', 'gmtl-wrappers.h')
 
 set_policy(Function('gmtl::setRot', 'gmtl-functions.h'),
            return_internal_reference())
