@@ -28,7 +28,7 @@
             <surname>Scott, </surname>
          </author>
       </authorgroup>
-      <pubdate>$Date: 2002-05-30 03:18:24 $</pubdate>
+      <pubdate>$Date: 2002-05-30 20:55:15 $</pubdate>
       <address><email>ggt-info@lists.sf.net</email></address>
    </articleinfo>
    <section>
@@ -187,7 +187,7 @@
                               <para> void xform( result, a, b ) </para>
                            </listitem>
                            <listitem>
-                              <para> type operator*( result, a, b ) </para>
+                              <para> type operator*( a, b ) </para>
                            </listitem>
                         </itemizedlist> </entry>
                      <entry
@@ -229,7 +229,8 @@
                      "make" function.  
                      Make functions are <emphasis>creational</emphasis>
                      in nature, and most takes data as input to
-                     "seed" that creation.
+                     "seed" that creation.  The result can be a 
+                     clone or a conversion from the input data.
                      </para>
                      <para>
                      The "make" functions all create a
