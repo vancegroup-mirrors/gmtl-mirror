@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: testSuite.cpp,v $
- * Date modified: $Date: 2002-03-21 20:58:33 $
- * Version:       $Revision: 1.33 $
+ * Date modified: $Date: 2002-03-21 21:06:56 $
+ * Version:       $Revision: 1.34 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -175,6 +175,7 @@ int main (int ac, char **av)
    // setup the perf suite
    CppUnit::TestSuite* perf_suite = new CppUnit::TestSuite( "perf_suite" );
    perf_suite->addTest( gmtlTest::CoordClassTest::perfSuite() );
+   perf_suite->addTest( gmtlTest::CoordCompareTest::perfSuite() );
 
    CppUnit::TestSuite* info_suite = new CppUnit::TestSuite( "info_suite" );
    info_suite->addTest( gmtlTest::OptTest::suite() );

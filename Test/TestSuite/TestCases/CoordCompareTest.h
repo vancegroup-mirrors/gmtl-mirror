@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: CoordCompareTest.h,v $
- * Date modified: $Date: 2002-03-20 21:43:36 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-03-21 21:06:57 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -62,8 +62,11 @@ public:
    {
    }
 
+   // Correctness tests
    void testCoordEqualityFloatTest();
    void testCoordEqualityDoubleTest();
+
+   // Performance tests
    void testCoordTimingOpEqualityTest();
    void testCoordTimingOpNotEqualityTest();
    void testCoordTimingIsEqualTest();
@@ -72,11 +75,19 @@ public:
    static CppUnit::Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("CoordCompareTest");
+      test_suite->addTest( new CppUnit::TestCaller<CoordCompareTest>("testCoordEqualityFloatTest", &CoordCompareTest::testCoordEqualityFloatTest));
+      test_suite->addTest( new CppUnit::TestCaller<CoordCompareTest>("testCoordEqualityDoubleTest", &CoordCompareTest::testCoordEqualityDoubleTest));
+      return test_suite;
+   }
+
+   static CppUnit::Test* perfSuite()
+   {
+      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("CoordClassPerfTest");
+
       test_suite->addTest( new CppUnit::TestCaller<CoordCompareTest>("testCoordTimingOpEqualityTest", &CoordCompareTest::testCoordTimingOpEqualityTest));
       test_suite->addTest( new CppUnit::TestCaller<CoordCompareTest>("testCoordTimingIsEqualTest", &CoordCompareTest::testCoordTimingIsEqualTest));
       test_suite->addTest( new CppUnit::TestCaller<CoordCompareTest>("testCoordTimingOpNotEqualityTest", &CoordCompareTest::testCoordTimingOpNotEqualityTest));
-      test_suite->addTest( new CppUnit::TestCaller<CoordCompareTest>("testCoordEqualityFloatTest", &CoordCompareTest::testCoordEqualityFloatTest));
-      test_suite->addTest( new CppUnit::TestCaller<CoordCompareTest>("testCoordEqualityDoubleTest", &CoordCompareTest::testCoordEqualityDoubleTest));
+
       return test_suite;
    }
 
