@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Vec.h,v $
- * Date modified: $Date: 2002-06-13 14:16:06 $
- * Version:       $Revision: 1.12 $
+ * Date modified: $Date: 2002-06-13 14:19:04 $
+ * Version:       $Revision: 1.13 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -99,21 +99,21 @@ public:
    : BaseType(val0, val1)
    {
       // @todo compile time assert is needed here
-      gmtlASSERT( SIZE = 2 && "out of bounds element access in Point" );
+      gmtlASSERT( SIZE == 2 && "out of bounds element access in Point" );
    }
 
    Vec(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2)
    : BaseType(val0, val1, val2)
    {
       // @todo compile time assert is needed here
-      gmtlASSERT( SIZE = 3 && "out of bounds element access in Point" );
+      gmtlASSERT( SIZE == 3 && "out of bounds element access in Point" );
    }
 
    Vec(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2,const DATA_TYPE& val3)
    : BaseType(val0, val1, val2, val3)
    {
       // @todo compile time assert is needed here
-      gmtlASSERT( SIZE = 4 && "out of bounds element access in Point" );
+      gmtlASSERT( SIZE == 4 && "out of bounds element access in Point" );
    }
    //@}
 };

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecBase.h,v $
- * Date modified: $Date: 2002-06-13 14:16:06 $
- * Version:       $Revision: 1.11 $
+ * Date modified: $Date: 2002-06-13 14:19:05 $
+ * Version:       $Revision: 1.12 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -151,7 +151,7 @@ template<class DATA_TYPE, unsigned SIZE>
 VecBase<DATA_TYPE,SIZE>::VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1)
 {
    // @todo need compile time assert
-   gmtlASSERT( SIZE = 2 && "out of bounds element access in VecBase" );
+   gmtlASSERT( SIZE == 2 && "out of bounds element access in VecBase" );
    mData[0] = val0;
    mData[1] = val1;
 }
@@ -160,7 +160,7 @@ template<class DATA_TYPE, unsigned SIZE>
 VecBase<DATA_TYPE,SIZE>::VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2)
 {
    // @todo need compile time assert
-   gmtlASSERT( SIZE = 3 && "out of bounds element access in VecBase" );
+   gmtlASSERT( SIZE == 3 && "out of bounds element access in VecBase" );
    mData[0] = val0;
    mData[1] = val1;
    mData[2] = val2;
@@ -170,7 +170,7 @@ template<class DATA_TYPE, unsigned SIZE>
 VecBase<DATA_TYPE,SIZE>::VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2,const DATA_TYPE& val3)
 {
    // @todo need compile time assert
-   gmtlASSERT( SIZE = 4 && "out of bounds element access in VecBase" );
+   gmtlASSERT( SIZE == 4 && "out of bounds element access in VecBase" );
    mData[0] = val0;
    mData[1] = val1;
    mData[2] = val2;
