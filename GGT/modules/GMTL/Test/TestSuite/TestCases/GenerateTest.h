@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: GenerateTest.h,v $
- * Date modified: $Date: 2002-03-09 20:29:42 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2002-03-09 21:05:34 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -528,7 +528,7 @@ public:
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE( "GenTest/makeRot(quatd,d,d,d,d)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
 
-      gmtl::Quat<float> q2;
+      gmtl::Quat<float> q2; bokf = 1.0f;
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
@@ -539,21 +539,21 @@ public:
       CPPUNIT_ASSERT_METRIC_TIMING_LE( "GenTest/makeRot(quatf,f,f,f,f)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
 
       
-      gmtl::Quat<double> q3;
+      gmtl::Quat<double> q3; bokd = 1.0f;
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
-         gmtl::makeRot( q3, bokd, gmtl::Vec<double, 3>( bokd, bokd, bokd ) );
+         gmtl::makeRot( q3, bokd, gmtl::makeNormal( gmtl::Vec<double, 3>( bokd, bokd, bokd ) ) );
          bokd *= q3[1];
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE( "GenTest/makeRot(quatd,d,vecd)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
 
-      gmtl::Quat<float> q4;
+      gmtl::Quat<float> q4; bokf = 1.0f;
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
-         gmtl::makeRot( q4, bokf, gmtl::Vec<float, 3>( bokf, bokf, bokf ) );
+         gmtl::makeRot( q4, bokf, gmtl::makeNormal( gmtl::Vec<float, 3>( bokf, bokf, bokf ) ) );
          bokf += q4[1];
       }
       CPPUNIT_METRIC_STOP_TIMING();
@@ -600,8 +600,8 @@ public:
       
       // force intelligent compilers to do all the iterations (ie. to not optimize them out), 
       // by using the variables computed...
-      CPPUNIT_ASSERT( bokf != 0 );
-      CPPUNIT_ASSERT( bokd != 0 );
+      CPPUNIT_ASSERT( bokf != 0.998f );
+      CPPUNIT_ASSERT( bokd != 0.0998 );
       CPPUNIT_ASSERT( q1[0] != 10000.0f );
       CPPUNIT_ASSERT( q2[1] != 10000.0f );
       CPPUNIT_ASSERT( q3[2] != 10000.0f );
