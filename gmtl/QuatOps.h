@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatOps.h,v $
- * Date modified: $Date: 2003-03-13 17:19:33 $
- * Version:       $Revision: 1.21 $
+ * Date modified: $Date: 2003-03-17 04:04:44 $
+ * Version:       $Revision: 1.22 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -78,10 +78,10 @@ namespace gmtl
 
       // Here is the same, only expanded... (grassman product)
       Quat<DATA_TYPE> temporary; // avoid aliasing problems...
-      temporary[Xelt] = q2[Welt]*q1[Xelt] + q2[Xelt]*q1[Welt] + q2[Yelt]*q1[Zelt] - q2[Zelt]*q1[Yelt];
-      temporary[Yelt] = q2[Welt]*q1[Yelt] + q2[Yelt]*q1[Welt] + q2[Zelt]*q1[Xelt] - q2[Xelt]*q1[Zelt];
-      temporary[Zelt] = q2[Welt]*q1[Zelt] + q2[Zelt]*q1[Welt] + q2[Xelt]*q1[Yelt] - q2[Yelt]*q1[Xelt];
-      temporary[Welt] = q2[Welt]*q1[Welt] - q2[Xelt]*q1[Xelt] - q2[Yelt]*q1[Yelt] - q2[Zelt]*q1[Zelt];
+      temporary[Xelt] = q1[Welt]*q2[Xelt] + q1[Xelt]*q2[Welt] + q1[Yelt]*q2[Zelt] - q1[Zelt]*q2[Yelt];
+      temporary[Yelt] = q1[Welt]*q2[Yelt] + q1[Yelt]*q2[Welt] + q1[Zelt]*q2[Xelt] - q1[Xelt]*q2[Zelt];
+      temporary[Zelt] = q1[Welt]*q2[Zelt] + q1[Zelt]*q2[Welt] + q1[Xelt]*q2[Yelt] - q1[Yelt]*q2[Xelt];
+      temporary[Welt] = q1[Welt]*q2[Welt] - q1[Xelt]*q2[Xelt] - q1[Yelt]*q2[Yelt] - q1[Zelt]*q2[Zelt];
 
       // use a temporary, in case q1 or q2 is the same as self.
       result[Xelt] = temporary[Xelt];
@@ -105,10 +105,10 @@ namespace gmtl
       // (grassman product - see mult() for discussion)
       // don't normalize, because it might not be rotation arithmetic we're doing
       // (only rotation quats have unit length)
-      return Quat<DATA_TYPE>( q2[Welt]*q1[Xelt] + q2[Xelt]*q1[Welt] + q2[Yelt]*q1[Zelt] - q2[Zelt]*q1[Yelt],
-                              q2[Welt]*q1[Yelt] + q2[Yelt]*q1[Welt] + q2[Zelt]*q1[Xelt] - q2[Xelt]*q1[Zelt],
-                              q2[Welt]*q1[Zelt] + q2[Zelt]*q1[Welt] + q2[Xelt]*q1[Yelt] - q2[Yelt]*q1[Xelt],
-                              q2[Welt]*q1[Welt] - q2[Xelt]*q1[Xelt] - q2[Yelt]*q1[Yelt] - q2[Zelt]*q1[Zelt] );
+      return Quat<DATA_TYPE>( q1[Welt]*q2[Xelt] + q1[Xelt]*q2[Welt] + q1[Yelt]*q2[Zelt] - q1[Zelt]*q2[Yelt],
+                              q1[Welt]*q2[Yelt] + q1[Yelt]*q2[Welt] + q1[Zelt]*q2[Xelt] - q1[Xelt]*q2[Zelt],
+                              q1[Welt]*q2[Zelt] + q1[Zelt]*q2[Welt] + q1[Xelt]*q2[Yelt] - q1[Yelt]*q2[Xelt],
+                              q1[Welt]*q2[Welt] - q1[Xelt]*q2[Xelt] - q1[Yelt]*q2[Yelt] - q1[Zelt]*q2[Zelt] );
    }
 
    /** quaternion postmult
@@ -183,26 +183,34 @@ namespace gmtl
    }
 
    /** quotient of two quaternions
-    * @post result = q1 / q2
+    * @post result = q1 * (1/q2)
     * @see Quat
     */
    template <typename DATA_TYPE>
-   Quat<DATA_TYPE>& div( Quat<DATA_TYPE>& result, const Quat<DATA_TYPE>& q1, const Quat<DATA_TYPE>& q2 )
+   Quat<DATA_TYPE>& div( Quat<DATA_TYPE>& result, const Quat<DATA_TYPE>& q1, Quat<DATA_TYPE> q2 )
    {
-      Quat<DATA_TYPE> q2_inv( q2 ), r, s;
+      // multiply q1 by the multiplicative inverse of the quaternion
+      return mult( result, q1, invert( q2 ) );
+   }
 
-      // conj the quat
-      conj( q2_inv );
+   /** quotient of two quaternions
+    * @post result = q1 * (1/q2)
+    *  @see Quat
+    */
+   template <typename DATA_TYPE>
+   Quat<DATA_TYPE> operator/( const Quat<DATA_TYPE>& q1, Quat<DATA_TYPE> q2 )
+   {
+      return q1 * invert( q2 );
+   }
 
-      mult( r, q1, q2_inv );
-      mult( s, q2_inv, q2_inv );
-
-      float sw_inv = 1.0f / s[Welt];
-      result[0] = r[0] * sw_inv;
-      result[1] = r[1] * sw_inv;
-      result[2] = r[2] * sw_inv;
-      result[3] = r[3] * sw_inv;
-      return result;
+   /** quotient of two quaternions
+    * @post result = result * (1/q2)
+    * @see Quat
+    */
+   template <typename DATA_TYPE>
+   Quat<DATA_TYPE>& operator/=( Quat<DATA_TYPE>& result, const Quat<DATA_TYPE>& q2 )
+   {
+      return div( result, result, q2 );
    }
 
    /** quaternion vector scale
@@ -409,6 +417,7 @@ namespace gmtl
    template <typename DATA_TYPE>
    Quat<DATA_TYPE>& invert( Quat<DATA_TYPE>& result )
    {
+      // from game programming gems p198
       // do result = conj( q ) / norm( q )
       conj( result );
 
