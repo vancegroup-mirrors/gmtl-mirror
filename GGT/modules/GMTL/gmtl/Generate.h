@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-07-11 21:17:36 $
- * Version:       $Revision: 1.64 $
+ * Date modified: $Date: 2002-10-28 23:03:31 $
+ * Version:       $Revision: 1.65 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -515,10 +515,11 @@ namespace gmtl
       if (sin_half_angle >= (DATA_TYPE)0.0001) // because (PI >= rad >= 0)
       {
          DATA_TYPE sin_half_angle_inv = DATA_TYPE(1.0) / sin_half_angle;
-         axisAngle.setAxis( gmtl::Vec3f(
-                            quat[Xelt] * sin_half_angle_inv,
-                            quat[Yelt] * sin_half_angle_inv,
-                            quat[Zelt] * sin_half_angle_inv ) );
+         Vec3f axis( quat[Xelt] * sin_half_angle_inv,
+                     quat[Yelt] * sin_half_angle_inv,
+                     quat[Zelt] * sin_half_angle_inv );
+         normalize( axis );
+         axisAngle.setAxis( axis );
       }
 
       // avoid NAN
