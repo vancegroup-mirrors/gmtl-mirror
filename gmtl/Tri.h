@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Tri.h,v $
- * Date modified: $Date: 2004-10-27 23:43:39 $
- * Version:       $Revision: 1.12 $
+ * Date modified: $Date: 2004-11-12 01:28:44 $
+ * Version:       $Revision: 1.13 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -98,12 +98,12 @@ public:
    //@{
    Point<DATA_TYPE, 3>& operator[]( const unsigned idx )
    {
-      gmtlASSERT( (0 <= idx) && (idx <= 2) );
+      gmtlASSERT( idx <= 2 );
       return mVerts[idx];
    }
    const Point<DATA_TYPE, 3>& operator[]( const unsigned idx ) const
    {
-      gmtlASSERT( (0 <= idx) && (idx <= 2) );
+      gmtlASSERT( idx <= 2 );
       return mVerts[idx];
    }
    //@}
