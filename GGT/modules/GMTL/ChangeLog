@@ -1,20 +1,21 @@
-DATE       AUTHOR    CHANGE
----------- --------  -----------------------------------------------------------
-2002-02-19 subatomic Added Matrix gen funcs
-2002-02-18 bscott    Added Plane comparison functions.
-2002-02-18 bscott    Added Plane class.
-2002-02-18 bscott    Added Tri class, comparison and ops
-2002-02-15 subatomic Added Matrix class, comparison and math ops
-2002-02-15 bscott    Added Sphere class and comparisons.
-2002-02-11 subatomic Added Math abstraction for sin, cos, etc...
-2002-02-11 allenb    Added Vec and Point ops.
-2002-02-11 allenb    Vector comparisons added.
-2002-02-10 allenb    Added Vec and Point classes.
-2002-02-10 allenb    Added VecBase class.
-2002-02-09 allenb    Remove old GFX traces.
-2002-02-09 allenb    Created gmtlConfig.h file and removed gfxConfig.h
-2002-01-30 allenb    Moved all code to header files to prepare the way for
-                     future refactoring.
-2002-01-30 allenb    Removed static const member variables from classes.
-2002-01-25 allenb    Initial version
+DATE       AUTHOR       CHANGE
+---------- --------     -----------------------------------------------------------
+2002-02-20 nonchocoboy  Added Plane math functions.
+2002-02-19 subatomic    Added Matrix gen funcs
+2002-02-18 nonchocoboy  Added Plane comparison functions.
+2002-02-18 nonchocoboy  Added Plane class.
+2002-02-18 nonchocoboy  Added Tri class, comparison and ops
+2002-02-15 subatomic    Added Matrix class, comparison and math ops
+2002-02-15 nonchocoboy  Added Sphere class and comparisons.
+2002-02-11 subatomic    Added Math abstraction for sin, cos, etc...
+2002-02-11 allenb       Added Vec and Point ops.
+2002-02-11 allenb       Vector comparisons added.
+2002-02-10 allenb       Added Vec and Point classes.
+2002-02-10 allenb       Added VecBase class.
+2002-02-09 allenb       Remove old GFX traces.
+2002-02-09 allenb       Created gmtlConfig.h file and removed gfxConfig.h
+2002-01-30 allenb       Moved all code to header files to prepare the way for
+                        future refactoring.
+2002-01-30 allenb       Removed static const member variables from classes.
+2002-01-25 allenb       Initial version
 
