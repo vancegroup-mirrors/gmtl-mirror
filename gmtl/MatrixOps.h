@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOps.h,v $
- * Date modified: $Date: 2002-03-21 15:53:23 $
- * Version:       $Revision: 1.20 $
+ * Date modified: $Date: 2002-04-04 21:35:20 $
+ * Version:       $Revision: 1.21 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -60,7 +60,8 @@ namespace gmtl
          for (unsigned int x = 0; x < Math::Min( COLS, ROWS ); ++x)
             result( x, x ) = (DATA_TYPE)1.0;
 
-         result.mState = Matrix<DATA_TYPE, ROWS, COLS>::IDENTITY;
+//         result.mState = Matrix<DATA_TYPE, ROWS, COLS>::IDENTITY;
+         result.mState = Matrix<DATA_TYPE, ROWS, COLS>::FULL;
       }
 
       return result;
