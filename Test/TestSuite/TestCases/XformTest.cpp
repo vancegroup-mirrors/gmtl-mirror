@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: XformTest.cpp,v $
- * Date modified: $Date: 2002-06-11 21:23:33 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2003-02-06 01:39:50 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -33,17 +33,117 @@
 *
  ************************************************************ ggt-cpr end */
 #include "XformTest.h"
-#include <gmtl/Output.h>
+#include "../Suites.h"
+#include <cppunit/extensions/HelperMacros.h>
+#include <cppunit/extensions/MetricRegistry.h>
 
-namespace gmtlTest {
-   void XformTest::testTimingXformQuatVec3()
+#include <gmtl/Xforms.h>
+
+namespace gmtlTest
+{
+   CPPUNIT_TEST_SUITE_REGISTRATION(XformTest);
+   CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(XformMetricTest, Suites::metric());
+
+   template <typename T>
+   class XformQuatVec3
+   {
+   public:
+      static void go( char* name )
+      {
+         std::string n = "XformTest/operator*(quat4,vec3)";
+         n += name;
+         gmtl::Quat<T> q1( gmtl::makeNormal( gmtl::Quat<T>( (T)1, (T)2, (T)3, (T)4 ) ) );
+         gmtl::Vec<T, 3> v2;
+         v2[0] = (T)1;
+         const long iters(25000);
+         CPPUNIT_METRIC_START_TIMING();
+         for (long iter = 0; iter < iters; ++iter)
+         {
+            v2 = q1 * v2;
+         }
+         CPPUNIT_METRIC_STOP_TIMING();
+         CPPUNIT_ASSERT_METRIC_TIMING_LE( n.c_str(), iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+         n = "XformTest/xform(vec,quat4,vec3)";
+         n += name;
+         CPPUNIT_METRIC_START_TIMING();
+         for (long iter = 0; iter < iters; ++iter)
+         {
+            gmtl::xform( v2, q1, v2 );
+         }
+         CPPUNIT_METRIC_STOP_TIMING();
+         CPPUNIT_ASSERT_METRIC_TIMING_LE( n.c_str(), iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+         CPPUNIT_ASSERT( v2[0] != 13.045 );
+      }
+   };
+
+// mips pro and VC7 can't handle template template params
+#ifdef __GNUC__
+   /** @todo Get XformMatByVecType to work outside gcc */
+   template <
+         template <typename, unsigned> class VEC_TYPE,
+         typename T,
+         unsigned VEC_SIZE,
+         unsigned ROWS,
+         unsigned COLS
+   >
+   class XformMatByVecType
+   {
+   public:
+      static void go( char* vectype  )
+      {
+         char buf[20]; int rows( ROWS ), cols( COLS ), vecsize( VEC_SIZE );
+         std::string n = "XformTest/operator*(mat";
+         sprintf( buf, "%d", rows ); n += buf;
+         sprintf( buf, "%d", cols ); n += buf;
+         n += ",";
+         n += vectype;
+         sprintf( buf, "%d", vecsize ); n += buf;
+         n += ")";
+         n += typeid( T ).name();
+         gmtl::Matrix<T, ROWS, COLS> q1;
+         VEC_TYPE<T, VEC_SIZE> v2;
+         const long iters(25000);
+         CPPUNIT_METRIC_START_TIMING();
+         for (long iter = 0; iter < iters; ++iter)
+         {
+            v2 = q1 * v2;
+         }
+         CPPUNIT_METRIC_STOP_TIMING();
+         CPPUNIT_ASSERT_METRIC_TIMING_LE( n.c_str(), iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+         n = "XformTest/xform(";
+         n += vectype;
+         sprintf( buf, "%d", vecsize ); n += buf;
+         n += ",mat";
+         sprintf( buf, "%d", rows ); n += buf;
+         sprintf( buf, "%d", cols ); n += buf;
+         n += ",";
+         n += vectype;
+         sprintf( buf, "%d", vecsize ); n += buf;
+         n += ")";
+         n += typeid( T ).name();
+         CPPUNIT_METRIC_START_TIMING();
+         for (long iter = 0; iter < iters; ++iter)
+         {
+            gmtl::xform( v2, q1, v2 );
+         }
+         CPPUNIT_METRIC_STOP_TIMING();
+         CPPUNIT_ASSERT_METRIC_TIMING_LE( n.c_str(), iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+         CPPUNIT_ASSERT( v2[0] != 1.0 );
+      }
+   };
+#endif // __GNUC__
+
+   void XformMetricTest::testTimingXformQuatVec3()
    {
       XformQuatVec3<float>::go( "f" );
       XformQuatVec3<double>::go( "d" );
    }
 
    /** @todo Get testTimingXformMatVecComplete to work outside gcc */
-   void XformTest::testTimingXformMatVecComplete()
+   void XformMetricTest::testTimingXformMatVecComplete()
    {
 // mips pro and VC7 can't handle template template params
 #ifdef __GNUC__
@@ -66,7 +166,7 @@ namespace gmtlTest {
    }
 
    /** @todo Get testTimingXformMatVecPartial to work outside gcc */
-   void XformTest::testTimingXformMatVecPartial()
+   void XformMetricTest::testTimingXformMatVecPartial()
    {
 // mips pro and VC7 can't handle template template params
 #ifdef __GNUC__
@@ -87,7 +187,7 @@ namespace gmtlTest {
    }
 
    /** @todo Get testTimingXformMatPointComplete to work outside gcc */
-   void XformTest::testTimingXformMatPointComplete()
+   void XformMetricTest::testTimingXformMatPointComplete()
    {
 // mips pro and VC7 can't handle template template params
 #ifdef __GNUC__
@@ -109,7 +209,7 @@ namespace gmtlTest {
 #endif // __GNUC__
    }
    /** @todo Get testTimingXformMatPointPartial to work outside gcc */
-   void XformTest::testTimingXformMatPointPartial()
+   void XformMetricTest::testTimingXformMatPointPartial()
    {
 // mips pro and VC7 can't handle template template params
 #ifdef __GNUC__

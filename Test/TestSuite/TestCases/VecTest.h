@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.h,v $
- * Date modified: $Date: 2002-11-27 05:37:43 $
- * Version:       $Revision: 1.27 $
+ * Date modified: $Date: 2003-02-06 01:39:50 $
+ * Version:       $Revision: 1.28 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -32,124 +32,86 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 *
  ************************************************************ ggt-cpr end */
-#include <iostream>
+#ifndef _GMTL_VEC_TEST_H_
+#define _GMTL_VEC_TEST_H_
 
-#include <cppunit/TestCase.h>
-#include <cppunit/TestSuite.h>
-#include <cppunit/TestCaller.h>
-
-#include <gmtl/Vec.h>
-#include <gmtl/VecOps.h>
+#include <cppunit/extensions/HelperMacros.h>
 
 namespace gmtlTest
 {
-
-class VecTest : public CppUnit::TestCase
-{
-public:
-   VecTest( std::string name = "VecTest" )
-   : CppUnit::TestCase (name)
-   {;}
-
-   virtual ~VecTest()
-   {}
-
-   virtual void setUp()
-   {;}
-
-   virtual void tearDown()
+   /**
+    * Functionality tests
+    */
+   class VecTest : public CppUnit::TestFixture
    {
-   }
+      CPPUNIT_TEST_SUITE(VecTest);
 
-   void testCreation();
-   void testCopyConstruct();
-   void testConstructors();
-   void testSet();
-   void testSetPtr();
-   void testGetData();
+      CPPUNIT_TEST(testCreation);
+      CPPUNIT_TEST(testCopyConstruct);
+      CPPUNIT_TEST(testConstructors);
+      CPPUNIT_TEST(testSet);
+      CPPUNIT_TEST(testSetPtr);
+      CPPUNIT_TEST(testGetData);
+      CPPUNIT_TEST(testEqualityCompare);
+      CPPUNIT_TEST(testIsEqual);
+      CPPUNIT_TEST(testOpNegate);
+      CPPUNIT_TEST(testOpPlusEq);
+      CPPUNIT_TEST(testOpPlus);
+      CPPUNIT_TEST(testOpMinusEq);
+      CPPUNIT_TEST(testOpMinus);
+      CPPUNIT_TEST(testOpMultScalarEq);
+      CPPUNIT_TEST(testOpMultScalar);
+      CPPUNIT_TEST(testOpScalarVecMult);
+      CPPUNIT_TEST(testOpDivScalarEq);
+      CPPUNIT_TEST(testOpDivScalar);
+      CPPUNIT_TEST(testGroupedOpsPerformance);
+      CPPUNIT_TEST(testDot);
+      CPPUNIT_TEST(testLength);
+      CPPUNIT_TEST(testNormalize);
+      CPPUNIT_TEST(testIsNormalized);
+      CPPUNIT_TEST(testIsNormalizedEps);
+      CPPUNIT_TEST(testCross);
+      CPPUNIT_TEST(testReflect);
+      CPPUNIT_TEST(testVecTimingLerp);
+      CPPUNIT_TEST(testLerp);
 
-   // -- Test comparison -- //
-   void testEqualityCompare();
-   void testIsEqual();
-   void testOpNegate();
-   void testOpPlusEq();
-   void testOpPlus();
-   void testOpMinusEq();
-   void testOpMinus();
-   void testOpMultScalarEq();
-   void testOpMultScalar();
-   void testOpScalarVecMult();
-   void testOpDivScalarEq();
-   void testOpDivScalar();
-   void testGroupedOpsPerformance();
+      CPPUNIT_TEST_SUITE_END();
 
-   // ---- Vec specific functions --- //
-   void testDot();
-   void testLength();
-   void testNormalize();
-   void testIsNormalized();
-   void testIsNormalizedEps();
-   void testCross();
-   void testReflect();
+   public:
+      void testCreation();
+      void testCopyConstruct();
+      void testConstructors();
+      void testSet();
+      void testSetPtr();
+      void testGetData();
 
-   void testVecTimingLerp();
-   void testLerp();
-   
+      // -- Test comparison -- //
+      void testEqualityCompare();
+      void testIsEqual();
+      void testOpNegate();
+      void testOpPlusEq();
+      void testOpPlus();
+      void testOpMinusEq();
+      void testOpMinus();
+      void testOpMultScalarEq();
+      void testOpMultScalar();
+      void testOpScalarVecMult();
+      void testOpDivScalarEq();
+      void testOpDivScalar();
+      void testGroupedOpsPerformance();
 
-   static CppUnit::Test* suite()
-   {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("VecTest");
-      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testLerp", &VecTest::testLerp));
-      
-      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testCreation", &VecTest::testCreation));
-      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testCopyConstruct", &VecTest::testCopyConstruct));
-      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testConstructors", &VecTest::testConstructors));
-      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testSet", &VecTest::testSet));
-      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testSetPtr", &VecTest::testSetPtr));
-      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testGetData", &VecTest::testGetData));
-      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testEqualityCompare", &VecTest::testEqualityCompare));
-      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testIsEqual", &VecTest::testIsEqual));
+      // ---- Vec specific functions --- //
+      void testDot();
+      void testLength();
+      void testNormalize();
+      void testIsNormalized();
+      void testIsNormalizedEps();
+      void testCross();
+      void testReflect();
 
-      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpPlusEq", &VecTest::testOpPlusEq));
-      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpPlus", &VecTest::testOpPlus));
-      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpMinusEq", &VecTest::testOpMinusEq));
-      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpMinus", &VecTest::testOpMinus));
-      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpMultScalarEq", &VecTest::testOpMultScalarEq));
-      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpMultScalar", &VecTest::testOpMultScalar));
-      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpScalarVecMult", &VecTest::testOpScalarVecMult));
-      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpDivScalarEq", &VecTest::testOpDivScalarEq));
-      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpDivScalar", &VecTest::testOpDivScalar));
+      void testVecTimingLerp();
+      void testLerp();
+   };
+}
 
-      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testGroupedOpsPerformance", &VecTest::testGroupedOpsPerformance));
-
-      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testDot", &VecTest::testDot));
-      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testReflect", &VecTest::testReflect));
-      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testLength", &VecTest::testLength));
-      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testNormalize", &VecTest::testNormalize));
-      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testIsNormalized", &VecTest::testIsNormalized));
-      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testIsNormalizedEps", &VecTest::testIsNormalizedEps));
-      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testCross", &VecTest::testCross));
-
-
-      return test_suite;
-   }
-
-   static CppUnit::Test* perfSuite()
-   {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("VecTiming");
-      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testVecTimingLerp", &VecTest::testVecTimingLerp));
-      return test_suite;
-   }
-   
-   static CppUnit::Test* interactiveSuite()
-   {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveVecTest");
-      //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
-      return test_suite;
-   }
-
-protected:
-
-};
-
-};
+#endif

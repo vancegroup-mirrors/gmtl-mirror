@@ -27,16 +27,15 @@ sources = Split("""
    QuatGenTest
    QuatOpsTest
    QuatStuffTest
-
-   TriTest
    SphereTest
+   TriTest
+   VecBaseTest
+   VecGenTest
+   VecTest
+   XformTest
 """)
 
 #sources = Split("""
-#   VecBaseTest
-#   VecGenTest
-#   VecTest
-#   XformTest
 #""")
 
 sources = map(lambda n: n + '.cpp', sources)

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.cpp,v $
- * Date modified: $Date: 2002-11-27 06:29:16 $
- * Version:       $Revision: 1.10 $
+ * Date modified: $Date: 2003-02-06 01:39:50 $
+ * Version:       $Revision: 1.11 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -33,11 +33,18 @@
 *
  ************************************************************ ggt-cpr end */
 #include "VecTest.h"
+#include "../Suites.h"
+#include <cppunit/extensions/HelperMacros.h>
 #include <cppunit/extensions/MetricRegistry.h>
+
+#include <gmtl/Vec.h>
+#include <gmtl/VecOps.h>
 #include <gmtl/Point.h>
 
 namespace gmtlTest
 {
+   CPPUNIT_TEST_SUITE_REGISTRATION(VecTest);
+
    void VecTest::testCreation()
    {
       gmtl::Vec<double, 3> vec;

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecGenTest.cpp,v $
- * Date modified: $Date: 2002-03-19 23:16:53 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2003-02-06 01:39:50 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -18,8 +18,7 @@
 * Copyright (C) 2001,2002 Allen Bierbaum
 *
 * This library is free software; you can redistribute it and/or
-* modify it under th MathPrimitives  [PrimName]Ops.h  Vec & Point [100%] -ab
-Quat [] -km Transforquations XformInterface? Xform.h   Collision detection CollisionInterface? Intersection.h   Bounding volumes BoundingInterface? Containment.h   Math factories MathFactories Builder.h  e terms of the GNU Lesser General Public
+* modify it under the terms of the GNU Lesser General Public
 * License as published by the Free Software Foundation; either
 * version 2.1 of the License, or (at your option) any later version.
 *
@@ -34,10 +33,21 @@ Quat [] -km Transforquations XformInterface? Xform.h   Collision detection Colli
 *
  ************************************************************ ggt-cpr end */
 #include "VecGenTest.h"
+#include "../Suites.h"
+#include <cppunit/extensions/HelperMacros.h>
 #include <cppunit/extensions/MetricRegistry.h>
+
+#include <gmtl/Vec.h>
+#include <gmtl/VecOps.h>
+#include <gmtl/Quat.h>
+#include <gmtl/QuatOps.h>
+#include <gmtl/Generate.h>
 
 namespace gmtlTest
 {
+   CPPUNIT_TEST_SUITE_REGISTRATION(VecGenTest);
+   CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(VecGenMetricTest, Suites::metric());
+
    //-- vec tests --//
 
    void VecGenTest::testMakeVecFromQuat()
@@ -78,7 +88,7 @@ namespace gmtlTest
    //-- timing tests --//
    
    
-   void VecGenTest::testGenTimingMakeNormalVec1()
+   void VecGenMetricTest::testGenTimingMakeNormalVec1()
    {
       gmtl::Vec<double, 4> vec4d;
       const long iters(25000);
@@ -95,7 +105,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( vec4d[0] != 10000.0f && vec4d[1] != 10000.0f && vec4d[2] != 10000.0f );
    }
    
-   void VecGenTest::testGenTimingMakeNormalVec2()
+   void VecGenMetricTest::testGenTimingMakeNormalVec2()
    {
       gmtl::Vec<float, 4> vec4f;
       const long iters(25000);
@@ -111,7 +121,7 @@ namespace gmtlTest
       // by using the variables computed...
       CPPUNIT_ASSERT( vec4f[0] != 10000.0f && vec4f[1] != 10000.0f && vec4f[2] != 10000.0f );
    }
-   void VecGenTest::testGenTimingMakeNormalVec3()
+   void VecGenMetricTest::testGenTimingMakeNormalVec3()
    {
       gmtl::Vec<double, 3> vec3d;
       const long iters(25000);
@@ -128,7 +138,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( vec3d[0] != 10000.0f && vec3d[1] != 10000.0f && vec3d[2] != 10000.0f );
    }
    
-   void VecGenTest::testGenTimingMakeNormalVec4()
+   void VecGenMetricTest::testGenTimingMakeNormalVec4()
    {
       gmtl::Vec<float, 3> vec3f;
       const long iters(25000);
@@ -146,7 +156,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( vec3f[0] != 10000.0f && vec3f[1] != 10000.0f && vec3f[2] != 10000.0f );
    }
    
-   void VecGenTest::testGenTimingMakeVec()
+   void VecGenMetricTest::testGenTimingMakeVec()
    {
       gmtl::Quat<double> q1;
       gmtl::Vec<double, 3> v1;

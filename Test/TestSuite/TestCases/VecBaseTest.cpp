@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecBaseTest.cpp,v $
- * Date modified: $Date: 2002-07-02 03:09:21 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2003-02-06 01:39:50 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -33,12 +33,17 @@
 *
  ************************************************************ ggt-cpr end */
 #include "VecBaseTest.h"
+#include "../Suites.h"
+#include <cppunit/extensions/HelperMacros.h>
 #include <cppunit/extensions/MetricRegistry.h>
 
 #include <gmtl/VecBase.h>
 
 namespace gmtlTest
 {
+   CPPUNIT_TEST_SUITE_REGISTRATION(VecBaseTest);
+   CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(VecBaseMetricTest, Suites::metric());
+
    void VecBaseTest::testVecBaseCreation()
    {
       gmtl::VecBase<double, 3> vec;
@@ -51,7 +56,7 @@ namespace gmtlTest
       */
    }
 
-   void VecBaseTest::testTimingVecBaseCreation()
+   void VecBaseMetricTest::testTimingVecBaseCreation()
    {
       // Test overhead of creation
       const long iters(400000);
@@ -91,7 +96,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( test_vec_copy[2] == 8.0f);
    }
 
-   void VecBaseTest::testTimingCopyConstruct()
+   void VecBaseMetricTest::testTimingCopyConstruct()
    {
       // Test copy construction overhead
       const long iters(400000);
@@ -143,7 +148,7 @@ namespace gmtlTest
 
    }
 
-   void VecBaseTest::testTimingConstructors()
+   void VecBaseMetricTest::testTimingConstructors()
    {
       // Test constructor
       const long iters(400000);
@@ -191,7 +196,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( test_vec1[0] == 1.0f);
    }
 
-   void VecBaseTest::testTimingSet()
+   void VecBaseMetricTest::testTimingSet()
    {
       // Test constructor
       gmtl::VecBase<float, 1> test_vec1;
@@ -246,7 +251,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( test_vec1[0] == 1.0f);
    }
 
-   void VecBaseTest::testTimingSetPtr()
+   void VecBaseMetricTest::testTimingSetPtr()
    {
       float data[4] = {1.0f, 2.0f, 3.0f, 4.0f};
       gmtl::VecBase<float, 1> test_vec1;
@@ -297,5 +302,27 @@ namespace gmtlTest
       data = test_vec2.getData();
       CPPUNIT_ASSERT( data[0] == 1.0f);
       CPPUNIT_ASSERT( data[1] == 2.0f);
+   }
+
+   void VecBaseMetricTest::testTimingGetData()
+   {
+      float* data;
+      gmtl::VecBase<float, 4> test_vec4(1.0f, 2.0f, 3.0f, 4.0f);
+
+      const unsigned iters(400000);
+      float use_value(0.0f);     // A temp just here to use the objs so the copiler (hopefully) does not opt them out
+
+      CPPUNIT_METRIC_START_TIMING();
+
+      for(unsigned iter=0;iter<iters; ++iter)
+      {
+         data = test_vec4.getData();
+         use_value = use_value + data[0];
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecBaseTest/GetDataOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      CPPUNIT_ASSERT( use_value > 0 );
    }
 }

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecBaseTest.h,v $
- * Date modified: $Date: 2002-05-20 22:39:23 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2003-02-06 01:39:50 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -32,83 +32,64 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 *
  ************************************************************ ggt-cpr end */
-#include <cppunit/TestCase.h>
-#include <cppunit/TestSuite.h>
-#include <cppunit/TestCaller.h>
+#ifndef _GMTL_VEC_BASE_TEST_H_
+#define _GMTL_VEC_BASE_TEST_H_
+
+#include <cppunit/extensions/HelperMacros.h>
 
 namespace gmtlTest
 {
-
-class VecBaseTest : public CppUnit::TestCase
-{
-public:
-   VecBaseTest( std::string name = "VecBaseTest" )
-   : CppUnit::TestCase (name)
-   {;}
-
-   virtual ~VecBaseTest()
-   {}
-
-   virtual void setUp()
-   {;}
-
-   virtual void tearDown()
+   /**
+    * Functionality tests
+    */
+   class VecBaseTest : public CppUnit::TestFixture
    {
-   }
+      CPPUNIT_TEST_SUITE(VecBaseTest);
 
-   // correctness tests
-   void testVecBaseCreation();
-   void testCopyConstruct();
-   void testConstructors();
+      CPPUNIT_TEST(testVecBaseCreation);
+      CPPUNIT_TEST(testCopyConstruct);
+      CPPUNIT_TEST(testConstructors);
+      CPPUNIT_TEST(testSet);
+      CPPUNIT_TEST(testSetPtr);
+      CPPUNIT_TEST(testGetData);
 
-   void testSet();
-   void testSetPtr();
-   void testGetData();
+      CPPUNIT_TEST_SUITE_END();
 
-   // performance tests
-   void testTimingVecBaseCreation();
-   void testTimingCopyConstruct();
-   void testTimingConstructors();
+   public:
+      void testVecBaseCreation();
+      void testCopyConstruct();
+      void testConstructors();
 
-   void testTimingSet();
-   void testTimingSetPtr();
-   void testTimingGetData();
+      void testSet();
+      void testSetPtr();
+      void testGetData();
+   };
 
-   static CppUnit::Test* suite()
+   /**
+    * Metric tests.
+    */
+   class VecBaseMetricTest : public CppUnit::TestFixture
    {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("VecBaseTest");
-      test_suite->addTest( new CppUnit::TestCaller<VecBaseTest>("testVecBaseCreation", &VecBaseTest::testVecBaseCreation));
-      test_suite->addTest( new CppUnit::TestCaller<VecBaseTest>("testCopyConstruct", &VecBaseTest::testCopyConstruct));
-      test_suite->addTest( new CppUnit::TestCaller<VecBaseTest>("testConstructors", &VecBaseTest::testConstructors));
-      test_suite->addTest( new CppUnit::TestCaller<VecBaseTest>("testSet", &VecBaseTest::testSet));
-      test_suite->addTest( new CppUnit::TestCaller<VecBaseTest>("testSetPtr", &VecBaseTest::testSetPtr));
-      test_suite->addTest( new CppUnit::TestCaller<VecBaseTest>("testGetData", &VecBaseTest::testGetData));
+      CPPUNIT_TEST_SUITE(VecBaseMetricTest);
 
-      return test_suite;
-   }
+      CPPUNIT_TEST(testTimingVecBaseCreation);
+      CPPUNIT_TEST(testTimingCopyConstruct);
+      CPPUNIT_TEST(testTimingConstructors);
+      CPPUNIT_TEST(testTimingSet);
+      CPPUNIT_TEST(testTimingSetPtr);
+      CPPUNIT_TEST(testTimingGetData);
 
-   static CppUnit::Test* perfSuite()
-   {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("VecBasePerfTest");
+      CPPUNIT_TEST_SUITE_END();
 
-      test_suite->addTest( new CppUnit::TestCaller<VecBaseTest>("testTimingVecBaseCreation", &VecBaseTest::testTimingVecBaseCreation));
-      test_suite->addTest( new CppUnit::TestCaller<VecBaseTest>("testTimingCopyConstruct", &VecBaseTest::testTimingCopyConstruct));
-      test_suite->addTest( new CppUnit::TestCaller<VecBaseTest>("testTimingConstructors", &VecBaseTest::testTimingConstructors));
-      test_suite->addTest( new CppUnit::TestCaller<VecBaseTest>("testTimingSet", &VecBaseTest::testTimingSet));
-      test_suite->addTest( new CppUnit::TestCaller<VecBaseTest>("testTimingSetPtr", &VecBaseTest::testTimingSetPtr));
+   public:
+      void testTimingVecBaseCreation();
+      void testTimingCopyConstruct();
+      void testTimingConstructors();
 
-      return test_suite;
-   }
+      void testTimingSet();
+      void testTimingSetPtr();
+      void testTimingGetData();
+   };
+}
 
-   static CppUnit::Test* interactiveSuite()
-   {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveVecBaseTest");
-      //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
-      return test_suite;
-   }
-
-protected:
-
-};
-
-};
+#endif
