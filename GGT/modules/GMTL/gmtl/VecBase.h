@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecBase.h,v $
- * Date modified: $Date: 2002-02-11 00:44:15 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-02-11 05:55:42 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -49,8 +49,12 @@ public:
    enum { Size = SIZE };
 
 public:
-   // Constructor
-   VecBase();
+   /** Default constructor.
+   * Does nothing, leaves data alone.
+   * This is for performance because this constructor is called by derived class constructors
+   * Even when they just want to set the data directly
+   */
+   VecBase() {;}
    VecBase(const VecBase<DATA_TYPE, SIZE>& rVec);
 
    VecBase(const DATA_TYPE& val0);
@@ -88,13 +92,6 @@ public:
 };
 
 // --- Inline members --- //
-template<class DATA_TYPE, unsigned SIZE>
-VecBase<DATA_TYPE,SIZE>::VecBase()
-{
-   for(unsigned i=0;i<SIZE;++i)
-      mData[i] = 0.0f;
-}
-
 template<class DATA_TYPE, unsigned SIZE>
 VecBase<DATA_TYPE,SIZE>::VecBase(const VecBase<DATA_TYPE, SIZE>& rVec)
 {
