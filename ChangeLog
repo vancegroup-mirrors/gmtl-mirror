@@ -1,5 +1,6 @@
 DATE       AUTHOR       CHANGE
 ---------- --------     --------------------------------------------------------
+2003-02-21 nonchocoboy  Added gmtl.h convenience header.
 2003-02-21 nonchocoboy  gmtl::Math::sign will now take any type as an argument.
 2003-02-21 allenb       Fixed bug where direction cosines were being computed
                         incorrectly. The method was actually computing the
