@@ -4,6 +4,7 @@
 #include <gmtl/Vec.h>
 #include <gmtl/AxisAngle.h>
 #include <gmtl/EulerAngle.h>
+#include <gmtl/Quat.h>
 #include <gmtl/Util/Meta.h>
 #include <gmtl/Util/StaticAssert.h>
 
@@ -73,8 +74,7 @@ public:
 
    Coord( DataType a0, DataType a1, DataType a2, DataType a3, DataType a4, DataType a5, DataType a6 )
    {
-      GMTL_STATIC_ASSERT((PosSize == 3) && "Using incorrect number of args for type size");
-      GMTL_STATIC_ASSERT((RotSize == 4) && "Using incorrect number of args for type size");
+      GMTL_STATIC_ASSERT(((PosSize == 3 && RotSize == 4) || (PosSize == 4 && RotSize == 3)) && "Using incorrect number of args for type size");
       if(PosSize == 3)
       {
          mPos[0] = a0; mPos[1] = a1; mPos[2] = a2;
@@ -91,7 +91,7 @@ public:
       }
 
    }
-
+  
    Coord( DataType a0, DataType a1, DataType a2, DataType a3, DataType a4, DataType a5, DataType a6, DataType a7 )
    {
       GMTL_STATIC_ASSERT((PosSize == 4) && "Using incorrect number of args for type size");
@@ -152,6 +152,7 @@ typedef Coord<Vec4d, AxisAngled> CoordVec4AxisAngled;
 typedef Coord<Vec4f, AxisAnglef> CoordVec4AxisAnglef;
 
 
+
 /** 3 elt types */
 typedef Coord<Vec3f, EulerAngleXYZf> Coord3fXYZ;
 typedef Coord<Vec3f, EulerAngleZYXf> Coord3fZYX;
@@ -168,6 +169,22 @@ typedef Coord<Vec4d, EulerAngleXYZd> Coord4dXYZ;
 typedef Coord<Vec4d, EulerAngleZYXd> Coord4dZYX;
 typedef Coord<Vec4d, EulerAngleZXYd> Coord4dZXY;
 
+/** 3 elt types */
+typedef Coord<Vec3f, Quatf> Coord3fQuat;
+typedef Coord<Vec3d, Quatd> Coord3dQuat;
+
+/** 4 elt types */
+typedef Coord<Vec4f, Quatf> Coord4fQuat;
+typedef Coord<Vec4d, Quatd> Coord4dQuat;
+
+
+/** 3 elt types */
+typedef Coord<Vec3f, AxisAnglef> Coord3fAxisAngle;
+typedef Coord<Vec3d, AxisAngled> Coord3dAxisAngle;
+
+/** 4 elt types */
+typedef Coord<Vec4f, AxisAnglef> Coord4fAxisAngle;
+typedef Coord<Vec4d, AxisAngled> Coord4dAxisAngle;
 
 }
 
