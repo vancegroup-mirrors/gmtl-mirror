@@ -29,8 +29,8 @@
 #
 # -----------------------------------------------------------------
 # File:          $RCSfile: Makefile,v $
-# Date modified: $Date: 2002-07-28 23:55:18 $
-# Version:       $Revision: 1.43 $
+# Date modified: $Date: 2003-01-10 06:29:27 $
+# Version:       $Revision: 1.44 $
 # -----------------------------------------------------------------
 # *************** <auto-copyright.pl END do not edit this line> ***************
 
@@ -38,7 +38,7 @@
 # Advanced template makefile for VR Juggler applications.  This is intended
 # for "power users" who really know what they are doing and want to abuse
 # Doozer's flexibility.  :)
-# $Id: Makefile,v 1.43 2002-07-28 23:55:18 nonchocoboy Exp $
+# $Id: Makefile,v 1.44 2003-01-10 06:29:27 subatomic Exp $
 #
 # *** IMPORTANT NOTES -- READ THESE FIRST ***
 #     1) This file _requires_ the use of GNU make (gmake).
@@ -180,10 +180,9 @@ TEST_SRCS = ConvertTest.cpp \
 CPPUNIT_UI_SRCS	= TextTestProgressListener.cpp	\
                   TextOutputter.cpp		\
                   TestRunner.cpp
-CPPUNIT_EXTS	= MetricRegistry.cpp
+CPPUNIT_EXTS	= #MetricRegistry.cpp
 CPPUNIT_SRCS	= Asserter.cpp			\
                   Exception.cpp			\
-                  NotEqualException.cpp		\
                   SourceLine.cpp		\
                   SynchronizedObject.cpp	\
                   TestAssert.cpp		\
@@ -191,7 +190,7 @@ CPPUNIT_SRCS	= Asserter.cpp			\
                   TestFailure.cpp		\
                   TestResult.cpp		\
                   TestResultCollector.cpp	\
-                  TestSucessListener.cpp	\
+                  TestSuccessListener.cpp	\
                   TestSuite.cpp			\
                   $(CPPUNIT_UI_SRCS)		\
                   $(CPPUNIT_EXTS)             
