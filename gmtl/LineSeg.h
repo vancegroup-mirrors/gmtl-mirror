@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: LineSeg.h,v $
- * Date modified: $Date: 2002-02-22 11:54:40 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-02-24 22:47:02 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -38,6 +38,7 @@
 #include <gmtl/gmtlConfig.h>
 #include <gmtl/Point.h>
 #include <gmtl/Vec.h>
+#include <gmtl/VecOps.h>
 
 namespace gmtl {
 
@@ -134,6 +135,14 @@ public:
    void setDir( const Vec<DATA_TYPE, 3>& dir )
    {
       mDir = dir;
+   }
+
+   /**
+    * Gets the length of this line segment.
+    */
+   const DATA_TYPE& getLength() const
+   {
+      return length( dir );
    }
 
 public:
