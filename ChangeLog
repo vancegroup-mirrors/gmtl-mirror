@@ -1,5 +1,8 @@
 DATE       AUTHOR       CHANGE
 ---------- --------     -----------------------------------------------------------
+2002-05-21 nonchocoboy  Removed Types.h. Apps will now need to define their own
+                        types if they wish to use anything other than the
+                        built-in primitive types.
 2002-05-20 subatomic    Removed gmtlConfig.h.
                         Added support to Math.h to compile out the float trig
                         functions.  Define NO_XXXF (where XXX is SIN, COS, ASIN
