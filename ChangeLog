@@ -1,5 +1,6 @@
 DATE       AUTHOR       CHANGE
 ---------- --------     -----------------------------------------------------------
+2002-03-14 allenb       Added gmtlASSERT macro to make gmtl more standalone
 2002-02-24 nonchocoboy  Added LineSeg class and comparitors.
 2002-02-20 nonchocoboy  Added Plane math functions.
 2002-02-19 subatomic    Added Matrix gen funcs

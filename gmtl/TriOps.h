@@ -7,15 +7,15 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: TriOps.h,v $
- * Date modified: $Date: 2002-02-18 23:22:16 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-03-15 03:26:57 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
 /*************************************************************** ggt-cpr beg
 *
 * GGT: The Generic Graphics Toolkit
-* Copyright (C) 2001,2002 Allen Bierbaum 
+* Copyright (C) 2001,2002 Allen Bierbaum
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU Lesser General Public
@@ -73,7 +73,7 @@ Vec<DATA_TYPE, 3> normal( const Tri<DATA_TYPE>& tri )
 /**
  * Compare two triangles to see if they are EXACTLY the same. In other words,
  * this comparison is done with zero tolerance.
- * 
+ *
  * @param tri1    the first triangle to compare
  * @param tri2    the second triangle to compare
  *
@@ -117,7 +117,7 @@ template< class DATA_TYPE >
 bool isEqual( const Tri<DATA_TYPE>& tri1, const Tri<DATA_TYPE>& tri2,
               const DATA_TYPE& eps )
 {
-   ggtASSERT( eps >= 0 );
+   gmtlASSERT( eps >= 0 );
    return ( isEqual(tri1[0], tri2[0], eps) &&
             isEqual(tri1[1], tri2[1], eps) &&
             isEqual(tri1[2], tri2[2], eps) );

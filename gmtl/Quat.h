@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Quat.h,v $
- * Date modified: $Date: 2002-03-09 04:14:50 $
- * Version:       $Revision: 1.12 $
+ * Date modified: $Date: 2002-03-15 03:26:57 $
+ * Version:       $Revision: 1.13 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -46,21 +46,21 @@ namespace gmtl
  *
  * this Quaternion is ordered in memory: x,y,z,w.
  *
- * Note: The code for most of these routines was built using the following 
+ * Note: The code for most of these routines was built using the following
  * references
  *
  * References:
  * <ul>
- * <li>   Advanced Animation and Rendering Techniques: pp363-365           
- * <li>   Animating Rotation with Quaternion Curves,  Ken Shoemake,        
- *           SIGGRAPH Proceedings Vol 19, Number 3, 1985                   
- * <li>   Quaternion Calculus for Animation,  Ken Shoemake SIGGRAPH course 
+ * <li>   Advanced Animation and Rendering Techniques: pp363-365
+ * <li>   Animating Rotation with Quaternion Curves,  Ken Shoemake,
+ *           SIGGRAPH Proceedings Vol 19, Number 3, 1985
+ * <li>   Quaternion Calculus for Animation,  Ken Shoemake SIGGRAPH course
  *           notes 1989
- * <li>   Game Developer Magazine: Feb 98, pg.34-42                        
- * <li>   Motivation for the use of Quaternions to perform transformations 
- *           http://www.rust.net/~kgeoinfo/quat1.htm                       
- * <li>   On quaternions; or on a new system of imaginaries in algebra,    
- *           Sir William Rowan Hamilton, Philosophical Magazine, xxv,      
+ * <li>   Game Developer Magazine: Feb 98, pg.34-42
+ * <li>   Motivation for the use of Quaternions to perform transformations
+ *           http://www.rust.net/~kgeoinfo/quat1.htm
+ * <li>   On quaternions; or on a new system of imaginaries in algebra,
+ *           Sir William Rowan Hamilton, Philosophical Magazine, xxv,
  *           pp. 10-13 (July 1844)
  * <li>   You also can find more on quaternions at
  *    <ul>
@@ -74,20 +74,20 @@ template <typename DATA_TYPE>
 class Quat
 {
 public:
-   /** use this to declare single value types of the same type as this matrix. 
+   /** use this to declare single value types of the same type as this matrix.
     */
    typedef DATA_TYPE DataType;
 
-   /** default constructor, initializes to quaternion multiplication identity 
+   /** default constructor, initializes to quaternion multiplication identity
     *  [x,y,z,w] == [0,0,0,1].
     *  NOTE: the addition identity is [0,0,0,0]
     */
-   Quat<DATA_TYPE>( const DATA_TYPE x = (DATA_TYPE)0.0, const DATA_TYPE y = (DATA_TYPE)0.0, 
-                    const DATA_TYPE z = (DATA_TYPE)0.0, const DATA_TYPE w = (DATA_TYPE)1.0 ) 
+   Quat<DATA_TYPE>( const DATA_TYPE x = (DATA_TYPE)0.0, const DATA_TYPE y = (DATA_TYPE)0.0,
+                    const DATA_TYPE z = (DATA_TYPE)0.0, const DATA_TYPE w = (DATA_TYPE)1.0 )
          : mData( x, y, z, w )
    {
    }
-   
+
    /** copy constructor
     */
    Quat<DATA_TYPE>( const Quat<DATA_TYPE>& q ) : mData( q.mData )
@@ -98,7 +98,7 @@ public:
    {
       mData.set( x, y, z, w );
    }
-   
+
    /** get the raw data elements of the quaternion.
     *  @post returns [sin( theta/2 ) * x, sin( theta/2 ) * x, sin( theta/2 ) * x, sin( theta/2 )] with theta in radians.
     */
@@ -110,8 +110,8 @@ public:
       w = mData[Welt];
    }
 
-   /** bracket operator.  
-    *  raw data accessor. 
+   /** bracket operator.
+    *  raw data accessor.
     *
     * <h3> "Example (access raw data element in a Quat):" </h3>
     * \code
@@ -124,9 +124,9 @@ public:
     *
     * @see VectorIndex
     */
-   DATA_TYPE& operator[]( const int x ) 
-   { 
-      ggtASSERT( x >= 0 && x < 4 && "out of bounds error" ); 
+   DATA_TYPE& operator[]( const int x )
+   {
+      gmtlASSERT( x >= 0 && x < 4 && "out of bounds error" );
       return mData[x];
    }
 
@@ -142,16 +142,16 @@ public:
     * @see VectorIndex
     */
    const DATA_TYPE& operator[]( const int x ) const
-   { 
-      ggtASSERT( x >= 0 && x < 4 && "out of bounds error" ); 
+   {
+      gmtlASSERT( x >= 0 && x < 4 && "out of bounds error" );
       return mData[x];
    }
-   
+
    /** Get a DATA_TYPE pointer to the quat internal data.
     * @post Returns a ptr to the head of the quat data
     */
    const DATA_TYPE*  getData() const { return (DATA_TYPE*)mData.getData();}
-   
+
 public:
    // Order x, y, z, w
    Vec<DATA_TYPE, 4> mData;

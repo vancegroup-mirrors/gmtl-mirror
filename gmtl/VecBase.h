@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecBase.h,v $
- * Date modified: $Date: 2002-03-08 17:16:14 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-03-15 03:26:57 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -72,12 +72,12 @@ public:
    // Member access
    inline DATA_TYPE& operator [](const unsigned i)
    {
-      ggtASSERT(i < SIZE);
+      gmtlASSERT(i < SIZE);
       return mData[i];
    }
    inline const DATA_TYPE&  operator [](const unsigned i) const
    {
-      ggtASSERT(i < SIZE);
+      gmtlASSERT(i < SIZE);
       return mData[i];
    }
 
@@ -101,14 +101,14 @@ VecBase<DATA_TYPE,SIZE>::VecBase(const VecBase<DATA_TYPE, SIZE>& rVec)
 template<class DATA_TYPE, unsigned SIZE>
 VecBase<DATA_TYPE,SIZE>::VecBase(const DATA_TYPE& val0)
 {
-   ggtASSERT( SIZE >= 1 && "out of bounds element access in VecBase" );
+   gmtlASSERT( SIZE >= 1 && "out of bounds element access in VecBase" );
    mData[0] = val0;
 }
 
 template<class DATA_TYPE, unsigned SIZE>
 VecBase<DATA_TYPE,SIZE>::VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1)
 {
-   ggtASSERT( SIZE >= 2 && "out of bounds element access in VecBase" );
+   gmtlASSERT( SIZE >= 2 && "out of bounds element access in VecBase" );
    mData[0] = val0;
    mData[1] = val1;
 }
@@ -116,7 +116,7 @@ VecBase<DATA_TYPE,SIZE>::VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1)
 template<class DATA_TYPE, unsigned SIZE>
 VecBase<DATA_TYPE,SIZE>::VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2)
 {
-   ggtASSERT( SIZE >= 3 && "out of bounds element access in VecBase" );
+   gmtlASSERT( SIZE >= 3 && "out of bounds element access in VecBase" );
    mData[0] = val0;
    mData[1] = val1;
    mData[2] = val2;
@@ -125,7 +125,7 @@ VecBase<DATA_TYPE,SIZE>::VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1,con
 template<class DATA_TYPE, unsigned SIZE>
 VecBase<DATA_TYPE,SIZE>::VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2,const DATA_TYPE& val3)
 {
-   ggtASSERT( SIZE >= 4 && "out of bounds element access in VecBase" );
+   gmtlASSERT( SIZE >= 4 && "out of bounds element access in VecBase" );
    mData[0] = val0;
    mData[1] = val1;
    mData[2] = val2;
@@ -143,20 +143,20 @@ inline void VecBase<DATA_TYPE,SIZE>::set(const DATA_TYPE* dataPtr)
 template<class DATA_TYPE, unsigned SIZE>
 inline void VecBase<DATA_TYPE,SIZE>::set(const DATA_TYPE& val0)
 {
-   ggtASSERT( SIZE >= 1 && "out of bounds element access in VecBase" );
+   gmtlASSERT( SIZE >= 1 && "out of bounds element access in VecBase" );
    mData[0] = val0;
 }
 template<class DATA_TYPE, unsigned SIZE>
 inline void VecBase<DATA_TYPE,SIZE>::set(const DATA_TYPE& val0,const DATA_TYPE& val1)
 {
-   ggtASSERT( SIZE >= 2 && "out of bounds element access in VecBase" );
+   gmtlASSERT( SIZE >= 2 && "out of bounds element access in VecBase" );
    mData[0] = val0;
    mData[1] = val1;
 }
 template<class DATA_TYPE, unsigned SIZE>
 inline void VecBase<DATA_TYPE,SIZE>::set(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2)
 {
-   ggtASSERT( SIZE >= 3 && "out of bounds element access in VecBase" );
+   gmtlASSERT( SIZE >= 3 && "out of bounds element access in VecBase" );
    mData[0] = val0;
    mData[1] = val1;
    mData[2] = val2;
@@ -164,7 +164,7 @@ inline void VecBase<DATA_TYPE,SIZE>::set(const DATA_TYPE& val0,const DATA_TYPE& 
 template<class DATA_TYPE, unsigned SIZE>
 inline void VecBase<DATA_TYPE,SIZE>::set(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2,const DATA_TYPE& val3)
 {
-   ggtASSERT( SIZE >= 4 && "out of bounds element access in VecBase" );
+   gmtlASSERT( SIZE >= 4 && "out of bounds element access in VecBase" );
    mData[0] = val0;
    mData[1] = val1;
    mData[2] = val2;

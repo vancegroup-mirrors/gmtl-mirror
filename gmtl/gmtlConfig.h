@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtlConfig.h,v $
- * Date modified: $Date: 2002-02-22 22:28:35 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-03-15 03:26:57 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -144,6 +144,6 @@
 #include <gmtl/gmtlTypes.h>
 #include <gmtl/gmtlDefines.h>
 #include <gmtl/Math.h>
-#include <Util/Assert.h>
+#include <gmtl/Assert.h>
 
 #endif

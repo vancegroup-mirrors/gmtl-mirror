@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-03-11 20:24:41 $
- * Version:       $Revision: 1.23 $
+ * Date modified: $Date: 2002-03-15 03:26:56 $
+ * Version:       $Revision: 1.24 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -47,14 +47,14 @@
 // @todo getTrans(mat, vec)  (or is it called vec = makeTrans(mat), or is it called convert( vec, mat ), convert( mat, vec ) )
 // @todo getScale( mat, vec ) or getScale( mat, scalar )
 // @todo getRot( mat, scalar, vec ) getRot( mat, deg, x, y, z )
-// @todo getRot(mat, a,b,c ) euler    
+// @todo getRot(mat, a,b,c ) euler
 // @todo getDirCos( mat, axes... )
 // @todo getAxes( mat, ... )
 
 namespace gmtl
 {
    //-- VEC GENERATORS --//
-   
+
    /** create a vector from the vector component of a quaternion
     * @post quat = [v,0] = [v0,v1,v2,0]
     * @todo should this be called convert?
@@ -64,7 +64,7 @@ namespace gmtl
    {
       return Vec<DATA_TYPE, 3>( quat[Xelt], quat[Yelt], quat[Zelt] );
    }
-   
+
    /** create a normalized vector from the given vector.
     */
    template <typename DATA_TYPE, unsigned SIZE>
@@ -73,12 +73,12 @@ namespace gmtl
       normalize( vec );
       return vec;
    }
-   
 
-      
-   
+
+
+
    //-- QUATERNION GENERATORS --//
-   
+
    /** create a pure quaternion
     * @post quat = [v,0] = [v0,v1,v2,0]
     */
@@ -87,7 +87,7 @@ namespace gmtl
    {
       return Quat<DATA_TYPE>( vec[0], vec[1], vec[2], 0 );
    }
-   
+
    /** create a pure quaternion
     * @post quat = [v,0] = [v0,v1,v2,0]
     */
@@ -97,7 +97,7 @@ namespace gmtl
       Quat<DATA_TYPE> temporary( quat );
       return normalize( temporary );
    }
-   
+
    /** quaternion complex conjugate.
     *  @post set result to the complex conjugate of result.
     *  @post result'[x,y,z,w] == result[-x,-y,-z,w]
@@ -109,7 +109,7 @@ namespace gmtl
       Quat<DATA_TYPE> temporary( quat );
       return conj( temporary );
    }
-   
+
    /** create quaternion from the inverse of another quaternion.
     *  @post returns the multiplicative inverse of quat
     *  @see Quat
@@ -128,8 +128,8 @@ namespace gmtl
    template <typename DATA_TYPE>
    inline Quat<DATA_TYPE>& makeRot( Quat<DATA_TYPE>& result, const DATA_TYPE rad, Vec<DATA_TYPE, 3> axis )
    {
-      ggtASSERT( (Math::isEqual( lengthSquared( axis ), (DATA_TYPE)1.0, (DATA_TYPE)0.001 ) || Math::isEqual( lengthSquared( axis ), (DATA_TYPE)0.0, (DATA_TYPE)0.001 )) && "you must pass in a normalized vector to makeRot( quat, rad, vec )" );
-      
+      gmtlASSERT( (Math::isEqual( lengthSquared( axis ), (DATA_TYPE)1.0, (DATA_TYPE)0.001 ) || Math::isEqual( lengthSquared( axis ), (DATA_TYPE)0.0, (DATA_TYPE)0.001 )) && "you must pass in a normalized vector to makeRot( quat, rad, vec )" );
+
       DATA_TYPE half_angle = rad * (DATA_TYPE)0.5;
       DATA_TYPE sin_half_angle = Math::sin( half_angle );
 
@@ -141,7 +141,7 @@ namespace gmtl
       // should automagically be normalized (unit magnitude) now...
       return result;
    }
-      
+
    /** make a rotation quaternion from an angle and an axis (slow).
     * @pre axis [xyz] will be normalized for you, no need to worry about it.
     * @post q = [ cos(rad/2), sin(rad/2) * [x,y,z] ]
@@ -151,7 +151,7 @@ namespace gmtl
    {
       return makeRot( result, rad, makeNormal( Vec<DATA_TYPE, 3>( x, y, z ) ) );
    }
-   
+
    /** make a rotation quaternion that will xform first vector to the second.
     *  @post generate rotation quaternion that is the rotation between the vectors.
     */
@@ -188,7 +188,7 @@ namespace gmtl
          return makeRot( result, angle, axis );
       }
    }
-   
+
    /** get the angle/axis from the rotation quaternion.
     *
     * @post returns an angle in radians, and a normalized axis equivelent to the quaternion's rotation.
@@ -199,14 +199,14 @@ namespace gmtl
     * </ul>
     */
    template <typename DATA_TYPE>
-   inline void getRot( Quat<DATA_TYPE> quat, DATA_TYPE& rad, DATA_TYPE& x, DATA_TYPE& y, DATA_TYPE& z ) 
+   inline void getRot( Quat<DATA_TYPE> quat, DATA_TYPE& rad, DATA_TYPE& x, DATA_TYPE& y, DATA_TYPE& z )
    {
       // make sure we don't get a NaN result from acos...
       if (Math::abs( quat[Welt] ) > (DATA_TYPE)1.0)
       {
          normalize( quat );
       }
-      ggtASSERT( Math::abs( quat[Welt] ) <= (DATA_TYPE)1.0 && "acos returns NaN when quat[Welt] > 1, try normalizing your quat." );
+      gmtlASSERT( Math::abs( quat[Welt] ) <= (DATA_TYPE)1.0 && "acos returns NaN when quat[Welt] > 1, try normalizing your quat." );
 
       // [acos( w ) * 2.0, v / (asin( w ) * 2.0)]
 
@@ -224,24 +224,24 @@ namespace gmtl
       }
 
       // avoid NAN
-      else 
+      else
       {
          x = DATA_TYPE( 1.0 ) - quat[Welt]; // one of the terms should be a 1,
          y = (DATA_TYPE)0.0;              // so we can maintain unit-ness
          z = (DATA_TYPE)0.0;              // in case w is 0 (which here w is 0)
       }
    }
-   
+
    enum RotationOrder
    {
       XYZ, ZYX, ZXY
    };
-   
+
    /** Create a rotation quaternion using euler angles (each in radians)
     * @pre pass in your angles in the same order as the RotationOrder you specify
     */
    template <typename DATA_TYPE>
-   inline Quat<DATA_TYPE>& makeRot( Quat<DATA_TYPE>& result, const DATA_TYPE param0, 
+   inline Quat<DATA_TYPE>& makeRot( Quat<DATA_TYPE>& result, const DATA_TYPE param0,
                  const DATA_TYPE param1, const DATA_TYPE param2, const RotationOrder order )
    {
       // this might be faster if put into the switch statement... (testme)
@@ -258,9 +258,9 @@ namespace gmtl
       DATA_TYPE zOver2 = zRot * (DATA_TYPE)0.5;
 
       // make the pitch quat
-      qx[Xelt] = Math::sin( xOver2 ); 
-      qx[Yelt] = (DATA_TYPE)0.0; 
-      qx[Zelt] = (DATA_TYPE)0.0; 
+      qx[Xelt] = Math::sin( xOver2 );
+      qx[Yelt] = (DATA_TYPE)0.0;
+      qx[Zelt] = (DATA_TYPE)0.0;
       qx[Welt] = Math::cos( xOver2 );
 
       // make the yaw quat
@@ -282,29 +282,29 @@ namespace gmtl
       case ZYX: result = qz * qy * qx; break;
       case ZXY: result = qz * qx * qy; break;
       default:
-         ggtASSERT( false && "unknown rotation order passed to makeRot" );
+         gmtlASSERT( false && "unknown rotation order passed to makeRot" );
          break;
       }
 
       // ensure the quaternion is normalized
       normalize( result );
       return result;
-   }   
-   
-   
-   
+   }
+
+
+
    //-- MATRIX GENERATORS --//
-   
-   
+
+
    /** Create a translation matrix from vec.
     * @pre if making an n x n matrix, then for
     * <ul>
-    *  <li><b>vector is homogeneous:</b> SIZE of vector needs to equal number of Matrix ROWS - 1  
-    *  <li><b>vector has scale component:</b> SIZE of vector needs to equal number of Matrix ROWS 
+    *  <li><b>vector is homogeneous:</b> SIZE of vector needs to equal number of Matrix ROWS - 1
+    *  <li><b>vector has scale component:</b> SIZE of vector needs to equal number of Matrix ROWS
     * </ul>
     * if making an n x n+1 matrix, then for
     * <ul>
-    *  <li><b>vector is homogeneous:</b> SIZE of vector needs to equal number of Matrix ROWS 
+    *  <li><b>vector is homogeneous:</b> SIZE of vector needs to equal number of Matrix ROWS
     *  <li><b>vector has scale component:</b> SIZE of vector needs to equal number of Matrix ROWS + 1
     * </ul>
     * @post if preconditions are not met, then function is undefined (will not compile)
@@ -313,20 +313,20 @@ namespace gmtl
    inline Matrix<DATA_TYPE, ROWS, COLS>& makeTrans( Matrix<DATA_TYPE, ROWS, COLS>& result, const Vec<DATA_TYPE, SIZE>& trans )
    {
       /* @todo make this a compile time assert... */
-      // if n x n   then (homogeneous case) vecsize == rows-1 or (scale component case) vecsize == rows 
+      // if n x n   then (homogeneous case) vecsize == rows-1 or (scale component case) vecsize == rows
       // if n x n+1 then (homogeneous case) vecsize == rows   or (scale component case) vecsize == rows+1
-      ggtASSERT( ((ROWS == COLS && (SIZE == (ROWS-1) || SIZE == ROWS)) || 
-               (COLS == (ROWS+1) && (SIZE == ROWS || SIZE == (ROWS+1)))) && 
+      gmtlASSERT( ((ROWS == COLS && (SIZE == (ROWS-1) || SIZE == ROWS)) ||
+               (COLS == (ROWS+1) && (SIZE == ROWS || SIZE == (ROWS+1)))) &&
               "preconditions not met for vector size in call to makeTrans.  Read your documentation." );
       result = Matrix<DATA_TYPE, ROWS, COLS>(); // set to ident - this could be faster...
-      
+
       // homogeneous case...
-      if ((ROWS == COLS && SIZE == ROWS) || (COLS == (ROWS+1) && SIZE == (ROWS+1)))  
+      if ((ROWS == COLS && SIZE == ROWS) || (COLS == (ROWS+1) && SIZE == (ROWS+1)))
       {
          for (unsigned x = 0; x < COLS - 1; ++x)
             result( x, COLS - 1 ) = trans[x] / trans[SIZE-1];
       }
-      
+
       // non-homogeneous case...
       else
       {
@@ -336,21 +336,21 @@ namespace gmtl
       return result;
    }
 
-   
-   
+
+
    /** Create a scale matrix.
     */
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS, unsigned SIZE >
    inline Matrix<DATA_TYPE, ROWS, COLS>& makeScale( Matrix<DATA_TYPE, ROWS, COLS>& result, const Vec<DATA_TYPE, SIZE>& scale )
    {
-      ggtASSERT( ((SIZE == (ROWS-1) && SIZE == (COLS-1)) || (SIZE == (ROWS-1) && SIZE == COLS) || (SIZE == (COLS-1) && SIZE == ROWS)) && "the scale params must fit within the matrix, check your sizes." );
+      gmtlASSERT( ((SIZE == (ROWS-1) && SIZE == (COLS-1)) || (SIZE == (ROWS-1) && SIZE == COLS) || (SIZE == (COLS-1) && SIZE == ROWS)) && "the scale params must fit within the matrix, check your sizes." );
       result = Matrix<DATA_TYPE, ROWS, COLS>(); // set to ident - this could be faster...
       for (unsigned x = 0; x < SIZE; ++x)
          result( x, x ) = scale[x];
       return result;
    }
 
-   
+
    /** Create a scale matrix.
     */
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
@@ -361,7 +361,7 @@ namespace gmtl
          result( x, x ) = scale;
       return result;
    }
-   
+
    /** Create a rotation matrix using an axis and an angle (in radians).
     *  to a rotation matrix defined by the rotation part of M
     * @post this function only produces 3x3, 3x4, 4x3, and 4x4 matrices, and is undefined otherwise
@@ -371,9 +371,9 @@ namespace gmtl
    inline Matrix<DATA_TYPE, ROWS, COLS>& makeRot( Matrix<DATA_TYPE, ROWS, COLS>& result, const DATA_TYPE radians, const Vec<DATA_TYPE, 3>& vec )
    {
       /* @todo make this a compile time assert... */
-      ggtASSERT( ROWS >= 3 && COLS >= 3 && ROWS <= 4 && COLS <= 4 && "this func is undefined for Matrix smaller than 3x3 or bigger than 4x4" );
-      ggtASSERT( Math::isEqual( lengthSquared( vec ), (DATA_TYPE)1.0, (DATA_TYPE)0.001 ) && "you must pass in a normalized vector to makeRot( mat, rad, vec )" );
-      
+      gmtlASSERT( ROWS >= 3 && COLS >= 3 && ROWS <= 4 && COLS <= 4 && "this func is undefined for Matrix smaller than 3x3 or bigger than 4x4" );
+      gmtlASSERT( Math::isEqual( lengthSquared( vec ), (DATA_TYPE)1.0, (DATA_TYPE)0.001 ) && "you must pass in a normalized vector to makeRot( mat, rad, vec )" );
+
       // GGI: pg 466
       DATA_TYPE s = Math::sin( radians );
       DATA_TYPE c = Math::cos( radians );
@@ -383,23 +383,23 @@ namespace gmtl
       DATA_TYPE z = vec[2];
 
       /* From: Introduction to robotic.  Craig.  Pg. 52 */
-      result( 0, 0 ) = (t*x*x)+c;     result( 0, 1 ) = (t*x*y)-(s*z); result( 0, 2 ) = (t*x*z)+(s*y); 
-      result( 1, 0 ) = (t*x*y)+(s*z); result( 1, 1 ) = (t*y*y)+c;     result( 1, 2 ) = (t*y*z)-(s*x); 
-      result( 2, 0 ) = (t*x*z)-(s*y); result( 2, 1 ) = (t*y*z)+(s*x); result( 2, 2 ) = (t*z*z)+c;     
+      result( 0, 0 ) = (t*x*x)+c;     result( 0, 1 ) = (t*x*y)-(s*z); result( 0, 2 ) = (t*x*z)+(s*y);
+      result( 1, 0 ) = (t*x*y)+(s*z); result( 1, 1 ) = (t*y*y)+c;     result( 1, 2 ) = (t*y*z)-(s*x);
+      result( 2, 0 ) = (t*x*z)-(s*y); result( 2, 1 ) = (t*y*z)+(s*x); result( 2, 2 ) = (t*z*z)+c;
 
       // if 4x3, 3x4, or 4x4, then fill in the rest with ident...
       if (ROWS > 3)
       {
          result( 3, 0 ) = (DATA_TYPE)0.0; result( 3, 1 ) = (DATA_TYPE)0.0; result( 3, 2 ) = (DATA_TYPE)0.0;
       }
-                  
-      if (COLS > 3)           
+
+      if (COLS > 3)
       {
          result( 0, 3 ) = (DATA_TYPE)0.0;
          result( 1, 3 ) = (DATA_TYPE)0.0;
          result( 2, 3 ) = (DATA_TYPE)0.0;
       }
-      
+
       if (ROWS > 3 && COLS > 3)
       {
          result( 3, 3 ) = (DATA_TYPE)1.0;
@@ -407,8 +407,8 @@ namespace gmtl
 
       return result;
    }
-   
-   
+
+
    /** make a rotation matrix from an angle and an axis.
     * @pre axis [xyz] will be normalized for you, no need to worry about it.
     * @post q = [ cos(rad/2), sin(rad/2) * [x,y,z] ]
@@ -418,7 +418,7 @@ namespace gmtl
    {
       return makeRot( result, rad, makeNormal( Vec<DATA_TYPE, 3>( x, y, z ) ) );
    }
-   
+
    /** Create a rotation matrix using an axis and an angle (in radians).   (static version)
     *  to a rotation matrix defined by the rotation part of M
     * @post this function only produces 3x3, 3x4, 4x3, and 4x4 matrices, and is undefined otherwise
@@ -432,19 +432,19 @@ namespace gmtl
       return makeRot( temporary, radians, x, y, z );
    }
    */
-         
-   
-   
+
+
+
    /** Create a rotation matrix using euler angles (in radians)
     * @pre pass in your args in the same order as the RotationOrder you specify
     * @post this function only produces 3x3, 3x4, 4x3, and 4x4 matrices, and is undefined otherwise
     */
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
-   inline Matrix<DATA_TYPE, ROWS, COLS>& makeRot( Matrix<DATA_TYPE, ROWS, COLS>& result, const DATA_TYPE param0, 
+   inline Matrix<DATA_TYPE, ROWS, COLS>& makeRot( Matrix<DATA_TYPE, ROWS, COLS>& result, const DATA_TYPE param0,
                                                  const DATA_TYPE param1, const DATA_TYPE param2, const RotationOrder order )
    {
       // @todo make this a compile time assert...
-      ggtASSERT( ROWS >= 3 && COLS >= 3 && ROWS <= 4 && COLS <= 4 && "this is undefined for Matrix smaller than 3x3 or bigger than 4x4" );
+      gmtlASSERT( ROWS >= 3 && COLS >= 3 && ROWS <= 4 && COLS <= 4 && "this is undefined for Matrix smaller than 3x3 or bigger than 4x4" );
 
       // this might be faster if put into the switch statement... (testme)
       const float xRot = (order == XYZ) ? param0 : ((order == ZXY) ? param1 : param2);
@@ -454,7 +454,7 @@ namespace gmtl
       float sx = Math::sin( xRot );  float cx = Math::cos( xRot );
       float sy = Math::sin( yRot );  float cy = Math::cos( yRot );
       float sz = Math::sin( zRot );  float cz = Math::cos( zRot );
-   
+
       // @todo metaprogram this!
       switch (order)
       {
@@ -477,23 +477,23 @@ namespace gmtl
          result( 2, 0 ) = -cx*sy;           result( 2, 1 ) = sx;     result( 2, 2 ) = cx*cy;
          break;
       default:
-         ggtASSERT( false && "unknown rotation order passed to makeRot" );
+         gmtlASSERT( false && "unknown rotation order passed to makeRot" );
          break;
       }
-         
+
       // if 4x3, 3x4, or 4x4, then fill in the rest with ident...
       if (ROWS > 3)
       {
          result( 3, 0 ) = (DATA_TYPE)0.0; result( 3, 1 ) = (DATA_TYPE)0.0; result( 3, 2 ) = (DATA_TYPE)0.0;
       }
-                  
-      if (COLS > 3)           
+
+      if (COLS > 3)
       {
          result( 0, 3 ) = (DATA_TYPE)0.0;
          result( 1, 3 ) = (DATA_TYPE)0.0;
          result( 2, 3 ) = (DATA_TYPE)0.0;
       }
-      
+
       if (ROWS > 3 && COLS > 3)
       {
          result( 3, 3 ) = (DATA_TYPE)1.0;
@@ -501,8 +501,8 @@ namespace gmtl
 
       return result;
    }
-   
-   
+
+
    /** Create a rotation matrix using euler angles (in radians) (static version)
     * @post this function only produces 3x3, 3x4, 4x3, and 4x4 matrices, and is undefined otherwise
     */
@@ -514,7 +514,7 @@ namespace gmtl
       return makeRot( temporary, rotx, roty, rotz, order );
    }
    */
-         
+
    /** create a rotation matrix that will rotate from SrcAxis to DestAxis.
     *  xSrcAxis, ySrcAxis, zSrcAxis is the base rotation to go from and defaults to xSrcAxis(1,0,0), ySrcAxis(0,1,0), zSrcAxis(0,0,1) if you only pass in 3 axes.
     *  @pre pass in 3 axes, and makeDirCos will give you the rotation from MATRIX_IDENTITY to DestAxis
@@ -525,12 +525,12 @@ namespace gmtl
    inline Matrix<DATA_TYPE, ROWS, COLS>& makeDirCos( Matrix<DATA_TYPE, ROWS, COLS>& result,
                                                      const Vec<DATA_TYPE, 3>& xDestAxis,
                                                      const Vec<DATA_TYPE, 3>& yDestAxis, const Vec<DATA_TYPE, 3>& zDestAxis,
-                                                     const Vec<DATA_TYPE, 3>& xSrcAxis = Vec<DATA_TYPE, 3>(1,0,0), 
-                                                     const Vec<DATA_TYPE, 3>& ySrcAxis = Vec<DATA_TYPE, 3>(0,1,0), 
+                                                     const Vec<DATA_TYPE, 3>& xSrcAxis = Vec<DATA_TYPE, 3>(1,0,0),
+                                                     const Vec<DATA_TYPE, 3>& ySrcAxis = Vec<DATA_TYPE, 3>(0,1,0),
                                                      const Vec<DATA_TYPE, 3>& zSrcAxis = Vec<DATA_TYPE, 3>(0,0,1) )
    {
       // @todo make this a compile time assert...
-      ggtASSERT( ROWS >= 3 && COLS >= 3 && ROWS <= 4 && COLS <= 4 && "this is undefined for Matrix smaller than 3x3 or bigger than 4x4" );
+      gmtlASSERT( ROWS >= 3 && COLS >= 3 && ROWS <= 4 && COLS <= 4 && "this is undefined for Matrix smaller than 3x3 or bigger than 4x4" );
 
       DATA_TYPE Xa, Xb, Xy;    // Direction cosines of the secondary x-axis
       DATA_TYPE Ya, Yb, Yy;    // Direction cosines of the secondary y-axis
@@ -544,28 +544,28 @@ namespace gmtl
       result( 0, 0 ) = Xa; result( 0, 1 ) = Xb; result( 0, 2 ) = Xy;
       result( 1, 0 ) = Ya; result( 1, 1 ) = Yb; result( 1, 2 ) = Yy;
       result( 2, 0 ) = Za; result( 2, 1 ) = Zb; result( 2, 2 ) = Zy;
-      
+
       // if 4x3, 3x4, or 4x4, then fill in the rest with ident...
       if (ROWS > 3)
       {
          result( 3, 0 ) = (DATA_TYPE)0.0; result( 3, 1 ) = (DATA_TYPE)0.0; result( 3, 2 ) = (DATA_TYPE)0.0;
       }
-                  
-      if (COLS > 3)           
+
+      if (COLS > 3)
       {
          result( 0, 3 ) = (DATA_TYPE)0.0;
          result( 1, 3 ) = (DATA_TYPE)0.0;
          result( 2, 3 ) = (DATA_TYPE)0.0;
       }
-      
+
       if (ROWS > 3 && COLS > 3)
       {
          result( 3, 3 ) = (DATA_TYPE)1.0;
       }
-      
+
       return result;
    }
-   
+
    /** set the matrix 3x3 to the direction cosines (static version)
     * @post this function only produces 3x3, 3x4, 4x3, and 4x4 matrices
     */
@@ -586,7 +586,7 @@ namespace gmtl
    inline Matrix<DATA_TYPE, ROWS, COLS>& makeAxes( Matrix<DATA_TYPE, ROWS, COLS>& result, const Vec<DATA_TYPE, 3>& xAxis, const Vec<DATA_TYPE, 3>& yAxis, const Vec<DATA_TYPE, 3>& zAxis )
    {
       // @todo make this a compile time assert...
-      ggtASSERT( ROWS >= 3 && COLS >= 3 && ROWS <= 4 && COLS <= 4 && "this is undefined for Matrix smaller than 3x3 or bigger than 4x4" );
+      gmtlASSERT( ROWS >= 3 && COLS >= 3 && ROWS <= 4 && COLS <= 4 && "this is undefined for Matrix smaller than 3x3 or bigger than 4x4" );
 
       result( 0, 0 ) = xAxis[0];
       result( 1, 0 ) = xAxis[1];
@@ -606,7 +606,7 @@ namespace gmtl
          result( 3, 0 ) = (DATA_TYPE)0.0; result( 3, 1 ) = (DATA_TYPE)0.0; result( 3, 2 ) = (DATA_TYPE)0.0;
       }
 
-      if (COLS > 3)           
+      if (COLS > 3)
       {
          result( 0, 3 ) = (DATA_TYPE)0.0;
          result( 1, 3 ) = (DATA_TYPE)0.0;
@@ -620,8 +620,8 @@ namespace gmtl
 
       return result;
    }
-   
-   
+
+
    /** make the matrix given the raw coordinate axes. (static version)
     * @post this function only produces 3x3, 3x4, 4x3, and 4x4 matrices, and is undefined otherwise
     * @post these axes are copied direct to the 3x3 in the matrix
@@ -634,7 +634,7 @@ namespace gmtl
       return makeAxes( temporary, xAxis, yAxis, zAxis );
    }
    */
-      
+
 } // end gmtl namespace.
 
 #endif

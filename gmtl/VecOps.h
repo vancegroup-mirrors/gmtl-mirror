@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecOps.h,v $
- * Date modified: $Date: 2002-03-11 20:18:33 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2002-03-15 03:26:57 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -54,7 +54,7 @@ VecBase<DATA_TYPE, SIZE>& operator +=(VecBase<DATA_TYPE, SIZE>& v1, const VecBas
    {
       v1[i] += v2[i];
    }
-   
+
    return v1;
 }
 
@@ -74,7 +74,7 @@ VecBase<DATA_TYPE, SIZE>& operator -=(VecBase<DATA_TYPE, SIZE>& v1, const VecBas
    {
       v1[i] -= v2[i];
    }
-   
+
    return v1;
 }
 
@@ -94,7 +94,7 @@ VecBase<DATA_TYPE, SIZE>& operator *=(VecBase<DATA_TYPE, SIZE>& v1, const SCALAR
    {
       v1[i] *= scalar;
    }
-   
+
    return v1;
 }
 
@@ -116,7 +116,7 @@ VecBase<DATA_TYPE, SIZE>& operator /=(VecBase<DATA_TYPE, SIZE>& v1, const SCALAR
    {
       v1[i] /= scalar;
    }
-   
+
    return v1;
 }
 
@@ -190,7 +190,7 @@ DATA_TYPE normalize(Vec<DATA_TYPE, SIZE>& v1)
       for(unsigned i=0;i<SIZE;++i)
       {
          v1[i] /= len;
-      }      
+      }
    }
 
    return len;
@@ -270,7 +270,7 @@ inline bool operator !=(const VecBase<DATA_TYPE, SIZE>& v1, const VecBase<DATA_T
 template<class DATA_TYPE, unsigned SIZE>
 inline bool isEqual(const VecBase<DATA_TYPE, SIZE>& v1, const VecBase<DATA_TYPE, SIZE>& v2, const DATA_TYPE& eps)
 {
-   ggtASSERT(eps >= 0);
+   gmtlASSERT(eps >= 0);
 
   for(unsigned i=0;i<SIZE;++i)
   {

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Vec3.h,v $
- * Date modified: $Date: 2002-02-10 04:45:24 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-03-15 03:26:57 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -129,12 +129,12 @@ Vec3::Vec3(const Vec3& rVec)
 // Member access
 inline float&  Vec3::operator [](const int i)
 {
-   ggtASSERT((i>=0)&&(i<3));
+   gmtlASSERT((i>=0)&&(i<3));
    return vec[i];
 }
 inline const float&  Vec3::operator [](const int i) const
 {
-   ggtASSERT((i>=0)&&(i<3));
+   gmtlASSERT((i>=0)&&(i<3));
    return vec[i];
 }
 

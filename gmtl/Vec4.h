@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Vec4.h,v $
- * Date modified: $Date: 2002-02-10 04:45:24 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-03-15 03:26:57 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -120,12 +120,12 @@ Vec4::Vec4(const Vec4& rVec)
 // Member access
 inline float&  Vec4::operator [](const int i)
 {
-   ggtASSERT((i>=0)&&(i<4));
+   gmtlASSERT((i>=0)&&(i<4));
    return vec[i];
 }
 inline const float&  Vec4::operator [](const int i) const
 {
-   ggtASSERT((i>=0)&&(i<4));
+   gmtlASSERT((i>=0)&&(i<4));
    return vec[i];
 }
 
