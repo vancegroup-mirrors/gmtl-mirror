@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecB.h,v $
- * Date modified: $Date: 2004-09-01 21:54:36 $
- * Version:       $Revision: 1.1.2.3 $
+ * Date modified: $Date: 2004-09-01 22:17:39 $
+ * Version:       $Revision: 1.1.2.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -251,7 +251,6 @@ public:
       return *this;
    }
 
-
    //@{
    /**
     * Gets the internal array of the components.
@@ -378,6 +377,7 @@ sum(const VecB<T,SIZE,R1>& v1, const VecB<T,SIZE,R2>& v2)
                                                              VecPlusBinary>(v1,v2) );
 }
 
+
 template<typename T, unsigned SIZE, typename R1>
 inline VecB<T,SIZE, VecBinaryExpr<VecB<T,SIZE,R1>, VecB<T,SIZE,ScalarArg<T> >, VecPlusBinary> >
 sum(const VecB<T,SIZE,R1>& v1, const T& arg)
@@ -392,6 +392,20 @@ sum(const VecB<T,SIZE,R1>& v1, const T& arg)
 
 
 } // meta
+
+template<typename T, unsigned SIZE, typename R1, typename R2>
+inline VecB<T,SIZE, meta::VecBinaryExpr<VecB<T,SIZE,R1>, VecB<T,SIZE,R2>, meta::VecPlusBinary> >
+operator+(const VecB<T,SIZE,R1>& v1, const VecB<T,SIZE,R2>& v2)
+{
+   return VecB<T,SIZE,
+               meta::VecBinaryExpr<VecB<T,SIZE,R1>,
+                                   VecB<T,SIZE,R2>,
+                                   meta::VecPlusBinary> >( meta::VecBinaryExpr<VecB<T,SIZE,R1>,
+                                                                               VecB<T,SIZE,R2>,
+                                                                               meta::VecPlusBinary>(v1,v2) );
+}
+
+
 } // gmtl
 
 namespace gm = gmtl::meta;

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.cpp,v $
- * Date modified: $Date: 2004-09-01 21:54:35 $
- * Version:       $Revision: 1.13.2.3 $
+ * Date modified: $Date: 2004-09-01 22:17:38 $
+ * Version:       $Revision: 1.13.2.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -61,6 +61,8 @@ namespace gmtlTest
 
       gmtl::VecB<float,3>  vecb_4(0,1,2);    // Construct with values
       vecb_1.set(5,6,7);                     // set
+      gmtl::VecB<float,3>  vecb_5(0,1,2);    // Construct with values
+      gmtl::VecB<float,3>  vecb_6(0,1,2);    // Construct with values
 
       vecb_2.mData[0] = 10;                  // Access data directly
       vecb_2.mData[1] = 12;
@@ -103,20 +105,289 @@ namespace gmtlTest
 
       std::cout << "ctr cnt after scalar: " << gmtl::helpers::VecCtrCounterInstance()->get() << std::endl;
 
-      /*
-      gmtl::meta::VecArg<gmtl::Vec<float,3> > va1(test_vec1);
-      gmtl::meta::VecArg<gmtl::Vec<float,3> > va2(test_vec2);
-      gmtl::meta::SumVec(va1, va2);
+      vecb_2.set(1,2,3);
+      vecb_3 = vecb_2;
+      vecb_4 = vecb_2;
+      vecb_5 = vecb_2;
 
-      gmtl::meta::AssignVec(test_vec3, gmtl::meta::SumVec(va1, va2) );
+      vecb_1 = vecb_2 + vecb_3 + vecb_4;
 
-      gmtl::meta::AssignVec(test_vec4, gmtl::meta::SumVec(
-                                             gmtl::meta::makeVecArg(test_vec1),
-                                             gmtl::meta::makeVecArg(test_vec2)) );
+      std::cout << "ctr cnt after multi-add: " << gmtl::helpers::VecCtrCounterInstance()->get() << std::endl;
+   }
 
-      gmtl::meta::AssignVec(test_vec1, gmtl::meta::SumVec(test_vec2, test_vec3));
-      */
+   void VecMetricTest::testVecBPerf()
+   {
+      gmtl::VecB<float,3> test_vec1(1.0, 2.0, 3.0);
+      gmtl::VecB<float,3> test_vec2(2.0, 2.0, 2.0);
+      gmtl::VecB<float,3> test_vec3(1.0, 2.0, 3.0);
 
+      unsigned num_ctr_calls_start(gmtl::helpers::VecCtrCounterInstance()->get());
+
+      // -- test op+ performance
+      const float iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+      test_vec3.set(5.0, 7.0, 9.0);
+
+      for( float iter=0;iter<iters; ++iter)
+      {
+         test_vec3.set(iter, iter+1, iter+2);
+         test_vec1 = test_vec3 + test_vec2;
+      }
+
+      test_vec2 = test_vec1;
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/VecB:OpPlusOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      unsigned avg_ctr_calls = (gmtl::helpers::VecCtrCounterInstance()->get()-num_ctr_calls_start)/unsigned(iters);
+      CPPUNIT_ASSERT_METRIC_LE("VecTest/VecB:OpPlusOverhead:ctr-calls", avg_ctr_calls, 0.075f, 0.1f);
+
+      {
+         gmtl::VecB<float,4> const_vec1(4.0f, 5.0f, 6.0f, 7.8f);
+         gmtl::VecB<float,4> const_vec2(1.0f, 2.0f, 3.0f, 4.8f);
+         gmtl::VecB<float,4> const_vec3(7.0f, 11.0f, 12.0f, 24.0f);
+         gmtl::VecB<float,4> vec1, vec2, vec3;
+
+         gmtl::VecB<float,4> res_vec, total_vec;
+
+         const unsigned long iters(10000);
+         unsigned num_ctr_calls, used_ctr_calls, avg_ctr_calls;
+
+         // -- test vec = vec+vec+vec
+         vec1.set(1.0, 2.0, 3.0, 4.0f);
+         vec2.set(3.0, 3.0, 3.0, 3.0);
+         vec3.set(11.0, 21.0, 75.0, 2.0f);
+         total_vec.set(0,0,0,0);
+         num_ctr_calls = gmtl::helpers::VecCtrCounterInstance()->get();
+
+         CPPUNIT_METRIC_START_TIMING();
+         for( unsigned iter=0;iter<iters; ++iter)
+         {
+            // Do some work to make the vectors change a little
+            vec1.set((float)iter, (float)iter+1, (float)iter+2, (float)iter+3);
+            vec2[0] *= 0.00125f;
+            vec3[2] *= -0.000345f;
+
+            // Do the actually operation of interest
+            res_vec = vec1+vec2+vec3;
+            total_vec[0] += res_vec[0];
+         }
+         CPPUNIT_METRIC_STOP_TIMING();
+         CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/VecB:vec+vec+vec:perf", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+         used_ctr_calls = gmtl::helpers::VecCtrCounterInstance()->get()-num_ctr_calls;
+         avg_ctr_calls = used_ctr_calls/iters;
+         CPPUNIT_ASSERT_METRIC_LE("VecTest/VecB:vec+vec+vec:ctr-calls", avg_ctr_calls, 0.075f, 0.1f);
+
+         /*
+         // -- test vec = vec-vec-vec
+         vec1.set(1.0, 2.0, 3.0, 4.0f);
+         vec2.set(3.0, 3.0, 3.0, 3.0);
+         vec3.set(12.0, 21.0, 75.0, 2.0f);
+         total_vec.set(0,0,0,0);
+         num_ctr_calls = gmtl::helpers::VecCtrCounterInstance()->get();
+
+         CPPUNIT_METRIC_START_TIMING();
+         for( unsigned iter=0;iter<iters; ++iter)
+         {
+            // Do some work to make the vectors change a little
+            vec1.set((float)iter, (float)iter+1, (float)iter+2, (float)iter+3);
+            vec2[1] *= 0.00125f;
+            vec3[2] *= (-0.000345);
+
+            // Do the actually operation of interest
+            res_vec = vec1-vec2-vec3;
+            total_vec += res_vec;
+         }
+         CPPUNIT_METRIC_STOP_TIMING();
+         CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/vec-vec-vec:perf", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+         used_ctr_calls = gmtl::helpers::VecCtrCounterInstance()->get()-num_ctr_calls;
+         avg_ctr_calls = used_ctr_calls/iters;
+         CPPUNIT_ASSERT_METRIC_LE("VecTest/vec-vec-vec:ctr-calls", avg_ctr_calls, 0.075f, 0.1f);
+
+         // -- test vec = const_vec1+const_vec2+const_vec3
+         // Should be able to unroll this quite a bit
+         total_vec.set(0,0,0,0);
+         num_ctr_calls = gmtl::helpers::VecCtrCounterInstance()->get();
+
+         CPPUNIT_METRIC_START_TIMING();
+         for( unsigned iter=0;iter<iters; ++iter)
+         {
+            // Do the actually operation of interest
+            res_vec = const_vec1+const_vec2+const_vec3;
+            total_vec += res_vec;
+         }
+         CPPUNIT_METRIC_STOP_TIMING();
+         CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/const_vec+const_vec+const_vec:perf", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+         used_ctr_calls = gmtl::helpers::VecCtrCounterInstance()->get()-num_ctr_calls;
+         avg_ctr_calls = used_ctr_calls/iters;
+         CPPUNIT_ASSERT_METRIC_LE("VecTest/const_vec+const_vec+const_vec:ctr-calls", avg_ctr_calls, 0.075f, 0.1f);
+
+         // -- test vec = const_vec1-const_vec2-const_vec3
+         total_vec.set(0,0,0,0);
+         num_ctr_calls = gmtl::helpers::VecCtrCounterInstance()->get();
+
+         CPPUNIT_METRIC_START_TIMING();
+         for( unsigned iter=0;iter<iters; ++iter)
+         {
+            // Do the actually operation of interest
+            res_vec = const_vec1-const_vec2-const_vec3;
+            total_vec += res_vec;
+         }
+         CPPUNIT_METRIC_STOP_TIMING();
+         CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/const_vec-const_vec-const_vec:perf", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+         used_ctr_calls = gmtl::helpers::VecCtrCounterInstance()->get()-num_ctr_calls;
+         avg_ctr_calls = used_ctr_calls/iters;
+         CPPUNIT_ASSERT_METRIC_LE("VecTest/const_vec-const_vec-const_vec:ctr-calls", avg_ctr_calls, 0.075f, 0.1f);
+
+         // -- test vec = (vec-const_vec)+(vec+const_vec)-(const_vec*scalar)
+         vec1.set(1.0, 2.0, 3.0, 4.0f);
+         vec2.set(3.0, 3.0, 3.0, 3.0);
+         vec3.set(12.0, 21.0, 75.0, 2.0f);
+         total_vec.set(0,0,0,0);
+         num_ctr_calls = gmtl::helpers::VecCtrCounterInstance()->get();
+
+         CPPUNIT_METRIC_START_TIMING();
+         for( unsigned iter=0;iter<iters; ++iter)
+         {
+            // Do some work to make the vectors change a little
+            vec1.set((float)iter, (float)iter+1, (float)iter+2, (float)iter+3);
+            vec2[2] *= 0.00125f;
+
+            // Do the actually operation of interest
+            res_vec = (vec1-const_vec1)+(vec2+const_vec2)-(const_vec3*7.6f);
+            total_vec += res_vec;
+         }
+         CPPUNIT_METRIC_STOP_TIMING();
+         CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/(vec-const_vec)+(vec+const_vec)-(const_vec*scalar):perf", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+         used_ctr_calls = gmtl::helpers::VecCtrCounterInstance()->get()-num_ctr_calls;
+         avg_ctr_calls = used_ctr_calls/iters;
+         CPPUNIT_ASSERT_METRIC_LE("VecTest/vec-const_vec)+(vec+const_vec)-(const_vec*scalar):ctr-calls", avg_ctr_calls, 0.075f, 0.1f);
+
+         // -- test vec = (vec*scalar)+(vec*scalar)
+         vec1.set(1.0, 2.0, 3.0, 4.0f);
+         vec2.set(3.0, 3.0, 3.0, 3.0);
+         vec3.set(12.0, 21.0, 75.0, 2.0f);
+         total_vec.set(0,0,0,0);
+         num_ctr_calls = gmtl::helpers::VecCtrCounterInstance()->get();
+
+         CPPUNIT_METRIC_START_TIMING();
+         for( unsigned iter=0;iter<iters; ++iter)
+         {
+            // Do some work to make the vectors change a little
+            vec1.set((float)iter, (float)iter+1, (float)iter+2, (float)iter+3);
+            vec2.set((float)iter, (float)iter-1, (float)iter-2, (float)iter-3);
+
+            // Do the actually operation of interest
+            res_vec = (vec1*7.0f)+(vec2*-1.0f);
+            total_vec += res_vec;
+         }
+         CPPUNIT_METRIC_STOP_TIMING();
+         CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/(vec*scalar)+(vec*scalar):perf", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+         used_ctr_calls = gmtl::helpers::VecCtrCounterInstance()->get()-num_ctr_calls;
+         avg_ctr_calls = used_ctr_calls/iters;
+         CPPUNIT_ASSERT_METRIC_LE("VecTest/(vec*scalar)+(vec*scalar):ctr-calls", avg_ctr_calls, 0.075f, 0.1f);
+
+         // -- test vec = (const_vec*scalar)
+         // Should be able to unroll this loop fairly well
+         vec1.set(1.0, 2.0, 3.0, 4.0f);
+         vec2.set(3.0, 3.0, 3.0, 3.0);
+         vec3.set(12.0, 21.0, 75.0, 2.0f);
+         total_vec.set(0,0,0,0);
+         num_ctr_calls = gmtl::helpers::VecCtrCounterInstance()->get();
+
+         CPPUNIT_METRIC_START_TIMING();
+         for( unsigned iter=0;iter<iters; ++iter)
+         {
+            // Do the actually operation of interest
+            res_vec = (const_vec1*3.0f);
+            total_vec += res_vec;
+         }
+         CPPUNIT_METRIC_STOP_TIMING();
+         CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/(const_vec*scalar):perf", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+         used_ctr_calls = gmtl::helpers::VecCtrCounterInstance()->get()-num_ctr_calls;
+         avg_ctr_calls = used_ctr_calls/iters;
+         CPPUNIT_ASSERT_METRIC_LE("VecTest/(const_vec*scalar):ctr-calls", avg_ctr_calls, 0.075f, 0.1f);
+
+         // -- test vec = (vec*dot(const_vec,vec))
+         // Should be able to unroll this loop fairly well
+         vec1.set(1.0, 2.0, 3.0, 4.0f);
+         vec2.set(3.0, 3.0, 3.0, 3.0);
+         vec3.set(12.0, 21.0, 75.0, 2.0f);
+         total_vec.set(0,0,0,0);
+         num_ctr_calls = gmtl::helpers::VecCtrCounterInstance()->get();
+
+         CPPUNIT_METRIC_START_TIMING();
+         for( unsigned iter=0;iter<iters; ++iter)
+         {
+            // Do some work to make the vectors change a little
+            vec1.set((float)iter, (float)iter+1, (float)iter+2, (float)iter+3);
+            vec2[2] *= 0.00125f;
+
+            // Do the actually operation of interest
+            res_vec = (vec1*gmtl::dot(const_vec1,vec2));
+            total_vec += res_vec;
+         }
+         CPPUNIT_METRIC_STOP_TIMING();
+         CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/(vec*dot(const_vec,vec)):perf", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+         used_ctr_calls = gmtl::helpers::VecCtrCounterInstance()->get()-num_ctr_calls;
+         avg_ctr_calls = used_ctr_calls/iters;
+         CPPUNIT_ASSERT_METRIC_LE("VecTest/(vec*dot(const_vec,vec)):ctr-calls", avg_ctr_calls, 0.075f, 0.1f);
+
+         // -- test vec = (scalar*cross(vec,vec))
+         // Should be able to unroll this loop fairly well
+         gmtl::Vec<float,3> vec5(3.0, 3.0, 3.0);
+         gmtl::Vec<float,3> vec6(12.0, 21.0, 75.0);
+         gmtl::Vec<float,3> total_vec2(0,0,0);
+         gmtl::Vec<float,3> res_vec2;
+         num_ctr_calls = gmtl::helpers::VecCtrCounterInstance()->get();
+
+         CPPUNIT_METRIC_START_TIMING();
+         for( unsigned iter=0;iter<iters; ++iter)
+         {
+            // Do some work to make the vectors change a little
+            vec5.set((float)iter+1, (float)iter+2, (float)iter+3);
+            vec6[2] *= 0.00125f;
+
+            // Do the actually operation of interest
+            res_vec2 = (gmtl::makeCross(vec5,vec6)*21.0f);
+            total_vec2 += res_vec2;
+         }
+         CPPUNIT_METRIC_STOP_TIMING();
+         CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/(vec*cross(vec,vec)):perf", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+         used_ctr_calls = gmtl::helpers::VecCtrCounterInstance()->get()-num_ctr_calls;
+         avg_ctr_calls = used_ctr_calls/iters;
+         CPPUNIT_ASSERT_METRIC_LE("VecTest/(vec*cross(vec,vec)):ctr-calls", avg_ctr_calls, 0.075f, 0.1f);
+
+         // -- test vec complex1
+         gmtl::Vec<float,3> vec7(3.0, 3.0, 3.0);
+         gmtl::Vec<float,3> vec8(12.0, 21.0, 75.0);
+         gmtl::Vec<float,3> vec9(12.0, 21.0, 75.0);
+         float multa(0.5), multb;
+         num_ctr_calls = gmtl::helpers::VecCtrCounterInstance()->get();
+
+         CPPUNIT_METRIC_START_TIMING();
+         for( unsigned iter=0;iter<iters; ++iter)
+         {
+            // Do some work to make the vectors change a little
+            multa  += 0.0025f;
+            multb = (iter/12.0f);
+            vec5.set((float)iter+1, (float)iter+2, (float)iter+3);
+            vec6[2] *= 0.00125f;
+            vec7.set((float)iter+1, (float)iter+2, (float)iter+3);
+            vec8[2] *= 0.00125f;
+            vec9[1] *= 0.00125f;
+
+            // Do the actually operation of interest
+            res_vec2 = ((multa*((5.0f*vec5)+ vec6)) - vec7)+((vec8*multb)-vec9);
+            total_vec2 += res_vec2;
+         }
+         CPPUNIT_METRIC_STOP_TIMING();
+         CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/complex1:perf", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+         used_ctr_calls = gmtl::helpers::VecCtrCounterInstance()->get()-num_ctr_calls;
+         avg_ctr_calls = used_ctr_calls/iters;
+         CPPUNIT_ASSERT_METRIC_LE("VecTest/complex1:ctr-calls", avg_ctr_calls, 0.075f, 0.1f);
+         */
+      }
    }
 
 
