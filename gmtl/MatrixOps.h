@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOps.h,v $
- * Date modified: $Date: 2002-02-18 23:22:15 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2002-02-28 14:19:58 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,6 +35,7 @@
 #ifndef _GMTL_MATRIXOPS_H_
 #define _GMTL_MATRIXOPS_H_
 
+#include <algorithm>        // needed for std::swap
 #include <gmtl/gmtlConfig.h>
 #include <gmtl/Matrix.h>
 #include <gmtl/Math.h>
@@ -64,7 +65,7 @@ namespace gmtl
       return result;
    }
 
-   /** matrix multiply with 3 unique matrices
+   /** matrix multiply.
     *  @PRE: if lhs is m x p, and rhs is p x n, then result is m x n (mult func undefined otherwise)
     *  @POST: returns a m x n matrix
     */
@@ -87,7 +88,7 @@ namespace gmtl
       return result = ret_mat;
    }
    
-   /** matrix * matrix
+   /** matrix * matrix.
     *  @PRE: if lhs is m x p, and rhs is p x n, then result is m x n (mult func undefined otherwise)
     *  @POST: returns a m x n matrix == lhs * rhs
     *  returns a temporary, is slower.
@@ -100,7 +101,7 @@ namespace gmtl
       return mult( temporary, lhs, rhs );
    }
    
-   /** matrix subtraction (algebraic operation for matrix)
+   /** matrix subtraction (algebraic operation for matrix).
     *  @PRE: if lhs is m x n, and rhs is m x n, then result is m x n (mult func undefined otherwise)
     *  @POST: returns a m x n matrix
     *  TODO: <B>enforce the sizes with templates...</b>
@@ -120,7 +121,7 @@ namespace gmtl
       return result;
    }
    
-   /** matrix addition (algebraic operation for matrix)
+   /** matrix addition (algebraic operation for matrix).
     *  @PRE: if lhs is m x n, and rhs is m x n, then result is m x n (mult func undefined otherwise)
     *  @POST: returns a m x n matrix
     *  TODO: <B>enforce the sizes with templates...</b>
@@ -140,7 +141,7 @@ namespace gmtl
       return result;
    }
 
-   /** matrix postmult. 
+   /** matrix postmultiply. 
     * @PRE: args must both be n x n (this function is undefined otherwise)
     * @POST: result' = result * operand
     */
@@ -151,7 +152,7 @@ namespace gmtl
       return mult( result, result, operand );
    }
    
-   /** matrix preMult. 
+   /** matrix preMultiply. 
     * @PRE: args must both be n x n (this function is undefined otherwise)
     * @POST: result' = operand * result
     */
@@ -208,24 +209,17 @@ namespace gmtl
       return mult( result, scalar );
    }
    
-   /** matrix transpose in place
+   /** matrix transpose in place.
     *  @PRE:  needs to be an N x N matrix
     *  @POST: flip along diagonal
     */
    template <typename DATA_TYPE, unsigned SIZE>
    Matrix<DATA_TYPE, SIZE, SIZE>& transpose( Matrix<DATA_TYPE, SIZE, SIZE>& result )
    {
-      // p. 149 Numerical Analysis (second ed.)
-      for (int i = 0; i < SIZE; ++i)
-      {
-         for (int j = 0; j < SIZE; ++j)
-         {
-            if (j > i) // do everything under the diagonal (so we don't flip twice)
-            {
-               Math::swap( result( j, i ), result( i, j ) );
-            }
-         }
-      }
+      // p. 27 game programming gems #1
+      for (int c = 0; c < SIZE; ++c)
+         for (int r = c + 1; r < SIZE; ++r)
+            std::swap( result( r, c ), result( c, r ) );
 
       return result;
    }
