@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: testSuite.cpp,v $
- * Date modified: $Date: 2002-02-10 04:38:06 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-02-10 05:03:59 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -58,13 +58,38 @@
 #include <TestCases/TriTest.h>
 #include <TestCases/InfoTests/OptTest.h>
 
+std::string getHostname(void);
+
+
 int main (int ac, char **av)
 {
-   CppUnit::TextTestRunner runner;
-	
+
+   // -------- CONFIGURE METRIC REGISTRY ------- //
+   CppUnit::MetricRegistry* metric_reg = CppUnit::MetricRegistry::instance();
+   std::string metric_prefix;    // Prefix for all metric labels (mode/hostname)
+
+   std::string host_name = getHostname();
+   metric_prefix = host_name + "/";
+#ifdef _DEBUG
+   metric_prefix += "Debug/";
+#endif
+#ifdef _OPT
+   metric_prefix += "Opt/";
+#endif
+
+   std::cout << " host: " << host_name << " prefix: "  << metric_prefix << std::endl;
+
+   metric_reg->setPrefix(metric_prefix);
+   metric_reg->setFilename("gmtl_metrics.txt");
+   metric_reg->setMetric("Main/MetricTest", 1221.75f);
+
+
    //------------------------------------
    //  GMTL Tests
    //------------------------------------
+   CppUnit::TextTestRunner runner;
+
+
    // Create the tests
    CppUnit::TestSuite* gmtl_suite = new CppUnit::TestSuite("gmtl_suite");
 	
@@ -88,4 +113,31 @@ int main (int ac, char **av)
    runner.run("gmtl_suite");
 
    return 0;
+}
+
+
+#include <sys/utsname.h>
+
+std::string getHostname(void)
+{
+   struct utsname buffer;
+
+   if ( uname(&buffer) == 0 )
+   {
+      char* temp;
+      temp = strchr(buffer.nodename, '.');
+
+      // If the node name contains the full host, dots and all, truncate it
+      // at the first dot.
+      if ( temp != NULL )
+      {
+         *temp = '\0';
+      }
+
+      return std::string(buffer.nodename);
+   }
+   else
+   {
+      return std::string("<hostname-lookup failed>");
+   }
 }
