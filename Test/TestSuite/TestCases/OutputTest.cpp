@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: OutputTest.cpp,v $
- * Date modified: $Date: 2002-03-20 19:20:57 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-03-20 19:38:55 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -98,5 +98,25 @@ namespace gmtlTest
                9, 10, 11, 12 );
       out3 << m34;
       CPPUNIT_ASSERT( out3.str() == "| 1 2 3 4 |\n| 5 6 7 8 |\n| 9 10 11 12 |\n" );
+   }
+
+   void OutputTest::testQuat()
+   {
+      std::stringstream out1;
+      gmtl::Quat<int> q1( 1, 2, 3, 4 );
+      out1 << q1;
+      CPPUNIT_ASSERT( out1.str() == "(1, 2, 3, 4)" );
+   }
+
+   void OutputTest::testTri()
+   {
+      std::stringstream out1;
+      gmtl::Tri<int> t1(
+            gmtl::Point<int, 3>(1, 2, 3),
+            gmtl::Point<int, 3>(4, 5, 6),
+            gmtl::Point<int, 3>(7, 8, 9)
+      );
+      out1 << t1;
+      CPPUNIT_ASSERT( out1.str() == "(1, 2, 3), (4, 5, 6), (7, 8, 9)" );
    }
 }
