@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-03-10 19:30:52 $
- * Version:       $Revision: 1.21 $
+ * Date modified: $Date: 2002-03-11 00:28:55 $
+ * Version:       $Revision: 1.22 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -241,7 +241,7 @@ namespace gmtl
     * @pre pass in your angles in the same order as the RotationOrder you specify
     */
    template <typename DATA_TYPE>
-   inline void makeRot( Quat<DATA_TYPE>& result, const DATA_TYPE param0, 
+   inline Quat<DATA_TYPE>& makeRot( Quat<DATA_TYPE>& result, const DATA_TYPE param0, 
                  const DATA_TYPE param1, const DATA_TYPE param2, const RotationOrder order )
    {
       // this might be faster if put into the switch statement... (testme)
@@ -258,22 +258,22 @@ namespace gmtl
       DATA_TYPE zOver2 = zRot * (DATA_TYPE)0.5;
 
       // make the pitch quat
-      qx.vec[Xelt] = Math::sin( xOver2 ); 
-      qx.vec[Yelt] = (DATA_TYPE)0.0; 
-      qx.vec[Zelt] = (DATA_TYPE)0.0; 
-      qx.vec[Welt] = Math::cos( xOver2 );
+      qx[Xelt] = Math::sin( xOver2 ); 
+      qx[Yelt] = (DATA_TYPE)0.0; 
+      qx[Zelt] = (DATA_TYPE)0.0; 
+      qx[Welt] = Math::cos( xOver2 );
 
       // make the yaw quat
-      qy.vec[Xelt] = (DATA_TYPE)0.0;
-      qy.vec[Yelt] = Math::sin( yOver2 );
-      qy.vec[Zelt] = (DATA_TYPE)0.0;
-      qy.vec[Welt] = Math::cos( yOver2 );
+      qy[Xelt] = (DATA_TYPE)0.0;
+      qy[Yelt] = Math::sin( yOver2 );
+      qy[Zelt] = (DATA_TYPE)0.0;
+      qy[Welt] = Math::cos( yOver2 );
 
       // make the roll quat
-      qz.vec[Xelt] = (DATA_TYPE)0.0;
-      qz.vec[Yelt] = (DATA_TYPE)0.0;
-      qz.vec[Zelt] = Math::sin( zOver2 );
-      qz.vec[Welt] = Math::cos( zOver2 );
+      qz[Xelt] = (DATA_TYPE)0.0;
+      qz[Yelt] = (DATA_TYPE)0.0;
+      qz[Zelt] = Math::sin( zOver2 );
+      qz[Welt] = Math::cos( zOver2 );
 
       // compose the three in pyr order...
       switch (order)
