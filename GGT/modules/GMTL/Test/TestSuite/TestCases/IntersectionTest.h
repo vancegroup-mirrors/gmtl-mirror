@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: IntersectionTest.h,v $
- * Date modified: $Date: 2003-05-15 16:50:47 $
- * Version:       $Revision: 1.13 $
+ * Date modified: $Date: 2003-05-15 16:54:45 $
+ * Version:       $Revision: 1.14 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -65,6 +65,9 @@ namespace gmtlTest
 
       void testIntersectAABoxSweep();
       void testIntersectSphereSweep();
+
+	  void testIntersectRayPlane();
+	  void testIntersectLineSegPlane();
    };
 
    /**
