@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-CoordOps.h,v $
- * Date modified: $Date: 2003-08-30 17:22:10 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2003-08-30 21:13:52 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -40,6 +40,10 @@
 // needed for Boost.Python to do its thing.
 
 #include <gmtl/Coord.h>
+#include <gmtl/VecOps.h>
+#include <gmtl/EulerAngleOps.h>
+#include <gmtl/QuatOps.h>
+#include <gmtl/AxisAngleOps.h>
 #include <gmtl/CoordOps.h>
 
 
