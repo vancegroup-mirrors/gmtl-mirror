@@ -1,5 +1,6 @@
 DATE       AUTHOR       CHANGE
 ---------- ------------ -------------------------------------------------------
+2003-03-15 nonchocoboy  NEW VERSION: 0.2.1
 2003-03-15 nonchocoboy  Replaced gmtl::version variable with a
                         gmtl::getVersion() inlined method to avoid mulitply
                         defined linker errors.
