@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Output.h,v $
- * Date modified: $Date: 2002-10-11 10:34:23 $
- * Version:       $Revision: 1.13 $
+ * Date modified: $Date: 2003-04-03 15:22:55 $
+ * Version:       $Revision: 1.14 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -45,6 +45,8 @@
 #include <gmtl/Sphere.h>
 #include <gmtl/EulerAngle.h>
 #include <gmtl/AABox.h>
+#include <gmtl/Ray.h>
+#include <gmtl/LineSeg.h>
 
 namespace gmtl
 {
@@ -229,6 +231,48 @@ namespace gmtl
    {
       out << b.mMin << " " << b.mMax << " ";
       out << (b.mEmpty ? "true" : "false");
+      return out;
+   }
+
+   /**
+    * Outputs a string representation of the given Ray to the given output
+    * stream. The output is formatted such that
+    *    Ray<int>(
+    *       Point<int>(1,2,3),
+    *       Vec<int>(4,5,6)
+    *    )
+    * will appear as "(1,2,3) (4,5,6)".
+    *
+    * @param out     the stream to write to
+    * @param b       the Ray to output
+    *
+    * @return  out after it has been written to
+    */
+   template< typename DATA_TYPE >
+   std::ostream& operator<<( std::ostream& out, const Ray<DATA_TYPE>& b )
+   {
+      out << b.getOrigin() << " " << b.getDir();
+      return out;
+   }
+
+   /**
+    * Outputs a string representation of the given LineSeg to the given output
+    * stream. The output is formatted such that
+    *    LineSeg<int>(
+    *       Point<int>(1,2,3),
+    *       Vec<int>(4,5,6)
+    *    )
+    * will appear as "(1,2,3) (4,5,6)".
+    *
+    * @param out     the stream to write to
+    * @param b       the LineSeg to output
+    *
+    * @return  out after it has been written to
+    */
+   template< typename DATA_TYPE >
+   std::ostream& operator<<( std::ostream& out, const LineSeg<DATA_TYPE>& b )
+   {
+      out << b.getOrigin() << " " << b.getDir();
       return out;
    }
    //@}
