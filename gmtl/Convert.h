@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Convert.h,v $
- * Date modified: $Date: 2002-02-20 17:40:39 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-02-20 21:39:41 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -42,7 +42,7 @@ namespace gmtl
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
    void convert( Matrix<DATA_TYPE, ROWS, COLS>& mat, const Quat<DATA_TYPE>& q )
    {
-      assert( ((ROWS == 3 && COLS == 3) ||
+      ggtASSERT( ((ROWS == 3 && COLS == 3) ||
                (ROWS == 3 && COLS == 4) ||
                (ROWS == 4 && COLS == 4)) && 
                "pre conditions not met on convert( mat, quat )" );
