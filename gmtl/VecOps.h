@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecOps.h,v $
- * Date modified: $Date: 2002-02-20 21:23:06 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-02-21 18:25:12 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -198,7 +198,7 @@ DATA_TYPE normalize(Vec<DATA_TYPE, SIZE>& v1)
 
 /**
  * Determines if the given vector is normalized with zero tolerance. The vector
- * is normalized if its length is 1.
+ * is normalized if its lengthSquared is 1.
  *
  * @param v1      the vector to test
  *
@@ -207,12 +207,12 @@ DATA_TYPE normalize(Vec<DATA_TYPE, SIZE>& v1)
 template< class DATA_TYPE, unsigned SIZE >
 bool isNormalized( const Vec<DATA_TYPE, SIZE>& v1 )
 {
-   return (length( v1 ) == DATA_TYPE(1));
+   return (lengthSquared( v1 ) == DATA_TYPE(1));
 }
 
 /**
  * Determines if the given vector is normalized within the given tolerance. The
- * vector is normalized if its length is 1.
+ * vector is normalized if its lengthSquared is 1.
  *
  * @param v1      the vector to test
  * @param eps     the epsilon tolerance
@@ -222,7 +222,7 @@ bool isNormalized( const Vec<DATA_TYPE, SIZE>& v1 )
 template< class DATA_TYPE, unsigned SIZE >
 bool isNormalized( const Vec<DATA_TYPE, SIZE>& v1, const DATA_TYPE& eps )
 {
-   return Math::isEqual( length(v1), DATA_TYPE(1), eps );
+   return Math::isEqual( lengthSquared(v1), DATA_TYPE(1), eps );
 }
 
 /** cross product
