@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Matrix.h,v $
- * Date modified: $Date: 2002-02-10 04:45:24 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-02-11 20:46:19 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -372,7 +372,7 @@ static inline void zeroClampAngle(float& angle)
 }
 
 
-void Matrix::makeXYZEuler(float xRot, float yRot, float zRot)
+inline void Matrix::makeXYZEuler(float xRot, float yRot, float zRot)
 {
    float sx = sin(Math::deg2Rad(xRot));  float cx = cos(Math::deg2Rad(xRot));
    float sy = sin(Math::deg2Rad(yRot));  float cy = cos(Math::deg2Rad(yRot));
@@ -388,7 +388,7 @@ void Matrix::makeXYZEuler(float xRot, float yRot, float zRot)
    zeroClamp();     // Clamp ~ zero values
 }
 
-void Matrix::getXYZEuler(float& xRot, float& yRot, float& zRot) const
+inline void Matrix::getXYZEuler(float& xRot, float& yRot, float& zRot) const
 {
    float cz;
 
@@ -404,7 +404,7 @@ void Matrix::getXYZEuler(float& xRot, float& yRot, float& zRot) const
 
 // ------------------------------------------------------------------- //
 
-void Matrix::makeZYXEuler(float zRot, float yRot, float xRot)
+inline void Matrix::makeZYXEuler(float zRot, float yRot, float xRot)
 {
    float sx = sin(Math::deg2Rad(xRot));  float cx = cos(Math::deg2Rad(xRot));
    float sy = sin(Math::deg2Rad(yRot));  float cy = cos(Math::deg2Rad(yRot));
@@ -420,7 +420,7 @@ void Matrix::makeZYXEuler(float zRot, float yRot, float xRot)
    zeroClamp();     // Clamp ~ zero values
 }
 
-void Matrix::getZYXEuler(float& zRot, float& yRot, float& xRot) const
+inline void Matrix::getZYXEuler(float& zRot, float& yRot, float& xRot) const
 {
    float sx;
 
@@ -436,7 +436,7 @@ void Matrix::getZYXEuler(float& zRot, float& yRot, float& xRot) const
 
 // -------------------------------------------------------------- //
 
-void Matrix::makeZXYEuler(float zRot, float xRot, float yRot)
+inline void Matrix::makeZXYEuler(float zRot, float xRot, float yRot)
 {
    float sx = sin(Math::deg2Rad(xRot));  float cx = cos(Math::deg2Rad(xRot));
    float sy = sin(Math::deg2Rad(yRot));  float cy = cos(Math::deg2Rad(yRot));
@@ -455,7 +455,7 @@ void Matrix::makeZXYEuler(float zRot, float xRot, float yRot)
 //: extract the yaw information from the matrix
 //  returned value is from -180 to 180, where 0 is none
 // Rotation around Y axis
-float Matrix::getYRot() const
+inline float Matrix::getYRot() const
 {
    /*
    const vjVec3 forwardPoint( 0, 0, -1 );       // -Z
@@ -481,7 +481,7 @@ float Matrix::getYRot() const
 //: extract the pitch information from the matrix
 //  returned value is from -180 to 180, where 0 none
 // Rotation around X axis
-float Matrix::getXRot() const
+inline float Matrix::getXRot() const
 {
    /*
    const vjVec3 forwardPoint( 0, 0, -1 );    // -Z
@@ -507,7 +507,7 @@ float Matrix::getXRot() const
 //: extract the roll information from the matrix
 //  returned value is from -180 to 180, where 0 is no roll
 // Rotation around Z axis
-float Matrix::getZRot() const
+inline float Matrix::getZRot() const
 {
    /*
    const vjVec3 up_point( 0, 1, 0 );          // straight up (+Y)
@@ -530,7 +530,7 @@ float Matrix::getZRot() const
    return 0.0f;
 }
 
-void Matrix::getZXYEuler(float& zRot, float& xRot, float& yRot) const
+inline void Matrix::getZXYEuler(float& zRot, float& xRot, float& yRot) const
 {
    // Extract the rotation directly fromt he matrix
    float x_angle;
@@ -576,7 +576,7 @@ void Matrix::getZXYEuler(float& zRot, float& xRot, float& yRot) const
 
 // --------------------------------------------------------------------------- //
 
-void Matrix::makeDirCos(Vec3 secXAxis, Vec3 secYAxis, Vec3 secZAxis)
+inline void Matrix::makeDirCos(Vec3 secXAxis, Vec3 secYAxis, Vec3 secZAxis)
 {
 //   vjASSERT(secXAxis.isNormalized());
 //   vjASSERT(secYAxis.isNormalized());
@@ -599,7 +599,7 @@ void Matrix::makeDirCos(Vec3 secXAxis, Vec3 secYAxis, Vec3 secZAxis)
        0,  0,  0, 1);
 }
 
-void Matrix::makeAxes(const Vec3& xAxis, const Vec3& yAxis, const Vec3& zAxis)
+inline void Matrix::makeAxes(const Vec3& xAxis, const Vec3& yAxis, const Vec3& zAxis)
 {
    makeIdent();
 
@@ -616,7 +616,7 @@ void Matrix::makeAxes(const Vec3& xAxis, const Vec3& yAxis, const Vec3& zAxis)
    mMat[2][2] = zAxis[2];
 }
 
-void Matrix::getAxes(Vec3& xAxis, Vec3& yAxis, Vec3& zAxis) const
+inline void Matrix::getAxes(Vec3& xAxis, Vec3& yAxis, Vec3& zAxis) const
 {
    xAxis[0] = mMat[0][0];
    xAxis[1] = mMat[0][1];
@@ -632,7 +632,7 @@ void Matrix::getAxes(Vec3& xAxis, Vec3& yAxis, Vec3& zAxis) const
 }
 
 
-void  Matrix::makeRot(float _degrees, Vec3 _axis)
+inline void  Matrix::makeRot(float _degrees, Vec3 _axis)
 {
     _axis.normalize();  // NOTE: This could be eliminated by passing normalized
              //       vector.  This could be by ref to make even faster
@@ -661,7 +661,7 @@ void  Matrix::makeRot(float _degrees, Vec3 _axis)
 }
 
 
-void  Matrix::makeTrans(float _x, float _y, float _z)
+inline void  Matrix::makeTrans(float _x, float _y, float _z)
 {
    makeIdent();
    mMat[3][0] = _x;
@@ -669,35 +669,35 @@ void  Matrix::makeTrans(float _x, float _y, float _z)
    mMat[3][2] = _z;
 }
 
-void Matrix::makeTrans(const Vec3& trans)
+inline void Matrix::makeTrans(const Vec3& trans)
 { makeTrans(trans[0],trans[1],trans[2]); }
 
-void Matrix::setTrans(float _x, float _y, float _z)
+inline void Matrix::setTrans(float _x, float _y, float _z)
 {
    mMat[3][0] = _x;
    mMat[3][1] = _y;
    mMat[3][2] = _z;
 }
 
-void Matrix::setTrans(const Vec3& trans)
+inline void Matrix::setTrans(const Vec3& trans)
 { setTrans(trans[0],trans[1],trans[2]); }
 
 
-void Matrix::getTrans(float& _x, float& _y, float& _z) const
+inline void Matrix::getTrans(float& _x, float& _y, float& _z) const
 {
    _x = mMat[3][0];
    _y = mMat[3][1];
    _z = mMat[3][2];
 }
 
-Vec3 Matrix::getTrans() const
+inline Vec3 Matrix::getTrans() const
 {
    Vec3 trans;;
    getTrans(trans[0],trans[1],trans[2]);
    return trans;
 }
 
-void  Matrix::makeScale(float _x, float _y, float _z)
+inline void  Matrix::makeScale(float _x, float _y, float _z)
 {
     makeIdent();
     mMat[0][0] = _x;
@@ -721,7 +721,7 @@ void  Matrix::makeScale(float _x, float _y, float _z)
 //int     n;
 
     /// Set mat = inverse(_m)
-bool Matrix::invert(Matrix& _m)
+inline bool Matrix::invert(Matrix& _m)
 
 {
         float*  a = _m.floatPtr();
