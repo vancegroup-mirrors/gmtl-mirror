@@ -7,8 +7,8 @@
 #
 # -----------------------------------------------------------------
 # File:          $RCSfile: configure.in,v $
-# Date modified: $Date: 2002-05-09 17:36:31 $
-# Version:       $Revision: 1.3 $
+# Date modified: $Date: 2002-05-21 14:54:40 $
+# Version:       $Revision: 1.4 $
 # -----------------------------------------------------------------
 #
 # ********************************************************** ggt-head end
@@ -33,8 +33,8 @@
 #
 # *********************************************************** ggt-cpr end
 
-AC_REVISION($Revision: 1.3 $)
-AC_INIT(gmtl/gmtlConfig.h)
+AC_REVISION($Revision: 1.4 $)
+AC_INIT(gmtl/gmtl.h)
 AC_CANONICAL_SYSTEM
 case $target_os in
   cygwin*)
