@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: OutputTest.h,v $
- * Date modified: $Date: 2002-03-20 19:38:55 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-03-20 19:49:12 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -64,6 +64,7 @@ namespace gmtlTest
       void testMatrix();
       void testQuat();
       void testTri();
+      void testPlane();
 
       static CppUnit::Test* suite()
       {
@@ -73,6 +74,7 @@ namespace gmtlTest
          test_suite->addTest( new CppUnit::TestCaller<OutputTest>("testMatrix", &OutputTest::testMatrix) );
          test_suite->addTest( new CppUnit::TestCaller<OutputTest>("testQuat", &OutputTest::testQuat) );
          test_suite->addTest( new CppUnit::TestCaller<OutputTest>("testTri", &OutputTest::testTri) );
+         test_suite->addTest( new CppUnit::TestCaller<OutputTest>("testPlane", &OutputTest::testPlane) );
 
          return test_suite;
       }

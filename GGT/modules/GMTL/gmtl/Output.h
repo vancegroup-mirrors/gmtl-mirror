@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Output.h,v $
- * Date modified: $Date: 2002-03-20 19:38:54 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-03-20 19:49:12 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -138,6 +138,25 @@ namespace gmtl
    std::ostream& operator<<( std::ostream& out, const Tri<DATA_TYPE> &t )
    {
       out << t[0] << ", " << t[1] << ", " << t[2];
+      return out;
+   }
+
+   /**
+    * Outputs a string representation of the given Plane to the given output
+    * stream. The output is formatted along the lines of:
+    * <pre>
+    *   (1, 2, 3), 4
+    * </pre>
+    *
+    * @param out     the stream to write to
+    * @param p       the Plane to output
+    *
+    * @return  out after it has been written to
+    */
+   template< typename DATA_TYPE >
+   std::ostream& operator<<( std::ostream& out, const Plane<DATA_TYPE> &p )
+   {
+      out << p.mNorm << ", " << p.mOffset;
       return out;
    }
 } // end namespace gmtl
