@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOps.h,v $
- * Date modified: $Date: 2002-02-18 19:28:57 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-02-18 21:21:48 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -88,7 +88,7 @@ namespace gmtl
    
    /** matrix * matrix
     *  @PRE: if lhs is m x p, and rhs is p x n, then result is m x n (mult func undefined otherwise)
-    *  @POST: returns a m x n matrix
+    *  @POST: returns a m x n matrix == lhs * rhs
     *  returns a temporary, is slower.
     */
    template <typename DATA_TYPE, unsigned ROWS, unsigned INTERNAL, unsigned COLS>
