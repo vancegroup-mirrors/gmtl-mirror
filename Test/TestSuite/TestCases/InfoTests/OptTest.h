@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: OptTest.h,v $
- * Date modified: $Date: 2002-02-11 20:38:12 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2002-02-11 20:51:14 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -39,9 +39,6 @@
 #include <cppunit/TestSuite.h>
 #include <cppunit/TestCaller.h>
 #include <cppunit/extensions/MetricRegistry.h>
-
-#include <gmtl/Vec3.h>
-#include <gmtl/matVecFuncs.h>
 
 namespace gmtlTest
 {
