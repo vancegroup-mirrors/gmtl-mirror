@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: LineSegTest.h,v $
- * Date modified: $Date: 2002-02-24 23:37:03 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-03-11 18:31:08 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -103,8 +103,6 @@ public:
 
    void testPtVecCreation()
    {
-      gmtl::Vec<float, 3> zeroVec(0,0,0);
-
       CPPUNIT_ASSERT(x1_lineseg.mOrigin == origin);
       CPPUNIT_ASSERT(y1_lineseg.mOrigin == origin);
       CPPUNIT_ASSERT(z1_lineseg.mOrigin == origin);
