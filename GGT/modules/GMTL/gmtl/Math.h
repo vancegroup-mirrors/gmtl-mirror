@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Math.h,v $
- * Date modified: $Date: 2002-03-21 16:41:06 $
- * Version:       $Revision: 1.21 $
+ * Date modified: $Date: 2002-04-10 14:03:19 $
+ * Version:       $Revision: 1.22 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,7 +35,6 @@
 #ifndef _GMTL_MATH_H_
 #define _GMTL_MATH_H_
 
-#include <gmtl/gmtlConfig.h>
 #include <gmtl/Assert.h>
 #include <math.h>
 #include <stdlib.h>
@@ -279,12 +278,14 @@ inline double sqrt( double fValue )
 }
 
 //----------------------------------------------------------------------------
+/** get a random number between 0 and 1
+ * @post returns number between 0 and 1
+ */
 inline float unitRandom()
 {
     //return float(random())/float(RAND_MAX);
    float ret_val;
-   ret_val = ::drand48();
-   gmtlASSERT((ret_val >= 0.0f) && (ret_val <= 1.0f));
+   ret_val = ::drand48(); // @todo use something portable!
    return ret_val;
 }
 
