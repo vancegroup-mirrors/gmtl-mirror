@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Point.h,v $
- * Date modified: $Date: 2002-02-11 05:40:51 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-02-11 05:55:42 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -53,9 +53,12 @@ public:
 
 public:
    /** Default constructor
-    * Constructs a vector with all elements zeroed
     */
-   Point() {;}
+   Point()
+   {
+      for(unsigned i=0;i<SIZE;++i)
+         mData[i] = 0.0f;
+   }
 
    /** @name Value constructors
     * Construct with copy of rVec
