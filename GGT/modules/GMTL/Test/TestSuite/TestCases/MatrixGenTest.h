@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixGenTest.h,v $
- * Date modified: $Date: 2002-02-18 20:02:04 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-02-18 20:39:59 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -78,7 +78,7 @@ public:
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixTest/matMakeRot33ByRef", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeRot33ByRef", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
    
    void testMatrixMakeRot34ByRef()
@@ -95,7 +95,7 @@ public:
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixTest/matMakeRot34ByRef", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeRot34ByRef", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
    
    void testMatrixMakeRot44ByRef()
@@ -112,7 +112,58 @@ public:
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixTest/matMakeRot44ByRef", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeRot44ByRef", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+   
+   void testMatrixMakeRot33ByVal()
+   {
+      gmtl::Matrix<float, 3, 3> mat;
+      
+      // Test overhead of creation
+      const long iters(100000);
+      CPPUNIT_METRIC_START_TIMING();
+
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         mat = gmtl::makeRot<float, 3, 3>( 90.0f, 1.0f, 0.0f, 0.0f );
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeRot33ByVal", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+   
+   void testMatrixMakeRot34ByVal()
+   {
+      gmtl::Matrix<float, 3, 4> mat;
+      
+      // Test overhead of creation
+      const long iters(100000);
+      CPPUNIT_METRIC_START_TIMING();
+
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         mat = gmtl::makeRot<float, 3, 4>( 90.0f, 1.0f, 0.0f, 0.0f );
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeRot34ByVal", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+   
+   void testMatrixMakeRot44ByVal()
+   {
+      gmtl::Matrix<float, 4, 4> mat;
+      
+      // Test overhead of creation
+      const long iters(100000);
+      CPPUNIT_METRIC_START_TIMING();
+
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         mat = gmtl::makeRot<float, 4, 4>( 90.0f, 1.0f, 0.0f, 0.0f );
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeRot44ByVal", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
    
    static Test* suite()
@@ -121,6 +172,9 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeRot33ByRef", &MatrixGenTest::testMatrixMakeRot33ByRef));
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeRot34ByRef", &MatrixGenTest::testMatrixMakeRot34ByRef));
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeRot44ByRef", &MatrixGenTest::testMatrixMakeRot44ByRef));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeRot33ByVal", &MatrixGenTest::testMatrixMakeRot33ByVal));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeRot34ByVal", &MatrixGenTest::testMatrixMakeRot34ByVal));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeRot44ByVal", &MatrixGenTest::testMatrixMakeRot44ByVal));
       return test_suite;
    }
 

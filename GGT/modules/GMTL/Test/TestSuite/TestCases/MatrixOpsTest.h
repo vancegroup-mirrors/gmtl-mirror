@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOpsTest.h,v $
- * Date modified: $Date: 2002-02-18 20:00:50 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-02-18 20:40:00 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -87,7 +87,7 @@ public:
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixOpsTest/matTransposeTest", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixOpsTest/TransposeTest", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }   
 
    void testMatrixTimeMult44()
@@ -109,7 +109,7 @@ public:
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixOpsTest/matMult44", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixOpsTest/Mult44", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
       
       
       CPPUNIT_METRIC_START_TIMING();
@@ -120,7 +120,7 @@ public:
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixOpsTest/matMult44operatorStar", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixOpsTest/Mult44operatorStar", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }   
    
 
@@ -143,7 +143,7 @@ public:
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixOpsTest/matAdd44", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixOpsTest/Add44", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
    
 
@@ -166,7 +166,7 @@ public:
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixOpsTest/matSub44", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixOpsTest/Sub44", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }   
    
    
