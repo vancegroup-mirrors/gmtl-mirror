@@ -5,8 +5,9 @@ GGT
    CVSROOT: allenb@cvs.ggt.sourceforge.net:/cvsroot/ggt
    #CVSROOT: :pserver:anonymous@cvs.subsynth.sourceforge.net:/cvsroot/subsynth;
 
-   Module: GGT; # Blah blah
+   Module: GGT;   # Blah blah
    //Tag: HEAD;
+   
    Path: ..;      // Put it overtop of me (since I am he)
    // Good good
 
@@ -18,7 +19,5 @@ GGT
       CVSROOT: allenb@cvs.vrjuggler.sourceforge.net:/cvsroot/vrjuggler;
       Module: juggler/modules/vapor [modules/vapor];
       Tag: HEAD;
-   }
-
-   
-}
+   } 
+};
