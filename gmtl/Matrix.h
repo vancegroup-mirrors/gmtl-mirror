@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Matrix.h,v $
- * Date modified: $Date: 2003-04-21 01:21:13 $
- * Version:       $Revision: 1.34 $
+ * Date modified: $Date: 2003-08-19 22:49:47 $
+ * Version:       $Revision: 1.35 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -465,7 +465,7 @@ public:
    }
 
    /*
-   // racket operator
+   // bracket operator
    const DATA_TYPE& operator[]( const unsigned i ) const
    {
       gmtlASSERT( i < (ROWS*COLS) );
@@ -473,8 +473,8 @@ public:
    }
    */
 
-   /** Get a DATA_TYPE pointer to the matrix data
-    * RETVAL: Returns a ptr to the head of the matrix data
+   /** Gets a DATA_TYPE pointer to the matrix data.
+    * @return Returns a pointer to the head of the matrix data.
     */
    const DATA_TYPE*  getData() const { return (DATA_TYPE*)mData; }
 
