@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: testSuite.cpp,v $
- * Date modified: $Date: 2002-06-11 21:52:53 $
- * Version:       $Revision: 1.50 $
+ * Date modified: $Date: 2002-06-24 03:35:06 $
+ * Version:       $Revision: 1.51 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -85,6 +85,7 @@
 #include <TestCases/AxisAngleCompareTest.h>
 
 #include <TestCases/AABoxTest.h>
+#include <TestCases/AABoxContainTest.h>
 
 
 #include <TestCases/InfoTests/OptTest.h>
@@ -174,6 +175,7 @@ int main (int ac, char **av)
 
    gmtl_suite->addTest( gmtlTest::OutputTest::suite() );
    gmtl_suite->addTest( gmtlTest::AABoxTest::suite() );
+   gmtl_suite->addTest( gmtlTest::AABoxContainTest::suite() );
    gmtl_suite->addTest( gmtlTest::EulerAngleClassTest::suite() );
    gmtl_suite->addTest( gmtlTest::EulerAngleCompareTest::suite() );
    gmtl_suite->addTest( gmtlTest::AxisAngleClassTest::suite() );
@@ -219,6 +221,7 @@ int main (int ac, char **av)
 
    perf_suite->addTest( gmtlTest::OutputTest::perfSuite() );
    perf_suite->addTest( gmtlTest::AABoxTest::perfSuite() );
+   perf_suite->addTest( gmtlTest::AABoxContainTest::perfSuite() );
    perf_suite->addTest( gmtlTest::EulerAngleClassTest::perfSuite() );
    perf_suite->addTest( gmtlTest::EulerAngleCompareTest::perfSuite() );
    perf_suite->addTest( gmtlTest::AxisAngleClassTest::perfSuite() );

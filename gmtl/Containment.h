@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Containment.h,v $
- * Date modified: $Date: 2002-05-20 22:19:00 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2002-06-24 03:35:06 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -37,6 +37,7 @@
 
 // new stuff
 #include <gmtl/Sphere.h>
+#include <gmtl/AABox.h>
 #include <gmtl/VecOps.h>
 
 // old stuff
@@ -48,6 +49,10 @@
 
 namespace gmtl
 {
+
+//-----------------------------------------------------------------------------
+// Sphere
+//-----------------------------------------------------------------------------
 
 /**
  * Tests if the given point is inside or on the surface of the given spherical
@@ -307,6 +312,70 @@ bool isOnVolume( const Sphere<DATA_TYPE>& container,
    // abs( |center-pt| - radius ) < tol
    return ( Math::abs( length(container.mCenter - pt) - container.mRadius )
             <= tol );
+}
+
+//-----------------------------------------------------------------------------
+// AABox
+//-----------------------------------------------------------------------------
+
+/**
+ * Tests if the given point is inside or on the surface of the given AABox
+ * volume.
+ *
+ * @param container  the AABox to test against
+ * @param pt         the point to test with
+ *
+ * @return  true if pt is inside container, false otherwise
+ */
+template< class DATA_TYPE >
+bool isInVolume( const AABox<DATA_TYPE>& container,
+                 const Point<DATA_TYPE, 3>& pt )
+{
+   if (! container.isEmpty())
+   {
+      return ( pt[0] >= container.mMin[0] &&
+               pt[1] >= container.mMin[1] &&
+               pt[2] >= container.mMin[2] &&
+               pt[0] <= container.mMax[0] &&
+               pt[1] <= container.mMax[1] &&
+               pt[2] <= container.mMax[2]);
+   }
+   else
+   {
+      return false;
+   }
+}
+
+/**
+ * Tests if the given AABox is completely inside or on the surface of the given
+ * AABox container.
+ *
+ * @param container  the AABox acting as the container
+ * @param box        the AABox that may be inside container
+ *
+ * @return  true if AABox is inside container, false otherwise
+ */
+template< class DATA_TYPE >
+bool isInVolume( const AABox<DATA_TYPE>& container,
+                 const AABox<DATA_TYPE>& box )
+{
+   // Empty boxes don't overlap
+   if (container.isEmpty() || box.isEmpty())
+   {
+      return false;
+   }
+
+   // Test that the boxes are not overlapping on any axis
+   if (container.mMax[0] < box.mMin[0] || container.mMin[0] > box.mMax[0] ||
+       container.mMax[1] < box.mMin[1] || container.mMin[1] > box.mMax[1] ||
+       container.mMax[2] < box.mMin[2] || container.mMin[2] > box.mMax[2])
+   {
+      return false;
+   }
+   else
+   {
+      return true;
+   }
 }
 
 /*
