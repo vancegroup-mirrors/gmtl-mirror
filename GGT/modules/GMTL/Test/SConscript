@@ -1,9 +1,11 @@
 import os
 pj = os.path.join
 
-Import('GetPlatform')
+Import('GetPlatform', 'optimize')
 
 builddir = 'build.' + GetPlatform()
+if optimize != 'no':
+   builddir = builddir + '.opt'
 BuildDir(builddir, 'TestSuite', duplicate=0)
 
 SConscript(dirs = builddir)

@@ -5,7 +5,15 @@
 /** @page gmtlfaq Generic Math Template Library FAQ
  *  Welcome to the GMTL frequently asked questions list.
  *
+ *  Topics:
  *
+ *  - @ref faqgeneral
+ *  - @ref Vectors
+ *  - @ref Matrices
+ *  - @ref Quaternions
+ *  - @ref Collision
+ *  - @ref General
+ *  - @ref CompileProblems
  * 
  *
  *  @section faqgeneral General Questions about GMTL
@@ -1499,6 +1507,62 @@
  *  float radians = 1.57;
  *  float degrees = gmtl::Math::rad2Deg( radians );
  *
+ *  @endcode
+ *
+ *  @subsection CompileProblems Common compile problems
+ *
+ *  <b>Errors with Vec/Point expression conversions</b>
+ *
+ *   <tt>Example error: error: no matching function for call 
+ *   to `lengthSquared(gmtl::VecBase<float, 3, 
+ *  gmtl::meta::VecBinaryExpr<gmtl::VecBase<float, 3, 
+ *  gmtl::meta::DefaultVecTag>, gmtl::VecBase<float, 3, 
+ *  gmtl::meta::DefaultVecTag>, gmtl::meta::VecPlusBinary> >)' </tt>
+ *
+ *  GMTL makes extensive use of expression templates.  These templates come into
+ *  play when evaluating statement such as:
+ *
+ *  @code
+ *
+ *  gmtl::Vec3f vec1, vec2, vec3;
+ *  vec1 = vec2 + (vec3 * 6.0);
+ *
+ *  @endcode
+ *  
+ *  When evaluating the expression on the second line, GMTL creates an expression
+ *  template tree to fully evaluate this expression when = is called.  The details
+ *  of this process are normally hidden from the user, but can come to the forefront
+ *  when a method expects a Vec or Point argument and is passed an expression.  For example:
+ *
+ *
+ *  @code
+ *
+ *  void myMethod(gmtl::Vec3f vec) 
+ *  { ... }
+ *
+ *  gmtl::Vec3f vec1, vec2;
+ *  
+ *  myMethod(vec1);           // Works correctly
+ *  myMethod(vec1 + vec2);    // Fails to compile
+ * 
+ *  @endcode
+ *
+ *  The reason the second line fails to compile is that the type for "vec1 + vec2" is not
+ *  a Vec3f.  It is an expression template that describes how to sum two Vec3f's.
+ *  (You may expect an autoconversion to happen, but it does not because of template argument
+ *  deduction rules).
+ *
+ *  There are two solutions to this, either explicitly construct a temporary
+ *  object to pass to the method (which is what an auto conversion would do anyway) or
+ *  write the method to handle expression templates.  This second option is not difficult,
+ *  but does require a further understanding of GMTL then is documented here.
+ *
+ *  Here is how the first option could be used:
+ *
+ *  @code
+ *  
+ *   myMethod(gmtl::Vec3f(vec1 + vec2));     // Creates a temporary to pass in
+ * 
  *  @endcode
  *
  */ 

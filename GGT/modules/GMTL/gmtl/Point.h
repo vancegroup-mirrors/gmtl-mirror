@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Point.h,v $
- * Date modified: $Date: 2003-03-29 22:02:19 $
- * Version:       $Revision: 1.16 $
+ * Date modified: $Date: 2004-09-16 19:40:35 $
+ * Version:       $Revision: 1.17 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -41,11 +41,11 @@ namespace gmtl
 {
 
 /** Point
- *  Use points when you need to represent a position.  Don't use points to 
+ *  Use points when you need to represent a position.  Don't use points to
  *  represent a Vector.  One difference you should note is that
  *  ceratain matrix operations are different between Point and Vec such as
  *  xform and operator*.  A Vec xform by matrix is simply a rotation,
- *  while a Point xformed by a matrix is a full matrix transform 
+ *  while a Point xformed by a matrix is a full matrix transform
  *  (rotation, skew, translation, scale).
  *
  * @see Point3f
@@ -63,6 +63,7 @@ public:
 
    /** Placeholder for the base type */
    typedef VecBase<DATA_TYPE, SIZE> BaseType;
+   typedef Point<DATA_TYPE, SIZE> VecType;
 
 public:
    /** Default constructor
@@ -77,14 +78,22 @@ public:
     * Construct with copy of rVec
     */
    //@{
+   /*
    Point(const Point<DATA_TYPE, SIZE>& rVec)
       : BaseType(static_cast<BaseType>(rVec))
    {;}
    Point(const VecBase<DATA_TYPE, SIZE>& rVec)
       : BaseType(rVec)
    {;}
+   */
 
-   /** 
+   template<typename REP2>
+   Point( const VecBase<DATA_TYPE, SIZE, REP2>& rVec )
+      : BaseType( rVec )
+   {
+   }
+
+   /**
     * Construct a 2-D point with 2 given values
     */
    Point(const DATA_TYPE& val0,const DATA_TYPE& val1)
@@ -94,7 +103,7 @@ public:
       gmtlASSERT( SIZE == 2 && "out of bounds element access in Point" );
    }
 
-   /** 
+   /**
     * Construct a 3-D point with 2 given values
     */
    Point(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2)
@@ -104,7 +113,7 @@ public:
       gmtlASSERT( SIZE == 3 && "out of bounds element access in Point" );
    }
 
-   /** 
+   /**
     * Construct a 4-D point with 2 given values
     */
    Point(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2,const DATA_TYPE& val3)
@@ -114,6 +123,15 @@ public:
       gmtlASSERT( SIZE == 4 && "out of bounds element access in Point" );
    }
    //@}
+
+   /** Assign from different rep. */
+   template<typename REP2>
+   inline VecType& operator=(const VecBase<DATA_TYPE,SIZE,REP2>& rhs)
+   {
+      BaseType::operator=(rhs);
+      return *this;
+   }
+
 
 };
 

@@ -8,8 +8,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: EulerAngleCompareTest.cpp,v $
- * Date modified: $Date: 2003-02-05 22:50:38 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2004-09-16 19:40:32 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -66,7 +66,7 @@ namespace gmtlTest
             CPPUNIT_ASSERT( !(euler1 == euler2) );
             euler2[j] = euler1[j]; // put it back
          }
-         
+
          // just for fun
          CPPUNIT_ASSERT(  (euler1 == euler2) );
          CPPUNIT_ASSERT( !(euler1 != euler2) );
@@ -277,7 +277,7 @@ namespace gmtlTest
             ++true_count;
          if (gmtl::isEqual( src_quat44,  test_quat44, 0.8f ))
             ++true_count;
-         if (gmtl::isEqual( src_quat101, test_quat101, 111.1 ))
+         if (gmtl::isEqual( src_quat101, test_quat101, double(111.1) ))
             ++true_count;
       }
 

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: TriOps.h,v $
- * Date modified: $Date: 2003-04-18 22:55:21 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2004-09-16 19:40:35 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -40,7 +40,7 @@
 
 namespace gmtl
 {
-/** @ingroup Ops Tri 
+/** @ingroup Ops Tri
  *  @name Triangle Operations
  * @{
  */
@@ -69,13 +69,13 @@ Point<DATA_TYPE, 3> center( const Tri<DATA_TYPE>& tri )
 template< class DATA_TYPE >
 Vec<DATA_TYPE, 3> normal( const Tri<DATA_TYPE>& tri )
 {
-   Vec<DATA_TYPE, 3> normal = makeCross( tri[1] - tri[0], tri[2] - tri[0] );
+   Vec<DATA_TYPE, 3> normal = makeCross( gmtl::Vec<DATA_TYPE,3>(tri[1] - tri[0]), gmtl::Vec<DATA_TYPE,3>(tri[2] - tri[0]) );
    normalize( normal );
    return normal;
 }
 /** @} */
 
-/** @ingroup Compare Tri 
+/** @ingroup Compare Tri
  *  @name Triangle Comparitors
  *  @{
  */
