@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Version.h,v $
- * Date modified: $Date: 2003-03-03 22:18:38 $
- * Version:       $Revision: 1.15 $
+ * Date modified: $Date: 2003-03-15 21:19:37 $
+ * Version:       $Revision: 1.16 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -137,7 +137,10 @@
 //--------------------------------------------------------------------------
 namespace gmtl
 {
-   const char* version = GMTL_XSTR(GMTL_VERSION_STRING);
+   inline const char* getVersion()
+   {
+      return GMTL_XSTR(GMTL_VERSION_STRING);
+   }
 } // end namespace gmtl
 
 //--------------------------------------------------------------------------

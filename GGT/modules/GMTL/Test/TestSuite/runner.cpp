@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: runner.cpp,v $
- * Date modified: $Date: 2003-02-05 02:21:16 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2003-03-15 21:19:37 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -80,7 +80,7 @@ int main(int argc, char** argv)
 
    // Print out what version of GMTL we're testing.
    std::cout<<std::endl;
-   std::cout<<"GMTL Version: "<<gmtl::version<<std::endl;
+   std::cout<<"GMTL Version: "<<gmtl::getVersion()<<std::endl;
    std::cout<<std::endl;
 
    //------------------------------------

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl.h,v $
- * Date modified: $Date: 2003-03-15 00:58:19 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2003-03-15 21:19:38 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -66,6 +66,7 @@
 #include <gmtl/VecBase.h>
 #include <gmtl/Vec.h>
 #include <gmtl/VecOps.h>
+#include <gmtl/Version.h>
 #include <gmtl/Xforms.h>
 
 #endif
