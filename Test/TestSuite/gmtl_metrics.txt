@@ -715,6 +715,11 @@ gfxn3/Debug/XformTest/operator*(quat4,vec3)f                       4.46164
 gfxn3/Debug/XformTest/operator*(quat4,vec3)i                       4.54588
 gfxn3/Debug/XformTest/operator*(quat4,vec3)l                       4.50316
 gfxn3/Debug/XformTest/operator*(quat4,vec3)s                       4.79197
+gfxn3/Debug/XformTest/xform(vec,quat4,vec3)d                       4.59735
+gfxn3/Debug/XformTest/xform(vec,quat4,vec3)f                       4.47408
+gfxn3/Debug/XformTest/xform(vec,quat4,vec3)i                       4.55087
+gfxn3/Debug/XformTest/xform(vec,quat4,vec3)l                       4.55468
+gfxn3/Debug/XformTest/xform(vec,quat4,vec3)s                       4.84546
 gfxn3/Opt/Main/MetricTest                                          1221.75
 gfxn3/Opt/PointTest/ConstructorsOverhead                           0.0984375
 gfxn3/Opt/PointTest/CopyConstructOverhead                          0.07059
