@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-05-29 21:19:01 $
- * Version:       $Revision: 1.56 $
+ * Date modified: $Date: 2002-06-06 15:16:34 $
+ * Version:       $Revision: 1.57 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -45,7 +45,6 @@
 #include <gmtl/Matrix.h>
 #include <gmtl/Meta.h>
 #include <gmtl/Math.h>
-#include <gmtl/Convert.h>
 #include <gmtl/Xforms.h>
 
 // @todo Vec& setNormal( Vec&, scalar, scalar, scalar ) (and other dimensions)  (might not need, use this instead - setNormal( Vec( scal, scal, scal ) ))
@@ -313,6 +312,77 @@ namespace gmtl
       return result;
    }
 
+   /** set vector to a "pure" quaternion.
+    *  @post quat = [v,0] = [v0,v1,v2,0]
+    */
+   template <typename DATA_TYPE>
+   Quat<DATA_TYPE>& set( Quat<DATA_TYPE>& pure_quat, const Vec<DATA_TYPE, 3>& vector )
+   {
+      gmtl::setPure(pure_quat, vector);
+      return pure_quat;
+   }
+   
+   /** set a matrix (3x3, 3x4, 4x3, or 4x4) to a quaternion.
+    */
+   template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
+   inline Quat<DATA_TYPE>& set( Quat<DATA_TYPE>& quat, const Matrix<DATA_TYPE, ROWS, COLS>& mat  )
+   {
+      gmtlASSERT( ((ROWS == 3 && COLS == 3) ||
+               (ROWS == 3 && COLS == 4) ||
+               (ROWS == 4 && COLS == 3) ||
+               (ROWS == 4 && COLS == 4)) &&
+               "pre conditions not met on set( quat, pos, mat ) which only sets a quaternion to the rotation part of a 3x3, 3x4, 4x3, or 4x4 matrix." );
+
+      DATA_TYPE tr( mat( 0, 0 ) + mat( 1, 1 ) + mat( 2, 2 ) ), s( 0.0f );
+
+      // If diagonal is positive
+      if (tr > (DATA_TYPE)0.0)
+      {
+         s = Math::sqrt( tr + (DATA_TYPE)1.0 );
+         quat[Welt] = s * (DATA_TYPE)0.5;
+         s = DATA_TYPE(0.5) / s;
+
+         quat[Xelt] = (mat( 2, 1 ) - mat( 1, 2 )) * s;
+         quat[Yelt] = (mat( 0, 2 ) - mat( 2, 0 )) * s;
+         quat[Zelt] = (mat( 1, 0 ) - mat( 0, 1 )) * s;
+      }
+
+      // when Diagonal is negative
+      else
+      {
+         static const unsigned int nxt[3] = { 1, 2, 0 };
+         unsigned int i( Xelt ), j, k;
+
+         if (mat( 1, 1 ) > mat( 0, 0 ))
+            i = 1;
+
+         if (mat( 2, 2 ) > mat( i, i ))
+            i = 2;
+
+         j = nxt[i];
+         k = nxt[j];
+
+         s = Math::sqrt( (mat( i, i )-(mat( j, j )+mat( k, k ))) + (DATA_TYPE)1.0 );
+
+         DATA_TYPE q[4];
+         q[i] = s * (DATA_TYPE)0.5;
+
+         if (s != (DATA_TYPE)0.0)
+            s = DATA_TYPE(0.5) / s;
+
+         q[3] = (mat( k, j ) - mat( j, k )) * s;
+         q[j] = (mat( j, i ) + mat( i, j )) * s;
+         q[k] = (mat( k, i ) + mat( i, k )) * s;
+
+         quat[Xelt] = q[0];
+         quat[Yelt] = q[1];
+         quat[Zelt] = q[2];
+         quat[Welt] = q[3];
+      }
+
+      return quat;
+   }
+   
    /** @} */
      
    /** @ingroup Generate 
@@ -330,7 +400,7 @@ namespace gmtl
    {
       gmtl::ignore_unused_variable_warning(t);
       TARGET_MATRIX_TYPE target_mat;
-      return convert( target_mat, src_mat );
+      return set( target_mat, src_mat );
    }
    
    /** Create a Matrix from a Coord (Euler type) 
@@ -345,7 +415,7 @@ namespace gmtl
    {
       gmtl::ignore_unused_variable_warning(t);
       MATRIX_TYPE temporary;
-      return convert( temporary, coord, order );
+      return set( temporary, coord, order );
    }
    
    /** Set matrix translation from vec.
@@ -1000,6 +1070,69 @@ namespace gmtl
       Matrix<DATA_TYPE, ROWS, COLS> result;
       return invert( result, src );
    }
+   
+   /** Convert Coord (Euler Type) to Matrix. 
+    * @see Coord
+    * @see Matrix
+    */
+   template <typename DATATYPE, unsigned POSSIZE, unsigned MATCOLS, unsigned MATROWS >
+   inline Matrix<DATATYPE, MATROWS, MATCOLS>& set( Matrix<DATATYPE, MATROWS, MATCOLS>& mat, const Coord<DATATYPE, POSSIZE, 3>& eulercoord, RotationOrder order = gmtl::XYZ )
+   {
+      return setMatrix( mat, eulercoord, order );
+   }
+   
+   /** set a quaternion to the rotation part of a 3x3, 3x4, 4x3, or 4x4 matrix. 
+    * @todo Implement using setRot
+    */
+   template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
+   Matrix<DATA_TYPE, ROWS, COLS>& set( Matrix<DATA_TYPE, ROWS, COLS>& mat, const Quat<DATA_TYPE>& q )
+   {
+      gmtlASSERT( ((ROWS == 3 && COLS == 3) ||
+               (ROWS == 3 && COLS == 4) ||
+               (ROWS == 4 && COLS == 3) ||
+               (ROWS == 4 && COLS == 4)) &&
+               "pre conditions not met on set( mat, quat ) which only sets a quaternion to the rotation part of a 3x3, 3x4, 4x3, or 4x4 matrix." );
+
+      // From Watt & Watt
+      DATA_TYPE wx, wy, wz, xx, yy, yz, xy, xz, zz, xs, ys, zs;
+
+      xs = q[Xelt] + q[Xelt]; ys = q[Yelt] + q[Yelt]; zs = q[Zelt] + q[Zelt];
+      xx = q[Xelt] * xs;      xy = q[Xelt] * ys;      xz = q[Xelt] * zs;
+      yy = q[Yelt] * ys;      yz = q[Yelt] * zs;      zz = q[Zelt] * zs;
+      wx = q[Welt] * xs;      wy = q[Welt] * ys;      wz = q[Welt] * zs;
+
+      mat( 0, 0 ) = DATA_TYPE(1.0) - (yy + zz);
+      mat( 1, 0 ) = xy + wz;
+      mat( 2, 0 ) = xz - wy;
+
+      mat( 0, 1 ) = xy - wz;
+      mat( 1, 1 ) = DATA_TYPE(1.0) - (xx + zz);
+      mat( 2, 1 ) = yz + wx;
+
+      mat( 0, 2 ) = xz + wy;
+      mat( 1, 2 ) = yz - wx;
+      mat( 2, 2 ) = DATA_TYPE(1.0) - (xx + yy);
+
+      if (ROWS == 4)
+      {
+         mat( 3, 0 ) = DATA_TYPE(0.0);
+         mat( 3, 1 ) = DATA_TYPE(0.0);
+         mat( 3, 2 ) = DATA_TYPE(0.0);
+      }
+
+      if (COLS == 4)
+      {
+         mat( 0, 3 ) = DATA_TYPE(0.0);
+         mat( 1, 3 ) = DATA_TYPE(0.0);
+         mat( 2, 3 ) = DATA_TYPE(0.0);
+      }
+
+      if (ROWS == 4 && COLS == 4)
+         mat( 3, 3 ) = DATA_TYPE(1.0);
+
+      return mat;
+   }
+
    /** @} */
      
    /** @ingroup Generate 
@@ -1026,9 +1159,18 @@ namespace gmtl
    {
       gmtl::ignore_unused_variable_warning(t);
       COORD_TYPE temporary;
-      return convert( temporary, mat, order );
+      return set( temporary, mat, order );
    }
    
+   /** Convert Matrix to Coord (Euler Type). 
+    * @see Coord
+    * @see Matrix
+    */
+   template <typename DATATYPE, unsigned POSSIZE, unsigned MATCOLS, unsigned MATROWS >
+   inline Coord<DATATYPE, POSSIZE, 3>& set( Coord<DATATYPE, POSSIZE, 3>& eulercoord, const Matrix<DATATYPE, MATROWS, MATCOLS>& mat, RotationOrder order = gmtl::XYZ )
+   {
+      return setCoord( eulercoord, mat, order );
+   }
    /** @} */
    
 } // end gmtl namespace.

@@ -134,12 +134,8 @@
  *  Tests for equality between GMTL data types.
  */
 
-/** @defgroup Generate Generators: make( ... ), get( ... ), set( ... ), and convert( ... ).
+/** @defgroup Generate Generators: make( ... ), set( ... ).
  *  Make get and set functions for all math types in gmtl.
- */
-
-/** @defgroup Convert Conversion: convert(...)
- *  Conversion between gmtl data types...
  */
 
 /** @defgroup Interp Interpolation: lerp(...), slerp(...)

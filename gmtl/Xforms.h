@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Xforms.h,v $
- * Date modified: $Date: 2002-06-05 23:51:21 $
- * Version:       $Revision: 1.26 $
+ * Date modified: $Date: 2002-06-06 15:16:34 $
+ * Version:       $Revision: 1.27 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -41,7 +41,6 @@
 #include <gmtl/MatrixOps.h>
 #include <gmtl/Quat.h>
 #include <gmtl/QuatOps.h>
-#include <gmtl/Convert.h>
 #include <gmtl/Generate.h>
 
 namespace gmtl
