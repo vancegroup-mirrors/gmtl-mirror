@@ -1,7 +1,6 @@
 #ifndef COORD_GMTL
 #define COORD_GMTL
 
-#include <gmtl/Point.h>
 #include <gmtl/Vec.h>
 
 namespace gmtl
@@ -40,21 +39,31 @@ public:
    {
    }
    
-   Coord( const Point<DATA_TYPE, POSSIZE>& pos, const Vec<DATA_TYPE, ROTSIZE>& rot ) : mPos( pos ), mRot( rot )
+   Coord( const Vec<DATA_TYPE, POSSIZE>& pos, const Vec<DATA_TYPE, ROTSIZE>& rot ) : mPos( pos ), mRot( rot )
    {
    }
    
-   const Point<DATA_TYPE, POSSIZE>& getPos() const { return mPos; }
+   const Vec<DATA_TYPE, POSSIZE>& getPos() const { return mPos; }
    const Vec<DATA_TYPE, ROTSIZE>& getRot() const { return mRot; }
    
+   
+   /// @todo what about having a pos, and a const_pos naming convention?
+   /// @todo what about having a rot, and a const_rot naming convention?
+   
    /** accessor to the position element */
-   Point<DATA_TYPE, POSSIZE>& pos() { return mPos; }
+   Vec<DATA_TYPE, POSSIZE>& pos() { return mPos; }
 
    /** accessor to the rotation element */
    Vec<DATA_TYPE, ROTSIZE>& rot() { return mRot; }
+   
+   /** const accessor to the position element */
+   const Vec<DATA_TYPE, POSSIZE>& pos() const { return mPos; }
+
+   /** const accessor to the rotation element */
+   const Vec<DATA_TYPE, ROTSIZE>& rot() const  { return mRot; }
 
 public:
-   Point<DATA_TYPE, POSSIZE> mPos;
+   Vec<DATA_TYPE, POSSIZE> mPos;
    Vec<DATA_TYPE, ROTSIZE> mRot;
 };
 
