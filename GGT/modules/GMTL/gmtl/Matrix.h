@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Matrix.h,v $
- * Date modified: $Date: 2003-04-11 05:43:46 $
- * Version:       $Revision: 1.31 $
+ * Date modified: $Date: 2003-04-11 05:45:16 $
+ * Version:       $Revision: 1.32 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -85,7 +85,7 @@ namespace gmtl
  *
  * <li> As a result, a gmtl matrix stores elements in memory transposed from 
  *      the equivelent matrix defined using a double array in the C/C++ 
- *      language (see example).
+ *      language, assuming they are accessed the same way (see example).
  * <ul>
  *    <li> Illustrative Example:                                           <br>
  *         Given two flavors of matrix, C/C++, and gmtl:                   <br>
