@@ -7,15 +7,15 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: testSuite.cpp,v $
- * Date modified: $Date: 2002-02-09 22:24:50 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-02-10 04:38:06 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
 /*************************************************************** ggt-cpr beg
 *
 * GGT: The Generic Graphics Toolkit
-* Copyright (C) 2001,2002 Allen Bierbaum 
+* Copyright (C) 2001,2002 Allen Bierbaum
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU Lesser General Public
@@ -45,6 +45,7 @@
 #include <cppunit/extensions/MetricRegistry.h>
 
 // GMTL tests
+#include <gmtl/gmtlConfig.h>
 #include <TestCases/Vec3Test.h>
 #include <TestCases/MatrixTest.h>
 #include <TestCases/Point3Test.h>

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Eigen.h,v $
- * Date modified: $Date: 2002-01-31 01:16:22 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-02-10 04:38:07 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -38,7 +38,7 @@
 #ifndef _EIGEN_H
 #define _EIGEN_H
 
-#include <gmtl/gmtlDefines.h>
+#include <gmtl/gmtlConfig.h>
 
 namespace gmtl
 {
