@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecOps.h,v $
- * Date modified: $Date: 2002-02-21 18:25:12 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-02-21 18:34:18 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -197,20 +197,6 @@ DATA_TYPE normalize(Vec<DATA_TYPE, SIZE>& v1)
 }
 
 /**
- * Determines if the given vector is normalized with zero tolerance. The vector
- * is normalized if its lengthSquared is 1.
- *
- * @param v1      the vector to test
- *
- * @return  true if the vector is normalized, false otherwise
- */
-template< class DATA_TYPE, unsigned SIZE >
-bool isNormalized( const Vec<DATA_TYPE, SIZE>& v1 )
-{
-   return (lengthSquared( v1 ) == DATA_TYPE(1));
-}
-
-/**
  * Determines if the given vector is normalized within the given tolerance. The
  * vector is normalized if its lengthSquared is 1.
  *
@@ -220,7 +206,7 @@ bool isNormalized( const Vec<DATA_TYPE, SIZE>& v1 )
  * @return  true if the vector is normalized, false otherwise
  */
 template< class DATA_TYPE, unsigned SIZE >
-bool isNormalized( const Vec<DATA_TYPE, SIZE>& v1, const DATA_TYPE& eps )
+bool isNormalized( const Vec<DATA_TYPE, SIZE>& v1, const DATA_TYPE& eps = (DATA_TYPE)0.0001 )
 {
    return Math::isEqual( lengthSquared(v1), DATA_TYPE(1), eps );
 }
