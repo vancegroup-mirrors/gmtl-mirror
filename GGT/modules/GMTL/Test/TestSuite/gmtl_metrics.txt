@@ -554,8 +554,10 @@ gfxn3/Debug/GenTest/makePure(vec3d)                                0.18399
 gfxn3/Debug/GenTest/makePure(vec3f)                                0.159362
 gfxn3/Debug/GenTest/makeRot(quatd,d,d,d,d)                         1.03898
 gfxn3/Debug/GenTest/makeRot(quatd,d,vecd)                          1.01476
+gfxn3/Debug/GenTest/makeRot(quatd,vec3d,vec3d)                     1.54838
 gfxn3/Debug/GenTest/makeRot(quatf,f,f,f,f)                         0.918188
 gfxn3/Debug/GenTest/makeRot(quatf,f,vecf)                          0.900467
+gfxn3/Debug/GenTest/makeRot(quatf,vec3f,vec3f)                     1.49585
 gfxn3/Debug/GenTest/makeVec(quatd)                                 0.183608
 gfxn3/Debug/GenTest/makeVec(quatf)                                 0.1771
 gfxn3/Debug/LineSegTest/CopyConstructOverhead                      0.0695625
