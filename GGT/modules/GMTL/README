@@ -25,7 +25,7 @@ o------------------------------------------------------------------------------o
   list of the minimum requirements.
 
     * A standards comformant C++ compiler with good template support
-    * SCons 0.11
+    * SCons 0.96
 
   If you wish to compile and use the tests in GMTL, you will also need the
   following:
