@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Matrix.h,v $
- * Date modified: $Date: 2004-11-12 01:34:49 $
- * Version:       $Revision: 1.38 $
+ * Date modified: $Date: 2004-11-22 15:04:05 $
+ * Version:       $Revision: 1.39 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -140,7 +140,8 @@ public:
    // boost::is_polymorphic returns a false positive.  The details can be
    // found in the Boost.Python FAQ:
    //    http://www.boost.org/libs/python/doc/v2/faq.html#macosx
-#if defined(__MACH__) && defined(__APPLE_CC__) && __APPLE_CC__ <= 1666
+#if defined(__MACH__) && defined(__APPLE_CC__) && defined(__GNUC__) && \
+    __GNUC__ == 3 && __GNUC_MINOR__ == 3
    bool dummy_;
 #endif
 
