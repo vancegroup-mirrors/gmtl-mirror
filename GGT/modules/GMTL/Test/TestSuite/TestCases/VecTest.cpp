@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.cpp,v $
- * Date modified: $Date: 2004-09-02 15:56:54 $
- * Version:       $Revision: 1.13.2.5 $
+ * Date modified: $Date: 2004-09-02 20:31:13 $
+ * Version:       $Revision: 1.13.2.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -52,18 +52,17 @@ namespace gmtlTest
 
    void VecTest::testVecB()
    {
-/*
-      gmtl::VecB<float,3>  vecb_1;
-      gmtl::VecB<float,3>  vecb_2;
+      gmtl::Vec<float,3>  vecb_1;
+      gmtl::Vec<float,3>  vecb_2;
       vecb_2[0] = 5.0f;    // assign
 
-      gmtl::VecB<float,3>  vecb_3(vecb_2);   // Copy construct
+      gmtl::Vec<float,3>  vecb_3(vecb_2);   // Copy construct
       CPPUNIT_ASSERT(vecb_3[0] == 5.0f);
 
-      gmtl::VecB<float,3>  vecb_4(0,1,2);    // Construct with values
+      gmtl::Vec<float,3>  vecb_4(0,1,2);    // Construct with values
       vecb_1.set(5,6,7);                     // set
-      gmtl::VecB<float,3>  vecb_5(0,1,2);    // Construct with values
-      gmtl::VecB<float,3>  vecb_6(0,1,2);    // Construct with values
+      gmtl::Vec<float,3>  vecb_5(0,1,2);    // Construct with values
+      gmtl::Vec<float,3>  vecb_6(0,1,2);    // Construct with values
 
       vecb_2.mData[0] = 10;                  // Access data directly
       vecb_2.mData[1] = 12;
@@ -73,38 +72,21 @@ namespace gmtlTest
       vecb_1 = vecb_2;
       CPPUNIT_ASSERT(vecb_1[1] == 12.0f);
 
-      gmtl::VecB<float,3,
-                 gm::VecBinaryExpr<gmtl::VecB<float,3>,
-                                   gmtl::VecB<float,3>,
-                                   gm::VecPlusBinary> > b_vec(gm::sum(vecb_1, vecb_2));
-
       //unsigned ctr_count;
-
       vecb_2[0] = 10.0f;
       vecb_3[0] = 12.0f;
       vecb_4[0] = 15.0f;
 
       std::cout << "ctr cnt before v2+v3: " << gmtl::helpers::VecCtrCounterInstance()->get() << std::endl;
 
-      vecb_1 = gm::sum(vecb_2, vecb_3);
+      vecb_1 = vecb_2 + vecb_3;
       CPPUNIT_ASSERT(22.0f == vecb_1[0]);
       std::cout << "ctr cnt after v2+v3: " << gmtl::helpers::VecCtrCounterInstance()->get() << std::endl;
 
       std::cout << "ctr cnt before v2+v3+v4: " << gmtl::helpers::VecCtrCounterInstance()->get() << std::endl;
-      vecb_1 = gm::sum(gm::sum(vecb_2,vecb_3), vecb_4);
+      vecb_1 = (vecb_2+vecb_3) + vecb_4;
       CPPUNIT_ASSERT(37.0f == vecb_1[0]);
       std::cout << "ctr cnt after v2+v3+v4: " << gmtl::helpers::VecCtrCounterInstance()->get() << std::endl;
-
-      vecb_2.set(1,2,3);
-      vecb_1 = gm::sum(vecb_2, 10.0f);
-
-      std::cout << "vecb_1: " << vecb_1[0] << ", " << vecb_1[1] << ", " << vecb_1[2] << std::endl;
-
-      CPPUNIT_ASSERT(11.0f == vecb_1[0]);
-      CPPUNIT_ASSERT(12.0f == vecb_1[1]);
-      CPPUNIT_ASSERT(13.0f == vecb_1[2]);
-
-      std::cout << "ctr cnt after scalar: " << gmtl::helpers::VecCtrCounterInstance()->get() << std::endl;
 
       vecb_2.set(1,2,3);
       vecb_3 = vecb_2;
@@ -114,7 +96,23 @@ namespace gmtlTest
       vecb_1 = vecb_2 + vecb_3 + vecb_4;
 
       std::cout << "ctr cnt after multi-add: " << gmtl::helpers::VecCtrCounterInstance()->get() << std::endl;
-      */
+
+      vecb_1 = vecb_2 * 3.0f;
+
+      CPPUNIT_ASSERT( vecb_1[0] == 3.0f);
+      CPPUNIT_ASSERT( vecb_1[1] == 6.0f);
+      CPPUNIT_ASSERT( vecb_1[2] == 9.0f);
+
+      std::cout << "ctr cnt after vec*scalar: " << gmtl::helpers::VecCtrCounterInstance()->get() << std::endl;
+
+      vecb_2.set(10, 20, 30);
+      vecb_1 = vecb_2/10.0f;
+
+      std::cout << "ctr cnt after vec/scalar: " << gmtl::helpers::VecCtrCounterInstance()->get() << std::endl;
+
+      vecb_1 = (vecb_2 +vecb_3)-(vecb_4+vecb_5)+(3.0f*vecb_6);
+      std::cout << "ctr cnt after (vecb_2 +vecb_3)-(vecb_4+vecb_5)+(3.0f*vecb_6): " << gmtl::helpers::VecCtrCounterInstance()->get() << std::endl;
+
    }
 
    void VecMetricTest::testVecBPerf()
@@ -620,11 +618,18 @@ namespace gmtlTest
    {
       gmtl::Vec<float,3> test_vec1(1.0, 2.0, 3.0);
       gmtl::Vec<float,3> test_vec2(2.0, 2.0, 2.0);
+      gmtl::Vec<float,3> test_vec3(3.0, 3.0, 3.0);
 
       test_vec1 += test_vec2;
       CPPUNIT_ASSERT( test_vec1[0] == 3.0f &&
                       test_vec1[1] == 4.0f &&
                       test_vec1[2] == 5.0f );
+
+      test_vec1.set(1,1,1);
+      test_vec1 += (test_vec2 + test_vec3);
+      CPPUNIT_ASSERT( test_vec1[0] == 6.0f &&
+                      test_vec1[1] == 7.0f &&
+                      test_vec1[2] == 8.0f );
    }
 
    void VecMetricTest::testTimingOpPlusEq()
@@ -632,6 +637,8 @@ namespace gmtlTest
       gmtl::Vec<float,3> test_vec1(1.0, 2.0, 3.0);
       gmtl::Vec<float,3> test_vec2(2.0, 2.0, 2.0);
       gmtl::Vec<float,3> test_vec3(5.0, 7.0, 9.0);
+
+      unsigned num_ctr_calls_start(gmtl::helpers::VecCtrCounterInstance()->get());
 
       // -- test op+= performance
       const float iters(400000);
@@ -647,6 +654,9 @@ namespace gmtlTest
       CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/OpPlusEqOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
 
       test_vec2 = test_vec1;
+
+      unsigned avg_ctr_calls = (gmtl::helpers::VecCtrCounterInstance()->get()-num_ctr_calls_start)/unsigned(iters);
+      CPPUNIT_ASSERT_METRIC_LE("VecTest/OpPlusEqOverhead:ctr-calls", avg_ctr_calls, 0.075f, 0.1f);
    }
 
    void VecTest::testOpPlus()
@@ -1250,6 +1260,8 @@ namespace gmtlTest
       CPPUNIT_ASSERT(GMTL_NEAR(dot,ans,0.01));
       dot = gmtl::dot(v3,v2);
       CPPUNIT_ASSERT(GMTL_NEAR(dot,ans,0.01));
+
+      dot = gmtl::dot(v1,(v2+v3));
    }
 
    void VecMetricTest::testTimingDot()
