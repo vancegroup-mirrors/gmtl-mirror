@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-03-09 20:26:38 $
- * Version:       $Revision: 1.18 $
+ * Date modified: $Date: 2002-03-09 21:02:50 $
+ * Version:       $Revision: 1.19 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -143,9 +143,7 @@ namespace gmtl
    template <typename DATA_TYPE>
    inline Quat<DATA_TYPE>& makeRot( Quat<DATA_TYPE>& result, const DATA_TYPE rad, const DATA_TYPE x, const DATA_TYPE y, const DATA_TYPE z )
    {
-      Vec<DATA_TYPE, 3> axis( x, y, z );
-      normalize( axis );
-      return makeRot( result, rad, axis );
+      return makeRot( result, rad, makeNormal( Vec<DATA_TYPE, 3>( x, y, z ) ) );
    }
    
    /** make a rotation quaternion that will xform first vector to the second.
@@ -409,9 +407,7 @@ namespace gmtl
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
    inline Matrix<DATA_TYPE, ROWS, COLS>& makeRot( Matrix<DATA_TYPE, ROWS, COLS>& result, const DATA_TYPE rad, const DATA_TYPE x, const DATA_TYPE y, const DATA_TYPE z )
    {
-      Vec<DATA_TYPE, 3> axis( x, y, z );
-      normalize( axis );
-      return makeRot( result, rad, axis );
+      return makeRot( result, rad, makeNormal( Vec<DATA_TYPE, 3>( x, y, z ) ) );
    }
    
    /** Create a rotation matrix using an axis and an angle (in radians).   (static version)
