@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Math.h,v $
- * Date modified: $Date: 2002-02-15 21:48:30 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2002-02-21 20:50:02 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -48,8 +48,8 @@ namespace Math
    /** @name Mathematical constants */
    //@{
    const float PI = 3.14159265358979323846; //3.14159265358979323846264338327950288419716939937510;
-   const float PI_2 = 1.57079632679489661923;
-   const float PI_4 = 0.78539816339744830962;
+   const float PI_OVER_2 = 1.57079632679489661923;
+   const float PI_OVER_4 = 0.78539816339744830962;
    //@}
 
 //----------------------------------------------------------------------------
@@ -130,11 +130,11 @@ inline float Math::aSin( float fValue )
         if ( fValue < 1.0f )
             return float( ::asinf( fValue ) );
         else
-            return (float)-Math::PI_2;
+            return (float)-Math::PI_OVER_2;
     }
     else
     {
-        return (float)Math::PI_2;
+        return (float)Math::PI_OVER_2;
     }
 }
 inline double Math::aSin( double fValue )
@@ -144,11 +144,11 @@ inline double Math::aSin( double fValue )
         if ( fValue < 1.0 )
             return double( ::asin( fValue ) );
         else
-            return (double)-Math::PI_2;
+            return (double)-Math::PI_OVER_2;
     }
     else
     {
-        return (double)Math::PI_2;
+        return (double)Math::PI_OVER_2;
     }
 }
 //----------------------------------------------------------------------------
