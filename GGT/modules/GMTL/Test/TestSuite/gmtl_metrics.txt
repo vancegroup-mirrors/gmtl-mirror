@@ -56,7 +56,7 @@ gfxn3/Debug/MatrixOpsTest/mult(res,mat44f,mat44f)                  21.5305
 gfxn3/Debug/MatrixOpsTest/operator*(mat44f,mat44f)                 22.6445
 gfxn3/Debug/MatrixOpsTest/setTrans(mat33f,vec2f)                   0.15708
 gfxn3/Debug/MatrixOpsTest/setTrans(mat33f,vec3f)                   0.21485
-gfxn3/Debug/MatrixOpsTest/setTrans(mat34f,vec3f)                   0.27511
+gfxn3/Debug/MatrixOpsTest/setTrans(mat34f,vec3f)                   0.20455
 gfxn3/Debug/MatrixOpsTest/setTrans(mat44f,vec3f)                   0.21493
 gfxn3/Debug/MatrixOpsTest/setTrans(mat44f,vec4f)                   0.34381
 gfxn3/Debug/MatrixOpsTest/sub(res,mat44f,mat44f)                   1.22954
