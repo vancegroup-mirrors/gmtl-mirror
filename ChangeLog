@@ -1,5 +1,7 @@
 DATE       AUTHOR       CHANGE
 ---------- ------------ -------------------------------------------------------
+2004-09-22 allenb       Added build dependency for all settings used to create
+                        gmtl-config script.
 2004-09-22 allenb       Added new Gauss-Jordan implace matrix invert.
                         Fixed bug in matrix invert that was hard coded to 4x4
                         NEW VERSION: 0.4.1
