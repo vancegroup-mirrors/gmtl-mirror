@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Matrix.h,v $
- * Date modified: $Date: 2002-07-11 21:17:37 $
- * Version:       $Revision: 1.23 $
+ * Date modified: $Date: 2003-02-21 21:21:20 $
+ * Version:       $Revision: 1.24 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -117,6 +117,7 @@ public:
    }
 
    /** element wise setter for 2x2.
+    * @note variable names specify the row,column number to put the data into
     *  @todo needs mp!!
     */
    void set( DATA_TYPE v00, DATA_TYPE v01,
