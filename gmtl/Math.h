@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Math.h,v $
- * Date modified: $Date: 2002-07-11 21:17:37 $
- * Version:       $Revision: 1.30 $
+ * Date modified: $Date: 2002-09-15 21:09:13 $
+ * Version:       $Revision: 1.31 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -475,6 +475,17 @@ inline T factorial(T rhs)
    return lhs;
 }
 /** @} */
+
+/**
+ * clamp "number" to a range between lo and hi
+ */
+template <class T>
+inline T clamp( T number, T lo, T hi )
+{
+   if (number > hi) number = hi;
+   else if (number < lo) number = lo;
+   return number;
+}
 
 /** @ingroup Interp
  * @name Scalar type interpolation (for doubles, floats, etc...)
