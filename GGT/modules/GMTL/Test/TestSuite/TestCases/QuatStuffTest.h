@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatStuffTest.h,v $
- * Date modified: $Date: 2002-02-22 10:21:12 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-02-22 19:45:18 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -50,7 +50,8 @@ namespace gmtlTest
    class QuatStuffTest : public CppUnit::TestCase
    {
    public:
-      QuatStuffTest( std::string name = "QuatStuffTest" ) : TestCase( name )
+      QuatStuffTest( std::string name = "QuatStuffTest" )
+         : CppUnit::TestCase( name )
       {
       }
 
@@ -72,12 +73,12 @@ namespace gmtlTest
          gmtl::Quatf q1, q2, q3, q4;
          q3 = makeRot( q1, gmtl::Math::deg2Rad( 45.0f ), 0.0f, 1.0f, 0.0f );
          q4 = makeRot( q2, gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f );
-         normalize( q3 );
-         normalize( q4 );
+         gmtl::normalize( q3 );
+         gmtl::normalize( q4 );
 
          // make sure that normalize doesn't change the rotation...
-         CPPUNIT_ASSERT( isEqual( q1, q3, 0.0001f ) );
-         CPPUNIT_ASSERT( isEqual( q2, q4, 0.0001f ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( q1, q3, 0.0001f ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( q2, q4, 0.0001f ) );
       }
 
       void xformVecSweepTest()
@@ -89,7 +90,7 @@ namespace gmtlTest
          // Should go from 0,0,1 to 0,-1,0 to 0,0,-1 ....
          for (float x = 0; x <= 180.0f; x += 90)
          {
-            makeRot( q, gmtl::Math::deg2Rad( x ), 1.0f, 0.0f, 0.0f );
+            gmtl::makeRot( q, gmtl::Math::deg2Rad( x ), 1.0f, 0.0f, 0.0f );
 
             gmtl::Vec3f result( q * v );
             if (x == 0)
@@ -108,13 +109,13 @@ namespace gmtlTest
          {
             gmtl::Quatf q, q2;
             float rad, x, y, z;
-            makeRot( q, gmtl::Math::deg2Rad(i), 1.0f, 0.0f, 0.0f );
+            gmtl::makeRot( q, gmtl::Math::deg2Rad(i), 1.0f, 0.0f, 0.0f );
             
-            getRot( q, rad, x, y, z );
-            makeRot( q2, rad, x, y, z );
+            gmtl::getRot( q, rad, x, y, z );
+            gmtl::makeRot( q2, rad, x, y, z );
             
             // make i a positive by x*360, store in b.  needed so I can use the % operator with neg values..
-            CPPUNIT_ASSERT( isEqual( q, q2, 0.0001f ) );
+            CPPUNIT_ASSERT( gmtl::isEqual( q, q2, 0.0001f ) );
 
             
             float b = i;
@@ -145,8 +146,8 @@ namespace gmtlTest
          // Quat product: no rotation * rotation
 
          gmtl::Quatf q1, q2, q3;
-         makeRot( q1, 0.0f, 1.0f, 0.0f, 0.0f );
-         makeRot( q2, gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f );
+         gmtl::makeRot( q1, 0.0f, 1.0f, 0.0f, 0.0f );
+         gmtl::makeRot( q2, gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f );
          // [0 rotation] * [90deg about x] should be [90deg about x]
 
          // first rotate by q2, then by q1
@@ -163,8 +164,8 @@ namespace gmtlTest
       {
          // Quat product: rotation * rotation
          gmtl::Quatf q1, q2, q3;
-         makeRot( q1, gmtl::Math::deg2Rad( 45.0f ), 0.0f,1.0f,0.0f );
-         makeRot( q2, gmtl::Math::deg2Rad( 90.0f ), 1.0f,0.0f,0.0f );
+         gmtl::makeRot( q1, gmtl::Math::deg2Rad( 45.0f ), 0.0f,1.0f,0.0f );
+         gmtl::makeRot( q2, gmtl::Math::deg2Rad( 90.0f ), 1.0f,0.0f,0.0f );
          // [45 about Y] * [90 about X] should be [90deg about .7,0,-.7]
          
          // first rotate by q2, then by q1
@@ -180,8 +181,8 @@ namespace gmtlTest
       {
          // xform vec by quat
          gmtl::Quatf q1, q2;//, q3;
-         makeRot( q1, gmtl::Math::deg2Rad( 45.0f ), 0.0f, -1.0f, 0.0f );
-         makeRot( q2, gmtl::Math::deg2Rad( 45.0f ), 1.0f,  0.0f, 0.0f );
+         gmtl::makeRot( q1, gmtl::Math::deg2Rad( 45.0f ), 0.0f, -1.0f, 0.0f );
+         gmtl::makeRot( q2, gmtl::Math::deg2Rad( 45.0f ), 1.0f,  0.0f, 0.0f );
 
          gmtl::Vec3f v( 0,1,0 ), r;
 
@@ -200,7 +201,7 @@ namespace gmtlTest
       {
          gmtl::Quatf q( 0.0f, -0.000313354, 0.0f, 1.0f );
          float rad, x, y, z;
-         getRot( q, rad, x, y, z );
+         gmtl::getRot( q, rad, x, y, z );
 
          // testing...
          double half_angle = 0.000626708 * 0.5f;
@@ -304,12 +305,12 @@ namespace gmtlTest
          gmtl::Vec3f v1( wq[gmtl::Xelt], wq[gmtl::Yelt], wq[gmtl::Zelt] );
          gmtl::Vec3f v2( q1[gmtl::Xelt], q1[gmtl::Yelt], q1[gmtl::Zelt] );
 
-         float w = w1 * w2 - dot( v1, v2 );
-         gmtl::Vec3f v = (v2 * w1) + (v1 * w2) + cross( v1, v2 );
+         float w = w1 * w2 - gmtl::dot( v1, v2 );
+         gmtl::Vec3f v = (v2 * w1) + (v1 * w2) + gmtl::cross( v1, v2 );
       }
 
 
-      static Test* suite()
+      static CppUnit::Test* suite()
       {
          CppUnit::TestSuite* test_suite = new CppUnit::TestSuite( "QuatStuffTest" );
          test_suite->addTest( new CppUnit::TestCaller<QuatStuffTest>( "xformVecTest", &QuatStuffTest::xformVecTest));        
@@ -321,7 +322,7 @@ namespace gmtlTest
          return test_suite;
       }
 
-      static Test* interactiveSuite()
+      static CppUnit::Test* interactiveSuite()
       {
          CppUnit::TestSuite* test_suite = new CppUnit::TestSuite( "InteractiveQuatStuffTest" );
          //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>( "interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind ) );

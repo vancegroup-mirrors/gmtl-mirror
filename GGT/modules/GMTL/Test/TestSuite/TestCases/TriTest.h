@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: TriTest.h,v $
- * Date modified: $Date: 2002-02-18 19:22:15 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-02-22 19:45:18 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -50,7 +50,7 @@ class TriTest : public CppUnit::TestCase
 {
 public:
    TriTest( std::string name = "TriTest")
-   : TestCase (name)
+   : CppUnit::TestCase (name)
    {}
 
    virtual ~TriTest()
@@ -346,7 +346,7 @@ public:
       CPPUNIT_ASSERT_METRIC_TIMING_LE("TriTest/NormalOverhead", iters, 0.075f, 0.1f); // warn at 7.5%, error at 10%
    }
 
-   static Test* suite()
+   static CppUnit::Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("TriTest");
       test_suite->addTest( new CppUnit::TestCaller<TriTest>("testCreation", &TriTest::testCreation));
@@ -361,7 +361,7 @@ public:
       return test_suite;
    }
 
-   static Test* interactiveSuite()
+   static CppUnit::Test* interactiveSuite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveTriTest");
       //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));

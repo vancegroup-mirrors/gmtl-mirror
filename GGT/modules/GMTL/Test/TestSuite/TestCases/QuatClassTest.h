@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatClassTest.h,v $
- * Date modified: $Date: 2002-02-20 21:59:45 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-02-22 19:45:18 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -46,7 +46,8 @@ namespace gmtlTest
    class QuatClassTest : public CppUnit::TestCase
    {
    public:
-      QuatClassTest( std::string name = "QuatClassTest" ) : TestCase( name )
+      QuatClassTest( std::string name = "QuatClassTest" )
+         : CppUnit::TestCase( name )
       {
       }
 
@@ -265,7 +266,7 @@ namespace gmtlTest
          CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatTest/operator=()", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
       }
 
-      static Test* suite()
+      static CppUnit::Test* suite()
       {
          CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("QuatClassTest");
          test_suite->addTest( new CppUnit::TestCaller<QuatClassTest>("testQuatTimingDefaultConstructor", &QuatClassTest::testQuatTimingDefaultConstructor));
@@ -280,7 +281,7 @@ namespace gmtlTest
          return test_suite;
       }
 
-      static Test* interactiveSuite()
+      static CppUnit::Test* interactiveSuite()
       {
          CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveQuatClassTest");
          //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecBaseTest.h,v $
- * Date modified: $Date: 2002-02-11 05:55:42 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-02-22 19:45:18 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -48,7 +48,7 @@ class VecBaseTest : public CppUnit::TestCase
 {
 public:
    VecBaseTest( std::string name = "VecBaseTest" )
-   : TestCase (name)
+   : CppUnit::TestCase (name)
    {;}
 
    virtual ~VecBaseTest()
@@ -284,7 +284,7 @@ public:
       CPPUNIT_ASSERT( data[1] == 2.0f);
    }
 
-   static Test* suite()
+   static CppUnit::Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("VecBaseTest");
       test_suite->addTest( new CppUnit::TestCaller<VecBaseTest>("testVecBaseCreation", &VecBaseTest::testVecBaseCreation));
@@ -297,7 +297,7 @@ public:
       return test_suite;
    }
 
-   static Test* interactiveSuite()
+   static CppUnit::Test* interactiveSuite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveVecBaseTest");
       //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: LineSegTest.h,v $
- * Date modified: $Date: 2002-02-22 11:54:40 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-02-22 19:45:18 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -48,7 +48,7 @@ class LineSegTest : public CppUnit::TestCase
 {
 public:
    LineSegTest( std::string name = "LineSegTest")
-   : TestCase (name)
+   : CppUnit::TestCase (name)
    {}
 
    virtual ~LineSegTest()
@@ -392,7 +392,7 @@ public:
       CPPUNIT_ASSERT_METRIC_TIMING_LE("PlaneTest/FindNearestPtOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
 */
-   static Test* suite()
+   static CppUnit::Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("LineSegTest");
       test_suite->addTest( new CppUnit::TestCaller<LineSegTest>("testCreation", &LineSegTest::testCreation));
@@ -408,7 +408,7 @@ public:
       return test_suite;
    }
 
-   static Test* interactiveSuite()
+   static CppUnit::Test* interactiveSuite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("LineTestInteractive");
       //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));

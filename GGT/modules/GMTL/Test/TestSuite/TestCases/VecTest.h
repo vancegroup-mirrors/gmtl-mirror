@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.h,v $
- * Date modified: $Date: 2002-02-21 21:34:26 $
- * Version:       $Revision: 1.12 $
+ * Date modified: $Date: 2002-02-22 19:45:18 $
+ * Version:       $Revision: 1.13 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -49,7 +49,7 @@ class VecTest : public CppUnit::TestCase
 {
 public:
    VecTest( std::string name = "VecTest" )
-   : TestCase (name)
+   : CppUnit::TestCase (name)
    {;}
 
    virtual ~VecTest()
@@ -950,11 +950,11 @@ public:
       gmtl::Vec<float,3> v4(2,4,5);
 
       // no tolerance
-      CPPUNIT_ASSERT( isNormalized(v1) );
-      CPPUNIT_ASSERT( isNormalized(v2) );
-      CPPUNIT_ASSERT( isNormalized(v3) );
+      CPPUNIT_ASSERT( gmtl::isNormalized(v1) );
+      CPPUNIT_ASSERT( gmtl::isNormalized(v2) );
+      CPPUNIT_ASSERT( gmtl::isNormalized(v3) );
       
-      CPPUNIT_ASSERT( ! isNormalized(v4) );
+      CPPUNIT_ASSERT( ! gmtl::isNormalized(v4) );
 
       // test performance
       const long iters(100000);
@@ -965,7 +965,7 @@ public:
       for ( unsigned long iter=0; iter<iters; ++iter )
       {
          v4 *= 1.0025f;
-         if ( isNormalized(v4) )
+         if ( gmtl::isNormalized(v4) )
             ++true_count;
       }
       CPPUNIT_METRIC_STOP_TIMING();
@@ -980,14 +980,14 @@ public:
       // epsilon tolerance
       for ( float eps=0; eps<10; eps+=0.5 )
       {
-         CPPUNIT_ASSERT( isNormalized(v1, eps) );
+         CPPUNIT_ASSERT( gmtl::isNormalized(v1, eps) );
       }
 
       v2.set(21,0,0);
-      CPPUNIT_ASSERT( ! isNormalized(v2, 15.0f * 15.0f) );
-      CPPUNIT_ASSERT( ! isNormalized(v2, 19.9f * 19.9f) );
-      CPPUNIT_ASSERT( isNormalized(v2, 21.0f * 21.0f - 0.9f) );
-      CPPUNIT_ASSERT( isNormalized(v2, 21.0f * 21.0f + 0.9f) );
+      CPPUNIT_ASSERT( ! gmtl::isNormalized(v2, 15.0f * 15.0f) );
+      CPPUNIT_ASSERT( ! gmtl::isNormalized(v2, 19.9f * 19.9f) );
+      CPPUNIT_ASSERT( gmtl::isNormalized(v2, 21.0f * 21.0f - 0.9f) );
+      CPPUNIT_ASSERT( gmtl::isNormalized(v2, 21.0f * 21.0f + 0.9f) );
 
       // test performance
       const long iters(100000);
@@ -999,7 +999,7 @@ public:
       for ( unsigned long iter=0; iter<iters; ++iter )
       {
          v2 *= 1.0025f;
-         if ( isNormalized(v2, tol) )
+         if ( gmtl::isNormalized(v2, tol) )
             ++true_count;
       }
       CPPUNIT_METRIC_STOP_TIMING();
@@ -1051,7 +1051,7 @@ public:
    }
 
 
-   static Test* suite()
+   static CppUnit::Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("VecTest");
       test_suite->addTest( new CppUnit::TestCaller<VecTest>("testCreation", &VecTest::testCreation));
@@ -1085,7 +1085,7 @@ public:
       return test_suite;
    }
 
-   static Test* interactiveSuite()
+   static CppUnit::Test* interactiveSuite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveVecTest");
       //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
