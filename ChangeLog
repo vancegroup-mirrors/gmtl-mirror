@@ -1,5 +1,9 @@
 DATE       AUTHOR       CHANGE
----------- --------     --------------------------------------------------------
+---------- ------------ -------------------------------------------------------
+2003-03-31 patrickh     Removed unneeded second argument from the function
+                        gmtl::makeInverse<>().  Changed the first argument of
+                        same to take a matrix by reference instead of by value.
+                        NEW VERSION: 0.2.2
 2003-03-16 subatomic    added operator/=( Quat, Quat )
                         added operator/( Quat, Quat )
                         fixed div( Quat, Quat )
