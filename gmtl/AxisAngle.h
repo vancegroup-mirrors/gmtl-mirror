@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AxisAngle.h,v $
- * Date modified: $Date: 2002-06-10 20:16:39 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-06-11 21:21:25 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -64,6 +64,8 @@ template <typename DATA_TYPE>
 class AxisAngle : public VecBase<DATA_TYPE, 4>
 {
 public:
+   enum { Size = 4 };
+   
    /** default constructor. initializes to identity rotation (no rotation). */
    AxisAngle() : 
       VecBase<DATA_TYPE, 4>( (DATA_TYPE)0.0, (DATA_TYPE)1.0, 
@@ -104,7 +106,7 @@ public:
    
    /** set the axis portion of the AxisAngle
     */
-   void setAxis( const Vec<DATA_TYPE, 3>& axis ) const 
+   void setAxis( const Vec<DATA_TYPE, 3>& axis ) 
    { 
       VecBase<DATA_TYPE, 4>::operator[]( 1 ) = axis[0];
       VecBase<DATA_TYPE, 4>::operator[]( 2 ) = axis[1];
@@ -114,7 +116,7 @@ public:
    /** get the angle part of the axisangle.
     *  @post returned in radians
     */
-   void setAngle( const DATA_TYPE& rad_angle ) const 
+   void setAngle( const DATA_TYPE& rad_angle ) 
    {
       VecBase<DATA_TYPE, 4>::operator[]( 0 ) = rad_angle;
    }
