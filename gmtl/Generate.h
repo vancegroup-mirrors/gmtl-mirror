@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-06-12 19:38:54 $
- * Version:       $Revision: 1.61 $
+ * Date modified: $Date: 2002-06-13 21:17:58 $
+ * Version:       $Revision: 1.62 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -333,7 +333,7 @@ namespace gmtl
       return result;
    }
 
-   /** redundant to set(quat,axisangle), provided for template compatibility.
+   /** Redundant duplication of the set(quat,axisangle) function, this is provided only for template compatibility.
     *  unless you're writing template functions, you should use set(quat,axisangle).
     */
    template <typename DATA_TYPE>
@@ -397,7 +397,7 @@ namespace gmtl
       return result;
    }
    
-   /** redundant to set(quat,eulerangle), provided for template compatibility. 
+   /** Redundant duplication of the set(quat,eulerangle) function, this is provided only for template compatibility.
     *  unless you're writing template functions, you should use set(quat,eulerangle).
     */
    template <typename DATA_TYPE, typename ROT_ORDER>
@@ -469,7 +469,7 @@ namespace gmtl
       return quat;
    }
    
-   /** redundant to set(quat,mat), provided for template compatibility. 
+   /** Redundant duplication of the set(quat,mat) function, this is provided only for template compatibility.
     *  unless you're writing template functions, you should use set(quat,mat).
     */
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
@@ -535,7 +535,7 @@ namespace gmtl
       return axisAngle;
    }
    
-   /** redundant to set(axisangle,quat), this is provided for template compatibility.
+   /** Redundant duplication of the set(axisangle,quat) function, this is provided only for template compatibility.
     *  unless you're writing template functions, you should use set(axisangle,quat) for clarity.
     */
    template <typename DATA_TYPE>
@@ -648,7 +648,7 @@ namespace gmtl
       return euler;
    }
    
-   /** redundant to set(eulerangle,quat), this is provided for template compatibility.
+   /** Redundant duplication of the set(eulerangle,quat) function, this is provided only for template compatibility.
     *  unless you're writing template functions, you should use set(eulerangle,quat) for clarity.
     */
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS, typename ROT_ORDER >
@@ -1146,6 +1146,15 @@ namespace gmtl
       gmtl::setTrans( eulercoord.pos(), mat );
       gmtl::set( eulercoord.rot(), mat );
       return eulercoord;
+   }
+   
+   /** Redundant duplication of the set(coord,mat) function, this is provided only for template compatibility.
+    *  unless you're writing template functions, you should use set(coord,mat) for clarity.
+    */
+   template <typename DATATYPE, typename POS_TYPE, typename ROT_TYPE, unsigned MATCOLS, unsigned MATROWS >
+   inline Coord<POS_TYPE, ROT_TYPE>& setRot( Coord<POS_TYPE, ROT_TYPE>& result, const Matrix<DATATYPE, MATROWS, MATCOLS>& mat )
+   {
+      return set( result, mat );
    }
    
    /** @} */
