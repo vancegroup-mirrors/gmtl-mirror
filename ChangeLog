@@ -1,5 +1,9 @@
 DATE       AUTHOR       CHANGE
 ---------- ------------ -------------------------------------------------------
+2003-04-18 patrickh     Renamed the vector version of gmtl::cross() that
+                        returns a newly created vector to gmtl::makeCross and
+                        moved it to Generate.h.
+                        NEW VERSION: 0.3.0
 2003-04-10 subatomic    Matrix state tracking.  Extensive testing on this.
                            Anyone writing their own matrix methods MUST also
                            implement matrix state tracking in every method!!|

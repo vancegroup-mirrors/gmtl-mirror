@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatStuffTest.cpp,v $
- * Date modified: $Date: 2003-02-06 01:12:27 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2003-04-18 22:55:21 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -318,7 +318,7 @@ namespace gmtlTest
       gmtl::Vec3f v2( q1[gmtl::Xelt], q1[gmtl::Yelt], q1[gmtl::Zelt] );
 
       float w = w1 * w2 - gmtl::dot( v1, v2 );
-      gmtl::Vec3f v = (v2 * w1) + (v1 * w2) + gmtl::cross( v1, v2 );
+      gmtl::Vec3f v = (v2 * w1) + (v1 * w2) + gmtl::makeCross( v1, v2 );
       w += 1; // use w
       v[0] += 1; // use v
    }

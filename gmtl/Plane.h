@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Plane.h,v $
- * Date modified: $Date: 2003-03-03 00:54:05 $
- * Version:       $Revision: 1.13 $
+ * Date modified: $Date: 2003-04-18 22:55:21 $
+ * Version:       $Revision: 1.14 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -86,7 +86,7 @@ public:
       Vec<DATA_TYPE, 3> vec12( pt2-pt1 );
       Vec<DATA_TYPE, 3> vec13( pt3-pt1 );
 
-      mNorm = cross( vec12, vec13 );
+      cross( mNorm, vec12, vec13 );
       normalize( mNorm );
 
       mOffset = dot( static_cast< Vec<DATA_TYPE, 3> >(pt1), mNorm );  // Graphics Gems I: Page 390

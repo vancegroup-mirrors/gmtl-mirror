@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.cpp,v $
- * Date modified: $Date: 2003-02-27 00:08:54 $
- * Version:       $Revision: 1.12 $
+ * Date modified: $Date: 2003-04-18 22:55:21 $
+ * Version:       $Revision: 1.13 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -39,6 +39,7 @@
 #include <gmtl/Vec.h>
 #include <gmtl/VecOps.h>
 #include <gmtl/Point.h>
+#include <gmtl/Generate.h>
 
 namespace gmtlTest
 {
@@ -928,7 +929,7 @@ namespace gmtlTest
          vec6 *= 0.00125f;
 
          // Do the actually operation of interest
-         res_vec2 = (gmtl::cross(vec5,vec6)*21.0f);
+         res_vec2 = (gmtl::makeCross(vec5,vec6)*21.0f);
          total_vec2 += res_vec2;
       }
       CPPUNIT_METRIC_STOP_TIMING();
@@ -1227,18 +1228,18 @@ namespace gmtlTest
       gmtl::Vec<float,3> cross;
 
       // Base Vectors
-      cross = gmtl::cross(v1,v2);
+      gmtl::cross(cross, v1,v2);
       CPPUNIT_ASSERT( gmtl::isEqual(cross, v3, 0.01f) );
-      cross = gmtl::cross(v2,v1);
+      gmtl::cross(cross, v2,v1);
       CPPUNIT_ASSERT( gmtl::isEqual(cross, (v3 * -1.0f), 0.01f) );
 
       v1.set(13.45f, -7.8f, 0.056f);
       v2.set(0.777f, 5.333f,12.21f);
       v3.set(-95.537f, -164.181f, 77.789f);
 
-      cross = gmtl::cross(v1,v2);
+      gmtl::cross(cross, v1,v2);
       CPPUNIT_ASSERT( gmtl::isEqual(cross, v3, 0.01f));
-      cross = gmtl::cross(v2, v1);
+      gmtl::cross(cross, v2, v1);
       CPPUNIT_ASSERT(gmtl::isEqual(cross, (v3 * -1.0f), 0.01f));
 
 
@@ -1259,7 +1260,7 @@ namespace gmtlTest
 
       for( float iter=0;iter<iters; ++iter)
       {
-         cross = gmtl::cross(v2,v1);
+         gmtl::cross(cross, v2,v1);
          v1 *= 1.0025f;
          v3 += cross;
       }
