@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Vec.h,v $
- * Date modified: $Date: 2002-05-21 15:26:32 $
- * Version:       $Revision: 1.10 $
+ * Date modified: $Date: 2002-06-13 13:55:45 $
+ * Version:       $Revision: 1.11 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -92,10 +92,6 @@ public:
    /**
     * Creates a new Vec initialized to the given values.
     */
-   Vec(const DATA_TYPE& val0)
-      : BaseType(val0)
-   {;}
-
    Vec(const DATA_TYPE& val0,const DATA_TYPE& val1)
    : BaseType(val0, val1)
    {;}

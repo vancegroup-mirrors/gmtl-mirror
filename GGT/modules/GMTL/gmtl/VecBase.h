@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecBase.h,v $
- * Date modified: $Date: 2002-05-20 22:39:22 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2002-06-13 13:55:45 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -78,7 +78,6 @@ public:
    /**
     * Creates a new VecBase initialized to the given values.
     */
-   VecBase(const DATA_TYPE& val0);
    VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1);
    VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2);
    VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2,const DATA_TYPE& val3);
