@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: SphereTest.h,v $
- * Date modified: $Date: 2002-03-15 19:09:23 $
- * Version:       $Revision: 1.10 $
+ * Date modified: $Date: 2002-03-18 18:25:14 $
+ * Version:       $Revision: 1.11 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -74,16 +74,19 @@ public:
 
       // Test overhead of creation
       const long iters(400000);
+      float use_value(0);
       CPPUNIT_METRIC_START_TIMING();
 
       for( long iter=0;iter<iters; ++iter)
       {
          gmtl::Sphere<float> test_sph2;
-         test_sph2.mRadius = 1.0f;
+         use_value = use_value + test_sph2.mRadius + 1.0f;
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("SphereTest/SphereCreationOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      CPPUNIT_ASSERT( use_value > 0.0f );
    }
 
    void testCopyConstruct()
@@ -188,6 +191,8 @@ public:
 
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("SphereTest/GetRadiusOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      CPPUNIT_ASSERT( use_value > 0.0f );
    }
 
    // -- Test setters --//

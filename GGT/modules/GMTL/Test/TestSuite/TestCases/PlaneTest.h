@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PlaneTest.h,v $
- * Date modified: $Date: 2002-03-11 18:20:09 $
- * Version:       $Revision: 1.15 $
+ * Date modified: $Date: 2002-03-18 18:25:13 $
+ * Version:       $Revision: 1.16 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -84,16 +84,19 @@ public:
 
       // Test overhead of creation
       const long iters(400000);
+      float use_value(0);
       CPPUNIT_METRIC_START_TIMING();
 
       for( long iter=0;iter<iters; ++iter)
       {
          gmtl::Plane<float> test_plane2;
-         test_plane2.mOffset = 1.0f;
+         use_value += test_plane2.mOffset + 1.0f;
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("PlaneTest/DefaultCreationOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      CPPUNIT_ASSERT( use_value > 0.0f );
    }
 
    void testThreePtCreation()

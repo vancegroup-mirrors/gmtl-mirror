@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecBaseTest.h,v $
- * Date modified: $Date: 2002-03-11 18:03:41 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-03-18 18:25:14 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -74,6 +74,7 @@ public:
 
       // Test overhead of creation
       const long iters(400000);
+      float use_value(0);
       CPPUNIT_METRIC_START_TIMING();
 
       for( long iter=0;iter<iters; ++iter)
@@ -84,10 +85,14 @@ public:
          test_vec3[0] = 2.0f;
          gmtl::VecBase<float, 4> test_vec4;
          test_vec4[0] = 3.0f;
+
+         use_value = use_value + test_vec2[0] + test_vec3[0] + test_vec4[0];
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("VecBaseTest/VecCreationOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      CPPUNIT_ASSERT( use_value > 0.0f );
    }
 
    void testCopyConstruct()
@@ -213,6 +218,8 @@ public:
 
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("VecBaseTest/SetOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      CPPUNIT_ASSERT( use_value > 0.0f );
    }
 
    void testSetPtr()
@@ -260,6 +267,8 @@ public:
 
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("VecBaseTest/SetPtrOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      CPPUNIT_ASSERT( use_value > 0.0f );
    }
 
 

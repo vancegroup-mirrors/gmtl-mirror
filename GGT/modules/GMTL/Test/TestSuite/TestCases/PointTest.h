@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PointTest.h,v $
- * Date modified: $Date: 2002-03-11 18:16:38 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2002-03-18 18:25:14 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -73,6 +73,7 @@ public:
 
       // Test overhead of creation
       const long iters(400000);
+      float use_value(0);
       CPPUNIT_METRIC_START_TIMING();
 
       for( long iter=0;iter<iters; ++iter)
@@ -83,10 +84,14 @@ public:
          test_point3[0] = 2.0f;
          gmtl::Point<float, 4> test_point4;
          test_point4[0] = 3.0f;
+
+         use_value += test_point2[0] + test_point3[0] + test_point4[0];
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("PointTest/pointCreationOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      CPPUNIT_ASSERT( use_value > 0.0f );
    }
 
    void testCopyConstruct()
@@ -212,6 +217,8 @@ public:
 
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("PointTest/SetOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      CPPUNIT_ASSERT( use_value > 0.0f );
    }
 
    void testSetPtr()
@@ -259,6 +266,8 @@ public:
 
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("PointTest/SetPtrOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      CPPUNIT_ASSERT( use_value > 0.0f );
    }
 
 
