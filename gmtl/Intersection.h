@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Intersection.h,v $
- * Date modified: $Date: 2003-05-04 23:45:56 $
- * Version:       $Revision: 1.11 $
+ * Date modified: $Date: 2003-05-15 16:43:33 $
+ * Version:       $Revision: 1.12 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -400,13 +400,31 @@ namespace gmtl
     *
     *  @param ray - the Ray
     *  @param plane - the Plane
-    *  @param t - an indicator of intersection position
-    *  @post t gives you the intersection point: isect_point = ray.origin + ray.dir * t 
+    *  @param t - t gives you the intersection point:
+    *         isect_point = ray.origin + ray.dir * t 
     *
-    *  @return true if the ray intersects the plane, false otherwise
+    *  @return true if the ray intersects the plane.
     */
    template<class DATA_TYPE>
    bool intersect( const Plane<DATA_TYPE>& plane, const Ray<DATA_TYPE>& ray, DATA_TYPE& t )
+   {
+      Vec<DATA_TYPE, 3> N( plane.getNormal() );
+      t = dot( N, N * plane.getOffset() - ray.getOrigin() ) / dot( N, ray.getDir() );
+      return (DATA_TYPE)0 <= t; 
+   }
+
+   /**
+    * Tests if the given plane and lineseg intersect with each other.
+    *
+    *  @param ray - the lineseg
+    *  @param plane - the Plane
+    *  @param t - t gives you the intersection point:
+    *         isect_point = lineseg.origin + lineseg.dir * t 
+    *
+    *  @return true if the lineseg intersects the plane.
+    */
+   template<class DATA_TYPE>
+   bool intersect( const Plane<DATA_TYPE>& plane, const LineSeg<DATA_TYPE>& ray, DATA_TYPE& t )
    {
       Vec<DATA_TYPE, 3> N( plane.getNormal() );
       t = dot( N, N * plane.getOffset() - ray.getOrigin() ) / dot( N, ray.getDir() );
@@ -427,10 +445,10 @@ namespace gmtl
     */
    template<class DATA_TYPE>
    bool intersect( const Tri<DATA_TYPE>& tri, const Ray<DATA_TYPE>& ray, 
-   						   float& u, float& v, float& t )
+                        float& u, float& v, float& t )
    {
-	   const float EPSILON = (DATA_TYPE)0.00001;
-	   Vec<DATA_TYPE, 3> edge1, edge2, tvec, pvec, qvec;
+      const float EPSILON = (DATA_TYPE)0.00001;
+      Vec<DATA_TYPE, 3> edge1, edge2, tvec, pvec, qvec;
       float det,inv_det;
 
       /* find vectors for two edges sharing vert0 */
@@ -487,7 +505,7 @@ namespace gmtl
     */
    template<class DATA_TYPE>
    bool intersect( const Tri<DATA_TYPE>& tri, const LineSeg<DATA_TYPE>& lineseg, 
-   						   float& u, float& v, float& t )
+                        float& u, float& v, float& t )
    {
       const DATA_TYPE eps = (DATA_TYPE)0.0001010101;
       DATA_TYPE l = length( lineseg.getDir() );
