@@ -1,5 +1,8 @@
 DATE       AUTHOR       CHANGE
 ---------- --------     -----------------------------------------------------------
+2002-03-15 allenb       Added makeRot<mat>(rad,axis) function
+2002-03-15 allenb       Added makeTrans<mat>(trans) function.
+2002-03-15 allenb       Added makeRot<mat>(val,val,val,method) function.
 2002-03-15 allenb       Added setTrans(matrix) function.
 2002-03-14 allenb       Added identity(matrix) function.
 2002-03-14 allenb       Added gmtlASSERT macro to make gmtl more standalone

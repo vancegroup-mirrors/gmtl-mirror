@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-03-15 19:24:59 $
- * Version:       $Revision: 1.26 $
+ * Date modified: $Date: 2002-03-15 20:50:22 $
+ * Version:       $Revision: 1.27 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -436,6 +436,20 @@ namespace gmtl
       return makeRot( temporary, radians, x, y, z );
    }
    */
+
+   /** Create a rotation matrix using axis and angle
+    * @post this function only produces 3x3, 3x4, 4x3, and 4x4 matrices, and is undefined otherwise
+    * @todo Increase perf of makeRot(val,axis). Make it fast for mp
+    */
+   ///*
+   template< typename MATRIX_TYPE >
+   inline MATRIX_TYPE makeRot( typename MATRIX_TYPE::DataType rad, const Vec<typename MATRIX_TYPE::DataType, 3> rotVec, 
+                               Type2Type< MATRIX_TYPE > t = Type2Type< MATRIX_TYPE >() )
+   {
+      MATRIX_TYPE temporary;
+      return makeRot( temporary, rad, rotVec );
+   }
+
 
 
 
