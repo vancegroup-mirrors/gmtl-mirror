@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: OptTest.cpp,v $
- * Date modified: $Date: 2002-02-11 20:38:12 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-02-11 20:44:05 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -456,6 +456,38 @@ namespace gmtlTest
       SeparateVec3 srcvec1, srcvec2;
       std::cout << std::endl << "test perf of returning result by reference (no temporary)" << std::endl;
 
+      // return by reference
+      // retbyref( result, v1, v2 );
+      {
+         CppUnit::MetricRegistry::TimeStamp start_t = CppUnit::MetricRegistry::instance()->getCurTime();
+         for (int x = 0; x < TIMES_TO_RUN; ++x)
+         {
+            retbyref( destvec, srcvec1, srcvec2 );
+         }
+         CppUnit::MetricRegistry::TimeStamp end_t = CppUnit::MetricRegistry::instance()->getCurTime();
+         std::cout << "\n[s]testRetValOpt (destvec = srcvec1 + srcvec2 with retbyref): " << end_t - start_t << std::endl;
+      }
+      {
+         CppUnit::MetricRegistry::TimeStamp start_t = CppUnit::MetricRegistry::instance()->getCurTime();
+         for (int x = 0; x < TIMES_TO_RUN; ++x)
+         {
+            retbyref( destvec, destvec, destvec );
+         }
+         CppUnit::MetricRegistry::TimeStamp end_t = CppUnit::MetricRegistry::instance()->getCurTime();
+         std::cout << "[s]testRetValOpt (destvec = destvec + srcvec2 with retbyref): " << end_t - start_t << std::endl;
+      }
+      {
+         ArrayVec3 destvec;
+         ArrayVec3 srcvec1, srcvec2;
+         CppUnit::MetricRegistry::TimeStamp start_t = CppUnit::MetricRegistry::instance()->getCurTime();
+         for (int x = 0; x < TIMES_TO_RUN; ++x)
+         {
+            retbyref( destvec, destvec, srcvec2 );
+         }
+         CppUnit::MetricRegistry::TimeStamp end_t = CppUnit::MetricRegistry::instance()->getCurTime();
+         std::cout << "[a]testRetValOpt (destvec = destvec + srcvec2 with retbyref): " << end_t - start_t << std::endl;
+      }
+      
       {
          CppUnit::MetricRegistry::TimeStamp start_t = CppUnit::MetricRegistry::instance()->getCurTime();
          for (int x = 0; x < TIMES_TO_RUN; ++x)
@@ -532,39 +564,7 @@ namespace gmtlTest
       SeparateVec3 srcvec1, srcvec2;
       std::cout << std::endl << "test perf of ret val opt when returning a temporary by value" << std::endl;
 
-      // return by reference
-      // retbyref( result, v1, v2 );
-      {
-         CppUnit::MetricRegistry::TimeStamp start_t = CppUnit::MetricRegistry::instance()->getCurTime();
-         for (int x = 0; x < TIMES_TO_RUN; ++x)
-         {
-            retbyref( destvec, srcvec1, srcvec2 );
-         }
-         CppUnit::MetricRegistry::TimeStamp end_t = CppUnit::MetricRegistry::instance()->getCurTime();
-         std::cout << "\n[s]testRetValOpt (destvec = srcvec1 + srcvec2 with retbyref): " << end_t - start_t << std::endl;
-      }
-      {
-         CppUnit::MetricRegistry::TimeStamp start_t = CppUnit::MetricRegistry::instance()->getCurTime();
-         for (int x = 0; x < TIMES_TO_RUN; ++x)
-         {
-            retbyref( destvec, destvec, destvec );
-         }
-         CppUnit::MetricRegistry::TimeStamp end_t = CppUnit::MetricRegistry::instance()->getCurTime();
-         std::cout << "[s]testRetValOpt (destvec = destvec + srcvec2 with retbyref): " << end_t - start_t << std::endl;
-      }
-      {
-         ArrayVec3 destvec;
-         ArrayVec3 srcvec1, srcvec2;
-         CppUnit::MetricRegistry::TimeStamp start_t = CppUnit::MetricRegistry::instance()->getCurTime();
-         for (int x = 0; x < TIMES_TO_RUN; ++x)
-         {
-            retbyref( destvec, destvec, srcvec2 );
-         }
-         CppUnit::MetricRegistry::TimeStamp end_t = CppUnit::MetricRegistry::instance()->getCurTime();
-         std::cout << "[a]testRetValOpt (destvec = destvec + srcvec2 with retbyref): " << end_t - start_t << std::endl;
-      }
-      
-      // return by reference
+      // return by value
       // result = retvalopt( v1, v2 );
       {
          CppUnit::MetricRegistry::TimeStamp start_t = CppUnit::MetricRegistry::instance()->getCurTime();
