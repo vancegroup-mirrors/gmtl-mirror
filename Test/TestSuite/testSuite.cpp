@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: testSuite.cpp,v $
- * Date modified: $Date: 2002-02-25 18:37:04 $
- * Version:       $Revision: 1.28 $
+ * Date modified: $Date: 2002-03-19 23:16:53 $
+ * Version:       $Revision: 1.29 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -60,6 +60,8 @@
 #include <TestCases/MatrixCompareTest.h>
 #include <TestCases/MatrixOpsTest.h>
 #include <TestCases/MatrixGenTest.h>
+#include <TestCases/QuatGenTest.h>
+#include <TestCases/VecGenTest.h>
 
 #include <TestCases/QuatClassTest.h>
 #include <TestCases/QuatCompareTest.h>
@@ -69,7 +71,7 @@
 #include <TestCases/ConvertTest.h>
 #include <TestCases/XformTest.h>
 
-#include <TestCases/GenerateTest.h>
+
 #include <TestCases/InfoTests/OptTest.h>
 
 // old tests
@@ -136,13 +138,14 @@ int main (int ac, char **av)
    gmtl_suite->addTest( gmtlTest::MatrixCompareTest::suite() );
    gmtl_suite->addTest( gmtlTest::MatrixOpsTest::suite() );
    gmtl_suite->addTest( gmtlTest::MatrixGenTest::suite() );
+   gmtl_suite->addTest( gmtlTest::QuatGenTest::suite() );
+   gmtl_suite->addTest( gmtlTest::VecGenTest::suite() );
    
    gmtl_suite->addTest( gmtlTest::QuatClassTest::suite() );
    gmtl_suite->addTest( gmtlTest::QuatCompareTest::suite() );
    gmtl_suite->addTest( gmtlTest::QuatOpsTest::suite() );
    gmtl_suite->addTest( gmtlTest::QuatStuffTest::suite() );
    
-   gmtl_suite->addTest( gmtlTest::GenerateTest::suite() );
    gmtl_suite->addTest( gmtlTest::XformTest::suite() );   
    gmtl_suite->addTest( gmtlTest::ConvertTest::suite() );
    
