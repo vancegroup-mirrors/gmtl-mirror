@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AABoxTest.h,v $
- * Date modified: $Date: 2002-06-05 02:43:13 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-06-24 03:11:43 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -121,7 +121,7 @@ public:
 
    static CppUnit::Test* interactiveSuite()
    {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveSphereTest");
+      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveAABoxTest");
       //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
       return test_suite;
    }
