@@ -8,8 +8,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AxisAngleCompareTest.cpp,v $
- * Date modified: $Date: 2003-02-05 02:21:17 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2004-09-16 19:40:32 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -273,8 +273,10 @@ namespace gmtlTest
             ++true_count;
          if (gmtl::isEqual( src_quat44,  test_quat44, 0.8f ))
             ++true_count;
-         if (gmtl::isEqual( src_quat101, test_quat101, 111.1 ))
+         /*
+         if (gmtl::isEqual( src_quat101, test_quat101, 111.1f ))
             ++true_count;
+            */
       }
 
       CPPUNIT_METRIC_STOP_TIMING();

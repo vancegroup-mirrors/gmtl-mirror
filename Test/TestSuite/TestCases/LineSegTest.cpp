@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: LineSegTest.cpp,v $
- * Date modified: $Date: 2004-08-03 04:17:51 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2004-09-16 19:40:32 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -148,11 +148,11 @@ namespace gmtlTest
       gmtl::LineSeg<float> test_lineseg;
       test_lineseg = gmtl::LineSeg<float>(origin, x1_pt);
       CPPUNIT_ASSERT(test_lineseg.mOrigin == origin);
-      CPPUNIT_ASSERT(test_lineseg.mDir == (x1_pt - origin));
+      CPPUNIT_ASSERT(test_lineseg.mDir == gmtl::Vec3f(x1_pt - origin));
 
       test_lineseg = gmtl::LineSeg<float>(x1_pt, y1_pt);
       CPPUNIT_ASSERT(test_lineseg.mOrigin == x1_pt);
-      CPPUNIT_ASSERT(test_lineseg.mDir == (y1_pt - x1_pt));
+      CPPUNIT_ASSERT(test_lineseg.mDir == gmtl::Vec3f(y1_pt - x1_pt));
    }
 
    void LineSegMetricTest::testTimingPtPtCreation()

@@ -1,5 +1,9 @@
 DATE       AUTHOR       CHANGE
 ---------- ------------ -------------------------------------------------------
+2004-09-16 allenb       Merged vector expression templates onto head.
+                        NEW VERSION: 0.4.0
+2004-09-03 allenb       Added output overload for vector expressions.
+2004-09-02 allenb       Added expression templates for vectors.
 2004-08-30 allenb       Added meta programming for loop unrolling of VecBase
                         assignment.
                         Added meta programs for VecOps: lenSqr, equal, dot
