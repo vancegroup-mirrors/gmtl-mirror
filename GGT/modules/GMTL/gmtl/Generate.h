@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-04-10 14:16:08 $
- * Version:       $Revision: 1.41 $
+ * Date modified: $Date: 2002-04-10 14:39:24 $
+ * Version:       $Revision: 1.42 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -619,25 +619,24 @@ namespace gmtl
 
       DATA_TYPE sx;
       DATA_TYPE cz;
-      DATA_TYPE xRot = 0, zRot = 0, yRot = 0;
-
+      
       // @todo metaprogram this!
       switch (order)
       {
       case XYZ:
          {
-            zRot = Math::aTan2( -mat(0,1), mat(0,0) );       // -(-cy*sz)/(cy*cz) - cy falls out
-            xRot = Math::aTan2( -mat(1,2), mat(2,2) );       // -(sx*cy)/(cx*cy) - cy falls out
-            cz = Math::cos( zRot );
-            yRot = Math::aTan2( mat(0,2), mat(0,0) / cz );   // (sy)/((cy*cz)/cz)
+            param2 = Math::aTan2( -mat(0,1), mat(0,0) );       // -(-cy*sz)/(cy*cz) - cy falls out
+            param0 = Math::aTan2( -mat(1,2), mat(2,2) );       // -(sx*cy)/(cx*cy) - cy falls out
+            cz = Math::cos( param2 );
+            param1 = Math::aTan2( mat(0,2), mat(0,0) / cz );   // (sy)/((cy*cz)/cz)
          }
          break;
       case ZYX:
          {
-            zRot = Math::aTan2( mat(1,0), mat(0,0) );        // (cy*sz)/(cy*cz) - cy falls out
-            xRot = Math::aTan2( mat(2,1), mat(2,2) );        // (sx*cy)/(cx*cy) - cy falls out
-            sx = Math::sin( xRot );
-            yRot = Math::aTan2( -mat(2,0), mat(2,1) / sx );  // -(-sy)/((sx*cy)/sx)
+            param0 = Math::aTan2( mat(1,0), mat(0,0) );        // (cy*sz)/(cy*cz) - cy falls out
+            param2 = Math::aTan2( mat(2,1), mat(2,2) );        // (sx*cy)/(cx*cy) - cy falls out
+            sx = Math::sin( param2 );
+            param1 = Math::aTan2( -mat(2,0), mat(2,1) / sx );  // -(-sy)/((sx*cy)/sx)
          }
          break;
       case ZXY:
@@ -678,20 +677,15 @@ namespace gmtl
                y_angle = Math::aTan2( cos_y, sin_y );
             }
 
-            xRot = x_angle;
-            yRot = y_angle;
-            zRot = z_angle;
+            param1 = x_angle;
+            param2 = y_angle;
+            param0 = z_angle;
          }
          break;
       default:
          gmtlASSERT( false && "unknown rotation order passed to setRot" );
          break;
       }
-
-      // this might be faster if put into the switch statement... (testme)
-      ((order == XYZ) ? param0 = xRot : ((order == ZXY) ? param1 = xRot : param2 = xRot));
-      ((order == XYZ) ? param1 = yRot : ((order == ZXY) ? param2 = yRot : param1 = yRot));
-      ((order == XYZ) ? param2 = zRot : ((order == ZXY) ? param0 = zRot : param0 = zRot));
    }
    //*/
 
