@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PlaneTest.h,v $
- * Date modified: $Date: 2003-05-15 16:56:35 $
- * Version:       $Revision: 1.23 $
+ * Date modified: $Date: 2003-05-15 16:57:47 $
+ * Version:       $Revision: 1.24 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -55,7 +55,7 @@ namespace gmtlTest
       CPPUNIT_TEST(testDistance);
       CPPUNIT_TEST(testWhichSide);
       CPPUNIT_TEST(testFindNearestPt);
-      CPPUNIT_TEST(testReflect);
+      CPPUNIT_TEST(testFindReflect);
 
       CPPUNIT_TEST_SUITE_END();
 
