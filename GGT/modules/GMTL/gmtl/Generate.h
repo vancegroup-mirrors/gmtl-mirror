@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-03-11 00:28:55 $
- * Version:       $Revision: 1.22 $
+ * Date modified: $Date: 2002-03-11 20:24:41 $
+ * Version:       $Revision: 1.23 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -323,14 +323,14 @@ namespace gmtl
       // homogeneous case...
       if ((ROWS == COLS && SIZE == ROWS) || (COLS == (ROWS+1) && SIZE == (ROWS+1)))  
       {
-         for (int x = 0; x < COLS - 1; ++x)
+         for (unsigned x = 0; x < COLS - 1; ++x)
             result( x, COLS - 1 ) = trans[x] / trans[SIZE-1];
       }
       
       // non-homogeneous case...
       else
       {
-         for (int x = 0; x < COLS - 1; ++x)
+         for (unsigned x = 0; x < COLS - 1; ++x)
             result( x, COLS - 1 ) = trans[x];
       }
       return result;
@@ -345,7 +345,7 @@ namespace gmtl
    {
       ggtASSERT( ((SIZE == (ROWS-1) && SIZE == (COLS-1)) || (SIZE == (ROWS-1) && SIZE == COLS) || (SIZE == (COLS-1) && SIZE == ROWS)) && "the scale params must fit within the matrix, check your sizes." );
       result = Matrix<DATA_TYPE, ROWS, COLS>(); // set to ident - this could be faster...
-      for (int x = 0; x < SIZE; ++x)
+      for (unsigned x = 0; x < SIZE; ++x)
          result( x, x ) = scale[x];
       return result;
    }
@@ -357,7 +357,7 @@ namespace gmtl
    inline Matrix<DATA_TYPE, ROWS, COLS>& makeScale( Matrix<DATA_TYPE, ROWS, COLS>& result, const DATA_TYPE scale )
    {
       result = Matrix<DATA_TYPE, ROWS, COLS>();
-      for (int x = 0; x < Math::Min( ROWS, COLS, Math::Max( ROWS, COLS ) - 1 ); ++x) // account for 2x4 or other weird sizes...
+      for (unsigned x = 0; x < Math::Min( ROWS, COLS, Math::Max( ROWS, COLS ) - 1 ); ++x) // account for 2x4 or other weird sizes...
          result( x, x ) = scale;
       return result;
    }
