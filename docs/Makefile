@@ -21,10 +21,8 @@ ref-latex rl:
 	doxygen gmtl.latex.doxy
 
 ref-pdf rp: rl
-	-rm -r pdf
 	-mkdir  pdf
-	cd latex && make ps && ps2pdf *.ps ../pdf/ref-guide.pdf
-	-rm -r latex
+	cd latex && make ps && ps2pdf refman.ps ../pdf/ref-guide.pdf
 
 man ref-man rm manpage m:
 	doxygen gmtl.man.doxy
