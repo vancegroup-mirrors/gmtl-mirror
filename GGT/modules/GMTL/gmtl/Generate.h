@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-03-09 21:16:44 $
- * Version:       $Revision: 1.20 $
+ * Date modified: $Date: 2002-03-10 19:30:52 $
+ * Version:       $Revision: 1.21 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -42,15 +42,22 @@
 #include <gmtl/Matrix.h>
 #include <gmtl/Meta.h>
 
+// @todo Vec& makeNormal( Vec&, scalar, scalar, scalar ) (and other dimensions)  (might not need, use this instead - makeNormal( Vec( scal, scal, scal ) ))
+// @todo getRot euler for quat
+// @todo getTrans(mat, vec)  (or is it called vec = makeTrans(mat), or is it called convert( vec, mat ), convert( mat, vec ) )
+// @todo getScale( mat, vec ) or getScale( mat, scalar )
+// @todo getRot( mat, scalar, vec ) getRot( mat, deg, x, y, z )
+// @todo getRot(mat, a,b,c ) euler    
+// @todo getDirCos( mat, axes... )
+// @todo getAxes( mat, ... )
+
 namespace gmtl
 {
    //-- VEC GENERATORS --//
-   // TODO: Vec& makeNormalized( Vec&, x, y )
-   // TODO: Vec& makeNormalized( Vec&, x, y, z )
-   // TODO: Vec& makeNormalized( Vec&, x, y, z, w )
-
+   
    /** create a vector from the vector component of a quaternion
     * @post quat = [v,0] = [v0,v1,v2,0]
+    * @todo should this be called convert?
     */
    template <typename DATA_TYPE>
    inline Vec<DATA_TYPE, 3> makeVec( const Quat<DATA_TYPE>& quat )
@@ -286,7 +293,6 @@ namespace gmtl
    
    
    
-   
    //-- MATRIX GENERATORS --//
    
    
@@ -330,6 +336,8 @@ namespace gmtl
       return result;
    }
 
+   
+   
    /** Create a scale matrix.
     */
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS, unsigned SIZE >
@@ -342,6 +350,7 @@ namespace gmtl
       return result;
    }
 
+   
    /** Create a scale matrix.
     */
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
@@ -398,6 +407,7 @@ namespace gmtl
 
       return result;
    }
+   
    
    /** make a rotation matrix from an angle and an axis.
     * @pre axis [xyz] will be normalized for you, no need to worry about it.
@@ -491,6 +501,7 @@ namespace gmtl
 
       return result;
    }
+   
    
    /** Create a rotation matrix using euler angles (in radians) (static version)
     * @post this function only produces 3x3, 3x4, 4x3, and 4x4 matrices, and is undefined otherwise
@@ -609,6 +620,7 @@ namespace gmtl
 
       return result;
    }
+   
    
    /** make the matrix given the raw coordinate axes. (static version)
     * @post this function only produces 3x3, 3x4, 4x3, and 4x4 matrices, and is undefined otherwise
