@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecGenTest.cpp,v $
- * Date modified: $Date: 2004-08-19 16:50:40 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2004-08-30 14:53:40 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -103,7 +103,7 @@ namespace gmtlTest
             // Test the row values
             for (unsigned int col=0; col<COLS; ++col)
             {
-               CPPUNIT_ASSERT(row[col] == (col*ROWS + i));
+               CPPUNIT_ASSERT(unsigned(row[col]) == unsigned(col*ROWS + i));
             }
          }
       }
@@ -153,7 +153,7 @@ namespace gmtlTest
             // Test the row values
             for (unsigned row=0; row<unsigned(ROWS); ++row)
             {
-               CPPUNIT_ASSERT(col[row] == (i*ROWS + row));
+               CPPUNIT_ASSERT(unsigned(col[row]) == unsigned(i*ROWS + row));
             }
          }
       }

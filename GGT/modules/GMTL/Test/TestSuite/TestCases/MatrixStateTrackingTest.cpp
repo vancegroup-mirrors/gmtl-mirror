@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixStateTrackingTest.cpp,v $
- * Date modified: $Date: 2003-04-11 04:16:04 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2004-08-30 14:53:40 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -22,7 +22,7 @@
 * License as published by the Free Software Foundation; either
 * version 2.1 of the License, or (at your option) any later version.
 *
-* This library is distributed in the hope that it will be useful, 
+* This library is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 * Lesser General Public License for more details.
@@ -54,9 +54,9 @@ namespace gmtlTest
       gmtl::Matrix44f::XformState all_states[num_states] = {
          gmtl::Matrix44f::IDENTITY,
          gmtl::Matrix44f::TRANS,
-         gmtl::Matrix44f::ORTHOGONAL, 
+         gmtl::Matrix44f::ORTHOGONAL,
          gmtl::Matrix44f::AFFINE,
-         gmtl::Matrix44f::NON_UNISCALE, 
+         gmtl::Matrix44f::NON_UNISCALE,
          gmtl::Matrix44f::FULL,
          gmtl::Matrix44f::XFORM_ERROR
       };
@@ -65,10 +65,10 @@ namespace gmtlTest
       int test_states[num_teststates] = {
          gmtl::Matrix44f::IDENTITY,
          gmtl::Matrix44f::TRANS,
-         gmtl::Matrix44f::ORTHOGONAL, 
+         gmtl::Matrix44f::ORTHOGONAL,
          gmtl::Matrix44f::AFFINE,
-         gmtl::Matrix44f::NON_UNISCALE, 
-         gmtl::Matrix44f::AFFINE | gmtl::Matrix44f::NON_UNISCALE, 
+         gmtl::Matrix44f::NON_UNISCALE,
+         gmtl::Matrix44f::AFFINE | gmtl::Matrix44f::NON_UNISCALE,
          gmtl::Matrix44f::FULL,
          gmtl::Matrix44f::XFORM_ERROR
       };
@@ -78,71 +78,71 @@ namespace gmtlTest
          int expected[num_teststates * num_teststates] = {
             gmtl::Matrix44f::IDENTITY, // ident
             gmtl::Matrix44f::TRANS,
-            gmtl::Matrix44f::ORTHOGONAL, 
+            gmtl::Matrix44f::ORTHOGONAL,
             gmtl::Matrix44f::AFFINE,
-            gmtl::Matrix44f::XFORM_ERROR, 
-            gmtl::Matrix44f::AFFINE | gmtl::Matrix44f::NON_UNISCALE, 
+            gmtl::Matrix44f::XFORM_ERROR,
+            gmtl::Matrix44f::AFFINE | gmtl::Matrix44f::NON_UNISCALE,
             gmtl::Matrix44f::FULL,
             gmtl::Matrix44f::XFORM_ERROR,
             gmtl::Matrix44f::TRANS,    // trans
             gmtl::Matrix44f::TRANS,
-            gmtl::Matrix44f::AFFINE, 
             gmtl::Matrix44f::AFFINE,
-            gmtl::Matrix44f::XFORM_ERROR, 
-            gmtl::Matrix44f::AFFINE | gmtl::Matrix44f::NON_UNISCALE, 
+            gmtl::Matrix44f::AFFINE,
+            gmtl::Matrix44f::XFORM_ERROR,
+            gmtl::Matrix44f::AFFINE | gmtl::Matrix44f::NON_UNISCALE,
             gmtl::Matrix44f::FULL,
             gmtl::Matrix44f::XFORM_ERROR,
             gmtl::Matrix44f::ORTHOGONAL,    // ORTHOGONAL
             gmtl::Matrix44f::AFFINE,
-            gmtl::Matrix44f::ORTHOGONAL, 
+            gmtl::Matrix44f::ORTHOGONAL,
             gmtl::Matrix44f::AFFINE,
-            gmtl::Matrix44f::XFORM_ERROR, 
-            gmtl::Matrix44f::AFFINE | gmtl::Matrix44f::NON_UNISCALE, 
+            gmtl::Matrix44f::XFORM_ERROR,
+            gmtl::Matrix44f::AFFINE | gmtl::Matrix44f::NON_UNISCALE,
             gmtl::Matrix44f::FULL,
             gmtl::Matrix44f::XFORM_ERROR,
             gmtl::Matrix44f::AFFINE,    // AFFINE
             gmtl::Matrix44f::AFFINE,
-            gmtl::Matrix44f::AFFINE, 
             gmtl::Matrix44f::AFFINE,
-            gmtl::Matrix44f::XFORM_ERROR, 
-            gmtl::Matrix44f::AFFINE | gmtl::Matrix44f::NON_UNISCALE, 
+            gmtl::Matrix44f::AFFINE,
+            gmtl::Matrix44f::XFORM_ERROR,
+            gmtl::Matrix44f::AFFINE | gmtl::Matrix44f::NON_UNISCALE,
             gmtl::Matrix44f::FULL,
             gmtl::Matrix44f::XFORM_ERROR,
             gmtl::Matrix44f::XFORM_ERROR,    // NON_UNISCALE
             gmtl::Matrix44f::XFORM_ERROR,
-            gmtl::Matrix44f::XFORM_ERROR, 
             gmtl::Matrix44f::XFORM_ERROR,
-            gmtl::Matrix44f::XFORM_ERROR, 
+            gmtl::Matrix44f::XFORM_ERROR,
+            gmtl::Matrix44f::XFORM_ERROR,
             gmtl::Matrix44f::XFORM_ERROR,
             gmtl::Matrix44f::XFORM_ERROR,
             gmtl::Matrix44f::XFORM_ERROR,
             gmtl::Matrix44f::AFFINE | gmtl::Matrix44f::NON_UNISCALE,    // AFFINE | NON_UNISCALE
             gmtl::Matrix44f::AFFINE | gmtl::Matrix44f::NON_UNISCALE,
-            gmtl::Matrix44f::AFFINE | gmtl::Matrix44f::NON_UNISCALE, 
             gmtl::Matrix44f::AFFINE | gmtl::Matrix44f::NON_UNISCALE,
-            gmtl::Matrix44f::XFORM_ERROR, 
-            gmtl::Matrix44f::AFFINE | gmtl::Matrix44f::NON_UNISCALE, 
+            gmtl::Matrix44f::AFFINE | gmtl::Matrix44f::NON_UNISCALE,
+            gmtl::Matrix44f::XFORM_ERROR,
+            gmtl::Matrix44f::AFFINE | gmtl::Matrix44f::NON_UNISCALE,
             gmtl::Matrix44f::FULL,
             gmtl::Matrix44f::XFORM_ERROR,
             gmtl::Matrix44f::FULL,    // FULL
             gmtl::Matrix44f::FULL,
-            gmtl::Matrix44f::FULL, 
             gmtl::Matrix44f::FULL,
-            gmtl::Matrix44f::XFORM_ERROR, 
+            gmtl::Matrix44f::FULL,
+            gmtl::Matrix44f::XFORM_ERROR,
             gmtl::Matrix44f::FULL,
             gmtl::Matrix44f::FULL,
             gmtl::Matrix44f::XFORM_ERROR,
             gmtl::Matrix44f::XFORM_ERROR,    // XFORM_ERROR
             gmtl::Matrix44f::XFORM_ERROR,
-            gmtl::Matrix44f::XFORM_ERROR, 
             gmtl::Matrix44f::XFORM_ERROR,
-            gmtl::Matrix44f::XFORM_ERROR, 
+            gmtl::Matrix44f::XFORM_ERROR,
+            gmtl::Matrix44f::XFORM_ERROR,
             gmtl::Matrix44f::XFORM_ERROR,
             gmtl::Matrix44f::XFORM_ERROR,
             gmtl::Matrix44f::XFORM_ERROR
          };
 
-         int total = 0; 
+         int total = 0;
          for (int x = 0; x < num_teststates; ++x)
          for (int y = 0; y < num_teststates; ++y)
          {
@@ -169,7 +169,7 @@ namespace gmtlTest
       // test set
       {
          gmtl::Matrix44f mat;
-         mat.set( 0,1,2,3, 4,5,6,7, 8,9,10,11, 12,13,14,15 );      
+         mat.set( 0,1,2,3, 4,5,6,7, 8,9,10,11, 12,13,14,15 );
          CPPUNIT_ASSERT( mat.mState == gmtl::Matrix44f::FULL );
       }
 
@@ -177,18 +177,18 @@ namespace gmtlTest
       {
          gmtl::Matrix44f mat;
          float data[16];
-         mat.setTranspose( data );      
+         mat.setTranspose( data );
          CPPUNIT_ASSERT( mat.mState == gmtl::Matrix44f::FULL );
       }
 
-   // matrix ops   
+   // matrix ops
 
       // test Identity
       {
          gmtl::Matrix44f mat;
          gmtl::identity( mat );
          CPPUNIT_ASSERT( mat.mState == gmtl::Matrix44f::IDENTITY );
-         
+
          // make sure identity() sets the flag when matrix wasn't originally identity
          mat.mState = gmtl::Matrix44f::FULL;
          gmtl::identity( mat );
@@ -290,7 +290,7 @@ namespace gmtlTest
                result.mState = test_states[y];
                result *= mat1;
                CPPUNIT_ASSERT( result.mState == gmtl::combineMatrixStates( test_states[x], test_states[y] ) && "operator*=( mat, mat ) does not combine matrix states properly" );
-            
+
                mat1.mState = test_states[x];
                result.mState = test_states[y];
                mat1 *= result;
@@ -325,9 +325,9 @@ namespace gmtlTest
       {
          gmtl::Matrix44f mat, mat2;
          gmtl::setScale( mat, 2345.0f );
-         int bok1 = (gmtl::Matrix44f::AFFINE);
-         int bok2 = (gmtl::Matrix44f::NON_UNISCALE);
-         int bok = (gmtl::Matrix44f::AFFINE | gmtl::Matrix44f::NON_UNISCALE);
+         //int bok1 = (gmtl::Matrix44f::AFFINE);
+         //int bok2 = (gmtl::Matrix44f::NON_UNISCALE);
+         //int bok = (gmtl::Matrix44f::AFFINE | gmtl::Matrix44f::NON_UNISCALE);
          CPPUNIT_ASSERT( mat.mState == (gmtl::Matrix44f::AFFINE | gmtl::Matrix44f::NON_UNISCALE) );
 
          mat2 = gmtl::makeScale<gmtl::Matrix44f>( 2345.0f );
@@ -339,7 +339,7 @@ namespace gmtlTest
          gmtl::Matrix44f mat, mat2;
          gmtl::setScale( mat, gmtl::Vec3f( 983.0f, 234.0f, 1.0f ) );
          CPPUNIT_ASSERT( mat.mState == (gmtl::Matrix44f::AFFINE | gmtl::Matrix44f::NON_UNISCALE) );
-         
+
          mat2 = gmtl::makeScale<gmtl::Matrix44f>( gmtl::Vec3f( 983.0f, 234.0f, 1.0f ) );
          CPPUNIT_ASSERT( mat2.mState == (gmtl::Matrix44f::AFFINE | gmtl::Matrix44f::NON_UNISCALE) );
       }
@@ -363,7 +363,7 @@ namespace gmtlTest
          mat.mState = gmtl::Matrix44f::AFFINE;
          gmtl::setTrans( mat, gmtl::Vec3f( 983.0f, 234.0f, 1.0f ) );
          CPPUNIT_ASSERT( mat.mState == gmtl::Matrix44f::AFFINE );
-         
+
          // make
          mat2 = gmtl::makeTrans<gmtl::Matrix44f>( gmtl::Vec3f( 983.0f, 234.0f, 1.0f ) );
          CPPUNIT_ASSERT( mat2.mState == gmtl::Matrix44f::TRANS );
@@ -394,7 +394,7 @@ namespace gmtlTest
          mat.mState = gmtl::Matrix44f::FULL;
          gmtl::setRot( mat, rot );
          CPPUNIT_ASSERT( mat.mState == gmtl::Matrix44f::FULL );
-         
+
          // make
          mat2 = gmtl::makeRot<gmtl::Matrix44f>( rot );
          CPPUNIT_ASSERT( mat2.mState == gmtl::Matrix44f::ORTHOGONAL );
@@ -424,7 +424,7 @@ namespace gmtlTest
          mat.mState = gmtl::Matrix44f::FULL;
          gmtl::setRot( mat, rot );
          CPPUNIT_ASSERT( mat.mState == gmtl::Matrix44f::FULL );
-         
+
          // make
          mat2 = gmtl::makeRot<gmtl::Matrix44f>( rot );
          CPPUNIT_ASSERT( mat2.mState == gmtl::Matrix44f::ORTHOGONAL );
@@ -454,7 +454,7 @@ namespace gmtlTest
          mat.mState = gmtl::Matrix44f::FULL;
          gmtl::setRot( mat, rot );
          CPPUNIT_ASSERT( mat.mState == gmtl::Matrix44f::FULL );
-         
+
          // make
          mat2 = gmtl::makeRot<gmtl::Matrix44f>( rot );
          CPPUNIT_ASSERT( mat2.mState == gmtl::Matrix44f::ORTHOGONAL );
@@ -509,7 +509,7 @@ namespace gmtlTest
          mat.mState = gmtl::Matrix44f::FULL;
          gmtl::setRot( mat, rot );
          CPPUNIT_ASSERT( mat.mState == gmtl::Matrix44f::FULL );
-         
+
          // make
          mat2 = gmtl::makeRot<gmtl::Matrix44f>( rot );
          CPPUNIT_ASSERT( mat2.mState == gmtl::Matrix44f::ORTHOGONAL );
@@ -540,7 +540,7 @@ namespace gmtlTest
          mat.mState = gmtl::Matrix44f::FULL;
          gmtl::set( mat, xform );
          CPPUNIT_ASSERT( mat.mState == gmtl::Matrix44f::AFFINE );
-         
+
          // make
          mat2 = gmtl::make<gmtl::Matrix44f>( xform );
          CPPUNIT_ASSERT( mat2.mState == gmtl::Matrix44f::AFFINE );
@@ -570,7 +570,7 @@ namespace gmtlTest
          mat.mState = gmtl::Matrix44f::FULL;
          gmtl::set( mat, xform );
          CPPUNIT_ASSERT( mat.mState == gmtl::Matrix44f::AFFINE );
-         
+
          // make
          mat2 = gmtl::make<gmtl::Matrix44f>( xform );
          CPPUNIT_ASSERT( mat2.mState == gmtl::Matrix44f::AFFINE );
@@ -600,7 +600,7 @@ namespace gmtlTest
          mat.mState = gmtl::Matrix44f::FULL;
          gmtl::set( mat, xform );
          CPPUNIT_ASSERT( mat.mState == gmtl::Matrix44f::AFFINE );
-         
+
          // make
          mat2 = gmtl::make<gmtl::Matrix44f>( xform );
          CPPUNIT_ASSERT( mat2.mState == gmtl::Matrix44f::AFFINE );
@@ -630,7 +630,7 @@ namespace gmtlTest
          mat.mState = gmtl::Matrix44f::FULL;
          gmtl::set( mat, xform );
          CPPUNIT_ASSERT( mat.mState == gmtl::Matrix44f::ORTHOGONAL );
-         
+
          // make
          mat2 = gmtl::make<gmtl::Matrix44f>( xform );
          CPPUNIT_ASSERT( mat2.mState == gmtl::Matrix44f::ORTHOGONAL );
@@ -660,7 +660,7 @@ namespace gmtlTest
          mat.mState = gmtl::Matrix44f::FULL;
          gmtl::set( mat, xform );
          CPPUNIT_ASSERT( mat.mState == gmtl::Matrix44f::ORTHOGONAL );
-         
+
          // make
          mat2 = gmtl::make<gmtl::Matrix44f>( xform );
          CPPUNIT_ASSERT( mat2.mState == gmtl::Matrix44f::ORTHOGONAL );
@@ -703,117 +703,117 @@ namespace gmtlTest
 
          gmtl::Matrix44f mat;
          float eps = 0.0001f;
-      // gmtl::Matrix44f::IDENTITY: 
+      // gmtl::Matrix44f::IDENTITY:
          {
             mat.set( 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 );
             mat.mState = gmtl::Matrix44f::IDENTITY;
             gmtl::Matrix44f iv( mat ), iv_full( mat ), iv_affine( mat ), iv_trans( mat ), iv_ortho( mat ), iv_nochange( mat );
             gmtl::invert( iv );
             gmtl::invertFull( iv_full, iv_full );
-            CPPUNIT_ASSERT( gmtl::isEqual( iv, iv_nochange, eps ) && gmtl::isEqual( iv, iv_full, eps ) && "invert(IDENTITY) funcs do not match" ); 
+            CPPUNIT_ASSERT( gmtl::isEqual( iv, iv_nochange, eps ) && gmtl::isEqual( iv, iv_full, eps ) && "invert(IDENTITY) funcs do not match" );
          }
-      // gmtl::Matrix44f::TRANS: 
+      // gmtl::Matrix44f::TRANS:
          {
-            mat.set( 1,0,0,4, 
-                     0,1,0,5, 
-                     0,0,1,6, 
+            mat.set( 1,0,0,4,
+                     0,1,0,5,
+                     0,0,1,6,
                      0,0,0,1 );
             mat.mState = gmtl::Matrix44f::TRANS;
             gmtl::Matrix44f iv( mat ), iv_full( mat ), iv_affine( mat ), iv_trans( mat ), iv_ortho( mat ), iv_nochange( mat );
             gmtl::invert( iv );
             gmtl::invertFull( iv_full, iv_full );
             gmtl::invertTrans( iv_trans, iv_trans );
-            CPPUNIT_ASSERT( gmtl::isEqual( iv, iv_trans, eps ) && gmtl::isEqual( iv, iv_full, eps ) && "invert(TRANS 4x4) funcs do not match" ); 
+            CPPUNIT_ASSERT( gmtl::isEqual( iv, iv_trans, eps ) && gmtl::isEqual( iv, iv_full, eps ) && "invert(TRANS 4x4) funcs do not match" );
          }
          // TODO: invertFull only works with nxn matrices (fix!!!!!)
          /*
          {
             gmtl::Matrix34f mat;
-            mat.set( 1,0,0,4, 
-                     0,1,0,5, 
+            mat.set( 1,0,0,4,
+                     0,1,0,5,
                      0,0,1,6 );
             mat.mState = gmtl::Matrix44f::TRANS;
             gmtl::Matrix34f iv( mat ), iv_full( mat ), iv_affine( mat ), iv_trans( mat ), iv_ortho( mat ), iv_nochange( mat );
             gmtl::invert( iv );
             gmtl::invertFull( iv_full, iv_full );
             gmtl::invertTrans( iv_trans, iv_trans );
-            CPPUNIT_ASSERT( gmtl::isEqual( iv, iv_trans, eps ) && gmtl::isEqual( iv, iv_full, eps ) && "invert(TRANS 3x4) funcs do not match" ); 
+            CPPUNIT_ASSERT( gmtl::isEqual( iv, iv_trans, eps ) && gmtl::isEqual( iv, iv_full, eps ) && "invert(TRANS 3x4) funcs do not match" );
          }
          */
-      // gmtl::Matrix44f::ORTHOGONAL: 
+      // gmtl::Matrix44f::ORTHOGONAL:
          {
-            mat.set( 0,0,-1,0, 
-                     1,0,0,0, 
-                     0,-1,0,0, 
+            mat.set( 0,0,-1,0,
+                     1,0,0,0,
+                     0,-1,0,0,
                      0,0,0,1 );
             mat.mState = gmtl::Matrix44f::ORTHOGONAL;
             gmtl::Matrix44f iv( mat ), iv_full( mat ), iv_affine( mat ), iv_trans( mat ), iv_ortho( mat ), iv_nochange( mat );
             gmtl::invert( iv );
             gmtl::invertFull( iv_full, iv_full );
             gmtl::invertOrthogonal( iv_ortho, iv_ortho );
-            CPPUNIT_ASSERT( gmtl::isEqual( iv, iv_ortho, eps ) && gmtl::isEqual( iv, iv_full, eps ) && "invert(ORTHOGONAL) funcs do not match" ); 
+            CPPUNIT_ASSERT( gmtl::isEqual( iv, iv_ortho, eps ) && gmtl::isEqual( iv, iv_full, eps ) && "invert(ORTHOGONAL) funcs do not match" );
          }
-      // gmtl::Matrix44f::AFFINE: 
+      // gmtl::Matrix44f::AFFINE:
          {
-            mat.set( 0,1,0, 10, 
-                     0,0,-1,11, 
-                     -1,0,0,12, 
+            mat.set( 0,1,0, 10,
+                     0,0,-1,11,
+                     -1,0,0,12,
                      0,0,0,1 );
             mat.mState = gmtl::Matrix44f::AFFINE;
             gmtl::Matrix44f iv( mat ), iv_full( mat ), iv_affine( mat ), iv_trans( mat ), iv_ortho( mat ), iv_nochange( mat );
             gmtl::invert( iv );
             gmtl::invertFull( iv_full, iv_full );
             gmtl::invertAffine( iv_affine, iv_affine );
-            CPPUNIT_ASSERT( gmtl::isEqual( iv, iv_affine, eps ) && gmtl::isEqual( iv, iv_full, eps ) && "invert(AFFINE) funcs do not match" ); 
+            CPPUNIT_ASSERT( gmtl::isEqual( iv, iv_affine, eps ) && gmtl::isEqual( iv, iv_full, eps ) && "invert(AFFINE) funcs do not match" );
          }
          {
-            mat.set( 0,1,0, 10, 
-                     0,0,-1,11, 
-                     -1,0,0,12, 
+            mat.set( 0,1,0, 10,
+                     0,0,-1,11,
+                     -1,0,0,12,
                      0,0,0,20057 );
             mat.mState = gmtl::Matrix44f::AFFINE;
             gmtl::Matrix44f iv( mat ), iv_full( mat ), iv_affine( mat ), iv_trans( mat ), iv_ortho( mat ), iv_nochange( mat );
             gmtl::invert( iv );
             gmtl::invertFull( iv_full, iv_full );
             gmtl::invertAffine( iv_affine, iv_affine );
-            CPPUNIT_ASSERT( gmtl::isEqual( iv, iv_affine, eps ) && gmtl::isEqual( iv, iv_full, eps ) && "invert(AFFINE with uniform scale) funcs do not match" ); 
+            CPPUNIT_ASSERT( gmtl::isEqual( iv, iv_affine, eps ) && gmtl::isEqual( iv, iv_full, eps ) && "invert(AFFINE with uniform scale) funcs do not match" );
          }
-      // gmtl::Matrix44f::AFFINE | gmtl::Matrix44f::NON_UNISCALE:  
+      // gmtl::Matrix44f::AFFINE | gmtl::Matrix44f::NON_UNISCALE:
          {
-            mat.set( 0,2,0, 10,    
-                     0,0,-8,11, 
-                     -3,0,0,12, 
+            mat.set( 0,2,0, 10,
+                     0,0,-8,11,
+                     -3,0,0,12,
                      0,0,0,1 );
             mat.mState = gmtl::Matrix44f::AFFINE | gmtl::Matrix44f::NON_UNISCALE;
             gmtl::Matrix44f iv( mat ), iv_full( mat ), iv_affine( mat ), iv_trans( mat ), iv_ortho( mat ), iv_nochange( mat );
             gmtl::invert( iv );
             gmtl::invertFull( iv_full, iv_full );
             gmtl::invertAffine( iv_affine, iv_affine );
-            CPPUNIT_ASSERT( gmtl::isEqual( iv, iv_affine, eps ) && gmtl::isEqual( iv, iv_full, eps ) && "invert(AFFINE with NON_UNISCALE) funcs do not match" ); 
+            CPPUNIT_ASSERT( gmtl::isEqual( iv, iv_affine, eps ) && gmtl::isEqual( iv, iv_full, eps ) && "invert(AFFINE with NON_UNISCALE) funcs do not match" );
          }
          {
-            mat.set( 0,2,0, 10, 
-                     0,0,-8,11, 
-                     -3,0,0,12, 
+            mat.set( 0,2,0, 10,
+                     0,0,-8,11,
+                     -3,0,0,12,
                      0,0,0,23489 );
             mat.mState = gmtl::Matrix44f::AFFINE | gmtl::Matrix44f::NON_UNISCALE;
             gmtl::Matrix44f iv( mat ), iv_full( mat ), iv_affine( mat ), iv_trans( mat ), iv_ortho( mat ), iv_nochange( mat );
             gmtl::invert( iv );
             gmtl::invertFull( iv_full, iv_full );
             gmtl::invertAffine( iv_affine, iv_affine );
-            CPPUNIT_ASSERT( gmtl::isEqual( iv, iv_affine, eps ) && gmtl::isEqual( iv, iv_full, eps ) && "invert(AFFINE with NON_UNISCALE and uniform scale) funcs do not match" ); 
+            CPPUNIT_ASSERT( gmtl::isEqual( iv, iv_affine, eps ) && gmtl::isEqual( iv, iv_full, eps ) && "invert(AFFINE with NON_UNISCALE and uniform scale) funcs do not match" );
          }
-      // gmtl::Matrix44f::FULL: 
+      // gmtl::Matrix44f::FULL:
          {
-            mat.set( 1,2,3,13, 
-                     4,5,6,14, 
-                     7,8,9,15, 
+            mat.set( 1,2,3,13,
+                     4,5,6,14,
+                     7,8,9,15,
                      10,11,12,16 );
             mat.mState = gmtl::Matrix44f::FULL;
             gmtl::Matrix44f iv( mat ), iv_full( mat ), iv_affine( mat ), iv_trans( mat ), iv_ortho( mat ), iv_nochange( mat );
             gmtl::invert( iv );
             gmtl::invertFull( iv_full, iv_full );
-            CPPUNIT_ASSERT( gmtl::isEqual( iv, iv_full, eps ) && "invert(AFFINE|NON_UNISCALE) funcs do not match" ); 
+            CPPUNIT_ASSERT( gmtl::isEqual( iv, iv_full, eps ) && "invert(AFFINE|NON_UNISCALE) funcs do not match" );
          }
       }
    }
