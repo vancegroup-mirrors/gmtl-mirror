@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PointTest.cpp,v $
- * Date modified: $Date: 2003-02-26 20:47:45 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2003-02-26 20:50:28 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -43,6 +43,7 @@
 namespace gmtlTest
 {
    CPPUNIT_TEST_SUITE_REGISTRATION(PointTest);
+   CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(PointMetricTest, Suites::metric());
 
    void PointTest::testCreation()
    {
