@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: ConvertTest.cpp,v $
- * Date modified: $Date: 2002-06-12 19:38:53 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-06-24 04:33:00 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -44,7 +44,7 @@ namespace gmtlTest
    {
       const float eps = 0.0001;
       gmtl::Vec<float, 3> vec( 1.0f, 2.0f, 3.0f );
-      gmtl::Quat<float> quat( 4.0f, 5.0f, 6.0f ), bok, expected( 1.0f, 2.0f, 3.0f, 0.0f );
+      gmtl::Quat<float> quat( 4.0f, 5.0f, 6.0f, 1.0f ), bok, expected( 1.0f, 2.0f, 3.0f, 0.0f );
 
       bok = gmtl::setPure( quat, vec );
       CPPUNIT_ASSERT( gmtl::isEqual( expected, quat, eps ) );

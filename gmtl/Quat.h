@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Quat.h,v $
- * Date modified: $Date: 2002-05-21 15:26:32 $
- * Version:       $Revision: 1.18 $
+ * Date modified: $Date: 2002-06-24 04:33:00 $
+ * Version:       $Revision: 1.19 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -84,8 +84,17 @@ public:
     *  [x,y,z,w] == [0,0,0,1].
     *  NOTE: the addition identity is [0,0,0,0]
     */
-   Quat<DATA_TYPE>( const DATA_TYPE x = (DATA_TYPE)0.0, const DATA_TYPE y = (DATA_TYPE)0.0,
-                    const DATA_TYPE z = (DATA_TYPE)0.0, const DATA_TYPE w = (DATA_TYPE)1.0 )
+   Quat<DATA_TYPE>()
+         : mData( (DATA_TYPE)0.0, (DATA_TYPE)0.0, (DATA_TYPE)0.0, (DATA_TYPE)1.0 )
+   {
+   }
+   
+   /** data constructor, initializes to quaternion multiplication identity
+    *  [x,y,z,w] == [0,0,0,1].
+    *  NOTE: the addition identity is [0,0,0,0]
+    */
+   Quat<DATA_TYPE>( const DATA_TYPE x, const DATA_TYPE y,
+                    const DATA_TYPE z, const DATA_TYPE w )
          : mData( x, y, z, w )
    {
    }
