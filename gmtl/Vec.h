@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Vec.h,v $
- * Date modified: $Date: 2002-06-13 13:55:45 $
- * Version:       $Revision: 1.11 $
+ * Date modified: $Date: 2002-06-13 14:16:06 $
+ * Version:       $Revision: 1.12 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -82,27 +82,39 @@ public:
     *
     * @param rVec    the Vec object to copy
     */
-   Vec(const Vec<DATA_TYPE, SIZE>& rVec)
-      : BaseType(static_cast<BaseType>(rVec))
-   {;}
-   Vec(const VecBase<DATA_TYPE, SIZE>& rVec)
-      : BaseType(rVec)
-   {;}
+   Vec( const Vec<DATA_TYPE, SIZE>& rVec )
+      : BaseType( static_cast<BaseType>( rVec ) )
+   {
+   }
+   
+   Vec( const VecBase<DATA_TYPE, SIZE>& rVec )
+      : BaseType( rVec )
+   {
+   }
 
    /**
     * Creates a new Vec initialized to the given values.
     */
    Vec(const DATA_TYPE& val0,const DATA_TYPE& val1)
    : BaseType(val0, val1)
-   {;}
+   {
+      // @todo compile time assert is needed here
+      gmtlASSERT( SIZE = 2 && "out of bounds element access in Point" );
+   }
 
    Vec(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2)
    : BaseType(val0, val1, val2)
-   {;}
+   {
+      // @todo compile time assert is needed here
+      gmtlASSERT( SIZE = 3 && "out of bounds element access in Point" );
+   }
 
    Vec(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2,const DATA_TYPE& val3)
    : BaseType(val0, val1, val2, val3)
-   {;}
+   {
+      // @todo compile time assert is needed here
+      gmtlASSERT( SIZE = 4 && "out of bounds element access in Point" );
+   }
    //@}
 };
 
