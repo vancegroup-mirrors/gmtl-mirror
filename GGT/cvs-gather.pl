@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# Id: es.pl,v 1.9 2002/01/19 00:44:39 patrick Exp
+# $Id: cvs-gather.pl,v 1.1 2002-02-01 17:22:13 patrickh Exp $
 
 require 5.004;
 
@@ -68,17 +68,17 @@ $debug_level = $HVERB_LVL if $verbose && $debug_level <= $CRITICAL_LVL;
 
 if ( ! $cfg_file )
 {
-   if ( -r ".esrc" )
+   if ( -r ".gatherrc" )
    {
-      $cfg_file = '.esrc';
+      $cfg_file = '.gatherrc';
    }
    else
    {
-      $cfg_file = "$ENV{'HOME'}/.esrc";
+      $cfg_file = "$ENV{'HOME'}/.gatherrc";
    }
 }
 
-$log_file = "es.log";
+$log_file = "gather.log";
 open(LOG_FILE, "> $log_file")
    or warn "WARNING: Could not create log file $log_file: $!\n";
 
@@ -88,13 +88,13 @@ my %override_modules = %orig_modules;
 
 if ( $#overrides == -1 )
 {
-   if ( -r ".esrc-override" )
+   if ( -r ".gatherrc-override" )
    {
-      push(@overrides, '.esrc-override');
+      push(@overrides, '.gatherrc-override');
    }
-   elsif ( -r "$ENV{'HOME'}/.esrc-override" )
+   elsif ( -r "$ENV{'HOME'}/.gatherrc-override" )
    {
-      push(@overrides, "$ENV{'HOME'}/.esrc-override");
+      push(@overrides, "$ENV{'HOME'}/.gatherrc-override");
    }
 }
 
@@ -200,7 +200,7 @@ For application makefiles:
 
     --cfg=<filename>
         Specify the name of the module configuration to load. If not given,
-        the current directory is searched for a .esrc file. If one is not
+        the current directory is searched for a .gatherrc file. If one is not
         found, the user's home directory is searched for the same file.
 
     --debug=<level>
@@ -210,7 +210,7 @@ For application makefiles:
         Specify the name of an an override file used to override values set
         by the loaded module configuration file. There may be zero or more of
         these. If not specified, the current directory is searched for the
-        file .esrc-override. If not found, the user's home directory is
+        file .gatherrc-override. If not found, the user's home directory is
         searched for the same file.
 
     --set <key1>=<value1> --set <key2>=<value2> ... --set <keyN>=<valueN>
@@ -670,8 +670,8 @@ sub checkoutModules ($)
          {
             printDebug $VERB_LVL, "$_ --> $$mod_ref{$_}{'CVSROOT'} ",
                        "$$mod_ref{$_}{'Tag'} $$mod_ref{$_}{'Date'} ",
-                       "$cvs_module_name ($$mod_ref{$_}{'Path'}";
-            printDebug $VERB_LVL, " --> $install_name" if $install_name;
+                       "$cvs_module_name (to $$mod_ref{$_}{'Path'}";
+            printDebug $VERB_LVL, "/$install_name" if $install_name;
             printDebug $VERB_LVL, ")\n";
             checkoutModule($_, $$mod_ref{"$_"}{'CVSROOT'},
                            $$mod_ref{"$_"}{'Tag'}, $$mod_ref{"$_"}{'Date'},
@@ -706,8 +706,22 @@ sub checkoutModule ($$$$$$$)
       print "Checking out source for $name: $cvs_module -- please wait ...\n";
       print LOG_FILE "$cmd_line\n";
       my $cwd = getcwd();
-      mkdir("$path", 0755) unless -d "$path";
-      chdir("$path") if $path;
+
+      # The name for the temporary checkout directory.
+      my $temp_checkout_dir = "$cwd/temp.$$";
+
+      # Create the temporary directory for the initial module checkout.
+      if ( mkdir("$temp_checkout_dir", 0700) )
+      {
+         chdir("$temp_checkout_dir")
+            or warn "WARNING: Could not chdir to $temp_checkout_dir: $!\n";
+      }
+      # If the temporary directory creation failed, we'll just fall back on
+      # the current working directory.
+      else
+      {
+         $temp_checkout_dir = "$cwd";
+      }
 
       if ( $verbose )
       {
@@ -718,6 +732,16 @@ sub checkoutModule ($$$$$$$)
          print LOG_FILE `$cmd_line 2>&1`;
       }
 
+      chdir("$cwd");
+      mkdir("$path", 0755) unless -d "$path";
+      chdir("$path") if $path;
+
+      # This is the full path to the directory where the checked-out module
+      # will be placed after being downloaded.
+      my $inst_dir = getcwd();
+
+      # We have an alternate installation name that the actual path to the
+      # checked-out module.
       if ( $install_name )
       {
          print "    Moving $cvs_module to $install_name ...\n";
@@ -749,7 +773,8 @@ sub checkoutModule ($$$$$$$)
          {
             my ($module_dir, $ext);
             ($orig_module_name, $module_dir, $ext) = fileparse("$cvs_module");
-            chdir("$module_dir");
+            chdir("$temp_checkout_dir/$module_dir")
+               or die "ERROR: Could not chdir to $temp_checkout_dir/$module_dir: $!\n";
          }
          # Otherwise, we can just use the module name as it was originally
          # given.
@@ -766,10 +791,52 @@ sub checkoutModule ($$$$$$$)
          }
          else
          {
+            printDebug $STATE_LVL, "Moving $orig_module_name to " .
+                                   "$co_dir/$install_name\n";
             rename("$orig_module_name", "$co_dir/$install_name")
                or warn "    WARNING: Module renaming failed: $!\n";
          }
       }
+      # We are going to use the default module name, but we have to get it
+      # from the temporary directory to the place the user wants it.
+      else
+      {
+         my @module_path = split(/\//, "$cvs_module");
+
+         my $skipped_path = '';
+         my $dest_dir = "$inst_dir";
+
+         # We have to iterate over each directory in @module_path and find
+         # the first path element that does not exist in $dest_dir.  The
+         # reason is that a previous module may have set up part of this
+         # module's path already, and we cannot overwrite what already exists.
+         my $dir;
+         foreach $dir ( @module_path )
+         {
+            # We found a directory that does not already exist, so we can go
+            # ahead with the move.
+            if ( ! -d "$dest_dir/$dir" )
+            {
+               printDebug $STATE_LVL,
+                          "Renaming $temp_checkout_dir/$skipped_path/$dir " .
+                          "to $dest_dir/$dir\n";
+               rename("$temp_checkout_dir/$skipped_path/$dir",
+                      "$dest_dir/$dir");
+            }
+            # $dir already exists in $dest_dir, so append it to $dest_dir and
+            # move on.
+            else
+            {
+               $skipped_path .= "$dir/";
+               $dest_dir     .= "/$dir";
+               printDebug $STATE_LVL, "Descending to $skipped_path ...\n";
+            }
+         }
+      }
+
+      printDebug $STATE_LVL, "Removing tree $temp_checkout_dir\n";
+      rmtree("$temp_checkout_dir")
+         or warn "WARNING: Could not clean up temporary checkout directory: $!\n";
 
       print "Done\n";
       chdir("$cwd");
