@@ -11,32 +11,99 @@
  *  @section General General Questions about GMTL
  *
  *  <b>Why do you use templated code?</b>
+ *
+ *
+ *
+ *
  *  <b>Why do you use namespaces?</b>
+ *
+ *
+ *
+ *
  *  <b>Why would I want to use your C math abstraction rather than the regular C math headers?
+ *
+ *
+ *
+ *
  *  <b>What is an AABox?</b>
+ *  This is an axially-aligned bounding box. Think of it as a box in 3D space
+ *  with its each of its sides parallel to one of the coordinate axes. Such a
+ *  box can be described using only 2 points, the minimum and maximum. AABoxes
+ *  can be useful in object collision detection.
+ *
  *  <b>What is an AxisAngle?</b>
+ *  This is a rotational data type, defined by an arbitrary axis vector in 
+ *  space and an amount of rotation. 
+ *
  *  <b>What is a Coord?</b>
+ *  This is a coordinate frame, defined by a position and a rotation value. 
+ *  
  *  <b>What is an EulerAngle?</b>
+ *  This is a data type that represents a rotational value. It consists of three
+ *  values, each representing a rotation about one of the coordinate axes X, Y,
+ *  and Z. Note that Euler angle representations are often more intuitive to
+ *  use, but suffer from the problem of Gimble lock.
+ *
  *  <b>What is a Matrix?</b>
+ *  This is a data type commonly used in graphical applications. It simply
+ *  contains rows and columns of data, with any number of rows and columns.
+ *  4x4 matrices can represent any transformation in 3D space, containing
+ *  (but not limited to) translational, rotational, skew, and scaling 
+ *  information.
+ *
  *  <b>What is a Plane?</b>
+ *  A plane is a flat surface in 3D space with no boundaries. It is defined by
+ *  a point in 3D space and a surface normal vector.
+ *
  *  <b>What is a Point?</b>
+ *  Points represent a position in space, with one data value per dimension of
+ *  that space. 
+ *
  *  <b>What is a Quat?</b>
+ *  This is a quaternion, which is represents a rotation in 3D space.
+ *  Quaternions can be used for rotational interpolation along the surface
+ *  of a sphere.
+ *
  *  <b>What is a Sphere?</b>
+ *  This is a 3D dimensional round object such that every point on the outer
+ *  boundary of the object is the same distance away from the centerpoint. A
+ *  sphere can be described by a centerpoint position and a radius.
+ *
  *  <b>What is a Tri?</b>
+ *  This is a triangle, defined by three points in space. The counterclockwise
+ *  ordering of the points determines the direction of the triangle's surface
+ *  normal (using a right-handed coordinate system). 
+ *
  *  <b>What is a Vec?</b>
+ *  This is a vector that represents a direction in space, with one data value
+ *  per dimension of the space.
+ *
  *  <b>What is the difference between a point and a vector?</b>
+ *  Points represent positions in space, while vectors represent a direction.
+ *  Even though they may seem to represent the same data, it is generally 
+ *  discouraged to use them interchangably. Differences occur when operations
+ *  are performed on them. For instance, if you transform a point using a 
+ *  matrix, the full transformation will be applied to the point (translation,
+ *  rotation, skew, and scale). But when a vector is transformed by a matrix,
+ *  only the rotational transform is applied to it.
+ *
  *  <b>Why doesn't my vector move?</b>
+ *  If you are transforming a vector using a matrix, only the matrix's 
+ *  rotational information will be applied. Hence, you may be expecting the
+ *  vector's endpoint to change but it will not. You most likely want to use
+ *  a Point object instead of a Vec.
+ *
  *  <b>What is the difference between AxisAngle, EulerAngle and Quat?</b>
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
+ *  An axis angle consists of a vector designating the axis to rotate about,
+ *  and the rotation amount to use. 
+ *  An Euler angle object consists of 3 rotation amounts, one for each
+ *  coordinate axis X, Y, and Z. Euler angles are often the most intuitive
+ *  rotation type, but suffer from the Gimble lock problem.
+ *  A quaternion has 4 values that can be translated into an axis and a
+ *  rotation amount, but are stored in a normalized form that maintain the
+ *  mathematical properties of quaternions, including the ability of spherical
+ *  interpolation.  
+ *  
  *
  *  @section Howto How Do I ...?
  *
@@ -63,6 +130,8 @@
  *  <b>How do I transform a vector using a matrix?</b>
  *  <b>How do I use my matrix data with OpenGL?</b>
  *  <b>How do I use my matrix data with DirectX?</b>
+
+ *  @subsection Quaternions Quaternions
  *
  *  @subsection General General Math
  *  <b>How do I use GMTL's C math abstraction?</b>
