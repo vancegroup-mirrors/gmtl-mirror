@@ -1,5 +1,6 @@
 DATE       AUTHOR    CHANGE
 ---------- --------  -----------------------------------------------------------
+2002-02-19 subatomic Added Matrix gen funcs
 2002-02-18 bscott    Added Plane comparison functions.
 2002-02-18 bscott    Added Plane class.
 2002-02-18 bscott    Added Tri class, comparison and ops
