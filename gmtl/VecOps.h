@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecOps.h,v $
- * Date modified: $Date: 2002-02-25 20:28:40 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2002-03-11 20:18:33 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -272,7 +272,7 @@ inline bool isEqual(const VecBase<DATA_TYPE, SIZE>& v1, const VecBase<DATA_TYPE,
 {
    ggtASSERT(eps >= 0);
 
-  for(int i=0;i<SIZE;++i)
+  for(unsigned i=0;i<SIZE;++i)
   {
      if (fabs(v1[i] - v2[i]) > eps)
         return false;
