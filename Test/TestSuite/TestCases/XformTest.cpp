@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: XformTest.cpp,v $
- * Date modified: $Date: 2003-02-06 01:39:50 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2003-04-24 19:11:45 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -37,6 +37,7 @@
 #include <cppunit/extensions/HelperMacros.h>
 #include <cppunit/extensions/MetricRegistry.h>
 
+#include <gmtl/Generate.h>
 #include <gmtl/Xforms.h>
 
 namespace gmtlTest
