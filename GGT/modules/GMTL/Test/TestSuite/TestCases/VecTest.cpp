@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.cpp,v $
- * Date modified: $Date: 2002-11-27 05:52:51 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2002-11-27 06:29:16 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -34,6 +34,7 @@
  ************************************************************ ggt-cpr end */
 #include "VecTest.h"
 #include <cppunit/extensions/MetricRegistry.h>
+#include <gmtl/Point.h>
 
 namespace gmtlTest
 {
