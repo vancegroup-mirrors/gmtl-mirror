@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixGenTest.h,v $
- * Date modified: $Date: 2002-02-19 22:35:15 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-02-19 23:39:38 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -66,6 +66,91 @@ public:
 
    void testMatrixMakeTrans()
    {
+      float eps = 0.001f;
+      // 2D rot/trans
+      { 
+         gmtl::Matrix<float, 2, 3> mat23, expected_result23;
+         expected_result23.set( 1, 0, 32,
+                                0, 1, 33 );
+         gmtl::makeTrans( mat23, gmtl::Vec2f( 32, 33 ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result23, mat23, eps ) );
+      }
+      // 2D rot/trans/skew
+      { 
+         gmtl::Matrix33f mat33, expected_result33;
+         expected_result33.set( 1, 0, 32,
+                                0, 1, 33,
+                                0, 0, 1 );
+         gmtl::makeTrans( mat33, gmtl::Vec2f( 32, 33 ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat33, eps ) );
+      }
+      // 2D rot/trans/skew set by homogeneous vector
+      { 
+         gmtl::Matrix33f mat33, expected_result33;
+         expected_result33.set( 1, 0, 64,
+                                0, 1, 66,
+                                0, 0, 1 );
+         gmtl::makeTrans( mat33, gmtl::Vec3f( 32, 33, 0.5f ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat33, eps ) );
+      }
+      // 3D rot/trans
+      { 
+         gmtl::Matrix34f mat34, expected_result34;
+         expected_result34.set( 1, 0, 0, 32,
+                                0, 1, 0, 33,
+                                0, 0, 1, 34 );
+         gmtl::makeTrans( mat34, gmtl::Vec3f( 32, 33, 34 ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result34, mat34, eps ) );
+      }
+      // 3D rot/trans set by homogeneous vector
+      { 
+         gmtl::Matrix34f mat34, expected_result34;
+         expected_result34.set( 1, 0, 0, 64,
+                                0, 1, 0, 66,
+                                0, 0, 1, 68 );
+         gmtl::makeTrans( mat34, gmtl::Vec4f( 32, 33, 34, 0.5f ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result34, mat34, eps ) );
+      }
+      // 3D rot/trans/skew
+      { 
+         gmtl::Matrix44f mat44, expected_result44;
+         expected_result44.set( 1, 0, 0, 32,
+                                0, 1, 0, 33, 
+                                0, 0, 1, 34,
+                                0, 0, 0, 1  );
+         gmtl::makeTrans( mat44, gmtl::Vec3f( 32, 33, 34 ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result44, mat44, eps ) );
+      }
+      // 3D rot/trans/skew set by homogeneous vector...
+      { 
+         gmtl::Matrix44f mat44, expected_result44;
+         expected_result44.set( 1, 0, 0, 64,
+                                0, 1, 0, 66,
+                                0, 0, 1, 68,
+                                0, 0, 0, 1  );
+         gmtl::makeTrans( mat44, gmtl::Vec4f( 32, 33, 34, 0.5f ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result44, mat44, eps ) );
+      }
+   }
+   
+   void testMatrixMakeAxes()
+   {
+   }
+   void testMatrixMakeDirCos()
+   {
+   }
+   void testMatrixMakeRotEuler()
+   {
+   }
+   void testMatrixMakeScale()
+   {
+   }
+   void testMatrixMakeRot()
+   {
+   }
+         
+   void testTimingMakeTrans()
+   {
       gmtl::Matrix33f mat33;
       gmtl::Matrix34f mat34;
       gmtl::Matrix44f mat44;
@@ -86,7 +171,7 @@ public:
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeTrans", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
    /*
-   void testMatrixMakeTransStatic()
+   void testTimingMakeTransStatic()
    {
       gmtl::Matrix22f mat22;
       gmtl::Matrix33f mat33;
@@ -108,7 +193,7 @@ public:
    }
    */
    
-   void testMatrixMakeScale()
+   void testTimingMakeScale()
    {
       gmtl::Matrix33f mat33;
       gmtl::Matrix34f mat34;
@@ -131,7 +216,7 @@ public:
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeScale", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
    /*
-   void testMatrixMakeScaleStatic()
+   void testTimingMakeScaleStatic()
    {
       gmtl::Matrix22f mat22;
       gmtl::Matrix33f mat33;
@@ -157,7 +242,7 @@ public:
    }
    */
          
-   void testMatrixMakeRot33()
+   void testTimingMakeRot33()
    {
       gmtl::Matrix33f mat;
       const long iters(100000);
@@ -168,7 +253,7 @@ public:
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeRot33", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
    
-   void testMatrixMakeRot34()
+   void testTimingMakeRot34()
    {
       gmtl::Matrix34f mat;
       const long iters(100000);
@@ -179,7 +264,7 @@ public:
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeRot34", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
    
-   void testMatrixMakeRot44()
+   void testTimingMakeRot44()
    {
       gmtl::Matrix44f mat;
       const long iters(100000);
@@ -191,7 +276,7 @@ public:
    }
    
    /*
-   void testMatrixMakeRot33Static()
+   void testTimingMakeRot33Static()
    {
       gmtl::bok<gmtl::Matrix33f>( (float)1.0f );
       gmtl::Matrix<float, 3, 3> mat;
@@ -203,7 +288,7 @@ public:
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeRot33Static", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
    
-   void testMatrixMakeRot34Static()
+   void testTimingMakeRot34Static()
    {
       gmtl::Matrix<float, 3, 4> mat;
       const long iters(100000);
@@ -214,7 +299,7 @@ public:
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeRot34Static", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
    
-   void testMatrixMakeRot44Static()
+   void testTimingMakeRot44Static()
    {
       gmtl::Matrix<float, 4, 4> mat;
       const long iters(100000);
@@ -228,7 +313,7 @@ public:
    
    // makeRot Euler tests...
    
-   void testMatrixMakeRotEuler33()
+   void testTimingMakeRotEuler33()
    {
       gmtl::Matrix33f mat;
       const long iters(100000);
@@ -243,7 +328,7 @@ public:
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeRotEuler33", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
    
-   void testMatrixMakeRotEuler34()
+   void testTimingMakeRotEuler34()
    {
       gmtl::Matrix34f mat;
       const long iters(100000);
@@ -258,7 +343,7 @@ public:
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeRotEuler34", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
    
-   void testMatrixMakeRotEuler44()
+   void testTimingMakeRotEuler44()
    {
       gmtl::Matrix44f mat;
       const long iters(100000);
@@ -273,7 +358,7 @@ public:
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeRotEuler44", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
    /*
-   void testMatrixMakeRotEuler33Static()
+   void testTimingMakeRotEuler33Static()
    {
       gmtl::Matrix<float, 3, 3> mat;
       const long iters(100000);
@@ -284,7 +369,7 @@ public:
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeRotEuler33Static", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
    
-   void testMatrixMakeRotEuler34Static()
+   void testTimingMakeRotEuler34Static()
    {
       gmtl::Matrix<float, 3, 4> mat;
       const long iters(100000);
@@ -295,7 +380,7 @@ public:
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeRotEuler34Static", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
    
-   void testMatrixMakeRotEuler44Static()
+   void testTimingMakeRotEuler44Static()
    {
       gmtl::Matrix44f mat;
       const long iters(100000);
@@ -307,7 +392,7 @@ public:
    }
    */
          
-   void testMatrixMakeDirCos33()
+   void testTimingMakeDirCos33()
    {
       gmtl::Matrix33f mat;
       const long iters(100000);
@@ -318,7 +403,7 @@ public:
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeDirCos33", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
    
-   void testMatrixMakeDirCos34()
+   void testTimingMakeDirCos34()
    {
       gmtl::Matrix34f mat;
       const long iters(100000);
@@ -329,7 +414,7 @@ public:
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeDirCos34", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
    
-   void testMatrixMakeDirCos44()
+   void testTimingMakeDirCos44()
    {
       gmtl::Matrix44f mat;
       const long iters(100000);
@@ -340,7 +425,7 @@ public:
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeDirCos44", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
    /*
-   void testMatrixMakeDirCos33Static()
+   void testTimingMakeDirCos33Static()
    {
       gmtl::Matrix<float, 3, 3> mat;
       const long iters(100000);
@@ -351,7 +436,7 @@ public:
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeDirCos33Static", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
    
-   void testMatrixMakeDirCos34Static()
+   void testTimingMakeDirCos34Static()
    {
       gmtl::Matrix<float, 3, 4> mat;
       const long iters(100000);
@@ -362,7 +447,7 @@ public:
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeDirCos34Static", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
    
-   void testMatrixMakeDirCos44Static()
+   void testTimingMakeDirCos44Static()
    {
       gmtl::Matrix44f mat;
       const long iters(100000);
@@ -374,7 +459,7 @@ public:
    }
    */
          
-   void testMatrixMakeAxes33()
+   void testTimingMakeAxes33()
    {
       gmtl::Matrix33f mat;
       const long iters(100000);
@@ -385,7 +470,7 @@ public:
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeAxes33", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
    
-   void testMatrixMakeAxes34()
+   void testTimingMakeAxes34()
    {
       gmtl::Matrix34f mat;
       const long iters(100000);
@@ -396,7 +481,7 @@ public:
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeAxes34", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
    
-   void testMatrixMakeAxes44()
+   void testTimingMakeAxes44()
    {
       gmtl::Matrix44f mat;
       const long iters(100000);
@@ -407,7 +492,7 @@ public:
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeAxes44", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
    /*
-   void testMatrixMakeAxes33Static()
+   void testTimingMakeAxes33Static()
    {
       gmtl::Matrix<float, 3, 3> mat;
       const long iters(100000);
@@ -418,7 +503,7 @@ public:
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeAxes33Static", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
    
-   void testMatrixMakeAxes34Static()
+   void testTimingMakeAxes34Static()
    {
       gmtl::Matrix<float, 3, 4> mat;
       const long iters(100000);
@@ -429,7 +514,7 @@ public:
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeAxes34Static", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
    
-   void testMatrixMakeAxes44Static()
+   void testTimingMakeAxes44Static()
    {
       gmtl::Matrix44f mat;
       const long iters(100000);
@@ -442,7 +527,7 @@ public:
    */
          
    // is this a convert test?
-   void testMatrixMakeAxes()
+   void testTimingMakeAxes()
    {
       gmtl::Matrix44f mat1, mat2;
       gmtl::Vec3f xAxis1,yAxis1,zAxis1;
@@ -490,56 +575,66 @@ public:
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("MatrixGenTest");
       
-      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeTrans", &MatrixGenTest::testMatrixMakeTrans));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testMatrixMakeTrans", &MatrixGenTest::testMatrixMakeTrans ) );
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testMatrixMakeAxes", &MatrixGenTest::testMatrixMakeAxes ) );
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testMatrixMakeDirCos", &MatrixGenTest::testMatrixMakeDirCos ) );
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testMatrixMakeRotEuler", &MatrixGenTest::testMatrixMakeRotEuler ) );
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testMatrixMakeScale", &MatrixGenTest::testMatrixMakeScale ) );
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testMatrixMakeRot", &MatrixGenTest::testMatrixMakeRot ) );
+      
+      
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingMakeTrans", &MatrixGenTest::testTimingMakeTrans ) );
       /*
-      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeTransStatic", &MatrixGenTest::testMatrixMakeTransStatic));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testTimingMakeTransStatic", &MatrixGenTest::testTimingMakeTransStatic ) );
       */
             
-      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeScale", &MatrixGenTest::testMatrixMakeScale));
-      /*
-      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeScaleStatic", &MatrixGenTest::testMatrixMakeScaleStatic));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingMakeScale", &MatrixGenTest::testTimingMakeScale ) );
+      /* 
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingMakeScaleStatic", &MatrixGenTest::testTimingMakeScaleStatic) );
       */
       
-      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeRot33", &MatrixGenTest::testMatrixMakeRot33));
-      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeRot34", &MatrixGenTest::testMatrixMakeRot34));
-      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeRot44", &MatrixGenTest::testMatrixMakeRot44));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingMakeRot33", &MatrixGenTest::testTimingMakeRot33 ) );
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingMakeRot34", &MatrixGenTest::testTimingMakeRot34 ) );
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingMakeRot44", &MatrixGenTest::testTimingMakeRot44 ) );
       /*
-      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeRot33Static", &MatrixGenTest::testMatrixMakeRot33Static));
-      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeRot34Static", &MatrixGenTest::testMatrixMakeRot34Static));
-      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeRot44Static", &MatrixGenTest::testMatrixMakeRot44Static));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingMakeRot33Static", &MatrixGenTest::testTimingMakeRot33Static ) );
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingMakeRot34Static", &MatrixGenTest::testTimingMakeRot34Static ) );
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingMakeRot44Static", &MatrixGenTest::testTimingMakeRot44Static ) );
       */
-      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeRotEuler33", &MatrixGenTest::testMatrixMakeRot33));
-      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeRotEuler34", &MatrixGenTest::testMatrixMakeRot34));
-      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeRotEuler44", &MatrixGenTest::testMatrixMakeRot44));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingMakeRotEuler33", &MatrixGenTest::testTimingMakeRot33 ) );
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingMakeRotEuler34", &MatrixGenTest::testTimingMakeRot34 ) );
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingMakeRotEuler44", &MatrixGenTest::testTimingMakeRot44 ) );
       /*
-      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeRotEuler33Static", &MatrixGenTest::testMatrixMakeRot33Static));
-      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeRotEuler34Static", &MatrixGenTest::testMatrixMakeRot34Static));
-      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeRotEuler44Static", &MatrixGenTest::testMatrixMakeRot44Static));
-      */
-            
-      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeDirCos33", &MatrixGenTest::testMatrixMakeDirCos33));
-      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeDirCos34", &MatrixGenTest::testMatrixMakeDirCos34));
-      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeDirCos44", &MatrixGenTest::testMatrixMakeDirCos44));
-      /*
-      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeDirCos33Static", &MatrixGenTest::testMatrixMakeDirCos33Static));
-      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeDirCos34Static", &MatrixGenTest::testMatrixMakeDirCos34Static));
-      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeDirCos44Static", &MatrixGenTest::testMatrixMakeDirCos44Static));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingMakeRotEuler33Static", &MatrixGenTest::testTimingMakeRot33Static ) );
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingMakeRotEuler34Static", &MatrixGenTest::testTimingMakeRot34Static ) );
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingMakeRotEuler44Static", &MatrixGenTest::testTimingMakeRot44Static ) );
       */
             
-      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeAxes33", &MatrixGenTest::testMatrixMakeAxes33));
-      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeAxes34", &MatrixGenTest::testMatrixMakeAxes34));
-      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeAxes44", &MatrixGenTest::testMatrixMakeAxes44));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingMakeDirCos33", &MatrixGenTest::testTimingMakeDirCos33 ) );
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingMakeDirCos34", &MatrixGenTest::testTimingMakeDirCos34 ) );
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingMakeDirCos44", &MatrixGenTest::testTimingMakeDirCos44 ) );
       /*
-      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeAxes33Static", &MatrixGenTest::testMatrixMakeAxes33Static));
-      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeAxes34Static", &MatrixGenTest::testMatrixMakeAxes34Static));
-      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeAxes44Static", &MatrixGenTest::testMatrixMakeAxes44Static));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingMakeDirCos33Static", &MatrixGenTest::testTimingMakeDirCos33Static ) );
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingMakeDirCos34Static", &MatrixGenTest::testTimingMakeDirCos34Static ) );
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingMakeDirCos44Static", &MatrixGenTest::testTimingMakeDirCos44Static ) );
       */
+            
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testTimingMakeAxes33", &MatrixGenTest::testTimingMakeAxes33 ) );
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testTimingMakeAxes34", &MatrixGenTest::testTimingMakeAxes34 ) );
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testTimingMakeAxes44", &MatrixGenTest::testTimingMakeAxes44 ) );
+      /*
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testTimingMakeAxes33Static", &MatrixGenTest::testTimingMakeAxes33Static ) );
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testTimingMakeAxes34Static", &MatrixGenTest::testTimingMakeAxes34Static ) );
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testTimingMakeAxes44Static", &MatrixGenTest::testTimingMakeAxes44Static ) );
+      */
+            
+      
       return test_suite;
    }
 
    static Test* interactiveSuite()
    {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveThreadTest");
+      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("bokbokbokbokbokbokbokbok");
       //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
       return test_suite;
    }
