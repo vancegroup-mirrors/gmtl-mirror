@@ -353,6 +353,11 @@ if not SCons.Script.options.help_msg:
 help_text += "Platform: " + GetPlatform() + "\n";
 help_text += str(baseEnv["TOOLS"]) + "\n";
 help_text += opts.GenerateHelpText(baseEnv);
+help_text += """\nOther Options:
+   optimize=no          Should we build optimize
+   profile=no           Should we build profiled code
+   PREFIX=/usr/local    Installation prefix
+"""
 help_text += """
 You can store configuration options in the file: options.custom
 This file will be loaded each time.  Note: Options are cached in the file: options.cache.
@@ -421,3 +426,5 @@ if not SCons.Script.options.help_msg:
 
 # Build everything by default
 Default('.')
+
+Help(help_text)
