@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOps.h,v $
- * Date modified: $Date: 2002-02-15 21:47:16 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-02-15 23:08:39 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -161,6 +161,18 @@ namespace gmtl
    }
    
    /** matrix scalar mult.
+    *  mult each elt in a matrix by a scalar value.
+    *  @POST: result = lhs * scalar
+    */
+   template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
+   inline Matrix<DATA_TYPE, ROWS, COLS>& mult( Matrix<DATA_TYPE, ROWS, COLS>& result, const Matrix<DATA_TYPE, ROWS, COLS>& lhs, float scalar )
+   {
+      for (int i = 0; i < ROWS * COLS; ++i)
+         result = lhs[i] * _s;
+      return result;
+   }
+   
+   /** matrix scalar mult.
     * mult each elt in a matrix by a scalar value.
     *  @POST: result' = result * scalar
     */
@@ -180,18 +192,6 @@ namespace gmtl
    inline Matrix<DATA_TYPE, ROWS, COLS>& operator*=( Matrix<DATA_TYPE, ROWS, COLS>& result, DATA_TYPE scalar )
    {
       return mult( result, scalar );
-   }
-   
-   /** matrix scalar mult.
-    *  mult each elt in a matrix by a scalar value.
-    *  @POST: result = lhs * scalar
-    */
-   template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
-   inline Matrix<DATA_TYPE, ROWS, COLS>& mult( Matrix<DATA_TYPE, ROWS, COLS>& result, const Matrix<DATA_TYPE, ROWS, COLS>& lhs, float scalar )
-   {
-      for (int i = 0; i < ROWS * COLS; ++i)
-         result = lhs[i] * _s;
-      return result;
    }
    
    /** matrix transpose in place
@@ -221,14 +221,17 @@ namespace gmtl
     *  @POST: flip along diagonal
     */
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
-   Matrix<DATA_TYPE, ROWS, COLS>& transpose( Matrix<DATA_TYPE, ROWS, COLS>& result, Matrix<DATA_TYPE, COLS, ROWS>& source )
+   Matrix<DATA_TYPE, ROWS, COLS>& transpose( Matrix<DATA_TYPE, ROWS, COLS>& result, const Matrix<DATA_TYPE, COLS, ROWS>& source )
    {
+      // in case result is == source... :(
+      Matrix<DATA_TYPE, COLS, ROWS> temp = source;
+      
       // p. 149 Numerical Analysis (second ed.)
       for (int i = 0; i < ROWS; ++i)
       {
          for (int j = 0; j < COLS; ++j)
          {
-            result( i, j ) = source( j, i );
+            result( i, j ) = temp( j, i );
          }
       }
 
