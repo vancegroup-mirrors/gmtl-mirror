@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Math.h,v $
- * Date modified: $Date: 2002-02-22 19:45:19 $
- * Version:       $Revision: 1.11 $
+ * Date modified: $Date: 2002-02-22 22:28:35 $
+ * Version:       $Revision: 1.12 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -86,6 +86,21 @@ inline T sign( int iValue )
 {
     return ( iValue > ((T)0) ? ((T)+1) : ( iValue < ((T)0) ? ((T)-1) : ((T)0) ) );
 }
+//----------------------------------------------------------------------------
+/**
+ * Clamps the given value down to zero if it is within epsilon of zero.
+ *
+ * @param value      the value to clamp
+ * @param eps        the epsilon tolerance or zero by default
+ *
+ * @return  zero if the value is close to 0, the value otherwise
+ */
+template <typename T>
+inline T zeroClamp( T value, T eps = T(0) )
+{
+   return ( (gmtl::Math::abs(value) <= eps) ? T(0) : value );
+}
+
 //----------------------------------------------------------------------------
 // don't allow non-float types, because their ret val wont be correct
 // i.e. with int, the int retval will be rounded up or down.  

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtlDefines.h,v $
- * Date modified: $Date: 2002-02-21 21:36:17 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-02-22 22:28:35 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -54,7 +54,6 @@ namespace gmtl
    const float GMTL_MAT_EQUAL_EPSILON = 0.001f;  // Epsilon for matrices to be equal
    const float GMTL_VEC_EQUAL_EPSILON = 0.0001f; // Epsilon for vectors to be equal
 
-#define GMTL_ZERO_CLAMP(x) ((fabs(x) < GMTL_EPSILON)? 0.0f : x)
 #define GMTL_NEAR(x,y,eps) (gmtl::Math::abs((x)-(y))<(eps))
 
 };
