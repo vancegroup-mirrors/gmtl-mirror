@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixClassTest.h,v $
- * Date modified: $Date: 2002-02-12 16:17:16 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-02-12 16:48:06 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -61,6 +61,212 @@ public:
    {
    }
 
+   void testTimingDefaultConstructor()
+   {
+      // Test overhead of creation
+      const long iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+
+      for( long iter=0;iter<iters; ++iter)
+      {
+         gmtl::Matrix<float, 1, 1> test_mat11;
+         test_mat11[0] = 1.0f;
+         gmtl::Matrix<float, 2, 2> test_mat22;
+         test_mat22[0] = 1.0f;
+         gmtl::Matrix<float, 3, 3> test_mat33;
+         test_mat33[4] = 2.0f;
+         gmtl::Matrix<float, 3, 4> test_mat34;
+         test_mat34[5] = 2.0f;
+         gmtl::Matrix<float, 4, 4> test_mat44;
+         test_mat44[15] = 3.0f;
+         gmtl::Matrix<double, 10, 1> test_mat101;
+         test_mat101[9] = 1.0;
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixTest/matConstructorOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+   
+   void testTimingCopyConstructor()
+   {
+      gmtl::Matrix<float, 1, 1> src_mat11;
+      src_mat11[0] = 1.0f;
+      gmtl::Matrix<float, 2, 2> src_mat22;
+      src_mat22[0] = 1.0f;
+      gmtl::Matrix<float, 3, 3> src_mat33;
+      src_mat33[4] = 2.0f;
+      gmtl::Matrix<float, 3, 4> src_mat34;
+      src_mat34[5] = 2.0f;
+      gmtl::Matrix<float, 4, 4> src_mat44;
+      src_mat44[15] = 3.0f;
+      gmtl::Matrix<double, 10, 1> src_mat101;
+      src_mat101[9] = 1.0f;
+
+      // Test overhead of creation
+      const long iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+
+      for( long iter=0;iter<iters; ++iter)
+      {
+         gmtl::Matrix<float, 1, 1> test_mat11( src_mat11 );
+         gmtl::Matrix<float, 2, 2> test_mat22( src_mat22 );
+         gmtl::Matrix<float, 3, 3> test_mat33( src_mat33 );
+         gmtl::Matrix<float, 3, 4> test_mat34( src_mat34 );
+         gmtl::Matrix<float, 4, 4> test_mat44( src_mat44 );
+         gmtl::Matrix<double, 10, 1> test_mat101( src_mat101 );
+         
+         test_mat11[0] = 1.0f;
+         test_mat22[0] = 1.0f;
+         test_mat33[4] = 2.0f;
+         test_mat34[5] = 2.0f;
+         test_mat44[15] = 3.0f;
+         test_mat101[9] = 1.0f;
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixTest/matCopyConstructorOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+   
+   void testTimingOpEqual()
+   {
+      gmtl::Matrix<float, 1, 1> src_mat11;
+      src_mat11[0] = 1.0f;
+      gmtl::Matrix<float, 2, 2> src_mat22;
+      src_mat22[0] = 1.0f;
+      gmtl::Matrix<float, 3, 3> src_mat33;
+      src_mat33[4] = 2.0f;
+      gmtl::Matrix<float, 3, 4> src_mat34;
+      src_mat34[5] = 2.0f;
+      gmtl::Matrix<double, 4, 4> src_mat44;
+      src_mat44[15] = 3.0;
+      gmtl::Matrix<float, 10, 1> src_mat101;
+      src_mat101[9] = 1.0f;
+
+      // Test overhead of creation
+      const long iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+
+      gmtl::Matrix<float, 1, 1> test_mat11;
+      gmtl::Matrix<float, 2, 2> test_mat22;
+      gmtl::Matrix<float, 3, 3> test_mat33;
+      gmtl::Matrix<float, 3, 4> test_mat34;
+      gmtl::Matrix<double, 4, 4> test_mat44;
+      gmtl::Matrix<float, 10, 1> test_mat101;
+
+      for( long iter=0;iter<iters; ++iter)
+      {
+         test_mat11 = src_mat11;
+         test_mat22 = src_mat22;
+         test_mat33 = src_mat33;
+         test_mat34 = src_mat34;
+         test_mat44 = src_mat44;
+         test_mat101 = src_mat101;
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixTest/matOpEqualOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+   
+   void testTimingOpParen()
+   {
+      // Test overhead of creation
+      const long iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+
+      gmtl::Matrix<float, 1, 1> test_mat11;
+      gmtl::Matrix<float, 2, 2> test_mat22;
+      gmtl::Matrix<float, 3, 3> test_mat33;
+      gmtl::Matrix<float, 3, 4> test_mat34;
+      gmtl::Matrix<double, 4, 4> test_mat44;
+      gmtl::Matrix<float, 10, 1> test_mat101;
+
+      for( long iter=0;iter<iters; ++iter)
+      {
+         test_mat11( 0,0 ) = 0.0f;
+         test_mat22( 1,1 ) = 0.0f;
+         test_mat33( 1,1 ) = 0.0f;
+         test_mat34( 1,2 ) = 0.0f;
+         test_mat44( 3,3 ) = 0.0f;
+         test_mat101( 9,0 ) = 0.0f;
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixTest/matOpParenOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+   
+   void testTimingOpBracket()
+   {
+      // Test overhead of creation
+      const long iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+
+      gmtl::Matrix<float, 1, 1> test_mat11;
+      gmtl::Matrix<float, 2, 2> test_mat22;
+      gmtl::Matrix<float, 3, 3> test_mat33;
+      gmtl::Matrix<float, 3, 4> test_mat34;
+      gmtl::Matrix<double, 4, 4> test_mat44;
+      gmtl::Matrix<float, 10, 1> test_mat101;
+
+      for( long iter=0;iter<iters; ++iter)
+      {
+         test_mat11[0] = 0.0f;
+         test_mat22[3] = 0.0f;
+         test_mat33[8] = 0.0f;
+         test_mat34[11] = 0.0f;
+         test_mat44[15] = 0.0f;
+         test_mat101[9] = 0.0f;
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixTest/matOpBracketOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+   
+   void testTimingSetPtr()
+   {
+      // Test overhead of creation
+      const long iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+
+      gmtl::Matrix<float, 2, 2> test_mat22;
+      gmtl::Matrix<float, 3, 3> test_mat33;
+      gmtl::Matrix<float, 3, 4> test_mat34;
+      gmtl::Matrix<double, 4, 4> test_mat44;
+
+      for( long iter=0;iter<iters; ++iter)
+      {
+         test_mat22.set( gmtl::MAT_IDENTITY22F.getData() );
+         test_mat33.set( gmtl::MAT_IDENTITY33F.getData() );
+         test_mat34.set( gmtl::MAT_IDENTITY34F.getData() );
+         test_mat44.set( gmtl::MAT_IDENTITY44D.getData() );
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixTest/matSetPtrOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+   
+   void testTimingSet()
+   {
+      // Test overhead of creation
+      const long iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+
+      gmtl::Matrix<float, 2, 2> test_mat22;
+      gmtl::Matrix<float, 3, 3> test_mat33;
+      gmtl::Matrix<float, 3, 4> test_mat34;
+      gmtl::Matrix<double, 4, 4> test_mat44;
+
+      for( long iter=0;iter<iters; ++iter)
+      {
+         test_mat22.set( 1,2,3,4 );
+         test_mat33.set( 2,3,4,5,6,7,7,10,1451235 );
+         test_mat34.set( 2,3,4,5,6,7,7,10,1451235,1,2,3 );
+         test_mat44.set( 2,3,4,5,6,7,7,10,1451235,1,2,3,1,2,3,4 );
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixTest/matSetOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+   
    // test out operations using identity matrix
    void testMatrixIdentity()
    {
@@ -728,6 +934,13 @@ public:
    static Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("MatrixClassTest");
+      test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testTimingDefaultConstructor", &MatrixClassTest::testTimingDefaultConstructor));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testTimingCopyConstructor", &MatrixClassTest::testTimingCopyConstructor));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testTimingOpEqual", &MatrixClassTest::testTimingOpEqual));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testTimingOpParen", &MatrixClassTest::testTimingOpParen));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testTimingOpBracket", &MatrixClassTest::testTimingOpBracket));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testTimingSetPtr", &MatrixClassTest::testTimingSetPtr));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testTimingSet", &MatrixClassTest::testTimingSet));
       test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testMatrixIdentity", &MatrixClassTest::testMatrixIdentity));
       test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testMatrixSetFloat", &MatrixClassTest::testMatrixSetFloat));
       test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testMatrix44Creation", &MatrixClassTest::testMatrix44Creation));
