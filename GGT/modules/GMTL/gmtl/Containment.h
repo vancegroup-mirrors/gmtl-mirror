@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Containment.h,v $
- * Date modified: $Date: 2002-06-24 03:35:06 $
- * Version:       $Revision: 1.10 $
+ * Date modified: $Date: 2002-06-24 05:48:26 $
+ * Version:       $Revision: 1.11 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -328,8 +328,8 @@ bool isOnVolume( const Sphere<DATA_TYPE>& container,
  * @return  true if pt is inside container, false otherwise
  */
 template< class DATA_TYPE >
-bool isInVolume( const AABox<DATA_TYPE>& container,
-                 const Point<DATA_TYPE, 3>& pt )
+bool isInVolume(const AABox<DATA_TYPE>& container,
+                const Point<DATA_TYPE, 3>& pt)
 {
    if (! container.isEmpty())
    {
@@ -356,8 +356,8 @@ bool isInVolume( const AABox<DATA_TYPE>& container,
  * @return  true if AABox is inside container, false otherwise
  */
 template< class DATA_TYPE >
-bool isInVolume( const AABox<DATA_TYPE>& container,
-                 const AABox<DATA_TYPE>& box )
+bool isInVolume(const AABox<DATA_TYPE>& container,
+                const AABox<DATA_TYPE>& box)
 {
    // Empty boxes don't overlap
    if (container.isEmpty() || box.isEmpty())
@@ -376,6 +376,84 @@ bool isInVolume( const AABox<DATA_TYPE>& container,
    {
       return true;
    }
+}
+
+/**
+ * Modifies the existing AABox to tightly enclose itself and the given point.
+ *
+ * @param container  [in,out] the AABox that will be extended
+ * @param pt         [in]     the point which the AABox should contain
+ */
+template< class DATA_TYPE >
+void extendVolume(AABox<DATA_TYPE>& container,
+                  const Point<DATA_TYPE, 3>& pt)
+{
+   if (! container.isEmpty())
+   {
+      // X coord
+      if (pt[0] > container.mMax[0])
+      {
+         container.mMax[0] = pt[0];
+      }
+      else if (pt[0] < container.mMin[0])
+      {
+         container.mMin[0] = pt[0];
+      }
+
+      // Y coord
+      if (pt[1] > container.mMax[1])
+      {
+         container.mMax[1] = pt[1];
+      }
+      else if (pt[1] < container.mMin[1])
+      {
+         container.mMin[1] = pt[1];
+      }
+
+      // Z coord
+      if (pt[2] > container.mMax[2])
+      {
+         container.mMax[2] = pt[2];
+      }
+      else if (pt[2] < container.mMin[2])
+      {
+         container.mMin[2] = pt[2];
+      }
+   }
+   else
+   {
+      // Make a box with essentially zero volume at the point
+      container.setMin(pt);
+      container.setMax(pt);
+      container.setEmpty(false);
+   }
+}
+
+/**
+ * Modifies the container to tightly enclose itself and the given AABox.
+ *
+ * @param container  [in,out] the AABox that will be extended
+ * @param box        [in]     the AABox which container should contain
+ */
+template< class DATA_TYPE >
+void extendVolume(AABox<DATA_TYPE>& container,
+                  const AABox<DATA_TYPE>& box)
+{
+   // Can't extend by an empty box
+   if (box.isEmpty())
+   {
+      return;
+   }
+
+   // An empty container is extended to be the box
+   if (container.isEmpty())
+   {
+      container = box;
+   }
+
+   // Just extend by the corners of the box
+   extendVolume(container, box.getMin());
+   extendVolume(container, box.getMax());
 }
 
 /*
