@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Compare.h,v $
- * Date modified: $Date: 2002-02-11 18:56:01 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-02-11 20:19:31 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -50,7 +50,7 @@ namespace gmtl
 
 /** Compare two vecs */
 template<class DATA_TYPE, unsigned SIZE>
-bool operator ==(const Vec<DATA_TYPE, SIZE>& v1, const Vec<DATA_TYPE, SIZE>& v2)
+bool operator ==(const VecBase<DATA_TYPE, SIZE>& v1, const VecBase<DATA_TYPE, SIZE>& v2)
 {
    for(unsigned i=0;i<SIZE;++i)
    {
@@ -70,7 +70,7 @@ bool operator ==(const Vec<DATA_TYPE, SIZE>& v1, const Vec<DATA_TYPE, SIZE>& v2)
 }
 
 template<class DATA_TYPE, unsigned SIZE>
-bool operator !=(const Vec<DATA_TYPE, SIZE>& v1, const Vec<DATA_TYPE, SIZE>& v2)
+bool operator !=(const VecBase<DATA_TYPE, SIZE>& v1, const VecBase<DATA_TYPE, SIZE>& v2)
 {
    return(! (v1 == v2));
 }
@@ -79,7 +79,7 @@ bool operator !=(const Vec<DATA_TYPE, SIZE>& v1, const Vec<DATA_TYPE, SIZE>& v2)
 * @pre eps must be >= 0
 */
 template<class DATA_TYPE, unsigned SIZE>
-bool isEqual(const Vec<DATA_TYPE, SIZE>& v1, const Vec<DATA_TYPE, SIZE>& v2, const DATA_TYPE& eps)
+bool isEqual(const VecBase<DATA_TYPE, SIZE>& v1, const VecBase<DATA_TYPE, SIZE>& v2, const DATA_TYPE& eps)
 {  
    ggtASSERT(eps >= 0);
 

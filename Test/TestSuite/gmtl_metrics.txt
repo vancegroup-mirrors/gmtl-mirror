@@ -17,11 +17,14 @@ gfxn0/Debug/VecTest/VecCreationOverhead                            0.21684
 gfxn1/Debug/Main/MetricTest                                        1221.75
 gfxn1/Debug/PointTest/ConstructorsOverhead                         0.22184
 gfxn1/Debug/PointTest/CopyConstructOverhead                        0.2482
+gfxn1/Debug/PointTest/EqualityCompareOverhead                      0.217447
+gfxn1/Debug/PointTest/InequalityCompareOverhead                    0.246795
 gfxn1/Debug/PointTest/SetOverhead                                  0.166302
 gfxn1/Debug/PointTest/SetPtrOverhead                               0.262678
-gfxn1/Debug/PointTest/pointCreationOverhead                        0.219548
+gfxn1/Debug/PointTest/isEqualOverhead                              0.64478
+gfxn1/Debug/PointTest/pointCreationOverhead                        0.218727
 gfxn1/Debug/VecBaseTest/ConstructorsOverhead                       0.151608
-gfxn1/Debug/VecBaseTest/CopyConstructOverhead                      0.213803
+gfxn1/Debug/VecBaseTest/CopyConstructOverhead                      0.212822
 gfxn1/Debug/VecBaseTest/SetOverhead                                0.166653
 gfxn1/Debug/VecBaseTest/SetPtrOverhead                             0.258008
 gfxn1/Debug/VecBaseTest/VecCreationOverhead                        0.076
