@@ -72,7 +72,7 @@ def BuildLinuxEnvironment():
 
    # Debug or optimize build?
    if optimize != 'no':
-      CXXFLAGS.extend(['-DNDEBUG', '-O2'])
+      CXXFLAGS.extend(['-DNDEBUG', '-g', '-O2'])
    else:
       CXXFLAGS.extend(['-D_DEBUG', '-g'])
 
@@ -186,7 +186,7 @@ opts = Options('config.cache')
 opts.Add('with-cppunit',
          'CppUnit installation directory',
          '/usr/local',
-         lambda k,v: WhereIs(pj(v, 'bin', 'cppunit-config')) != None
+         lambda k,v,env=None: WhereIs(pj(v, 'bin', 'cppunit-config')) != None
         )
 opts.Update(baseEnv)
 Help(opts.GenerateHelpText(baseEnv))
