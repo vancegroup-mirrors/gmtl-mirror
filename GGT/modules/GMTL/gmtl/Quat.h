@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Quat.h,v $
- * Date modified: $Date: 2002-02-20 21:42:38 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2002-02-21 21:37:08 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -98,6 +98,9 @@ public:
       mData.set( x, y, z, w );
    }
    
+   /** get the raw data elements of the quaternion.
+    *  @post returns [sin( theta/2 ) * x, sin( theta/2 ) * x, sin( theta/2 ) * x, sin( theta/2 )] with theta in radians.
+    */
    void get( DATA_TYPE& x, DATA_TYPE& y, DATA_TYPE& z, DATA_TYPE& w )
    {
       x = mData[Xelt];
@@ -143,7 +146,7 @@ public:
       return mData[x];
    }
    
-   /** Get a DATA_TYPE pointer to the matrix data
+   /** Get a DATA_TYPE pointer to the quat internal data.
     * @post Returns a ptr to the head of the quat data
     */
    const DATA_TYPE*  getData() const { return (DATA_TYPE*)mData.getData();}

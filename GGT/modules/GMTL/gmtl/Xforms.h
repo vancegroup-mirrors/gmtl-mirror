@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Xforms.h,v $
- * Date modified: $Date: 2002-02-15 21:48:16 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-02-21 21:37:08 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -42,10 +42,25 @@
 #include <gmtl/Point3.h>
 #include <gmtl/OOBox.h>
 #include <gmtl/matVecFuncs.h>
-
+#include <gmtl/Quat.h>
+#include <gmtl/QuatOps.h>
+#include <gmtl/Convert.h>
 
 namespace gmtl
 {
+   /** transform a vector by a rotation quaternion.
+    * @pre give a vector
+    * @post result = quat * vector
+    */
+   template<class DATA_TYPE>
+   inline Vec<DATA_TYPE, 3>& xform( Vec<DATA_TYPE, 3>& result_vec, const Quat<dataType>& rot, const Vec<DATA_TYPE, 3>& vector ) const
+   {
+      // shoemake original (left hand rule):
+      // return convert( result_vec, makeInvert( rot ) * makePure( vector ) * rot );
+
+      // shoemake recent version (right hand rule):
+      return convert( result_vec, rot * makePure( vector ) * makeInvert( rot ) );
+   }
 
 /*
    Vec4 operator*(const Matrix& _m, const Vec4& _v)
