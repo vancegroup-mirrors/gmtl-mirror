@@ -418,7 +418,7 @@ def ApplyCppUnitOptions(env):
    global have_cppunit
    if have_cppunit:
       cfg = pj(env['CppUnitDir'], 'bin', 'cppunit-config')
-      ParseConfig(env, cfg + ' --cflags --libs')
+      env.ParseConfig(cfg + ' --cflags --libs')
 
 def AddCppUnitOptions(opts):
    opts.Add('CppUnitDir',
