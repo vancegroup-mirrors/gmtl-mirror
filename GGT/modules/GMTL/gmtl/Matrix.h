@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Matrix.h,v $
- * Date modified: $Date: 2002-03-15 19:25:30 $
- * Version:       $Revision: 1.14 $
+ * Date modified: $Date: 2002-03-20 19:11:08 $
+ * Version:       $Revision: 1.15 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -40,30 +40,30 @@
 namespace gmtl
 {
 
-//-----------------------------------------------------------------------------
-//: Matrix: 4x4 Matrix class (OpenGL ordering)
-//
-// C/C++ uses matrices in row major order.  In other words the access
-// indices look like: mat[row][col] <br>
-// (0,0) (0,1) (0,2) (0,3)   <=== Array      <br>
-// (1,0) (1,1) (1,2) (1,3)   <=== Array      <br>
-// (2,0) (2,1) (2,2) (2,3)   <=== Array      <br>
-// (3,0) (3,1) (3,2) (3,3)   <=== Array      <br>
-// <br>
-// OpenGL ordering specifies that the matrix has to be column major in memory,
-// so we need to access it more like: <br>
-//    NOTE: The given indexes are what the cells have to be called in C/C++
-//          notation.  Since we are putting the columns into memory
-//          back-to-back.        <br>
-// (0,0) (1,0) (2,0) (3,0)       <br>
-// (0,1) (1,1) (2,1) (3,1)       <br>
-// (0,2) (1,2) (2,2) (3,2)       <br>
-// (0,3) (1,3) (2,3) (3,3)       <br>
-//   ^     ^     ^     ^         <br>
-//   ====================== Arrays     <br>
-//
-// So basically OpenGL ordering is the Transpose of the way C++ accesses the array
-//-----------------------------------------------------------------------------
+/**
+ * Matrix: 4x4 Matrix class (OpenGL ordering)
+ *
+ * C/C++ uses matrices in row major order.  In other words the access
+ * indices look like: mat[row][col] <br>
+ * (0,0) (0,1) (0,2) (0,3)   <=== Array      <br>
+ * (1,0) (1,1) (1,2) (1,3)   <=== Array      <br>
+ * (2,0) (2,1) (2,2) (2,3)   <=== Array      <br>
+ * (3,0) (3,1) (3,2) (3,3)   <=== Array      <br>
+ * <br>
+ * OpenGL ordering specifies that the matrix has to be column major in memory,
+ * so we need to access it more like: <br>
+ *    NOTE: The given indexes are what the cells have to be called in C/C++
+ *          notation.  Since we are putting the columns into memory
+ *          back-to-back.        <br>
+ * (0,0) (1,0) (2,0) (3,0)       <br>
+ * (0,1) (1,1) (2,1) (3,1)       <br>
+ * (0,2) (1,2) (2,2) (3,2)       <br>
+ * (0,3) (1,3) (2,3) (3,3)       <br>
+ *   ^     ^     ^     ^         <br>
+ *   ====================== Arrays     <br>
+ *
+ * So basically OpenGL ordering is the Transpose of the way C++ accesses the array
+ */
 template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
 class Matrix
 {
@@ -90,12 +90,12 @@ public:
    /** Default Constructor (Identity constructor) */
    Matrix()
    {
-      // TODO: mp
+      /** @todo mp */
       for (unsigned int r = 0; r < ROWS; ++r)
       for (unsigned int c = 0; c < COLS; ++c)
          this->operator()( r, c ) = (DATA_TYPE)0.0;
 
-      // TODO: mp
+      /** @todo mp */
       for (unsigned int x = 0; x < Math::Min( COLS, ROWS ); ++x)
          this->operator()( x, x ) = (DATA_TYPE)1.0;
 
@@ -110,7 +110,7 @@ public:
    }
 
    /** element wise setter for 2x2.
-    *  TODO: needs mp!!
+    *  @todo needs mp!!
     */
    void set( DATA_TYPE v00, DATA_TYPE v01,
              DATA_TYPE v10, DATA_TYPE v11 )
@@ -124,7 +124,7 @@ public:
    }
 
    /** element wise setter for 2x3.
-    * TODO: needs mp!!
+    * @todo needs mp!!
     */
    void set( DATA_TYPE v00, DATA_TYPE v01, DATA_TYPE v02,
              DATA_TYPE v10, DATA_TYPE v11, DATA_TYPE v12  )
@@ -140,7 +140,7 @@ public:
    }
 
    /** element wise setter for 3x3.
-    * TODO: needs mp!!
+    * @todo needs mp!!
     */
    void set( DATA_TYPE v00, DATA_TYPE v01, DATA_TYPE v02,
              DATA_TYPE v10, DATA_TYPE v11, DATA_TYPE v12,
@@ -162,7 +162,7 @@ public:
    }
 
    /** element wise setter for 3x4.
-    * TODO: needs mp!!  currently no way for a 4x3, ....
+    * @todo needs mp!!  currently no way for a 4x3, ....
     */
    void set( DATA_TYPE v00, DATA_TYPE v01, DATA_TYPE v02, DATA_TYPE v03,
              DATA_TYPE v10, DATA_TYPE v11, DATA_TYPE v12, DATA_TYPE v13,
@@ -187,7 +187,7 @@ public:
    }
 
    /** element wise setter for 4x4.
-    * TODO: needs mp!!  currently no way for a 4x3, ....
+    * @todo needs mp!!  currently no way for a 4x3, ....
     */
    void set( DATA_TYPE v00, DATA_TYPE v01, DATA_TYPE v02, DATA_TYPE v03,
              DATA_TYPE v10, DATA_TYPE v11, DATA_TYPE v12, DATA_TYPE v13,
@@ -243,7 +243,7 @@ public:
     */
    void set( const DATA_TYPE* data )
    {
-      // TODO: mp
+      /** @todo mp */
       for (unsigned int x = 0; x < ROWS * COLS; ++x)
          mData[x] = data[x];
       mState = FULL;
@@ -273,7 +273,7 @@ public:
     */
    void setTranspose( const DATA_TYPE* data )
    {
-      // TODO: metaprog
+      /** @todo metaprog */
       for (unsigned int r = 0; r < ROWS; ++r)
       for (unsigned int c = 0; c < COLS; ++c)
          this->operator()( r, c ) = data[(r * COLS) + c];
