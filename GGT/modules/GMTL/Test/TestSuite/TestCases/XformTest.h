@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: XformTest.h,v $
- * Date modified: $Date: 2002-03-10 19:06:48 $
- * Version:       $Revision: 1.19 $
+ * Date modified: $Date: 2002-03-10 20:22:11 $
+ * Version:       $Revision: 1.20 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -382,7 +382,7 @@ public:
          CPPUNIT_ASSERT( gmtl::isEqual( result1, result2, eps ) );
          
          // should be equal because the rotation is normalized
-         CPPUNIT_ASSERT( gmtl::isEqual( makeConj( rot ), makeInvert( rot ), eps ) );
+		 CPPUNIT_ASSERT( gmtl::isEqual( gmtl::makeConj( rot ), gmtl::makeInvert( rot ), eps ) );
       }
       
       // same, but without the expected value (just check that the two are equal)
@@ -398,7 +398,7 @@ public:
          CPPUNIT_ASSERT( gmtl::isEqual( result1, result2, eps ) );
 
          // should be equal because the rotation is normalized
-         CPPUNIT_ASSERT( gmtl::isEqual( makeConj( rot ), makeInvert( rot ), eps ) ); 
+		 CPPUNIT_ASSERT( gmtl::isEqual( gmtl::makeConj( rot ), gmtl::makeInvert( rot ), eps ) ); 
       }
    }   
    
