@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatGenTest.h,v $
- * Date modified: $Date: 2002-03-19 23:16:53 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-03-20 00:06:51 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -89,6 +89,7 @@ public:
    void testGenTimingMakePure();
    void testGenTimingMakeNormalQuat();
    void testGenTimingMakeRot();
+   void testGenTimingSetRot();
 
    /** @todo implement quat makeRot Euler */
    static CppUnit::Test* suite()
@@ -107,6 +108,7 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<QuatGenTest>( "testGenTimingMakePure", &QuatGenTest::testGenTimingMakePure ) );
       test_suite->addTest( new CppUnit::TestCaller<QuatGenTest>( "testGenTimingMakeNormalQuat", &QuatGenTest::testGenTimingMakeNormalQuat ) );
       test_suite->addTest( new CppUnit::TestCaller<QuatGenTest>( "testGenTimingMakeRot", &QuatGenTest::testGenTimingMakeRot ) );
+      test_suite->addTest( new CppUnit::TestCaller<QuatGenTest>( "testGenTimingSetRot", &QuatGenTest::testGenTimingSetRot ) );
 
       return test_suite;
    }

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixGenTest.cpp,v $
- * Date modified: $Date: 2002-03-19 23:06:49 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-03-20 00:06:51 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -49,6 +49,9 @@ namespace gmtlTest
                                 0, 1, 33 );
          gmtl::setTrans( mat23, gmtl::Vec2f( 32, 33 ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result23, mat23, eps ) );
+         
+         // make sure that make and set return the same...
+         CPPUNIT_ASSERT( expected_result23 == gmtl::makeTrans<gmtl::Matrix23f>( gmtl::Vec2f( 32, 33 ) ) );
       }
       // 2D rot/trans/skew
       { 
@@ -58,6 +61,9 @@ namespace gmtlTest
                                 0, 0, 1 );
          gmtl::setTrans( mat33, gmtl::Vec2f( 32, 33 ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat33, eps ) );
+         
+         // make sure that make and set return the same...
+         CPPUNIT_ASSERT( expected_result33 == gmtl::makeTrans<gmtl::Matrix33f>( gmtl::Vec2f( 32, 33 ) ) );
       }
       // 2D rot/trans/skew set by homogeneous vector
       { 
@@ -107,16 +113,12 @@ namespace gmtlTest
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result44, mat44, eps ) );
       }
 
-      // --- Test standalone makeTrans(trans) against makeTrans(mat,trans) -- //
+      // --- Test standalone makeTrans(trans) against setTrans(mat,trans) -- //
       {
          gmtl::Matrix44f expected_mat;
          gmtl::Vec3f trans3(1.0, 2.0, 3.0f);
-         gmtl::Vec4f trans4(1.0, 2.0, 3.0f);
          gmtl::setTrans(expected_mat, trans3);
          CPPUNIT_ASSERT( gmtl::isEqual( gmtl::makeTrans<gmtl::Matrix44f>(trans3), 
-                                        expected_mat, eps ) );
-         gmtl::setTrans(expected_mat, trans4);
-         CPPUNIT_ASSERT( gmtl::isEqual( gmtl::makeTrans<gmtl::Matrix44f>(trans4), 
                                         expected_mat, eps ) );
        
       }
@@ -147,7 +149,11 @@ namespace gmtlTest
                                 a, a, a, a  );
          gmtl::setAxes( mat44, gmtl::Vec3f( 0,1,0 ), gmtl::Vec3f( 1,0,0 ), gmtl::Vec3f( 0,0,-1 ) ); 
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result44, mat44, eps ) );
-         //CPPUNIT_ASSERT( gmtl::makeAxes( gmtl::Vec3f( 0,1,0 ), gmtl::Vec3f( 1,0,0 ), gmtl::Vec3f( 0,0,-1 ) ) == mat44 );
+         
+         // make sure set and make are the same...
+         gmtl::Matrix44f new_mat;
+         gmtl::setAxes( new_mat, gmtl::Vec3f( 0,1,0 ), gmtl::Vec3f( 1,0,0 ), gmtl::Vec3f( 0,0,-1 ) );
+         CPPUNIT_ASSERT( gmtl::makeAxes<gmtl::Matrix44f>( gmtl::Vec3f( 0,1,0 ), gmtl::Vec3f( 1,0,0 ), gmtl::Vec3f( 0,0,-1 ) ) == new_mat );
       }
    }
    
@@ -176,7 +182,11 @@ namespace gmtlTest
                                 a, a, a, a  );
          gmtl::setDirCos( mat44, gmtl::Vec3f( 0,1,0 ), gmtl::Vec3f( 1,0,0 ), gmtl::Vec3f( 0,0,-1 ) ); 
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result44, mat44, eps ) );
-         //CPPUNIT_ASSERT( gmtl::makeDirCos<gmtl::Matrix44f>( gmtl::Vec3f( 0,1,0 ), gmtl::Vec3f( 1,0,0 ), gmtl::Vec3f( 0,0,-1 ) ) == mat44 );
+         
+         // make sure set and make are the same...
+         gmtl::Matrix44f new_mat;
+         gmtl::setDirCos( new_mat, gmtl::Vec3f( 0,1,0 ), gmtl::Vec3f( 1,0,0 ), gmtl::Vec3f( 0,0,-1 ) );
+         CPPUNIT_ASSERT( gmtl::makeDirCos<gmtl::Matrix44f>( gmtl::Vec3f( 0,1,0 ), gmtl::Vec3f( 1,0,0 ), gmtl::Vec3f( 0,0,-1 ) ) == new_mat );
       }
    }
    
@@ -194,6 +204,11 @@ namespace gmtlTest
                                 a, 33, a );
          gmtl::setScale( mat23, gmtl::Vec2f( 32, 33 ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result23, mat23, eps ) );
+         
+         // make sure set and make are the same...
+         gmtl::Matrix23f new_mat;
+         gmtl::setScale( new_mat, gmtl::Vec2f( 32, 33 ) );
+         CPPUNIT_ASSERT( gmtl::makeScale<gmtl::Matrix23f >( gmtl::Vec2f( 32, 33 ) ) == new_mat );
       }
       // 2D rot/trans/skew
       { 
@@ -205,6 +220,11 @@ namespace gmtlTest
                                 a, a, a );
          gmtl::setScale( mat33, gmtl::Vec2f( 32, 33 ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat33, eps ) );
+         
+         // make sure set and make are the same...
+         gmtl::Matrix33f new_mat;
+         gmtl::setScale( new_mat, gmtl::Vec2f( 32, 33 ) );
+         CPPUNIT_ASSERT( gmtl::makeScale<gmtl::Matrix33f >( gmtl::Vec2f( 32, 33 ) ) == new_mat );
       }
       // 3D rot/trans
       { 
@@ -216,6 +236,11 @@ namespace gmtlTest
                                 a, a, 34, a );
          gmtl::setScale( mat34, gmtl::Vec3f( 32, 33, 34 ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result34, mat34, eps ) );
+         
+         // make sure set and make are the same...
+         gmtl::Matrix34f new_mat;
+         gmtl::setScale( new_mat, gmtl::Vec3f( 32, 33, 34 ) );
+         CPPUNIT_ASSERT( gmtl::makeScale<gmtl::Matrix34f >( gmtl::Vec3f( 32, 33, 34 ) ) == new_mat );
       }
       // 3D rot/trans/skew
       { 
@@ -228,6 +253,11 @@ namespace gmtlTest
                                 a, a, a, a  );
          gmtl::setScale( mat44, gmtl::Vec3f( 32, 33, 34 ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result44, mat44, eps ) );
+         
+         // make sure set and make are the same...
+         gmtl::Matrix44f new_mat;
+         gmtl::setScale( new_mat, gmtl::Vec3f( 32, 33, 34 ) );
+         CPPUNIT_ASSERT( gmtl::makeScale<gmtl::Matrix44f >( gmtl::Vec3f( 32, 33, 34 ) ) == new_mat );
       }
       
       
@@ -241,6 +271,11 @@ namespace gmtlTest
                                 a, 32, a );
          gmtl::setScale( mat23, 32.0f );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result23, mat23, eps ) );
+         
+         // make sure set and make are the same...
+         gmtl::Matrix23f new_mat;
+         gmtl::setScale( new_mat, 32.0f );
+         CPPUNIT_ASSERT( gmtl::makeScale<gmtl::Matrix23f >( 32.0f ) == new_mat );
       }
       // 2D rot/trans/skew
       { 
@@ -252,6 +287,11 @@ namespace gmtlTest
                                 a, a, a );
          gmtl::setScale( mat33, 32.0f );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat33, eps ) );
+         
+         // make sure set and make are the same...
+         gmtl::Matrix33f new_mat;
+         gmtl::setScale( new_mat, 32.0f );
+         CPPUNIT_ASSERT( gmtl::makeScale<gmtl::Matrix33f >( 32.0f ) == new_mat );
       }
       // 3D rot/trans
       { 
@@ -263,6 +303,11 @@ namespace gmtlTest
                                 a, a, 32, a );
          gmtl::setScale( mat34, 32.0f );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result34, mat34, eps ) );
+         
+         // make sure set and make are the same...
+         gmtl::Matrix34f new_mat;
+         gmtl::setScale( new_mat, 32.0f );
+         CPPUNIT_ASSERT( gmtl::makeScale<gmtl::Matrix34f >( 32.0f ) == new_mat );
       }
       // 3D rot/trans/skew
       { 
@@ -275,6 +320,11 @@ namespace gmtlTest
                                 a, a, a, a  );
          gmtl::setScale( mat44, 32.0f );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result44, mat44, eps ) );
+         
+         // make sure set and make are the same...
+         gmtl::Matrix44f new_mat;
+         gmtl::setScale( new_mat, 32.0f );
+         CPPUNIT_ASSERT( gmtl::makeScale<gmtl::Matrix44f >( 32.0f ) == new_mat );
       }
       { 
          // make sure this compiles, and runs without internal assert.
@@ -306,6 +356,10 @@ namespace gmtlTest
          gmtl::Matrix33f mat2;
          gmtl::setRot( mat2, gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f );
          CPPUNIT_ASSERT( gmtl::isEqual( mat2, mat, eps ) );
+         
+         // make sure set and make are the same...
+         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix33f>( gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f ) == mat2 );
+         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix33f>( gmtl::Math::deg2Rad( 90.0f ), vec ) == mat2 );
       }
       {
          gmtl::Matrix33f mat, expected_result33;
@@ -323,6 +377,10 @@ namespace gmtlTest
          gmtl::Matrix33f mat2;
          gmtl::setRot( mat2, gmtl::Math::deg2Rad( -360.0f ), -1.0f, 1.0f, -1.0f );
          CPPUNIT_ASSERT( gmtl::isEqual( mat2, mat, eps ) );
+         
+         // make sure set and make are the same...
+         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix33f>( gmtl::Math::deg2Rad( -360.0f ), -1.0f, 1.0f, -1.0f ) == mat2 );
+         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix33f>( gmtl::Math::deg2Rad( -360.0f ), vec ) == mat2 );
       }
       
       {
@@ -343,6 +401,13 @@ namespace gmtlTest
             mat2[x] = a;
          gmtl::setRot( mat2, gmtl::Math::deg2Rad( -90.0f ), 1.0f, 0.0f, 0.0f );
          CPPUNIT_ASSERT( gmtl::isEqual( mat2, mat, eps ) );
+         
+         // make sure set and make are the same...
+         gmtl::Matrix34f new_mat;
+         gmtl::setRot( new_mat, gmtl::Math::deg2Rad( -90.0f ), 1.0f, 0.0f, 0.0f );
+         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix34f>( gmtl::Math::deg2Rad( -90.0f ), 1.0f, 0.0f, 0.0f ) == new_mat );
+         gmtl::setRot( new_mat, gmtl::Math::deg2Rad( -90.0f ), vec );
+         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix34f>( gmtl::Math::deg2Rad( -90.0f ), vec ) == new_mat );
       }
       {
          gmtl::Matrix34f mat, expected_result34;
@@ -362,6 +427,13 @@ namespace gmtlTest
             mat2[x] = a;
          gmtl::setRot( mat2, gmtl::Math::deg2Rad( 45.0f ), 0.7f, -0.7f, -0.7f );
          CPPUNIT_ASSERT( gmtl::isEqual( mat2, mat, eps ) );
+         
+         // make sure set and make are the same...
+         gmtl::Matrix34f new_mat;
+         gmtl::setRot( new_mat, gmtl::Math::deg2Rad( 45.0f ), 0.7f, -0.7f, -0.7f );
+         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix34f>( gmtl::Math::deg2Rad( 45.0f ), 0.7f, -0.7f, -0.7f ) == new_mat );
+         gmtl::setRot( new_mat, gmtl::Math::deg2Rad( 45.0f ), vec );
+         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix34f>( gmtl::Math::deg2Rad( 45.0f ), vec ) == new_mat );
       }
       // test that unnormalized vec works...
       {
@@ -383,6 +455,13 @@ namespace gmtlTest
             mat2[x] = a;
          gmtl::setRot( mat2, gmtl::Math::deg2Rad( 45.0f ), 1.7f, 1.7f, 1.7f );
          CPPUNIT_ASSERT( gmtl::isEqual( mat2, mat, eps ) );
+         
+         // make sure set and make are the same...
+         gmtl::Matrix44f new_mat;
+         gmtl::setRot( new_mat, gmtl::Math::deg2Rad( 45.0f ), 1.7f, 1.7f, 1.7f );
+         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix44f>( gmtl::Math::deg2Rad( 45.0f ), 1.7f, 1.7f, 1.7f ) == new_mat );
+         gmtl::setRot( new_mat, gmtl::Math::deg2Rad( 45.0f ), vec );
+         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix44f>( gmtl::Math::deg2Rad( 45.0f ), vec ) == new_mat );
       }
 
       // ---- Test standalone one ---- //
@@ -435,6 +514,9 @@ namespace gmtlTest
                                 0, 1,  0  );
          gmtl::setRot( mat, gmtl::Math::deg2Rad( 90.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::XYZ );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
+         
+         // make sure set and make are the same...
+         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix33f>( gmtl::Math::deg2Rad( 90.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::XYZ ) == mat );
       }
       {
          gmtl::Matrix33f mat, expected_result33;
@@ -445,6 +527,9 @@ namespace gmtlTest
                                 -1, 0, 0  );
          gmtl::setRot( mat, gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 90.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::XYZ );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
+         
+         // make sure set and make are the same...
+         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix33f>( gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 90.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::XYZ ) == mat );
       }
       {
          gmtl::Matrix33f mat, expected_result33;
@@ -455,6 +540,9 @@ namespace gmtlTest
                                 0, 0, 1  );
          gmtl::setRot( mat, gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 90.0f ), gmtl::XYZ );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
+
+         // make sure set and make are the same...
+         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix33f>( gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 90.0f ), gmtl::XYZ ) == mat );
       }
       
       {
@@ -466,6 +554,11 @@ namespace gmtlTest
                                -0.729234f, 0.225687f, -0.645974f, a   );
          gmtl::setRot( mat, gmtl::Math::deg2Rad( 156.0f ), gmtl::Math::deg2Rad( -45.0f ), gmtl::Math::deg2Rad( -15.0f ), gmtl::XYZ );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result34, mat, eps ) );
+
+         // make sure set and make are the same...
+         gmtl::Matrix34f new_mat;
+         gmtl::setRot( new_mat, gmtl::Math::deg2Rad( 156.0f ), gmtl::Math::deg2Rad( -45.0f ), gmtl::Math::deg2Rad( -15.0f ), gmtl::XYZ );
+         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix34f>( gmtl::Math::deg2Rad( 156.0f ), gmtl::Math::deg2Rad( -45.0f ), gmtl::Math::deg2Rad( -15.0f ), gmtl::XYZ ) == new_mat );
       }
       {
          gmtl::Matrix34f mat, expected_result34;
@@ -478,6 +571,15 @@ namespace gmtlTest
                              gmtl::Math::deg2Rad( 90.0f ), 
                              gmtl::Math::deg2Rad( 0.0f ), gmtl::XYZ );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result34, mat, eps ) );
+
+         // make sure set and make are the same...
+         gmtl::Matrix34f new_mat;
+         gmtl::setRot( new_mat, gmtl::Math::deg2Rad( 0.0f ), 
+                             gmtl::Math::deg2Rad( 90.0f ), 
+                             gmtl::Math::deg2Rad( 0.0f ), gmtl::XYZ );
+         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix34f>( gmtl::Math::deg2Rad( 0.0f ), 
+                             gmtl::Math::deg2Rad( 90.0f ), 
+                             gmtl::Math::deg2Rad( 0.0f ), gmtl::XYZ ) == new_mat );
       }
 
       {
@@ -490,6 +592,11 @@ namespace gmtlTest
                                 a, a, a, a );
          gmtl::setRot( mat, gmtl::Math::deg2Rad( -156.0f ), gmtl::Math::deg2Rad( 45.7892892f ), gmtl::Math::deg2Rad( -361.0f ), gmtl::XYZ );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result44, mat, eps ) );
+         
+         // make sure set and make are the same...
+         gmtl::Matrix44f new_mat;
+         gmtl::setRot( new_mat, gmtl::Math::deg2Rad( -156.0f ), gmtl::Math::deg2Rad( 45.7892892f ), gmtl::Math::deg2Rad( -361.0f ), gmtl::XYZ );
+         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix44f>( gmtl::Math::deg2Rad( -156.0f ), gmtl::Math::deg2Rad( 45.7892892f ), gmtl::Math::deg2Rad( -361.0f ), gmtl::XYZ ) == new_mat );
       }
       
       
@@ -505,6 +612,15 @@ namespace gmtlTest
                              gmtl::Math::deg2Rad( 45.0f ), 
                              gmtl::Math::deg2Rad( 15.0f ), gmtl::ZYX );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
+         
+         // make sure set and make are the same...
+         gmtl::Matrix33f new_mat;
+         gmtl::setRot( new_mat, gmtl::Math::deg2Rad( 90.0f ), 
+                             gmtl::Math::deg2Rad( 45.0f ), 
+                             gmtl::Math::deg2Rad( 15.0f ), gmtl::ZYX );
+         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix33f>( gmtl::Math::deg2Rad( 90.0f ), 
+                             gmtl::Math::deg2Rad( 45.0f ), 
+                             gmtl::Math::deg2Rad( 15.0f ), gmtl::ZYX ) == new_mat );
       }
       {
          gmtl::Matrix33f mat, expected_result33;
@@ -515,6 +631,11 @@ namespace gmtlTest
                                 0, 0, 1  );
          gmtl::setRot( mat, gmtl::Math::deg2Rad( 90.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::ZYX );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
+         
+         // make sure set and make are the same...
+         gmtl::Matrix33f new_mat;
+         gmtl::setRot( new_mat, gmtl::Math::deg2Rad( 90.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::ZYX );
+         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix33f>( gmtl::Math::deg2Rad( 90.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::ZYX ) == new_mat );
       }
       {
          gmtl::Matrix33f mat, expected_result33;
@@ -525,6 +646,11 @@ namespace gmtlTest
                                 -1, 0, 0  );
          gmtl::setRot( mat, gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 90.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::ZYX );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
+         
+         // make sure set and make are the same...
+         gmtl::Matrix33f new_mat;
+         gmtl::setRot( new_mat, gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 90.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::ZYX );
+         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix33f>( gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 90.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::ZYX ) == new_mat );
       }
       {
          gmtl::Matrix33f mat, expected_result33;
