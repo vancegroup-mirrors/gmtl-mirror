@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.h,v $
- * Date modified: $Date: 2002-03-10 04:01:24 $
- * Version:       $Revision: 1.15 $
+ * Date modified: $Date: 2002-03-11 18:10:06 $
+ * Version:       $Revision: 1.16 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -538,7 +538,6 @@ public:
    void testOpMultScalar()
    {
       gmtl::Vec<float,3> test_vec1(1.0, 2.0, 3.0);
-      gmtl::Vec<float,3> test_vec2(2.0, 2.0, 2.0);
       gmtl::Vec<float,3> test_vec3(1.0, 2.0, 3.0);
 
       test_vec1 = test_vec3 * 4.0f;
@@ -586,7 +585,6 @@ public:
    void testOpDivScalar()
    {
       gmtl::Vec<float,3> test_vec1(1.0, 2.0, 3.0);
-      gmtl::Vec<float,3> test_vec2(2.0, 2.0, 2.0);
       gmtl::Vec<float,3> test_vec3(12.0, 8.0, 4.0);
 
       test_vec1 = test_vec3 / 4.0f;
@@ -769,7 +767,6 @@ public:
 
       // -- test vec = (scalar*cross(vec,vec))
       // Should be able to unroll this loop fairly well
-      gmtl::Vec<float,3> vec4(1.0, 2.0, 3.0);
       gmtl::Vec<float,3> vec5(3.0, 3.0, 3.0);
       gmtl::Vec<float,3> vec6(12.0, 21.0, 75.0);
       gmtl::Vec<float,3> total_vec2(0,0,0);
@@ -909,7 +906,6 @@ public:
    {
       gmtl::Vec<float,3> v1(1,0,0);
       gmtl::Vec<float,3> v2(0,1,0);
-      gmtl::Vec<float,3> v3(0,0,1);
 
       // Other Vectors
       v1.set(2.0f, 4.0f, 5.0f);
@@ -956,7 +952,7 @@ public:
       CPPUNIT_ASSERT( ! gmtl::isNormalized(v4) );
 
       // test performance
-      const long iters(100000);
+      const unsigned long iters(100000);
       long true_count(0);
       v4.set( 0.5f, 0.5f, 0.5f );
       
@@ -989,7 +985,7 @@ public:
       CPPUNIT_ASSERT( gmtl::isNormalized(v2, 21.0f * 21.0f + 0.9f) );
 
       // test performance
-      const long iters(100000);
+      const unsigned long iters(100000);
       long true_count(0);
       v2.set( 0.5f, 0.5f, 0.5f );
       float tol = 0.25f;
