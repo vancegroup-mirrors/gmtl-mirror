@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Output.h,v $
- * Date modified: $Date: 2002-08-23 18:48:35 $
- * Version:       $Revision: 1.11 $
+ * Date modified: $Date: 2002-08-23 23:09:22 $
+ * Version:       $Revision: 1.12 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -43,6 +43,7 @@
 #include <gmtl/Tri.h>
 #include <gmtl/Plane.h>
 #include <gmtl/Sphere.h>
+#include <gmtl/EulerAngle.h>
 
 namespace gmtl
 {
