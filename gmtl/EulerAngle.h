@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: EulerAngle.h,v $
- * Date modified: $Date: 2002-06-12 19:38:54 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-06-12 19:46:51 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -81,22 +81,63 @@ public:
    }
 
    /** copy constructor. */
-   EulerAngle( const EulerAngle& e ) : VecBase<DATA_TYPE, 3>( e )
+   EulerAngle( const EulerAngle& e )
    {
+      mData[0] = e.mData[0];
+      mData[1] = e.mData[1];
+      mData[2] = e.mData[2];
    }
 
    /** data constructor.   angles are in radians. */
    EulerAngle( DATA_TYPE p0, DATA_TYPE p1, DATA_TYPE p2 ) :
             VecBase<DATA_TYPE, 3>( p0, p1, p2 )
    {
+      mData[0] = p0;
+      mData[1] = p1;
+      mData[2] = p2;
    }
    
    /** set data.   angles are in radians. */
    void set( const DATA_TYPE& p0, const DATA_TYPE& p1, 
              const DATA_TYPE& p2 )
    {
-      VecBase<DATA_TYPE, 3>::set( p0, p1, p2 );
+      mData[0] = p0;
+      mData[1] = p1;
+      mData[2] = p2;
    }
+   
+   //@{
+   /** Gets the ith component in this EulerAngle.
+    *  @param i    the zero-based index of the component to access.
+    *  @pre 0 <= i < 3
+    *  @return  a reference to the ith component
+    */
+   inline DATA_TYPE& operator[]( const unsigned i )
+   {
+      gmtlASSERT( i < Size );
+      return mData[i];
+   }
+   inline const DATA_TYPE&  operator[]( const unsigned i ) const
+   {
+      gmtlASSERT( i < Size );
+      return mData[i];
+   }
+   //@}
+   
+   //@{
+   /** Gets the internal array of the components.
+    *  @return  a pointer to the component array with length SIZE
+    */
+   DATA_TYPE* getData() { return mData; }
+   
+   /** Gets the internal array of the components (const version)
+    *  @return  a pointer to the component array with length SIZE
+    */
+   const DATA_TYPE* getData() const { return mData; }
+   //@}
+   
+private:
+   DATA_TYPE mData[Size];
 };
 
 const EulerAngle<float, XYZ> EULERANGLE_IDENTITY_XYZF( 0.0f, 0.0f, 0.0f );
