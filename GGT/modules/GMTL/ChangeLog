@@ -1,5 +1,8 @@
 DATE       AUTHOR       CHANGE
 ---------- --------     -----------------------------------------------------------
+2002-06-13 subatomic    For safety, don't allow VecBase(DATA_TYPE) constructor.
+                        Also don't allow mismatched constructors such as
+                        Vec3( a, b ), or Vec2( a, b, c ), these will assert now.
 2002-06-12 subatomic    EulerAngle is templatized on RotationOrder now.
                         This means that EulerXYZ and EulerZYX are discrete types
                         which will allow the benefit of type safety and compile 
