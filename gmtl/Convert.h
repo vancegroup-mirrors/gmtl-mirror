@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Convert.h,v $
- * Date modified: $Date: 2002-05-17 23:07:11 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2002-05-17 23:09:27 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -42,7 +42,7 @@
 namespace gmtl
 {
    /** @ingroup Convert
-    *  @name Matrix Coord
+    *  @name Matrix/Coord
     *  @{
     */
           
