@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOpsTest.h,v $
- * Date modified: $Date: 2002-02-16 00:24:25 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-02-18 20:00:50 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -58,8 +58,6 @@ public:
 
    virtual void setUp()
    {
-      gmtl::Matrix44f mat, mat2, mat1;
-      gmtl::mult( mat, mat1, mat2 );
    }
 
    virtual void tearDown()
@@ -112,6 +110,17 @@ public:
 
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixOpsTest/matMult44", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      
+      
+      CPPUNIT_METRIC_START_TIMING();
+
+      for( long iter=0;iter<iters; ++iter)
+      {
+         res_mat = test_mat1 * test_mat2;
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixOpsTest/matMult44operatorStar", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }   
    
 
@@ -453,6 +462,11 @@ public:
             preMult( m2, m1 );
             CPPUNIT_ASSERT( isEqual( res_mat, m2, eps ) );
          }
+         {
+            gmtl::Matrix<T, 3, 3> result;
+            result = mat1 * mat2;
+            CPPUNIT_ASSERT( isEqual( res_mat, result, eps ) );
+         }
          
          // make sure mult is not commutitive
          mult( mat3, mat2, mat1 );
@@ -482,6 +496,11 @@ public:
             const gmtl::Matrix<T, 3, 3> m2( mat2 );
             preMult( m1, m2 );
             CPPUNIT_ASSERT( isEqual( res_mat, m1, eps ) );
+         }
+         {
+            gmtl::Matrix<T, 3, 3> result;
+            result = mat2 * mat1;
+            CPPUNIT_ASSERT( isEqual( res_mat, result, eps ) );
          }
       }
    };
@@ -518,7 +537,11 @@ public:
          expected_answer44.setTranspose( v3 );
          mult( res44, rhs43, lhs34 );
          CPPUNIT_ASSERT( isEqual( expected_answer44, res44, eps ) );
-         
+         {
+            gmtl::Matrix<T, 4, 4> result;
+            result = rhs43 * lhs34;
+            CPPUNIT_ASSERT( isEqual( expected_answer44, result, eps ) );
+         }
          
          // make sure mat3 = mat1 * mat2 yields the correct result
          T v4[] = {  212.74,  224.44,  236.15,  
@@ -527,7 +550,11 @@ public:
          expected_answer33.setTranspose( v4 );
          mult( res33, lhs34, rhs43 );
          CPPUNIT_ASSERT( isEqual( res33, expected_answer33, eps ) );
-
+         {
+            gmtl::Matrix<T, 3, 3> result;
+            result = lhs34 * rhs43;
+            CPPUNIT_ASSERT( isEqual( expected_answer33, result, eps ) );
+         }
          
          
          gmtl::Matrix<T, 5, 3> lhs53;
@@ -545,6 +572,11 @@ public:
                     592.94, 437.80, 499.30, 582.67, 666.04  };
          expected_answer54.setTranspose( v6 );
          CPPUNIT_ASSERT( isEqual( expected_answer54, res54, eps ) );
+         {
+            gmtl::Matrix<T, 5, 4> result;
+            result = lhs53 * lhs34;
+            CPPUNIT_ASSERT( isEqual( expected_answer54, result, eps ) );
+         }
       }
    };
    
@@ -594,6 +626,11 @@ public:
             preMult( m2, m1 );
             CPPUNIT_ASSERT( isEqual( res_mat, m2, eps ) );
          }
+         {
+            gmtl::Matrix<T, 4, 4> result;
+            result = mat1 * mat2;
+            CPPUNIT_ASSERT( isEqual( res_mat, result, eps ) );
+         }
          
          // make sure mult is not commutitive
          mult( mat3, mat2, mat1 );
@@ -624,6 +661,11 @@ public:
             const gmtl::Matrix<T, 4, 4> m2( mat2 );
             preMult( m1, m2 );
             CPPUNIT_ASSERT( isEqual( res_mat, m1, eps ) );
+         }
+         {
+            gmtl::Matrix<T, 4, 4> result;
+            result = mat2 * mat1;
+            CPPUNIT_ASSERT( isEqual( res_mat, result, eps ) );
          }
       }
    };
