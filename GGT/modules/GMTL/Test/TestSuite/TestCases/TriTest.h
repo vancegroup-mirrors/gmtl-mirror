@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: TriTest.h,v $
- * Date modified: $Date: 2003-02-05 02:21:17 $
- * Version:       $Revision: 1.13 $
+ * Date modified: $Date: 2003-02-26 23:39:06 $
+ * Version:       $Revision: 1.14 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -39,6 +39,9 @@
 
 namespace gmtlTest
 {
+   /**
+    * Functional tests.
+    */
    class TriTest : public CppUnit::TestFixture
    {
       CPPUNIT_TEST_SUITE(TriTest);
@@ -73,6 +76,37 @@ namespace gmtlTest
       void testIsEqual();
       void testCenter();
       void testNormal();
+   };
+
+   /**
+    * Metric tests.
+    */
+   class TriMetricTest : public CppUnit::TestFixture
+   {
+      CPPUNIT_TEST_SUITE(TriMetricTest);
+
+      CPPUNIT_TEST(testTimingCreation);
+      CPPUNIT_TEST(testTimingCopyConstruct);
+      CPPUNIT_TEST(testTimingConstructors);
+      CPPUNIT_TEST(testTimingVertexAccessor);
+      CPPUNIT_TEST(testTimingEdges);
+      CPPUNIT_TEST(testTimingEqualOps);
+      CPPUNIT_TEST(testTimingIsEqual);
+      CPPUNIT_TEST(testTimingCenter);
+      CPPUNIT_TEST(testTimingNormal);
+
+      CPPUNIT_TEST_SUITE_END();
+
+   public:
+      void testTimingCreation();
+      void testTimingCopyConstruct();
+      void testTimingConstructors();
+      void testTimingVertexAccessor();
+      void testTimingEdges();
+      void testTimingEqualOps();
+      void testTimingIsEqual();
+      void testTimingCenter();
+      void testTimingNormal();
    };
 }
 

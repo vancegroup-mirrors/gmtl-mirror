@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: TriTest.cpp,v $
- * Date modified: $Date: 2003-02-05 02:21:17 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2003-02-26 23:39:06 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -33,7 +33,7 @@
 *
  ************************************************************ ggt-cpr end */
 #include "TriTest.h"
-#include <cppunit/extensions/HelperMacros.h>
+#include "../Suites.h"
 #include <cppunit/extensions/MetricRegistry.h>
 
 #include <gmtl/Tri.h>
@@ -43,6 +43,7 @@
 namespace gmtlTest
 {
    CPPUNIT_TEST_SUITE_REGISTRATION(TriTest);
+   CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(TriMetricTest, Suites::metric());
 
    void TriTest::testCreation()
    {
@@ -51,7 +52,10 @@ namespace gmtlTest
       CPPUNIT_ASSERT(test_tri[0] == zero);
       CPPUNIT_ASSERT(test_tri[1] == zero);
       CPPUNIT_ASSERT(test_tri[2] == zero);
+   }
 
+   void TriMetricTest::testTimingCreation()
+   {
       // test overhead of creation
       const long iters(400000);
       CPPUNIT_METRIC_START_TIMING();
@@ -78,7 +82,10 @@ namespace gmtlTest
       CPPUNIT_ASSERT(test_tri_copy[0][0] == 2.0f);
       CPPUNIT_ASSERT(test_tri_copy[1][1] == 4.0f);
       CPPUNIT_ASSERT(test_tri_copy[2][2] == 1.0f);
+   }
 
+   void TriMetricTest::testTimingCopyConstruct()
+   {
       // test copy construction overhead
       const long iters(400000);
       gmtl::Tri<float> test_tri2;
@@ -108,7 +115,10 @@ namespace gmtlTest
       CPPUNIT_ASSERT(test_tri[0] == zero);
       CPPUNIT_ASSERT(test_tri[1] == unitX);
       CPPUNIT_ASSERT(test_tri[2] == unitY);
+   }
 
+   void TriMetricTest::testTimingConstructors()
+   {
       // Test constructor overhead
       const long iters(400000);
       float use_value(0.0f);     // A temp just here to use the objs so the compiler (hopefully does not opt them out
@@ -139,6 +149,14 @@ namespace gmtlTest
       CPPUNIT_ASSERT( test_tri[0] == pt0 );
       CPPUNIT_ASSERT( test_tri[1] == pt1 );
       CPPUNIT_ASSERT( test_tri[2] == pt2 );
+   }
+
+   void TriMetricTest::testTimingVertexAccessor()
+   {
+      gmtl::Point<float, 3> pt0( 2.0f, 0.0f, -5.0f );
+      gmtl::Point<float, 3> pt1( 1.0f, 2.0f, -5.0f );
+      gmtl::Point<float, 3> pt2( 1.0f, -2.0f, -5.0f );
+      gmtl::Tri<float> test_tri( pt0, pt1, pt2 );
 
       // test operator[] overhead
       const long iters(400000);
@@ -167,6 +185,15 @@ namespace gmtlTest
       CPPUNIT_ASSERT( test_tri.edge(0) == e0 );
       CPPUNIT_ASSERT( test_tri.edge(1) == e1 );
       CPPUNIT_ASSERT( test_tri.edge(2) == e2 );
+   }
+
+   void TriMetricTest::testTimingEdges()
+   {
+      gmtl::Point<float, 3> p0( 0.0f, 0.0f, 0.0f );
+      gmtl::Point<float, 3> p1( 1.0f, 0.0f, 0.0f );
+      gmtl::Point<float, 3> p2( 0.0f, 1.0f, 0.0f );
+      gmtl::Tri<float> test_tri( p0, p1, p2 );
+      gmtl::Vec<float, 3> e0 = p1 - p0;
 
       // test edge(..) overhead
       const long iters(400000);
@@ -208,6 +235,17 @@ namespace gmtlTest
       CPPUNIT_ASSERT( test_tri1 != test_tri3 );
       CPPUNIT_ASSERT( !(test_tri3 == test_tri1) );
       CPPUNIT_ASSERT( test_tri3 != test_tri1 );
+   }
+
+   void TriMetricTest::testTimingEqualOps()
+   {
+      gmtl::Tri<float> test_tri1(
+            gmtl::Point<float, 3>(0,0,0),
+            gmtl::Point<float, 3>(1,0,0),
+            gmtl::Point<float, 3>(0,1,0)
+      );
+      gmtl::Tri<float> test_tri2( test_tri1 );
+      gmtl::Tri<float> test_tri3( test_tri1 );
 
       // test equal ops overhead
       const long iters(400000);
@@ -255,6 +293,16 @@ namespace gmtlTest
             CPPUNIT_ASSERT( gmtl::isEqual(test_tri1, test_tri2, 22.0f) );
          }
       }
+   }
+
+   void TriMetricTest::testTimingIsEqual()
+   {
+      gmtl::Tri<float> test_tri1(
+            gmtl::Point<float, 3>(0,0,0),
+            gmtl::Point<float, 3>(2,0,0),
+            gmtl::Point<float, 3>(1,2,0)
+      );
+      gmtl::Tri<float> test_tri2(test_tri1);
 
       // test isEqual overhead
       const long iters(400000);
@@ -286,6 +334,16 @@ namespace gmtlTest
       gmtl::Vec<float, 3> center = gmtl::center(test_tri);
       gmtl::Vec<float, 3> correctCenter(2,(4.0f/3.0f),0);
       CPPUNIT_ASSERT( center == correctCenter );
+   }
+
+   void TriMetricTest::testTimingCenter()
+   {
+      gmtl::Tri<float> test_tri(
+            gmtl::Point<float, 3>(0,0,0),
+            gmtl::Point<float, 3>(4,0,0),
+            gmtl::Point<float, 3>(2,4,0)
+      );
+      gmtl::Vec<float, 3> center = gmtl::center(test_tri);
 
       // test center overhead
       const long iters(400000);
@@ -312,6 +370,16 @@ namespace gmtlTest
       gmtl::Vec<float, 3> normal = gmtl::normal(test_tri);
       gmtl::Vec<float, 3> correctNormal(0,0,1);
       CPPUNIT_ASSERT( normal == correctNormal );
+   }
+
+   void TriMetricTest::testTimingNormal()
+   {
+      gmtl::Tri<float> test_tri(
+            gmtl::Point<float, 3>(0,0,0),
+            gmtl::Point<float, 3>(4,0,0),
+            gmtl::Point<float, 3>(2,4,0)
+      );
+      gmtl::Vec<float, 3> normal = gmtl::normal(test_tri);
 
       // test normal overhead
       const long iters(400000);
