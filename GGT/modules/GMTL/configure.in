@@ -7,8 +7,8 @@
 #
 # -----------------------------------------------------------------
 # File:          $RCSfile: configure.in,v $
-# Date modified: $Date: 2002-04-19 18:54:57 $
-# Version:       $Revision: 1.1 $
+# Date modified: $Date: 2002-04-24 15:12:11 $
+# Version:       $Revision: 1.2 $
 # -----------------------------------------------------------------
 #
 # ********************************************************** ggt-head end
@@ -33,13 +33,23 @@
 #
 # *********************************************************** ggt-cpr end
 
-AC_REVISION($Revision: 1.1 $)
+AC_REVISION($Revision: 1.2 $)
 AC_INIT(gmtl/gmtlConfig.h)
+
+# $srcdir is the root directory of the GMTL source tree.  To get a value for
+# $GMTLROOT_ABS, we cd there and save the value of running pwd.  Then return
+# to the directory where configure is being run ($topdir).
+topdir=`pwd`
+cd "$srcdir"
+GMTLROOT_ABS=`pwd`
+cd "$topdir"
 
 gmtl_cxxflags=''
 gmtl_extra_cxxflags=''
 gmtl_extra_include_dirs=''
 
+AC_SUBST(GMTLROOT_ABS)
+AC_SUBST(topdir)
 AC_SUBST(gmtl_cxxflags)
 AC_SUBST(gmtl_extra_cxxflags)
 AC_SUBST(gmtl_extra_include_dirs)

@@ -7,8 +7,8 @@
 #
 # -----------------------------------------------------------------
 # File:          $RCSfile: Makefile.in,v $
-# Date modified: $Date: 2002-04-19 18:54:57 $
-# Version:       $Revision: 1.1 $
+# Date modified: $Date: 2002-04-24 15:12:12 $
+# Version:       $Revision: 1.2 $
 # -----------------------------------------------------------------
 #
 # ********************************************************** ggt-head end
@@ -40,15 +40,48 @@ bindir=		@bindir@
 datadir=	@datadir@
 exec_prefix=	@exec_prefix@
 includedir=	@includedir@
+instlinks=	$(topdir)/instlinks
 libdir=		@libdir@
 libexecdir=	@libexecdir@
 prefix=		@prefix@
 sbindir=	@sbindir@
 sysconfdir=	@sysconfdir@
+topdir=		@topdir@
 top_srcdir=	@top_srcdir@
+GMTLROOT_ABS=	@GMTLROOT_ABS@
 
 MKINSTALLDIRS=	$(top_srcdir)/mkinstalldirs
+
+all buildworld debug optim profiled dbg dbg-dso opt opt-dso prof prof-dso:
+	@$(MAKE) links
+
+links:
+	@echo "------------------------------------------------"
+	@echo "Setting up developer installation links"
+	@echo "------------------------------------------------"
+	$(SHELL) $(MKINSTALLDIRS) $(instlinks)/include
+	cd $(instlinks)/include && rm -f gmtl &&			\
+          ln -s $(GMTLROOT_ABS)/gmtl ./
+	@echo "\n\n"
+	@echo "---------------------------------------------------------------"
+	@echo 'You should now set $$GMTL_BASE_DIR to:'
+	@cd $(instlinks) && echo "  `pwd`"
+	@echo "---------------------------------------------------------------"
+
+clean-links:
+	@echo "------------------------------------------------"
+	@echo "Removing developer installation links"
+	@echo "------------------------------------------------"
+	rm -rf $(instlinks)
+
+release:
+	@$(MAKE) install
 
 install:
 	@$(MKINSTALLDIRS) $(includedir)
 	$(error "Not implemented yet")
+
+clean cleandepend:
+
+clobber:
+	@$(MAKE) clean-links
