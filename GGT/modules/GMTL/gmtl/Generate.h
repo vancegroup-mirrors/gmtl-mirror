@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-05-29 17:09:50 $
- * Version:       $Revision: 1.54 $
+ * Date modified: $Date: 2002-05-29 19:48:05 $
+ * Version:       $Revision: 1.55 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -452,6 +452,17 @@ namespace gmtl
       return setTrans( temporary, arg );
    }
 
+   /**
+    * Gets the translational aspect of the given matrix. This function has the
+    * same preconditions as makeTrans.
+    *
+    * @param arg     the matrix from which to extract the translation
+    * @param x       filled with the translation along the x-axis
+    * @param y       filled with the translation along the y-axis
+    * @param z       filled with the translation along the z-axis
+    * 
+    * @see gmtl::makeTrans
+    */
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
    inline void getTrans( const Matrix<DATA_TYPE, ROWS, COLS>& arg,
                              DATA_TYPE& x, DATA_TYPE& y, DATA_TYPE& z)
@@ -461,10 +472,6 @@ namespace gmtl
       y = trans_vec[1];
       z = trans_vec[2];
    }
-
-
-
-
 
    /** Set the scale part of a matrix.
     */
