@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-05-17 23:07:11 $
- * Version:       $Revision: 1.51 $
+ * Date modified: $Date: 2002-05-24 22:31:14 $
+ * Version:       $Revision: 1.52 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -45,6 +45,7 @@
 #include <gmtl/Matrix.h>
 #include <gmtl/Meta.h>
 #include <gmtl/Math.h>
+#include <gmtl/Convert.h>
 
 
 /** @defgroup Generate Generators: make( ... ), get( ... ), set( ... ), and convert( ... ).
