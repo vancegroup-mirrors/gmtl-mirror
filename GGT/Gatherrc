@@ -23,7 +23,7 @@
    JugglerBaseStuff
    {
       CVSROOT: :pserver:anonymous@cvs.vrjuggler.sourceforge.net:/cvsroot/vrjuggler;
-      Module: juggler/external/cppunit [external/cppunit];
+      Module: cppunit [external/cppunit];
       Tag: HEAD;
       Path: .;
    };
