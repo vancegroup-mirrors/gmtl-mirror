@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: SphereTest.cpp,v $
- * Date modified: $Date: 2003-09-06 21:26:51 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2003-09-06 21:53:16 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -990,7 +990,15 @@ namespace gmtlTest
       {
          gmtl::Spheref sphere( gmtl::Point3f( 0,0,0 ), 2 );
          gmtl::LineSegf ray( gmtl::Point3f( -0.143958f,-0.229931f,-0.013235f ),
-                   gmtl::Vec3f( 0, .000000119209f, 0 ) );
+                             gmtl::Vec3f( 0, .000000119209f, 0 ) );
+         bool result = gmtl::intersect( sphere, ray, hits, t0, t1 );
+         assert( result == true );
+      }
+      // another that brought up a different bug
+      {
+         gmtl::Spheref sphere( gmtl::Point3f( 0,0,0 ), 2 );
+         gmtl::LineSegf ray( gmtl::Point3f( -0.054072f,-0.22992f,-0.120733f ),
+                         gmtl::Vec3f( 0, -.000000119209f, 0 ) );
          bool result = gmtl::intersect( sphere, ray, hits, t0, t1 );
          assert( result == true );
       }
