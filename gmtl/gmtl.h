@@ -3,6 +3,7 @@
 
 #include <gmtl/Defines.h>
 #include <gmtl/Math.h>
-#include <gmtl/Assert.h> 
+#include <gmtl/Assert.h>
+#include <gmtl/Version.h>
 
 #endif
