@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Output.h,v $
- * Date modified: $Date: 2002-03-20 20:06:36 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-04-17 02:08:48 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -46,8 +46,15 @@
 #include <gmtl/Plane.h>
 #include <gmtl/Sphere.h>
 
+/** @defgroup Output Output Stream Methods: operator<<( ... ). 
+ *  std::ostream& operator<< methods...
+ */
+
 namespace gmtl
 {
+   /** @addtogroup Output */
+   //@{
+   
    /**
     * Outputs a string representation of the given VecBase type to the given
     * output stream. This works for both Point and Vec types. The output is
@@ -185,6 +192,8 @@ namespace gmtl
       out << s.mCenter << ", " << s.mRadius;
       return out;
    }
+   //@}
+
 } // end namespace gmtl
 
 #endif
