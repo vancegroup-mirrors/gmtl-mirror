@@ -1,5 +1,6 @@
 DATE       AUTHOR       CHANGE
 ---------- ------------ -------------------------------------------------------
+2003-05-13 subatomic    added reflect() for point about a plane
 2003-05-09 subatomic    added Matrix xform, *, and *=  for lineseg and ray
 2003-04-25 subatomic    changed makeInverse(mat) to makeInverse for consistency
                         NEW VERSION 0.3.1
