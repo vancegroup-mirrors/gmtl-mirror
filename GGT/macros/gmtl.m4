@@ -7,8 +7,8 @@ dnl   Allen Bierbaum
 dnl
 dnl -----------------------------------------------------------------
 dnl File:          $RCSfile: gmtl.m4,v $
-dnl Date modified: $Date: 2004-05-18 15:15:15 $
-dnl Version:       $Revision: 1.13 $
+dnl Date modified: $Date: 2004-05-25 18:40:51 $
+dnl Version:       $Revision: 1.14 $
 dnl -----------------------------------------------------------------
 dnl
 dnl ************************************************************** ggt-head end
@@ -106,6 +106,11 @@ AC_DEFUN(GMTL_PATH,
       GMTL_CONFIG='no'
    fi
 
+   dnl If $GMTL_ROOT has no value, use $GMTL_CONFIG to get it.
+   if test "x$GMTL_ROOT" = "x" ; then
+      GMTL_ROOT=`$GMTL_CONFIG $gmtl_config_args --prefix`
+   fi
+
    GMTL_CXXFLAGS=''
 
    no_gmtl='no'
@@ -116,6 +121,7 @@ AC_DEFUN(GMTL_PATH,
    fi
 
    ggt_save_CPPFLAGS="$CPPFLAGS"
+   CPPFLAGS="$GMTL_CXXFLAGS $CPPFLAGS"
 
    dnl Add the user-specified GMTL installation directory to the preprocessor
    dnl arguments.  Ensure that /usr/include is not included multiple times if
