@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: testSuite.cpp,v $
- * Date modified: $Date: 2002-07-04 20:14:18 $
- * Version:       $Revision: 1.52 $
+ * Date modified: $Date: 2002-07-11 17:06:48 $
+ * Version:       $Revision: 1.53 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -223,7 +223,7 @@ int main (int ac, char **av)
 
    perf_suite->addTest( gmtlTest::OutputTest::perfSuite() );
    perf_suite->addTest( gmtlTest::AABoxTest::perfSuite() );
-   gmtl_suite->addTest( gmtlTest::AABoxOpsTest::perfSuite() );
+   perf_suite->addTest( gmtlTest::AABoxOpsTest::perfSuite() );
    perf_suite->addTest( gmtlTest::AABoxContainTest::perfSuite() );
    perf_suite->addTest( gmtlTest::EulerAngleClassTest::perfSuite() );
    perf_suite->addTest( gmtlTest::EulerAngleCompareTest::perfSuite() );

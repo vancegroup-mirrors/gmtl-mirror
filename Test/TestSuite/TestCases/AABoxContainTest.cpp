@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AABoxContainTest.cpp,v $
- * Date modified: $Date: 2002-06-24 05:48:25 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-07-11 17:06:48 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -66,7 +66,7 @@ namespace gmtlTest
       for(long iter=0;iter<iters; ++iter)
       {
          gmtl::isInVolume(box, origin);
-         use_value = use_value + box.mMin[0] + 1.0f;
+         use_value = use_value + box.mMin[0] + 2.0f;
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
@@ -109,7 +109,7 @@ namespace gmtlTest
       for(long iter=0;iter<iters; ++iter)
       {
          gmtl::isInVolume(box, box2);
-         use_value = use_value + box.mMin[0] + 1.0f;
+         use_value = use_value + box.mMin[0] + 2.0f;
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
@@ -160,7 +160,7 @@ namespace gmtlTest
       for(long iter=0;iter<iters; ++iter)
       {
          gmtl::extendVolume(box, origin);
-         use_value = use_value + box.mMin[0] + 1.0f;
+         use_value = use_value + box.mMin[0] + 2.0f;
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
@@ -226,7 +226,7 @@ namespace gmtlTest
       for(long iter=0;iter<iters; ++iter)
       {
          gmtl::extendVolume(box, box2);
-         use_value = use_value + box.mMin[0] + 1.0f;
+         use_value = use_value + box.mMin[0] + 2.0f;
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
