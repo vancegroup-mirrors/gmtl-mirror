@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AABoxTest.cpp,v $
- * Date modified: $Date: 2002-06-05 02:43:13 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-06-24 05:46:48 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -43,10 +43,10 @@ namespace gmtlTest
    void AABoxTest::testCreation()
    {
       gmtl::AABox<float> box;
-      gmtl::Vec<float, 3> zeroVec;
+      gmtl::Point<float, 3> zeroPoint;
 
-      CPPUNIT_ASSERT( box.mMin == zeroVec );
-      CPPUNIT_ASSERT( box.mMax == zeroVec );
+      CPPUNIT_ASSERT( box.mMin == zeroPoint );
+      CPPUNIT_ASSERT( box.mMax == zeroPoint );
       CPPUNIT_ASSERT( box.mEmpty == true );
    }
 
@@ -79,8 +79,8 @@ namespace gmtlTest
 
       gmtl::AABox<float> box_copy(box);
 
-      CPPUNIT_ASSERT( box_copy.mMin == gmtl::Vec3f(-2.0f, -4.0f, -8.0f) );
-      CPPUNIT_ASSERT( box_copy.mMax == gmtl::Vec3f( 2.0f,  4.0f,  8.0f) );
+      CPPUNIT_ASSERT( box_copy.mMin == gmtl::Point3f(-2.0f, -4.0f, -8.0f) );
+      CPPUNIT_ASSERT( box_copy.mMax == gmtl::Point3f( 2.0f,  4.0f,  8.0f) );
       CPPUNIT_ASSERT( box_copy.mEmpty == false );
    }
 
@@ -108,9 +108,9 @@ namespace gmtlTest
 
    void AABoxTest::testConstructors()
    {
-      gmtl::AABox<float> box( gmtl::Vec3f(1.0f, 2.0f, 3.0f), gmtl::Vec3f(4.0f, 5.0f, 6.0f) );
-      CPPUNIT_ASSERT( box.mMin == gmtl::Vec3f(1.0f, 2.0f, 3.0f) );
-      CPPUNIT_ASSERT( box.mMax == gmtl::Vec3f(4.0f, 5.0f, 6.0f) );
+      gmtl::AABox<float> box( gmtl::Point3f(1.0f, 2.0f, 3.0f), gmtl::Point3f(4.0f, 5.0f, 6.0f) );
+      CPPUNIT_ASSERT( box.mMin == gmtl::Point3f(1.0f, 2.0f, 3.0f) );
+      CPPUNIT_ASSERT( box.mMax == gmtl::Point3f(4.0f, 5.0f, 6.0f) );
       CPPUNIT_ASSERT( box.mEmpty == false );
    }
 
@@ -124,7 +124,7 @@ namespace gmtlTest
 
       for( long iter=0;iter<iters; ++iter)
       {
-         gmtl::AABox<float> box2( gmtl::Vec3f(1.0f, 2.0f, 3.0f), gmtl::Vec3f(4.0f, 5.0f, 6.0f) );
+         gmtl::AABox<float> box2( gmtl::Point3f(1.0f, 2.0f, 3.0f), gmtl::Point3f(4.0f, 5.0f, 6.0f) );
 
          use_value = use_value + box2.mMin[0];
       }
@@ -138,15 +138,15 @@ namespace gmtlTest
    // -- Test accessors --//
    void AABoxTest::testGetMin()
    {
-      gmtl::Vec3f min( -1.0f, -2.0f, -3.0f );
-      gmtl::AABox<float> box( min, gmtl::Vec3f() );
+      gmtl::Point3f min( -1.0f, -2.0f, -3.0f );
+      gmtl::AABox<float> box( min, gmtl::Point3f() );
       CPPUNIT_ASSERT( box.getMin() == min );
    }
 
    void AABoxTest::testTimingGetMin()
    {
-      gmtl::Vec3f min( -1.0f, -2.0f, -3.0f );
-      gmtl::AABox<float> box( min, gmtl::Vec3f() );
+      gmtl::Point3f min( -1.0f, -2.0f, -3.0f );
+      gmtl::AABox<float> box( min, gmtl::Point3f() );
 
       // Test getMin overhead
       const long iters(400000);
@@ -168,15 +168,15 @@ namespace gmtlTest
 
    void AABoxTest::testGetMax()
    {
-      gmtl::Vec3f max( 1.0f, 2.0f, 3.0f );
-      gmtl::AABox<float> box( gmtl::Vec3f(0,0,0), max );
+      gmtl::Point3f max( 1.0f, 2.0f, 3.0f );
+      gmtl::AABox<float> box( gmtl::Point3f(0,0,0), max );
       CPPUNIT_ASSERT( box.getMax() == max );
    }
 
    void AABoxTest::testTimingGetMax()
    {
-      gmtl::Vec3f max( 1.0f, 2.0f, 3.0f );
-      gmtl::AABox<float> box( gmtl::Vec3f(0,0,0), max );
+      gmtl::Point3f max( 1.0f, 2.0f, 3.0f );
+      gmtl::AABox<float> box( gmtl::Point3f(0,0,0), max );
 
       // Test getMax overhead
       const long iters(400000);
@@ -199,7 +199,7 @@ namespace gmtlTest
    void AABoxTest::testIsEmpty()
    {
       gmtl::AABox<float> box;
-      gmtl::AABox<float> box2( gmtl::Vec3f(-1.0f, -2.0f, -3.0f), gmtl::Vec3f(1.0f, 2.0f, 3.0f) );
+      gmtl::AABox<float> box2( gmtl::Point3f(-1.0f, -2.0f, -3.0f), gmtl::Point3f(1.0f, 2.0f, 3.0f) );
       CPPUNIT_ASSERT( box.isEmpty() == true );
       CPPUNIT_ASSERT( box2.isEmpty() == false );
    }
@@ -233,7 +233,7 @@ namespace gmtlTest
    void AABoxTest::testSetMin()
    {
       gmtl::AABox<float> box;
-      gmtl::Vec3f min( -2.0f, -4.0f, -1.0f );
+      gmtl::Point3f min( -2.0f, -4.0f, -1.0f );
       box.setMin( min );
       CPPUNIT_ASSERT( box.getMin() == min );
    }
@@ -241,7 +241,7 @@ namespace gmtlTest
    void AABoxTest::testTimingSetMin()
    {
       gmtl::AABox<float> box;
-      gmtl::Vec3f min;
+      gmtl::Point3f min;
 
       // Test setMin overhead
       const long iters(400000);
@@ -261,7 +261,7 @@ namespace gmtlTest
    void AABoxTest::testSetMax()
    {
       gmtl::AABox<float> box;
-      gmtl::Vec3f max( 2.0f, 4.0f, 1.0f );
+      gmtl::Point3f max( 2.0f, 4.0f, 1.0f );
       box.setMax( max );
       CPPUNIT_ASSERT( box.getMax() == max );
    }
@@ -269,7 +269,7 @@ namespace gmtlTest
    void AABoxTest::testTimingSetMax()
    {
       gmtl::AABox<float> box;
-      gmtl::Vec3f max;
+      gmtl::Point3f max;
 
       // Test setMax overhead
       const long iters(400000);

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AABox.h,v $
- * Date modified: $Date: 2002-06-05 02:41:03 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2002-06-24 05:46:49 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,7 +35,7 @@
 #ifndef _GMTL_AABOX_H_
 #define _GMTL_AABOX_H_
 
-#include <gmtl/Vec.h>
+#include <gmtl/Point.h>
 
 namespace gmtl
 {
@@ -70,7 +70,7 @@ namespace gmtl
        * @pre  all elements of min are less than max
        * @pre  bot min and max are not zero
        */
-      AABox(const Vec<DATA_TYPE, 3>& min, const Vec<DATA_TYPE, 3>& max)
+      AABox(const Point<DATA_TYPE, 3>& min, const Point<DATA_TYPE, 3>& max)
          : mMin(min), mMax(max), mEmpty(false)
       {}
 
@@ -88,7 +88,7 @@ namespace gmtl
        *
        * @return  the min point
        */
-      const Vec<DATA_TYPE, 3>& getMin() const
+      const Point<DATA_TYPE, 3>& getMin() const
       {
          return mMin;
       }
@@ -98,7 +98,7 @@ namespace gmtl
        *
        * @return  the max point
        */
-      const Vec<DATA_TYPE, 3>& getMax() const
+      const Point<DATA_TYPE, 3>& getMax() const
       {
          return mMax;
       }
@@ -118,7 +118,7 @@ namespace gmtl
        *
        * @param min     the min point
        */
-      void setMin(const Vec<DATA_TYPE, 3>& min)
+      void setMin(const Point<DATA_TYPE, 3>& min)
       {
          mMin = min;
       }
@@ -128,7 +128,7 @@ namespace gmtl
        *
        * @param max     the max point
        */
-      void setMax(const Vec<DATA_TYPE, 3>& max)
+      void setMax(const Point<DATA_TYPE, 3>& max)
       {
          mMax = max;
       }
@@ -147,12 +147,12 @@ namespace gmtl
       /**
        * The minimum point of the box.
        */
-      Vec<DATA_TYPE, 3> mMin;
+      Point<DATA_TYPE, 3> mMin;
 
       /**
        * The maximum point on the box.
        */
-      Vec<DATA_TYPE, 3> mMax;
+      Point<DATA_TYPE, 3> mMax;
 
       /**
        * Flag for empty box. True if the box is empty.
