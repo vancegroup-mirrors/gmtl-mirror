@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: LineSegOps.h,v $
- * Date modified: $Date: 2003-03-03 00:54:05 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2003-03-17 00:11:12 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -69,6 +69,21 @@ inline DATA_TYPE distance( const LineSeg<DATA_TYPE>& lineseg,
                            const Point<DATA_TYPE, 3>& pt )
 {
    return gmtl::length( pt - findNearestPt( lineseg, pt ) );
+}
+
+/**
+ * Computes the shortest distance from the line segment to the given point.
+ *
+ * @param lineseg    the line segment to test
+ * @param pt         the point which to test against lineseg
+ *
+ * @return  the squared shortest distance from pt to lineseg (value is squared, this func is slightly faster since it doesn't involve a sqrt)
+ */
+template< class DATA_TYPE >
+inline DATA_TYPE distanceSquared( const LineSeg<DATA_TYPE>& lineseg,
+                           const Point<DATA_TYPE, 3>& pt )
+{
+   return gmtl::lengthSquared( pt - findNearestPt( lineseg, pt ) );
 }
 
 //--- LineSeg Comparitor ---//
