@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixGenTest.cpp,v $
- * Date modified: $Date: 2003-02-25 05:19:24 $
- * Version:       $Revision: 1.14 $
+ * Date modified: $Date: 2003-04-01 15:34:29 $
+ * Version:       $Revision: 1.15 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -46,6 +46,39 @@ namespace gmtlTest
 {
    CPPUNIT_TEST_SUITE_REGISTRATION(MatrixGenTest);
    CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(MatrixGenMetricTest, Suites::metric());
+
+   void MatrixGenTest::testMatrixsetViewing()
+   {
+      // check against results from gluPerspective, and glFrustum.
+      {
+         gmtl::Matrix44f mat;
+         gmtl::setFrustum( mat, -1.0f, 1.0f, 1.0f, -1.0f, 0.02f, 100.0f );
+         //std::cout << "frus: " << mat << std::endl;
+         float data[] = { 0.02, 0, 0, 0,
+                        0, 0.02, 0, 0,
+                        0, 0, -1.0004, -0.040008,
+                        0, 0, -1, 0 };
+         gmtl::Matrix44f expected;
+         expected.setTranspose( data );
+
+         CPPUNIT_ASSERT( gmtl::isEqual( expected, mat, 0.001f ) );
+      }
+
+      {
+         gmtl::Matrix44f mat;
+         gmtl::setPerspective( mat, 89.0f, 1.33f, 0.001f, 1000.0f );
+         //std::cout << "per: " << mat << std::endl;
+
+         float data[] = { 0.765118, 0, 0, 0,
+                           0, 1.01761, 0, 0,
+                           0, 0, -1.0, -0.002,
+                           0, 0, -1, 0 };
+         gmtl::Matrix44f expected;
+         expected.setTranspose( data );
+
+         CPPUNIT_ASSERT( gmtl::isEqual( expected, mat, 0.001f ) );
+      }
+   }
 
    void MatrixGenTest::testMatrixsetTrans()
    {

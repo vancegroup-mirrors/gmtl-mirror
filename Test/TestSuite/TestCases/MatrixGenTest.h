@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixGenTest.h,v $
- * Date modified: $Date: 2003-02-05 23:47:40 $
- * Version:       $Revision: 1.27 $
+ * Date modified: $Date: 2003-04-01 15:34:29 $
+ * Version:       $Revision: 1.28 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -46,6 +46,7 @@ namespace gmtlTest
    {
       CPPUNIT_TEST_SUITE(MatrixGenTest);
 
+      CPPUNIT_TEST(testMatrixsetViewing);
       CPPUNIT_TEST(testMatrixsetTrans);
       CPPUNIT_TEST(testMatrixsetAxes);
       CPPUNIT_TEST(testMatrixsetDirCos);
@@ -58,6 +59,7 @@ namespace gmtlTest
       CPPUNIT_TEST_SUITE_END();
 
    public:
+      void testMatrixsetViewing();
       void testMatrixsetTrans();
       void testMatrixsetAxes();
       void testMatrixsetDirCos();
