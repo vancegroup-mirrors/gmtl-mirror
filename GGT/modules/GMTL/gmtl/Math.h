@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Math.h,v $
- * Date modified: $Date: 2002-02-11 23:22:21 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-02-12 21:26:07 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -291,11 +291,13 @@ inline double Math::rad2Deg( double fVal )
 //----------------------------------------------------------------------------
 
 /** Is almost equal?
- * test for equality with tolerance...
+ * test for equality within some tolerance...
+ * @PRE: tolerance must be >= 0
  */
 template <class T>
 inline bool isEqual( const T& a, const T& b, const T& tolerance )
 {
+   ggtASSERT( tolerance >= (T)0 );
    return bool( Math::abs( a - b ) <= tolerance );
 }
 //----------------------------------------------------------------------------
