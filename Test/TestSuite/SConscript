@@ -2,7 +2,7 @@ import os
 pj = os.path.join
 
 Import('baseEnv PREFIX')
-Import('GetPlatform')
+Import('GetPlatform SetupCppUnit')
 
 sources = Split("""
    runner.cpp
@@ -13,13 +13,9 @@ testcases_sources = SConscript(dirs = 'TestCases')
 testcases_sources = map(lambda n: pj('TestCases', n), testcases_sources)
 sources.extend(testcases_sources)
 
-print 'Sources:'
-for s in sources:
-   print '\t' + str(s)
-
 # Setup the runtests executable target
 env = baseEnv.Copy()
-ParseConfig(env, '/home/vr/Juggler/linux/gcc30/bin/cppunit-config --cflags --libs')
+SetupCppUnit(env)
 env.Append(CPPPATH = Split('#Test/TestSuite #'),
            LIBS = Split('dl'))
 

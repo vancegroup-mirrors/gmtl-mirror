@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: OOBoxTest.h,v $
- * Date modified: $Date: 2002-07-02 02:07:01 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2003-02-07 01:23:56 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -43,7 +43,7 @@
 namespace gmtlTest
 {
 
-class OOBoxTest : public CppUnit::TestCase
+class OOBoxTest : public CppUnit::TestFixture
 {
 public:
    OOBoxTest( std::string name = "OOBoxTest")

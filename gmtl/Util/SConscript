@@ -1,7 +1,7 @@
 import os
 pj = os.path.join
 
-Import('baseEnv PREFIX')
+Import('pkg baseEnv PREFIX')
 
 headers = Split("""
    Assert
@@ -13,3 +13,4 @@ headers = map(lambda n: n + '.h', headers)
 
 for h in headers:
    baseEnv.Install(pj(PREFIX, 'include', 'gmtl', 'Util'), h)
+   pkg.addExtraDist([h])

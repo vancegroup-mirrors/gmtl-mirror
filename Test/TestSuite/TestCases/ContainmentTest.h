@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: ContainmentTest.h,v $
- * Date modified: $Date: 2002-07-02 02:07:01 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2003-02-07 01:23:56 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -49,7 +49,7 @@ namespace gmtlTest
 
    using namespace gmtl;
 
-class ContainmentTest : public CppUnit::TestCase
+class ContainmentTest : public CppUnit::TestFixture
 {
 public:
    ContainmentTest( std::string name = "ContainmentTest")

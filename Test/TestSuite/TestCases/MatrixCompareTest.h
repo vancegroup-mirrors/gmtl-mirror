@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixCompareTest.h,v $
- * Date modified: $Date: 2003-02-05 23:47:39 $
- * Version:       $Revision: 1.14 $
+ * Date modified: $Date: 2003-02-07 01:23:56 $
+ * Version:       $Revision: 1.15 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -42,7 +42,7 @@ namespace gmtlTest
    /**
     * Functionality tests
     */
-   class MatrixCompareTest : public CppUnit::TestCase
+   class MatrixCompareTest : public CppUnit::TestFixture
    {
       CPPUNIT_TEST_SUITE(MatrixCompareTest);
 
@@ -61,7 +61,7 @@ namespace gmtlTest
    /**
     * Metric tests.
     */
-   class MatrixCompareMetricTest : public CppUnit::TestCase
+   class MatrixCompareMetricTest : public CppUnit::TestFixture
    {
       CPPUNIT_TEST_SUITE(MatrixCompareMetricTest);
 

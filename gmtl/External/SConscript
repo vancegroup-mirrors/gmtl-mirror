@@ -1,7 +1,7 @@
 import os
 pj = os.path.join
 
-Import('baseEnv PREFIX')
+Import('pkg baseEnv PREFIX')
 
 headers = Split("""
    OpenSGConvert
@@ -11,3 +11,4 @@ headers = map(lambda n: n + '.h', headers)
 
 for h in headers:
    baseEnv.Install(pj(PREFIX, 'include', 'gmtl', 'External'), h)
+   pkg.addExtraDist([h])
