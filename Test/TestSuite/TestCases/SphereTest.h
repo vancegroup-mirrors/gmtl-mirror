@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: SphereTest.h,v $
- * Date modified: $Date: 2003-02-26 23:25:09 $
- * Version:       $Revision: 1.17 $
+ * Date modified: $Date: 2003-03-17 00:41:17 $
+ * Version:       $Revision: 1.18 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -56,6 +56,7 @@ namespace gmtlTest
       CPPUNIT_TEST(testExtendVolumePoint);
       CPPUNIT_TEST(testExtendVolumeSphere);
       CPPUNIT_TEST(testMakeVolumePoint);
+      CPPUNIT_TEST(testSphereIntersections);
 //      CPPUNIT_TEST(testMakeVolumeSphere);
 
       CPPUNIT_TEST_SUITE_END();
@@ -76,6 +77,10 @@ namespace gmtlTest
       // -- Test comparison -- //
       void testEqualityCompare();
       void testIsEqual();
+
+      // intersection tests
+      static void testSphereIntersect( float x, float y, float z );
+      void testSphereIntersections();
 
       //---------------------------------------------------------------------------
       // Containment tests
