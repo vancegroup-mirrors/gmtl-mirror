@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecOps.h,v $
- * Date modified: $Date: 2002-02-18 23:22:16 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-02-20 21:23:06 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -194,6 +194,35 @@ DATA_TYPE normalize(Vec<DATA_TYPE, SIZE>& v1)
    }
 
    return len;
+}
+
+/**
+ * Determines if the given vector is normalized with zero tolerance. The vector
+ * is normalized if its length is 1.
+ *
+ * @param v1      the vector to test
+ *
+ * @return  true if the vector is normalized, false otherwise
+ */
+template< class DATA_TYPE, unsigned SIZE >
+bool isNormalized( const Vec<DATA_TYPE, SIZE>& v1 )
+{
+   return (length( v1 ) == DATA_TYPE(1));
+}
+
+/**
+ * Determines if the given vector is normalized within the given tolerance. The
+ * vector is normalized if its length is 1.
+ *
+ * @param v1      the vector to test
+ * @param eps     the epsilon tolerance
+ *
+ * @return  true if the vector is normalized, false otherwise
+ */
+template< class DATA_TYPE, unsigned SIZE >
+bool isNormalized( const Vec<DATA_TYPE, SIZE>& v1, const DATA_TYPE& eps )
+{
+   return Math::isEqual( length(v1), DATA_TYPE(1), eps );
 }
 
 /** cross product
