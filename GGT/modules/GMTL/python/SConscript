@@ -23,7 +23,7 @@ sources = map(lambda n: pj('src', 'gmtl', os.path.basename(n)), sources)
 env = baseEnv.Copy()
 
 # If using GCC, deal with ld O(n^2) algorithm.
-if env['CXX'][:3] == 'g++':
+if env['CXX'][:3] == 'g++' and WhereIs('objcopy'):
    env['CXXCOM'] += " ; objcopy --set-section-flags .debug_str=contents,debug $TARGET"
    env['SHCXXCOM'] += " ; objcopy -v --set-section-flags .debug_str=contents,debug $TARGET $TARGET"
 
