@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: GenerateTest.h,v $
- * Date modified: $Date: 2002-02-25 20:29:31 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-02-25 20:42:07 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -385,6 +385,7 @@ public:
    
    void testGenTimingMakeRot()
    {
+      float bok = 1;
       gmtl::Quat<double> q1;
       const long iters(400000);
       CPPUNIT_METRIC_START_TIMING();
@@ -392,6 +393,7 @@ public:
       for (long iter = 0; iter < iters; ++iter)
       {
          gmtl::makeRot( q1, 1.0, 1.0, 1.0, 1.0 );
+         bok += q1[2];
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE( "GenTest/makeRot(quatd,d,d,d,d)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
@@ -401,6 +403,7 @@ public:
       for (long iter = 0; iter < iters; ++iter)
       {
          gmtl::makeRot( q2, 1.0f, 1.0f, 1.0f, 1.0f );
+         bok += q2[3];
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE( "GenTest/makeRot(quatf,f,f,f,f)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
@@ -410,6 +413,7 @@ public:
       for (long iter = 0; iter < iters; ++iter)
       {
          gmtl::makeRot( q3, 1.0, gmtl::Vec<double, 3>( 1,1,1 ) );
+         bok += q3[1];
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE( "GenTest/makeRot(quatd,d,vecd)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
@@ -419,6 +423,7 @@ public:
       for (long iter = 0; iter < iters; ++iter)
       {
          gmtl::makeRot( q4, 1.0f, gmtl::Vec<float, 3>( 1,1,1 ) );
+         bok += q4[1];
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE( "GenTest/makeRot(quatf,f,vecf)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
@@ -429,6 +434,7 @@ public:
       for (long iter = 0; iter < iters; ++iter)
       {
          gmtl::makeRot( q5, v4, v5 );
+         bok += q5[2];
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE( "GenTest/makeRot(quatd,vec3d,vec3d)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
@@ -439,10 +445,21 @@ public:
       for (long iter = 0; iter < iters; ++iter)
       {
          gmtl::makeRot( q6, v6, v7 );
+         bok += q6[1];
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE( "GenTest/makeRot(quatf,vec3f,vec3f)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
 
+      float a, b, c, d;
+      CPPUNIT_METRIC_START_TIMING();
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         gmtl::getRot( q6, a, b, c, d );
+         bok += a;
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE( "GenTest/getRot(quatf,f,f,f,f)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT( bok != 0 );
    }  
    
    /** @todo implement quat makeRot Euler */
