@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.h,v $
- * Date modified: $Date: 2004-09-01 22:17:38 $
- * Version:       $Revision: 1.29.4.2 $
+ * Date modified: $Date: 2004-09-16 14:59:28 $
+ * Version:       $Revision: 1.29.4.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -46,7 +46,7 @@ namespace gmtlTest
    {
       CPPUNIT_TEST_SUITE(VecTest);
 
-      CPPUNIT_TEST(testVecB);
+      CPPUNIT_TEST(testVecMeta);
 
       CPPUNIT_TEST(testCreation);
       CPPUNIT_TEST(testCopyConstruct);
@@ -78,7 +78,7 @@ namespace gmtlTest
       CPPUNIT_TEST_SUITE_END();
 
    public:
-      void testVecB();
+      void testVecMeta();
 
       void testCreation();
       void testCopyConstruct();
@@ -119,7 +119,7 @@ namespace gmtlTest
    {
       CPPUNIT_TEST_SUITE(VecMetricTest);
 
-      CPPUNIT_TEST(testVecBPerf);
+      CPPUNIT_TEST(testVecMetaPerf);
       CPPUNIT_TEST(testTimingCreation);
       CPPUNIT_TEST(testTimingCopyConstruct);
       CPPUNIT_TEST(testTimingConstructors);
@@ -149,7 +149,7 @@ namespace gmtlTest
       CPPUNIT_TEST_SUITE_END();
 
    public:
-      void testVecBPerf();
+      void testVecMetaPerf();
 
       void testTimingCreation();
       void testTimingCopyConstruct();

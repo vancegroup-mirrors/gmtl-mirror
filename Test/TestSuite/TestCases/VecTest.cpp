@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.cpp,v $
- * Date modified: $Date: 2004-09-02 20:32:48 $
- * Version:       $Revision: 1.13.2.7 $
+ * Date modified: $Date: 2004-09-16 14:59:28 $
+ * Version:       $Revision: 1.13.2.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -50,7 +50,7 @@ namespace gmtlTest
    CPPUNIT_TEST_SUITE_REGISTRATION(VecTest);
    CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(VecMetricTest, Suites::metric());
 
-   void VecTest::testVecB()
+   void VecTest::testVecMeta()
    {
       gmtl::Vec<float,3>  vecb_1;
       gmtl::Vec<float,3>  vecb_2;
@@ -113,16 +113,20 @@ namespace gmtlTest
       vecb_1 = (vecb_2 +vecb_3)-(vecb_4+vecb_5)+(3.0f*vecb_6);
       std::cout << "ctr cnt after (vecb_2 +vecb_3)-(vecb_4+vecb_5)+(3.0f*vecb_6): " << gmtl::helpers::VecCtrCounterInstance()->get() << std::endl;
 
+      // Test implicit constructor
+      //float length = gmtl::lengthSquared(vecb_1+vecb_2);
+      float length = gmtl::lengthSquared<float,3>(vecb_1+vecb_2);
+
    }
 
-   void VecMetricTest::testVecBPerf()
+   void VecMetricTest::testVecMetaPerf()
    {
       gmtl::Vec<float,3> vec1;
       gmtl::Vec<float,3> vec2;
       gmtl::Vec<float,3> vec3;
       float dot;
 
-      dot = gmtl::dot(vec1,gmtl::Vec<float,3>(vec2+vec3));
+      dot = gmtl::dot(vec1,vec2+vec3);
       //dot = gmtl::dot(vec1,(vec2+vec3));
 
       /*
