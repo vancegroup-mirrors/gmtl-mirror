@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: LineSegTest.h,v $
- * Date modified: $Date: 2002-07-02 02:07:01 $
- * Version:       $Revision: 1.10 $
+ * Date modified: $Date: 2002-10-17 09:20:30 $
+ * Version:       $Revision: 1.11 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -84,12 +84,15 @@ public:
    void testSetOrigin();
    void testGetDir();
    void testSetDir();
+   void testGetLength();
 
-   // --------------------------
-   // Comparison tests
-   // --------------------------
    void testEqualityCompare();
    void testIsEqual();
+
+   // -----------------------
+   // Performance Tests
+   // -----------------------
+   void testTimingGetLength();
 /*
    // --------------------------
    // Operations tests
@@ -215,6 +218,7 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<LineSegTest>("testSetOrigin", &LineSegTest::testSetOrigin));
       test_suite->addTest( new CppUnit::TestCaller<LineSegTest>("testGetDir", &LineSegTest::testGetDir));
       test_suite->addTest( new CppUnit::TestCaller<LineSegTest>("testSetDir", &LineSegTest::testSetDir));
+      test_suite->addTest( new CppUnit::TestCaller<LineSegTest>("testGetLength", &LineSegTest::testGetLength));
 //      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testDistance", &PlaneTest::testDistance));
 //      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testWhichSide", &PlaneTest::testWhichSide));
 //      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testFindNearestPt", &PlaneTest::testFindNearestPt));
@@ -225,6 +229,9 @@ public:
    static CppUnit::Test* perfSuite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("LineSegTiming");
+#define ADD_TEST(x) test_suite->addTest(new CppUnit::TestCaller<LineSegTest>( "testTiming" # x, &LineSegTest::testTiming ## x))
+      ADD_TEST(GetLength);
+#undef ADD_TEST
       return test_suite;
    }
    
