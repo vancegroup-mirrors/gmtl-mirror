@@ -7,8 +7,8 @@
 #
 # -----------------------------------------------------------------
 # File:          $RCSfile: Makefile.in,v $
-# Date modified: $Date: 2002-06-04 22:11:26 $
-# Version:       $Revision: 1.8 $
+# Date modified: $Date: 2002-06-16 20:27:32 $
+# Version:       $Revision: 1.9 $
 # -----------------------------------------------------------------
 #
 # ********************************************************** ggt-head end
@@ -64,6 +64,8 @@ install:
 	cp -p $(GMTLROOT_ABS)/gmtl/Fit/*.h $(includedir)/gmtl/Fit
 	@$(SHELL) $(MKINSTALLDIRS) $(includedir)/gmtl/Numerics
 	cp -p $(GMTLROOT_ABS)/gmtl/Numerics/*.h $(includedir)/gmtl/Numerics
+	@$(SHELL) $(MKINSTALLDIRS) $(bindir)
+	cd $(bindir) && rm -f gmtl-config && cp $(GMTLROOT_ABS)/gmtl-config .
 
 clean cleandepend:
 
