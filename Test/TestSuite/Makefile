@@ -29,8 +29,8 @@
 #
 # -----------------------------------------------------------------
 # File:          $RCSfile: Makefile,v $
-# Date modified: $Date: 2002-06-05 02:43:13 $
-# Version:       $Revision: 1.34 $
+# Date modified: $Date: 2002-06-06 00:08:39 $
+# Version:       $Revision: 1.35 $
 # -----------------------------------------------------------------
 # *************** <auto-copyright.pl END do not edit this line> ***************
 
@@ -38,7 +38,7 @@
 # Advanced template makefile for VR Juggler applications.  This is intended
 # for "power users" who really know what they are doing and want to abuse
 # Doozer's flexibility.  :)
-# $Id: Makefile,v 1.34 2002-06-05 02:43:13 nonchocoboy Exp $
+# $Id: Makefile,v 1.35 2002-06-06 00:08:39 subatomic Exp $
 #
 # *** IMPORTANT NOTES -- READ THESE FIRST ***
 #     1) This file _requires_ the use of GNU make (gmake).
@@ -194,9 +194,11 @@ SRCS = $(TEST_SRCS) $(CPPUNIT_SRCS)
 OBJDIR = $(DZR_HOSTTYPE).obj
 DEPDIR = $(DZR_HOSTTYPE).obj
 
+ifneq ($(HOSTTYPE), Win32)
 # This is for extra libraries needed specfically for your application.  The
 # general libraries needed for applications are in $(LIBS).
 EXTRA_LIBS	= -lm
+endif
 
 # This is for extra system libraries (-lpthread for example) needed
 # specifically for this application.  These are added to the linker command
