@@ -29,8 +29,8 @@
 #
 # -----------------------------------------------------------------
 # File:          $RCSfile: Makefile,v $
-# Date modified: $Date: 2002-01-26 23:10:48 $
-# Version:       $Revision: 1.1 $
+# Date modified: $Date: 2002-01-26 23:47:52 $
+# Version:       $Revision: 1.2 $
 # -----------------------------------------------------------------
 # *************** <auto-copyright.pl END do not edit this line> ***************
 
@@ -38,7 +38,7 @@
 # Advanced template makefile for VR Juggler applications.  This is intended
 # for "power users" who really know what they are doing and want to abuse
 # Doozer's flexibility.  :)
-# $Id: Makefile,v 1.1 2002-01-26 23:10:48 allenb Exp $
+# $Id: Makefile,v 1.2 2002-01-26 23:47:52 allenb Exp $
 #
 # *** IMPORTANT NOTES -- READ THESE FIRST ***
 #     1) This file _requires_ the use of GNU make (gmake).
@@ -56,9 +56,6 @@ default: all
 # -----------------------------------------------------------------------------
 GGT_ROOT	= ../../../../
 CPPUNIT_DIR = $(GGT_ROOT)/external/cppunit
-CPPUNIT_PATHS = $(CPPUNIT_DIR) \
-                $(CPPUNIT_DIR)/framework \
-                $(CPPUNIT_DIR)/CppUnit/textui
 
 # Specify the directory containing the Doozer .mk files that will be used.
 # Users are encouraged to include files relative to this variable in this file
@@ -108,7 +105,7 @@ EXTRA_CXXFLAGS		=
 EXTRA_DEBUG_FLAGS	=
 EXTRA_OPTIM_FLAGS	=
 
-GMTL_INCLUDES  = -I$(GGT_ROOT)/modules/GMTL/
+GMTL_INCLUDES  = -I$(GGT_ROOT)/modules/GMTL/ -I$(GGT_ROOT)/
 SUITE_INCLUDES = -I$(CPPUNIT_DIR)/include
 EXTRA_INCLUDES	= $(GMTL_INCLUDES) $(SUITE_INCLUDES)
 
@@ -124,15 +121,23 @@ EXTRA_UI_FLAGS		=
 #
 # This can be done for as many lists of object files as necessary.
 # This is helpful for compiling multiple applications.
-TEST_SRCS = 
-CPPUNIT_TEXTUI_SRCS = TestRunner.cpp TextTestResult.cpp
-CPPUNIT_SRCS = TestCase.cpp \
-               TestResult.cpp \
-               TestFailure.cpp \
-               TestSuite.cpp
-TESTDRIVER_SRCS = testSuite.cpp
+TEST_SRCS = testSuite.cpp
+CPPUNIT_UI_SRCS	= TextTestResult.cpp	\
+                  TextTestRunner.cpp
+CPPUNIT_EXTS	= MetricRegistry.cpp
+CPPUNIT_SRCS	= Exception.cpp		\
+                  NotEqualException.cpp	\
+                  TestAssert.cpp	\
+                  TestCase.cpp		\
+                  TestResult.cpp	\
+                  TestFailure.cpp	\
+                  TestSuite.cpp \
+                  $(CPPUNIT_UI_SRCS) \
+                  $(CPPUNIT_EXTS)
 
-SRCS = $(TEST_SRCS) $(CPPUNIT_TEXTUI_SRCS) $(CPPUNIT_SRCS) $(TESTDRIVER_SRCS)
+EXTRA_CPPUNIT_SRCS_PATH	= $(CPPUNIT_DIR)/src/cppunit $(CPPUNIT_DIR)/src/cppunit/extensions
+
+SRCS = $(TEST_SRCS) $(CPPUNIT_SRCS)
 
 # This is for extra libraries needed specfically for your application.  The
 # general libraries needed for applications are in $(LIBS).
@@ -146,7 +151,7 @@ EXTRA_SYS_LIBS	=
 # Extend this as necessary to find source files that are not in the current
 # directory.  Set EXTRA_PATH_FOR_SOURCES to all the directories that you
 # have sources in. (current dir is already included by default)
-EXTRA_PATH_FOR_SOURCES = 
+EXTRA_PATH_FOR_SOURCES = $(EXTRA_CPPUNIT_SRCS_PATH)
 
 # Additional files and directories besides the standard ones that need to be
 # removed by the 'clean' target.

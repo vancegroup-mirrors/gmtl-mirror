@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: IntersectionTest.h,v $
- * Date modified: $Date: 2002-01-26 23:10:48 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-01-26 23:47:52 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -38,25 +38,25 @@
 #include <gfxConfig.h>
 #include <iostream>
 
-#include <TestCase.h>
-#include <TestSuite.h>
-#include <TestCaller.h>
+#include <cppunit/TestCase.h>
+#include <cppunit/TestSuite.h>
+#include <cppunit/TestCaller.h>
 
-#include <GMTL/Vec3.h>
-#include <GMTL/Point3.h>
-#include <GMTL/OOBox.h>
-#include <GMTL/Intersection.h>
-#include <GMTL/gmtlOutput.h>
+#include <gmtl/Vec3.h>
+#include <gmtl/Point3.h>
+#include <gmtl/OOBox.h>
+#include <gmtl/Intersection.h>
+#include <gmtl/gmtlOutput.h>
 
 
 namespace gmtlTest
 {
    using namespace gmtl;
 
-class IntersectionTest : public TestCase
+class IntersectionTest : public CppUnit::TestCase
 {
 public:
-   IntersectionTest( std::string name )
+   IntersectionTest( std::string name = "IntersectionTest")
    : TestCase (name)
    {;}
 
@@ -80,18 +80,18 @@ public:
       box1.axis(0) = Vec3(1,0,0);  box1.axis(1) = Vec3(0,1,0); box1.axis(2) = Vec3(0,0,1);
       box1.center().set(3,0,0);
       box1.halfLen(0) = box1.halfLen(1) = box1.halfLen(2) = 1.0f;
-      assertTest(TestIntersect(box0,box1) == false);
-      assertTest(TestIntersect(1.0f,box0,Vec3(0,0,0),box1,Vec3(0,0,0)) == false);
+      CPPUNIT_ASSERT(TestIntersect(box0,box1) == false);
+      CPPUNIT_ASSERT(TestIntersect(1.0f,box0,Vec3(0,0,0),box1,Vec3(0,0,0)) == false);
 
       // Axis A1
       box1.center().set(0,3,0);
-      assertTest(TestIntersect(box0,box1) == false);
-      assertTest(TestIntersect(1.0f,box0,Vec3(0,0,0),box1,Vec3(0,0,0)) == false);
+      CPPUNIT_ASSERT(TestIntersect(box0,box1) == false);
+      CPPUNIT_ASSERT(TestIntersect(1.0f,box0,Vec3(0,0,0),box1,Vec3(0,0,0)) == false);
 
       // Axis A2
       box1.center().set(0,0,3);
-      assertTest(TestIntersect(box0,box1) == false);
-      assertTest(TestIntersect(1.0f,box0,Vec3(0,0,0),box1,Vec3(0,0,0)) == false);
+      CPPUNIT_ASSERT(TestIntersect(box0,box1) == false);
+      CPPUNIT_ASSERT(TestIntersect(1.0f,box0,Vec3(0,0,0),box1,Vec3(0,0,0)) == false);
 
       // Axis B0
       // Axis B1
@@ -106,8 +106,8 @@ public:
       box1.axis(0) = Vec3(1,0,0);  box1.axis(1) = Vec3(0,1,0); box1.axis(2) = Vec3(0,0,1);
       box1.center().set(1,0,0);
       box1.halfLen(0) = box1.halfLen(1) = box1.halfLen(2) = 1.0f;
-      assertTest(TestIntersect(box0,box1) == true);
-      assertTest(TestIntersect(1.0f,box0,Vec3(0,0,0),box1,Vec3(0,0,0)) == true);
+      CPPUNIT_ASSERT(TestIntersect(box0,box1) == true);
+      CPPUNIT_ASSERT(TestIntersect(1.0f,box0,Vec3(0,0,0),box1,Vec3(0,0,0)) == true);
 
 
       // ---- Other tests --- //
@@ -129,7 +129,7 @@ public:
       box1.axis(0).set(0, -4.65661e-10, -1);    box1.halfLen(0) = 0.25;
       box1.axis(1).set(1, 0, 0);                box1.halfLen(1) = 2.25;
       box1.axis(2).set(0, -1, 4.65661e-10);     box1.halfLen(2) = 2.25;
-      assertTest(TestIntersect(box0,box1) == true);
+      CPPUNIT_ASSERT(TestIntersect(box0,box1) == true);
 
    }
 
@@ -144,31 +144,31 @@ public:
       box1.axis(0) = Vec3(1,0,0);  box1.axis(1) = Vec3(0,1,0); box1.axis(2) = Vec3(0,0,1);
       box1.center().set(3,0,0);
       box1.halfLen(0) = box1.halfLen(1) = box1.halfLen(2) = 1.0f;
-      assertTest(TestIntersect(0.5f,box0,Vec3(1,0,0),box1,Vec3(0,0,0)) == false);
-      assertTest(TestIntersect(0.5f,box0,Vec3(0,0,0),box1,Vec3(-1,0,0)) == false);
-      assertTest(TestIntersect(1.0f,box0,Vec3(1,0,0),box1,Vec3(0,0,0)) == true);
-      assertTest(TestIntersect(1.0f,box0,Vec3(0,0,0),box1,Vec3(-1,0,0)) == true);
-      assertTest(TestIntersect(2.0f,box0,Vec3(1,0,0),box1,Vec3(0,0,0)) == true);
-      assertTest(TestIntersect(2.0f,box0,Vec3(0,0,0),box1,Vec3(-1,0,0)) == true);
+      CPPUNIT_ASSERT(TestIntersect(0.5f,box0,Vec3(1,0,0),box1,Vec3(0,0,0)) == false);
+      CPPUNIT_ASSERT(TestIntersect(0.5f,box0,Vec3(0,0,0),box1,Vec3(-1,0,0)) == false);
+      CPPUNIT_ASSERT(TestIntersect(1.0f,box0,Vec3(1,0,0),box1,Vec3(0,0,0)) == true);
+      CPPUNIT_ASSERT(TestIntersect(1.0f,box0,Vec3(0,0,0),box1,Vec3(-1,0,0)) == true);
+      CPPUNIT_ASSERT(TestIntersect(2.0f,box0,Vec3(1,0,0),box1,Vec3(0,0,0)) == true);
+      CPPUNIT_ASSERT(TestIntersect(2.0f,box0,Vec3(0,0,0),box1,Vec3(-1,0,0)) == true);
 
 
       // Axis A1
       box1.center().set(0,3,0);
-      assertTest(TestIntersect(0.5f,box0,Vec3(0,1,0),box1,Vec3(0,0,0)) == false);
-      assertTest(TestIntersect(0.5f,box0,Vec3(0,0,0),box1,Vec3(0,-1,0)) == false);
-      assertTest(TestIntersect(1.0f,box0,Vec3(0,1,0),box1,Vec3(0,0,0)) == true);
-      assertTest(TestIntersect(1.0f,box0,Vec3(0,0,0),box1,Vec3(0,-1,0)) == true);
-      assertTest(TestIntersect(2.0f,box0,Vec3(0,1,0),box1,Vec3(0,0,0)) == true);
-      assertTest(TestIntersect(2.0f,box0,Vec3(0,0,0),box1,Vec3(0,-1,0)) == true);
+      CPPUNIT_ASSERT(TestIntersect(0.5f,box0,Vec3(0,1,0),box1,Vec3(0,0,0)) == false);
+      CPPUNIT_ASSERT(TestIntersect(0.5f,box0,Vec3(0,0,0),box1,Vec3(0,-1,0)) == false);
+      CPPUNIT_ASSERT(TestIntersect(1.0f,box0,Vec3(0,1,0),box1,Vec3(0,0,0)) == true);
+      CPPUNIT_ASSERT(TestIntersect(1.0f,box0,Vec3(0,0,0),box1,Vec3(0,-1,0)) == true);
+      CPPUNIT_ASSERT(TestIntersect(2.0f,box0,Vec3(0,1,0),box1,Vec3(0,0,0)) == true);
+      CPPUNIT_ASSERT(TestIntersect(2.0f,box0,Vec3(0,0,0),box1,Vec3(0,-1,0)) == true);
 
       // Axis A2
       box1.center().set(0,0,3);
-      assertTest(TestIntersect(0.5f,box0,Vec3(0,0,1),box1,Vec3(0,0,0)) == false);
-      assertTest(TestIntersect(0.5f,box0,Vec3(0,0,0),box1,Vec3(0,0,-1)) == false);
-      assertTest(TestIntersect(1.0f,box0,Vec3(0,0,1),box1,Vec3(0,0,0)) == true);
-      assertTest(TestIntersect(1.0f,box0,Vec3(0,0,0),box1,Vec3(0,0,-1)) == true);
-      assertTest(TestIntersect(2.0f,box0,Vec3(0,0,1),box1,Vec3(0,0,0)) == true);
-      assertTest(TestIntersect(2.0f,box0,Vec3(0,0,0),box1,Vec3(0,0,-1)) == true);
+      CPPUNIT_ASSERT(TestIntersect(0.5f,box0,Vec3(0,0,1),box1,Vec3(0,0,0)) == false);
+      CPPUNIT_ASSERT(TestIntersect(0.5f,box0,Vec3(0,0,0),box1,Vec3(0,0,-1)) == false);
+      CPPUNIT_ASSERT(TestIntersect(1.0f,box0,Vec3(0,0,1),box1,Vec3(0,0,0)) == true);
+      CPPUNIT_ASSERT(TestIntersect(1.0f,box0,Vec3(0,0,0),box1,Vec3(0,0,-1)) == true);
+      CPPUNIT_ASSERT(TestIntersect(2.0f,box0,Vec3(0,0,1),box1,Vec3(0,0,0)) == true);
+      CPPUNIT_ASSERT(TestIntersect(2.0f,box0,Vec3(0,0,0),box1,Vec3(0,0,-1)) == true);
 
       // Axis B0
       // Axis B1
@@ -184,11 +184,11 @@ public:
       box1.center().set(2,2,0);
       box1.halfLen(0) = box1.halfLen(1) = box1.halfLen(2) = 0.5f;
       Vec3 urVec(1,1,0);      // Vector moving up and right
-      assertTest(TestIntersect(0.5f,box0,urVec,box1,-urVec) == false);
-      assertTest(TestIntersect(1.0f,box0,urVec,box1,-urVec) == false);
-      assertTest(TestIntersect(1.5f,box0,urVec,box1,-urVec) == true);
-      assertTest(TestIntersect(2.0f,box0,urVec,box1,-urVec) == true);
-      assertTest(TestIntersect(2.5f,box0,urVec,box1,-urVec) == true);
+      CPPUNIT_ASSERT(TestIntersect(0.5f,box0,urVec,box1,-urVec) == false);
+      CPPUNIT_ASSERT(TestIntersect(1.0f,box0,urVec,box1,-urVec) == false);
+      CPPUNIT_ASSERT(TestIntersect(1.5f,box0,urVec,box1,-urVec) == true);
+      CPPUNIT_ASSERT(TestIntersect(2.0f,box0,urVec,box1,-urVec) == true);
+      CPPUNIT_ASSERT(TestIntersect(2.5f,box0,urVec,box1,-urVec) == true);
    }
 
 
@@ -209,42 +209,42 @@ public:
 
       // --- Axis A0 --- //
       // Move towards, but don't hit
-      assertTest(TestIntersect(0.5f,box0,Vec3(1,0,0),box1,Vec3(0,0,0),contactTime) == false);
-      assertTest(TestIntersect(0.5f,box0,Vec3(0,0,0),box1,Vec3(-1,0,0),contactTime) == false);
-      assertTest(TestIntersect(0.25f,box0,Vec3(1,0,0),box1,Vec3(-1,0,0),contactTime) == false);
+      CPPUNIT_ASSERT(TestIntersect(0.5f,box0,Vec3(1,0,0),box1,Vec3(0,0,0),contactTime) == false);
+      CPPUNIT_ASSERT(TestIntersect(0.5f,box0,Vec3(0,0,0),box1,Vec3(-1,0,0),contactTime) == false);
+      CPPUNIT_ASSERT(TestIntersect(0.25f,box0,Vec3(1,0,0),box1,Vec3(-1,0,0),contactTime) == false);
       // Move towards, and hit at end of time
-      assertTest(TestIntersect(1.0f,box0,Vec3(1,0,0),box1,Vec3(0,0,0),contactTime) == true);
-      assertDoublesEqual(1.0f,contactTime,0.001);
-      assertTest(TestIntersect(1.0f,box0,Vec3(0,0,0),box1,Vec3(-1,0,0),contactTime) == true);
-      assertDoublesEqual(1.0f,contactTime,0.001);
-      assertTest(TestIntersect(0.5f,box0,Vec3(1,0,0),box1,Vec3(-1,0,0),contactTime) == true);
-      assertDoublesEqual(0.5f,contactTime,0.001);
+      CPPUNIT_ASSERT(TestIntersect(1.0f,box0,Vec3(1,0,0),box1,Vec3(0,0,0),contactTime) == true);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(1.0f,contactTime,0.001);
+      CPPUNIT_ASSERT(TestIntersect(1.0f,box0,Vec3(0,0,0),box1,Vec3(-1,0,0),contactTime) == true);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(1.0f,contactTime,0.001);
+      CPPUNIT_ASSERT(TestIntersect(0.5f,box0,Vec3(1,0,0),box1,Vec3(-1,0,0),contactTime) == true);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(0.5f,contactTime,0.001);
       // Move towards, and hit during
-      assertTest(TestIntersect(1.0f,box0,Vec3(2,0,0),box1,Vec3(0,0,0),contactTime) == true);
-      assertDoublesEqual(0.5f,contactTime,0.001);
-      assertTest(TestIntersect(2.0f,box0,Vec3(0,0,0),box1,Vec3(-2,0,0),contactTime) == true);
-      assertDoublesEqual(0.5f,contactTime,0.001);
-      assertTest(TestIntersect(10.0f,box0,Vec3(0.25,0,0),box1,Vec3(-0.5,0,0),contactTime) == true);
-      assertDoublesEqual(1.333333f,contactTime,0.001);
+      CPPUNIT_ASSERT(TestIntersect(1.0f,box0,Vec3(2,0,0),box1,Vec3(0,0,0),contactTime) == true);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(0.5f,contactTime,0.001);
+      CPPUNIT_ASSERT(TestIntersect(2.0f,box0,Vec3(0,0,0),box1,Vec3(-2,0,0),contactTime) == true);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(0.5f,contactTime,0.001);
+      CPPUNIT_ASSERT(TestIntersect(10.0f,box0,Vec3(0.25,0,0),box1,Vec3(-0.5,0,0),contactTime) == true);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(1.333333f,contactTime,0.001);
 
       /*
       // Axis A1
       box1.center().set(0,3,0);
-      assertTest(TestIntersect(0.5f,box0,Vec3(0,1,0),box1,Vec3(0,0,0)) == false);
-      assertTest(TestIntersect(0.5f,box0,Vec3(0,0,0),box1,Vec3(0,-1,0)) == false);
-      assertTest(TestIntersect(1.0f,box0,Vec3(0,1,0),box1,Vec3(0,0,0)) == true);
-      assertTest(TestIntersect(1.0f,box0,Vec3(0,0,0),box1,Vec3(0,-1,0)) == true);
-      assertTest(TestIntersect(2.0f,box0,Vec3(0,1,0),box1,Vec3(0,0,0)) == true);
-      assertTest(TestIntersect(2.0f,box0,Vec3(0,0,0),box1,Vec3(0,-1,0)) == true);
+      CPPUNIT_ASSERT(TestIntersect(0.5f,box0,Vec3(0,1,0),box1,Vec3(0,0,0)) == false);
+      CPPUNIT_ASSERT(TestIntersect(0.5f,box0,Vec3(0,0,0),box1,Vec3(0,-1,0)) == false);
+      CPPUNIT_ASSERT(TestIntersect(1.0f,box0,Vec3(0,1,0),box1,Vec3(0,0,0)) == true);
+      CPPUNIT_ASSERT(TestIntersect(1.0f,box0,Vec3(0,0,0),box1,Vec3(0,-1,0)) == true);
+      CPPUNIT_ASSERT(TestIntersect(2.0f,box0,Vec3(0,1,0),box1,Vec3(0,0,0)) == true);
+      CPPUNIT_ASSERT(TestIntersect(2.0f,box0,Vec3(0,0,0),box1,Vec3(0,-1,0)) == true);
 
       // Axis A2
       box1.center().set(0,0,3);
-      assertTest(TestIntersect(0.5f,box0,Vec3(0,0,1),box1,Vec3(0,0,0)) == false);
-      assertTest(TestIntersect(0.5f,box0,Vec3(0,0,0),box1,Vec3(0,0,-1)) == false);
-      assertTest(TestIntersect(1.0f,box0,Vec3(0,0,1),box1,Vec3(0,0,0)) == true);
-      assertTest(TestIntersect(1.0f,box0,Vec3(0,0,0),box1,Vec3(0,0,-1)) == true);
-      assertTest(TestIntersect(2.0f,box0,Vec3(0,0,1),box1,Vec3(0,0,0)) == true);
-      assertTest(TestIntersect(2.0f,box0,Vec3(0,0,0),box1,Vec3(0,0,-1)) == true);
+      CPPUNIT_ASSERT(TestIntersect(0.5f,box0,Vec3(0,0,1),box1,Vec3(0,0,0)) == false);
+      CPPUNIT_ASSERT(TestIntersect(0.5f,box0,Vec3(0,0,0),box1,Vec3(0,0,-1)) == false);
+      CPPUNIT_ASSERT(TestIntersect(1.0f,box0,Vec3(0,0,1),box1,Vec3(0,0,0)) == true);
+      CPPUNIT_ASSERT(TestIntersect(1.0f,box0,Vec3(0,0,0),box1,Vec3(0,0,-1)) == true);
+      CPPUNIT_ASSERT(TestIntersect(2.0f,box0,Vec3(0,0,1),box1,Vec3(0,0,0)) == true);
+      CPPUNIT_ASSERT(TestIntersect(2.0f,box0,Vec3(0,0,0),box1,Vec3(0,0,-1)) == true);
 
       // Axis B0
       // Axis B1
@@ -260,29 +260,29 @@ public:
       box1.center().set(2,2,0);
       box1.halfLen(0) = box1.halfLen(1) = box1.halfLen(2) = 0.5f;
       Vec3 urVec(1,1,0);      // Vector moving up and right
-      assertTest(TestIntersect(0.5f,box0,urVec,box1,-urVec) == false);
-      assertTest(TestIntersect(1.0f,box0,urVec,box1,-urVec) == false);
-      assertTest(TestIntersect(1.5f,box0,urVec,box1,-urVec) == true);
-      assertTest(TestIntersect(2.0f,box0,urVec,box1,-urVec) == true);
-      assertTest(TestIntersect(2.5f,box0,urVec,box1,-urVec) == true);
+      CPPUNIT_ASSERT(TestIntersect(0.5f,box0,urVec,box1,-urVec) == false);
+      CPPUNIT_ASSERT(TestIntersect(1.0f,box0,urVec,box1,-urVec) == false);
+      CPPUNIT_ASSERT(TestIntersect(1.5f,box0,urVec,box1,-urVec) == true);
+      CPPUNIT_ASSERT(TestIntersect(2.0f,box0,urVec,box1,-urVec) == true);
+      CPPUNIT_ASSERT(TestIntersect(2.5f,box0,urVec,box1,-urVec) == true);
       */
    }
 
 
    static Test* suite()
    {
-      TestSuite* test_suite = new TestSuite ("IntersectionTest");
-      test_suite->addTest( new TestCaller<IntersectionTest>("testStaticObbObbIntersection", &IntersectionTest::testStaticObbObbIntersection));
-      test_suite->addTest( new TestCaller<IntersectionTest>("testDynamicObbObbIntersection", &IntersectionTest::testDynamicObbObbIntersection));
-      test_suite->addTest( new TestCaller<IntersectionTest>("testFirstContactObbObbIntersection", &IntersectionTest::testFirstContactObbObbIntersection));
+      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("IntersectionTest");
+      test_suite->addTest( new CppUnit::TestCaller<IntersectionTest>("testStaticObbObbIntersection", &IntersectionTest::testStaticObbObbIntersection));
+      test_suite->addTest( new CppUnit::TestCaller<IntersectionTest>("testDynamicObbObbIntersection", &IntersectionTest::testDynamicObbObbIntersection));
+      test_suite->addTest( new CppUnit::TestCaller<IntersectionTest>("testFirstContactObbObbIntersection", &IntersectionTest::testFirstContactObbObbIntersection));
 
       return test_suite;
    }
 
    static Test* interactiveSuite()
    {
-      TestSuite* test_suite = new TestSuite ("IntersectionTestInteractive");
-      //test_suite->addTest( new TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
+      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("IntersectionTestInteractive");
+      //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
       return test_suite;
    }
 

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Vec3.h,v $
- * Date modified: $Date: 2002-01-18 20:43:11 $
- * Version:       $Revision: 1.1.1.1 $
+ * Date modified: $Date: 2002-01-26 23:47:53 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -36,7 +36,7 @@
 #define _GMTL_VEC3_H_
 
 #include <iostream>
-#include <GMTL/gmtlDefines.h>
+#include <gmtl/gmtlDefines.h>
 
 namespace gmtl
 {

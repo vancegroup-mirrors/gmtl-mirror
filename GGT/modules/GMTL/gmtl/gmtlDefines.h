@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtlDefines.h,v $
- * Date modified: $Date: 2002-01-18 20:43:12 $
- * Version:       $Revision: 1.1.1.1 $
+ * Date modified: $Date: 2002-01-26 23:47:53 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -36,9 +36,9 @@
 #define _GMTL_DEFINES_H
 
 #include <gfxConfig.h>
-#include <GMTL/gmtlTypes.h>
+#include <gmtl/gmtlTypes.h>
 #include <iostream>
-#include <GMTL/Math.h>
+#include <gmtl/Math.h>
 
 #include <Util/Assert.h>
 

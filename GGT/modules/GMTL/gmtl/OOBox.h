@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: OOBox.h,v $
- * Date modified: $Date: 2002-01-18 20:43:11 $
- * Version:       $Revision: 1.1.1.1 $
+ * Date modified: $Date: 2002-01-26 23:47:53 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,10 +35,10 @@
 #ifndef _GMTL_OOBox_H_
 #define _GMTL_OOBox_H_
 
-#include <GMTL/gmtlDefines.h>
-#include <GMTL/Vec3.h>
-#include <GMTL/Point3.h>
-#include <GMTL/matVecFuncs.h>
+#include <gmtl/gmtlDefines.h>
+#include <gmtl/Vec3.h>
+#include <gmtl/Point3.h>
+#include <gmtl/matVecFuncs.h>
 
 namespace gmtl
 {

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Vec3.cpp,v $
- * Date modified: $Date: 2002-01-18 20:43:11 $
- * Version:       $Revision: 1.1.1.1 $
+ * Date modified: $Date: 2002-01-26 23:47:53 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -32,7 +32,7 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 *
  ************************************************************ ggt-cpr end */
-#include <GMTL/Vec3.h>
+#include <gmtl/Vec3.h>
 
 namespace gmtl
 {

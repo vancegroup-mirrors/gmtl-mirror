@@ -11,7 +11,7 @@
  */
 
 /* This should always be included first. */
-#include <gfx_defines.h>
+//#include <gfx_defines.h>
 
 #ifdef _DEBUG
 #   define GFX_DEBUG
