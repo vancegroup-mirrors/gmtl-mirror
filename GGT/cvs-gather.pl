@@ -24,9 +24,9 @@
 #
 # *************** <auto-copyright.pl END do not edit this line> ***************
 
-# cvs-gather.pl,v 1.10 2002/02/24 22:06:13 patrickh Exp
+# $Id: cvs-gather.pl,v 1.7 2002-06-05 23:59:14 subatomic Exp $
 
-require 5.004;
+use 5.005;
 
 use Cwd qw(chdir getcwd);
 use File::Basename;
@@ -60,7 +60,7 @@ sub nextSpinnerFrame($);
 # *********************************************************************
 # Here is the version for this script!
 
-my $VERSION = '0.0.12';
+my $VERSION = '0.1.5';
 # *********************************************************************
 
 my $cfg_file      = '';
@@ -88,23 +88,15 @@ GetOptions('cfg=s' => \$cfg_file, 'help' => \$help, 'override=s' => \@overrides,
            'debug=i' => \$debug_level, 'set=s' => \%cmd_overrides,
            'version' => \$print_version, 'verbose' => \$verbose,
            'entry-mod' => \$entry_mod, 'force-install' => \$force_install,
-           'limit=s' => \@limit_modules, 'manual' => \$manual)
+           'target=s' => \@limit_modules, 'manual' => \$manual)
    or pod2usage(2);
 
 # Print the help output and exit if --help was on the command line.
 pod2usage(1) if $help;
+pod2usage(-exitstatus => 0, -verbose => 2) if $manual;
 
 # Print the version number and exit if --version was on the command line.
 printVersion() && exit(0) if $print_version;
-
-# Print the POD documentation in manpage format.  This for people who don't
-# know about perldoc (*sigh*).  The current implementation is a hack since I
-# don't know yet if there is something comparable to pod2usage().
-if ( $manual )
-{
-   system("perldoc $0");
-   exit(0);
-}
 
 # If we are doing verbose output and the user did not change the debug level,
 # then we push the debug level up to the max.
@@ -112,7 +104,11 @@ $debug_level = $HVERB_LVL if $verbose && $debug_level <= $CRITICAL_LVL;
 
 if ( ! $cfg_file )
 {
-   if ( -r ".gatherrc" )
+   if ( -r "Gatherrc" )
+   {
+      $cfg_file = 'Gatherrc';
+   }
+   elsif ( -r ".gatherrc" )
    {
       $cfg_file = '.gatherrc';
    }
@@ -222,11 +218,11 @@ foreach $key ( keys(%cmd_overrides) )
    }
 }
 
-my (%limited_modules) = ();
+my (%targeted_modules) = ();
 
 if ( $#limit_modules == -1 )
 {
-   %limited_modules = %override_modules;
+   %targeted_modules = %override_modules;
 }
 else
 {
@@ -234,15 +230,15 @@ else
    {
       if ( ! defined($override_modules{"$_"}) )
       {
-         warn "WARNING: Trying to limit to unknown module '$_'\n";
+         warn "WARNING: Trying to target unknown module '$_'\n";
          next;
       }
 
-      $limited_modules{"$_"} = $override_modules{"$_"};
+      $targeted_modules{"$_"} = $override_modules{"$_"};
    }
 }
 
-checkoutModules(\%limited_modules);
+checkoutModules(\%targeted_modules);
 exit 0;
 
 # -----------------------------------------------------------------------------
@@ -394,7 +390,7 @@ sub parseModule ($$$;$)
          }
 
          # Matched the beginning of a sub-module.
-         if ( $module_body =~ /^(\w+)\s*{\s*(.*)/s )
+         if ( $module_body =~ /^(\w.*?\w?)\s*{\s*(.*)/s )
          {
             $indent += 4;
             ($module_body = parseModule("$2", "$1",
@@ -482,7 +478,7 @@ sub expandWildcardLine ($$)
       }
       else
       {
-         $modules[0] = $$module_ref{$path_arr[0]};
+         $modules[0] = $path_arr[0];
       }
 
       my $module;
@@ -813,13 +809,16 @@ sub checkoutModule ($$$$$$$)
          
          my $install_dir = '';
 
+         # The installation name contains at least two directories.
          if ( $install_name =~ /\// )
          {
             $install_dir = (fileparse("$install_name"))[1];
          }
+         # The installation does not contain a directory, so the goal is
+         # simply to rename a checked out directory.
          else
          {
-            $install_dir = "$install_name";
+            $install_dir = '.';
          }
 
          # Create the path for the module's target location unless it already
@@ -829,8 +828,12 @@ sub checkoutModule ($$$$$$$)
          my $orig_module_name = '';
 
          # Save the current working directory.  It is the directory where
-         # the module was checked out.
-         my $co_dir = getcwd();
+         # the module will be installed.
+         my $target_dir = getcwd();
+
+         # Now we must go into the checkout directory to do the renaming.
+         chdir("$temp_checkout_dir")
+            or die "ERROR: Could not chdir to $temp_checkout_dir: $!\n";
 
          # If the checked out module contained a path, we have to deal with
          # that.
@@ -838,7 +841,9 @@ sub checkoutModule ($$$$$$$)
          {
             my ($module_dir, $ext);
             ($orig_module_name, $module_dir, $ext) = fileparse("$cvs_module");
-            chdir("$temp_checkout_dir/$module_dir")
+
+            # Go to the subdirectory containing the actual module.
+            chdir("$module_dir")
                or die "ERROR: Could not chdir to $temp_checkout_dir/$module_dir: $!\n";
          }
          # Otherwise, we can just use the module name as it was originally
@@ -848,23 +853,23 @@ sub checkoutModule ($$$$$$$)
             $orig_module_name = "$cvs_module";
          }
 
-         printDebug $VERB_LVL, "$orig_module_name --> $co_dir/$install_name\n";
+         printDebug $VERB_LVL, "$orig_module_name --> $target_dir/$install_name\n";
 
-         if ( -d "$co_dir/$install_name" && ! $force_install )
+         if ( -d "$target_dir/$install_name" && ! $force_install )
          {
             warn "    WARNING: Module renaming failed--target directory already exists!\n";
          }
          else
          {
-            rmtree("$co_dir/$install_name") if $force_install;
+            rmtree("$target_dir/$install_name") if $force_install;
             printDebug $STATE_LVL, "Moving $orig_module_name to " .
-                                   "$co_dir/$install_name\n";
-            rename("$orig_module_name", "$co_dir/$install_name")
+                                   "$target_dir/$install_name\n";
+            rename("$orig_module_name", "$target_dir/$install_name")
                or warn "    WARNING: Module renaming failed: $!\n";
 
             # If the user requested to do so, modify $dest_dir/CVS/Entries to
             # include $dir.
-            modifyCvsEntries("$co_dir", "$install_name") if $entry_mod;
+            modifyCvsEntries("$target_dir", "$install_name") if $entry_mod;
          }
       }
       # We are going to use the default module name, but we have to get it
@@ -1089,8 +1094,9 @@ Print usage information.
 =item B<--cfg=<filename>>
 
 Specify the name of the module configuration to load. If not given,
-the current directory is searched for a .gatherrc file. If one is not
-found, the user's home directory is searched for the same file.
+the current directory is searched for a Gatherrc file and then a .gatherrc
+file. If one is not found, the user's home directory is searched for the
+same file.
 
 =item B<--debug=<level>>
 
@@ -1107,12 +1113,12 @@ When re-downloading a module, force removal of the existing
 directory.  Without this option, a warning is printed, and the
 existing directory is not removed.
 
-=item B<--limit <module1>> B<--limit <module2>> ... B<--limit <moduleN>>
+=item B<--target <module1>> B<--target <module2>> ... B<--target <moduleN>>
 
-=item B<--limit <module1,module2,...,moduleN>>
+=item B<--target <module1,module2,...,moduleN>>
 
 Limit the gathered modules to those listed.  The list may be defined by
-multiple B<--limit> arguments or by specifying a single B<--limit>
+multiple B<--target> arguments or by specifying a single B<--target>
 argument with a comma-separated list of module names.  The named module
 may only be a "top-level" module, and all dependencies of the named module
 will be gathered.  In other words, the named module cannot exist solely as
@@ -1225,14 +1231,15 @@ the end of the line.  No other comment syntax is supported.
 
 =over 8
 
-=item B<./.gatherrc>, B<$HOME/.gatherrc>
+=item B<./Gatherrc>, B<./.gatherrc>, B<$HOME/.gatherrc>
 
 If no configuration file is specified using B<--cfg>, the script will
-search the current directory for the file B<.gatherrc>.  If not found,
-the user's home directory is searched for a file of the same name.
-This is the basic configuration file that names the module (or modules)
-and any dependencies.  A configuration file must be specified using one
-of these three methods for the script to do any work.
+search the current directory for the file B<Gatherrc> and then the file
+B<.gatherrc>.  If not found, the user's home directory is searched for
+a file of the same name.  This is the basic configuration file that
+names the module (or modules) and any dependencies.  A configuration
+file must be specified using one of these three methods for the script
+to do any work.
 
 =item B<./.gatherrc-override>, B<$HOME/.gatherrc-override>
 
@@ -1244,5 +1251,3 @@ If not found, the user's home directory is searched for a file of the
 same name.  Override settings are optional.
 
 =back
-
-=out
