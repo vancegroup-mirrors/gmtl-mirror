@@ -129,7 +129,7 @@ def BuildWin32Environment():
       Tool(t)(env)
 
    # We need exception handling support turned on for Boost.Python.
-   env['CXXFLAGS'] += '/EHsc'
+   env['CXXFLAGS'] += '/GR /GX /EHsc /QIfdiv /QI0f'
 
    return env
 
@@ -234,8 +234,10 @@ def ValidatePythonOption(key, value, environ):
             # Build up the env information
             if GetPlatform() == 'win32':
                environ.Append(PythonCPPPATH = [pj(prefix, 'include')])
+               environ.Append(PythonLIBPATH = [pj(prefix, 'libs')])
             else:
                environ.Append(PythonCPPPATH = [pj(prefix, 'include', 'python'+py_ver)])
+               environ.Append(PythonLIBPATH = [])
    else:
       assert False, "Invalid Python key"
 
@@ -243,6 +245,7 @@ def ValidatePythonOption(key, value, environ):
 
 def ApplyPythonOptions(env):
    env.Append(CPPPATH = env["PythonCPPPATH"])
+   env.Append(LIBPATH = env["PythonLIBPATH"])
 
 def AddPythonOptions(opts):
    opts.Add('EnablePython',
