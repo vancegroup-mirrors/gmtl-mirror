@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl.h,v $
- * Date modified: $Date: 2003-02-23 07:27:58 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2003-02-23 20:22:20 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -39,7 +39,6 @@
 #include <gmtl/AABoxOps.h>
 #include <gmtl/AxisAngle.h>
 #include <gmtl/AxisAngleOps.h>
-#include <gmtl/Comparitors.h>
 #include <gmtl/Containment.h>
 #include <gmtl/Coord.h>
 #include <gmtl/CoordOps.h>
@@ -48,7 +47,6 @@
 #include <gmtl/EulerAngleOps.h>
 #include <gmtl/Generate.h>
 #include <gmtl/Intersection.h>
-#include <gmtl/IntersectionOps.h>
 #include <gmtl/LineSeg.h>
 #include <gmtl/LineSegOps.h>
 #include <gmtl/Math.h>
@@ -69,7 +67,6 @@
 #include <gmtl/VecBase.h>
 #include <gmtl/Vec.h>
 #include <gmtl/VecOps.h>
-#include <gmtl/Version.h>
 #include <gmtl/Xforms.h>
 
 #endif
