@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _gmtl_functions_h.cpp,v $
- * Date modified: $Date: 2003-05-20 18:57:15 $
- * Version:       $Revision: 1.1.1.1 $
+ * Date modified: $Date: 2003-06-13 15:22:24 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -140,8 +140,6 @@ void _Export_gmtl_functions_h()
     def("isEqual", (bool (*)(const gmtl::Sphere<double> &, const gmtl::Sphere<double> &, const double &))&gmtl::isEqual);
     def("isEqual", (bool (*)(const gmtl::AABox<double> &, const gmtl::AABox<double> &, const double &))&gmtl::isEqual);
     def("isEqual", (bool (*)(const gmtl::AABox<float> &, const gmtl::AABox<float> &, const float &))&gmtl::isEqual);
-    def("isEqual", (bool (*)(const gmtl::LineSeg<double> &, const gmtl::LineSeg<double> &, const double &))&gmtl::isEqual);
-    def("isEqual", (bool (*)(const gmtl::LineSeg<float> &, const gmtl::LineSeg<float> &, const float &))&gmtl::isEqual);
     def("isEqual", (bool (*)(const gmtl::Plane<double> &, const gmtl::Plane<double> &, const double &))&gmtl::isEqual);
     def("isEqual", (bool (*)(const gmtl::Matrix<float,3,3> &, const gmtl::Matrix<float,3,3> &, const float &))&gmtl::isEqual, isEqual_overloads_2_3());
     def("isEqual", (bool (*)(const gmtl::Matrix<float,4,4> &, const gmtl::Matrix<float,4,4> &, const float &))&gmtl::isEqual, isEqual_overloads_2_3());
