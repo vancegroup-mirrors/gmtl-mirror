@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2003-04-18 23:15:28 $
- * Version:       $Revision: 1.75 $
+ * Date modified: $Date: 2003-04-24 21:24:41 $
+ * Version:       $Revision: 1.76 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -52,150 +52,6 @@
 
 namespace gmtl
 {
-   /** @ingroup Generate
-     *  @name Generic Generators (any type)
-     *  @{
-     */
-
-   /** Construct an object from another object of a different type.
-    *  This allows us to automatically convert from any type to any
-    *  other type.
-    *  @pre must have a set() function defined that converts between the
-    *       two types.
-    *  @param src    the object to use for creation
-    *  @return a new object with values based on the src variable
-    *  @see OpenSGGenerate.h for an example
-    */
-   template <typename TARGET_TYPE, typename SOURCE_TYPE>
-   inline TARGET_TYPE make( const SOURCE_TYPE& src,
-                           Type2Type< TARGET_TYPE > t = Type2Type< TARGET_TYPE >() )
-   {
-      gmtl::ignore_unused_variable_warning(t);
-      TARGET_TYPE target;
-      return gmtl::set( target, src );
-   }
-
-   /** Create a rotation datatype from another rotation datatype.
-    * @post converts the source rotation to a to another type (usually Matrix, Quat, Euler, AxisAngle),
-    * @post returns a temporary object.
-    */
-   template <typename ROTATION_TYPE, typename SOURCE_TYPE >
-   inline ROTATION_TYPE makeRot( const SOURCE_TYPE& coord,
-                                Type2Type< ROTATION_TYPE > t = Type2Type< ROTATION_TYPE >() )
-   {
-      gmtl::ignore_unused_variable_warning(t);
-      ROTATION_TYPE temporary;
-      return gmtl::set( temporary, coord );
-   }
-
-   /** Create a rotation matrix or quaternion (or any other rotation data type) using direction cosines.
-    *
-    *  If the two coordinate frames are labeled: SRC and TARGET, the matrix produced is:  src_M_target
-    *  this means that it will transform a point in TARGET to SRC but moves the base frame from SRC to TARGET.
-    *
-    * @param DestAxis required to specify
-    * @param SrcAxis optional to specify
-    * @pre specify 1 axis (3 vectors), or 2 axes (6 vectors).
-    * @post Creates a rotation from SrcAxis to DestAxis
-    * @post this function only produces 3x3, 3x4, 4x3, and 4x4 matrices, and is undefined otherwise
-    */
-   template< typename ROTATION_TYPE >
-   inline ROTATION_TYPE makeDirCos( const Vec<typename ROTATION_TYPE::DataType, 3>& xDestAxis,
-                                  const Vec<typename ROTATION_TYPE::DataType, 3>& yDestAxis,
-                                  const Vec<typename ROTATION_TYPE::DataType, 3>& zDestAxis,
-                                  const Vec<typename ROTATION_TYPE::DataType, 3>& xSrcAxis = Vec<typename ROTATION_TYPE::DataType, 3>(1,0,0),
-                                  const Vec<typename ROTATION_TYPE::DataType, 3>& ySrcAxis = Vec<typename ROTATION_TYPE::DataType, 3>(0,1,0),
-                                  const Vec<typename ROTATION_TYPE::DataType, 3>& zSrcAxis = Vec<typename ROTATION_TYPE::DataType, 3>(0,0,1),
-                               Type2Type< ROTATION_TYPE > t = Type2Type< ROTATION_TYPE >() )
-   {
-      gmtl::ignore_unused_variable_warning(t);
-      ROTATION_TYPE temporary;
-      return setDirCos( temporary, xDestAxis, yDestAxis, zDestAxis, xSrcAxis, ySrcAxis, zSrcAxis );
-   }
-
-   /**
-    * Make a translation datatype from another translation datatype.
-    * Typically this is from Matrix to Vec or Vec to Matrix.
-    * This function reads only translation information from the src datatype.
-    *
-    * @param arg  the matrix to extract the translation from
-    *
-    * @pre if making an n x n matrix, then for
-    *    - <b>vector is homogeneous:</b> SIZE of vector needs to equal number of Matrix ROWS - 1
-    *    - <b>vector has scale component:</b> SIZE of vector needs to equal number of Matrix ROWS
-    * <br>if making an n x n+1 matrix, then for
-    *    - <b>vector is homogeneous:</b> SIZE of vector needs to equal number of Matrix ROWS
-    *    - <b>vector has scale component:</b> SIZE of vector needs to equal number of Matrix ROWS + 1
-    * @post if preconditions are not met, then function is undefined (will not compile)
-    */
-   template<typename TRANS_TYPE, typename SRC_TYPE >
-   inline TRANS_TYPE makeTrans( const SRC_TYPE& arg,
-                             Type2Type< TRANS_TYPE > t = Type2Type< TRANS_TYPE >())
-   {
-      gmtl::ignore_unused_variable_warning(t);
-      TRANS_TYPE temporary;
-      return setTrans( temporary, arg );
-   }
-
-   /** Create a rotation datatype that will xform first vector to the second.
-    *  @pre  each vec needs to be normalized.
-    *  @post This function returns a temporary object.
-    */
-   template< typename ROTATION_TYPE >
-   inline ROTATION_TYPE makeRot( const Vec<typename ROTATION_TYPE::DataType, 3>& from,
-                                 const Vec<typename ROTATION_TYPE::DataType, 3>& to )
-   {
-      ROTATION_TYPE temporary;
-      return setRot( temporary, from, to );
-   }
-
-   /** set a rotation datatype that will xform first vector to the second.
-    *  @pre  each vec needs to be normalized.
-    *  @post generate rotation datatype that is the rotation between the vectors.
-    *  @note: only sets the rotation component of result, if result is a matrix, only sets the 3x3.
-    */
-   template <typename DEST_TYPE, typename DATA_TYPE>
-   inline DEST_TYPE& setRot( DEST_TYPE& result, const Vec<DATA_TYPE, 3>& from, const Vec<DATA_TYPE, 3>& to )
-   {
-      // @todo should assert that DEST_TYPE::DataType == DATA_TYPE
-      const DATA_TYPE epsilon = (DATA_TYPE)0.00001;
-
-      gmtlASSERT( gmtl::Math::isEqual( gmtl::length( from ), (DATA_TYPE)1.0, epsilon ) &&
-                  gmtl::Math::isEqual( gmtl::length( to ), (DATA_TYPE)1.0, epsilon ) &&
-                  "input params not normalized" );
-
-      DATA_TYPE cosangle = dot( from, to );
-
-      // if cosangle is close to 1, so the vectors are close to being coincident
-      // Need to generate an angle of zero with any vector we like
-      // We'll choose identity (no rotation)
-      if ( Math::isEqual( cosangle, (DATA_TYPE)1.0, epsilon ) )
-      {
-         return result = DEST_TYPE();
-      }
-
-      // vectors are close to being opposite, so rotate one a little...
-      else if ( Math::isEqual( cosangle, (DATA_TYPE)-1.0, epsilon ) )
-      {
-         Vec<DATA_TYPE, 3> to_rot( to[0] + (DATA_TYPE)0.3, to[1] - (DATA_TYPE)0.15, to[2] - (DATA_TYPE)0.15 ), axis;
-         normalize( cross( axis, from, to_rot ) ); // setRot requires normalized vec
-         DATA_TYPE angle = Math::aCos( cosangle );
-         return setRot( result, gmtl::AxisAngle<DATA_TYPE>( angle, axis ) );
-      }
-
-      // This is the usual situation - take a cross-product of vec1 and vec2
-      // and that is the axis around which to rotate.
-      else
-      {
-         Vec<DATA_TYPE, 3> axis;
-         normalize( cross( axis, from, to ) ); // setRot requires normalized vec
-         DATA_TYPE angle = Math::aCos( cosangle );
-         return setRot( result, gmtl::AxisAngle<DATA_TYPE>( angle, axis ) );
-      }
-   }
-
-   /** @} */
-
    /** @ingroup Generate
     *  @name Vec Generators
     *  @{
@@ -889,18 +745,6 @@ namespace gmtl
       return result;
    }
 
-
-   /** Convert an AxisAngle to a rotation matrix.
-    * @post this function only writes to 3x3, 3x4, 4x3, and 4x4 matrices, and is undefined otherwise
-    * @pre AxisAngle must be normalized (the axis part), results are undefined if not.
-    */
-   template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
-   inline Matrix<DATA_TYPE, ROWS, COLS>& set( Matrix<DATA_TYPE, ROWS, COLS>& result, const AxisAngle<DATA_TYPE>& axisAngle )
-   {
-      gmtl::identity( result );
-      return setRot( result, axisAngle );
-   }
-
    /** Set (only) the rotation part of a matrix using an EulerAngle (angles are in radians).
     * @post this function only produces 3x3, 3x4, 4x3, and 4x4 matrices, and is undefined otherwise
     * @see EulerAngle for angle ordering (usually ordered based on RotationOrder)
@@ -954,6 +798,17 @@ namespace gmtl
       case Matrix<DATA_TYPE, ROWS, COLS>::IDENTITY: result.mState = Matrix<DATA_TYPE, ROWS, COLS>::ORTHOGONAL; break;
       }
       return result;
+   }
+
+   /** Convert an AxisAngle to a rotation matrix.
+    * @post this function only writes to 3x3, 3x4, 4x3, and 4x4 matrices, and is undefined otherwise
+    * @pre AxisAngle must be normalized (the axis part), results are undefined if not.
+    */
+   template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
+   inline Matrix<DATA_TYPE, ROWS, COLS>& set( Matrix<DATA_TYPE, ROWS, COLS>& result, const AxisAngle<DATA_TYPE>& axisAngle )
+   {
+      gmtl::identity( result );
+      return setRot( result, axisAngle );
    }
 
    /** Convert an EulerAngle to a rotation matrix.
@@ -1183,27 +1038,6 @@ namespace gmtl
       return invert( result, src );
    }
 
-   /** Convert a Coord to a Matrix
-    * @see Coord
-    * @see Matrix
-    */
-   template <typename DATATYPE, typename POS_TYPE, typename ROT_TYPE, unsigned MATCOLS, unsigned MATROWS >
-   inline Matrix<DATATYPE, MATROWS, MATCOLS>& set( Matrix<DATATYPE, MATROWS, MATCOLS>& mat,
-                                                   const Coord<POS_TYPE, ROT_TYPE>& coord )
-   {
-      // set to ident first...
-      gmtl::identity( mat );
-
-      // set translation
-      // @todo metaprogram this out for 3x3 and 2x2 matrices
-      if (MATCOLS == 4)
-      {
-         setTrans( mat, coord.getPos() );// filtered (only sets the trans part).
-      }
-      setRot( mat, coord.getRot() ); // filtered (only sets the rot part).
-      return mat;
-   }
-
    /** Set the rotation portion of a matrix (3x3) from a rotation quaternion.
     * @pre only 3x3, 3x4, 4x3, or 4x4 matrices are allowed, function is undefined otherwise.
     */
@@ -1242,6 +1076,27 @@ namespace gmtl
       case Matrix<DATA_TYPE, ROWS, COLS>::TRANS:    mat.mState = Matrix<DATA_TYPE, ROWS, COLS>::AFFINE; break;
       case Matrix<DATA_TYPE, ROWS, COLS>::IDENTITY: mat.mState = Matrix<DATA_TYPE, ROWS, COLS>::ORTHOGONAL; break;
       }
+      return mat;
+   }
+
+   /** Convert a Coord to a Matrix
+    * @see Coord
+    * @see Matrix
+    */
+   template <typename DATATYPE, typename POS_TYPE, typename ROT_TYPE, unsigned MATCOLS, unsigned MATROWS >
+   inline Matrix<DATATYPE, MATROWS, MATCOLS>& set( Matrix<DATATYPE, MATROWS, MATCOLS>& mat,
+                                                   const Coord<POS_TYPE, ROT_TYPE>& coord )
+   {
+      // set to ident first...
+      gmtl::identity( mat );
+
+      // set translation
+      // @todo metaprogram this out for 3x3 and 2x2 matrices
+      if (MATCOLS == 4)
+      {
+         setTrans( mat, coord.getPos() );// filtered (only sets the trans part).
+      }
+      setRot( mat, coord.getRot() ); // filtered (only sets the rot part).
       return mat;
    }
 
@@ -1299,6 +1154,150 @@ namespace gmtl
    inline Coord<POS_TYPE, ROT_TYPE>& setRot( Coord<POS_TYPE, ROT_TYPE>& result, const Matrix<DATATYPE, MATROWS, MATCOLS>& mat )
    {
       return gmtl::set( result, mat );
+   }
+
+   /** @} */
+
+   /** @ingroup Generate
+     *  @name Generic Generators (any type)
+     *  @{
+     */
+
+   /** Construct an object from another object of a different type.
+    *  This allows us to automatically convert from any type to any
+    *  other type.
+    *  @pre must have a set() function defined that converts between the
+    *       two types.
+    *  @param src    the object to use for creation
+    *  @return a new object with values based on the src variable
+    *  @see OpenSGGenerate.h for an example
+    */
+   template <typename TARGET_TYPE, typename SOURCE_TYPE>
+   inline TARGET_TYPE make( const SOURCE_TYPE& src,
+                           Type2Type< TARGET_TYPE > t = Type2Type< TARGET_TYPE >() )
+   {
+      gmtl::ignore_unused_variable_warning(t);
+      TARGET_TYPE target;
+      return gmtl::set( target, src );
+   }
+
+   /** Create a rotation datatype from another rotation datatype.
+    * @post converts the source rotation to a to another type (usually Matrix, Quat, Euler, AxisAngle),
+    * @post returns a temporary object.
+    */
+   template <typename ROTATION_TYPE, typename SOURCE_TYPE >
+   inline ROTATION_TYPE makeRot( const SOURCE_TYPE& coord,
+                                Type2Type< ROTATION_TYPE > t = Type2Type< ROTATION_TYPE >() )
+   {
+      gmtl::ignore_unused_variable_warning(t);
+      ROTATION_TYPE temporary;
+      return gmtl::set( temporary, coord );
+   }
+
+   /** Create a rotation matrix or quaternion (or any other rotation data type) using direction cosines.
+    *
+    *  If the two coordinate frames are labeled: SRC and TARGET, the matrix produced is:  src_M_target
+    *  this means that it will transform a point in TARGET to SRC but moves the base frame from SRC to TARGET.
+    *
+    * @param DestAxis required to specify
+    * @param SrcAxis optional to specify
+    * @pre specify 1 axis (3 vectors), or 2 axes (6 vectors).
+    * @post Creates a rotation from SrcAxis to DestAxis
+    * @post this function only produces 3x3, 3x4, 4x3, and 4x4 matrices, and is undefined otherwise
+    */
+   template< typename ROTATION_TYPE >
+   inline ROTATION_TYPE makeDirCos( const Vec<typename ROTATION_TYPE::DataType, 3>& xDestAxis,
+                                  const Vec<typename ROTATION_TYPE::DataType, 3>& yDestAxis,
+                                  const Vec<typename ROTATION_TYPE::DataType, 3>& zDestAxis,
+                                  const Vec<typename ROTATION_TYPE::DataType, 3>& xSrcAxis = Vec<typename ROTATION_TYPE::DataType, 3>(1,0,0),
+                                  const Vec<typename ROTATION_TYPE::DataType, 3>& ySrcAxis = Vec<typename ROTATION_TYPE::DataType, 3>(0,1,0),
+                                  const Vec<typename ROTATION_TYPE::DataType, 3>& zSrcAxis = Vec<typename ROTATION_TYPE::DataType, 3>(0,0,1),
+                               Type2Type< ROTATION_TYPE > t = Type2Type< ROTATION_TYPE >() )
+   {
+      gmtl::ignore_unused_variable_warning(t);
+      ROTATION_TYPE temporary;
+      return setDirCos( temporary, xDestAxis, yDestAxis, zDestAxis, xSrcAxis, ySrcAxis, zSrcAxis );
+   }
+
+   /**
+    * Make a translation datatype from another translation datatype.
+    * Typically this is from Matrix to Vec or Vec to Matrix.
+    * This function reads only translation information from the src datatype.
+    *
+    * @param arg  the matrix to extract the translation from
+    *
+    * @pre if making an n x n matrix, then for
+    *    - <b>vector is homogeneous:</b> SIZE of vector needs to equal number of Matrix ROWS - 1
+    *    - <b>vector has scale component:</b> SIZE of vector needs to equal number of Matrix ROWS
+    * <br>if making an n x n+1 matrix, then for
+    *    - <b>vector is homogeneous:</b> SIZE of vector needs to equal number of Matrix ROWS
+    *    - <b>vector has scale component:</b> SIZE of vector needs to equal number of Matrix ROWS + 1
+    * @post if preconditions are not met, then function is undefined (will not compile)
+    */
+   template<typename TRANS_TYPE, typename SRC_TYPE >
+   inline TRANS_TYPE makeTrans( const SRC_TYPE& arg,
+                             Type2Type< TRANS_TYPE > t = Type2Type< TRANS_TYPE >())
+   {
+      gmtl::ignore_unused_variable_warning(t);
+      TRANS_TYPE temporary;
+      return setTrans( temporary, arg );
+   }
+
+   /** Create a rotation datatype that will xform first vector to the second.
+    *  @pre  each vec needs to be normalized.
+    *  @post This function returns a temporary object.
+    */
+   template< typename ROTATION_TYPE >
+   inline ROTATION_TYPE makeRot( const Vec<typename ROTATION_TYPE::DataType, 3>& from,
+                                 const Vec<typename ROTATION_TYPE::DataType, 3>& to )
+   {
+      ROTATION_TYPE temporary;
+      return setRot( temporary, from, to );
+   }
+
+   /** set a rotation datatype that will xform first vector to the second.
+    *  @pre  each vec needs to be normalized.
+    *  @post generate rotation datatype that is the rotation between the vectors.
+    *  @note: only sets the rotation component of result, if result is a matrix, only sets the 3x3.
+    */
+   template <typename DEST_TYPE, typename DATA_TYPE>
+   inline DEST_TYPE& setRot( DEST_TYPE& result, const Vec<DATA_TYPE, 3>& from, const Vec<DATA_TYPE, 3>& to )
+   {
+      // @todo should assert that DEST_TYPE::DataType == DATA_TYPE
+      const DATA_TYPE epsilon = (DATA_TYPE)0.00001;
+
+      gmtlASSERT( gmtl::Math::isEqual( gmtl::length( from ), (DATA_TYPE)1.0, epsilon ) &&
+                  gmtl::Math::isEqual( gmtl::length( to ), (DATA_TYPE)1.0, epsilon ) &&
+                  "input params not normalized" );
+
+      DATA_TYPE cosangle = dot( from, to );
+
+      // if cosangle is close to 1, so the vectors are close to being coincident
+      // Need to generate an angle of zero with any vector we like
+      // We'll choose identity (no rotation)
+      if ( Math::isEqual( cosangle, (DATA_TYPE)1.0, epsilon ) )
+      {
+         return result = DEST_TYPE();
+      }
+
+      // vectors are close to being opposite, so rotate one a little...
+      else if ( Math::isEqual( cosangle, (DATA_TYPE)-1.0, epsilon ) )
+      {
+         Vec<DATA_TYPE, 3> to_rot( to[0] + (DATA_TYPE)0.3, to[1] - (DATA_TYPE)0.15, to[2] - (DATA_TYPE)0.15 ), axis;
+         normalize( cross( axis, from, to_rot ) ); // setRot requires normalized vec
+         DATA_TYPE angle = Math::aCos( cosangle );
+         return setRot( result, gmtl::AxisAngle<DATA_TYPE>( angle, axis ) );
+      }
+
+      // This is the usual situation - take a cross-product of vec1 and vec2
+      // and that is the axis around which to rotate.
+      else
+      {
+         Vec<DATA_TYPE, 3> axis;
+         normalize( cross( axis, from, to ) ); // setRot requires normalized vec
+         DATA_TYPE angle = Math::aCos( cosangle );
+         return setRot( result, gmtl::AxisAngle<DATA_TYPE>( angle, axis ) );
+      }
    }
 
    /** @} */
