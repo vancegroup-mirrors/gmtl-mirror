@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatOps.h,v $
- * Date modified: $Date: 2002-02-28 14:21:05 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-02-28 15:06:29 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -43,7 +43,7 @@ namespace gmtl
    /** product of two quaternions (quaternion product)
     *  multiplication of quats is much like multiplication of typical complex numbers.
     *  @post q1q2 = (s1 + v1)(s2 + v2)
-    *  @post this' = q1 * q2
+    *  @post this' = q1 * q2   (grassman product)
     *  @see Quat
     */
    template <typename DATA_TYPE>
@@ -90,15 +90,20 @@ namespace gmtl
    }
    
    /** product of two quaternions (quaternion product)
-    *  @post this' = q1 * q2
+    *  @post this' = q1 * q2 (grassman product)
     *  @see Quat
     *  @todo metaprogramming on quat operator*()
     */
    template <typename DATA_TYPE>
    Quat<DATA_TYPE> operator*( const Quat<DATA_TYPE>& q1, const Quat<DATA_TYPE>& q2 )
    {
-      Quat<DATA_TYPE> temporary;
-      return mult( temporary, q1, q2 );
+      // (grassman product - see mult() for discussion)
+      // don't normalize, because it might not be rotation arithmetic we're doing
+      // (only rotation quats have unit length)
+      return Quat<DATA_TYPE>( q1[Welt]*q2[Xelt] + q1[Xelt]*q2[Welt] + q1[Yelt]*q2[Zelt] - q1[Zelt]*q2[Yelt],
+                              q1[Welt]*q2[Yelt] + q1[Yelt]*q2[Welt] + q1[Zelt]*q2[Xelt] - q1[Xelt]*q2[Zelt],
+                              q1[Welt]*q2[Zelt] + q1[Zelt]*q2[Welt] + q1[Xelt]*q2[Yelt] - q1[Yelt]*q2[Xelt],
+                              q1[Welt]*q2[Welt] - q1[Xelt]*q2[Xelt] - q1[Yelt]*q2[Yelt] - q1[Zelt]*q2[Zelt] );
    }
    
    /** vector scalar multiplication
