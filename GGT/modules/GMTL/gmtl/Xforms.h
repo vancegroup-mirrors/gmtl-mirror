@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Xforms.h,v $
- * Date modified: $Date: 2002-03-09 19:50:46 $
- * Version:       $Revision: 1.14 $
+ * Date modified: $Date: 2002-03-09 22:54:50 $
+ * Version:       $Revision: 1.15 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -113,6 +113,7 @@ namespace gmtl
     *  @post This results in a full matrix xform of the vector (assumes you know what you are doing - 
     *  i.e. that you know that the last component of a vector by definition is 0.0, and changing 
     *  this might make the xform different than what you may expect).
+    *  @post returns a point same size as the matrix rows...  (v[r][1] = m[r][k] * v[k][1])
     */
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
    inline Vec<DATA_TYPE, COLS>& xform( Vec<DATA_TYPE, COLS>& result, const Matrix<DATA_TYPE, ROWS, COLS>& matrix, const Vec<DATA_TYPE, COLS>& vector )
@@ -135,6 +136,7 @@ namespace gmtl
     *  @post This results in a full matrix xform of the vector (assumes you know what you are doing - 
     *  i.e. that you know that the last component of a vector by definition is 0.0, and changing 
     *  this might make the xform different that what you may expect).
+    *  @post returns a vec same size as the matrix rows...  (v[r][1] = m[r][k] * v[k][1])
     */
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
    inline Vec<DATA_TYPE, COLS> operator*( const Matrix<DATA_TYPE, ROWS, COLS>& matrix, const Vec<DATA_TYPE, COLS>& vector )
@@ -153,7 +155,7 @@ namespace gmtl
     *  @post This ends up being a partial xform using only the rotation from the matrix (vector xformed result is untranslated).
     */
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS, unsigned VEC_SIZE>
-   inline Vec<DATA_TYPE, VEC_SIZE>& xform( Vec<DATA_TYPE, VEC_SIZE>& result, const Matrix<DATA_TYPE, ROWS, COLS>& matrix, const Vec<DATA_TYPE, VEC_SIZE>& vector )
+   inline Vec<DATA_TYPE, VEC_SIZE>& xform( Vec<DATA_TYPE, VEC_SIZE >& result, const Matrix<DATA_TYPE, ROWS, COLS>& matrix, const Vec<DATA_TYPE, VEC_SIZE >& vector )
    {
       ggtASSERT( VEC_SIZE == COLS - 1 );
       // do a standard [m x k] by [k x n] matrix multiplication (where n == 0).
@@ -168,9 +170,20 @@ namespace gmtl
       xform( temp_result, matrix, temp_vector );
       
       // convert result back to vec<DATA_TYPE, VEC_SIZE>
-      for (int x = 0; x < VEC_SIZE; ++x)
-         result[x] = temp_result[x];
-            
+      // some matrices will make the W param large even if this is a true vector, 
+      // we'll need to redistribute it to the other elts if W param is non-zero
+      if (Math::isEqual( temp_result[VEC_SIZE], (DATA_TYPE)0, (DATA_TYPE)0.0001 ) == false)
+      {
+         DATA_TYPE w_coord_div = DATA_TYPE( 1.0 ) / temp_result[VEC_SIZE];
+         for (int x = 0; x < VEC_SIZE; ++x)
+            result[x] = temp_result[x] * w_coord_div;
+      }
+      else
+      {
+         for (int x = 0; x < VEC_SIZE; ++x)
+            result[x] = temp_result[x];
+      }
+      
       return result;
    }
 
@@ -192,6 +205,7 @@ namespace gmtl
    /** transform point by a matrix.
     *  multiplication of [m x k] matrix by a [k x 1] matrix (also known as a Point...).
     *  @post This results in a full matrix xform of the point.
+    *  @post returns a point same size as the matrix rows...  (p[r][1] = m[r][k] * p[k][1])
     */
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
    inline Point<DATA_TYPE, COLS>& xform( Point<DATA_TYPE, COLS>& result, const Matrix<DATA_TYPE, ROWS, COLS>& matrix, const Point<DATA_TYPE, COLS>& point )
@@ -211,6 +225,7 @@ namespace gmtl
    /** matrix * point.
     *  multiplication of [m x k] matrix by a [k x 1] matrix (also known as a Point...).
     *  @post This results in a full matrix xform of the point.
+    *  @post returns a point same size as the matrix rows...  (p[r][1] = m[r][k] * p[k][1])
     */
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
    inline Point<DATA_TYPE, COLS> operator*( const Matrix<DATA_TYPE, ROWS, COLS>& matrix, const Point<DATA_TYPE, COLS>& point )
@@ -242,10 +257,20 @@ namespace gmtl
       // transform it.
       xform( temp_result, matrix, temp_point );
       
-      // convert pnt<pnt_size> to pnt<pnt_size - 1>
-      DATA_TYPE w_coord_div = DATA_TYPE( 1.0 ) / temp_result[PNT_SIZE];
-      for (int x = 0; x < PNT_SIZE; ++x)
-         result[x] = temp_result[x] * w_coord_div;
+      // convert result back to pnt<DATA_TYPE, PNT_SIZE>
+      // some matrices will make the W param large even if this is a true vector, 
+      // we'll need to redistribute it to the other elts if W param is non-zero
+      if (Math::isEqual( temp_result[VEC_SIZE], (DATA_TYPE)0, (DATA_TYPE)0.0001 ) == false)
+      {
+         DATA_TYPE w_coord_div = DATA_TYPE( 1.0 ) / temp_result[PNT_SIZE];
+         for (int x = 0; x < PNT_SIZE; ++x)
+            result[x] = temp_result[x] * w_coord_div;
+      }
+      else
+      {
+         for (int x = 0; x < PNT_SIZE; ++x)
+            result[x] = temp_result[x];
+      }
             
       return result;
    }
