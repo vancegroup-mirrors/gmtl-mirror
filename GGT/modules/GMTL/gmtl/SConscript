@@ -28,6 +28,7 @@ headers = Split("""
    Point
    Quat
    QuatOps
+   Ray
    Sphere
    SphereOps
    Tri
