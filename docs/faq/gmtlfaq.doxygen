@@ -63,7 +63,7 @@
  *  <b>What is a Quat?</b>
  *  This is a quaternion, which is represents a rotation in 3D space.
  *  Quaternions can be used for rotational interpolation along the surface
- *  of a sphere.
+ *  of a sphere. They are represented at a 4-element normalized vector.
  *
  *  <b>What is a Sphere?</b>
  *  This is a 3D dimensional round object such that every point on the outer
@@ -442,9 +442,98 @@
  *
  *  @subsection Quaternions Quaternions
  *  <b>How do I create quaternions?</b>
+ *  You can create quaternions directly using known values.
+ * 
+ *  float x = 1.0;
+ *  float y, z, w = 0.0;
+ *  gmtl::Quatf myQuat(x, y, z, w);
+ *
+ *  You can also create quaternions based on other rotational types, such
+ *  as an EulerAngle or matrix.
+ *  
+ *  gmtl::EulerAngleXYZf myEuler;
+ *  gmtl::Matrix44f myMat;
+ *  myQuat = gmtl::make<gmtl::Quatf>( myEuler );
+ *  myQuat = gmtl::make<gmtl::Quatf>( myMat );
+ *
+ *
  *  <b>How do I multiply quaternions?</b>
- *  <b>How do I combine quaternions?</b>
- *  <b>How do I perform spherical interpolation with quaterions?</b>
+ *  Simply use the * and *= operators.
+ *
+ *  gmtl::Quatf quatA, quatB, quatC;
+ *  quatA *= quatB;
+ *  quatC = quatA * quatB;
+ *
+ *
+ *  <b>How do I combine quaternion rotations?</b>
+ *  This is the same as multiplying quaternions.
+ *
+ *  gmtl::Quatf quatA, quatB, quatC;
+ *  quatA *= quatB;
+ *  quatC = quatA * quatB;
+ *
+ *
+ *  <b>How do I perform spherical interpolation with quaternions?</b>
+ *  Use the slerp function. You need an origin quaternion, a target quaternion,
+ *  and an interpolation amount between 0 and 1. The following example 
+ *  interpolated halfway between the origin and target quaternions. Note that
+ *  the interpolation path follows the shortest length arc around a sphere.
+ *
+ *  gmtl::Quatf resultQuat, originQuat, targetQuat;
+ *  float amount = 0.5;
+ *
+ *  gmtl::slerp( resultQuat, amount, originQuat, targetQuat );
+ *
+ *
+ *  <b>How do I perform linear interpolation with quaternions?</b>
+ *  This is similar to performing spherical interpolation, but follows a 
+ *  straight line interpolation path rather than a shortest arc around a sphere.
+ *  
+ *  gmtl::Quatf resultQuat, originQuat, targetQuat;
+ *  float amount = 0.5;
+ *
+ *  gmtl::lerp( resultQuat, amount, originQuat, targetQuat );
+ *  
+ *
+ *  <b>How do I make a quaternion that rotates one vector to another along the shortest arc?</b>
+ *  If you have an origin vector and a target vector, you can use the makeRot 
+ *  function. Note that you should normalize these vectors first.
+ * 
+ *  gmtl::Vec3f originVec, targetVec;
+ *  gmtl::Quatf myQuat;
+ *
+ *  gmtl::normalize( originVec );
+ *  gmtl::normalize( targetVec );
+ *  myQuat = gmtl::makeRot<gmtl::Quatf>( originVec, targetVec );
+ *
+ *
+ *  <b>How do I invert a quaternion?</b>
+ *  Use the invert function. 
+ *
+ *  gmtl::Quatf myQuat;
+ *  gmtl::invert( myQuat );
+ *
+ *
+ *  <b>How do I conjugate a quaternion?</b>
+ *  Use the conj function.
+ * 
+ *  gmtl::Quatf myQuat;
+ *  gmtl::conj( myQuat );
+ *
+ *
+ *  <b>How do I check if 2 quaternions are the same?</b>
+ *  Use the == and != operators.
+ *
+ *  gmtl::Quatf quatA, quatB;
+ *  if (quatA == quatB)
+ *  {
+ *     cout << "Quaternions are equal" << endl;
+ *  }
+ *  if (quatA != quatB)
+ *  {
+ *     cout << "Quaternions are not equal" << endl;
+ *  }
+ *
  *
  *  @subsection General General Math
  *  <b>How do I use GMTL's C math abstraction?</b>
