@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Intersection.h,v $
- * Date modified: $Date: 2003-03-03 00:54:05 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2003-03-17 00:10:31 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -282,6 +282,119 @@ namespace gmtl
       return intersect(box, sph);
    }
 
+   /**
+    * intersect point/sphere.
+    * @param point   the point to test
+    * @param sphere  the sphere to test
+    * @return true if point is in or on sphere
+    */
+   template<class DATA_TYPE>
+   bool intersect( const Sphere<DATA_TYPE>& sphere, const Point<DATA_TYPE, 3>& point )
+   {
+      gmtl::Vec<DATA_TYPE, 3> offset = point - sphere.getCenter();
+      DATA_TYPE dist = lengthSquared( offset ) - sphere.getRadius() * sphere.getRadius();
+      
+      // point is inside the sphere when true
+      return  dist <= 0;
+   }
+
+   /**
+    * intersect ray/sphere.
+    * note: after calling this, you can find the intersection point with: ray.getOrigin() + ray.getDir() * t
+    *
+    * @param ray     the ray to test
+    * @param sphere  the sphere to test
+    * @return returns intersection point in t, and the number of hits
+    * @return numhits, t0, t1 are undefined if return value is false
+    */
+   template<typename T>
+   inline bool intersect( const Sphere<T>& sphere, const Ray<T>& ray, int& numhits, float& t0, float& t1 )
+   {
+      numhits = -1;
+
+      // set up quadratic Q(t) = a*t^2 + 2*b*t + c
+      Vec<T, 3> offset = ray.getOrigin() - sphere.getCenter();
+      T a = lengthSquared( ray.getDir() );
+      T b = dot( offset, ray.getDir() );
+      T c = lengthSquared( offset ) - sphere.getRadius() * sphere.getRadius();
+
+      // no intersection if Q(t) has no real roots
+      T discriminant = b * b - a * c;
+      if (discriminant < 0.0f)
+      {
+         numhits = 0;
+         return false;
+      }
+      else if (discriminant > 0.0f)
+      {
+         T root = Math::sqrt( discriminant );
+         T invA = T(1) / a;
+         t0 = (-b - root) * invA;
+         t1 = (-b + root) * invA;
+
+         // assert: t0 < t1 since A > 0
+
+         if (t0 >= T(0))
+         {
+            numhits = 2;
+            return true;
+         }
+         else if (t1 >= 0.0f)
+         {
+            numhits = 1;
+            t0 = t1;
+            return true;
+         }
+         else
+         {
+            numhits = 0; 
+            return false;
+         }
+      }
+      else
+      {
+         t0 = -b / a;
+         if (t0 >= T(0))
+         {
+            numhits = 1;
+            return true;
+         }
+         else
+         {
+            numhits = 0;
+            return false;
+         }
+      }
+   }
+
+   // intersect LineSeg/Sphere.
+   // does intersection on sphere surface, point inside sphere doesn't count as an intersection
+   // returns intersection point(s) in t
+   // find intersection point(s) with: ray.getOrigin() + ray.getDir() * t
+   // numhits, t0, t1 are undefined if return value is false
+   template<typename T>
+   inline bool intersect( const Sphere<T>& sphere, const LineSeg<T>& lineseg, int& numhits, float& t0, float& t1 )
+   {
+      if (intersect( sphere, Ray<T>( lineseg ), numhits, t0, t1 ))
+      {
+         // throw out hits that are past 1 in segspace (off the end of the lineseg)
+         while (0 < numhits && 1.0f < t0) 
+         {
+            --numhits;
+            t0 = t1;
+         }
+         if (2 == numhits && 1.0f < t1)
+         {
+            --numhits;
+         }
+         return 0 < numhits;
+      }
+      else
+      {
+         return false;
+      }
+   }
+   
    /**
     * Tests if the given plane and ray intersect with each other.
     *
