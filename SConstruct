@@ -144,8 +144,39 @@ def SetupCppUnit(env):
       sys.exit(1)
    cfg = pj(env['with-cppunit'], 'bin', 'cppunit-config')
    ParseConfig(env, cfg + ' --cflags --libs')
-Export('SetupCppUnit')
 
+def SetupPython(env, requiredVersion):
+   "Sets up the environment for Python"
+   print 'Looking for python 2.2 ...'
+   python = WhereIs('python')
+   if not python:
+      print 'WARNING: Can\'t find python executable'
+      return
+
+   py_cmd = python + ' -c \'import sys; print sys.prefix; print sys.version[:3]\''
+   (prefix, py_ver) = string.split(os.popen(py_cmd).read())
+
+   # Version must match
+   if py_ver != str(requiredVersion):
+      print 'WARNING: Python version ' + py_ver + ' != ' + str(requiredVersion)
+      return
+
+   # Build up the env information
+   py_cpppath = pj(prefix, 'include', 'python'+py_ver)
+   py_libpath = pj(prefix, 'lib', 'python'+py_ver, 'config')
+   py_lib = 'python'+py_ver
+
+   # Setup the env
+   env.Append(CPPPATH   = [py_cpppath],
+              LIBPATH   = [py_libpath],
+              LIBS      = [py_lib, 'pthread', 'util'])
+
+def SetupBoostPython(env):
+   "Sets up the env for Boost Python"
+   env.Append(LIBS = ['boost_python'])
+
+
+Export('SetupCppUnit SetupPython SetupBoostPython')
 
 
 #------------------------------------------------------------------------------
@@ -180,6 +211,7 @@ elif GetPlatform() == 'win32':
 else:
    print 'Unsupported build environment: ' + GetPlatform()
    sys.exit(-1)
+baseEnv['enable-python'] = False
 Export('baseEnv')
 
 opts = Options('config.cache')
@@ -187,6 +219,11 @@ opts.Add('with-cppunit',
          'CppUnit installation directory',
          '/usr/local',
          lambda k,v,env=None: WhereIs(pj(v, 'bin', 'cppunit-config')) != None
+        )
+opts.Add('enable-python',
+         'Whether or not to build the Python bindings for GMTL',
+         False,
+         lambda k,v,ent=None: True
         )
 opts.Update(baseEnv)
 Help(opts.GenerateHelpText(baseEnv))
@@ -222,6 +259,8 @@ Export('pkg')
 
 # Process subdirectories
 subdirs = Split('gmtl')
+if baseEnv['enable-python']:
+   subdirs.append('python')
 if HasCppUnit(baseEnv):
    subdirs.append('Test')
 SConscript(dirs = subdirs)
