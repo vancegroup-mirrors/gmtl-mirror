@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Defines.h,v $
- * Date modified: $Date: 2002-05-28 14:46:15 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-07-09 21:28:11 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -77,6 +77,23 @@ namespace gmtl
 #define GMTL_NEAR(x,y,eps) (gmtl::Math::abs((x)-(y))<(eps))
 
 };
+
+// Platform-specific settings.
+#ifdef __sun__
+#define NO_ACOSF 1
+#define NO_ASINF 1
+#define NO_TANF 1
+#define NO_ATAN2F 1
+#define NO_COSF 1
+#define NO_SINF 1
+#define NO_TANF 1
+#define NO_SQRTF 1
+#define NO_LOGF 1
+#define NO_EXPF 1
+#define NO_POWF 1
+#define NO_CEILF 1
+#define NO_FLOORF 1
+#endif
 
 
 #endif

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Math.h,v $
- * Date modified: $Date: 2002-06-12 19:38:54 $
- * Version:       $Revision: 1.28 $
+ * Date modified: $Date: 2002-07-09 21:28:11 $
+ * Version:       $Revision: 1.29 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -37,6 +37,7 @@
 
 #include <math.h>
 #include <stdlib.h>
+#include <gmtl/Defines.h>
 #include <gmtl/Assert.h>
 
 namespace gmtl
@@ -86,7 +87,11 @@ template <typename T>
 inline T ceil( T fValue );
 inline float ceil( float fValue )
 {
-    return float( ::ceilf( fValue ) );
+#ifdef NO_CEILF
+   return float(::ceil(fValue));
+#else
+   return float( ::ceilf( fValue ) );
+#endif
 }
 inline double ceil( double fValue )
 {
@@ -97,7 +102,11 @@ template <typename T>
 inline T floor( T fValue ); // why do a floor of int?  shouldn't compile...
 inline float floor( float fValue )
 {
-    return float( ::floorf( fValue ) );
+#ifdef NO_FLOORF
+   return float(::floor(fValue));
+#else
+   return float( ::floorf( fValue ) );
+#endif
 }
 inline double floor( double fValue )
 {
@@ -130,13 +139,18 @@ inline T zeroClamp( T value, T eps = T(0) )
 //      we'd need a float retval to do it right, but we can't specialize by ret
 template <typename T>
 inline T aCos( T fValue );
-#ifndef NO_ACOSF
 inline float aCos( float fValue )
 {
     if ( -1.0f < fValue )
     {
         if ( fValue < 1.0f )
+        {
+#ifdef NO_ACOSF
+            return float(::acos(fValue));
+#else
             return float( ::acosf( fValue ) );
+#endif
+        }
         else
             return 0.0f;
     }
@@ -145,7 +159,6 @@ inline float aCos( float fValue )
         return (float)gmtl::Math::PI;
     }
 }
-#endif
 inline double aCos( double fValue )
 {
     if ( -1.0 < fValue )
@@ -163,13 +176,18 @@ inline double aCos( double fValue )
 //----------------------------------------------------------------------------
 template <typename T>
 inline T aSin( T fValue );
-#ifndef NO_ASINF
 inline float aSin( float fValue )
 {
     if ( -1.0f < fValue )
     {
         if ( fValue < 1.0f )
+        {
+#ifdef NO_ASINF
+            return float(::asin(fValue));
+#else
             return float( ::asinf( fValue ) );
+#endif
+        }
         else
             return (float)-gmtl::Math::PI_OVER_2;
     }
@@ -178,7 +196,6 @@ inline float aSin( float fValue )
         return (float)gmtl::Math::PI_OVER_2;
     }
 }
-#endif
 inline double aSin( double fValue )
 {
     if ( -1.0 < fValue )
@@ -200,21 +217,25 @@ inline double aTan( double fValue )
 {
     return ::atan( fValue );
 }
-#ifndef NO_TANF
 inline float aTan( float fValue )
 {
-    return float( ::atanf( fValue ) );
-}
+#ifdef NO_TANF
+   return float(::atan(fValue));
+#else
+   return float( ::atanf( fValue ) );
 #endif
+}
 //----------------------------------------------------------------------------
 template <typename T>
 inline T atan2( T fY, T fX );
-#ifndef NO_ATAN2F
 inline float aTan2( float fY, float fX )
 {
-    return float( ::atan2f( fY, fX ) );
-}
+#ifdef NO_ATAN2F
+   return float(::atan2(fY, fX));
+#else
+   return float( ::atan2f( fY, fX ) );
 #endif
+}
 inline double aTan2( double fY, double fX )
 {
     return double( ::atan2( fY, fX ) );
@@ -222,12 +243,14 @@ inline double aTan2( double fY, double fX )
 //----------------------------------------------------------------------------
 template <typename T>
 inline T cos( T fValue );
-#ifndef NO_COSF
 inline float cos( float fValue )
 {
-    return float( ::cosf( fValue ) );
-}
+#ifdef NO_COSF
+   return float(::cos(fValue));
+#else
+   return float( ::cosf( fValue ) );
 #endif
+}
 inline double cos( double fValue )
 {
     return double( ::cos( fValue ) );
@@ -237,7 +260,11 @@ template <typename T>
 inline T exp( T fValue );
 inline float exp( float fValue )
 {
-    return float( ::expf( fValue ) );
+#ifdef NO_EXPF
+   return float(::exp(fValue));
+#else
+   return float( ::expf( fValue ) );
+#endif
 }
 inline double exp( double fValue )
 {
@@ -252,7 +279,11 @@ inline double log( double fValue )
 }
 inline float log( float fValue )
 {
-    return float( ::logf( fValue ) );
+#ifdef NO_LOGF
+   return float(::log(fValue));
+#else
+   return float( ::logf( fValue ) );
+#endif
 }
 //----------------------------------------------------------------------------
 inline double pow( double fBase, double fExponent)
@@ -261,7 +292,11 @@ inline double pow( double fBase, double fExponent)
 }
 inline float pow( float fBase, float fExponent)
 {
-    return float( ::powf( fBase, fExponent ) );
+#ifdef NO_POWF
+   return float(::pow(fBase, fExponent));
+#else
+   return float( ::powf( fBase, fExponent ) );
+#endif
 }
 //----------------------------------------------------------------------------
 template <typename T>
@@ -270,12 +305,14 @@ inline double sin( double fValue )
 {
     return double( ::sin( fValue ) );
 }
-#ifndef NO_SINF
 inline float sin( float fValue )
 {
-    return float( ::sinf( fValue ) );
-}
+#ifdef NO_SINF
+   return float(::sin(fValue));
+#else
+   return float( ::sinf( fValue ) );
 #endif
+}
 //----------------------------------------------------------------------------
 template <typename T>
 inline T tan( T fValue );
@@ -283,12 +320,14 @@ inline double tan( double fValue )
 {
     return double( ::tan( fValue ) );
 }
-#ifndef NO_TANF
 inline float tan( float fValue )
 {
-    return float( ::tanf( fValue ) );
-}
+#ifdef NO_TANF
+   return float(::tan(fValue));
+#else
+   return float( ::tanf( fValue ) );
 #endif
+}
 //----------------------------------------------------------------------------
 template <typename T>
 inline T sqr( T fValue )
@@ -296,13 +335,15 @@ inline T sqr( T fValue )
     return T( fValue * fValue );
 }
 //----------------------------------------------------------------------------
-#ifndef NO_SQRTF
 template <typename T>
 inline T sqrt( T fValue )
 {
-    return T( ::sqrtf( ((float)fValue) ) );
-}
+#ifdef NO_SQRTF
+   return T(::sqrt(((float)fValue)));
+#else
+   return T( ::sqrtf( ((float)fValue) ) );
 #endif
+}
 inline double sqrt( double fValue )
 {
     return double( ::sqrt( fValue ) );
