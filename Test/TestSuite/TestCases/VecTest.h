@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.h,v $
- * Date modified: $Date: 2002-03-20 16:06:50 $
- * Version:       $Revision: 1.21 $
+ * Date modified: $Date: 2002-03-21 16:30:17 $
+ * Version:       $Revision: 1.22 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -91,10 +91,16 @@ public:
    void testIsNormalizedEps();
    void testCross();
 
+   void testVecTimingLerp();
+   void testLerp();
+   
 
    static CppUnit::Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("VecTest");
+      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testLerp", &VecTest::testLerp));
+      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testVecTimingLerp", &VecTest::testVecTimingLerp));
+      
       test_suite->addTest( new CppUnit::TestCaller<VecTest>("testCreation", &VecTest::testCreation));
       test_suite->addTest( new CppUnit::TestCaller<VecTest>("testCopyConstruct", &VecTest::testCopyConstruct));
       test_suite->addTest( new CppUnit::TestCaller<VecTest>("testConstructors", &VecTest::testConstructors));
