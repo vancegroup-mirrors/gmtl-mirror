@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: SphereTest.h,v $
- * Date modified: $Date: 2002-02-12 05:46:22 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-02-15 18:28:46 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -41,6 +41,7 @@
 
 #include <gmtl/Sphere.h>
 #include <gmtl/Compare.h>
+#include <gmtl/Containment.h>
 
 namespace gmtlTest
 {
@@ -142,6 +143,95 @@ public:
 
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("SphereTest/ConstructorsOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+
+   // -- Test accessors --//
+   void testGetCenter()
+   {
+      gmtl::Point<float, 3> center( 1.0f, 2.0f, 3.0f );
+      gmtl::Sphere<float> test_sph( center, 25.0f );
+      CPPUNIT_ASSERT( test_sph.getCenter() == center );
+
+      // Test getCenter overhead
+      const long iters(400000);
+      float use_value(0.0f);     // A temp just here to use the objs so the compiler (hopefully) does not opt them out
+
+      CPPUNIT_METRIC_START_TIMING();
+
+      for( long iter=0;iter<iters; ++iter)
+      {
+         center = test_sph.getCenter();
+         use_value = use_value + center[0];
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("SphereTest/GetCenterOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+
+   void testGetRadius()
+   {
+      float radius = 25.0f;
+      gmtl::Sphere<float> test_sph( gmtl::Point<float, 3>( 1.0f, 2.0f, 3.0f ), radius );
+      CPPUNIT_ASSERT( test_sph.getRadius() == radius );
+
+      // Test getCenter overhead
+      const long iters(400000);
+      float use_value(0.0f);     // A temp just here to use the objs so the compiler (hopefully) does not opt them out
+
+      CPPUNIT_METRIC_START_TIMING();
+
+      for( long iter=0;iter<iters; ++iter)
+      {
+         radius = test_sph.getRadius();
+         use_value = use_value + radius;
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("SphereTest/GetRadiusOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+
+   // -- Test setters --//
+   void testSetCenter()
+   {
+      gmtl::Sphere<float> test_sph( gmtl::Point<float, 3>( 1.0f, 2.0f, 3.0f ), 25.0f );
+      gmtl::Point<float, 3> center( 2.0f, 4.0f, 1.0f );
+      test_sph.setCenter( center );
+      CPPUNIT_ASSERT( test_sph.getCenter() == center );
+
+      // Test getCenter overhead
+      const long iters(400000);
+
+      CPPUNIT_METRIC_START_TIMING();
+
+      for( long iter=0;iter<iters; ++iter)
+      {
+         center.set( iter, iter, iter );
+         test_sph.setCenter( center );
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("SphereTest/SetCenterOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+
+   void testSetRadius()
+   {
+      gmtl::Sphere<float> test_sph( gmtl::Point<float, 3>( 1.0f, 2.0f, 3.0f ), 25.0f );
+      test_sph.setRadius( 45.0f );
+      CPPUNIT_ASSERT( test_sph.getRadius() == 45.0f );
+
+      // Test getCenter overhead
+      const long iters(400000);
+      float use_value(0.0f);     // A temp just here to use the objs so the compiler (hopefully) does not opt them out
+
+      CPPUNIT_METRIC_START_TIMING();
+
+      for( long iter=0;iter<iters; ++iter)
+      {
+         test_sph.setRadius( iter );
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("SphereTest/SetRadiusOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
 
    // -- Test comparison -- //
@@ -273,6 +363,10 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<SphereTest>("testConstructors", &SphereTest::testConstructors));
       test_suite->addTest( new CppUnit::TestCaller<SphereTest>("testEqualityCompare", &SphereTest::testEqualityCompare));
       test_suite->addTest( new CppUnit::TestCaller<SphereTest>("testIsEqual", &SphereTest::testIsEqual));
+      test_suite->addTest( new CppUnit::TestCaller<SphereTest>("testGetCenter", &SphereTest::testGetCenter));
+      test_suite->addTest( new CppUnit::TestCaller<SphereTest>("testGetRadius", &SphereTest::testGetRadius));
+      test_suite->addTest( new CppUnit::TestCaller<SphereTest>("testSetCenter", &SphereTest::testSetCenter));
+      test_suite->addTest( new CppUnit::TestCaller<SphereTest>("testSetRadius", &SphereTest::testSetRadius));
 
       return test_suite;
    }

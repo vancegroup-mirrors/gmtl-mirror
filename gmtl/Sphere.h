@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Sphere.h,v $
- * Date modified: $Date: 2002-02-12 05:46:22 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-02-15 18:28:46 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -78,6 +78,46 @@ public:
    Sphere( const Sphere<DATA_TYPE>& sphere )
       : mCenter( sphere.mCenter ), mRadius( sphere.mRadius )
    {}
+
+   /**
+    * Gets the center of the sphere.
+    *
+    * @return  the center point of the sphere
+    */
+   const Point<DATA_TYPE, 3>& getCenter() const
+   {
+      return mCenter;
+   }
+
+   /**
+    * Gets the radius of the sphere.
+    *
+    * @return  the radius of the sphere
+    */
+   const DATA_TYPE& getRadius() const
+   {
+      return mRadius;
+   }
+
+   /**
+    * Sets the center point of the sphere.
+    *
+    * @param center     the new point at which to center the sphere
+    */
+   void setCenter( const Point<DATA_TYPE, 3>& center )
+   {
+      mCenter = center;
+   }
+
+   /**
+    * Sets the radius of the sphere.
+    *
+    * @param radius     the new radius of the sphere
+    */
+   void setRadius( const DATA_TYPE& radius )
+   {
+      mRadius = radius;
+   }
 
 public:
    /**
