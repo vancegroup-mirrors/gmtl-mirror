@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecBase.h,v $
- * Date modified: $Date: 2004-09-01 15:57:33 $
- * Version:       $Revision: 1.15.2.1 $
+ * Date modified: $Date: 2004-09-02 14:27:23 $
+ * Version:       $Revision: 1.15.2.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -44,6 +44,12 @@
 namespace gmtl
 {
 
+namespace meta
+{
+   struct DefaultVecTag
+   {;};
+}
+
 
 /**
  * Base type for vector-like objects including Points and Vectors. It is
@@ -51,14 +57,66 @@ namespace gmtl
  * make it up.
  *
  * @param DATA_TYPE  the datatype to use for the components
+ * @param SIZE       the number of components this VecB has
+ * @param REP        the representation to use for the vector.  (expression template or default)
+ */
+template<class DATA_TYPE, unsigned SIZE, typename REP=meta::DefaultVecTag>
+class VecBase
+{
+protected:
+   const REP  expRep;      // The expression rep
+
+public:
+   /// The datatype used for the components of this VecB.
+   typedef DATA_TYPE DataType;
+
+   /// The number of components this VecB has.
+   enum Params { Size = SIZE };
+
+public:
+   VecBase()
+   {;}
+
+   VecBase(const REP& rep)
+      : expRep(rep)
+   {;}
+
+   /** Conversion operator to default vecbase type. */
+   /*
+   operator VecBase<DATA_TYPE,SIZE,meta::DefaultVecTag>()
+   {
+      return VecBase<DATA_TYPE,SIZE,meta::DefaultVecTag>(*this);
+   }
+   */
+
+   /** Return the value at given location. */
+   inline DATA_TYPE operator [](const unsigned i)
+   {
+      gmtlASSERT(i < SIZE);
+      return expRep[i];
+   }
+   inline const DATA_TYPE  operator [](const unsigned i) const
+   {
+      gmtlASSERT(i < SIZE);
+      return expRep[i];
+   }
+};
+
+
+/**
+ * Specialized version of VecBase that is actually used for all user interaction
+ * with a traditional vector.
+ *
+ * @param DATA_TYPE  the datatype to use for the components
  * @param SIZE       the number of components this VecBase has
  */
 template<class DATA_TYPE, unsigned SIZE>
-class VecBase
+class VecBase<DATA_TYPE,SIZE,meta::DefaultVecTag>
 {
 public:
    /// The datatype used for the components of this VecBase.
    typedef DATA_TYPE DataType;
+   typedef VecBase<DATA_TYPE, SIZE, meta::DefaultVecTag> VecType;
 
    /// The number of components this VecBase has.
    enum Params { Size = SIZE };
@@ -88,21 +146,53 @@ public:
 #ifdef GMTL_COUNT_CONSTRUCT_CALLS
       gmtl::helpers::VecCtrCounterInstance()->inc();
 #endif
-      /*
-      for(unsigned i=0;i<SIZE;++i)
-         mData[i] = rVec.mData[i];
-      */
+      //for(unsigned i=0;i<SIZE;++i)
+      //   mData[i] = rVec.mData[i];
+
       gmtl::meta::AssignVecUnrolled<SIZE-1, VecBase<DATA_TYPE,SIZE> >::func(*this, rVec);
    }
 
+   template<typename REP2>
+   VecBase(const VecBase<DATA_TYPE, SIZE, REP2>& rVec)
+   {
+#ifdef GMTL_COUNT_CONSTRUCT_CALLS
+      gmtl::helpers::VecCtrCounterInstance()->inc();
+#endif
+      for(unsigned i=0;i<SIZE;++i)
+      {  mData[i] = rVec[i]; }
+   }
 
    //@{
    /**
     * Creates a new VecBase initialized to the given values.
     */
-   VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1);
-   VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2);
-   VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2,const DATA_TYPE& val3);
+   VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1)
+   {
+#ifdef GMTL_COUNT_CONSTRUCT_CALLS
+      gmtl::helpers::VecCtrCounterInstance()->inc();
+#endif
+      // @todo need compile time assert
+      gmtlASSERT( SIZE == 2 && "out of bounds element access in VecB" );
+      mData[0] = val0; mData[1] = val1;
+   }
+   VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2)
+   {
+#ifdef GMTL_COUNT_CONSTRUCT_CALLS
+      gmtl::helpers::VecCtrCounterInstance()->inc();
+#endif
+      // @todo need compile time assert
+      gmtlASSERT( SIZE == 3 && "out of bounds element access in VecB" );
+      mData[0] = val0;  mData[1] = val1;  mData[2] = val2;
+   }
+   VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2,const DATA_TYPE& val3)
+   {
+#ifdef GMTL_COUNT_CONSTRUCT_CALLS
+      gmtl::helpers::VecCtrCounterInstance()->inc();
+#endif
+      // @todo need compile time assert
+      gmtlASSERT( SIZE == 4 && "out of bounds element access in VecB" );
+      mData[0] = val0;  mData[1] = val1;  mData[2] = val2;  mData[3] = val3;
+   }
    //@}
 
    /**
@@ -111,16 +201,33 @@ public:
     * @param dataPtr    the array containing the values to copy
     * @pre dataPtr has at least SIZE elements
     */
-   inline void set(const DATA_TYPE* dataPtr);
+   inline void set(const DATA_TYPE* dataPtr)
+   {
+      gmtl::meta::AssignArrayUnrolled<SIZE-1, DATA_TYPE>::func(&(mData[0]), dataPtr);
+   }
 
    //@{
    /**
     * Sets the components in this VecBase to the given values.
     */
-   inline void set(const DATA_TYPE& val0);
-   inline void set(const DATA_TYPE& val0,const DATA_TYPE& val1);
-   inline void set(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2);
-   inline void set(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2,const DATA_TYPE& val3);
+   inline void set(const DATA_TYPE& val0)
+   { mData[0] = val0; }
+
+   inline void set(const DATA_TYPE& val0,const DATA_TYPE& val1)
+   {
+      gmtlASSERT( SIZE >= 2 && "out of bounds element access in VecB" );
+      mData[0] = val0; mData[1] = val1;
+   }
+   inline void set(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2)
+   {
+      gmtlASSERT( SIZE >= 3 && "out of bounds element access in VecB" );
+      mData[0] = val0;  mData[1] = val1;  mData[2] = val2;
+   }
+   inline void set(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2,const DATA_TYPE& val3)
+   {
+      gmtlASSERT( SIZE >= 4 && "out of bounds element access in VecB" );
+      mData[0] = val0;  mData[1] = val1;  mData[2] = val2;  mData[3] = val3;
+   }
    //@}
 
    //@{
@@ -144,6 +251,31 @@ public:
    }
    //@}
 
+   /** Assign from different rep. */
+   template<typename REP2>
+   inline VecType& operator=(const VecBase<DATA_TYPE,SIZE,REP2>& rhs)
+   {
+      for(unsigned i=0;i<SIZE;++i)
+      {
+         mData[i] = rhs[i];
+      }
+
+      //gmtl::meta::AssignVecUnrolled<SIZE-1, VecBase<DATA_TYPE,SIZE> >::func(*this, rVec);
+      return *this;
+   }
+
+   /*
+    Assign from another of same type.
+   inline VecType& operator=(const VecType&  rhs)
+   {
+      for(unsigned i=0;i<SIZE;++i)
+      {
+         mData[i] = rhs[i];
+      }
+      return *this;
+   }
+*/
+
    //@{
    /**
     * Gets the internal array of the components.
@@ -161,89 +293,6 @@ public:
    DATA_TYPE mData[SIZE];
 };
 
-// --- Inline members --- //
-template<class DATA_TYPE, unsigned SIZE>
-VecBase<DATA_TYPE,SIZE>::VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1)
-{
-#ifdef GMTL_COUNT_CONSTRUCT_CALLS
-   gmtl::helpers::VecCtrCounterInstance()->inc();
-#endif
-
-   // @todo need compile time assert
-   gmtlASSERT( SIZE == 2 && "out of bounds element access in VecBase" );
-   mData[0] = val0;
-   mData[1] = val1;
-}
-
-template<class DATA_TYPE, unsigned SIZE>
-VecBase<DATA_TYPE,SIZE>::VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2)
-{
-#ifdef GMTL_COUNT_CONSTRUCT_CALLS
-   gmtl::helpers::VecCtrCounterInstance()->inc();
-#endif
-   // @todo need compile time assert
-   gmtlASSERT( SIZE == 3 && "out of bounds element access in VecBase" );
-   mData[0] = val0;
-   mData[1] = val1;
-   mData[2] = val2;
-}
-
-template<class DATA_TYPE, unsigned SIZE>
-VecBase<DATA_TYPE,SIZE>::VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2,const DATA_TYPE& val3)
-{
-#ifdef GMTL_COUNT_CONSTRUCT_CALLS
-   gmtl::helpers::VecCtrCounterInstance()->inc();
-#endif
-   // @todo need compile time assert
-   gmtlASSERT( SIZE == 4 && "out of bounds element access in VecBase" );
-   mData[0] = val0;
-   mData[1] = val1;
-   mData[2] = val2;
-   mData[3] = val3;
-}
-
-
-// Setting
-template<class DATA_TYPE, unsigned SIZE>
-inline void VecBase<DATA_TYPE,SIZE>::set(const DATA_TYPE* dataPtr)
-{
-   /*
-   for(unsigned i=0;i<SIZE;++i)
-      mData[i] = dataPtr[i];
-   */
-   gmtl::meta::AssignArrayUnrolled<SIZE-1, DATA_TYPE>::func(&(mData[0]), dataPtr);
-
-}
-template<class DATA_TYPE, unsigned SIZE>
-inline void VecBase<DATA_TYPE,SIZE>::set(const DATA_TYPE& val0)
-{
-   gmtlASSERT( SIZE >= 1 && "out of bounds element access in VecBase" );
-   mData[0] = val0;
-}
-template<class DATA_TYPE, unsigned SIZE>
-inline void VecBase<DATA_TYPE,SIZE>::set(const DATA_TYPE& val0,const DATA_TYPE& val1)
-{
-   gmtlASSERT( SIZE >= 2 && "out of bounds element access in VecBase" );
-   mData[0] = val0;
-   mData[1] = val1;
-}
-template<class DATA_TYPE, unsigned SIZE>
-inline void VecBase<DATA_TYPE,SIZE>::set(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2)
-{
-   gmtlASSERT( SIZE >= 3 && "out of bounds element access in VecBase" );
-   mData[0] = val0;
-   mData[1] = val1;
-   mData[2] = val2;
-}
-template<class DATA_TYPE, unsigned SIZE>
-inline void VecBase<DATA_TYPE,SIZE>::set(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2,const DATA_TYPE& val3)
-{
-   gmtlASSERT( SIZE >= 4 && "out of bounds element access in VecBase" );
-   mData[0] = val0;
-   mData[1] = val1;
-   mData[2] = val2;
-   mData[3] = val3;
-}
 
 };
 

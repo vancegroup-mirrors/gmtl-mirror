@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecOps.h,v $
- * Date modified: $Date: 2004-08-30 16:07:33 $
- * Version:       $Revision: 1.29 $
+ * Date modified: $Date: 2004-09-02 14:27:23 $
+ * Version:       $Revision: 1.29.2.1 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -39,6 +39,7 @@
 #include <gmtl/Math.h>
 #include <gmtl/Vec.h>
 #include <gmtl/VecOpsMeta.h>
+#include <gmtl/VecExprMeta.h>
 
 namespace gmtl
 {
@@ -89,6 +90,7 @@ VecBase<DATA_TYPE, SIZE>& operator +=(VecBase<DATA_TYPE, SIZE>& v1,
    return v1;
 }
 
+
 /**
  * Adds v2 to v1 and returns the result. Thus result = v1 + v2.
  *
@@ -97,6 +99,7 @@ VecBase<DATA_TYPE, SIZE>& operator +=(VecBase<DATA_TYPE, SIZE>& v1,
  *
  * @return  the result of adding v2 to v1
  */
+/*
 template<class DATA_TYPE, unsigned SIZE>
 VecBase<DATA_TYPE, SIZE> operator +(const VecBase<DATA_TYPE, SIZE>& v1,
                                     const VecBase<DATA_TYPE, SIZE>& v2)
@@ -105,6 +108,20 @@ VecBase<DATA_TYPE, SIZE> operator +(const VecBase<DATA_TYPE, SIZE>& v1,
    ret_val += v2;
    return ret_val;
 }
+*/
+
+template<typename T, unsigned SIZE, typename R1, typename R2>
+inline VecBase<T,SIZE, meta::VecBinaryExpr<VecBase<T,SIZE,R1>, VecBase<T,SIZE,R2>, meta::VecPlusBinary> >
+operator+(const VecBase<T,SIZE,R1>& v1, const VecBase<T,SIZE,R2>& v2)
+{
+   return VecBase<T,SIZE,
+               meta::VecBinaryExpr<VecBase<T,SIZE,R1>,
+                                   VecBase<T,SIZE,R2>,
+                                   meta::VecPlusBinary> >( meta::VecBinaryExpr<VecBase<T,SIZE,R1>,
+                                                                               VecBase<T,SIZE,R2>,
+                                                                               meta::VecPlusBinary>(v1,v2) );
+}
+
 
 /**
  * Subtracts v2 from v1 and stores the result in v1. This is equivalent to the
@@ -135,6 +152,7 @@ VecBase<DATA_TYPE, SIZE>& operator -=(VecBase<DATA_TYPE, SIZE>& v1,
  *
  * @return  the result of subtracting v2 from v1
  */
+/*
 template < class DATA_TYPE, unsigned SIZE>
 Vec<DATA_TYPE, SIZE> operator -(const VecBase<DATA_TYPE, SIZE>& v1,
                                 const VecBase<DATA_TYPE, SIZE>& v2)
@@ -142,6 +160,19 @@ Vec<DATA_TYPE, SIZE> operator -(const VecBase<DATA_TYPE, SIZE>& v1,
    Vec<DATA_TYPE, SIZE> ret_val(v1);
    ret_val -= v2;
    return ret_val;
+}
+*/
+
+template<typename T, unsigned SIZE, typename R1, typename R2>
+inline VecBase<T,SIZE, meta::VecBinaryExpr<VecBase<T,SIZE,R1>, VecBase<T,SIZE,R2>, meta::VecMinusBinary> >
+operator-(const VecBase<T,SIZE,R1>& v1, const VecBase<T,SIZE,R2>& v2)
+{
+   return VecBase<T,SIZE,
+               meta::VecBinaryExpr<VecBase<T,SIZE,R1>,
+                                   VecBase<T,SIZE,R2>,
+                                   meta::VecMinusBinary> >( meta::VecBinaryExpr<VecBase<T,SIZE,R1>,
+                                                                               VecBase<T,SIZE,R2>,
+                                                                               meta::VecMinusBinary>(v1,v2) );
 }
 
 /**

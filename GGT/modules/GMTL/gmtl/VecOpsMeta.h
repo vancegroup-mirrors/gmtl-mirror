@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecOpsMeta.h,v $
- * Date modified: $Date: 2004-09-01 15:57:33 $
- * Version:       $Revision: 1.1.2.1 $
+ * Date modified: $Date: 2004-09-02 14:27:23 $
+ * Version:       $Revision: 1.1.2.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -93,8 +93,6 @@ struct EqualVecUnrolled<0,VT>
    static bool func(const VT& v1, const VT& v2)
    {   return (v1[0]==v2[0]); }
 };
-
-
 //@}
 
 } // namespace meta
