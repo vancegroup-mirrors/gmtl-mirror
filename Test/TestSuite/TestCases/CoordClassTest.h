@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: CoordClassTest.h,v $
- * Date modified: $Date: 2002-03-20 21:43:36 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-03-21 20:58:34 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -60,7 +60,10 @@ namespace gmtlTest
       {
       }
 
+      // Correctness tests
       void testCoordClassTestCreation();
+
+      // Performance tests
       void testCoordTimingDefaultConstructor();
       void testCoordTimingElementConstructor();
       void testCoordTimingCopyConstructor();
@@ -70,12 +73,20 @@ namespace gmtlTest
       static CppUnit::Test* suite()
       {
          CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("CoordClassTest");
+         test_suite->addTest( new CppUnit::TestCaller<CoordClassTest>("testCoordClassTestCreation", &CoordClassTest::testCoordClassTestCreation));
+         return test_suite;
+      }
+
+      static CppUnit::Test* perfSuite()
+      {
+         CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("CoordClassPerfTest");
+
          test_suite->addTest( new CppUnit::TestCaller<CoordClassTest>("testCoordTimingDefaultConstructor", &CoordClassTest::testCoordTimingDefaultConstructor));
          test_suite->addTest( new CppUnit::TestCaller<CoordClassTest>("testCoordTimingElementConstructor", &CoordClassTest::testCoordTimingElementConstructor));
          test_suite->addTest( new CppUnit::TestCaller<CoordClassTest>("testCoordTimingCopyConstructor", &CoordClassTest::testCoordTimingCopyConstructor));
          test_suite->addTest( new CppUnit::TestCaller<CoordClassTest>("testCoordTimingGet", &CoordClassTest::testCoordTimingGet));
          test_suite->addTest( new CppUnit::TestCaller<CoordClassTest>("testCoordTimingOpEqual", &CoordClassTest::testCoordTimingOpEqual));
-         test_suite->addTest( new CppUnit::TestCaller<CoordClassTest>("testCoordClassTestCreation", &CoordClassTest::testCoordClassTestCreation));
+
          return test_suite;
       }
 

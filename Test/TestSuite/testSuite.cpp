@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: testSuite.cpp,v $
- * Date modified: $Date: 2002-03-20 22:32:22 $
- * Version:       $Revision: 1.32 $
+ * Date modified: $Date: 2002-03-21 20:58:33 $
+ * Version:       $Revision: 1.33 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -95,7 +95,7 @@ std::string getHostname(void);
 
 void usage( char** av )
 {
-   std::cout << "\n\nusage: " << av[0] << " [gmtl|info|all]\n\n" << std::endl;
+   std::cout << "\n\nusage: " << av[0] << " [gmtl|perf|info|all]\n\n" << std::endl;
 }
 
 int main (int ac, char **av)
@@ -171,26 +171,35 @@ int main (int ac, char **av)
    gmtl_suite->addTest( gmtlTest::IntersectionTest::suite() );
    gmtl_suite->addTest( gmtlTest::TriTest::suite() );
    */
+
+   // setup the perf suite
+   CppUnit::TestSuite* perf_suite = new CppUnit::TestSuite( "perf_suite" );
+   perf_suite->addTest( gmtlTest::CoordClassTest::perfSuite() );
+
    CppUnit::TestSuite* info_suite = new CppUnit::TestSuite( "info_suite" );
    info_suite->addTest( gmtlTest::OptTest::suite() );
 
    // Add the tests
    runner.addTest( gmtl_suite );
+   runner.addTest( perf_suite );
    runner.addTest( info_suite );
 
    // --- RUN THEM --- //
    if (ac > 1)
    {
       std::string arg = av[1];
-      if (arg.size() > 0 && (arg[0] == 'i' || arg[0] == 'a'))
-         runner.run( "info_suite" );
       if (arg.size() > 0 && (arg[0] == 'g' || arg[0] == 'a'))
          runner.run( "gmtl_suite" );
+      if (arg.size() > 0 && (arg[0] == 'p' || arg[0] == 'a'))
+         runner.run( "perf_suite" );
+      if (arg.size() > 0 && (arg[0] == 'i' || arg[0] == 'a'))
+         runner.run( "info_suite" );
    }
    else
    {
       usage( av );
       runner.run( "gmtl_suite" );
+      runner.run( "perf_suite" );
       usage( av );
    }   
 
