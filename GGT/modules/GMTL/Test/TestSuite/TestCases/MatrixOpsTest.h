@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOpsTest.h,v $
- * Date modified: $Date: 2002-02-15 23:48:15 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-02-16 00:12:09 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -418,7 +418,7 @@ public:
       {
          gmtl::Matrix<T, 3, 3> mat1, mat2, mat3, res_mat;
 
-         T eps = (T)0.001;
+         T eps = (T)0.0001;
 
          mat1.set((T) 1.1000, (T)2.2000,  (T) 3.3000, 
                   (T) 5.5000, (T)6.6000,  (T) 7.7000, 
@@ -498,7 +498,7 @@ public:
          gmtl::Matrix<T, 3, 3> res33, expected_answer33;
 
          
-         T eps = (T)0.005;
+         T eps = (T)0.0001;
 
          T v1[] = { 1.1000, 2.2000, 3.3000, 4.4000, 
                     5.5000, 6.6000, 7.7000, 8.8000,   
@@ -556,7 +556,7 @@ public:
       {
          gmtl::Matrix<T, 4, 4> mat1, mat2, mat3, res_mat;
 
-         T eps = (T)0.001;
+         T eps = (T)0.0001;
 
          mat1.set((T) 1.1000, (T)2.2000,  (T) 3.3000, (T) 4.4000,
                   (T) 5.5000, (T)6.6000,  (T) 7.7000, (T) 8.8000,
@@ -600,11 +600,11 @@ public:
          CPPUNIT_ASSERT( !isEqual( res_mat, mat3, eps ) );
 
          // make sure mat3 = mat2 * mat1 yields the correct result
-         res_mat.set((T)  55.610,  (T) 100.380,  (T) 141.910,  (T) 183.440,
-                     (T)1765.070,  (T)1898.660,  (T)2090.570,  (T)2282.480,
-                     (T) 185.960,  (T)  94.580,  (T)  83.390,  (T)  72.200,
-                     (T) 545.440,  (T) 598.620,  (T) 668.810,  (T) 739.000 );
-         CPPUNIT_ASSERT( isEqual( res_mat, mat3, eps ) );
+         res_mat.set(  55.610,   100.380,   141.910,   183.440,
+                     1765.070,  1898.660,  2090.570,  2282.480,
+                      185.960,    94.580,    83.390,    72.200,
+                      545.440,   598.620,   668.810,   739.000 );
+         CPPUNIT_ASSERT( isEqual( res_mat, mat3, (T)0.05 ) );
          
          // test post and pre mult operators...
          {
@@ -638,14 +638,15 @@ public:
       matrixMultUnlike<double>::go();
    }
    
-   class matrixScalarMult()
+   template <typename T>
+   class matrixScalarMult
    {
    public:
-      void go()
+      static void go()
       {
-         gmtl::Matrix<T, 4, 4> mat1, mat3, res_mat;
+         gmtl::Matrix<T, 4, 4> mat1, res_mat, expected_result;
 
-         T eps = (T)0.001;
+         T eps = (T)0.0001;
 
          mat1.set((T) 1.1000, (T)2.2000,  (T) 3.3000, (T) 4.4000,
                   (T) 5.5000, (T)6.6000,  (T) 7.7000, (T) 8.8000,
@@ -685,7 +686,7 @@ public:
       static void go()
       {
          gmtl::Matrix<DATA_TYPE, 4, 4> mat1, expected_value, result, identity;
-         DATA_TYPE eps = 0.4;
+         DATA_TYPE eps = 0.0001;
          mat1.set( 0.78,  1.4,   2.9, 3.45,
                    4.21, 57.9,  65.9, 74.6,
                    89.2, 99.2,  10.9, 11.9,
@@ -780,7 +781,6 @@ public:
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("MatrixOpsTest");
       test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixTranspose", &MatrixOpsTest::testMatrixTranspose ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixMult", &MatrixOpsTest::testMatrixMult ) );
-      test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixPostPreMult", &MatrixOpsTest::testMatrixPostPreMult ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixScalarMult", &MatrixOpsTest::testMatrixScalarMult ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixAddSub", &MatrixOpsTest::testMatrixAddSub ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatInvert", &MatrixOpsTest::testMatInvert ) );
