@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Xforms.h,v $
- * Date modified: $Date: 2002-02-25 17:48:47 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2002-02-28 14:24:12 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -49,6 +49,8 @@ namespace gmtl
    /** transform a vector by a rotation quaternion.
     * @pre give a vector
     * @post result = quat * vector
+    * @see game programming gems #1 p199
+    * @see shoemake siggraph notes
     */
    template <typename DATA_TYPE>
    inline Vec<DATA_TYPE, 3>& xform( Vec<DATA_TYPE, 3>& result_vec, const Quat<DATA_TYPE>& rot, const Vec<DATA_TYPE, 3>& vector )
@@ -57,7 +59,8 @@ namespace gmtl
       // return makeVec( result_vec, makeInvert( rot ) * makePure( vector ) * rot );
 
       // shoemake recent version (right hand rule):
-      return result_vec = makeVec( rot * makePure( vector ) * makeInvert( rot ) );
+      // return result_vec = makeVec( rot * makePure( vector ) * makeInvert( rot ) );
+      return result_vec = makeVec( rot * makePure( vector ) * makeConj( rot ) );
    }
 
    /** transform a vector by a rotation quaternion.
@@ -71,7 +74,8 @@ namespace gmtl
       // return makeVec( result_vec, makeInvert( rot ) * makePure( vector ) * rot );
 
       // shoemake recent version (right hand rule):
-      return makeVec( rot * makePure( vector ) * makeInvert( rot ) );
+      // return makeVec( rot * makePure( vector ) * makeInvert( rot ) );
+      return makeVec( rot * makePure( vector ) * makeConj( rot ) );
    }
 
    /** matrix * vector xform.
