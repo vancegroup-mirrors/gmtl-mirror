@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatStuffTest.h,v $
- * Date modified: $Date: 2002-02-22 20:12:58 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-02-25 20:39:19 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -79,6 +79,20 @@ namespace gmtlTest
          // make sure that normalize doesn't change the rotation...
          CPPUNIT_ASSERT( gmtl::isEqual( q1, q3, 0.0001f ) );
          CPPUNIT_ASSERT( gmtl::isEqual( q2, q4, 0.0001f ) );
+         
+         float a, b, c, d;
+         gmtl::getRot( q1, a, b, c, d );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( a, gmtl::Math::deg2Rad( 45.0f ), 0.0001f ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( b, 0.0f, 0.0001f ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( c, 1.0f, 0.0001f ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( d, 0.0f, 0.0001f ) );
+         
+         gmtl::getRot( q2, a, b, c, d );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( a, gmtl::Math::deg2Rad( 90.0f ), 0.0001f ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( b, 1.0f, 0.0001f ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( c, 0.0f, 0.0001f ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( d, 0.0f, 0.0001f ) );
+         
       }
 
       void xformVecSweepTest()
