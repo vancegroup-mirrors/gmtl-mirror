@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Convert.h,v $
- * Date modified: $Date: 2002-02-21 21:37:08 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-03-08 17:27:40 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -38,19 +38,18 @@
 namespace gmtl
 {
    /** convert vector to a "pure" quaternion.
-    * @post quat = [v,0] = [v0,v1,v2,0]
+    *  @post quat = [v,0] = [v0,v1,v2,0]
     */
    template <typename DATA_TYPE>
    Quat<DATA_TYPE>& convert( Quat<DATA_TYPE>& pure_quat, const Vec<DATA_TYPE, 3>& vector )
    {
-      pure_quat.set( vector[0], vector[1], vector[2], 0 );
+      pure_quat.set( vector[0], vector[1], vector[2], (DATA_TYPE)0 );
       return pure_quat;
    }
    
    /** convert a quaternion to the rotation part of a 3x3, 3x4, or 4x4 matrix. */
-   /*
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
-   void convert( Matrix<DATA_TYPE, ROWS, COLS>& mat, const Quat<DATA_TYPE>& q )
+   Matrix<DATA_TYPE, ROWS, COLS>& convert( Matrix<DATA_TYPE, ROWS, COLS>& mat, const Quat<DATA_TYPE>& q )
    {
       ggtASSERT( ((ROWS == 3 && COLS == 3) ||
                (ROWS == 3 && COLS == 4) ||
@@ -60,41 +59,43 @@ namespace gmtl
       // From Watt & Watt
       DATA_TYPE wx, wy, wz, xx, yy, yz, xy, xz, zz, xs, ys, zs;
       
-      xs = q[VJ_X] + q[VJ_X];    ys = q[VJ_Y] + q[VJ_Y];    zs = q[VJ_Z] + q[VJ_Z];
-      xx = q[VJ_X] * xs;   xy = q[VJ_X] * ys;   xz = q[VJ_X] * zs;
-      yy = q[VJ_Y] * ys;   yz = q[VJ_Y] * zs;   zz = q[VJ_Z] * zs;
-      wx = q[VJ_W] * xs;   wy = q[VJ_W] * ys;   wz = q[VJ_W] * zs;
+      xs = q[Xelt] + q[Xelt]; ys = q[Yelt] + q[Yelt]; zs = q[Zelt] + q[Zelt];
+      xx = q[Xelt] * xs;      xy = q[Xelt] * ys;      xz = q[Xelt] * zs;
+      yy = q[Yelt] * ys;      yz = q[Yelt] * zs;      zz = q[Zelt] * zs;
+      wx = q[Welt] * xs;      wy = q[Welt] * ys;      wz = q[Welt] * zs;
 
-      mat( 0, 0 ) = 1.0 - (yy+zz);
-      mat( 1, 0 ) = xy+wz;
-      mat( 2, 0 ) = xz-wy;
+      mat( 0, 0 ) = DATA_TYPE(1.0) - (yy + zz);
+      mat( 1, 0 ) = xy + wz;
+      mat( 2, 0 ) = xz - wy;
  
-      mat( 0, 1 ) = xy-wz;
-      mat( 1, 1 ) = 1.0 - (xx+zz);
-      mat( 2, 1 ) = yz+wx;
+      mat( 0, 1 ) = xy - wz;
+      mat( 1, 1 ) = DATA_TYPE(1.0) - (xx + zz);
+      mat( 2, 1 ) = yz + wx;
  
-      mat( 0, 2 ) = xz+wy;
-      mat( 1, 2 ) = yz-wx;
-      mat( 2, 2 ) = 1.0 - (xx+yy);
+      mat( 0, 2 ) = xz + wy;
+      mat( 1, 2 ) = yz - wx;
+      mat( 2, 2 ) = DATA_TYPE(1.0) - (xx + yy);
 
       if (ROWS == 4)
       {
-         mat( 3, 0 ) = 0.0;
-         mat( 3, 1 ) = 0.0;
-         mat( 3, 2 ) = 0.0;
+         mat( 3, 0 ) = DATA_TYPE(0.0);
+         mat( 3, 1 ) = DATA_TYPE(0.0);
+         mat( 3, 2 ) = DATA_TYPE(0.0);
       }
 
       if (COLS == 4)
       {
-         mat( 0, 3 ) = 0.0;
-         mat( 1, 3 ) = 0.0;
-         mat( 2, 3 ) = 0.0;
+         mat( 0, 3 ) = DATA_TYPE(0.0);
+         mat( 1, 3 ) = DATA_TYPE(0.0);
+         mat( 2, 3 ) = DATA_TYPE(0.0);
       }
 
       if (ROWS == 4 && COLS == 4)
-         mat( 3, 3 ) = 1.0;
+         mat( 3, 3 ) = DATA_TYPE(1.0);
+      
+      return mat;
    }
-   */
+   
 } // end namespace gmtl.
 
 #endif
