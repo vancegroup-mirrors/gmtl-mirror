@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: ConvertTest.h,v $
- * Date modified: $Date: 2002-03-11 02:23:13 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-03-11 20:15:31 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -77,7 +77,7 @@ public:
    void testConvertQuatMat_MatQuat()
    {
       float eps = 0.0001f;
-      gmtl::Vec3f xAxis1, yAxis1, zAxis1;
+//      gmtl::Vec3f xAxis1, yAxis1, zAxis1;
       gmtl::Matrix44f mat1, mat2;
       gmtl::Quatf quat0, quat1;
 
