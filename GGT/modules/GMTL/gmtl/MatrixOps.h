@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOps.h,v $
- * Date modified: $Date: 2002-03-21 15:34:33 $
- * Version:       $Revision: 1.19 $
+ * Date modified: $Date: 2002-03-21 15:53:23 $
+ * Version:       $Revision: 1.20 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -84,7 +84,7 @@ namespace gmtl
       {
          for (unsigned int x = 0; x < ROWS*COLS; ++x)
          {
-            result[0] = (DATA_TYPE)0;
+            result[x] = (DATA_TYPE)0;
          }
       }
       return result;
