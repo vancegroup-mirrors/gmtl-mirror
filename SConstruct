@@ -80,7 +80,7 @@ def BuildLinuxEnvironment():
 
    CXX = WhereIs('g++3') or 'g++'
    LINK = CXX
-   CXXFLAGS = ['-Wall', '-pipe']
+   CXXFLAGS = ['-ftemplate-depth-256', '-Wall', '-pipe']
    LINKFLAGS = []
 
    # Enable profiling?
