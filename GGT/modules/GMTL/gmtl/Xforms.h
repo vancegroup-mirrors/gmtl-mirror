@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Xforms.h,v $
- * Date modified: $Date: 2002-02-28 14:24:12 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2002-02-28 15:47:12 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -48,19 +48,39 @@ namespace gmtl
 {
    /** transform a vector by a rotation quaternion.
     * @pre give a vector
-    * @post result = quat * vector
+    * @post Rv = q P(v) q*
+    * @post vector = rotquat * pure_quat_from_vector * rotquat_conj
     * @see game programming gems #1 p199
     * @see shoemake siggraph notes
     */
    template <typename DATA_TYPE>
    inline Vec<DATA_TYPE, 3>& xform( Vec<DATA_TYPE, 3>& result_vec, const Quat<DATA_TYPE>& rot, const Vec<DATA_TYPE, 3>& vector )
    {
-      // shoemake original (left hand rule):
-      // return makeVec( result_vec, makeInvert( rot ) * makePure( vector ) * rot );
-
-      // shoemake recent version (right hand rule):
-      // return result_vec = makeVec( rot * makePure( vector ) * makeInvert( rot ) );
-      return result_vec = makeVec( rot * makePure( vector ) * makeConj( rot ) );
+      // easiest to write and understand (slowest too)
+      // return result_vec = makeVec( rot * makePure( vector ) * makeConj( rot ) );
+      
+      // longer, but maybe more optimal (faster by 8% than 1st method in debug mode.)
+      //Quat<DATA_TYPE> rot_conj( rot ); conj( rot_conj );
+      //Quat<DATA_TYPE> quat_vector( rot * Quat<DATA_TYPE>( vector[0], vector[1], vector[2], (DATA_TYPE)0.0 ) * rot_conj );
+      //result_vec[0] = quat_vector[0];
+      //result_vec[1] = quat_vector[1];
+      //result_vec[2] = quat_vector[2];
+      //return result_vec;
+      
+      // completely hand expanded (faster by 28% than 1st method in debug mode.)
+      Quat<DATA_TYPE> rot_conj( -rot[Xelt], -rot[Yelt], -rot[Zelt], rot[Welt] ); 
+      Quat<DATA_TYPE> pure( vector[0], vector[1], vector[2], (DATA_TYPE)0.0 );
+      Quat<DATA_TYPE> temp( 
+         pure[Welt]*rot_conj[Xelt] + pure[Xelt]*rot_conj[Welt] + pure[Yelt]*rot_conj[Zelt] - pure[Zelt]*rot_conj[Yelt],
+         pure[Welt]*rot_conj[Yelt] + pure[Yelt]*rot_conj[Welt] + pure[Zelt]*rot_conj[Xelt] - pure[Xelt]*rot_conj[Zelt],
+         pure[Welt]*rot_conj[Zelt] + pure[Zelt]*rot_conj[Welt] + pure[Xelt]*rot_conj[Yelt] - pure[Yelt]*rot_conj[Xelt],
+         pure[Welt]*rot_conj[Welt] - pure[Xelt]*rot_conj[Xelt] - pure[Yelt]*rot_conj[Yelt] - pure[Zelt]*rot_conj[Zelt] );
+      
+      result_vec.set( 
+         rot[Welt]*temp[Xelt] + rot[Xelt]*temp[Welt] + rot[Yelt]*temp[Zelt] - rot[Zelt]*temp[Yelt],
+         rot[Welt]*temp[Yelt] + rot[Yelt]*temp[Welt] + rot[Zelt]*temp[Xelt] - rot[Xelt]*temp[Zelt],
+         rot[Welt]*temp[Zelt] + rot[Zelt]*temp[Welt] + rot[Xelt]*temp[Yelt] - rot[Yelt]*temp[Xelt] );
+      return result_vec;
    }
 
    /** transform a vector by a rotation quaternion.
@@ -70,12 +90,27 @@ namespace gmtl
    template <typename DATA_TYPE>
    inline Vec<DATA_TYPE, 3> operator*( const Quat<DATA_TYPE>& rot, const Vec<DATA_TYPE, 3>& vector )
    {
-      // shoemake original (left hand rule):
-      // return makeVec( result_vec, makeInvert( rot ) * makePure( vector ) * rot );
+      // easiest to write and understand (slowest too)
+      // return makeVec( rot * makePure( vector ) * makeConj( rot ) );
+      
+      // longer, but more optimal (faster by 8% than 1st method in debug mode.)
+      //Quat<DATA_TYPE> rot_conj( rot ); conj( rot_conj );
+      //Quat<DATA_TYPE> quat_vector( rot * Quat<DATA_TYPE>( vector[0], vector[1], vector[2], (DATA_TYPE)0.0 ) * rot_conj );
+      //return Vec<DATA_TYPE, 3>( quat_vector[0], quat_vector[1], quat_vector[2] );
+      
+      // completely hand expanded (faster by 24% than 1st method in debug mode.)
+      Quat<DATA_TYPE> rot_conj( -rot[Xelt], -rot[Yelt], -rot[Zelt], rot[Welt] ); 
+      Quat<DATA_TYPE> pure( vector[0], vector[1], vector[2], (DATA_TYPE)0.0 );
+      Quat<DATA_TYPE> temp( 
+         pure[Welt]*rot_conj[Xelt] + pure[Xelt]*rot_conj[Welt] + pure[Yelt]*rot_conj[Zelt] - pure[Zelt]*rot_conj[Yelt],
+         pure[Welt]*rot_conj[Yelt] + pure[Yelt]*rot_conj[Welt] + pure[Zelt]*rot_conj[Xelt] - pure[Xelt]*rot_conj[Zelt],
+         pure[Welt]*rot_conj[Zelt] + pure[Zelt]*rot_conj[Welt] + pure[Xelt]*rot_conj[Yelt] - pure[Yelt]*rot_conj[Xelt],
+         pure[Welt]*rot_conj[Welt] - pure[Xelt]*rot_conj[Xelt] - pure[Yelt]*rot_conj[Yelt] - pure[Zelt]*rot_conj[Zelt] );
 
-      // shoemake recent version (right hand rule):
-      // return makeVec( rot * makePure( vector ) * makeInvert( rot ) );
-      return makeVec( rot * makePure( vector ) * makeConj( rot ) );
+      return Vec<DATA_TYPE, 3>( 
+         rot[Welt]*temp[Xelt] + rot[Xelt]*temp[Welt] + rot[Yelt]*temp[Zelt] - rot[Zelt]*temp[Yelt],
+         rot[Welt]*temp[Yelt] + rot[Yelt]*temp[Welt] + rot[Zelt]*temp[Xelt] - rot[Xelt]*temp[Zelt],
+         rot[Welt]*temp[Zelt] + rot[Zelt]*temp[Welt] + rot[Xelt]*temp[Yelt] - rot[Yelt]*temp[Xelt] );
    }
 
    /** matrix * vector xform.
