@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixCompareTest.h,v $
- * Date modified: $Date: 2002-03-11 02:19:32 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2002-03-18 21:56:24 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -113,222 +113,15 @@ public:
          }
       }
    };
-   
-   void testMatEqualityFloatTest()
-   {
-      testEqual<float, 5, 5>::go();
-      testEqual<float, 5, 4>::go();
-      testEqual<float, 4, 5>::go();
-      testEqual<float, 4, 4>::go();
-      testEqual<float, 4, 3>::go();
-      testEqual<float, 3, 4>::go();
-      testEqual<float, 4, 3>::go();
-      testEqual<float, 3, 3>::go();
-      testEqual<float, 3, 2>::go();
-      testEqual<float, 2, 3>::go();
-      testEqual<float, 2, 2>::go();
-      testEqual<float, 2, 1>::go();
-      testEqual<float, 1, 2>::go();
-      testEqual<float, 1, 1>::go();
-   }
-   
-   void testMatEqualityDoubleTest()
-   {
-      testEqual<double, 5, 5>::go();
-      testEqual<double, 5, 4>::go();
-      testEqual<double, 4, 5>::go();
-      testEqual<double, 4, 4>::go();
-      testEqual<double, 4, 3>::go();
-      testEqual<double, 3, 4>::go();
-      testEqual<double, 4, 3>::go();
-      testEqual<double, 3, 3>::go();
-      testEqual<double, 3, 2>::go();
-      testEqual<double, 2, 3>::go();
-      testEqual<double, 2, 2>::go();
-      testEqual<double, 2, 1>::go();
-      testEqual<double, 1, 2>::go();
-      testEqual<double, 1, 1>::go();
-   }
-   
-   void testMatEqualityIntTest()
-   {
-      testEqual<int, 5, 5>::go();
-      testEqual<int, 5, 4>::go();
-      testEqual<int, 4, 5>::go();
-      testEqual<int, 4, 4>::go();
-      testEqual<int, 4, 3>::go();
-      testEqual<int, 3, 4>::go();
-      testEqual<int, 4, 3>::go();
-      testEqual<int, 3, 3>::go();
-      testEqual<int, 3, 2>::go();
-      testEqual<int, 2, 3>::go();
-      testEqual<int, 2, 2>::go();
-      testEqual<int, 2, 1>::go();
-      testEqual<int, 1, 2>::go();
-      testEqual<int, 1, 1>::go();
-   }
 
-   void testMatTimingOpEqualityTest()
-   {
-      // Test overhead of creation
-      const long iters(25000);
-      
-      gmtl::Matrix<float, 1, 1> src_mat11;
-      gmtl::Matrix<float, 2, 2> src_mat22;
-      gmtl::Matrix<float, 3, 3> src_mat33;
-      gmtl::Matrix<float, 3, 4> src_mat34;
-      gmtl::Matrix<float, 4, 4> src_mat44;
-      gmtl::Matrix<double, 10, 1> src_mat101;
-      
-      // half will be equal
-      src_mat11[0] = 1.0f;
-      src_mat22[0] = 1.0f;
-      src_mat33[4] = 2.0f;
-      
-      gmtl::Matrix<float, 1, 1> test_mat11( src_mat11 );
-      gmtl::Matrix<float, 2, 2> test_mat22( src_mat22 );
-      gmtl::Matrix<float, 3, 3> test_mat33( src_mat33 );
-      gmtl::Matrix<float, 3, 4> test_mat34( src_mat34 );
-      gmtl::Matrix<float, 4, 4> test_mat44( src_mat44 );
-      gmtl::Matrix<double, 10, 1> test_mat101( src_mat101 );
-      
-      // half will be not equal
-      src_mat34[5] = 2.0f;
-      src_mat44[15] = 3.0f;
-      src_mat101[9] = 1.0f;
+   void testMatEqualityFloatTest();
+   void testMatEqualityDoubleTest();
+   void testMatEqualityIntTest();
 
-      unsigned true_count(0);
-      
-      CPPUNIT_METRIC_START_TIMING();
-      for( long iter=0;iter<iters; ++iter)
-      {
-         if (src_mat11 == test_mat11)
-            ++true_count;
-         if (src_mat22 == test_mat22)
-            ++true_count;
-         if (src_mat33 == test_mat33)
-            ++true_count;
-         if (src_mat34 == test_mat34)
-            ++true_count;
-         if (src_mat44 == test_mat44)
-            ++true_count;
-         if (src_mat101 == test_mat101)
-            ++true_count;
-      }
+   void testMatTimingOpEqualityTest();
+   void testMatTimingOpNotEqualityTest();
+   void testMatTimingIsEqualTest();
 
-      CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixCompareTest/OpEqualityTest", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
-      // make sure compiler uses true_count
-      CPPUNIT_ASSERT( true_count > 0 );
-   }
-   
-   void testMatTimingOpNotEqualityTest()
-   {
-      // Test overhead of creation
-      const long iters(25000);
-      
-      gmtl::Matrix<float, 1, 1> src_mat11;
-      gmtl::Matrix<float, 2, 2> src_mat22;
-      gmtl::Matrix<float, 3, 3> src_mat33;
-      gmtl::Matrix<float, 3, 4> src_mat34;
-      gmtl::Matrix<float, 4, 4> src_mat44;
-      gmtl::Matrix<double, 10, 1> src_mat101;
-      
-      // half will be equal
-      src_mat11[0] = 1.0f;
-      src_mat22[0] = 1.0f;
-      src_mat33[4] = 2.0f;
-      
-      gmtl::Matrix<float, 1, 1> test_mat11( src_mat11 );
-      gmtl::Matrix<float, 2, 2> test_mat22( src_mat22 );
-      gmtl::Matrix<float, 3, 3> test_mat33( src_mat33 );
-      gmtl::Matrix<float, 3, 4> test_mat34( src_mat34 );
-      gmtl::Matrix<float, 4, 4> test_mat44( src_mat44 );
-      gmtl::Matrix<double, 10, 1> test_mat101( src_mat101 );
-      
-      // half will be not equal
-      src_mat34[5] = 2.0f;
-      src_mat44[15] = 3.0f;
-      src_mat101[9] = 1.0f;
-
-      unsigned true_count(0);
-      
-      CPPUNIT_METRIC_START_TIMING();
-      for( long iter=0;iter<iters; ++iter)
-      {
-         if (src_mat11 != test_mat11)
-            ++true_count;
-         if (src_mat22 != test_mat22)
-            ++true_count;
-         if (src_mat33 != test_mat33)
-            ++true_count;
-         if (src_mat34 != test_mat34)
-            ++true_count;
-         if (src_mat44 != test_mat44)
-            ++true_count;
-         if (src_mat101 != test_mat101)
-            ++true_count;
-      }
-
-      CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixCompareTest/OpNotEqualityTest", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
-      // make sure compiler uses true_count
-      CPPUNIT_ASSERT( true_count > 0 );
-   }
-   
-   void testMatTimingIsEqualTest()
-   {
-      // Test overhead of creation
-      const long iters(25000);
-      
-      gmtl::Matrix<float, 1, 1> src_mat11;
-      gmtl::Matrix<float, 2, 2> src_mat22;
-      gmtl::Matrix<float, 3, 3> src_mat33;
-      gmtl::Matrix<float, 3, 4> src_mat34;
-      gmtl::Matrix<float, 4, 4> src_mat44;
-      gmtl::Matrix<double, 10, 1> src_mat101;
-      
-      // half will be equal
-      src_mat11[0] = 1.0f;
-      src_mat22[0] = 1.0f;
-      src_mat33[4] = 2.0f;
-      
-      gmtl::Matrix<float, 1, 1> test_mat11( src_mat11 );
-      gmtl::Matrix<float, 2, 2> test_mat22( src_mat22 );
-      gmtl::Matrix<float, 3, 3> test_mat33( src_mat33 );
-      gmtl::Matrix<float, 3, 4> test_mat34( src_mat34 );
-      gmtl::Matrix<float, 4, 4> test_mat44( src_mat44 );
-      gmtl::Matrix<double, 10, 1> test_mat101( src_mat101 );
-      
-      // half will be not equal
-      src_mat34[5] = 2.0f;
-      src_mat44[15] = 3.0f;
-      src_mat101[9] = 1.0f;
-      
-      unsigned true_count(0);
-      
-      CPPUNIT_METRIC_START_TIMING();
-      for( long iter=0;iter<iters; ++iter)
-      {
-         if (gmtl::isEqual( src_mat11,  test_mat11, 0.0f ))
-            ++true_count;
-         if (gmtl::isEqual( src_mat22,  test_mat22, 0.2f ))
-            ++true_count;
-         if (gmtl::isEqual( src_mat33,  test_mat33, 0.3f ))
-            ++true_count;
-         if (gmtl::isEqual( src_mat34,  test_mat34, 0.6f ))
-            ++true_count;
-         if (gmtl::isEqual( src_mat44,  test_mat44, 0.8f ))
-            ++true_count;
-         if (gmtl::isEqual( src_mat101, test_mat101, 111.1 ))
-            ++true_count;
-      }
-      CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixCompareTest/IsEqualTest", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
-      // make sure compiler uses true_count
-      CPPUNIT_ASSERT( true_count > 0 );
-   }   
-   
    static CppUnit::Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("MatrixCompareTest");
