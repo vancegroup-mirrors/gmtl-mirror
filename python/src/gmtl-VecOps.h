@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-VecOps.h,v $
- * Date modified: $Date: 2004-05-25 16:59:56 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2004-09-16 21:22:09 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -50,8 +50,10 @@ namespace gmtl
    typedef gmtl::VecBase<float, 4> VecBase4f;
    typedef gmtl::VecBase<double, 4> VecBase4d;
 
-   template float dot(const gmtl::Vec3f&, const gmtl::Vec3f&);
-   template float dot(const gmtl::Vec4f&, const gmtl::Vec4f&);
+   template float dot(const gmtl::VecBase<float, 3>&,
+                      const gmtl::VecBase<float, 3>&);
+   template float dot(const gmtl::VecBase<float, 4>&,
+                      const gmtl::VecBase<float, 4>&);
 
    template float length(const gmtl::Vec3f&);
    template float length(const gmtl::Vec4f&);
