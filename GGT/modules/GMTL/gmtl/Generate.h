@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-03-15 15:29:24 $
- * Version:       $Revision: 1.25 $
+ * Date modified: $Date: 2002-03-15 19:24:59 $
+ * Version:       $Revision: 1.26 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -330,6 +330,16 @@ namespace gmtl
       return result;
    }
 
+   /** Create a translation matrix from a vec
+   */
+   template< typename MATRIX_TYPE, unsigned SIZE >
+   inline MATRIX_TYPE makeTrans( const Vec<typename MATRIX_TYPE::DataType, SIZE>& trans, Type2Type< MATRIX_TYPE > t = Type2Type< MATRIX_TYPE >() )
+   {
+      MATRIX_TYPE temporary;
+      return makeTrans( temporary, trans );
+   }
+
+
 
 
    /** Create a scale matrix.
@@ -499,15 +509,17 @@ namespace gmtl
 
    /** Create a rotation matrix using euler angles (in radians) (static version)
     * @post this function only produces 3x3, 3x4, 4x3, and 4x4 matrices, and is undefined otherwise
+    * @todo Increase perf of makeRot(val,val,val, rotMethod). Make it fast for mp
     */
-   /*
-   template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
-   inline Matrix<DATA_TYPE, ROWS, COLS> makeRot( DATA_TYPE rotx, DATA_TYPE roty, DATA_TYPE rotz, RotationOrder order, Type2Type<Matrix<DATA_TYPE, ROWS, COLS> > t = Type2Type<Matrix<DATA_TYPE, ROWS, COLS> >() )
+   ///*
+   template< typename MATRIX_TYPE >
+   inline MATRIX_TYPE makeRot( typename MATRIX_TYPE::DataType rotx, typename MATRIX_TYPE::DataType roty, typename MATRIX_TYPE::DataType rotz, 
+                               RotationOrder order, Type2Type< MATRIX_TYPE > t = Type2Type< MATRIX_TYPE >() )
    {
-      Matrix<DATA_TYPE, ROWS, COLS> temporary;
+      MATRIX_TYPE temporary;
       return makeRot( temporary, rotx, roty, rotz, order );
    }
-   */
+   //*/
 
    /** create a rotation matrix that will rotate from SrcAxis to DestAxis.
     *  xSrcAxis, ySrcAxis, zSrcAxis is the base rotation to go from and defaults to xSrcAxis(1,0,0), ySrcAxis(0,1,0), zSrcAxis(0,0,1) if you only pass in 3 axes.
