@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: OptTest.cpp,v $
- * Date modified: $Date: 2002-02-20 07:06:24 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2002-02-22 20:12:58 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -289,7 +289,7 @@ namespace gmtlTest
    */
 
    OptTest::OptTest( std::string name )
-   : TestCase (name)
+   : CppUnit::TestCase (name)
    {;}
 
    OptTest::~OptTest()

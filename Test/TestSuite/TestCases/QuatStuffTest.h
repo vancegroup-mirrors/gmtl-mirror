@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatStuffTest.h,v $
- * Date modified: $Date: 2002-02-22 19:45:18 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-02-22 20:12:58 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -71,8 +71,8 @@ namespace gmtlTest
       {
          // make sure make rot produces a normalized quat (if not normalized, then it isn't a rotation)
          gmtl::Quatf q1, q2, q3, q4;
-         q3 = makeRot( q1, gmtl::Math::deg2Rad( 45.0f ), 0.0f, 1.0f, 0.0f );
-         q4 = makeRot( q2, gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f );
+         q3 = gmtl::makeRot( q1, gmtl::Math::deg2Rad( 45.0f ), 0.0f, 1.0f, 0.0f );
+         q4 = gmtl::makeRot( q2, gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f );
          gmtl::normalize( q3 );
          gmtl::normalize( q4 );
 

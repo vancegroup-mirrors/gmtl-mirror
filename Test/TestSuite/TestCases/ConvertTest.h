@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: ConvertTest.h,v $
- * Date modified: $Date: 2002-02-22 10:21:12 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-02-22 20:12:58 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -48,7 +48,7 @@ class ConvertTest : public CppUnit::TestCase
 {
 public:
    ConvertTest( std::string name = "ConvertTest" )
-   : TestCase (name)
+   : CppUnit::TestCase (name)
    {;}
 
    virtual ~ConvertTest()
@@ -66,19 +66,19 @@ public:
       const float eps = 0.0001;
       gmtl::Vec<float, 3> vec( 1,2,3 );
       gmtl::Quat<float> quat( 4,5,6 ), bok, expected( 1, 2, 3, 0 );
-      bok = convert( quat, vec );
+      bok = gmtl::convert( quat, vec );
       CPPUNIT_ASSERT( gmtl::isEqual( expected, quat, eps ) );
       CPPUNIT_ASSERT( gmtl::isEqual( expected, bok, eps ) );
    }
 
-   static Test* suite()
+   static CppUnit::Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite( "ConvertTest" );
       test_suite->addTest( new CppUnit::TestCaller<ConvertTest>( "testConvertVecToPureQuat", &ConvertTest::testConvertVecToPureQuat ) );
       return test_suite;
    }
 
-   static Test* interactiveSuite()
+   static CppUnit::Test* interactiveSuite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite( "InteractiveThreadTest" );
       //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>( "interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));

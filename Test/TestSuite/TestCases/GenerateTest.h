@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: GenerateTest.h,v $
- * Date modified: $Date: 2002-02-22 10:21:12 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-02-22 20:12:58 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -53,7 +53,7 @@ class GenerateTest : public CppUnit::TestCase
 {
 public:
    GenerateTest( std::string name = "GenerateTest" )
-   : TestCase (name)
+   : CppUnit::TestCase (name)
    {;}
 
    virtual ~GenerateTest()
@@ -66,7 +66,7 @@ public:
    {
    }
    
-   void output( gmtl::Quatf q )
+   void output( gmtl::Quat<float> q )
    {
       std::cout<<q[0]<<" "<<q[1]<<" "<<q[2]<<" "<<q[3]<<std::endl;
    } 
@@ -76,7 +76,7 @@ public:
    void testMakeVecFromQuat()
    {
       gmtl::Quat<float> quat( 0.0f,21.0f,31.0f,1234.0f );
-      gmtl::Vec<float, 3> vec( makeVec( quat ) );
+      gmtl::Vec<float, 3> vec( gmtl::makeVec( quat ) );
       CPPUNIT_ASSERT( vec[0] == 0.0f );
       CPPUNIT_ASSERT( vec[1] == 21.0f );
       CPPUNIT_ASSERT( vec[2] == 31.0f );
@@ -87,7 +87,7 @@ public:
    void testQuatMakePure()
    {
       gmtl::Vec<float, 3> vec( 121, 232, 343 );
-      gmtl::Quat<float> quat( makePure( vec ) );
+      gmtl::Quat<float> quat( gmtl::makePure( vec ) );
       CPPUNIT_ASSERT( quat[gmtl::Xelt] == 121 );
       CPPUNIT_ASSERT( quat[gmtl::Yelt] == 232 );
       CPPUNIT_ASSERT( quat[gmtl::Zelt] == 343 );
@@ -96,7 +96,7 @@ public:
    void testQuatMakeConj()
    {
       gmtl::Quat<float> quat( 0.0f,21.0f,31.0f,1234.0f );
-      gmtl::Quat<float> quat2 = makeConj( quat );
+      gmtl::Quat<float> quat2 = gmtl::makeConj( quat );
       
       // make sure the func didn't munge the data...
       CPPUNIT_ASSERT( quat[gmtl::Xelt] == 0.0f );
@@ -115,8 +115,8 @@ public:
    {
       // test out mult( result, quat, quat )
       const float eps = 0.0001f;
-      gmtl::Quatf q( 0.2, 0.33, 0.44, 0.101 ), expected_result( -0.567053, -0.935637, -1.24752, 0.286362 );
-      gmtl::Quatf q4( makeInvert( q ) );
+      gmtl::Quat<float> q( 0.2, 0.33, 0.44, 0.101 ), expected_result( -0.567053, -0.935637, -1.24752, 0.286362 );
+      gmtl::Quat<float> q4( gmtl::makeInvert( q ) );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result, q4, eps ) );
    }
    
@@ -126,8 +126,8 @@ public:
       gmtl::Quat<float> q1, q2;
       gmtl::makeRot( q1, gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f );
       gmtl::makeRot( q2, gmtl::Math::deg2Rad( 32.0f ), 0.0f, 1.0f, 0.0f );
-      gmtl::Quatf expected_result1( 0.707107, 0, 0, 0.707107 );
-      gmtl::Quatf expected_result2( 0, 0.275637, 0, 0.961262 );
+      gmtl::Quat<float> expected_result1( 0.707107, 0, 0, 0.707107 );
+      gmtl::Quat<float> expected_result2( 0, 0.275637, 0, 0.961262 );
 
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, q1, eps ) );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result2, q2, eps ) );
@@ -135,50 +135,50 @@ public:
       CPPUNIT_ASSERT( gmtl::isNormalized( q2, eps ) );
       
       // values from VR Juggler math lib...
-      std::vector<gmtl::Quatf> quats;
-      quats.push_back( gmtl::Quatf( 0, 0, 0, -1       ) );
-      quats.push_back( gmtl::Quatf( -0, -0.173648, -0, -0.984808) );
-      quats.push_back( gmtl::Quatf( -0, -0.34202, -0, -0.939693 ) );
-      quats.push_back( gmtl::Quatf( -0, -0.5, -0, -0.866025     ) );
-      quats.push_back( gmtl::Quatf( -0, -0.642788, -0, -0.766044) );
-      quats.push_back( gmtl::Quatf( -0, -0.766044, -0, -0.642788) );
-      quats.push_back( gmtl::Quatf( -0, -0.866025, -0, -0.5     ) );
-      quats.push_back( gmtl::Quatf( -0, -0.939693, -0, -0.34202 ) );
-      quats.push_back( gmtl::Quatf( -0, -0.984808, -0, -0.173648) );
-      quats.push_back( gmtl::Quatf( -0, -1, -0, 0    ) );
-      quats.push_back( gmtl::Quatf( -0, -0.984808, -0, 0.173648 ) );
-      quats.push_back( gmtl::Quatf( -0, -0.939693, -0, 0.34202  ) );
-      quats.push_back( gmtl::Quatf( -0, -0.866025, -0, 0.5      ) );
-      quats.push_back( gmtl::Quatf( -0, -0.766044, -0, 0.642788 ) );
-      quats.push_back( gmtl::Quatf( -0, -0.642788, -0, 0.766044 ) );
-      quats.push_back( gmtl::Quatf( -0, -0.5, -0, 0.866025      ) );
-      quats.push_back( gmtl::Quatf( -0, -0.34202, -0, 0.939693  ) );
-      quats.push_back( gmtl::Quatf( -0, -0.173648, -0, 0.984808 ) );
-      quats.push_back( gmtl::Quatf( 0, 0, 0, 1                  ) );
-      quats.push_back( gmtl::Quatf( 0, 0.173648, 0, 0.984808    ) );
-      quats.push_back( gmtl::Quatf( 0, 0.34202, 0, 0.939693     ) );
-      quats.push_back( gmtl::Quatf( 0, 0.5, 0, 0.866025         ) );
-      quats.push_back( gmtl::Quatf( 0, 0.642788, 0, 0.766044    ) );
-      quats.push_back( gmtl::Quatf( 0, 0.766044, 0, 0.642788    ) );
-      quats.push_back( gmtl::Quatf( 0, 0.866025, 0, 0.5         ) );
-      quats.push_back( gmtl::Quatf( 0, 0.939693, 0, 0.34202     ) );
-      quats.push_back( gmtl::Quatf( 0, 0.984808, 0, 0.173648    ) );
-      quats.push_back( gmtl::Quatf( 0, 1, 0, 0       ) );
-      quats.push_back( gmtl::Quatf( 0, 0.984808, 0, -0.173648   ) );
-      quats.push_back( gmtl::Quatf( 0, 0.939693, 0, -0.34202    ) );
-      quats.push_back( gmtl::Quatf( 0, 0.866025, 0, -0.5        ) );
-      quats.push_back( gmtl::Quatf( 0, 0.766044, 0, -0.642788   ) );
-      quats.push_back( gmtl::Quatf( 0, 0.642788, 0, -0.766044   ) );
-      quats.push_back( gmtl::Quatf( 0, 0.5, 0, -0.866025        ) );
-      quats.push_back( gmtl::Quatf( 0, 0.34202, 0, -0.939693    ) );
-      quats.push_back( gmtl::Quatf( 0, 0.173648, 0, -0.984808   ) );
-      quats.push_back( gmtl::Quatf( -0, 0, -0, -1    ) );
+      std::vector< gmtl::Quat<float> > quats;
+      quats.push_back( gmtl::Quat<float>( 0, 0, 0, -1       ) );
+      quats.push_back( gmtl::Quat<float>( -0, -0.173648, -0, -0.984808) );
+      quats.push_back( gmtl::Quat<float>( -0, -0.34202, -0, -0.939693 ) );
+      quats.push_back( gmtl::Quat<float>( -0, -0.5, -0, -0.866025     ) );
+      quats.push_back( gmtl::Quat<float>( -0, -0.642788, -0, -0.766044) );
+      quats.push_back( gmtl::Quat<float>( -0, -0.766044, -0, -0.642788) );
+      quats.push_back( gmtl::Quat<float>( -0, -0.866025, -0, -0.5     ) );
+      quats.push_back( gmtl::Quat<float>( -0, -0.939693, -0, -0.34202 ) );
+      quats.push_back( gmtl::Quat<float>( -0, -0.984808, -0, -0.173648) );
+      quats.push_back( gmtl::Quat<float>( -0, -1, -0, 0    ) );
+      quats.push_back( gmtl::Quat<float>( -0, -0.984808, -0, 0.173648 ) );
+      quats.push_back( gmtl::Quat<float>( -0, -0.939693, -0, 0.34202  ) );
+      quats.push_back( gmtl::Quat<float>( -0, -0.866025, -0, 0.5      ) );
+      quats.push_back( gmtl::Quat<float>( -0, -0.766044, -0, 0.642788 ) );
+      quats.push_back( gmtl::Quat<float>( -0, -0.642788, -0, 0.766044 ) );
+      quats.push_back( gmtl::Quat<float>( -0, -0.5, -0, 0.866025      ) );
+      quats.push_back( gmtl::Quat<float>( -0, -0.34202, -0, 0.939693  ) );
+      quats.push_back( gmtl::Quat<float>( -0, -0.173648, -0, 0.984808 ) );
+      quats.push_back( gmtl::Quat<float>( 0, 0, 0, 1                  ) );
+      quats.push_back( gmtl::Quat<float>( 0, 0.173648, 0, 0.984808    ) );
+      quats.push_back( gmtl::Quat<float>( 0, 0.34202, 0, 0.939693     ) );
+      quats.push_back( gmtl::Quat<float>( 0, 0.5, 0, 0.866025         ) );
+      quats.push_back( gmtl::Quat<float>( 0, 0.642788, 0, 0.766044    ) );
+      quats.push_back( gmtl::Quat<float>( 0, 0.766044, 0, 0.642788    ) );
+      quats.push_back( gmtl::Quat<float>( 0, 0.866025, 0, 0.5         ) );
+      quats.push_back( gmtl::Quat<float>( 0, 0.939693, 0, 0.34202     ) );
+      quats.push_back( gmtl::Quat<float>( 0, 0.984808, 0, 0.173648    ) );
+      quats.push_back( gmtl::Quat<float>( 0, 1, 0, 0       ) );
+      quats.push_back( gmtl::Quat<float>( 0, 0.984808, 0, -0.173648   ) );
+      quats.push_back( gmtl::Quat<float>( 0, 0.939693, 0, -0.34202    ) );
+      quats.push_back( gmtl::Quat<float>( 0, 0.866025, 0, -0.5        ) );
+      quats.push_back( gmtl::Quat<float>( 0, 0.766044, 0, -0.642788   ) );
+      quats.push_back( gmtl::Quat<float>( 0, 0.642788, 0, -0.766044   ) );
+      quats.push_back( gmtl::Quat<float>( 0, 0.5, 0, -0.866025        ) );
+      quats.push_back( gmtl::Quat<float>( 0, 0.34202, 0, -0.939693    ) );
+      quats.push_back( gmtl::Quat<float>( 0, 0.173648, 0, -0.984808   ) );
+      quats.push_back( gmtl::Quat<float>( -0, 0, -0, -1    ) );
       
       // @todo check this against another math lib other than VR Juggler...
       int count = 0;
       for (int x = -360; x <= 360; x += 20)
       {
-         gmtl::Quatf q3;
+         gmtl::Quat<float> q3;
          CPPUNIT_ASSERT( count >= 0 );
          gmtl::makeRot( q2, gmtl::Math::deg2Rad( float(x) ), 0.0f, 1.0f, 0.0f );
          gmtl::makeRot( q3, gmtl::Math::deg2Rad( float(x) ), gmtl::Vec3f( 0.0f, 1.0f, 0.0f ) );
@@ -233,7 +233,7 @@ public:
       // @todo check this against another math lib other than VR Juggler...
       //   (all the vals above look sane, but... )
       float a, b, c, fg;
-      gmtl::Quatf q2;
+      gmtl::Quat<float> q2;
       int count = 0;
       for (int x = -360; x <= 360; x += 20)
       {
@@ -247,7 +247,7 @@ public:
    void testQuatMakeGetMakeRot()
    {
       const float eps = 0.0001f;
-      gmtl::Quatf q2, q3;
+      gmtl::Quat<float> q2, q3;
       float fg, a, b, c, fg1, a1, b1, c1;
       for (int x = -360; x <= 360; x += 20)
       {
@@ -265,7 +265,7 @@ public:
    }
 
    /** @todo implement quat makeRot Euler */
-   static Test* suite()
+   static CppUnit::Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite( "GenerateTest" );
       test_suite->addTest( new CppUnit::TestCaller<GenerateTest>( "testMakeVecFromQuat", &GenerateTest::testMakeVecFromQuat ) );
@@ -278,7 +278,7 @@ public:
       return test_suite;
    }
 
-   static Test* interactiveSuite()
+   static CppUnit::Test* interactiveSuite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite( "InteractiveThreadTest" );
       //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>( "interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));

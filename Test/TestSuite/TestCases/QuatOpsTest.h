@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatOpsTest.h,v $
- * Date modified: $Date: 2002-02-22 10:41:40 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-02-22 20:12:58 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -51,7 +51,7 @@ class QuatOpsTest : public CppUnit::TestCase
 {
 public:
    QuatOpsTest( std::string name = "QuatOpsTest" )
-   : TestCase (name)
+   : CppUnit::TestCase (name)
    {;}
 
    virtual ~QuatOpsTest()
@@ -71,20 +71,20 @@ public:
    
    void testQuatTimingMult()
    {
-      gmtl::Quatf<float> q1, q2, q3, q4;
+      gmtl::Quat<float> q1, q2, q3, q4;
       const long iters(400000);
       CPPUNIT_METRIC_START_TIMING();
       bool result = false;
       for (long iter = 0; iter < iters; ++iter)
       {
-         q4 = mult( q1, q2, q3 );
+         q4 = gmtl::mult( q1, q2, q3 );
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatOpsTest/mult(q1,q2)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
    void testQuatTimingOperatorMult()
    {
-      gmtl::Quatf<float> q1, q2, q3, q4;
+      gmtl::Quat<float> q1, q2, q3, q4;
       const long iters(400000);
       CPPUNIT_METRIC_START_TIMING();
       bool result = false;
@@ -98,13 +98,13 @@ public:
    
    void testQuatTimingDiv()
    {
-      gmtl::Quatf<float> q1, q2, q3, q4;
+      gmtl::Quat<float> q1, q2, q3, q4;
       const long iters(400000);
       CPPUNIT_METRIC_START_TIMING();
       bool result = false;
       for (long iter = 0; iter < iters; ++iter)
       {
-         q4 = div( q1, q2, q3 );
+         q4 = gmtl::div( q1, q2, q3 );
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatOpsTest/invert()", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
@@ -112,14 +112,14 @@ public:
    
    void testQuatTimingVectorMult()
    {
-      gmtl::Quatf<float> q1, q2, q3, q4;
+      gmtl::Quat<float> q1, q2, q3, q4;
       float bok;
       const long iters(400000);
       CPPUNIT_METRIC_START_TIMING();
       bool result = false;
       for (long iter = 0; iter < iters; ++iter)
       {
-         q4 = mult( q1, q2, bok );
+         q4 = gmtl::mult( q1, q2, bok );
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatOpsTest/mult(q,scalar)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
@@ -127,13 +127,13 @@ public:
    
    void testQuatTimingVectorAdd()
    {
-      gmtl::Quatf<float> q1, q2, q3, q4;
+      gmtl::Quat<float> q1, q2, q3, q4;
       const long iters(400000);
       CPPUNIT_METRIC_START_TIMING();
       bool result = false;
       for (long iter = 0; iter < iters; ++iter)
       {
-         q4 = add( q1, q2, q3 );
+         q4 = gmtl::add( q1, q2, q3 );
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatOpsTest/add(r,q1,q2)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
@@ -141,13 +141,13 @@ public:
    
    void testQuatTimingVectorSub()
    {
-      gmtl::Quatf<float> q1, q2, q3, q4;
+      gmtl::Quat<float> q1, q2, q3, q4;
       const long iters(400000);
       CPPUNIT_METRIC_START_TIMING();
       bool result = false;
       for (long iter = 0; iter < iters; ++iter)
       {
-         q4 = sub( q1, q2, q3 );
+         q4 = gmtl::sub( q1, q2, q3 );
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatOpsTest/sub(r,q1,q2)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
@@ -155,14 +155,14 @@ public:
    
    void testQuatTimingVectorDot()
    {
-      gmtl::Quatf<float> q1, q2, q3, q4;
+      gmtl::Quat<float> q1, q2, q3, q4;
       float bok;
       const long iters(400000);
       CPPUNIT_METRIC_START_TIMING();
       bool result = false;
       for (long iter = 0; iter < iters; ++iter)
       {
-         bok = dot( q1, q2 );
+         bok = gmtl::dot( q1, q2 );
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatOpsTest/dot(q1,q2)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
@@ -170,14 +170,14 @@ public:
    
    void testQuatTimingNorm()
    {
-      gmtl::Quatf<float> q1, q2, q3, q4;
+      gmtl::Quat<float> q1, q2, q3, q4;
       float bok;
       const long iters(400000);
       CPPUNIT_METRIC_START_TIMING();
       bool result = false;
       for (long iter = 0; iter < iters; ++iter)
       {
-         bok = lengthSquared( q1 );
+         bok = gmtl::lengthSquared( q1 );
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatOpsTest/lengthSquared(q)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
@@ -185,14 +185,14 @@ public:
    
    void testQuatTimingMag()
    {
-      gmtl::Quatf<float> q1, q2, q3, q4;
+      gmtl::Quat<float> q1, q2, q3, q4;
       float bok;
       const long iters(400000);
       CPPUNIT_METRIC_START_TIMING();
       bool result = false;
       for (long iter = 0; iter < iters; ++iter)
       {
-         bok = length( q1 );
+         bok = gmtl::length( q1 );
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatOpsTest/length(q)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
@@ -200,13 +200,13 @@ public:
    
    void testQuatTimingNormalize()
    {
-      gmtl::Quatf<float> q1, q2, q3, q4;
+      gmtl::Quat<float> q1, q2, q3, q4;
       const long iters(400000);
       CPPUNIT_METRIC_START_TIMING();
       bool result = false;
       for (long iter = 0; iter < iters; ++iter)
       {
-         q4 = normalize( q1 );
+         q4 = gmtl::normalize( q1 );
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatOpsTest/normalize(q)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
@@ -214,13 +214,13 @@ public:
    
    void testQuatTimingNormalizeFast()
    {
-      gmtl::Quatf<float> q1, q2, q3, q4;
+      gmtl::Quat<float> q1, q2, q3, q4;
       const long iters(400000);
       CPPUNIT_METRIC_START_TIMING();
       bool result = false;
       for (long iter = 0; iter < iters; ++iter)
       {
-         q4 = normalizeFast( q1 );
+         q4 = gmtl::normalizeFast( q1 );
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatOpsTest/normalizeFast(q)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
@@ -228,13 +228,13 @@ public:
    
    void testQuatTimingConj()
    {
-      gmtl::Quatf<float> q1, q2, q3, q4;
+      gmtl::Quat<float> q1, q2, q3, q4;
       const long iters(400000);
       CPPUNIT_METRIC_START_TIMING();
       bool result = false;
       for (long iter = 0; iter < iters; ++iter)
       {
-         q4 = conj( q1 );
+         q4 = gmtl::conj( q1 );
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatOpsTest/conj(q)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
@@ -242,13 +242,13 @@ public:
 
    void testQuatTimingInvert()
    {
-      gmtl::Quatf<float> q1, q2, q3, q4;
+      gmtl::Quat<float> q1, q2, q3, q4;
       const long iters(400000);
       CPPUNIT_METRIC_START_TIMING();
       bool result = false;
       for (long iter = 0; iter < iters; ++iter)
       {
-         q4 = invert( q1 );
+         q4 = gmtl::invert( q1 );
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatOpsTest/invert(q)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
@@ -270,22 +270,22 @@ public:
    {
       // test out mult( result, quat, quat )
       const float eps = 0.0001f;
-      gmtl::Quatf q3( 1, 2, 3, 4 ), q4( 5, 6, 7, 8 ), q5, q6;
+      gmtl::Quat<float> q3( 1, 2, 3, 4 ), q4( 5, 6, 7, 8 ), q5, q6;
       gmtl::mult( q5, q3, q4 );
       gmtl::mult( q6, q4, q3 );
       
-      gmtl::Quatf expected_result1( 24, 48, 48, -6 ), expected_result2( 32, 32, 56, -6 );
+      gmtl::Quat<float> expected_result1( 24, 48, 48, -6 ), expected_result2( 32, 32, 56, -6 );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, q5, eps ) );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result2, q6, eps ) );
       
       // operator* should be same
-      gmtl::Quatf q7, q8;
+      gmtl::Quat<float> q7, q8;
       q7 = q3 * q4;
       q8 = q4 * q3;
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, q7, eps ) );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result2, q8, eps ) );
       
-      gmtl::Quatf  bokbokbok( 9, 10, 11, 12 ), expected_result3( 122, 476, 638, -1296 );
+      gmtl::Quat<float>  bokbokbok( 9, 10, 11, 12 ), expected_result3( 122, 476, 638, -1296 );
       q6 = q4 * q3 * bokbokbok;
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result3, q6, eps ) );
    }
@@ -294,11 +294,11 @@ public:
    {
       // test out mult( result, quat, quat )
       const float eps = 0.0001f;
-      gmtl::Quatf q3( 1, 2, 3, 4 ), q4( 5, 6, 7, 8 ), q5, q6;
+      gmtl::Quat<float> q3( 1, 2, 3, 4 ), q4( 5, 6, 7, 8 ), q5, q6;
       gmtl::div( q5, q3, q4 );
       gmtl::div( q6, q4, q3 );
       
-      gmtl::Quatf expected_result1( 0.173913, 0.347826, -0, -1.52174 ), expected_result2( 4, 8, 0, 35 );
+      gmtl::Quat<float> expected_result1( 0.173913, 0.347826, -0, -1.52174 ), expected_result2( 4, 8, 0, 35 );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, q5, eps ) );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result2, q6, eps ) );
    }
@@ -307,10 +307,10 @@ public:
    {
       // test out mult( result, quat, quat )
       const float eps = 0.0001f;
-      gmtl::Quatf q3( 1, 2, 3, 4 ), q5;
+      gmtl::Quat<float> q3( 1, 2, 3, 4 ), q5;
       gmtl::mult( q5, q3, 23.0f );
       
-      gmtl::Quatf expected_result1( 1 * 23.0f, 2 * 23.0f, 3 * 23.0f, 4 * 23.0f );
+      gmtl::Quat<float> expected_result1( 1 * 23.0f, 2 * 23.0f, 3 * 23.0f, 4 * 23.0f );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, q5, eps ) );
    }
    
@@ -318,10 +318,10 @@ public:
    {
       // test out mult( result, quat, quat )
       const float eps = 0.0001f;
-      gmtl::Quatf q3( 1, 2, 3, 4 ), q5, q6( 2, 3, 4, 5 );
+      gmtl::Quat<float> q3( 1, 2, 3, 4 ), q5, q6( 2, 3, 4, 5 );
       gmtl::add( q5, q3, q6 );
       
-      gmtl::Quatf expected_result1( 3, 5, 7, 9 );
+      gmtl::Quat<float> expected_result1( 3, 5, 7, 9 );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, q5, eps ) );
    }
    
@@ -329,10 +329,10 @@ public:
    {
       // test out mult( result, quat, quat )
       const float eps = 0.0001f;
-      gmtl::Quatf q3( 1, 2, 3, 4 ), q5, q6( 2, 3, 4, 5 );
+      gmtl::Quat<float> q3( 1, 2, 3, 4 ), q5, q6( 2, 3, 4, 5 );
       gmtl::sub( q5, q3, q6 );
 
-      gmtl::Quatf expected_result1( -1, -1, -1, -1 );
+      gmtl::Quat<float> expected_result1( -1, -1, -1, -1 );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, q5, eps ) );
    }
    
@@ -340,34 +340,34 @@ public:
    {
       // test out mult( result, quat, quat )
       const float eps = 0.0001f;
-      CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::dot( gmtl::Quatf( 1, 0, 0, 0 ), gmtl::Quatf( 1, 0, 0, 0 ) ), 1.0f, eps ) );
-      CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::dot( gmtl::Quatf( 1, 0, 0, 0 ), gmtl::Quatf( 0, 1, 0, 0 ) ), 0.0f, eps ) );
-      CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::dot( gmtl::Quatf( 1, 0, 0, 0 ), gmtl::Quatf( 1, 1, 0, 0 ) ), 1.0f, eps ) );
-      CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::dot( gmtl::Quatf( 1, 0, 0, 10 ), gmtl::Quatf( 1, 0, 0, 223 ) ), 2231.0f, eps ) );
+      CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::dot( gmtl::Quat<float>( 1, 0, 0, 0 ), gmtl::Quat<float>( 1, 0, 0, 0 ) ), 1.0f, eps ) );
+      CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::dot( gmtl::Quat<float>( 1, 0, 0, 0 ), gmtl::Quat<float>( 0, 1, 0, 0 ) ), 0.0f, eps ) );
+      CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::dot( gmtl::Quat<float>( 1, 0, 0, 0 ), gmtl::Quat<float>( 1, 1, 0, 0 ) ), 1.0f, eps ) );
+      CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::dot( gmtl::Quat<float>( 1, 0, 0, 10 ), gmtl::Quat<float>( 1, 0, 0, 223 ) ), 2231.0f, eps ) );
    }
    
    void testQuatNorm()
    {
       const float eps = 0.0001f;
-      gmtl::Quatf q1( 1,1,1,1 );
-      CPPUNIT_ASSERT( gmtl::Math::isEqual( lengthSquared( q1 ), 4.0f, eps ) );
+      gmtl::Quat<float> q1( 1,1,1,1 );
+      CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::lengthSquared( q1 ), 4.0f, eps ) );
    }
    
    void testQuatMag()
    {
       const float eps = 0.0001f;
-      gmtl::Quatf q1( 1,1,1,1 );
-      CPPUNIT_ASSERT( gmtl::Math::isEqual( length( q1 ), 2.0f, eps ) );
+      gmtl::Quat<float> q1( 1,1,1,1 );
+      CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::length( q1 ), 2.0f, eps ) );
    }
    
    void testQuatNormalize()
    {
       const float eps = 0.0001f;
-      gmtl::Quatf q3( 0,0,342334,0 ), q5( 342334,-342334,342334,-342334 );
+      gmtl::Quat<float> q3( 0,0,342334,0 ), q5( 342334,-342334,342334,-342334 );
       gmtl::normalize( q3 );
       gmtl::normalize( q5 );
 
-      gmtl::Quatf expected_result1( 0, 0, 1, 0 ), expected_result2( 0.5, -0.5, 0.5, -0.5 );
+      gmtl::Quat<float> expected_result1( 0, 0, 1, 0 ), expected_result2( 0.5, -0.5, 0.5, -0.5 );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, q3, eps ) );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result2, q5, eps ) );
       
@@ -378,11 +378,11 @@ public:
    void testQuatNormalizeFast()
    {
       const float eps = 0.0001f;
-      gmtl::Quatf q3( 0,0,2,0 ), q5( 2,-2,2,-2 );
+      gmtl::Quat<float> q3( 0,0,2,0 ), q5( 2,-2,2,-2 );
       gmtl::normalizeFast( q3 );
       gmtl::normalizeFast( q5 );
 
-      gmtl::Quatf expected_result1( 0, 0, 0.5, 0 ), expected_result2( 0.125, -0.125, 0.125, -0.125 );
+      gmtl::Quat<float> expected_result1( 0, 0, 0.5, 0 ), expected_result2( 0.125, -0.125, 0.125, -0.125 );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, q3, eps ) );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result2, q5, eps ) );
    }
@@ -390,11 +390,11 @@ public:
    void testQuatConj()
    {
       const float eps = 0.0001f;
-      gmtl::Quatf q3( 0,0,342334,0 ), q5( 342334,-342334,342334,-342334 );
+      gmtl::Quat<float> q3( 0,0,342334,0 ), q5( 342334,-342334,342334,-342334 );
       gmtl::conj( q3 );
       gmtl::conj( q5 );
 
-      gmtl::Quatf expected_result1( 0, 0, -342334, 0 ), expected_result2( -342334,342334,-342334,-342334 );
+      gmtl::Quat<float> expected_result1( 0, 0, -342334, 0 ), expected_result2( -342334,342334,-342334,-342334 );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, q3, eps ) );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result2, q5, eps ) );
    }
@@ -403,20 +403,20 @@ public:
    {
       // test out mult( result, quat, quat )
       const float eps = 0.0001f;
-      gmtl::Quatf q( 0.2, 0.33, 0.44, 0.101 ), expected_result( -0.567053, -0.935637, -1.24752, 0.286362 );
-      gmtl::Quatf q2( q );
-      gmtl::Quatf q3( gmtl::invert( q2 ) );
+      gmtl::Quat<float> q( 0.2, 0.33, 0.44, 0.101 ), expected_result( -0.567053, -0.935637, -1.24752, 0.286362 );
+      gmtl::Quat<float> q2( q );
+      gmtl::Quat<float> q3( gmtl::invert( q2 ) );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result, q3, eps ) );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result, q2, eps ) );
       
-      gmtl::Quatf q4( makeInvert( q ) );
+      gmtl::Quat<float> q4( gmtl::makeInvert( q ) );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result, q4, eps ) );
    }
 
    /** @todo, slerp, lerp, squad, meantangent, exp, log */
    
 
-   static Test* suite()
+   static CppUnit::Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("QuatOpsTest");
       test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatMult", &QuatOpsTest::testQuatMult));
@@ -449,7 +449,7 @@ public:
       return test_suite;
    }
 
-   static Test* interactiveSuite()
+   static CppUnit::Test* interactiveSuite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveThreadTest");
       //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));

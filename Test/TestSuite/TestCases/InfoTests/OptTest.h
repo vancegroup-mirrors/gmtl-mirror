@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: OptTest.h,v $
- * Date modified: $Date: 2002-02-12 18:01:10 $
- * Version:       $Revision: 1.11 $
+ * Date modified: $Date: 2002-02-22 20:12:58 $
+ * Version:       $Revision: 1.12 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -104,7 +104,7 @@ public:
    // test perf of passing a primitive by value/ref/const ref
    // test the performance of passing primitives into functions
    template< class T >
-   void OptTest::testPassPrimitiveTypes()
+   void testPassPrimitiveTypes()
    {
       T prim = 24;
       std::cout << std::endl << "test performance of passing "<<(typeid(T).name())<<" into funcs" << std::endl;
@@ -149,7 +149,7 @@ public:
       }
    }
 
-   static Test* suite()
+   static CppUnit::Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("OptTest");
       test_suite->addTest( new CppUnit::TestCaller<OptTest>("testInPlace", &OptTest::testInPlace));
@@ -169,7 +169,7 @@ public:
       return test_suite;
    }
 
-   static Test* interactiveSuite()
+   static CppUnit::Test* interactiveSuite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveThreadTest");
       //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
