@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Vec_double_4.cpp,v $
- * Date modified: $Date: 2004-10-27 19:01:33 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2004-10-28 00:03:58 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -41,8 +41,6 @@ void _Export_Vec_double_4()
     class_< gmtl::Vec<double,4>, bases< gmtl::VecBase<double,4> >  >("Vec4d", init<  >())
         .def(init< const gmtl::Vec<double,4> & >())
         .def(init< const gmtl::VecBase<double,4> & >())
-        .def(init< const double &, const double & >())
-        .def(init< const double &, const double &, const double & >())
         .def(init< const double &, const double &, const double &, const double & >())
         .def_pickle(gmtlPickle::Vec4_pickle<double>())
     );

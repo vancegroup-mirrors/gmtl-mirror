@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Point_float_3.cpp,v $
- * Date modified: $Date: 2004-10-27 19:01:33 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2004-10-28 00:03:58 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -41,9 +41,7 @@ void _Export_Point_float_3()
     class_< gmtl::Point<float,3>, bases< gmtl::VecBase<float,3> > >("Point3f", init<  >())
         .def(init< const gmtl::Point<float,3> & >())
         .def(init< const gmtl::VecBase<float,3> & >())
-        .def(init< const float &, const float & >())
         .def(init< const float &, const float &, const float & >())
-        .def(init< const float &, const float &, const float &, const float & >())
         .def_pickle(gmtlPickle::Point3_pickle<float>())
     );
 
