@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Intersection.h,v $
- * Date modified: $Date: 2003-09-06 21:50:00 $
- * Version:       $Revision: 1.16 $
+ * Date modified: $Date: 2003-09-06 21:58:48 $
+ * Version:       $Revision: 1.17 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -325,6 +325,14 @@ namespace gmtl
          numhits = 0;
          return false;
       }
+      else if (a < 0.0001f) // zero length, just do a point test.
+      {
+         t0 = T( 0 );
+         t1 = T( 1 );
+         bool ret = intersect( sphere, ray.getOrigin() );
+         numhits = (ret) ? 2 : numhits;
+         return ret;
+      }
       else if (discriminant > 0.0f)
       {
          T root = Math::sqrt( discriminant );
@@ -336,16 +344,6 @@ namespace gmtl
 
          if (t0 >= T(0))
          {
-            numhits = 2;
-            return true;
-         }
-         // handle zero-length rays...
-         // if origin is within the sphere then raylength must be 0
-         // count this as an intersection
-         else if (c <= 0 && a < 0.0001f)
-         {
-            t1 = T(1);
-            t0 = T(0);
             numhits = 2;
             return true;
          }
@@ -367,16 +365,6 @@ namespace gmtl
          if (t0 >= T(0))
          {
             numhits = 1;
-            return true;
-         }
-         // handle zero-length rays...
-         // if origin is within the sphere then raylength must be 0
-         // count this as an intersection
-         else if (c <= 0)
-         {
-            t1 = T(1);
-            t0 = T(0);
-            numhits = 2;
             return true;
          }
          else
