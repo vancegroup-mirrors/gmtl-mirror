@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PointTest.h,v $
- * Date modified: $Date: 2002-02-11 05:40:51 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-02-11 20:19:31 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -282,6 +282,127 @@ public:
       CPPUNIT_ASSERT( data[1] == 2.0f);
    }
 
+   // -- Test comparison -- //
+   void testEqualityCompare()
+   {
+      gmtl::Point<float, 4> test_point1(1.0f, 2.0f, 3.0f, 4.0f);
+      gmtl::Point<float, 4> test_point2(test_point1);
+
+      CPPUNIT_ASSERT( test_point1 == test_point2);
+      CPPUNIT_ASSERT(! (test_point1 != test_point2));
+
+      test_point2 = test_point1;     // Set equal, vary elt 0
+      test_point2[0] = 21.10f;
+      CPPUNIT_ASSERT( test_point1 != test_point2);
+      CPPUNIT_ASSERT(! (test_point1 == test_point2));
+
+      test_point2 = test_point1;     // Set equal, vary elt 0
+      test_point2[1] = 21.10f;
+      CPPUNIT_ASSERT( test_point1 != test_point2);
+      CPPUNIT_ASSERT(! (test_point1 == test_point2));
+
+      test_point2 = test_point1;     // Set equal, vary elt 0
+      test_point2[2] = 21.10f;
+      CPPUNIT_ASSERT( test_point1 != test_point2);
+      CPPUNIT_ASSERT(! (test_point1 == test_point2));
+
+      test_point2 = test_point1;     // Set equal, vary elt 0
+      test_point2[3] = 21.10f;
+      CPPUNIT_ASSERT( test_point1 != test_point2);
+      CPPUNIT_ASSERT(! (test_point1 == test_point2));
+
+      // Test comparison performance
+      // Test constructor
+      const float iters(400000);
+      unsigned true_count(0);
+      unsigned false_count(0);
+      
+      // -- Equality
+      CPPUNIT_METRIC_START_TIMING();
+      test_point1.set(0.0f, 0.0f, 0.0f, 2000.0f);
+      test_point2.set(0.0f, 0.0f, 0.0f, 1000.0f);
+      
+      for( float iter=0;iter<iters; ++iter)
+      {
+         test_point1[3] += 1.0f;
+         test_point2[3] += 2.0f;
+         if(test_point1 == test_point2)
+            true_count++;         
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("PointTest/EqualityCompareOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      // -- Inequality
+      CPPUNIT_METRIC_START_TIMING();
+      test_point1.set(0.0f, 0.0f, 0.0f, 2000.0f);
+      test_point2.set(0.0f, 0.0f, 0.0f, 1000.0f);
+      
+      for( float iter=0;iter<iters; ++iter)
+      {
+         test_point1[3] += 1.0f;
+         test_point2[3] += 2.0f;
+         if(test_point1 != test_point2)
+            false_count++;
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("PointTest/InequalityCompareOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+   }
+
+   // -- Test comparison -- //
+   void testIsEqual()
+   {
+      gmtl::Point<float, 4> test_point1(1.0f, 2.0f, 3.0f, 4.0f);
+      gmtl::Point<float, 4> test_point2(test_point1);
+      float eps(0.0f);
+
+      for(eps=0.0f;eps<10.0f;eps += 0.05f)
+      {
+         CPPUNIT_ASSERT( gmtl::isEqual(test_point1, test_point2, eps) );                     
+      }
+
+      test_point1.set(1.0f, 1.0f, 1.0f, 1.0f);
+      for(unsigned elt=0; elt<4; elt++)
+      {
+         test_point2 = test_point1;     // Set equal, vary elt 0
+         test_point2[elt] = 21.0f;
+         CPPUNIT_ASSERT( !gmtl::isEqual(test_point1, test_point2, 10.0f) );
+         CPPUNIT_ASSERT( !gmtl::isEqual(test_point1, test_point2, 19.9f) );
+         CPPUNIT_ASSERT( gmtl::isEqual(test_point1, test_point2, 20.1f) );
+         CPPUNIT_ASSERT( gmtl::isEqual(test_point1, test_point2, 22.0f) );
+      }
+
+      // Test comparison performance
+      // Test constructor
+      const float iters(400000);
+      unsigned true_count(0);
+      unsigned false_count(0);
+      
+      // -- Equality
+      CPPUNIT_METRIC_START_TIMING();
+      test_point1.set(0.0f, 0.0f, 0.0f, 2000.0f);
+      test_point2.set(0.0f, 0.0f, 0.0f, 1000.0f);
+      
+      for( float iter=0;iter<iters; ++iter)
+      {
+         test_point1[3] += 1.0f;
+         test_point2[3] += 2.0f;
+         if(gmtl::isEqual(test_point1, test_point2, 1.0f) )
+            true_count++;
+         if(gmtl::isEqual(test_point1, test_point2, 0.1f) )
+            true_count++;
+         if(gmtl::isEqual(test_point1, test_point2, 100000.0f) )
+            true_count++;
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("PointTest/isEqualOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      
+   }
+
+
    static Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("PointTest");
@@ -291,6 +412,8 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<PointTest>("testSet", &PointTest::testSet));
       test_suite->addTest( new CppUnit::TestCaller<PointTest>("testSetPtr", &PointTest::testSetPtr));
       test_suite->addTest( new CppUnit::TestCaller<PointTest>("testGetData", &PointTest::testGetData));
+      test_suite->addTest( new CppUnit::TestCaller<PointTest>("testEqualityCompare", &PointTest::testEqualityCompare));
+      test_suite->addTest( new CppUnit::TestCaller<PointTest>("testIsEqual", &PointTest::testIsEqual));
 
       return test_suite;
    }
