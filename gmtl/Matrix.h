@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Matrix.h,v $
- * Date modified: $Date: 2002-05-21 14:58:55 $
- * Version:       $Revision: 1.21 $
+ * Date modified: $Date: 2002-05-21 15:26:32 $
+ * Version:       $Revision: 1.22 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -65,6 +65,9 @@ namespace gmtl
  *   ====================== Arrays     <br>
  *
  * So basically OpenGL ordering is the Transpose of the way C++ accesses the array
+ *
+ * @see Matrix44f
+ * @see Matrix44d
  * @ingroup Types
  */
 template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>

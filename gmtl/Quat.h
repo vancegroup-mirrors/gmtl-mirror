@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Quat.h,v $
- * Date modified: $Date: 2002-05-21 14:58:55 $
- * Version:       $Revision: 1.17 $
+ * Date modified: $Date: 2002-05-21 15:26:32 $
+ * Version:       $Revision: 1.18 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -44,10 +44,12 @@ namespace gmtl
 /** Quat: Class to encapsulate quaternion behaviors.
  *
  * this Quaternion is ordered in memory: x,y,z,w.
+ * @see Quatf 
+ * @see Quatd
  *
  * Note: The code for most of these routines was built using the following
  * references
- *
+ * 
  * References:
  * <ul>
  * <li>   Advanced Animation and Rendering Techniques: pp363-365
