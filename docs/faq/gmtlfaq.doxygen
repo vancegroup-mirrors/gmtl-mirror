@@ -45,6 +45,12 @@
  *  and Z. Note that Euler angle representations are often more intuitive to
  *  use, but suffer from the problem of Gimble lock.
  *
+ *  <b>What is a LineSeg?</b>
+ *  This is a line segment of finite length. It consists of 2 endpoints in space.
+ *  Internally to GMTL, a LineSeg is defined by an endpoint in space
+ *  and a vector that shows where the other endpoint is relative to the first
+ *  point.
+ *
  *  <b>What is a Matrix?</b>
  *  This is a data type commonly used in graphical applications. It simply
  *  contains rows and columns of data, with any number of rows and columns.
@@ -64,6 +70,11 @@
  *  This is a quaternion, which is represents a rotation in 3D space.
  *  Quaternions can be used for rotational interpolation along the surface
  *  of a sphere. They are represented at a 4-element normalized vector.
+ *
+ *  <b>What is a Ray?</b>
+ *  A ray is a line in space that has an origin point extends to infinity
+ *  in some direction. In GMTL, a ray is represented by a Point object denoting
+ *  its origin and a vector showing the direction it is pointing.
  *
  *  <b>What is a Sphere?</b>
  *  This is a 3D dimensional round object such that every point on the outer
@@ -110,11 +121,74 @@
  *  in a matrix, in column major order. 
  *
  *  <b>What are the general concepts behind GMTL?</b>
- *  <b>What's with all the 'make' and 'set' functions</b>
+ *  <b>What's with all the 'make' and 'set' functions?</b>
+ *  You use the 'make' function to generate new objects based on existing
+ *  objects that may not even be the same type. For instance, we
+ *  can create a quaternion rotation from an existing Euler angle rotation.
+ *  Once made, the quaternion will perform the exact same rotation as the 
+ *  Euler angle.
+ *
+ *  gmtl::EulerAngleXYZf myEuler;
+ *  gmtl::Quatf myQuat = gmtl::make<gmtl::Quatf>( myEuler );
+ *
+ *  Note that you have to specify a templated argument that says what kind of
+ *  object you want to be made.
+ *
+ *  Although you can usually make one object from any other type of object, 
+ *  there are some fundamental limitations. For instance, you can't make a 
+ *  quaternion (purely rotational information) from a vector (purely 
+ *  translational information). Similarly, if you have a matrix containing
+ *  both translational and rotational information, you can only make a vector 
+ *  based on the translational data.
+ *
+ *  In the following example, we make a new axis angle object that has the
+ *  same rotational data as our existing matrix. Regardless of whatever 
+ *  translation and scaling data our matrix contains, only the rotation is
+ *  represented in the new axis angle.
+ *
+ *  gmtl::Matrix44f myMat;
+ *  gmtl::AxisAnglef myAA = gmtl::make<gmtl::AxisAnglef>( myMat );
+ *
+ *  The 'set' function, however, modifies an existing object with data from
+ *  another object. For instance, if you already have a quaternion and you 
+ *  want to change its rotation data to match an Euler angle, the 'set' 
+ *  function is appropriate. Note that the first argument is ALWAYS the object
+ *  that you want to change, and the second argument is ALWAYS the object that
+ *  you want to use as the data source. The source data will not be changed.
+ *
+ *  gmtl::EulerAngleXYZf myEuler;
+ *  gmtl::Quatf myQuat;
+ *
+ *  gmtl::set( myQuat, myEuler );
+ *
+ *  Additionally, you can use altered versions of the 'make' and 'set' functions
+ *  that specifically target certain types of data, such as rotational, 
+ *  translational, or scaling information.
+ *
+ *  EXAMPLES
  *
  *  @section Spatial Spatial Objects
  *  <b>What is a spatial object?</b>
+ *  A spatial object is something that has some sort of geometric meaning,
+ *  rather than being purely mathematical. Spatial objects can be visualized
+ *  in some way, such that you could draw them on a piece of paper or render
+ *  them using 3-D graphics. They occupy some portion of an n-dimensional 
+ *  space, typically 2-D or 3-D. 
+ *
+ *  Spatial objects are typically used for generating boundaries or performing
+ *  collision detection. They can be extremely useful in graphical applications.
+ *  We can perform special operations on spatial objects, such as testing
+ *  whether certain objects intersect with each other or whether one volumetric
+ *  object (such as a sphere) contains another spatial object.
+ *
+ *
  *  <b>What kinds of spatial objects does GMTL support?</b>
+ *  Points, vectors, line segments, rays, planes, spheres, axially-aligned 
+ *  boxes, and triangles.
+ *
+ *
+ *  <b>What objects in GMTL are not considered spatial?</b>
+ *  Matrices, quaternions, axis angles, Euler angles, and coordinate frames.
  *
  *
  *  @section Howto How Do I ...?
