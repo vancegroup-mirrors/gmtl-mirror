@@ -9,6 +9,17 @@
       Path: external;
    };
 
+   Boost_cppcompat
+   {
+      CVSROOT: :pserver:anonymous@cvs.boost.sourceforge.net:/cvsroot/boost;
+      Module: boost/boost/compatibility/cpp_c_headers [external/boost/boost/compatibility/cpp_c_headers];
+      Tag: Version_1_27_0;
+      Path: .;
+   };
+
+
+
+
    JugglerBaseStuff
    {
       CVSROOT: :pserver:anonymous@cvs.vrjuggler.sourceforge.net:/cvsroot/vrjuggler;
