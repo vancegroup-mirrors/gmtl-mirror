@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Intersection.h,v $
- * Date modified: $Date: 2004-05-25 15:45:04 $
- * Version:       $Revision: 1.19 $
+ * Date modified: $Date: 2004-07-21 18:43:17 $
+ * Version:       $Revision: 1.20 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -46,6 +46,7 @@
 #include <gmtl/Ray.h>
 #include <gmtl/LineSeg.h>
 #include <gmtl/Tri.h>
+#include <gmtl/PlaneOps.h>
 
 namespace gmtl
 {
@@ -73,7 +74,7 @@ namespace gmtl
       // No separating axis ... they must intersect
       return true;
    }
-   
+
    /**
     * Tests if the given AABox and point intersect with each other. On an edge IS
     * considered intersection by this algorithm.
@@ -293,7 +294,7 @@ namespace gmtl
    {
       gmtl::Vec<DATA_TYPE, 3> offset = point - sphere.getCenter();
       DATA_TYPE dist = lengthSquared( offset ) - sphere.getRadius() * sphere.getRadius();
-      
+
       // point is inside the sphere when true
       return  dist <= 0;
    }
@@ -382,7 +383,7 @@ namespace gmtl
       if (intersect( sphere, Ray<T>( lineseg ), numhits, t0, t1 ))
       {
          // throw out hits that are past 1 in segspace (off the end of the lineseg)
-         while (0 < numhits && 1.0f < t0) 
+         while (0 < numhits && 1.0f < t0)
          {
             --numhits;
             t0 = t1;
@@ -418,7 +419,7 @@ namespace gmtl
          return true;
       }
       // todo: make this faster (find an early out) since 1 or 0 hits is the common case.
-      // volume test has some additional checks before we can throw it out because 
+      // volume test has some additional checks before we can throw it out because
       // one of both points may be inside the volume, so we want to return hits for those as well...
       else // 1 or 0 hits.
       {
@@ -447,7 +448,7 @@ namespace gmtl
          // maybe both points are inside?
          else if (inside1 && inside2) // 0 hits.
          {
-            t0 = T(0); 
+            t0 = T(0);
             t1 = T(1);
             numhits = 2;
             return true;
@@ -474,14 +475,14 @@ namespace gmtl
       {
          return true;
       }
-      else 
+      else
       {
          const T rsq = sphere.getRadius() * sphere.getRadius();
          const Vec<T, 3> dist = ray.getOrigin() - sphere.getCenter();
          const T a = lengthSquared( dist ) - rsq;
-         
+
          bool inside = a <= T( 0 );
-         
+
          // start point is inside
          if (inside)
          {
@@ -493,23 +494,37 @@ namespace gmtl
       }
       return result;
    }
-   
+
    /**
     * Tests if the given plane and ray intersect with each other.
     *
     *  @param ray - the Ray
     *  @param plane - the Plane
     *  @param t - t gives you the intersection point:
-    *         isect_point = ray.origin + ray.dir * t 
+    *         isect_point = ray.origin + ray.dir * t
     *
     *  @return true if the ray intersects the plane.
+    *  @note If ray is parallel to plane: t=0, ret:true -> on plane, ret:false -> No hit
     */
    template<class DATA_TYPE>
    bool intersect( const Plane<DATA_TYPE>& plane, const Ray<DATA_TYPE>& ray, DATA_TYPE& t )
    {
+      const float eps(0.00001f);
+
+      // t = -(n·P + d)
       Vec<DATA_TYPE, 3> N( plane.getNormal() );
-      t = dot( N, N * plane.getOffset() - ray.getOrigin() ) / dot( N, ray.getDir() );
-      return (DATA_TYPE)0 <= t; 
+      float denom( dot(N,ray.getDir()) );
+      if(gmtl::Math::abs(denom) < eps)    // Ray parallel to plane
+      {
+         t = 0;
+         if(distance(plane, ray.mOrigin) < eps)     // Test for ray on plane
+         { return true; }
+         else
+         { return false; }
+      }
+      t = dot( N, N * plane.getOffset() - ray.getOrigin() ) / denom;
+
+      return (DATA_TYPE)0 <= t;
    }
 
    /**
@@ -518,16 +533,33 @@ namespace gmtl
     *  @param ray - the lineseg
     *  @param plane - the Plane
     *  @param t - t gives you the intersection point:
-    *         isect_point = lineseg.origin + lineseg.dir * t 
+    *         isect_point = lineseg.origin + lineseg.dir * t
     *
     *  @return true if the lineseg intersects the plane.
     */
    template<class DATA_TYPE>
-   bool intersect( const Plane<DATA_TYPE>& plane, const LineSeg<DATA_TYPE>& ray, DATA_TYPE& t )
+   bool intersect( const Plane<DATA_TYPE>& plane, const LineSeg<DATA_TYPE>& seg, DATA_TYPE& t )
    {
+      bool res(intersect(plane, static_cast<Ray<DATA_TYPE> >(seg), t));
+      return res && t <= (DATA_TYPE)1.0;
+
+      /*
+      const float eps(0.00001f);
+
+      // t = -(n·P + d)
       Vec<DATA_TYPE, 3> N( plane.getNormal() );
-      t = dot( N, N * plane.getOffset() - ray.getOrigin() ) / dot( N, ray.getDir() );
-      return (DATA_TYPE)0 <= t && t <= (DATA_TYPE)1.0; 
+      float denom( dot(N,ray.getDir()) );
+      if(gmtl::Math::abs(denom) < eps)    // Ray parallel to plane
+      {
+         t = 0;
+         if(distance(plane, ray.mOrigin) < eps)     // Test for ray on plane
+         { return true; }
+         else
+         { return false; }
+      }
+      t = dot( N, N * plane.getOffset() - ray.getOrigin() ) / denom;
+      return (DATA_TYPE)0 <= t && t <= (DATA_TYPE)1.0;
+      */
    }
 
    /**
@@ -543,7 +575,7 @@ namespace gmtl
     *  @see from http://www.acm.org/jgt/papers/MollerTrumbore97/code.html
     */
    template<class DATA_TYPE>
-   bool intersect( const Tri<DATA_TYPE>& tri, const Ray<DATA_TYPE>& ray, 
+   bool intersect( const Tri<DATA_TYPE>& tri, const Ray<DATA_TYPE>& ray,
                         float& u, float& v, float& t )
    {
       const float EPSILON = (DATA_TYPE)0.00001f;
@@ -585,7 +617,7 @@ namespace gmtl
       t *= inv_det;
       u *= inv_det;
       v *= inv_det;
-      
+
       // test if t is within the ray boundary (when t >= 0)
       return t >= (DATA_TYPE)0;
    }
@@ -603,7 +635,7 @@ namespace gmtl
     *  @return true if the line segment intersects the triangle.
     */
    template<class DATA_TYPE>
-   bool intersect( const Tri<DATA_TYPE>& tri, const LineSeg<DATA_TYPE>& lineseg, 
+   bool intersect( const Tri<DATA_TYPE>& tri, const LineSeg<DATA_TYPE>& lineseg,
                         float& u, float& v, float& t )
    {
       const DATA_TYPE eps = (DATA_TYPE)0.0001010101;
@@ -615,11 +647,11 @@ namespace gmtl
          t /= lineseg.getLength(); // need to normalize the result
          return result && t <= (DATA_TYPE)1.0;
       }
-      else 
+      else
          return false;
    }
 }
 
-   
+
 
 #endif
