@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatOpsTest.h,v $
- * Date modified: $Date: 2002-03-15 19:25:31 $
- * Version:       $Revision: 1.10 $
+ * Date modified: $Date: 2002-03-15 19:30:40 $
+ * Version:       $Revision: 1.11 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -117,7 +117,7 @@ public:
    void testQuatTimingOperatorMult()
    {
       gmtl::Quat<float> q2, q4;
-      const long iters(25000);
+      const long iters(10000);
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
@@ -132,7 +132,7 @@ public:
    void testQuatTimingDiv()
    {
       gmtl::Quat<float> q3, q4;
-      const long iters(25000);
+      const long iters(10000);
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
@@ -147,7 +147,7 @@ public:
    void testQuatTimingVectorMult()
    {
       gmtl::Quat<float> q3, q4;
-      const long iters(25000);
+      const long iters(10000);
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
@@ -162,7 +162,7 @@ public:
    void testQuatTimingVectorAdd()
    {
       gmtl::Quat<float> q3, q4;
-      const long iters(25000);
+      const long iters(10000);
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
@@ -177,7 +177,7 @@ public:
    void testQuatTimingVectorSub()
    {
       gmtl::Quat<float> q3, q4;
-      const long iters(25000);
+      const long iters(10000);
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
@@ -192,7 +192,7 @@ public:
    void testQuatTimingVectorDot()
    {
       gmtl::Quat<float> q1, q2;
-      const long iters(25000);
+      const long iters(10000);
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
@@ -208,7 +208,7 @@ public:
    void testQuatTimingNorm()
    {
       gmtl::Quat<float> q1;
-      const long iters(25000);
+      const long iters(10000);
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
@@ -224,7 +224,7 @@ public:
    void testQuatTimingMag()
    {
       gmtl::Quat<float> q1;
-      const long iters(25000);
+      const long iters(10000);
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
@@ -240,7 +240,7 @@ public:
    void testQuatTimingNormalize()
    {
       gmtl::Quat<float> q4;
-      const long iters(25000);
+      const long iters(10000);
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
@@ -255,7 +255,7 @@ public:
    void testQuatTimingConj()
    {
       gmtl::Quat<float> q4;
-      const long iters(25000);
+      const long iters(10000);
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
@@ -270,7 +270,7 @@ public:
    void testQuatTimingInvert()
    {
       gmtl::Quat<float> q4;
-      const long iters(25000);
+      const long iters(10000);
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
