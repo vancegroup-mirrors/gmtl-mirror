@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixCompareTest.h,v $
- * Date modified: $Date: 2002-03-21 21:51:28 $
- * Version:       $Revision: 1.11 $
+ * Date modified: $Date: 2002-03-21 21:57:50 $
+ * Version:       $Revision: 1.12 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -62,10 +62,12 @@ public:
    {
    }
 
+   // Correctness tests
    void testMatEqualityFloatTest();
    void testMatEqualityDoubleTest();
    void testMatEqualityIntTest();
 
+   // Performance tests
    void testMatTimingOpEqualityTest();
    void testMatTimingOpNotEqualityTest();
    void testMatTimingIsEqualTest();
@@ -73,12 +75,20 @@ public:
    static CppUnit::Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("MatrixCompareTest");
-      test_suite->addTest( new CppUnit::TestCaller<MatrixCompareTest>("testMatTimingOpEqualityTest", &MatrixCompareTest::testMatTimingOpEqualityTest));
-      test_suite->addTest( new CppUnit::TestCaller<MatrixCompareTest>("testMatTimingIsEqualTest", &MatrixCompareTest::testMatTimingIsEqualTest));
-      test_suite->addTest( new CppUnit::TestCaller<MatrixCompareTest>("testMatTimingOpNotEqualityTest", &MatrixCompareTest::testMatTimingOpNotEqualityTest));
       test_suite->addTest( new CppUnit::TestCaller<MatrixCompareTest>("testMatEqualityFloatTest", &MatrixCompareTest::testMatEqualityFloatTest));
       test_suite->addTest( new CppUnit::TestCaller<MatrixCompareTest>("testMatEqualityDoubleTest", &MatrixCompareTest::testMatEqualityDoubleTest));
       test_suite->addTest( new CppUnit::TestCaller<MatrixCompareTest>("testMatEqualityIntTest", &MatrixCompareTest::testMatEqualityIntTest));
+      return test_suite;
+   }
+
+   static CppUnit::Test* perfSuite()
+   {
+      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("MatrixComparePerfTest");
+
+      test_suite->addTest( new CppUnit::TestCaller<MatrixCompareTest>("testMatTimingOpEqualityTest", &MatrixCompareTest::testMatTimingOpEqualityTest));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixCompareTest>("testMatTimingIsEqualTest", &MatrixCompareTest::testMatTimingIsEqualTest));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixCompareTest>("testMatTimingOpNotEqualityTest", &MatrixCompareTest::testMatTimingOpNotEqualityTest));
+
       return test_suite;
    }
 
