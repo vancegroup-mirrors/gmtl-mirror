@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Quat.h,v $
- * Date modified: $Date: 2002-02-21 21:37:08 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2002-02-22 10:03:08 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -123,7 +123,7 @@ public:
     *
     * @see VectorIndex
     */
-   DATA_TYPE& operator[]( const VectorIndex x ) 
+   DATA_TYPE& operator[]( const int x ) 
    { 
       ggtASSERT( x >= 0 && x < 4 && "out of bounds error" ); 
       return mData[x];
@@ -140,7 +140,7 @@ public:
     *
     * @see VectorIndex
     */
-   const DATA_TYPE& operator[]( const VectorIndex x ) const
+   const DATA_TYPE& operator[]( const int x ) const
    { 
       ggtASSERT( x >= 0 && x < 4 && "out of bounds error" ); 
       return mData[x];
