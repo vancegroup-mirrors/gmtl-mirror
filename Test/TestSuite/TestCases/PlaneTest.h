@@ -7,15 +7,15 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PlaneTest.h,v $
- * Date modified: $Date: 2002-01-26 23:47:52 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-01-31 00:56:20 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
 /*************************************************************** ggt-cpr beg
 *
 * GGT: The Generic Graphics Toolkit
-* Copyright (C) 2001,2002 Allen Bierbaum 
+* Copyright (C) 2001,2002 Allen Bierbaum
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU Lesser General Public
@@ -49,10 +49,10 @@ class PlaneTest : public CppUnit::TestCase
 public:
    PlaneTest( std::string name = "PlaneTest")
    : TestCase (name),
-      origin(gmtl::Vec3::ZERO),
-      x1_pt(gmtl::Vec3::UNIT_X),
-      y1_pt(gmtl::Vec3::UNIT_Y),
-      z1_pt(gmtl::Vec3::UNIT_Z)
+      origin(gmtl::ZeroVec3),
+      x1_pt(gmtl::XUnitVec3),
+      y1_pt(gmtl::YUnitVec3),
+      z1_pt(gmtl::ZUnitVec3)
    {;}
 
    virtual ~PlaneTest()
@@ -74,9 +74,9 @@ public:
    void testThreePtCreation()
    {
      // Check normals of the standard planes
-     CPPUNIT_ASSERT(xy_plane.mNorm == gmtl::Vec3::UNIT_Z);   // Z-Plane
-     CPPUNIT_ASSERT(zx_plane.mNorm == gmtl::Vec3::UNIT_Y);   // Y-Plane
-     CPPUNIT_ASSERT(yz_plane.mNorm == gmtl::Vec3::UNIT_X);   // Z-Plane
+     CPPUNIT_ASSERT(xy_plane.mNorm == gmtl::ZUnitVec3);   // Z-Plane
+     CPPUNIT_ASSERT(zx_plane.mNorm == gmtl::YUnitVec3);   // Y-Plane
+     CPPUNIT_ASSERT(yz_plane.mNorm == gmtl::XUnitVec3);   // Z-Plane
      CPPUNIT_ASSERT(xy_plane.mOffset == 0.0f);
      CPPUNIT_ASSERT(zx_plane.mOffset == 0.0f);
      CPPUNIT_ASSERT(yz_plane.mOffset == 0.0f);
@@ -84,35 +84,35 @@ public:
      // Test offset of some simple planes
      gmtl::Plane test_plane;
      test_plane = gmtl::Plane(gmtl::Point3(1.0,0.0,0.0), gmtl::Point3(1.0,1.0,0.0), gmtl::Point3(1.0,0.0,1.0));
-     CPPUNIT_ASSERT(test_plane.mNorm == gmtl::Vec3::UNIT_X);
+     CPPUNIT_ASSERT(test_plane.mNorm == gmtl::XUnitVec3);
      CPPUNIT_ASSERT(test_plane.mOffset == 1.0f);
    }
 
    void testNormPtCreation()
    {
       gmtl::Plane test_plane;
-      test_plane = gmtl::Plane(gmtl::Vec3::UNIT_X, origin);    // X-axis through origin
-      CPPUNIT_ASSERT(test_plane.mNorm == gmtl::Vec3::UNIT_X);
+      test_plane = gmtl::Plane(gmtl::XUnitVec3, origin);    // X-axis through origin
+      CPPUNIT_ASSERT(test_plane.mNorm == gmtl::XUnitVec3);
       CPPUNIT_ASSERT(test_plane.mOffset == 0.0f);
 
-      test_plane = gmtl::Plane(gmtl::Vec3::UNIT_X, x1_pt);    // X-axis through 1,0,0
-      CPPUNIT_ASSERT(test_plane.mNorm == gmtl::Vec3::UNIT_X);
+      test_plane = gmtl::Plane(gmtl::XUnitVec3, x1_pt);    // X-axis through 1,0,0
+      CPPUNIT_ASSERT(test_plane.mNorm == gmtl::XUnitVec3);
       CPPUNIT_ASSERT(test_plane.mOffset == 1.0f);
 
-      test_plane = gmtl::Plane(gmtl::Vec3::UNIT_Z, x1_pt);    // Z-axis through 1,0,0
-      CPPUNIT_ASSERT(test_plane.mNorm == gmtl::Vec3::UNIT_Z);
+      test_plane = gmtl::Plane(gmtl::ZUnitVec3, x1_pt);    // Z-axis through 1,0,0
+      CPPUNIT_ASSERT(test_plane.mNorm == gmtl::ZUnitVec3);
       CPPUNIT_ASSERT(test_plane.mOffset == 0.0f);
 
-      test_plane = gmtl::Plane(gmtl::Vec3::UNIT_Z, gmtl::Point3(0,0,-1));    // Z-axis through 0,0,-1
-      CPPUNIT_ASSERT(test_plane.mNorm == gmtl::Vec3::UNIT_Z);
+      test_plane = gmtl::Plane(gmtl::ZUnitVec3, gmtl::Point3(0,0,-1));    // Z-axis through 0,0,-1
+      CPPUNIT_ASSERT(test_plane.mNorm == gmtl::ZUnitVec3);
       CPPUNIT_ASSERT(test_plane.mOffset == -1.0f);
    }
 
    void testNormOffsetCreation()
    {
       gmtl::Plane test_plane;
-      test_plane = gmtl::Plane(gmtl::Vec3::UNIT_X, 0.0f);    // X-axis through origin
-      CPPUNIT_ASSERT(test_plane.mNorm == gmtl::Vec3::UNIT_X);
+      test_plane = gmtl::Plane(gmtl::XUnitVec3, 0.0f);    // X-axis through origin
+      CPPUNIT_ASSERT(test_plane.mNorm == gmtl::XUnitVec3);
       CPPUNIT_ASSERT(test_plane.mOffset == 0.0f);
    }
 
@@ -123,7 +123,7 @@ public:
    {
       float dist;
 
-      dist = xy_plane.distanceToPt(gmtl::Vec3::UNIT_Z);
+      dist = xy_plane.distanceToPt(gmtl::ZUnitVec3);
       CPPUNIT_ASSERT(dist == 1.0f);
 
       dist = xy_plane.distanceToPt(gmtl::Point3(-12.0,5.0,-17.0f));

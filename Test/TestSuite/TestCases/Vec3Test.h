@@ -7,15 +7,15 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Vec3Test.h,v $
- * Date modified: $Date: 2002-01-26 23:47:52 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-01-31 00:56:20 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
 /*************************************************************** ggt-cpr beg
 *
 * GGT: The Generic Graphics Toolkit
-* Copyright (C) 2001,2002 Allen Bierbaum 
+* Copyright (C) 2001,2002 Allen Bierbaum
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU Lesser General Public
@@ -81,9 +81,9 @@ public:
 
    void testVec3Cross()
    {
-      gmtl::Vec3 v1(gmtl::Vec3::UNIT_X);
-      gmtl::Vec3 v2(gmtl::Vec3::UNIT_Y);
-      gmtl::Vec3 v3(gmtl::Vec3::UNIT_Z);
+      gmtl::Vec3 v1(gmtl::XUnitVec3);
+      gmtl::Vec3 v2(gmtl::YUnitVec3);
+      gmtl::Vec3 v3(gmtl::ZUnitVec3);
       gmtl::Vec3 cross;
 
       // Base Vectors
@@ -105,9 +105,9 @@ public:
 
    void testVec3Dot()
    {
-      gmtl::Vec3 v1(gmtl::Vec3::UNIT_X);
-      gmtl::Vec3 v2(gmtl::Vec3::UNIT_Y);
-      gmtl::Vec3 v3(gmtl::Vec3::UNIT_Z);
+      gmtl::Vec3 v1(gmtl::XUnitVec3);
+      gmtl::Vec3 v2(gmtl::YUnitVec3);
+      gmtl::Vec3 v3(gmtl::ZUnitVec3);
       float dot, ans;
 
       // Base Vectors

@@ -7,15 +7,15 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Quat.h,v $
- * Date modified: $Date: 2002-01-26 23:47:53 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-01-31 00:56:21 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
 /*************************************************************** ggt-cpr beg
 *
 * GGT: The Generic Graphics Toolkit
-* Copyright (C) 2001,2002 Allen Bierbaum 
+* Copyright (C) 2001,2002 Allen Bierbaum
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU Lesser General Public
@@ -58,9 +58,11 @@ namespace gmtl {
 class Quat
 {
 public:
+   /*
    static const Quat ZERO;
    static const Quat IDENTITY;
    static const float EPSILON;
+   */
 
 public:
    // --- Constructors --- //
@@ -116,6 +118,10 @@ public:
    // Order x, y, z, w
    float    vec[4];
 };
+
+const Quat ZeroQuat = Quat(0.0,0.0,0.0,0.0);
+const Quat IdentQuat = Quat(0.0,0.0,0.0,1.0);
+const float EpsilonQuat = 1e-03;
 
 
 Quat slerp(float t, const Quat& p, const Quat& q, int extraSpins=0);

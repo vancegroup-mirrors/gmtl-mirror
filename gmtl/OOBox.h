@@ -7,15 +7,15 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: OOBox.h,v $
- * Date modified: $Date: 2002-01-26 23:47:53 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-01-31 00:56:21 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
 /*************************************************************** ggt-cpr beg
 *
 * GGT: The Generic Graphics Toolkit
-* Copyright (C) 2001,2002 Allen Bierbaum 
+* Copyright (C) 2001,2002 Allen Bierbaum
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU Lesser General Public
@@ -86,10 +86,10 @@ public:
 
    void ident()
    {
-      mCenter = Point3::ZERO;
-      mAxis[0] = Point3::UNIT_X;
-      mAxis[1] = Point3::UNIT_Y;
-      mAxis[2] = Point3::UNIT_Z;
+      mCenter = ZeroVec3;
+      mAxis[0] = XUnitVec3;
+      mAxis[1] = YUnitVec3;
+      mAxis[2] = ZUnitVec3;
       mHalfLen[0] = mHalfLen[1] = mHalfLen[2] = 0.0f;
    }
 

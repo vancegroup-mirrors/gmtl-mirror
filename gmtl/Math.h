@@ -7,15 +7,15 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Math.h,v $
- * Date modified: $Date: 2002-01-26 23:47:53 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-01-31 00:56:21 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
 /*************************************************************** ggt-cpr beg
 *
 * GGT: The Generic Graphics Toolkit
-* Copyright (C) 2001,2002 Allen Bierbaum 
+* Copyright (C) 2001,2002 Allen Bierbaum
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU Lesser General Public
@@ -43,42 +43,45 @@
 namespace gmtl
 {
 
-class Math
+namespace Math
 {
-public:
-    static int iAbs (int iValue);
-    static int iCeil (float fValue);
-    static int iFloor (float fValue);
-    static int iSign (int iValue);
+   int iAbs (int iValue);
+   int iCeil (float fValue);
+   int iFloor (float fValue);
+   int iSign (int iValue);
 
-    static float abs (float fValue);
-    static float aCos (float fValue);
-    static float aSin (float fValue);
-    static float aTan (float fValue);
-    static float aTan2 (float fY, float fX);
-    static float ceil (float fValue);
-    static float cos (float fValue);
-    static float exp (float fValue);
-    static float floor (float fValue);
-    static float log (float fValue);
-    static float pow (float kBase, float kExponent);
-    static float sign (float fValue);
-    static float sin (float fValue);
-    static float sqr (float fValue);
-    static float sqrt (float fValue);
-    static float unitRandom ();  // in [0,1]
+   float abs (float fValue);
+   float aCos (float fValue);
+   float aSin (float fValue);
+   float aTan (float fValue);
+   float aTan2 (float fY, float fX);
+   float ceil (float fValue);
+   float cos (float fValue);
+   float exp (float fValue);
+   float floor (float fValue);
+   float log (float fValue);
+   float pow (float kBase, float kExponent);
+   float sign (float fValue);
+   float sin (float fValue);
+   float sqr (float fValue);
+   float sqrt (float fValue);
+   float unitRandom ();  // in [0,1]
     /*
     static float symmetricRandom ();  // in [-1,1]
     */
 
-    static float deg2Rad(float fVal);
-    static float rad2Deg(float fVal);
+   float deg2Rad(float fVal);
+   float rad2Deg(float fVal);
 
-    static const float PI;       //     = 3.14159265358979323846;
-    static const float PI_2;     //     = 1.57079632679489661923;
+    //static const float PI;       //     = 3.14159265358979323846;
+    //static const float PI_2;     //     = 1.57079632679489661923;
+
+   /** @name Mathematical constants */
+   //@{
+   const float PI = 3.14159265358979323846;
+   const float PI_2 = 1.57079632679489661923;
+   //@}
 };
-
-
 
 
 //----------------------------------------------------------------------------
@@ -118,7 +121,7 @@ inline float Math::aCos (float fValue)
     }
     else
     {
-        return PI;
+        return Math::PI;
     }
 }
 //----------------------------------------------------------------------------
@@ -129,11 +132,11 @@ inline float Math::aSin (float fValue)
         if ( fValue < 1.0 )
             return float(::asin(fValue));
         else
-            return -PI_2;
+            return -Math::PI_2;
     }
     else
     {
-        return PI_2;
+        return Math::PI_2;
     }
 }
 //----------------------------------------------------------------------------
@@ -221,12 +224,12 @@ float Math::SymmetricRandom ()
 
 inline float Math::deg2Rad(float fVal)
 {
-   return float(fVal*(PI/180.0f));
+   return float(fVal*(Math::PI/180.0f));
 }
 
 inline float Math::rad2Deg(float fVal)
 {
-   return float(fVal*(180.0/PI));
+   return float(fVal*(180.0/Math::PI));
 }
 
 }

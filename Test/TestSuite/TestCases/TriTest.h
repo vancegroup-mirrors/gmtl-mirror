@@ -7,15 +7,15 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: TriTest.h,v $
- * Date modified: $Date: 2002-01-26 23:47:52 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-01-31 00:56:20 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
 /*************************************************************** ggt-cpr beg
 *
 * GGT: The Generic Graphics Toolkit
-* Copyright (C) 2001,2002 Allen Bierbaum 
+* Copyright (C) 2001,2002 Allen Bierbaum
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU Lesser General Public
@@ -64,17 +64,17 @@ public:
 
    void testTriCreation()
    {
-      gmtl::Tri  test_tri(Vec3::ZERO, Vec3::UNIT_X, Vec3::UNIT_Y);
-      CPPUNIT_ASSERT(test_tri[0] == Vec3::ZERO);
-      CPPUNIT_ASSERT(test_tri[1] == Vec3::UNIT_X);
-      CPPUNIT_ASSERT(test_tri[2] == Vec3::UNIT_Y);
+      gmtl::Tri  test_tri(ZeroVec3, XUnitVec3, YUnitVec3);
+      CPPUNIT_ASSERT(test_tri[0] == ZeroVec3);
+      CPPUNIT_ASSERT(test_tri[1] == XUnitVec3);
+      CPPUNIT_ASSERT(test_tri[2] == YUnitVec3);
    }
 
    void testEdges()
    {
-      gmtl::Tri  test_tri(Vec3::ZERO, Vec3::UNIT_X, Vec3::UNIT_Y);
-      Vec3 edge0 = Vec3::ZERO - Vec3::UNIT_X;
-      Vec3 edge1 = Vec3::UNIT_Y - Vec3::UNIT_X;
+      gmtl::Tri  test_tri(ZeroVec3, XUnitVec3, YUnitVec3);
+      Vec3 edge0 = ZeroVec3 - XUnitVec3;
+      Vec3 edge1 = YUnitVec3 - XUnitVec3;
 
       CPPUNIT_ASSERT(test_tri.edge0() == edge0);
       CPPUNIT_ASSERT(test_tri.edge1() == edge1);
@@ -82,7 +82,7 @@ public:
 
    void testCenter()
    {
-      gmtl::Tri  test_tri(Vec3::ZERO, Vec3::UNIT_X, Vec3::UNIT_Y);
+      gmtl::Tri  test_tri(ZeroVec3, XUnitVec3, YUnitVec3);
 
       Point3 center(0.333, 0.333, 0.0f);
       CPPUNIT_ASSERT(center.equal(test_tri.center(), 0.01));
