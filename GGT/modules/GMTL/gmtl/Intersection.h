@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Intersection.h,v $
- * Date modified: $Date: 2003-05-15 16:43:33 $
- * Version:       $Revision: 1.12 $
+ * Date modified: $Date: 2003-08-18 03:15:40 $
+ * Version:       $Revision: 1.13 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -133,7 +133,7 @@ namespace gmtl
       Vec<DATA_TYPE, 3> overlap2(DATA_TYPE(1), DATA_TYPE(1), DATA_TYPE(1));
 
       // Check if the boxes already overlap
-      if (intersect(box1, box2))
+      if (gmtl::intersect(box1, box2))
       {
          firstContact = secondContact = DATA_TYPE(0);
          return true;
@@ -279,7 +279,7 @@ namespace gmtl
    template<class DATA_TYPE>
    bool intersect(const Sphere<DATA_TYPE>& sph, const AABox<DATA_TYPE>& box)
    {
-      return intersect(box, sph);
+      return gmtl::intersect(box, sph);
    }
 
    /**
