@@ -6,9 +6,9 @@
  *   Allen Bierbaum
  *
  * -----------------------------------------------------------------
- * File:          $RCSfile: testSuite.cpp,v $
- * Date modified: $Date: 2003-01-10 06:11:19 $
- * Version:       $Revision: 1.57 $
+ * File:          $RCSfile: runner.cpp,v $
+ * Date modified: $Date: 2003-01-10 06:44:31 $
+ * Version:       $Revision: 1.1 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
