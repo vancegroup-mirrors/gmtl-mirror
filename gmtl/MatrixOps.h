@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOps.h,v $
- * Date modified: $Date: 2002-02-15 23:08:39 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-02-15 23:48:53 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -128,53 +128,53 @@ namespace gmtl
 
    /** matrix postmult. 
     * @PRE: args must both be n x n (this function is undefined otherwise)
-    * @POST: result = tmp(result) * rhs
+    * @POST: result' = result * operand
     */
    template <typename DATA_TYPE, unsigned SIZE>
    inline Matrix<DATA_TYPE, SIZE, SIZE>& postMult( Matrix<DATA_TYPE, SIZE, SIZE>& result, 
-                                                     const Matrix<DATA_TYPE, SIZE, SIZE>& rhs )
+                                                     const Matrix<DATA_TYPE, SIZE, SIZE>& operand )
    {
-      return mult( result, Matrix<DATA_TYPE, SIZE, SIZE>( result ), rhs );
+      return mult( result, result, operand );
    }
    
    /** matrix preMult. 
     * @PRE: args must both be n x n (this function is undefined otherwise)
-    * @POST: result = lhs * tmp(result) 
+    * @POST: result' = operand * result
     */
    template <typename DATA_TYPE, unsigned SIZE>
-   inline Matrix<DATA_TYPE, SIZE, SIZE>& preMult(  const Matrix<DATA_TYPE, SIZE, SIZE>& lhs, 
-                                                   Matrix<DATA_TYPE, SIZE, SIZE>& result )
+   inline Matrix<DATA_TYPE, SIZE, SIZE>& preMult( Matrix<DATA_TYPE, SIZE, SIZE>& result,
+                                                  const Matrix<DATA_TYPE, SIZE, SIZE>& operand )
    {
-      return mult( result, lhs, Matrix<DATA_TYPE, SIZE, SIZE>( result ) );
+      return mult( result, operand, result );
    }
    
    /** matrix postmult (operator*=).
     * does a postmult on the matrix.
     * @PRE: args must both be n x n (this function is undefined otherwise)
-    * @POST: result = tmp(result) * rhs
+    * @POST: result' = result * operand
     */
    template <typename DATA_TYPE, unsigned SIZE>
    inline Matrix<DATA_TYPE, SIZE, SIZE>& operator*=( Matrix<DATA_TYPE, SIZE, SIZE>& result, 
-                                                     const Matrix<DATA_TYPE, SIZE, SIZE>& rhs )
+                                                     const Matrix<DATA_TYPE, SIZE, SIZE>& operand )
    {
-      return postMult( result, rhs );
+      return postMult( result, operand );
    }
    
    /** matrix scalar mult.
     *  mult each elt in a matrix by a scalar value.
-    *  @POST: result = lhs * scalar
+    *  @POST: result = mat * scalar
     */
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
-   inline Matrix<DATA_TYPE, ROWS, COLS>& mult( Matrix<DATA_TYPE, ROWS, COLS>& result, const Matrix<DATA_TYPE, ROWS, COLS>& lhs, float scalar )
+   inline Matrix<DATA_TYPE, ROWS, COLS>& mult( Matrix<DATA_TYPE, ROWS, COLS>& result, const Matrix<DATA_TYPE, ROWS, COLS>& mat, float scalar )
    {
       for (int i = 0; i < ROWS * COLS; ++i)
-         result = lhs[i] * _s;
+         result = mat[i] * _s;
       return result;
    }
    
    /** matrix scalar mult.
     * mult each elt in a matrix by a scalar value.
-    *  @POST: result' = result * scalar
+    *  @POST: result *= scalar
     */
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
    inline Matrix<DATA_TYPE, ROWS, COLS>& mult( Matrix<DATA_TYPE, ROWS, COLS>& result, DATA_TYPE scalar )
@@ -186,7 +186,7 @@ namespace gmtl
    
    /** matrix scalar mult (operator*=).
     * multiply matrix elements by a scalar
-    * @POST: result' = result * scalar
+    * @POST: result *= scalar
     */
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
    inline Matrix<DATA_TYPE, ROWS, COLS>& operator*=( Matrix<DATA_TYPE, ROWS, COLS>& result, DATA_TYPE scalar )
