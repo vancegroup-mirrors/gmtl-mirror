@@ -24,7 +24,7 @@
 #
 # *************** <auto-copyright.pl END do not edit this line> ***************
 
-# $Id: cvs-gather.pl,v 1.5 2002-02-23 17:41:06 patrickh Exp $
+# cvs-gather.pl,v 1.10 2002/02/24 22:06:13 patrickh Exp
 
 require 5.004;
 
@@ -60,7 +60,7 @@ sub nextSpinnerFrame($);
 # *********************************************************************
 # Here is the version for this script!
 
-my $VERSION = '0.0.10';
+my $VERSION = '0.0.12';
 # *********************************************************************
 
 my $cfg_file      = '';
@@ -750,6 +750,8 @@ sub updateModule ($$$$)
    }
 
    chdir("$cur_dir");
+   print "Done\n";
+
    return $status;
 }
 
@@ -769,7 +771,7 @@ sub checkoutModule ($$$$$$$)
       my $cmd_line = "cvs -d $cvsroot checkout ";
 
       $cmd_line .= "-r $tag " if $tag && "$tag" ne "HEAD";
-      $cmd_line .= "-D $date " if $date;
+      $cmd_line .= "-D \"$date\" " if $date;
 
       $cmd_line .= "$cvs_module";
       print "Checking out source for $name: $cvs_module -- please wait ...\n";
@@ -953,7 +955,11 @@ sub runCvsCommand ($)
    # Close up our pipe now that we are done with it.
    close(CVS_CMD);
 
-   print "Done\n";
+   if ( $? && ! $verbose )
+   {
+      warn "\nWARNING: An error may have occurred when running CVS.  " .
+           "Check $log_file\n";
+   }
 
    return 1;
 }
