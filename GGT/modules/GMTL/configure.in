@@ -7,8 +7,8 @@
 #
 # -----------------------------------------------------------------
 # File:          $RCSfile: configure.in,v $
-# Date modified: $Date: 2002-05-21 14:54:40 $
-# Version:       $Revision: 1.4 $
+# Date modified: $Date: 2002-05-29 21:25:12 $
+# Version:       $Revision: 1.5 $
 # -----------------------------------------------------------------
 #
 # ********************************************************** ggt-head end
@@ -33,7 +33,7 @@
 #
 # *********************************************************** ggt-cpr end
 
-AC_REVISION($Revision: 1.4 $)
+AC_REVISION($Revision: 1.5 $)
 AC_INIT(gmtl/gmtl.h)
 AC_CANONICAL_SYSTEM
 case $target_os in
@@ -46,7 +46,7 @@ AC_PROG_LN_S
 
 if test "X$OS" = "XWIN32"
 then
-   LN_S="cp -r"
+   LN_S="cp -pr"
 fi
 
 # $srcdir is the root directory of the GMTL source tree.  To get a value for
