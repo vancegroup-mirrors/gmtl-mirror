@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: OptTest.cpp,v $
- * Date modified: $Date: 2002-02-12 16:15:30 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-02-12 18:01:10 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -120,6 +120,21 @@ namespace gmtlTest
       lhs.mat[16] = 0.0f;
    }
 
+   inline Mat44 retvalopt( const Mat44& lhs, const Mat44& rhs )
+   {
+      return Mat44( lhs );
+   }
+   inline Mat44 retvalInternalTemporary( const Mat44& lhs, const Mat44& rhs )
+   {
+      Mat44 temporary;
+      temporary = lhs;
+      return temporary;
+   }
+   inline void retbyref( Mat44& result, const Mat44& lhs, const Mat44& rhs )
+   {
+      result = lhs;
+   }
+   
    class ArrayVec3
    {
    public:
@@ -175,14 +190,6 @@ namespace gmtlTest
    inline ArrayVec3 retvalopt( const ArrayVec3& lhs, const ArrayVec3& rhs )
    {
       return ArrayVec3( lhs.vec[0] + rhs.vec[0], lhs.vec[1] + rhs.vec[1], lhs.vec[2] + rhs.vec[2] );
-   }
-   inline ArrayVec3 noretvalopt( const ArrayVec3& lhs, const ArrayVec3& rhs )
-   {
-      ArrayVec3 temporary;
-      temporary.vec[0] = lhs.vec[0] + rhs.vec[0];
-      temporary.vec[1] = lhs.vec[1] + rhs.vec[1];
-      temporary.vec[2] = lhs.vec[2] + rhs.vec[2];
-      return temporary;
    }
    inline void retbyref( ArrayVec3& result, const ArrayVec3& lhs, const ArrayVec3& rhs )
    {
@@ -487,7 +494,7 @@ namespace gmtlTest
          }
          CppUnit::MetricRegistry::TimeStamp end_t = CppUnit::MetricRegistry::instance()->getCurTime();
          double avg = ((double)end_t - (double)start_t) / ((double)TIMES_TO_RUN);
-         std::cout << "\n[s]testRetValOpt (destvec = srcvec1 + srcvec2 with retbyref): " << avg << std::endl;
+         std::cout << "\n[s]testRetByReference retbyref( destvec, srcvec1, srcvec2 ): " << avg << std::endl;
       }
       {
          CppUnit::MetricRegistry::TimeStamp start_t = CppUnit::MetricRegistry::instance()->getCurTime();
@@ -497,7 +504,7 @@ namespace gmtlTest
          }
          CppUnit::MetricRegistry::TimeStamp end_t = CppUnit::MetricRegistry::instance()->getCurTime();
          double avg = ((double)end_t - (double)start_t) / ((double)TIMES_TO_RUN);
-         std::cout << "[s]testRetValOpt (destvec = destvec + srcvec2 with retbyref): " << avg << std::endl;
+         std::cout << "[s]testRetByReference retbyref( destvec, destvec, srcvec2 ): " << avg << std::endl;
       }
       {
          ArrayVec3 destvec;
@@ -505,11 +512,23 @@ namespace gmtlTest
          CppUnit::MetricRegistry::TimeStamp start_t = CppUnit::MetricRegistry::instance()->getCurTime();
          for (int x = 0; x < TIMES_TO_RUN; ++x)
          {
-            retbyref( destvec, destvec, srcvec2 );
+            retbyref( destvec, srcvec1, srcvec2 );
          }
          CppUnit::MetricRegistry::TimeStamp end_t = CppUnit::MetricRegistry::instance()->getCurTime();
          double avg = ((double)end_t - (double)start_t) / ((double)TIMES_TO_RUN);
-         std::cout << "[a]testRetValOpt (destvec = destvec + srcvec2 with retbyref): " << avg << std::endl;
+         std::cout << "[a]testRetByReference retbyref( destvec, srcvec1, srcvec2 ): " << avg << std::endl;
+      }
+      {
+         Mat44 destmat;
+         Mat44 srcmat1, srcmat2;
+         CppUnit::MetricRegistry::TimeStamp start_t = CppUnit::MetricRegistry::instance()->getCurTime();
+         for (int x = 0; x < TIMES_TO_RUN; ++x)
+         {
+            retbyref( destmat, srcmat1, srcmat2 );
+         }
+         CppUnit::MetricRegistry::TimeStamp end_t = CppUnit::MetricRegistry::instance()->getCurTime();
+         double avg = ((double)end_t - (double)start_t) / ((double)TIMES_TO_RUN);
+         std::cout << "[m]testRetByReference retbyref( destmat, srcmat1, srcmat2 ): " << avg << std::endl;
       }
 
       {
@@ -520,7 +539,7 @@ namespace gmtlTest
          }
          CppUnit::MetricRegistry::TimeStamp end_t = CppUnit::MetricRegistry::instance()->getCurTime();
          double avg = ((double)end_t - (double)start_t) / ((double)TIMES_TO_RUN);
-         std::cout << "\n[s]testRetValOpt (destvec += srcvec1): " << avg << std::endl;
+         std::cout << "\n[s]testRetByReference (destvec += srcvec1): " << avg << std::endl;
       }
       {
          CppUnit::MetricRegistry::TimeStamp start_t = CppUnit::MetricRegistry::instance()->getCurTime();
@@ -530,7 +549,7 @@ namespace gmtlTest
          }
          CppUnit::MetricRegistry::TimeStamp end_t = CppUnit::MetricRegistry::instance()->getCurTime();
          double avg = ((double)end_t - (double)start_t) / ((double)TIMES_TO_RUN);
-         std::cout << "[s]testRetValOpt (destvec = srcvec1; destvec += srcvec2): " << avg << std::endl;
+         std::cout << "[s]testRetByReference (destvec = srcvec1; destvec += srcvec2): " << avg << std::endl;
       }
       {
          ArrayVec3 destvec;
@@ -542,12 +561,12 @@ namespace gmtlTest
          }
          CppUnit::MetricRegistry::TimeStamp end_t = CppUnit::MetricRegistry::instance()->getCurTime();
          double avg = ((double)end_t - (double)start_t) / ((double)TIMES_TO_RUN);
-         std::cout << "[a]testRetValOpt (destvec = srcvec1; destvec += srcvec2): " << avg << std::endl;
+         std::cout << "[a]testRetByReference (destvec = srcvec1; destvec += srcvec2): " << avg << std::endl;
       }
    }
 
    // test perf of returning internal temporary by value
-   void OptTest::testRetValOptUsingInternalTemporary()
+   void OptTest::testRetValTemp()
    {
       SeparateVec3 destvec;
       SeparateVec3 srcvec1, srcvec2;
@@ -561,17 +580,17 @@ namespace gmtlTest
          }
          CppUnit::MetricRegistry::TimeStamp end_t = CppUnit::MetricRegistry::instance()->getCurTime();
          double avg = ((double)end_t - (double)start_t) / ((double)TIMES_TO_RUN);
-         std::cout << "\n[s]testRetValOpt (destvec = srcvec1 + srcvec2 with noretvalopt): " << avg << std::endl;
+         std::cout << "\n[s]testRetValTemp v = retvalInternalTemporary( s1, s2 ): " << avg << std::endl;
       }
       {
          CppUnit::MetricRegistry::TimeStamp start_t = CppUnit::MetricRegistry::instance()->getCurTime();
          for (int x = 0; x < TIMES_TO_RUN; ++x)
          {
-            destvec = retvalInternalTemporary( destvec, destvec );
+            destvec = retvalInternalTemporary( destvec, srcvec1 );
          }
          CppUnit::MetricRegistry::TimeStamp end_t = CppUnit::MetricRegistry::instance()->getCurTime();
          double avg = ((double)end_t - (double)start_t) / ((double)TIMES_TO_RUN);
-         std::cout << "[s]testRetValOpt (destvec = destvec + srcvec2 with noretvalopt): " << avg << std::endl;
+         std::cout << "[s]testRetValTemp v = retvalInternalTemporary( v, s1 ): " << avg << std::endl;
       }
       {
          ArrayVec3 destvec;
@@ -579,11 +598,23 @@ namespace gmtlTest
          CppUnit::MetricRegistry::TimeStamp start_t = CppUnit::MetricRegistry::instance()->getCurTime();
          for (int x = 0; x < TIMES_TO_RUN; ++x)
          {
-            destvec = retvalInternalTemporary( destvec, srcvec2 );
+            destvec = retvalInternalTemporary( srcvec1, srcvec2 );
          }
          CppUnit::MetricRegistry::TimeStamp end_t = CppUnit::MetricRegistry::instance()->getCurTime();
          double avg = ((double)end_t - (double)start_t) / ((double)TIMES_TO_RUN);
-         std::cout << "[a]testRetValOpt (destvec = destvec + srcvec2 with noretvalopt): " << avg << std::endl;
+         std::cout << "[a]testRetValTemp v = retvalInternalTemporary( s1, s2 ): " << avg << std::endl;
+      }
+      {
+         Mat44 destmat;
+         Mat44 srcmat1, srcmat2;
+         CppUnit::MetricRegistry::TimeStamp start_t = CppUnit::MetricRegistry::instance()->getCurTime();
+         for (int x = 0; x < TIMES_TO_RUN; ++x)
+         {
+            destmat = retvalInternalTemporary( srcmat1, srcmat2 );
+         }
+         CppUnit::MetricRegistry::TimeStamp end_t = CppUnit::MetricRegistry::instance()->getCurTime();
+         double avg = ((double)end_t - (double)start_t) / ((double)TIMES_TO_RUN);
+         std::cout << "[m]testRetValTemp m = retvalInternalTemporary( s1, s2 ): " << avg << std::endl;
       }
    }
 
@@ -604,7 +635,7 @@ namespace gmtlTest
          }
          CppUnit::MetricRegistry::TimeStamp end_t = CppUnit::MetricRegistry::instance()->getCurTime();
          double avg = ((double)end_t - (double)start_t) / ((double)TIMES_TO_RUN);
-         std::cout << "\n[s]testRetValOpt (destvec = srcvec1 + srcvec2 with retvalopt): " << avg << std::endl;
+         std::cout << "\n[s]testRetValOpt v = retvalopt( s1, s2 ): " << avg << std::endl;
       }
       {
          CppUnit::MetricRegistry::TimeStamp start_t = CppUnit::MetricRegistry::instance()->getCurTime();
@@ -614,7 +645,7 @@ namespace gmtlTest
          }
          CppUnit::MetricRegistry::TimeStamp end_t = CppUnit::MetricRegistry::instance()->getCurTime();
          double avg = ((double)end_t - (double)start_t) / ((double)TIMES_TO_RUN);
-         std::cout << "[s]testRetValOpt (destvec = destvec + srcvec2 with retvalopt): " << avg << std::endl;
+         std::cout << "[s]testRetValOpt v = retvalopt( v, v ): " << avg << std::endl;
       }
       {
          ArrayVec3 destvec;
@@ -626,7 +657,19 @@ namespace gmtlTest
          }
          CppUnit::MetricRegistry::TimeStamp end_t = CppUnit::MetricRegistry::instance()->getCurTime();
          double avg = ((double)end_t - (double)start_t) / ((double)TIMES_TO_RUN);
-         std::cout << "[a]testRetValOpt (destvec = destvec + srcvec2 with retvalopt): " << avg << std::endl;
+         std::cout << "[a]testRetValOpt v = retvalopt( v, s2 ): " << avg << std::endl;
+      }
+      {
+         Mat44 dest;
+         Mat44 src1, src2;
+         CppUnit::MetricRegistry::TimeStamp start_t = CppUnit::MetricRegistry::instance()->getCurTime();
+         for (int x = 0; x < TIMES_TO_RUN; ++x)
+         {
+            dest = retvalopt( src1, src2 );
+         }
+         CppUnit::MetricRegistry::TimeStamp end_t = CppUnit::MetricRegistry::instance()->getCurTime();
+         double avg = ((double)end_t - (double)start_t) / ((double)TIMES_TO_RUN);
+         std::cout << "[m]testRetValOpt m = retvalopt( s1, s2 ): " << avg << std::endl;
       }
       
       {
@@ -637,7 +680,7 @@ namespace gmtlTest
             myval = simpleRetValOpt( -myval );
          }
          CppUnit::MetricRegistry::TimeStamp end_t = CppUnit::MetricRegistry::instance()->getCurTime();
-         std::cout << "[d]testRetValOpt (simpleRetValOpt( -4 ) ): " << end_t - start_t << std::endl;
+         std::cout << "[d]testRetValOpt simpleRetValOpt( -4 ): " << end_t - start_t << std::endl;
       }
       {
          double myval = -4;
@@ -647,7 +690,7 @@ namespace gmtlTest
             myval = simpleRetValOpt( -myval );
          }
          CppUnit::MetricRegistry::TimeStamp end_t = CppUnit::MetricRegistry::instance()->getCurTime();
-         std::cout << "[d]testRetValOpt (simpleRetVal( -4 ) ): " << end_t - start_t << std::endl;
+         std::cout << "[d]testRetValOpt simpleRetVal( -4 ): " << end_t - start_t << std::endl;
       }
    }
 

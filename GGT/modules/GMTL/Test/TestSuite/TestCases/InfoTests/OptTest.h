@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: OptTest.h,v $
- * Date modified: $Date: 2002-02-12 04:42:36 $
- * Version:       $Revision: 1.10 $
+ * Date modified: $Date: 2002-02-12 18:01:10 $
+ * Version:       $Revision: 1.11 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -92,7 +92,7 @@ public:
    void testRetByReference();
 
    // test perf of returning internal temporary by value
-   void testRetValOptUsingInternalTemporary();
+   void testRetValTemp();
 
    // test perf of the the return value optimization when returning a temporary by value
    void testRetValOpt();
@@ -155,7 +155,7 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<OptTest>("testInPlace", &OptTest::testInPlace));
       test_suite->addTest( new CppUnit::TestCaller<OptTest>("testSetEqual", &OptTest::testSetEqual));
       test_suite->addTest( new CppUnit::TestCaller<OptTest>("testRetByReference", &OptTest::testRetByReference));
-      test_suite->addTest( new CppUnit::TestCaller<OptTest>("testRetValOptUsingInternalTemporary", &OptTest::testRetValOptUsingInternalTemporary));
+      test_suite->addTest( new CppUnit::TestCaller<OptTest>("testRetValTemp", &OptTest::testRetValTemp));
       test_suite->addTest( new CppUnit::TestCaller<OptTest>("testRetValOpt", &OptTest::testRetValOpt));
       test_suite->addTest( new CppUnit::TestCaller<OptTest>("testLoopUnrolling", &OptTest::testLoopUnrolling));
 
