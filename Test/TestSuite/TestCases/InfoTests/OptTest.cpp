@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: OptTest.cpp,v $
- * Date modified: $Date: 2002-02-12 04:42:36 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-02-12 16:15:30 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -36,6 +36,15 @@
 
 namespace gmtlTest
 {
+   inline double simpleRetValOpt( double myval )
+   {
+      return double( ::fabs( myval ) );
+   }
+   inline double simpleRetVal( double myval )
+   {
+      return ::fabs( myval );
+   }
+   
    class Mat44
    {
    public:
@@ -618,6 +627,27 @@ namespace gmtlTest
          CppUnit::MetricRegistry::TimeStamp end_t = CppUnit::MetricRegistry::instance()->getCurTime();
          double avg = ((double)end_t - (double)start_t) / ((double)TIMES_TO_RUN);
          std::cout << "[a]testRetValOpt (destvec = destvec + srcvec2 with retvalopt): " << avg << std::endl;
+      }
+      
+      {
+         double myval = -4;
+         CppUnit::MetricRegistry::TimeStamp start_t = CppUnit::MetricRegistry::instance()->getCurTime();
+         for (int x = 0; x < TIMES_TO_RUN; ++x)
+         {
+            myval = simpleRetValOpt( -myval );
+         }
+         CppUnit::MetricRegistry::TimeStamp end_t = CppUnit::MetricRegistry::instance()->getCurTime();
+         std::cout << "[d]testRetValOpt (simpleRetValOpt( -4 ) ): " << end_t - start_t << std::endl;
+      }
+      {
+         double myval = -4;
+         CppUnit::MetricRegistry::TimeStamp start_t = CppUnit::MetricRegistry::instance()->getCurTime();
+         for (int x = 0; x < TIMES_TO_RUN; ++x)
+         {
+            myval = simpleRetValOpt( -myval );
+         }
+         CppUnit::MetricRegistry::TimeStamp end_t = CppUnit::MetricRegistry::instance()->getCurTime();
+         std::cout << "[d]testRetValOpt (simpleRetVal( -4 ) ): " << end_t - start_t << std::endl;
       }
    }
 
