@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Coord.h,v $
- * Date modified: $Date: 2004-10-30 18:24:32 $
- * Version:       $Revision: 1.15 $
+ * Date modified: $Date: 2004-11-12 01:34:48 $
+ * Version:       $Revision: 1.16 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -94,8 +94,8 @@ public:
    //@{
    Coord( DataType a0, DataType a1, DataType a2, DataType a3, DataType a4, DataType a5 )
    {
-      GMTL_STATIC_ASSERT(PosSize == 3);   // "Using incorrect number of args for type size");
-      GMTL_STATIC_ASSERT(RotSize == 3);   // "Using incorrect number of args for type size");
+      GMTL_STATIC_ASSERT(PosSize == 3, Using_incorrect_number_of_args_for_type_size);
+      GMTL_STATIC_ASSERT(RotSize == 3, Using_incorrect_number_of_args_for_type_size);
       if(PosSize == 3)
       {
          mPos[0] = a0; mPos[1] = a1; mPos[2] = a2;
@@ -109,7 +109,7 @@ public:
 
    Coord( DataType a0, DataType a1, DataType a2, DataType a3, DataType a4, DataType a5, DataType a6 )
    {
-      GMTL_STATIC_ASSERT( (PosSize == 3 && RotSize == 4) || (PosSize == 4 && RotSize == 3)); // "Using incorrect number of args for type size");
+      GMTL_STATIC_ASSERT( (PosSize == 3 && RotSize == 4) || (PosSize == 4 && RotSize == 3), Using_incorrect_number_of_args_for_type_size);
       if(PosSize == 3)
       {
          mPos[0] = a0; mPos[1] = a1; mPos[2] = a2;
@@ -129,8 +129,8 @@ public:
   
    Coord( DataType a0, DataType a1, DataType a2, DataType a3, DataType a4, DataType a5, DataType a6, DataType a7 )
    {
-      GMTL_STATIC_ASSERT(PosSize == 4);    // "Using incorrect number of args for type size"
-      GMTL_STATIC_ASSERT(RotSize == 4);    // "Using incorrect number of args for type size"
+      GMTL_STATIC_ASSERT(PosSize == 4, Using_incorrect_number_of_args_for_type_size);
+      GMTL_STATIC_ASSERT(RotSize == 4, Using_incorrect_number_of_args_for_type_size);
       if(PosSize == 4)
       {
          mPos[0] = a0; mPos[1] = a1; mPos[2] = a2; mPos[3] = a3;

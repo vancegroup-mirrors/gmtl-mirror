@@ -1,9 +1,35 @@
 /** Static assertion macros 
-* Borrowed from boost (see boost.org)
+* Borrowed from boost and Loki.
 */
 #ifndef GMTL_STATIC_ASSERT_HPP
 #define GMTL_STATIC_ASSERT_HPP
 
+namespace gmtl
+{
+   /**
+    * Define a structure that will contain our static assert; the name 
+    * CompileTimeError will hopefully be displayed and catch the eye of the
+    * programmer.
+    */
+   template <int> struct CompileTimeError;
+   template <> struct CompileTimeError<true> {};
+}
+/**
+ * GMTL_STATIC_ASSERT macro.
+ * This macro will evaluate a compile time integral or pointer expression;
+ * if the expression is zero, the macro will generate a message in the form
+ * of an undefined identifier.
+ *
+ * @param   expr     the expression to evaluate.
+ * @param   msg      the message to display if expr is zero; msg cannot
+ *                   contain spaces!
+ */
+#define GMTL_STATIC_ASSERT(expr, msg) \
+   { gmtl::CompileTimeError<((expr) != 0)> ERROR_##msg; (void)ERROR_##msg; }
+
+// -- OLD Static assert --- //
+// -- To be used if the new one causes problems -- //
+/*
 #include <gmtl/Defines.h>
 #include <gmtl/Util/Meta.h>
 
@@ -69,5 +95,6 @@ template<int x> struct static_assert_test{};
       = sizeof(::gmtl::STATIC_ASSERTION_FAILURE< (bool)( B ) >) }
 #endif
 
+*/
 
 #endif // GMTL_STATIC_ASSERT_HPP

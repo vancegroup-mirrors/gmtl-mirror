@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecBase.h,v $
- * Date modified: $Date: 2004-10-30 18:24:33 $
- * Version:       $Revision: 1.18 $
+ * Date modified: $Date: 2004-11-12 01:34:49 $
+ * Version:       $Revision: 1.19 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -37,6 +37,7 @@
 
 #include <gmtl/Defines.h>
 #include <gmtl/Util/Assert.h>
+#include <gmtl/Util/StaticAssert.h>
 #include <gmtl/Util/Meta.h>
 #include <gmtl/Config.h>
 #include <gmtl/Helpers.h>
@@ -188,8 +189,7 @@ public:
 #ifdef GMTL_COUNT_CONSTRUCT_CALLS
       gmtl::helpers::VecCtrCounterInstance()->inc();
 #endif
-      // @todo need compile time assert
-      gmtlASSERT( SIZE == 2 && "out of bounds element access in VecB" );
+      GMTL_STATIC_ASSERT( SIZE == 2, Invalid_constructor_of_size_2_used);
       mData[0] = val0; mData[1] = val1;
    }
    VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2)
@@ -197,8 +197,7 @@ public:
 #ifdef GMTL_COUNT_CONSTRUCT_CALLS
       gmtl::helpers::VecCtrCounterInstance()->inc();
 #endif
-      // @todo need compile time assert
-      gmtlASSERT( SIZE == 3 && "out of bounds element access in VecB" );
+      GMTL_STATIC_ASSERT( SIZE == 3, Invalid_constructor_of_size_3_used );
       mData[0] = val0;  mData[1] = val1;  mData[2] = val2;
    }
    VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2,const DATA_TYPE& val3)
@@ -207,7 +206,7 @@ public:
       gmtl::helpers::VecCtrCounterInstance()->inc();
 #endif
       // @todo need compile time assert
-      gmtlASSERT( SIZE == 4 && "out of bounds element access in VecB" );
+      GMTL_STATIC_ASSERT( SIZE == 4, Invalid_constructor_of_size_4_used);
       mData[0] = val0;  mData[1] = val1;  mData[2] = val2;  mData[3] = val3;
    }
    //@}
@@ -232,17 +231,17 @@ public:
 
    inline void set(const DATA_TYPE& val0,const DATA_TYPE& val1)
    {
-      gmtlASSERT( SIZE >= 2 && "out of bounds element access in VecB" );
+      GMTL_STATIC_ASSERT( SIZE >= 2, Set_out_of_valid_range);
       mData[0] = val0; mData[1] = val1;
    }
    inline void set(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2)
    {
-      gmtlASSERT( SIZE >= 3 && "out of bounds element access in VecB" );
+      GMTL_STATIC_ASSERT( SIZE >= 3, Set_out_of_valid_range);
       mData[0] = val0;  mData[1] = val1;  mData[2] = val2;
    }
    inline void set(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2,const DATA_TYPE& val3)
    {
-      gmtlASSERT( SIZE >= 4 && "out of bounds element access in VecB" );
+      GMTL_STATIC_ASSERT( SIZE >= 4, Set_out_of_valid_range);
       mData[0] = val0;  mData[1] = val1;  mData[2] = val2;  mData[3] = val3;
    }
    //@}

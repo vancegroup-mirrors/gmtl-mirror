@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Vec.h,v $
- * Date modified: $Date: 2004-10-30 18:24:33 $
- * Version:       $Revision: 1.20 $
+ * Date modified: $Date: 2004-11-12 01:34:49 $
+ * Version:       $Revision: 1.21 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -38,6 +38,7 @@
 #include <gmtl/Defines.h>
 #include <gmtl/Config.h>
 #include <gmtl/VecBase.h>
+#include <gmtl/Util/StaticAssert.h>
 
 namespace gmtl
 {
@@ -114,22 +115,19 @@ public:
    Vec(const DATA_TYPE& val0,const DATA_TYPE& val1)
    : BaseType(val0, val1)
    {
-      // @todo compile time assert is needed here
-      gmtlASSERT( SIZE == 2 && "out of bounds element access in Point" );
+      GMTL_STATIC_ASSERT( SIZE == 2, Out_Of_Bounds_Element_Access_In_Vec );
    }
 
    Vec(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2)
    : BaseType(val0, val1, val2)
    {
-      // @todo compile time assert is needed here
-      gmtlASSERT( SIZE == 3 && "out of bounds element access in Point" );
+      GMTL_STATIC_ASSERT( SIZE == 3, Out_Of_Bounds_Element_Access_In_Vec );
    }
 
    Vec(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2,const DATA_TYPE& val3)
    : BaseType(val0, val1, val2, val3)
    {
-      // @todo compile time assert is needed here
-      gmtlASSERT( SIZE == 4 && "out of bounds element access in Point" );
+      GMTL_STATIC_ASSERT( SIZE == 4, Out_Of_Bounds_Element_Access_In_Vec );
    }
    //@}
 

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Matrix.h,v $
- * Date modified: $Date: 2004-10-27 18:59:51 $
- * Version:       $Revision: 1.37 $
+ * Date modified: $Date: 2004-11-12 01:34:49 $
+ * Version:       $Revision: 1.38 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -38,6 +38,7 @@
 #include <gmtl/Defines.h>
 #include <gmtl/Math.h>
 #include <gmtl/Util/Assert.h>
+#include <gmtl/Util/StaticAssert.h>
 
 namespace gmtl
 {
@@ -268,7 +269,7 @@ public:
    void set( DATA_TYPE v00, DATA_TYPE v01,
              DATA_TYPE v10, DATA_TYPE v11 )
    {
-      gmtlASSERT( ROWS == 2 && COLS == 2 ); // could be at compile time...
+      GMTL_STATIC_ASSERT( (ROWS == 2 && COLS == 2), Set_called_when_Matrix_not_of_size_2_2 );
       mData[0] = v00;
       mData[1] = v10;
       mData[2] = v01;
@@ -282,7 +283,7 @@ public:
    void set( DATA_TYPE v00, DATA_TYPE v01, DATA_TYPE v02,
              DATA_TYPE v10, DATA_TYPE v11, DATA_TYPE v12  )
    {
-      gmtlASSERT( ROWS == 2 && COLS == 3 ); // could be at compile time...
+      GMTL_STATIC_ASSERT( (ROWS == 2 && COLS == 3), Set_called_when_Matrix_not_of_size_2_3 );
       mData[0] = v00;
       mData[1] = v10;
       mData[2] = v01;
@@ -299,7 +300,7 @@ public:
              DATA_TYPE v10, DATA_TYPE v11, DATA_TYPE v12,
              DATA_TYPE v20, DATA_TYPE v21, DATA_TYPE v22)
    {
-      gmtlASSERT( ROWS == 3 && COLS == 3 ); // could be at compile time...
+      GMTL_STATIC_ASSERT( (ROWS == 3 && COLS == 3), Set_called_when_Matrix_not_of_size_3_3 );
       mData[0] = v00;
       mData[1] = v10;
       mData[2] = v20;
@@ -321,7 +322,7 @@ public:
              DATA_TYPE v10, DATA_TYPE v11, DATA_TYPE v12, DATA_TYPE v13,
              DATA_TYPE v20, DATA_TYPE v21, DATA_TYPE v22, DATA_TYPE v23)
    {
-      gmtlASSERT( ROWS == 3 && COLS == 4 );// could be compile time...
+      GMTL_STATIC_ASSERT( (ROWS == 3 && COLS == 4), Set_called_when_Matrix_not_of_size_3_4 );
       mData[0] = v00;
       mData[1] = v10;
       mData[2] = v20;
@@ -347,7 +348,7 @@ public:
              DATA_TYPE v20, DATA_TYPE v21, DATA_TYPE v22, DATA_TYPE v23,
              DATA_TYPE v30, DATA_TYPE v31, DATA_TYPE v32, DATA_TYPE v33 )
    {
-      gmtlASSERT( ROWS == 4 && COLS == 4 );// could be compile time...
+      GMTL_STATIC_ASSERT( (ROWS == 4 && COLS == 4), Set_called_when_Matrix_not_of_size_4_4 );
       mData[0]  = v00;
       mData[1]  = v10;
       mData[2]  = v20;
