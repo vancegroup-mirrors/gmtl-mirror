@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Coord.h,v $
- * Date modified: $Date: 2003-03-29 22:02:18 $
- * Version:       $Revision: 1.14 $
+ * Date modified: $Date: 2004-10-30 18:24:32 $
+ * Version:       $Revision: 1.15 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,6 +35,7 @@
 #ifndef _GMTL_COORD_H_
 #define _GMTL_COORD_H_
 
+#include <gmtl/Defines.h>
 #include <gmtl/Vec.h>
 #include <gmtl/AxisAngle.h>
 #include <gmtl/EulerAngle.h>

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Meta.h,v $
- * Date modified: $Date: 2004-08-30 14:54:40 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2004-10-30 18:24:34 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,6 +35,7 @@
 #ifndef _GMTL_METAPROGRAMMING_H
 #define _GMTL_METAPROGRAMMING_H
 
+#include <gmtl/Defines.h>
 
 /*** STRINGIZE and JOIN macros */
 /* Taken from boost (see boost.org) */
@@ -87,6 +88,7 @@ namespace gmtl
 
 } // end namespace
 
+#ifndef GMTL_NO_METAPROG
 namespace gmtl
 {
 namespace meta
@@ -130,7 +132,6 @@ struct AssignArrayUnrolled<0,T>
 
 }  // namespace meta
 }  // namespace gmtl
-
-
+#endif /* ! GMTL_NO_METAPROG */
 
 #endif

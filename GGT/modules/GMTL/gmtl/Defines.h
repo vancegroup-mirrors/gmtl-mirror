@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Defines.h,v $
- * Date modified: $Date: 2003-08-03 16:23:21 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2004-10-30 18:24:32 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -94,6 +94,10 @@ namespace gmtl
 #define NO_POWF 1
 #define NO_CEILF 1
 #define NO_FLOORF 1
+#endif
+
+#if defined(_MSC_VER) && _MSC_VER < 1310
+#define GMTL_NO_METAPROG
 #endif
 
 

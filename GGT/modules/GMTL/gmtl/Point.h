@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Point.h,v $
- * Date modified: $Date: 2004-09-16 19:40:35 $
- * Version:       $Revision: 1.17 $
+ * Date modified: $Date: 2004-10-30 18:24:33 $
+ * Version:       $Revision: 1.18 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,6 +35,7 @@
 #ifndef _GMTL_POINT_H_
 #define _GMTL_POINT_H_
 
+#include <gmtl/Defines.h>
 #include <gmtl/VecBase.h>
 
 namespace gmtl
@@ -82,16 +83,19 @@ public:
    Point(const Point<DATA_TYPE, SIZE>& rVec)
       : BaseType(static_cast<BaseType>(rVec))
    {;}
+   */
+
+#ifdef GMTL_NO_METAPROG
    Point(const VecBase<DATA_TYPE, SIZE>& rVec)
       : BaseType(rVec)
    {;}
-   */
-
+#else
    template<typename REP2>
    Point( const VecBase<DATA_TYPE, SIZE, REP2>& rVec )
       : BaseType( rVec )
    {
    }
+#endif
 
    /**
     * Construct a 2-D point with 2 given values
@@ -125,13 +129,20 @@ public:
    //@}
 
    /** Assign from different rep. */
+#ifdef GMTL_NO_METAPROG
+   inline VecType& operator=(const VecBase<DATA_TYPE,SIZE>& rhs)
+   {
+      BaseType::operator=(rhs);
+      return *this;
+   }
+#else
    template<typename REP2>
    inline VecType& operator=(const VecBase<DATA_TYPE,SIZE,REP2>& rhs)
    {
       BaseType::operator=(rhs);
       return *this;
    }
-
+#endif
 
 };
 

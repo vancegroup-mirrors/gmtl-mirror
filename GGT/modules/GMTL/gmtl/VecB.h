@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecB.h,v $
- * Date modified: $Date: 2004-09-16 19:40:35 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2004-10-30 18:24:33 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,8 +35,11 @@
 #ifndef _GMTL_VECB_H_
 #define _GMTL_VECB_H_
 
+#include <gmtl/Defines.h>
 #include <gmtl/Util/Assert.h>
+#ifndef GMTL_NO_METAPROG
 #include <gmtl/Util/Meta.h>
+#endif
 #include <gmtl/Config.h>
 #include <gmtl/Helpers.h>
 
@@ -132,11 +135,12 @@ public:
 #ifdef GMTL_COUNT_CONSTRUCT_CALLS
       gmtl::helpers::VecCtrCounterInstance()->inc();
 #endif
-      /*
+#ifdef GMTL_NO_METAPROG
       for(unsigned i=0;i<SIZE;++i)
          mData[i] = rVec.mData[i];
-      */
+#else
       gmtl::meta::AssignVecUnrolled<SIZE-1, VecB<DATA_TYPE,SIZE> >::func(*this, rVec);
+#endif
    }
 
 

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Output.h,v $
- * Date modified: $Date: 2004-09-16 19:40:35 $
- * Version:       $Revision: 1.15 $
+ * Date modified: $Date: 2004-10-30 18:24:33 $
+ * Version:       $Revision: 1.16 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -53,7 +53,7 @@ namespace gmtl
    namespace output
    {
       /** Outputters for vector types. */
-
+#ifndef GMTL_NO_METAPROG
       template<typename DATA_TYPE, unsigned SIZE, typename REP>
       struct VecOutputter
       {
@@ -83,7 +83,7 @@ namespace gmtl
             return out;
          }
       };
-
+#endif
    }
 
    /** @ingroup Output
@@ -100,11 +100,29 @@ namespace gmtl
     *
     * @return  out after it has been written to
     */
+#ifdef GMTL_NO_METAPROG
+   template<typename DATA_TYPE, unsigned SIZE>
+   std::ostream& operator<<(std::ostream& out, const VecBase<DATA_TYPE, SIZE>& v)
+   {
+      out << "(";
+      for ( unsigned i=0; i<SIZE; ++i )
+      {
+         if ( i != 0 )
+         {
+            out << ", ";
+         }
+         out << v[i];
+      }
+      out << ")";
+      return out;
+   }
+#else
    template<typename DATA_TYPE, unsigned SIZE, typename REP>
    std::ostream& operator<<(std::ostream& out, const VecBase<DATA_TYPE, SIZE, REP>& v)
    {
       return output::VecOutputter<DATA_TYPE,SIZE,REP>::outStream(out,v);
    }
+#endif
 
    /**
     * Outputs a string representation of the given EulerAngle type to the given
