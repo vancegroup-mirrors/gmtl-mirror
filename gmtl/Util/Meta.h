@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Meta.h,v $
- * Date modified: $Date: 2002-07-11 21:17:37 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2004-08-30 14:54:40 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -49,7 +49,7 @@
 
 //
 // Helper macro GMTL_JOIN:
-// The following piece of macro magic joins the two 
+// The following piece of macro magic joins the two
 // arguments together, even when one of the arguments is
 // itself a macro (see 16.3.1 in C++ standard).  The key
 // is that macro expansion of macro arguments does not
@@ -62,11 +62,11 @@
 
 /** Meta programming classes */
 namespace gmtl
-{  
+{
    /** @ingroup Meta */
    //@{
-   
-   /** A lightweight identifier you can pass to overloaded functions 
+
+   /** A lightweight identifier you can pass to overloaded functions
     *  to typefy them.
     *
     *  Type2Type lets you transport the type information about T to functions
@@ -76,7 +76,7 @@ namespace gmtl
    {
       typedef T OriginalType;
    };
-   
+
    //@}
 
    /** @ingroup HelperMeta */
@@ -86,4 +86,51 @@ namespace gmtl
    //@}
 
 } // end namespace
+
+namespace gmtl
+{
+namespace meta
+{
+
+// ------ LOOP UnRolling ------------ //
+template<int ELT, typename T>
+struct AssignVecUnrolled
+{
+   static void func(T& lVec, const T& rVec)
+   {
+      AssignVecUnrolled<ELT-1,T>::func(lVec, rVec);
+      lVec[ELT] = rVec[ELT];
+   }
+};
+
+template<typename T>
+struct AssignVecUnrolled<0,T>
+{
+   static void func(T& lVec, const T& rVec)
+   { lVec[0] = rVec[0]; }
+};
+
+// Template programs for array assignment unrolled
+template<int ELT, typename T>
+struct AssignArrayUnrolled
+{
+   static void func(T* lVec, const T* rVec)
+   {
+      AssignArrayUnrolled<ELT-1,T>::func(lVec, rVec);
+      lVec[ELT] = rVec[ELT];
+   }
+};
+
+template<typename T>
+struct AssignArrayUnrolled<0,T>
+{
+   static void func(T* lVec, const T* rVec)
+   { lVec[0] = rVec[0]; }
+};
+
+}  // namespace meta
+}  // namespace gmtl
+
+
+
 #endif
