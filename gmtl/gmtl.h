@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl.h,v $
- * Date modified: $Date: 2003-02-23 20:22:20 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2003-03-15 00:58:19 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -52,7 +52,6 @@
 #include <gmtl/Math.h>
 #include <gmtl/Matrix.h>
 #include <gmtl/MatrixOps.h>
-#include <gmtl/OOBox.h>
 #include <gmtl/Output.h>
 #include <gmtl/Plane.h>
 #include <gmtl/PlaneOps.h>
