@@ -24,10 +24,10 @@ env.Append(CPPPATH = Split('#Test/TestSuite #'),
            LIBS = Split('dl'))
 
 if GetPlatform() == 'linux':
-   env['CXXFLAGS'].extend(['-fexceptions'])
+   env.Append(CXXFLAGS = ['-fexceptions'])
 
 if GetPlatform() == 'irix':
-   env['CPPPATH'].extend(['#../../external/boost/boost/compatibility/cpp_c_headers'])
-   env['LIBS'].extend(['m'])
+   env.Append(CPPPATH = ['#../../external/boost/boost/compatibility/cpp_c_headers'],
+              LIBS = ['m'])
 
 env.Program('runtests', sources)
