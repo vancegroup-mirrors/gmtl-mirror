@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixClassTest.cpp,v $
- * Date modified: $Date: 2002-03-18 23:40:46 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-03-21 21:38:53 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -570,6 +570,96 @@ namespace gmtlTest {
       }
    }
 
+   // make sure set( float* ) works
+   template <typename DATA_TYPE>
+   class matrixSetPtr
+   {
+   public:
+      static void go()
+      {   
+         {
+            DATA_TYPE mat44[] = { 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15 };
+            gmtl::Matrix<DATA_TYPE, 4, 4> test_mat;
+            test_mat.set( mat44 );
+
+            CPPUNIT_ASSERT( test_mat( 0, 0 ) == 0  );
+            CPPUNIT_ASSERT( test_mat( 1, 0 ) == 1  );
+            CPPUNIT_ASSERT( test_mat( 2, 0 ) == 2  );
+            CPPUNIT_ASSERT( test_mat( 3, 0 ) == 3  );
+            CPPUNIT_ASSERT( test_mat( 0, 1 ) == 4  );
+            CPPUNIT_ASSERT( test_mat( 1, 1 ) == 5  );
+            CPPUNIT_ASSERT( test_mat( 2, 1 ) == 6  );
+            CPPUNIT_ASSERT( test_mat( 3, 1 ) == 7  );
+            CPPUNIT_ASSERT( test_mat( 0, 2 ) == 8  );
+            CPPUNIT_ASSERT( test_mat( 1, 2 ) == 9  );
+            CPPUNIT_ASSERT( test_mat( 2, 2 ) == 10 );
+            CPPUNIT_ASSERT( test_mat( 3, 2 ) == 11 );
+            CPPUNIT_ASSERT( test_mat( 0, 3 ) == 12 );
+            CPPUNIT_ASSERT( test_mat( 1, 3 ) == 13 );
+            CPPUNIT_ASSERT( test_mat( 2, 3 ) == 14 );
+            CPPUNIT_ASSERT( test_mat( 3, 3 ) == 15 );
+         }
+
+         {
+            DATA_TYPE mat34[] = { 0,1,2,3,4,5,6,7,8,9,10,11 };
+            gmtl::Matrix<DATA_TYPE, 3, 4> test_mat;
+            test_mat.set( mat34 );
+
+            CPPUNIT_ASSERT( test_mat( 0, 0 ) == 0 );
+            CPPUNIT_ASSERT( test_mat( 1, 0 ) == 1 );
+            CPPUNIT_ASSERT( test_mat( 2, 0 ) == 2 );
+            CPPUNIT_ASSERT( test_mat( 0, 1 ) == 3 );
+            CPPUNIT_ASSERT( test_mat( 1, 1 ) == 4 );
+            CPPUNIT_ASSERT( test_mat( 2, 1 ) == 5 );
+            CPPUNIT_ASSERT( test_mat( 0, 2 ) == 6 );
+            CPPUNIT_ASSERT( test_mat( 1, 2 ) == 7 );
+            CPPUNIT_ASSERT( test_mat( 2, 2 ) == 8 );
+            CPPUNIT_ASSERT( test_mat( 0, 3 ) == 9 );
+            CPPUNIT_ASSERT( test_mat( 1, 3 ) == 10 );
+            CPPUNIT_ASSERT( test_mat( 2, 3 ) == 11 );
+         }
+
+         {
+            DATA_TYPE mat33[] = { 0,1,2,3,4,5,6,7,8 };
+            gmtl::Matrix<DATA_TYPE, 3, 3> test_mat;
+            test_mat.set( mat33 );
+
+            CPPUNIT_ASSERT( test_mat( 0, 0 ) == 0 );
+            CPPUNIT_ASSERT( test_mat( 1, 0 ) == 1 );
+            CPPUNIT_ASSERT( test_mat( 2, 0 ) == 2 );
+            CPPUNIT_ASSERT( test_mat( 0, 1 ) == 3 );
+            CPPUNIT_ASSERT( test_mat( 1, 1 ) == 4 );
+            CPPUNIT_ASSERT( test_mat( 2, 1 ) == 5 );
+            CPPUNIT_ASSERT( test_mat( 0, 2 ) == 6 );
+            CPPUNIT_ASSERT( test_mat( 1, 2 ) == 7 );
+            CPPUNIT_ASSERT( test_mat( 2, 2 ) == 8 );
+         }
+
+         {
+            DATA_TYPE mat23[] = { 0,1,2,3,4,5 };
+            gmtl::Matrix<DATA_TYPE, 2, 3> test_mat;
+            test_mat.set( mat23 );
+
+            CPPUNIT_ASSERT( test_mat( 0, 0 ) == 0 );
+            CPPUNIT_ASSERT( test_mat( 1, 0 ) == 1 );
+            CPPUNIT_ASSERT( test_mat( 0, 1 ) == 2 );
+            CPPUNIT_ASSERT( test_mat( 1, 1 ) == 3 );
+            CPPUNIT_ASSERT( test_mat( 0, 2 ) == 4 );
+            CPPUNIT_ASSERT( test_mat( 1, 2 ) == 5 );
+         }
+         {
+            DATA_TYPE mat22[] = { 0,1,2,3 };
+            gmtl::Matrix<DATA_TYPE, 2, 2> test_mat;
+            test_mat.set( mat22 );
+
+            CPPUNIT_ASSERT( test_mat( 0, 0 ) == 0 );
+            CPPUNIT_ASSERT( test_mat( 1, 0 ) == 1 );
+            CPPUNIT_ASSERT( test_mat( 0, 1 ) == 2 );
+            CPPUNIT_ASSERT( test_mat( 1, 1 ) == 3 );
+         }
+      }
+   };
+
    void MatrixClassTest::testMatrixSetPtr()
    {
       matrixSetPtr<float>::go();
@@ -579,6 +669,109 @@ namespace gmtlTest {
       matrixSetPtr<char>::go();
       matrixSetPtr<short>::go();
    }
+
+   // make sure setTranspose( float* ) works
+   // setTranspose allows you to set up your mat by hand in a static array (float mat[] = {};)
+   // in such a way that the formatting in your code looks like the memory layout of the matrix
+   // i.e. colums and rows will match. 
+   // this setTranspose func doesn't take mat data in memory order, but rather its transpose.
+   template <typename DATA_TYPE>
+   class matrixSetTransposePtr
+   {
+   public:
+      static void go()
+      {   
+         {
+            DATA_TYPE mat44[] = {  0, 1, 2, 3,
+                                   4, 5, 6, 7,
+                                   8, 9,10,11,
+                                  12,13,14,15  };
+            gmtl::Matrix<DATA_TYPE, 4, 4> test_mat;
+            test_mat.setTranspose( mat44 );
+
+            CPPUNIT_ASSERT( test_mat( 0, 0 ) == 0  );
+            CPPUNIT_ASSERT( test_mat( 0, 1 ) == 1  );
+            CPPUNIT_ASSERT( test_mat( 0, 2 ) == 2  );
+            CPPUNIT_ASSERT( test_mat( 0, 3 ) == 3  );
+            CPPUNIT_ASSERT( test_mat( 1, 0 ) == 4  );
+            CPPUNIT_ASSERT( test_mat( 1, 1 ) == 5  );
+            CPPUNIT_ASSERT( test_mat( 1, 2 ) == 6  );
+            CPPUNIT_ASSERT( test_mat( 1, 3 ) == 7  );
+            CPPUNIT_ASSERT( test_mat( 2, 0 ) == 8  );
+            CPPUNIT_ASSERT( test_mat( 2, 1 ) == 9  );
+            CPPUNIT_ASSERT( test_mat( 2, 2 ) == 10 );
+            CPPUNIT_ASSERT( test_mat( 2, 3 ) == 11 );
+            CPPUNIT_ASSERT( test_mat( 3, 0 ) == 12 );
+            CPPUNIT_ASSERT( test_mat( 3, 1 ) == 13 );
+            CPPUNIT_ASSERT( test_mat( 3, 2 ) == 14 );
+            CPPUNIT_ASSERT( test_mat( 3, 3 ) == 15 );
+         }
+
+         {
+            DATA_TYPE mat34[] = { 0, 1,  2,  3,
+                                  4, 5,  6,  7,
+                                  8, 9, 10, 11  };
+            gmtl::Matrix<DATA_TYPE, 3, 4> test_mat;
+            test_mat.setTranspose( mat34 );
+
+            CPPUNIT_ASSERT( test_mat( 0, 0 ) == 0  );
+            CPPUNIT_ASSERT( test_mat( 0, 1 ) == 1  );
+            CPPUNIT_ASSERT( test_mat( 0, 2 ) == 2  );
+            CPPUNIT_ASSERT( test_mat( 0, 3 ) == 3  );
+            CPPUNIT_ASSERT( test_mat( 1, 0 ) == 4  );
+            CPPUNIT_ASSERT( test_mat( 1, 1 ) == 5  );
+            CPPUNIT_ASSERT( test_mat( 1, 2 ) == 6  );
+            CPPUNIT_ASSERT( test_mat( 1, 3 ) == 7  );
+            CPPUNIT_ASSERT( test_mat( 2, 0 ) == 8  );
+            CPPUNIT_ASSERT( test_mat( 2, 1 ) == 9  );
+            CPPUNIT_ASSERT( test_mat( 2, 2 ) == 10 );
+            CPPUNIT_ASSERT( test_mat( 2, 3 ) == 11 );
+         }
+
+         {
+            DATA_TYPE mat33[] = { 0,1,2,
+                                  3,4,5,
+                                  6,7,8 };
+            gmtl::Matrix<DATA_TYPE, 3, 3> test_mat;
+            test_mat.setTranspose( mat33 );
+
+            CPPUNIT_ASSERT( test_mat( 0, 0 ) == 0 );
+            CPPUNIT_ASSERT( test_mat( 0, 1 ) == 1 );
+            CPPUNIT_ASSERT( test_mat( 0, 2 ) == 2 );
+            CPPUNIT_ASSERT( test_mat( 1, 0 ) == 3 );
+            CPPUNIT_ASSERT( test_mat( 1, 1 ) == 4 );
+            CPPUNIT_ASSERT( test_mat( 1, 2 ) == 5 );
+            CPPUNIT_ASSERT( test_mat( 2, 0 ) == 6 );
+            CPPUNIT_ASSERT( test_mat( 2, 1 ) == 7 );
+            CPPUNIT_ASSERT( test_mat( 2, 2 ) == 8 );
+         }
+
+         {
+            DATA_TYPE mat23[] = { 0,1,2,
+                                  3,4,5 };
+            gmtl::Matrix<DATA_TYPE, 2, 3> test_mat;
+            test_mat.setTranspose( mat23 );
+
+            CPPUNIT_ASSERT( test_mat( 0, 0 ) == 0 );
+            CPPUNIT_ASSERT( test_mat( 0, 1 ) == 1 );
+            CPPUNIT_ASSERT( test_mat( 0, 2 ) == 2 );
+            CPPUNIT_ASSERT( test_mat( 1, 0 ) == 3 );
+            CPPUNIT_ASSERT( test_mat( 1, 1 ) == 4 );
+            CPPUNIT_ASSERT( test_mat( 1, 2 ) == 5 );
+         }
+         {
+            DATA_TYPE mat22[] = { 0,1,
+                                  2,3 };
+            gmtl::Matrix<DATA_TYPE, 2, 2> test_mat;
+            test_mat.setTranspose( mat22 );
+
+            CPPUNIT_ASSERT( test_mat( 0, 0 ) == 0 );
+            CPPUNIT_ASSERT( test_mat( 0, 1 ) == 1 );
+            CPPUNIT_ASSERT( test_mat( 1, 0 ) == 2 );
+            CPPUNIT_ASSERT( test_mat( 1, 1 ) == 3 );
+         }
+      }
+   };
 
    void MatrixClassTest::testMatrixSetTransposePtr()
    {
