@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Output.h,v $
- * Date modified: $Date: 2002-05-17 23:07:11 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-05-17 23:20:09 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -52,7 +52,9 @@
 
 namespace gmtl
 {
-   /** @ingroup Output */
+   /** @ingroup Output
+    *  @name Output Stream Operators
+    */
    //@{
    
    /**

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtlDefines.h,v $
- * Date modified: $Date: 2002-05-17 23:07:11 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2002-05-17 23:20:09 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -39,7 +39,7 @@
  *  GMTL comes with many math data types: Vec, Point, Matrix, Quat, Coord, Sphere.
  */
 
-/** @defgroup Ops Mathematical Operations: +, -, \*, /, invert, dot, cross
+/** @defgroup Ops Mathematical Operations: add(...), sub(...), mul(...), div(...), invert(...), dot(...), cross(...)
  *  Implements fundamental mathematical operations such as +, -, *, invert, dot product.
  */
 
@@ -90,6 +90,7 @@ namespace gmtl
    };
 
    /** @ingroup Defines
+    * @name Constants
     * @{
     */    
    const float GMTL_EPSILON = 1.0e-6f;
