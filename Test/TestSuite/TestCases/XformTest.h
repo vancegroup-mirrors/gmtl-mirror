@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: XformTest.h,v $
- * Date modified: $Date: 2002-03-10 18:46:56 $
- * Version:       $Revision: 1.18 $
+ * Date modified: $Date: 2002-03-10 19:06:48 $
+ * Version:       $Revision: 1.19 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -71,10 +71,10 @@ public:
          T bok = 88;
          std::string n = "XformTest/operator*(quat4,vec3)";
          n += name;
-         gmtl::Quat<T> q1( (T)1, (T)2, (T)3, (T)4 );
+         gmtl::Quat<T> q1( makeNormal( gmtl::Quatf<T>( (T)1, (T)2, (T)3, (T)4 ) ) );
          gmtl::Vec<T, 3> v2;
          v2[0] = (T)1;
-         const long iters(50000);
+         const long iters(25000);
          CPPUNIT_METRIC_START_TIMING();
          for (long iter = 0; iter < iters; ++iter)
          {
@@ -100,9 +100,6 @@ public:
    {
       XformQuatVec3<float>::go( "f" );
       XformQuatVec3<double>::go( "d" );
-      XformQuatVec3<short>::go( "s" );
-      XformQuatVec3<int>::go( "i" );
-      XformQuatVec3<long>::go( "l" );
    }   
    
 
