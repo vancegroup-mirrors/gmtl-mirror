@@ -27,15 +27,16 @@ Automatic distribution builder and packager for SCons.
 #
 # -----------------------------------------------------------------
 # File:          $RCSfile: AutoDist.py,v $
-# Date modified: $Date: 2003-03-15 22:10:20 $
-# Version:       $Revision: 1.2 $
+# Date modified: $Date: 2003-05-26 03:34:59 $
+# Version:       $Revision: 1.3 $
 # -----------------------------------------------------------------
 ############################################################## autodist-cpr end
 
-__version__    = '0.1.4'
+__version__    = '0.1.5'
 __author__     = 'Ben Scott'
 
 
+import os
 from os import path
 
 import SCons.Defaults
@@ -318,11 +319,21 @@ class Package:
       self.data['assemblies'].extend([prog])
       return prog
 
-   def addExtraDist(self, files):
+   def addExtraDist(self, files, exclude=[]):
       """
-      Adds in the given files to the distribution of this package.
+      Adds in the given files to the distribution of this package. If a
+      directory is encountered in the file list, it is recursively added. Files
+      whose names are in the exclude list are not added to the list.
       """
-      self.data['extra_dist'].extend(files)
+      for file in files:
+         # Make sure to skip files in the exclude list
+         if not file in exclude:
+            # If the file is a directory, recurse on it
+            if os.path.isdir(file):
+               self.addExtraDist(os.listdir(file), exclude)
+            # If the file is not a directory, add in the extra dist list
+            else:
+               self.data['extra_dist'].append(file)
 
    def getName(self):
       return self.data['name']
@@ -419,7 +430,7 @@ def _CreateSourceTarGzBuilder(env):
 
       # Make the tar.gz
       targz = Action('tar cf - -C '+temp_dir+' $SOURCES | gzip -f > $TARGET')
-      targz(target, [dist_name], env)
+      targz(target, [File(dist_name)], env)
 
       # Remove the temporary directory
       shutil.rmtree(temp_dir)
