@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2003-03-31 16:37:43 $
- * Version:       $Revision: 1.69 $
+ * Date modified: $Date: 2003-04-01 00:40:53 $
+ * Version:       $Revision: 1.70 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -866,7 +866,7 @@ namespace gmtl
 
    /**
     * Extracts the Y axis rotation information from the matrix.
-    * @post Returned value is from -180 to 180, where 0 is none.
+    * @post Returned value is from -PI to PI, where 0 is none.
     */
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
    inline DATA_TYPE makeYRot( const Matrix<DATA_TYPE, ROWS, COLS>& mat )
@@ -899,7 +899,7 @@ namespace gmtl
 
    /**
     * Extracts the X-axis rotation information from the matrix.
-    * @post Returned value is from -180 to 180, where 0 is no rotation.
+    * @post Returned value is from -PI to PI, where 0 is no rotation.
     */
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
    inline DATA_TYPE makeXRot( const Matrix<DATA_TYPE, ROWS, COLS>& mat )
@@ -932,7 +932,7 @@ namespace gmtl
 
    /**
     * Extracts the Z-axis rotation information from the matrix.
-    * @post Returned value is from -180 to 180, where 0 is no rotation.
+    * @post Returned value is from -PI to PI, where 0 is no rotation.
     */
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
    inline DATA_TYPE makeZRot( const Matrix<DATA_TYPE, ROWS, COLS>& mat )
