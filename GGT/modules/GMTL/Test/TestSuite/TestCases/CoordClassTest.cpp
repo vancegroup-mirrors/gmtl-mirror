@@ -8,8 +8,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: CoordClassTest.cpp,v $
- * Date modified: $Date: 2002-07-11 21:20:40 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-09-11 07:03:22 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -87,6 +87,59 @@ namespace gmtlTest
       CPPUNIT_ASSERT( q4.rot()[0] == 4.0f );
       CPPUNIT_ASSERT( q4.rot()[1] == 5.0f );
       CPPUNIT_ASSERT( q4.rot()[2] == 6.0f );
+
+      // Instantiate one copy of all the types that we are supposed to support
+      gmtl::CoordVec3EulerAngleXYZd CoordVec3EulerAngleXYZd_test();
+      gmtl::CoordVec3EulerAngleXYZf CoordVec3EulerAngleXYZf_test();
+      gmtl::CoordVec4EulerAngleXYZd CoordVec4EulerAngleXYZd_test();
+      gmtl::CoordVec4EulerAngleXYZf CoordVec4EulerAngleXYZf_test();
+
+      gmtl::CoordVec3EulerAngleZYXd CoordVec3EulerAngleZYXd_test();
+      gmtl::CoordVec3EulerAngleZYXf CoordVec3EulerAngleZYXf_test();
+      gmtl::CoordVec4EulerAngleZYXd CoordVec4EulerAngleZYXd_test();
+      gmtl::CoordVec4EulerAngleZYXf CoordVec4EulerAngleZYXf_test();
+
+      gmtl::CoordVec3EulerAngleZXYd CoordVec3EulerAngleZXYd_test();
+      gmtl::CoordVec3EulerAngleZXYf CoordVec3EulerAngleZXYf_test();
+      gmtl::CoordVec4EulerAngleZXYd CoordVec4EulerAngleZXYd_test();
+      gmtl::CoordVec4EulerAngleZXYf CoordVec4EulerAngleZXYf_test();
+
+      gmtl::CoordVec3AxisAngled CoordVec3AxisAngled_test();
+      gmtl::CoordVec3AxisAnglef CoordVec3AxisAnglef_test();
+      gmtl::CoordVec4AxisAngled CoordVec4AxisAngled_test();
+      gmtl::CoordVec4AxisAnglef CoordVec4AxisAnglef_test();
+
+      /** 3 elt types */
+      gmtl::Coord3fXYZ Coord3fXYZ_test();
+      gmtl::Coord3fZYX Coord3fZYX_test();
+      gmtl::Coord3fZXY Coord3fZXY_test();
+      gmtl::Coord3dXYZ Coord3dXYZ_test();
+      gmtl::Coord3dZYX Coord3dZYX_test();
+      gmtl::Coord3dZXY Coord3dZXY_test();
+
+      /** 4 elt types */
+      gmtl::Coord4fXYZ Coord4fXYZ_test();
+      gmtl::Coord4fZYX Coord4fZYX_test();
+      gmtl::Coord4fZXY Coord4fZXY_test();
+      gmtl::Coord4dXYZ Coord4dXYZ_test();
+      gmtl::Coord4dZYX Coord4dZYX_test();
+      gmtl::Coord4dZXY Coord4dZXY_test();
+
+      /** 3 elt types */
+      gmtl::Coord3fQuat Coord3fQuat_test();
+      gmtl::Coord3dQuat Coord3dQuat_test();
+
+      /** 4 elt types */
+      gmtl::Coord4fQuat Coord4fQuat_test();
+      gmtl::Coord4dQuat Coord4dQuat_test();
+
+      /** 3 elt types */
+      gmtl::Coord3fAxisAngle Coord3fAxisAngle_test();
+      gmtl::Coord3dAxisAngle Coord3dAxisAngle_test();
+
+      /** 4 elt types */
+      gmtl::Coord4fAxisAngle Coord4fAxisAngle_test();
+      gmtl::Coord4dAxisAngle Coord4dAxisAngle_test();
    }
 
    void testMultiArgConstructors()
