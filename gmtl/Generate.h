@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-02-20 16:50:15 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2002-02-20 17:22:22 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -255,13 +255,15 @@ namespace gmtl
    }
    */
          
-   /** create a rotation matrix that will rotate from MATRIX_IDENTITY to makeAxes[x, y, z].
-    *  to go between arbitrary rotations, use the version of this that takes 6 vec params...
+   /** create a rotation matrix that will rotate from SrcAxis to DestAxis.
+    *  xSrcAxis, ySrcAxis, zSrcAxis is the base rotation to go from and defaults to xSrcAxis(1,0,0), ySrcAxis(0,1,0), zSrcAxis(0,0,1) if you only pass in 3 axes.
+    *  @pre pass in 3 axes, and makeDirCos will give you the rotation from MATRIX_IDENTITY to DestAxis
+    *  @pre pass in 6 axes, and makeDirCos will give you the rotation from your 3-axis rotation to your second 3-axis rotation
     *  @post this function only produces 3x3, 3x4, 4x3, and 4x4 matrices
-    *  @todo make the 6 param version of makeDirCos
     */
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
-   inline Matrix<DATA_TYPE, ROWS, COLS>& makeDirCos( Matrix<DATA_TYPE, ROWS, COLS>& result, const Vec<DATA_TYPE, 3>& secXAxis, const Vec<DATA_TYPE, 3>& secYAxis, const Vec<DATA_TYPE, 3>& secZAxis )
+   inline Matrix<DATA_TYPE, ROWS, COLS>& makeDirCos( Matrix<DATA_TYPE, ROWS, COLS>& result, const Vec<DATA_TYPE, 3>& xDestAxis, const Vec<DATA_TYPE, 3>& yDestAxis, const Vec<DATA_TYPE, 3>& zDestAxis,
+         const Vec<DATA_TYPE, 3>& xSrcAxis = Vec<DATA_TYPE, 3>(1,0,0), const Vec<DATA_TYPE, 3>& ySrcAxis = Vec<DATA_TYPE, 3>(0,1,0), const Vec<DATA_TYPE, 3>& zSrcAxis = Vec<DATA_TYPE, 3>(0,0,1) )
    {
       // @todo make this a compile time assert...
       assert( ROWS >= 3 && COLS >= 3 && ROWS <= 4 && COLS <= 4 && "this is undefined for Matrix smaller than 3x3 or bigger than 4x4" );
@@ -270,11 +272,9 @@ namespace gmtl
       DATA_TYPE Ya, Yb, Yy;    // Direction cosines of the secondary y-axis
       DATA_TYPE Za, Zb, Zy;    // Direction cosines of the secondary z-axis
 
-      Vec<DATA_TYPE, 3> xAxis(1,0,0), yAxis(0,1,0), zAxis(0,0,1);   // The base axis to use
-
-      Xa = dot(secXAxis, xAxis);  Xb = dot(secXAxis, yAxis);  Xy = dot(secXAxis, zAxis);
-      Ya = dot(secYAxis, xAxis);  Yb = dot(secYAxis, yAxis);  Yy = dot(secYAxis, zAxis);
-      Za = dot(secZAxis, xAxis);  Zb = dot(secZAxis, yAxis);  Zy = dot(secZAxis, zAxis);
+      Xa = dot(xDestAxis, xSrcAxis);  Xb = dot(xDestAxis, ySrcAxis);  Xy = dot(xDestAxis, zSrcAxis);
+      Ya = dot(yDestAxis, xSrcAxis);  Yb = dot(yDestAxis, ySrcAxis);  Yy = dot(yDestAxis, zSrcAxis);
+      Za = dot(zDestAxis, xSrcAxis);  Zb = dot(zDestAxis, ySrcAxis);  Zy = dot(zDestAxis, zSrcAxis);
 
       // Set the matrix correctly
       result( 0, 0 ) = Xa; result( 0, 1 ) = Xb; result( 0, 2 ) = Xy;
@@ -307,10 +307,10 @@ namespace gmtl
     */
    /*
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
-   inline Matrix<DATA_TYPE, ROWS, COLS> makeDirCos( const Vec<DATA_TYPE, 3>& secXAxis, const Vec<DATA_TYPE, 3>& secYAxis, const Vec<DATA_TYPE, 3>& secZAxis, Type2Type<Matrix<DATA_TYPE, ROWS, COLS> > t = Type2Type<Matrix<DATA_TYPE, ROWS, COLS> >() )
+   inline Matrix<DATA_TYPE, ROWS, COLS> makeDirCos( const Vec<DATA_TYPE, 3>& xDestAxis, const Vec<DATA_TYPE, 3>& yDestAxis, const Vec<DATA_TYPE, 3>& zDestAxis, Type2Type<Matrix<DATA_TYPE, ROWS, COLS> > t = Type2Type<Matrix<DATA_TYPE, ROWS, COLS> >() )
    {
       Matrix<DATA_TYPE, ROWS, COLS> temporary;
-      return makeAxes( temporary, secXAxis, secYAxis, secZAxis );
+      return makeAxes( temporary, xDestAxis, yDestAxis, zDestAxis );
    }
    */
          
