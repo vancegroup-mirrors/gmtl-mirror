@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: OutputTest.h,v $
- * Date modified: $Date: 2002-07-02 02:07:02 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2002-10-11 10:34:22 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -44,7 +44,7 @@ namespace gmtlTest
    class OutputTest : public CppUnit::TestCase
    {
    public:
-      OutputTest( std::string name = "SphereTest" )
+      OutputTest( std::string name = "OutputTest" )
          : CppUnit::TestCase( name )
       {}
 
@@ -64,6 +64,7 @@ namespace gmtlTest
       void testTri();
       void testPlane();
       void testSphere();
+      void testAABox();
 
       static CppUnit::Test* suite()
       {
@@ -75,10 +76,11 @@ namespace gmtlTest
          test_suite->addTest( new CppUnit::TestCaller<OutputTest>("testTri", &OutputTest::testTri) );
          test_suite->addTest( new CppUnit::TestCaller<OutputTest>("testPlane", &OutputTest::testPlane) );
          test_suite->addTest( new CppUnit::TestCaller<OutputTest>("testSphere", &OutputTest::testSphere) );
+         test_suite->addTest( new CppUnit::TestCaller<OutputTest>("testAABox", &OutputTest::testAABox) );
 
          return test_suite;
       }
-      
+
       static CppUnit::Test* perfSuite()
       {
          CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("OutputTiming");

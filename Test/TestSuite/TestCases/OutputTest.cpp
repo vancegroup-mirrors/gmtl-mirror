@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: OutputTest.cpp,v $
- * Date modified: $Date: 2002-06-13 14:03:34 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-10-11 10:34:22 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -149,5 +149,16 @@ namespace gmtlTest
       );
       out1 << s1;
       CPPUNIT_ASSERT( out1.str() == "(1, 2, 3), 4" );
+   }
+
+   void OutputTest::testAABox()
+   {
+      std::stringstream out1;
+      gmtl::AABox<int> b1(
+            gmtl::Point<int, 3>(1, 2, 3),
+            gmtl::Point<int, 3>(4, 5, 6)
+      );
+      out1 << b1;
+      CPPUNIT_ASSERT( out1.str() == "(1, 2, 3) (4, 5, 6) false" );
    }
 }
