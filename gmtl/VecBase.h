@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecBase.h,v $
- * Date modified: $Date: 2004-09-16 19:40:35 $
- * Version:       $Revision: 1.16 $
+ * Date modified: $Date: 2004-10-20 01:35:05 $
+ * Version:       $Revision: 1.17 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -47,7 +47,7 @@ namespace gmtl
 namespace meta
 {
    struct DefaultVecTag
-   {;};
+   {};
 }
 
 
