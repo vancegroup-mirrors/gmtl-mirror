@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOps.h,v $
- * Date modified: $Date: 2002-06-06 00:10:16 $
- * Version:       $Revision: 1.24 $
+ * Date modified: $Date: 2002-06-06 00:21:36 $
+ * Version:       $Revision: 1.25 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -319,7 +319,7 @@ namespace gmtl
          for ( j = 0; j < n; j++ )
          {
             m[ i][ j] = a[ i * n + j];
-            m[ i][ j + n] = ( i == j ) ? 1.0 : 0.0 ;
+            m[ i][ j + n] = ( i == j ) ? (DATA_TYPE)1.0 : (DATA_TYPE)0.0 ;
          }
       }
 
@@ -359,7 +359,7 @@ namespace gmtl
          for ( j = 0; j < 2*n; j++ )
          {
             if ( j == c[ k] )
-               m[ r[ k]][ j] = 1.0;
+               m[ r[ k]][ j] = (DATA_TYPE)1.0;
             else
                m[ r[ k]][ j] /= pivot;
          }
@@ -373,7 +373,7 @@ namespace gmtl
             for ( j=0, fac = m[ i][ c[k]]; j < 2*n; j++ )
             {
                if ( j == c[ k] )
-                  m[ i][ j] = 0.0;
+                  m[ i][ j] = (DATA_TYPE)0.0;
                else
                   m[ i][ j] -= fac * m[ r[k]][ j];
             }
