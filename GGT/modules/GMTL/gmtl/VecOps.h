@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecOps.h,v $
- * Date modified: $Date: 2002-11-27 05:48:49 $
- * Version:       $Revision: 1.21 $
+ * Date modified: $Date: 2002-12-23 01:18:36 $
+ * Version:       $Revision: 1.22 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -46,9 +46,9 @@ namespace gmtl
  * @name Vector/Point Operations
  * @{
  */
-   
+
 // --- Basic VEC types operations -- //
-  
+
 /**
  * Negates v1.  The result = -v1.
  *
@@ -248,7 +248,7 @@ VecBase<DATA_TYPE, SIZE> operator /(const VecBase<DATA_TYPE, SIZE>& v1,
 
 /** @ingroup Ops
  *  @name Vector Operations
- * @{ 
+ * @{
  */
 
 /**
@@ -412,7 +412,7 @@ VecBase<DATA_TYPE, SIZE>& reflect( VecBase<DATA_TYPE, SIZE>& result, const
 
 /**
  * Linearly interpolates between to vectors.
- * 
+ *
  * @pre  lerpVal is a value between 0 and 1 that interpolates between from and to.
  * @post undefined if lerpVal < 0 or lerpVal > 1
  *
@@ -426,7 +426,7 @@ VecBase<DATA_TYPE, SIZE>& reflect( VecBase<DATA_TYPE, SIZE>& result, const
 template <typename DATA_TYPE, unsigned SIZE>
 VecBase<DATA_TYPE, SIZE>& lerp( VecBase<DATA_TYPE, SIZE>& result,
                                 const DATA_TYPE& lerpVal,
-                                const VecBase<DATA_TYPE, SIZE>& from, 
+                                const VecBase<DATA_TYPE, SIZE>& from,
                                 const VecBase<DATA_TYPE, SIZE>& to )
 {
    /// @todo metaprogramming...
@@ -443,7 +443,7 @@ VecBase<DATA_TYPE, SIZE>& lerp( VecBase<DATA_TYPE, SIZE>& result,
  * @{
  */
 
-       
+
 // --- VEC comparisons -- //
 
 /**

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Math.h,v $
- * Date modified: $Date: 2002-11-26 05:10:28 $
- * Version:       $Revision: 1.32 $
+ * Date modified: $Date: 2002-12-23 01:19:13 $
+ * Version:       $Revision: 1.33 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -44,7 +44,7 @@ namespace gmtl
 {
 
 /** Base class for Rotation orders
- *  @ingroup Defines 
+ *  @ingroup Defines
  * @see XYZ, ZYX, ZXY
  */
 struct RotationOrderBase { enum { IS_ROTORDER = 1 }; };
@@ -64,7 +64,7 @@ struct ZXY : public RotationOrderBase { enum { ID = 2 }; };
 namespace Math
 {
    /** @ingroup Math
-    *  @name Mathematical constants 
+    *  @name Mathematical constants
     *  @{
     */
    const float PI = 3.14159265358979323846f; //3.14159265358979323846264338327950288419716939937510;
