@@ -1,5 +1,8 @@
 DATE       AUTHOR       CHANGE
 ---------- --------     --------------------------------------------------------
+2003-02-21 allenb       Fixed bug where direction cosines were being computed
+                        incorrectly. The method was actually computing the
+                        inverse of the correct value.
 2003-02-06 nonchocoboy  Replaced build system with an SCons-based build system.
 2003-01-10 subatomic    Added new Ray.h
                         added Ray/Plane Ray/Tri intersect functions

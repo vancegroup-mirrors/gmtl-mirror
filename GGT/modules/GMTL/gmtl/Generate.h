@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-10-28 23:03:31 $
- * Version:       $Revision: 1.65 $
+ * Date modified: $Date: 2003-02-21 21:21:20 $
+ * Version:       $Revision: 1.66 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -87,6 +87,10 @@ namespace gmtl
    }
 
    /** Create a rotation matrix or quaternion (or any other rotation data type) using direction cosines.
+    *
+    *  If the two coordinate frames are labeled: SRC and TARGET, the matrix produced is:  src_M_target
+    *  this means that it will transform a point in TARGET to SRC but moves the base frame from SRC to TARGET.
+    *
     * @param DestAxis required to specify
     * @param SrcAxis optional to specify
     * @pre specify 1 axis (3 vectors), or 2 axes (6 vectors).
@@ -947,6 +951,10 @@ namespace gmtl
 
    /** create a rotation matrix that will rotate from SrcAxis to DestAxis.
     *  xSrcAxis, ySrcAxis, zSrcAxis is the base rotation to go from and defaults to xSrcAxis(1,0,0), ySrcAxis(0,1,0), zSrcAxis(0,0,1) if you only pass in 3 axes.
+    *
+    *  If the two coordinate frames are labeled: SRC and TARGET, the matrix produced is:  src_M_target
+    *  this means that it will transform a point in TARGET to SRC but moves the base frame from SRC to TARGET.
+    *
     *  @pre pass in 3 axes, and setDirCos will give you the rotation from MATRIX_IDENTITY to DestAxis
     *  @pre pass in 6 axes, and setDirCos will give you the rotation from your 3-axis rotation to your second 3-axis rotation
     *  @post this function only produces 3x3, 3x4, 4x3, and 4x4 matrices
@@ -962,18 +970,18 @@ namespace gmtl
       // @todo set this a compile time assert...
       gmtlASSERT( ROWS >= 3 && COLS >= 3 && ROWS <= 4 && COLS <= 4 && "this is undefined for Matrix smaller than 3x3 or bigger than 4x4" );
 
-      DATA_TYPE Xa, Xb, Xy;    // Direction cosines of the secondary x-axis
-      DATA_TYPE Ya, Yb, Yy;    // Direction cosines of the secondary y-axis
-      DATA_TYPE Za, Zb, Zy;    // Direction cosines of the secondary z-axis
+      DATA_TYPE Xa, Xb, Xc;    // Direction cosines of the secondary x-axis
+      DATA_TYPE Ya, Yb, Yc;    // Direction cosines of the secondary y-axis
+      DATA_TYPE Za, Zb, Zc;    // Direction cosines of the secondary z-axis
 
-      Xa = dot(xDestAxis, xSrcAxis);  Xb = dot(xDestAxis, ySrcAxis);  Xy = dot(xDestAxis, zSrcAxis);
-      Ya = dot(yDestAxis, xSrcAxis);  Yb = dot(yDestAxis, ySrcAxis);  Yy = dot(yDestAxis, zSrcAxis);
-      Za = dot(zDestAxis, xSrcAxis);  Zb = dot(zDestAxis, ySrcAxis);  Zy = dot(zDestAxis, zSrcAxis);
+      Xa = dot(xDestAxis, xSrcAxis);  Xb = dot(xDestAxis, ySrcAxis);  Xc = dot(xDestAxis, zSrcAxis);
+      Ya = dot(yDestAxis, xSrcAxis);  Yb = dot(yDestAxis, ySrcAxis);  Yc = dot(yDestAxis, zSrcAxis);
+      Za = dot(zDestAxis, xSrcAxis);  Zb = dot(zDestAxis, ySrcAxis);  Zc = dot(zDestAxis, zSrcAxis);
 
       // Set the matrix correctly
-      result( 0, 0 ) = Xa; result( 0, 1 ) = Xb; result( 0, 2 ) = Xy;
-      result( 1, 0 ) = Ya; result( 1, 1 ) = Yb; result( 1, 2 ) = Yy;
-      result( 2, 0 ) = Za; result( 2, 1 ) = Zb; result( 2, 2 ) = Zy;
+      result( 0, 0 ) = Xa; result( 0, 1 ) = Ya; result( 0, 2 ) = Za;
+      result( 1, 0 ) = Xb; result( 1, 1 ) = Yb; result( 1, 2 ) = Zb;
+      result( 2, 0 ) = Xc; result( 2, 1 ) = Yc; result( 2, 2 ) = Zc;
 
       return result;
    }
