@@ -438,7 +438,53 @@ namespace gmtlTest
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, res1, eps ) );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result2, res2, eps ) );
       
-      /// @todo, test interpolated values...
+      /// test interpolated values...
+      gmtl::Vec3f quadrant[8];
+      quadrant[0].set(  1.0f,  1.0f,  1.0f );
+      quadrant[1].set( -1.0f,  1.0f,  1.0f );
+      quadrant[2].set( -1.0f,  1.0f, -1.0f );
+      quadrant[3].set(  1.0f,  1.0f, -1.0f );
+      quadrant[4].set(  1.0f, -1.0f, -1.0f );
+      quadrant[5].set(  1.0f, -1.0f,  1.0f );
+      quadrant[6].set( -1.0f, -1.0f,  1.0f );
+      quadrant[7].set( -1.0f, -1.0f, -1.0f );
+
+      gmtl::Quatf expected_result0, q180, q90, q_0001;
+         
+      // create one quat for each of the 8 quadrants...
+      gmtl::Quatf q0[8], q180[8], q90[8], q_0001[8];
+      for (unsigned int x = 0; x < 8; ++x)
+      {
+         gmtl::setRot( q0[x],     gmtl::AxisAnglef( gmtl::Math::deg2Rad( 0 ),       quadrant[x] ) );
+         gmtl::setRot( q180[x],   gmtl::AxisAnglef( gmtl::Math::deg2Rad( 180 ),     quadrant[x] ) );
+         gmtl::setRot( q90[x],    gmtl::AxisAnglef( gmtl::Math::deg2Rad( 90 ),      quadrant[x] ) );
+         gmtl::setRot( q_0001[x], gmtl::AxisAnglef( gmtl::Math::deg2Rad( 0.0001f ), quadrant[x] ) );
+
+         /// @todo test these:
+
+         // same yields same
+         // gmtl::slerp( result, 0.0f, q0[x], q0[x] ); // yields q0
+         // gmtl::slerp( result, 0.5f, q0[x], q0[x] ); // yields q0
+         // gmtl::slerp( result, 1.0f, q0[x], q0[x] ); // yields q0
+
+         // 180 deg - there is more than one valid path to take, 
+         // gmtl::slerp( result, 0.0f, q0[x], q180[x] ); // yields q0
+         // gmtl::slerp( result, 0.5f, q0[x], q180[x] ); // not sure what to test here...
+         // gmtl::slerp( result, 1.0f, q0[x], q180[x] ); // yields q180
+
+         // 90 deg
+         // gmtl::slerp( result, 0.0f, q0[x], q90[x] ); // yields q0
+         // gmtl::slerp( result, 0.5f, q0[x], q90[x] ); // yields shortest path
+         // gmtl::slerp( result, 1.0f, q0[x], q90[x] ); // yields q90
+
+         // .0001 deg
+         // gmtl::slerp( result, 0.0f, q0[x], q_0001[x] ); // yields q0
+         // gmtl::slerp( result, 0.5f, q0[x], q_0001[x] ); // yields shortest path (very close to q0 or q_0001)
+         // gmtl::slerp( result, 1.0f, q0[x], q_0001[x] ); // yields q_0001
+      }
+
+      /// @todo given 8 quadrants, (8 quats), test each quat against every other quat (56 total checks)
+      //        note: might have to test with two different angled quats, not sure...
    }
 
    /** @todo, squad, meantangent, exp, log */

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: testSuite.cpp,v $
- * Date modified: $Date: 2002-07-28 23:55:18 $
- * Version:       $Revision: 1.55 $
+ * Date modified: $Date: 2002-09-15 16:24:39 $
+ * Version:       $Revision: 1.56 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -274,6 +274,7 @@ int main (int ac, char **av)
    }
    else
    {
+      std::cout << "Argument unrecognized... running defaults." << std::endl;
       usage( av );
          std::cout << "running gmtl_suite" << std::endl;
       runner.run( "gmtl_suite" );
@@ -285,6 +286,7 @@ int main (int ac, char **av)
    return 0;
 }
 
+#ifndef WIN32
 
 #include <sys/utsname.h>
 
@@ -311,3 +313,4 @@ std::string getHostname(void)
       return std::string("<hostname-lookup failed>");
    }
 }
+#endif
