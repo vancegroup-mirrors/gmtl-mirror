@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: LineSegOps.h,v $
- * Date modified: $Date: 2002-03-15 03:26:56 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-11-26 04:10:56 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -68,7 +68,7 @@ template< class DATA_TYPE >
 inline DATA_TYPE distance( const LineSeg<DATA_TYPE>& lineseg,
                            const Point<DATA_TYPE, 3>& pt )
 {
-   return ( pt - findNearestPt( lineseg, pt ) );
+   return gmtl::length( pt - findNearestPt( lineseg, pt ) );
 }
 
 //--- LineSeg Comparitor ---//
