@@ -1,5 +1,6 @@
 DATE       AUTHOR       CHANGE
 ---------- ------------ -------------------------------------------------------
+2003-09-23 nonchocoboy  added Vec accessors for matrix rows and columns.
 2003-09-07 subatomic    added new intersectVolume for sphere/linetype
                         this is separate from intersect, which only 
                         intersects with the surface of the sphere.
