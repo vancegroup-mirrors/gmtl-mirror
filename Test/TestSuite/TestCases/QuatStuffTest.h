@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatStuffTest.h,v $
- * Date modified: $Date: 2002-02-25 20:42:07 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-03-11 00:34:34 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -41,12 +41,13 @@
 #include <gmtl/Quat.h>
 #include <gmtl/QuatOps.h>
 #include <gmtl/Generate.h>
-#include <gmtl/Convert.h>
 #include <gmtl/Xforms.h>
+#include <gmtl/Convert.h>
 
 namespace gmtlTest
 {
 
+   /** a hodge podge of tests.  stuff that is a little higher level, some real world tests, etc... */
    class QuatStuffTest : public CppUnit::TestCase
    {
    public:
