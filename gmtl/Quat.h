@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Quat.h,v $
- * Date modified: $Date: 2003-03-03 00:54:05 $
- * Version:       $Revision: 1.21 $
+ * Date modified: $Date: 2003-03-29 22:02:19 $
+ * Version:       $Revision: 1.22 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -80,7 +80,7 @@ public:
     */
    typedef DATA_TYPE DataType;
 
-   enum { Size = 4 };
+   enum Params { Size = 4 };
 
    /** default constructor, initializes to quaternion multiplication identity
     *  [x,y,z,w] == [0,0,0,1].

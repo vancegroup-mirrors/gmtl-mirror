@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Vec.h,v $
- * Date modified: $Date: 2003-03-03 00:54:05 $
- * Version:       $Revision: 1.16 $
+ * Date modified: $Date: 2003-03-29 22:02:19 $
+ * Version:       $Revision: 1.17 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -60,7 +60,7 @@ public:
    typedef DATA_TYPE DataType;
 
    /// The number of components this Vec has.
-   enum { Size = SIZE };
+   enum Params { Size = SIZE };
 
    /// The superclass type.
    typedef VecBase<DATA_TYPE, SIZE> BaseType;

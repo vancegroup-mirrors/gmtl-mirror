@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: EulerAngle.h,v $
- * Date modified: $Date: 2003-03-03 00:54:04 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2003-03-29 22:02:18 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -67,7 +67,7 @@ template <typename DATA_TYPE, typename ROTATION_ORDER>
 class EulerAngle
 {
 public:
-   enum { Size = 3, Order = ROTATION_ORDER::ID };
+   enum Params { Size = 3, Order = ROTATION_ORDER::ID };
 
    /** default constructor. initializes to identity rotation (no rotation). */
    EulerAngle()

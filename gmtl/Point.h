@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Point.h,v $
- * Date modified: $Date: 2003-03-03 00:54:05 $
- * Version:       $Revision: 1.15 $
+ * Date modified: $Date: 2003-03-29 22:02:19 $
+ * Version:       $Revision: 1.16 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -59,7 +59,7 @@ class Point : public VecBase<DATA_TYPE, SIZE>
 {
 public:
    typedef DATA_TYPE DataType;
-   enum { Size = SIZE };
+   enum Params { Size = SIZE };
 
    /** Placeholder for the base type */
    typedef VecBase<DATA_TYPE, SIZE> BaseType;
