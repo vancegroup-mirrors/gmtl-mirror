@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOps.h,v $
- * Date modified: $Date: 2003-04-18 22:33:30 $
- * Version:       $Revision: 1.34 $
+ * Date modified: $Date: 2004-01-30 04:31:28 $
+ * Version:       $Revision: 1.35 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -41,6 +41,7 @@
 #include <gmtl/Math.h>
 #include <gmtl/Vec.h>
 #include <gmtl/VecOps.h>
+#include <gmtl/Util/Assert.h>
 
 namespace gmtl
 {
@@ -299,7 +300,7 @@ namespace gmtl
    inline Matrix<DATA_TYPE, ROWS, COLS>& invertTrans( Matrix<DATA_TYPE, ROWS, COLS>& result, 
                                                        const Matrix<DATA_TYPE, ROWS, COLS>& src )
    {
-      assert( ROWS == COLS || COLS == ROWS+1 && "invertTrans supports NxN or Nx(N-1) matrices only" );
+      gmtlASSERT( ROWS == COLS || COLS == ROWS+1 && "invertTrans supports NxN or Nx(N-1) matrices only" );
 
       if (&result != &src)
          result = src; // could optimise this a little more (skip the trans copy), favor simplicity for now...
@@ -433,7 +434,7 @@ namespace gmtl
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
    inline Matrix<DATA_TYPE, ROWS, COLS>& invertFull( Matrix<DATA_TYPE, ROWS, COLS>& result, const Matrix<DATA_TYPE, ROWS, COLS>& src )
    {
-      assert( ROWS == COLS && "invertFull only works with nxn matrices" );
+      gmtlASSERT( ROWS == COLS && "invertFull only works with nxn matrices" );
 
       /*---------------------------------------------------------------------------*
        | mat_inv: Compute the inverse of a n x n matrix, using the maximum pivot   |
