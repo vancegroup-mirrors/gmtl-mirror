@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.h,v $
- * Date modified: $Date: 2002-03-11 18:10:06 $
- * Version:       $Revision: 1.16 $
+ * Date modified: $Date: 2002-03-15 17:31:52 $
+ * Version:       $Revision: 1.17 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -616,7 +616,7 @@ public:
 
       gmtl::Vec<float,4> res_vec, total_vec;
 
-      const unsigned long iters(10000);
+      const unsigned long iters(30000);
 
       // -- test vec = vec+vec+vec
       vec1.set(1.0, 2.0, 3.0, 4.0f);

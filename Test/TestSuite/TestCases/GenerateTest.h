@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: GenerateTest.h,v $
- * Date modified: $Date: 2002-03-11 16:39:22 $
- * Version:       $Revision: 1.10 $
+ * Date modified: $Date: 2002-03-15 17:31:52 $
+ * Version:       $Revision: 1.11 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -400,7 +400,7 @@ public:
    void testGenTimingMakeConj()
    {
       gmtl::Quat<double> q1;
-      const long iters(25000);
+      const long iters(50000);
       CPPUNIT_METRIC_START_TIMING();
       
       for (long iter = 0; iter < iters; ++iter)
