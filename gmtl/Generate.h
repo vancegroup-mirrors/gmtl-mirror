@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-02-20 14:58:32 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2002-02-20 16:50:15 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,12 +35,19 @@
 #ifndef _GMTL_GENERATE_H_
 #define _GMTL_GENERATE_H_
 
-#include <gmtl/Vec.h>
+#include <gmtl/Vec.h>    // for Vec
+#include <gmtl/VecOps.h> // for lengthSquared
 #include <gmtl/Matrix.h>
 #include <gmtl/Meta.h>
 
 namespace gmtl
 {
+   // VEC
+   // TODO: Vec& makeNormalized( Vec&, x, y )
+   // TODO: Vec& makeNormalized( Vec&, x, y, z )
+   // TODO: Vec& makeNormalized( Vec&, x, y, z, w )
+
+   
    /** Create a translation matrix from vec.
     * @pre if making an n x n matrix, then for
     * <ul>
@@ -58,8 +65,8 @@ namespace gmtl
    inline Matrix<DATA_TYPE, ROWS, COLS>& makeTrans( Matrix<DATA_TYPE, ROWS, COLS>& result, const Vec<DATA_TYPE, SIZE>& trans )
    {
       /* @todo make this a compile time assert... */
-      // if n x n   then vecsize == rows-1 or (homogeneous case) vecsize == rows 
-      // if n x n+1 then vecsize == rows   or (homogeneous case) vecsize == rows+1
+      // if n x n   then (homogeneous case) vecsize == rows-1 or (scale component case) vecsize == rows 
+      // if n x n+1 then (homogeneous case) vecsize == rows   or (scale component case) vecsize == rows+1
       assert( ((ROWS == COLS && (SIZE == (ROWS-1) || SIZE == ROWS)) || 
                (COLS == (ROWS+1) && (SIZE == ROWS || SIZE == (ROWS+1)))) && 
               "preconditions not met for vector size in call to makeTrans.  Read your documentation." );
@@ -109,15 +116,19 @@ namespace gmtl
     * @post this function only produces 3x3, 3x4, 4x3, and 4x4 matrices, and is undefined otherwise
     */
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
-   inline Matrix<DATA_TYPE, ROWS, COLS>& makeRot( Matrix<DATA_TYPE, ROWS, COLS>& result, const DATA_TYPE radians, const DATA_TYPE x, const DATA_TYPE y, const DATA_TYPE z )
+   inline Matrix<DATA_TYPE, ROWS, COLS>& makeRot( Matrix<DATA_TYPE, ROWS, COLS>& result, const DATA_TYPE radians, const Vec<DATA_TYPE, 3>& vec )
    {
       /* @todo make this a compile time assert... */
-      assert( ROWS >= 3 && COLS >= 3 && ROWS <= 4 && COLS <= 4 && "this is undefined for Matrix smaller than 3x3 or bigger than 4x4" );
+      assert( ROWS >= 3 && COLS >= 3 && ROWS <= 4 && COLS <= 4 && "this func is undefined for Matrix smaller than 3x3 or bigger than 4x4" );
+      assert( Math::isEqual( lengthSquared( vec ), (DATA_TYPE)1.0, (DATA_TYPE)0.001 ) && "you must pass in a normalized vector to makeRot( rad, vec )" );
       
       // GGI: pg 466
       DATA_TYPE s = Math::sin( radians );
       DATA_TYPE c = Math::cos( radians );
-      DATA_TYPE t = 1 - c;
+      DATA_TYPE t = 1.0f - c;
+      DATA_TYPE x = vec[0];
+      DATA_TYPE y = vec[1];
+      DATA_TYPE z = vec[2];
 
       /* From: Introduction to robotic.  Craig.  Pg. 52 */
       result( 0, 0 ) = (t*x*x)+c;     result( 0, 1 ) = (t*x*y)-(s*z); result( 0, 2 ) = (t*x*z)+(s*y); 
@@ -165,43 +176,52 @@ namespace gmtl
    };
    
    /** Create a rotation matrix using euler angles (in radians)
+    * @pre pass in your args in the same order as the RotationOrder you specify
     * @post this function only produces 3x3, 3x4, 4x3, and 4x4 matrices, and is undefined otherwise
     */
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
-   inline Matrix<DATA_TYPE, ROWS, COLS>& makeRot( Matrix<DATA_TYPE, ROWS, COLS>& result, const DATA_TYPE xRot, 
-                                                 const DATA_TYPE yRot, const DATA_TYPE zRot, const RotationOrder order, 
+   inline Matrix<DATA_TYPE, ROWS, COLS>& makeRot( Matrix<DATA_TYPE, ROWS, COLS>& result, const DATA_TYPE param0, 
+                                                 const DATA_TYPE param1, const DATA_TYPE param2, const RotationOrder order, 
                                                  Type2Type<Matrix<DATA_TYPE, ROWS, COLS> > t = Type2Type<Matrix<DATA_TYPE, ROWS, COLS> >() )
    {
       // @todo make this a compile time assert...
       assert( ROWS >= 3 && COLS >= 3 && ROWS <= 4 && COLS <= 4 && "this is undefined for Matrix smaller than 3x3 or bigger than 4x4" );
+
+      // this might be faster if put into the switch statement... (testme)
+      const float xRot = (order == XYZ) ? param0 : ((order == ZXY) ? param1 : param2);
+      const float yRot = (order == XYZ) ? param1 : ((order == ZXY) ? param2 : param1);
+      const float zRot = (order == XYZ) ? param2 : ((order == ZXY) ? param0 : param0);
 
       float sx = Math::sin( xRot );  float cx = Math::cos( xRot );
       float sy = Math::sin( yRot );  float cy = Math::cos( yRot );
       float sz = Math::sin( zRot );  float cz = Math::cos( zRot );
    
       // @todo metaprogram this!
-      if (order == XYZ)
+      switch (order)
       {
+      case XYZ:
          // Derived by simply multiplying out the matrices by hand X * Y * Z
          result( 0, 0 ) = cy*cz;             result( 0, 1 ) = -cy*sz;            result( 0, 2 ) = sy;
          result( 1, 0 ) = sx*sy*cz + cx*sz;  result( 1, 1 ) = -sx*sy*sz + cx*cz; result( 1, 2 ) = -sx*cy;
          result( 2, 0 ) = -cx*sy*cz + sx*sz; result( 2, 1 ) = cx*sy*sz + sx*cz;  result( 2, 2 ) = cx*cy;
-      }
-      else if (order == ZYX)
-      {
+         break;
+      case ZYX:
          // Derived by simply multiplying out the matrices by hand Z * Y * Z
          result( 0, 0 ) = cy*cz; result( 0, 1 ) = -cx*sz + sx*sy*cz; result( 0, 2 ) = sx*sz + cx*sy*cz;
          result( 1, 0 ) = cy*sz; result( 1, 1 ) = cx*cz + sx*sy*sz;  result( 1, 2 ) = -sx*cz + cx*sy*sz;
          result( 2, 0 ) = -sy;   result( 2, 1 ) = sx*cy;             result( 2, 2 ) = cx*cy;
-      }
-      else if (order == ZYX)
-      {
+         break;
+      case ZXY:
          // Derived by simply multiplying out the matrices by hand Z * X * Y
          result( 0, 0 ) = cy*cz - sx*sy*sz; result( 0, 1 ) = -cx*sz; result( 0, 2 ) = sy*cz + sx*cy*sz;
          result( 1, 0 ) = cy*sz + sx*sy*cz; result( 1, 1 ) = cx*cz;  result( 1, 2 ) = sy*sz - sx*cy*cz;
          result( 2, 0 ) = -cx*sy;           result( 2, 1 ) = sx;     result( 2, 2 ) = cx*cy;
+         break;
+      default:
+         assert( false && "unknown rotation order passed to makeRot" );
+         break;
       }
-   
+         
       // if 4x3, 3x4, or 4x4, then fill in the rest with ident...
       if (ROWS > 3)
       {
