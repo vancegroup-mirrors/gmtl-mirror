@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: XformTest.h,v $
- * Date modified: $Date: 2002-03-09 03:26:58 $
- * Version:       $Revision: 1.11 $
+ * Date modified: $Date: 2002-03-09 19:54:00 $
+ * Version:       $Revision: 1.12 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -310,59 +310,96 @@ public:
    
    void testQuatVecXform()
    {
-      // xform a vector by a quat.  verify the rotation worked...
-      const float eps = 0.0001f;
-      gmtl::Quat<float> q1, q2, q3, qident;
-      gmtl::Vec<float, 3> vec( 0.0f, 0.0f, 1.0f ), res1, res2, res3, res4, resi, vec2( 2.0f, 5.0f, 10.0f );
-      gmtl::makeRot( q1, gmtl::Math::deg2Rad( 90.0f ), 0.0f, 1.0f, 0.0f );
-      gmtl::makeRot( q2, gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f );
-      gmtl::makeRot( q3, gmtl::Math::deg2Rad( 35.0f ), 1.0f, 1.0f, 0.0f );
-      
-      gmtl::Vec<float, 3> ex1( 1.0f, 0.0f, 0.0f );
-      gmtl::Vec<float, 3> ex2( 0.0f, -1.0f, 0.0f );
-      gmtl::Vec<float, 3> ex3( 0.40558f, -0.40558f, 0.819152f ); // this also matches xform(mat,vec)
-      gmtl::Vec<float, 3> ex4( 6.32707f, 0.67293f, 9.40826f ); // this also matches xform(mat,vec)
-      
-      gmtl::xform( res1, q1, vec );
-      gmtl::xform( res2, q2, vec );
-      gmtl::xform( res3, q3, vec );
-      gmtl::xform( res4, q3, vec2 );
-      gmtl::xform( resi, qident, vec );
-      
-      std::cout<<"-------------"<<std::endl;
-      for (int x = 0; x < 3; ++x)
-            std::cout<<res3[x]<<"=="<<ex3[x]<<" "<<std::flush;
-         std::cout<<std::endl;
-      
-      CPPUNIT_ASSERT( gmtl::isEqual( vec, resi, eps ) );
-      CPPUNIT_ASSERT( gmtl::isEqual( ex1, res1, eps ) );
-      CPPUNIT_ASSERT( gmtl::isEqual( ex2, res2, eps ) );
-      CPPUNIT_ASSERT( gmtl::isEqual( ex3, res3, eps ) );
-      CPPUNIT_ASSERT( gmtl::isEqual( ex4, res4, eps ) );
-      
-      // operator* should be same
-      gmtl::Vec<float, 3> res5, res6, res7, res8;
-      res5 = q1 * vec;
-      res6 = q2 * vec;
-      res7 = q3 * vec;
-      res8 = q3 * vec2;
-      resi = qident * vec;
-      CPPUNIT_ASSERT( gmtl::isEqual( vec, resi, eps ) );
-      CPPUNIT_ASSERT( gmtl::isEqual( ex1, res5, eps ) );
-      CPPUNIT_ASSERT( gmtl::isEqual( ex2, res6, eps ) );
-      CPPUNIT_ASSERT( gmtl::isEqual( ex3, res7, eps ) );
-      CPPUNIT_ASSERT( gmtl::isEqual( ex4, res8, eps ) );
-      
-      // make sure that xform by quat yields same result as xform by mat.
-      gmtl::Matrix<float, 4,4> mat;
-      gmtl::makeRot( mat, gmtl::Math::deg2Rad( 35.0f ), 1.0f, 1.0f, 0.0f );
-      res8 = mat * vec2;
-      std::cout<<"-------------"<<std::endl;
-      for (int x = 0; x < 3; ++x)
-            std::cout<<res8[x]<<"=="<<ex4[x]<<" "<<std::flush;
-         std::cout<<std::endl;
-      CPPUNIT_ASSERT( gmtl::isEqual( ex4, res8, eps ) );
+      {
+         // xform() vector quat.  verify xform works...
+         const float eps = 0.0001f;
+         gmtl::Quat<float> q1, q2, q3, qident;
+         gmtl::Vec<float, 3> vec( 0.0f, 0.0f, 1.0f ), res1, res2, res3, res4, resi, vec2( 2.0f, 5.0f, 10.0f );
+         gmtl::makeRot( q1, gmtl::Math::deg2Rad( 90.0f ), 0.0f, 1.0f, 0.0f );
+         gmtl::makeRot( q2, gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f );
+         gmtl::makeRot( q3, gmtl::Math::deg2Rad( 35.0f ), 1.0f, 1.0f, 0.0f );
+
+         gmtl::Vec<float, 3> ex1( 1.0f, 0.0f, 0.0f );
+         gmtl::Vec<float, 3> ex2( 0.0f, -1.0f, 0.0f );
+         gmtl::Vec<float, 3> ex3( 0.40558f, -0.40558f, 0.819152f ); // this also matches xform(mat,vec)
+         gmtl::Vec<float, 3> ex4( 6.32707f, 0.67293f, 9.40826f ); // this also matches xform(mat,vec)
+
+         gmtl::xform( res1, q1, vec );
+         gmtl::xform( res2, q2, vec );
+         gmtl::xform( res3, q3, vec );
+         gmtl::xform( res4, q3, vec2 );
+         gmtl::xform( resi, qident, vec );
+
+         CPPUNIT_ASSERT( gmtl::isEqual( vec, resi, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( ex1, res1, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( ex2, res2, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( ex3, res3, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( ex4, res4, eps ) );
+
+         // operator*() should be same as xform()
+         gmtl::Vec<float, 3> res5, res6, res7, res8;
+         res5 = q1 * vec;
+         res6 = q2 * vec;
+         res7 = q3 * vec;
+         res8 = q3 * vec2;
+         resi = qident * vec;
+         CPPUNIT_ASSERT( gmtl::isEqual( vec, resi, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( ex1, res5, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( ex2, res6, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( ex3, res7, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( ex4, res8, eps ) );
+
+         // make sure that xform(quat) yields same result as xform(mat).
+         gmtl::Matrix<float, 4,4> mat;
+         gmtl::makeRot( mat, gmtl::Math::deg2Rad( 35.0f ), 1.0f, 1.0f, 0.0f );
+         res8 = mat * vec2;
+         CPPUNIT_ASSERT( gmtl::isEqual( ex4, res8, eps ) );
+      }
+
+      // make sure non unit length vectors work...
+      {   
+         float eps = 0.001f;
+         const gmtl::Vec3f vec( 10,100,200 ), expected( 10, -200, 100 );
+         gmtl::Quatf rot;
+         gmtl::makeRot( rot, gmtl::Math::deg2Rad( 90.0f ), gmtl::makeNormalize( gmtl::Vec3f( 1,0,0 ) ) );
+         
+         gmtl::Vec3f result;
+         gmtl::xform( result, rot, vec );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected, result, eps ) );
+      }
    }
+   
+   void weird_XformQuatVec_InvConj_SanityCheck()
+   {
+      // just for sanity check, inv and conj should both work 
+      // for the implementation of quat*vec (but conj is actually faster so we usually choose that.)
+      {   
+         float eps = 0.001f;
+         const gmtl::Vec3f vec( 10,-100,-2000 ), expected( 10, 2000, -100 );
+         gmtl::Quatf rot;
+         gmtl::makeRot( rot, gmtl::Math::deg2Rad( 90.0f ), gmtl::makeNormalize( gmtl::Vec3f( 1,0,0 ) ) );
+         
+         gmtl::Vec3f result1, result2;
+         result1 = makeVec( rot * makePure( vec ) * makeConj( rot ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected, result1, eps ) );
+         result2 = makeVec( rot * makePure( vec ) * makeInvert( rot ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected, result2, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( result1, result2, eps ) );
+      }
+      
+      // same, but without the expected value (just check that the two are equal)
+      {   
+         float eps = 0.001f;
+         const gmtl::Vec3f vec( 123, -4.56, 78.910 );
+         gmtl::Quatf rot;
+         gmtl::makeRot( rot, gmtl::Math::deg2Rad( 123.4556f ), gmtl::makeNormalize( gmtl::Vec3f( -79,1000,234 ) ) );
+         
+         gmtl::Vec3f result1, result2;
+         result1 = makeVec( rot * makePure( vec ) * makeConj( rot ) );
+         result2 = makeVec( rot * makePure( vec ) * makeInvert( rot ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( result1, result2, eps ) );
+      }
+   }   
    
    void testMatVecXform()
    {
@@ -561,34 +598,34 @@ public:
       // more "interesting" rotations...
       {
          const float eps = 0.0001f;
-         gmtl::Matrix<float, 4, 4> q3;
-         gmtl::Vec<float, 3> vec( 2.0f, 5.0f, 10.0f ), res3;
-         gmtl::Vec<float, 3> ex3( 6.32707, 0.67293, 9.40826 );
-
+         const gmtl::Vec<float, 3> vec( 2.0f, 5.0f, 10.0f ), expected( 6.32707, 0.67293, 9.40826 );
+         gmtl::Matrix<float, 4, 4> mat;
+         gmtl::makeRot( mat, gmtl::Math::deg2Rad( 35.0f ), 1.0f, 1.0f, 0.0f );
+         
          // xform a vector by a mat.  verify the rotation worked...
-         gmtl::makeRot( q3, gmtl::Math::deg2Rad( 35.0f ), 1.0f, 1.0f, 0.0f );
-         gmtl::xform( res3, q3, vec );
-         
-         
-         CPPUNIT_ASSERT( gmtl::isEqual( ex3, res3, eps ) );
-         
+         gmtl::Vec<float, 3> result1;
+         gmtl::xform( result1, mat, vec );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected, result1, eps ) );
+
          // operator* should be same
-         gmtl::Vec<float, 3> res4, res5, res6, res7;
-         res6 = q3 * vec;
-         CPPUNIT_ASSERT( gmtl::isEqual( ex3, res6, eps ) );
+         gmtl::Vec<float, 3> result2;
+         result2 = mat * vec;
+         CPPUNIT_ASSERT( gmtl::isEqual( expected, result2, eps ) );
          
          // make sure that xform by quat yields same result as xform by mat.
          gmtl::Quat<float> quat;
-         vec.set( 2.0f, 5.0f, 10.0f );
          gmtl::makeRot( quat, gmtl::Math::deg2Rad( 35.0f ), 1.0f, 1.0f, 0.0f );
-         xform( res7, quat, vec );
-         std::cout<<"-------------"<<std::endl;
-         for (int x = 0; x < 3; ++x)
-            std::cout<<res7[x]<<"=="<<ex3[x]<<" "<<std::flush;
-         std::cout<<std::endl;
-      
-         CPPUNIT_ASSERT( gmtl::isEqual( ex3, res7, eps ) );
+         
+         gmtl::Vec<float, 3> result3;
+         gmtl::xform( result3, quat, vec );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected, result3, eps ) );
+         
+         gmtl::Vec<float, 3> result4;
+         result4 = quat * vec;
+         CPPUNIT_ASSERT( gmtl::isEqual( expected, result4, eps ) );
       }
+      
+      
    }   
 
    static CppUnit::Test* suite()
@@ -603,6 +640,7 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<XformTest>("xformMatVecComplete", &XformTest::xformMatVecComplete));
       test_suite->addTest( new CppUnit::TestCaller<XformTest>("xformMatVecPartial", &XformTest::xformMatVecPartial));
       test_suite->addTest( new CppUnit::TestCaller<XformTest>("testQuatVecXform", &XformTest::testQuatVecXform));
+      test_suite->addTest( new CppUnit::TestCaller<XformTest>("weird_XformQuatVec_InvConj_SanityCheck", &XformTest::weird_XformQuatVec_InvConj_SanityCheck));
       test_suite->addTest( new CppUnit::TestCaller<XformTest>("testMatVecXform", &XformTest::testMatVecXform));
       test_suite->addTest( new CppUnit::TestCaller<XformTest>("xformQuatVec3", &XformTest::xformQuatVec3));
 
