@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOpsTest.cpp,v $
- * Date modified: $Date: 2004-09-22 20:37:26 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2004-10-27 23:11:24 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -1065,11 +1065,11 @@ namespace gmtlTest
 
             gmtl::invert(inv_mat, mat);
             mult_mat = mat * inv_mat;
-            assert( gmtl::isEqual(mult_mat, expected_mat, DATA_TYPE(eps)));
+            CPPUNIT_ASSERT( gmtl::isEqual(mult_mat, expected_mat, DATA_TYPE(eps)));
 
             inv_mat = mat;
             gmtl::invert(inv_mat);
-            assert( gmtl::isEqual(mult_mat, expected_mat, DATA_TYPE(eps)));
+            CPPUNIT_ASSERT( gmtl::isEqual(mult_mat, expected_mat, DATA_TYPE(eps)));
          }
       }
    };
@@ -1133,7 +1133,7 @@ namespace gmtlTest
                   mult_mat = inv_mat * rot_mat;
                   std::cout << "inv_mat orig: \n" << inv_mat << std::endl
                             << "mult_mat orig: \n" << mult_mat << std::endl;
-                  assert( gmtl::isEqual(mult_mat, expected_mult, eps));
+                  CPPUNIT_ASSERT( gmtl::isEqual(mult_mat, expected_mult, eps));
 
                   gmtl::identity(inv_mat);
                   gmtl::invertFull_GJ(inv_mat, rot_mat);
@@ -1141,12 +1141,12 @@ namespace gmtlTest
                   std::cout << "inv_mat gj: \n" << inv_mat << std::endl
                             << "mult_mat gj: \n" << mult_mat << std::endl;
 
-                  assert( gmtl::isEqual(mult_mat, expected_mult, eps));
+                  CPPUNIT_ASSERT( gmtl::isEqual(mult_mat, expected_mult, eps));
 
                   gmtl::identity(inv_mat);
                   gmtl::invert(inv_mat, rot_mat);
                   mult_mat = inv_mat * rot_mat;
-                  assert( gmtl::isEqual(mult_mat, expected_mult, eps));
+                  CPPUNIT_ASSERT( gmtl::isEqual(mult_mat, expected_mult, eps));
                }
             }
          }
