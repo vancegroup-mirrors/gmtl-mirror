@@ -7,8 +7,8 @@ dnl   Allen Bierbaum
 dnl
 dnl -----------------------------------------------------------------
 dnl File:          $RCSfile: gmtl.m4,v $
-dnl Date modified: $Date: 2004-03-15 17:24:44 $
-dnl Version:       $Revision: 1.11 $
+dnl Date modified: $Date: 2004-04-12 03:20:42 $
+dnl Version:       $Revision: 1.12 $
 dnl -----------------------------------------------------------------
 dnl
 dnl ************************************************************** ggt-head end
@@ -65,9 +65,9 @@ AC_DEFUN(GMTL_PATH,
                [GMTL_ROOT="$withval"], [GMTL_ROOT=$2])
    AC_ARG_WITH(gmtl-includes,
                [  --with-gmtl-includes=<DIR>
-                          GMTL header file directory      [default=$2/include]],
+                          GMTL header file directory      [No default]],
                [gmtl_inc_dir="$withval"],
-               ifelse([$3], , [gmtl_inc_dir=$2/include], [gmtl_inc_dir=$3]))
+               ifelse([$3], , [gmtl_inc_dir='no'], [gmtl_inc_dir=$3]))
    AC_ARG_WITH(gmtl-exec-prefix,
                [  --with-gmtl-exec-prefix=<PATH>
                           Exec prefix where GMTL is
@@ -120,15 +120,15 @@ dnl                         test GMTL program], , enable_gmtltest=yes)
 
    ggt_save_CPPFLAGS="$CPPFLAGS"
 
-   dnl Add the user-specified Boost installation directory to the preprocessor
+   dnl Add the user-specified GMTL installation directory to the preprocessor
    dnl arguments.  Ensure that /usr/include is not included multiple times if
-   dnl $BOOST_ROOT is "/usr".  The goal here is to let the user specify either
-   dnl the Boost root directory, the Boost include directory, or both.
+   dnl $GMTL_ROOT is "/usr".  The goal here is to let the user specify either
+   dnl the GMTL root directory, the GMTL include directory, or both.
    if test "x$GMTL_ROOT" != "x/usr" -o "x$gmtl_inc_dir" != "xno" ; then
-      dnl No Boost include directory, so append "/include" to $GMTL_ROOT.
+      dnl No GMTL include directory, so append "/include" to $GMTL_ROOT.
       if test "x$gmtl_inc_dir" = "xno" ; then
          ggt_gmtl_incdir="$GMTL_ROOT/include"
-      dnl We have a Boost include directory, so we'll use it and hope for
+      dnl We have a GMTL include directory, so we'll use it and hope for
       dnl the best.
       else
          ggt_gmtl_incdir="$gmtl_inc_dir"
