@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.h,v $
- * Date modified: $Date: 2002-02-22 21:48:34 $
- * Version:       $Revision: 1.14 $
+ * Date modified: $Date: 2002-03-10 04:01:24 $
+ * Version:       $Revision: 1.15 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -611,9 +611,9 @@ public:
 
    void testGroupedOpsPerformance()
    {
-      gmtl::Vec<float,4> const_vec1(4.0, 5.0, 6.0, 7.8);
-      gmtl::Vec<float,4> const_vec2(1.0, 2.0, 3.0, 4.8);
-      gmtl::Vec<float,4> const_vec3(7.0, 11.0, 12.0, 24.0);
+      gmtl::Vec<float,4> const_vec1(4.0f, 5.0f, 6.0f, 7.8f);
+      gmtl::Vec<float,4> const_vec2(1.0f, 2.0f, 3.0f, 4.8f);
+      gmtl::Vec<float,4> const_vec3(7.0f, 11.0f, 12.0f, 24.0f);
       gmtl::Vec<float,4> vec1, vec2, vec3;
 
       gmtl::Vec<float,4> res_vec, total_vec;
@@ -809,16 +809,16 @@ public:
       CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0f, gmtl::dot(v2,v3), 0.05);
 
       // Other Vectors
-      v1.set(13.45, -7.8, 0.056);
-      v2.set(0.777, 5.333,12.21);
-      v3.set(3.4, -1.6, 0.23);
+      v1.set(13.45f, -7.8f, 0.056f);
+      v2.set(0.777f, 5.333f,12.21f);
+      v3.set(3.4f, -1.6f, 0.23f);
 
-      ans = -30.463;
+      ans = -30.463f;
       dot = gmtl::dot(v1,v2);
       CPPUNIT_ASSERT(GMTL_NEAR(dot,ans,0.01));
       dot = gmtl::dot(v2,v1);
       CPPUNIT_ASSERT(GMTL_NEAR(dot,ans,0.01));
-      ans = -3.0827;
+      ans = -3.0827f;
       dot = gmtl::dot(v2,v3);
       CPPUNIT_ASSERT(GMTL_NEAR(dot,ans,0.01));
       dot = gmtl::dot(v3,v2);
@@ -1019,9 +1019,9 @@ public:
       cross = gmtl::cross(v2,v1);
       CPPUNIT_ASSERT( gmtl::isEqual(cross, (v3 * -1.0f), 0.01f) );
 
-      v1.set(13.45, -7.8, 0.056);
-      v2.set(0.777, 5.333,12.21);
-      v3.set(-95.537, -164.181, 77.789);
+      v1.set(13.45f, -7.8f, 0.056f);
+      v2.set(0.777f, 5.333f,12.21f);
+      v3.set(-95.537f, -164.181f, 77.789f);
 
       cross = gmtl::cross(v1,v2);
       CPPUNIT_ASSERT( gmtl::isEqual(cross, v3, 0.01f));
