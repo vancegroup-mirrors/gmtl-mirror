@@ -11,4 +11,4 @@ headers = map(lambda n: n + '.h', headers)
 
 for h in headers:
    baseEnv.Install(pj(PREFIX, 'include', 'gmtl', 'External'), h)
-   pkg.addExtraDist([h])
+   pkg.addExtraDist([File(h)])
