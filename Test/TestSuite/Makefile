@@ -29,8 +29,8 @@
 #
 # -----------------------------------------------------------------
 # File:          $RCSfile: Makefile,v $
-# Date modified: $Date: 2002-02-22 19:45:18 $
-# Version:       $Revision: 1.9 $
+# Date modified: $Date: 2002-02-24 22:10:54 $
+# Version:       $Revision: 1.10 $
 # -----------------------------------------------------------------
 # *************** <auto-copyright.pl END do not edit this line> ***************
 
@@ -38,7 +38,7 @@
 # Advanced template makefile for VR Juggler applications.  This is intended
 # for "power users" who really know what they are doing and want to abuse
 # Doozer's flexibility.  :)
-# $Id: Makefile,v 1.9 2002-02-22 19:45:18 nonchocoboy Exp $
+# $Id: Makefile,v 1.10 2002-02-24 22:10:54 patrickh Exp $
 #
 # *** IMPORTANT NOTES -- READ THESE FIRST ***
 #     1) This file _requires_ the use of GNU make (gmake).
@@ -60,10 +60,10 @@ CPPUNIT_DIR = $(GGT_ROOT)/external/cppunit
 # Specify the directory containing the Doozer .mk files that will be used.
 # Users are encouraged to include files relative to this variable in this file
 # so that the include path can be changed easily.
-mk_basedir	= $(GGT_ROOT)/Doozer/
+DZR_BASE_DIR	= $(GGT_ROOT)/Doozer
 
 # Get the name of the host platform early.
-include $(mk_basedir)/dzr.hosttype.mk
+include $(DZR_BASE_DIR)/mk/dzr.hosttype.mk
 
 # -----------------------------------------------------------------------------
 # Application-specific variable settings.  It is safe to modify these.
@@ -110,7 +110,8 @@ GMTL_INCLUDES  = -I$(GGT_ROOT)/modules/GMTL/ -I$(GGT_ROOT)/
 SUITE_INCLUDES = -I$(CPPUNIT_DIR)/include
 EXTRA_INCLUDES = $(GMTL_INCLUDES) $(SUITE_INCLUDES)
 
-ifeq ($(findstring IRIX, $(HOSTTYPE)), IRIX)
+# Platform-specific settings.
+ifeq ($(HOSTTYPE), IRIX)
    EXTRA_INCLUDES += -I$(GGT_ROOT)/external/boost/boost/compatibility/cpp_c_headers
 endif
 
@@ -166,24 +167,8 @@ CLEAN_DIRS	=
 
 # The following include line MUST COME BEFORE the targets for compiling the
 # application.
-#
-# To build an application, include one of the following basic files:
-#
-#     dzr.glapp.mk - An ordinary OpenGL app
-#     dzr.pfapp.mk - An ordinary Performer app
-#     dzr.juggler.glapp.mk - An ordinary VR Juggler OpenGL app
-#     dzr.juggler.pfapp.mk - An ordinary VR Juggler Performer app
-#
-include $(mk_basedir)/dzr.basicapp.mk
-
-# For additional features, include one or more of the following extra files:
-#
-#     dzr.aw.mk - Add sound using AudioWorks
-#     dzr.sl.mk - Add sound using SL
-#     dzr.switcher.mk - Add capabilities to get this application
-#                        compiled into a VR Juggler switcher
-#
-#include $(mk_basedir)/...
+include $(DZR_BASE_DIR)/mk/dzr.basicapp.mk
+#include $(DZR_BASE_DIR)/ext/...
 
 # To modify various variables set internally by Doozer, make changes here.
 # If a variable's value needs to be extended in some way, it can be done
