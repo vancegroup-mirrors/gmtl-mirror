@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: LineSeg.h,v $
- * Date modified: $Date: 2003-01-10 18:42:01 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2003-01-29 23:33:10 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -92,8 +92,8 @@ public:
    LineSeg( const Point<DATA_TYPE, 3>& beg, const Point<DATA_TYPE, 3>& end )
       : Ray<DATA_TYPE>()
    {
-      mOrigin = beg;
-      mDir = end - beg;
+      this->mOrigin = beg;
+      this->mDir = end - beg;
    }
 
    /**
@@ -101,7 +101,7 @@ public:
     */
    DATA_TYPE getLength() const
    {
-      return length( mDir );
+      return length(this->mDir);
    }
 };
 
