@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-03-20 07:11:23 $
- * Version:       $Revision: 1.33 $
+ * Date modified: $Date: 2002-03-20 07:29:49 $
+ * Version:       $Revision: 1.34 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -397,7 +397,7 @@ namespace gmtl
       return ret_trans;
    }
 
-   template< typename DATA_TYPE, unsigned ROWS, unsigned COLS, typename VEC_TYPE >
+   template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
    inline void getTrans( const Matrix<DATA_TYPE, ROWS, COLS>& arg,
                              DATA_TYPE& x, DATA_TYPE& y, DATA_TYPE& z)
    {
