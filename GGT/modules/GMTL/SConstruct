@@ -262,7 +262,7 @@ def ValidateBoostOption(key, value, environ):
          elif platform == 'darwin':
             tool = ''
          else:
-            tool = 'gcc'
+            tool = '-gcc'
 
          if platform == 'darwin':
             threading = ''
