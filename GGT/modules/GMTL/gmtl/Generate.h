@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-02-22 10:42:52 $
- * Version:       $Revision: 1.12 $
+ * Date modified: $Date: 2002-02-22 21:50:22 $
+ * Version:       $Revision: 1.13 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -116,14 +116,14 @@ namespace gmtl
    {
       // normalize if possible...
       float l = length( axis );
-      if (l > 0.0001f)
+      if (l > (DATA_TYPE)0.0001)
       {
-         l = 1.0f / l;
+         l = (DATA_TYPE)1.0 / l;
          axis *= l;
       }   
       
       // do it...
-      DATA_TYPE half_angle = rad * 0.5f;
+      DATA_TYPE half_angle = rad * (DATA_TYPE)0.5;
       DATA_TYPE sin_half_angle = Math::sin( half_angle );
 
       result[Welt] = Math::cos( half_angle );
@@ -219,9 +219,9 @@ namespace gmtl
       // avoid NAN
       else 
       {
-         x = 1.0f - quat[Welt]; // one of the terms should be a 1,
-         y = 0.0f;              // so we can maintain unit-ness
-         z = 0.0f;              // in case w is 0 (which here w is 0)
+         x = DATA_TYPE( 1.0 ) - quat[Welt]; // one of the terms should be a 1,
+         y = (DATA_TYPE)0.0;              // so we can maintain unit-ness
+         z = (DATA_TYPE)0.0;              // in case w is 0 (which here w is 0)
       }
    }
    
@@ -246,25 +246,25 @@ namespace gmtl
       Quat<DATA_TYPE> qx, qy, qz;
 
       // precompute half angles
-      DATA_TYPE xOver2 = xRot * 0.5f;
-      DATA_TYPE yOver2 = yRot * 0.5f;
-      DATA_TYPE zOver2 = zRot * 0.5f;
+      DATA_TYPE xOver2 = xRot * (DATA_TYPE)0.5;
+      DATA_TYPE yOver2 = yRot * (DATA_TYPE)0.5;
+      DATA_TYPE zOver2 = zRot * (DATA_TYPE)0.5;
 
       // make the pitch quat
       qx.vec[Xelt] = Math::sin( xOver2 ); 
-      qx.vec[Yelt] = 0.0f; 
-      qx.vec[Zelt] = 0.0f; 
+      qx.vec[Yelt] = (DATA_TYPE)0.0; 
+      qx.vec[Zelt] = (DATA_TYPE)0.0; 
       qx.vec[Welt] = Math::cos( xOver2 );
 
       // make the yaw quat
-      qy.vec[Xelt] = 0.0f;
+      qy.vec[Xelt] = (DATA_TYPE)0.0;
       qy.vec[Yelt] = Math::sin( yOver2 );
-      qy.vec[Zelt] = 0.0f;
+      qy.vec[Zelt] = (DATA_TYPE)0.0;
       qy.vec[Welt] = Math::cos( yOver2 );
 
       // make the roll quat
-      qz.vec[Xelt] = 0.0f;
-      qz.vec[Yelt] = 0.0f;
+      qz.vec[Xelt] = (DATA_TYPE)0.0;
+      qz.vec[Yelt] = (DATA_TYPE)0.0;
       qz.vec[Zelt] = Math::sin( zOver2 );
       qz.vec[Welt] = Math::cos( zOver2 );
 
@@ -367,7 +367,7 @@ namespace gmtl
       // GGI: pg 466
       DATA_TYPE s = Math::sin( radians );
       DATA_TYPE c = Math::cos( radians );
-      DATA_TYPE t = 1.0f - c;
+      DATA_TYPE t = DATA_TYPE( 1.0 ) - c;
       DATA_TYPE x = vec[0];
       DATA_TYPE y = vec[1];
       DATA_TYPE z = vec[2];
