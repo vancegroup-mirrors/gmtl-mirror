@@ -1,3 +1,5 @@
+include version.mk.doxy
+
 default: guide ref
 all a: gh gp gt rh rm rp
 usage u help h:
@@ -43,7 +45,7 @@ guide-txt gt:
 # prefix: Specify the dir you want the docs dumped into, can be a 
 #         new dir one level deep.  Defaults to "./installed"
 prefix ?=./installed
-version ?=0.0.1
+version ?=$(PROJECT_NUMBER)
 install:
 	-mkdir $(prefix)
 	-cp -r html $(prefix)/gmtlReferenceGuide-$(version)-html
