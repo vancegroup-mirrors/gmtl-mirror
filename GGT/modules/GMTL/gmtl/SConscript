@@ -1,0 +1,53 @@
+import os
+pj = os.path.join
+
+Import('baseEnv PREFIX')
+
+headers = Split("""
+   AABox
+   AABoxOps
+   AxisAngle
+   AxisAngleOps
+   Comparitors
+   Containment
+   Coord
+   CoordOps
+   Defines
+   EulerAngle
+   EulerAngleOps
+   Generate
+   Intersection
+   LineSeg
+   LineSegOps
+   Math
+   Matrix
+   MatrixOps
+   Output
+   Plane
+   PlaneOps
+   Point
+   Quat
+   QuatOps
+   Sphere
+   SphereOps
+   Tri
+   TriOps
+   Vec
+   VecBase
+   VecOps
+   Version
+   Xforms
+""")
+
+headers = map(lambda n: n + '.h', headers)
+
+subdirs = Split("""
+   External
+   Util
+""")
+
+for s in subdirs:
+   SConscript(dirs = s)
+
+for h in headers:
+   baseEnv.Install(pj(PREFIX, 'include', 'gmtl'), h)

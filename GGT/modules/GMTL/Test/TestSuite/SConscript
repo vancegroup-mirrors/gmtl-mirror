@@ -1,0 +1,52 @@
+import os
+pj = os.path.join
+
+Import('baseEnv PREFIX')
+
+sources = Split("""
+   testSuite.cpp
+""")
+
+# Define the sources for cppunit
+cppunit_sources = Split("""
+   Asserter
+   Exception
+   NotEqualException
+   SourceLine
+   SynchronizedObject
+   TestAssert
+   TestCase
+   TestFailure
+   TestResult
+   TestResultCollector
+   TestRunner
+   TestSucessListener
+   TestSuite
+   TextTestProgressListener
+   TextOutputter
+""")
+cppunit_sources.extend([pj('extensions', 'MetricRegistry')])
+cppunit_sources = map(lambda n: n + '.cpp', cppunit_sources)
+
+# Make cppunit sources relative to the cppunit installed dir
+cppunit_sources = map(lambda n: '#../../external/cppunit/src/cppunit/' + n,
+                      cppunit_sources)
+
+# Add in the sources for cppunit
+sources.extend(cppunit_sources)
+
+# Add in the sources from the subdirectories
+testcases_sources = SConscript(dirs = 'TestCases')
+testcases_sources = map(lambda n: pj('TestCases', n), testcases_sources)
+sources.extend(testcases_sources)
+
+# Setup the runtests executable target
+env = baseEnv.Copy()
+env['CXXFLAGS'].extend(['-fexceptions'])
+env['CPPPATH'].extend(Split("""
+                        #Test/TestSuite
+                        #
+                        #../../external/cppunit/include
+                      """))
+
+env.Program('runtests', source = sources)
