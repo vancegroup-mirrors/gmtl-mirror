@@ -1,5 +1,8 @@
 DATE       AUTHOR       CHANGE
 ---------- --------     -----------------------------------------------------------
+2002-05-17 subatomic    Doxygen: grouped everything into "modules", logical 
+                        groupings that make the reference guide much easier
+                        to use.
 2002-05-10 nonchocoboy  Added makeInverse for matrices.
 2002-05-10 subatomic    Added typedefs for Planef and Planed
 2002-05-10 allenb       Added gmtl::ignore_unused_variable_warning to get rid
