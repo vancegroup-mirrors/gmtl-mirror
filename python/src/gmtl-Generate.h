@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-Generate.h,v $
- * Date modified: $Date: 2003-08-17 06:32:59 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2003-09-24 05:29:11 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -293,6 +293,26 @@ namespace gmtl
                                       const gmtl::Matrix44f&);
    template gmtl::Coord4fQuat& setRot(gmtl::Coord4fQuat&,
                                       const gmtl::Matrix44f&);
+
+   template void setRow(gmtl::Vec3f&, const gmtl::Matrix33f&, unsigned);
+   template void setRow(gmtl::Vec3d&, const gmtl::Matrix33d&, unsigned);
+   template void setRow(gmtl::Vec4f&, const gmtl::Matrix44f&, unsigned);
+   template void setRow(gmtl::Vec4d&, const gmtl::Matrix44d&, unsigned);
+
+   template gmtl::Vec3f makeRow(const gmtl::Matrix33f&, unsigned);
+   template gmtl::Vec3d makeRow(const gmtl::Matrix33d&, unsigned);
+   template gmtl::Vec4f makeRow(const gmtl::Matrix44f&, unsigned);
+   template gmtl::Vec4d makeRow(const gmtl::Matrix44d&, unsigned);
+
+   template void setColumn(gmtl::Vec3f&, const gmtl::Matrix33f&, unsigned);
+   template void setColumn(gmtl::Vec3d&, const gmtl::Matrix33d&, unsigned);
+   template void setColumn(gmtl::Vec4f&, const gmtl::Matrix44f&, unsigned);
+   template void setColumn(gmtl::Vec4d&, const gmtl::Matrix44d&, unsigned);
+
+   template gmtl::Vec3f makeColumn(const gmtl::Matrix33f&, unsigned);
+   template gmtl::Vec3d makeColumn(const gmtl::Matrix33d&, unsigned);
+   template gmtl::Vec4f makeColumn(const gmtl::Matrix44f&, unsigned);
+   template gmtl::Vec4d makeColumn(const gmtl::Matrix44d&, unsigned);
 }
 
 #endif /* _PYGMTL_GENERATE_H_ */
