@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixGenTest.h,v $
- * Date modified: $Date: 2002-02-19 23:39:38 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-02-20 00:29:00 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -144,6 +144,90 @@ public:
    }
    void testMatrixMakeScale()
    {
+      float eps = 0.001f;
+      // 2D rot/trans
+      { 
+         gmtl::Matrix<float, 2, 3> mat23, expected_result23;
+         expected_result23.set( 32, 0, 0,
+                                0, 33, 0 );
+         gmtl::makeScale( mat23, gmtl::Vec2f( 32, 33 ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result23, mat23, eps ) );
+      }
+      // 2D rot/trans/skew
+      { 
+         gmtl::Matrix33f mat33, expected_result33;
+         expected_result33.set( 32, 0, 0,
+                                0, 33, 0,
+                                0, 0, 1 );
+         gmtl::makeScale( mat33, gmtl::Vec2f( 32, 33 ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat33, eps ) );
+      }
+      // 3D rot/trans
+      { 
+         gmtl::Matrix34f mat34, expected_result34;
+         expected_result34.set( 32, 0, 0, 0,
+                                0, 33, 0, 0,
+                                0, 0, 34, 0 );
+         gmtl::makeScale( mat34, gmtl::Vec3f( 32, 33, 34 ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result34, mat34, eps ) );
+      }
+      // 3D rot/trans/skew
+      { 
+         gmtl::Matrix44f mat44, expected_result44;
+         expected_result44.set( 32, 0, 0, 0,
+                                0, 33, 0, 0,
+                                0, 0, 34, 0,
+                                0, 0, 0, 1  );
+         gmtl::makeScale( mat44, gmtl::Vec3f( 32, 33, 34 ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result44, mat44, eps ) );
+      }
+      
+      
+      
+      // 2D rot/trans
+      { 
+         gmtl::Matrix<float, 2, 3> mat23, expected_result23;
+         expected_result23.set( 32, 0, 0,
+                                0, 32, 0 );
+         gmtl::makeScale( mat23, 32.0f );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result23, mat23, eps ) );
+      }
+      // 2D rot/trans/skew
+      { 
+         gmtl::Matrix33f mat33, expected_result33;
+         expected_result33.set( 32, 0, 0,
+                                0, 32, 0,
+                                0, 0, 1 );
+         gmtl::makeScale( mat33, 32.0f );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat33, eps ) );
+      }
+      // 3D rot/trans
+      { 
+         gmtl::Matrix34f mat34, expected_result34;
+         expected_result34.set( 32, 0, 0, 0,
+                                0, 32, 0, 0,
+                                0, 0, 32, 0 );
+         gmtl::makeScale( mat34, 32.0f );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result34, mat34, eps ) );
+      }
+      // 3D rot/trans/skew
+      { 
+         gmtl::Matrix44f mat44, expected_result44;
+         expected_result44.set( 32, 0, 0, 0,
+                                0, 32, 0, 0,
+                                0, 0, 32, 0,
+                                0, 0, 0, 1  );
+         gmtl::makeScale( mat44, 32.0f );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result44, mat44, eps ) );
+      }
+      { 
+         // make sure this compiles, and runs without internal assert.
+         gmtl::Matrix<float, 4, 8> mat48;
+         gmtl::makeScale( mat48, 32.0f );
+         
+         gmtl::Matrix<float, 8, 4> mat84;
+         gmtl::makeScale( mat84, 32.0f );
+      }
    }
    void testMatrixMakeRot()
    {
