@@ -1,6 +1,7 @@
 DATE       AUTHOR       CHANGE
 ---------- --------     --------------------------------------------------------
 2002-07-28 nonchocoboy  Added basic intersection test for AABoxes.
+                        NEW VERSION: 0.1.7
 2002-07-11 allenb       Added static assert.  Added muli-arg constructor for
                         Coord.  Created Util directory.  Added new coord types.
                         NEW VERSION: 0.1.6
