@@ -1,5 +1,6 @@
 DATE       AUTHOR       CHANGE
 ---------- --------     -----------------------------------------------------------
+2002-05-09 allenb       Added OpenSG conversion functions.
 2002-03-20 subatomic    Added Coord and all ops, gens, converts, compares.
 2002-03-20 nonchocoboy  Added overloaded operator<< functions.
 2002-03-15 allenb       Added makeRot<mat>(rad,axis) function
