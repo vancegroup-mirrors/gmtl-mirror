@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-02-19 17:46:21 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-02-19 23:39:12 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -41,47 +41,58 @@
 
 namespace gmtl
 {
-   /** Create a translation matrix.
-    * @post this function only produces 3x3, 3x4, and 4x4 matrices, and is undefined otherwise
-    */
-   template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
-   inline Matrix<DATA_TYPE, ROWS, COLS>& makeTrans( Matrix<DATA_TYPE, ROWS, COLS>& result, DATA_TYPE x, DATA_TYPE y, DATA_TYPE z )
-   {
-      /* @todo make this a compile time assert... */
-      assert( ROWS >= 3 && COLS == 4 && ROWS <= 4 && "this is undefined for Matrix smaller than 3x3 or bigger than 4x4" );
-      result = Matrix<DATA_TYPE, ROWS, COLS>();
-      result( 0, 3 ) = x;
-      result( 1, 3 ) = y;
-      result( 2, 3 ) = z;
-      return result;
-   }
-   
    /** Create a translation matrix from vec.
-    * @post this function only produces 3x3, 3x4, and 4x4 matrices, and is undefined otherwise
+    * @pre if making an n x n matrix, then for
+    * <ul>
+    *  <li><b>non-homogeneous vector:</b> SIZE of vector needs to equal number of Matrix ROWS - 1  
+    *  <li><b>homogeneous vector:</b> SIZE of vector needs to equal number of Matrix ROWS 
+    * </ul>
+    * if making an n x n+1 matrix, then for
+    * <ul>
+    *  <li><b>non-homogeneous vector:</b> SIZE of vector needs to equal number of Matrix ROWS 
+    *  <li><b>homogeneous vector:</b> SIZE of vector needs to equal number of Matrix ROWS + 1
+    * </ul>
+    * @post if preconditions are not met, then function is undefined (will not compile)
     */
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS, unsigned SIZE >
    inline Matrix<DATA_TYPE, ROWS, COLS>& makeTrans( Matrix<DATA_TYPE, ROWS, COLS>& result, const Vec<DATA_TYPE, SIZE>& trans )
    {
       /* @todo make this a compile time assert... */
-      assert( (SIZE == ROWS || SIZE == (ROWS - 1)) && COLS > 0 && "vector needs to be equal to or 1 less than the number of ROWS in the matrix." );
-      result = Matrix<DATA_TYPE, ROWS, COLS>();
-      for (int x = 0; x < SIZE; ++x)
-         result( x, COLS - 1 ) = trans[x];
+      // if n x n   then vecsize == rows-1 or (homogeneous case) vecsize == rows 
+      // if n x n+1 then vecsize == rows   or (homogeneous case) vecsize == rows+1
+      assert( ((ROWS == COLS && (SIZE == (ROWS-1) || SIZE == ROWS)) || 
+               (COLS == (ROWS+1) && (SIZE == ROWS || SIZE == (ROWS+1)))) && 
+              "preconditions not met for vector size in call to makeTrans.  Read your documentation." );
+      result = Matrix<DATA_TYPE, ROWS, COLS>(); // set to ident - this could be faster...
+      
+      // homogeneous case...
+      if ((ROWS == COLS && SIZE == ROWS) || (COLS == (ROWS+1) && SIZE == (ROWS+1)))  
+      {
+         for (int x = 0; x < COLS - 1; ++x)
+            result( x, COLS - 1 ) = trans[x] / trans[SIZE-1];
+      }
+      
+      // non-homogeneous case...
+      else
+      {
+         for (int x = 0; x < COLS - 1; ++x)
+            result( x, COLS - 1 ) = trans[x];
+      }
       return result;
-   }   
-   
+   }
+
    /** Create a scale matrix.
     */
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS, unsigned SIZE >
    inline Matrix<DATA_TYPE, ROWS, COLS>& makeScale( Matrix<DATA_TYPE, ROWS, COLS>& result, const Vec<DATA_TYPE, SIZE>& scale )
    {
-      assert( (SIZE == (ROWS-1) && SIZE == COLS) || (SIZE == (COLS-1) && SIZE == ROWS) && "the scale params must fit within the matrix, check your sizes." );
-      result = Matrix<DATA_TYPE, ROWS, COLS>();
+      assert( ((SIZE == (ROWS-1) && SIZE == (COLS-1)) || (SIZE == (ROWS-1) && SIZE == COLS) || (SIZE == (COLS-1) && SIZE == ROWS)) && "the scale params must fit within the matrix, check your sizes." );
+      result = Matrix<DATA_TYPE, ROWS, COLS>(); // set to ident - this could be faster...
       for (int x = 0; x < SIZE; ++x)
          result( x, x ) = scale[x];
       return result;
    }
-   
+
    /** Create a scale matrix.
     */
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
