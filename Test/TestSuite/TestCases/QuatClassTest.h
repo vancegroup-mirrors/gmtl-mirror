@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatClassTest.h,v $
- * Date modified: $Date: 2002-03-11 19:13:29 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-03-18 18:25:14 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -206,6 +206,7 @@ namespace gmtlTest
       void testQuatTimingGet()
       {
          const long iters( 400000 );
+         float use_value(0);
          CPPUNIT_METRIC_START_TIMING();
          gmtl::Quat<float> q;
          float x = 102, y = 103, z = 101, w = 100;
@@ -213,28 +214,36 @@ namespace gmtlTest
          {
             // performance of get...
             q.get( x, y, z, w );
+            use_value = use_value + x + y + z + w;
          }
          CPPUNIT_METRIC_STOP_TIMING();
          CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatTest/get()", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+         CPPUNIT_ASSERT( use_value > 0.0f );
       }
 
       void testQuatTimingSet()
       {
          const long iters( 400000 );
+         float use_value(0);
          CPPUNIT_METRIC_START_TIMING();
          gmtl::Quat<float> q;
          for (long iter = 0; iter < iters; ++iter)
          {
             // performance of set...
             q.set( 1, 2, 3, 4 );
+            use_value += q[gmtl::Xelt];
          }
          CPPUNIT_METRIC_STOP_TIMING();
          CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatTest/set()", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+         CPPUNIT_ASSERT( use_value >= 0.0f );
       }
 
       void testQuatTimingOpBracket()
       {
          const long iters( 400000 );
+         float use_value(0);
          CPPUNIT_METRIC_START_TIMING();
          gmtl::Quat<float> q;
          float x = 102, y = 103, z = 101, w = 100;
@@ -245,25 +254,30 @@ namespace gmtlTest
             q[gmtl::Yelt] = y;
             q[gmtl::Zelt] = z;
             q[gmtl::Welt] = w;
+            use_value = use_value + x + y + z + w;
          }
          CPPUNIT_METRIC_STOP_TIMING();
          CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatTest/operator[]()", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+         CPPUNIT_ASSERT( use_value > 0.0f );
       }
   
       void testQuatTimingGetData()
       {
          const long iters( 400000 );
+         float use_value(0);
          CPPUNIT_METRIC_START_TIMING();
          gmtl::Quat<float> q;
-         float w = 100;
          for (long iter = 0; iter < iters; ++iter)
          {
             // performance of getData...
             const float* d = q.getData();
-            w += d[3];
+            use_value += d[3];
          }
          CPPUNIT_METRIC_STOP_TIMING();
          CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatTest/getData()", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+         CPPUNIT_ASSERT( use_value > 0.0f );
       }
 
       void testQuatTimingOpEqual()
