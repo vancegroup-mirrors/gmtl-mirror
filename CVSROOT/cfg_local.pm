@@ -94,7 +94,7 @@ sub add_viewcvs_entry
       }
       else
       {
-         $extra = ".diff?r1=$prevrev&r2=$rev&diff_format=h";
+         $extra = ".diff?r1=$prevrev&r2=$rev&diff_format=l";
       }
 
       push(@output, "$baseurl$extra$www_repos");
