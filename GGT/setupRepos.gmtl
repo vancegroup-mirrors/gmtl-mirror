@@ -1,0 +1,2 @@
+#!/bin/sh
+./cvs-gather.pl --cfg=deps.esrc --limit=JugglerBaseStuff --limit=Doozer
