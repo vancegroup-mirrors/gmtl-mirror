@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-04-17 02:08:47 $
- * Version:       $Revision: 1.44 $
+ * Date modified: $Date: 2002-05-05 19:41:01 $
+ * Version:       $Revision: 1.45 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -897,6 +897,15 @@ namespace gmtl
       return result;
    }
 
+   /** create a matrix transposed from the source.
+    *  @post returns the transpose of m
+    *  @see Quat
+    */
+   template < typename DATA_TYPE, unsigned ROWS, unsigned COLS >
+   inline Matrix<DATA_TYPE, ROWS, COLS> makeTranspose( const Matrix<DATA_TYPE, ROWS, COLS>& m )
+   {
+      return transpose( Matrix<DATA_TYPE, ROWS, COLS>( m ) );
+   }
 
    /** set the matrix given the raw coordinate axes.
     * @post this function only produces 3x3, 3x4, 4x3, and 4x4 matrices, and is undefined otherwise
