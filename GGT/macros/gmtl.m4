@@ -7,8 +7,8 @@ dnl   Allen Bierbaum
 dnl
 dnl -----------------------------------------------------------------
 dnl File:          $RCSfile: gmtl.m4,v $
-dnl Date modified: $Date: 2002-06-04 21:31:47 $
-dnl Version:       $Revision: 1.9 $
+dnl Date modified: $Date: 2002-09-23 19:02:30 $
+dnl Version:       $Revision: 1.10 $
 dnl -----------------------------------------------------------------
 dnl
 dnl ************************************************************** ggt-head end
@@ -152,10 +152,11 @@ dnl                         test GMTL program], , enable_gmtltest=yes)
       gmtl_major=`grep 'define GMTL_VERSION_MAJOR ' $ggt_gmtl_incdir/gmtl/Version.h | awk '{ print $[3] }' -`
       gmtl_version="$gmtl_major.$gmtl_minor.$gmtl_patch"
 
-      DPP_VERSION_CHECK_MSG([GMTL], [$gmtl_version], [$1],
-                            ggt_cv_gmtl_version_okay, ,
-                            [ggt_have_gmtl='no'
-                            $5])
+      AC_MSG_CHECKING([whether GMTL version is >= $1])
+      AC_MSG_RESULT([$gmtl_version])
+      DPP_VERSION_CHECK([$gmtl_version], [$1], ,
+                        [ggt_have_gmtl='no'
+                        $5])
    fi
 
    if test "x$ggt_have_gmtl" = "xyes" ; then
