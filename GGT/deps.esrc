@@ -24,7 +24,7 @@
    {
       CVSROOT: allenb@cvs.doozer.sourceforge.net:/cvsroot/doozer;
       Module: Doozer;
-      Tag: HEAD;
+      Tag: RELENG_1;
 	  Path: .;
    }; 
 
