@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixClassTest.h,v $
- * Date modified: $Date: 2002-03-11 17:13:25 $
- * Version:       $Revision: 1.10 $
+ * Date modified: $Date: 2002-03-18 18:42:04 $
+ * Version:       $Revision: 1.11 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -65,6 +65,7 @@ public:
    {
       // Test overhead of creation
       const long iters(25000);
+      float use_value(0);
       CPPUNIT_METRIC_START_TIMING();
 
       for (long iter = 0; iter < iters; ++iter)
@@ -81,10 +82,15 @@ public:
          test_mat44[15] = 3.0f;
          gmtl::Matrix<double, 10, 1> test_mat101;
          test_mat101[9] = 1.0;
+
+         use_value = use_value + test_mat11[0] + test_mat22[0] + test_mat33[4] +
+                     test_mat34[5] + test_mat44[15] + test_mat101[9];
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixTest/ConstructorOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      CPPUNIT_ASSERT( use_value > 0.0f );
    }
    
    void testTimingCopyConstructor()
