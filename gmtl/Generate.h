@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-03-19 23:05:06 $
- * Version:       $Revision: 1.31 $
+ * Date modified: $Date: 2002-03-20 00:07:40 $
+ * Version:       $Revision: 1.32 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -369,7 +369,7 @@ namespace gmtl
 
    /** Create a scale matrix.
     */
-   template <typename MATRIX_TYPE>
+   template <typename MATRIX_TYPE, unsigned SIZE>
    inline MATRIX_TYPE makeScale( const Vec<typename MATRIX_TYPE::DataType, SIZE>& scale, 
                                Type2Type< MATRIX_TYPE > t = Type2Type< MATRIX_TYPE >() )
    {
