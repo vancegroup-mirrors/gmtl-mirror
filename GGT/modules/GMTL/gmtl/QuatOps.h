@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatOps.h,v $
- * Date modified: $Date: 2002-03-15 03:26:57 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2002-03-20 07:50:25 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -386,10 +386,10 @@ namespace gmtl
       if (cosom < (DATA_TYPE)0.0)
       {
          cosom = -cosom;
-         q.vec[0] = -to.vec[0];   // Reverse all signs
-         q.vec[1] = -to.vec[1];
-         q.vec[2] = -to.vec[2];
-         q.vec[3] = -to.vec[3];
+         q[0] = -to[0];   // Reverse all signs
+         q[1] = -to[1];
+         q[2] = -to[2];
+         q[3] = -to[3];
       }
       else
       {
@@ -402,10 +402,10 @@ namespace gmtl
       {
          // Standard case (slerp)
          DATA_TYPE omega, sinom;
-         omega = Math::acos( cosom ); // extract theta from dot product's cos theta
-         sinom = Math::sin( omega );
-         sclp  = Math::sin( ((DATA_TYPE)1.0 - t) * omega ) / sinom;
-         sclq  = Math::sin( t * omega ) / sinom;
+         omega = gmtl::Math::aCos( cosom ); // extract theta from dot product's cos theta
+         sinom = gmtl::Math::sin( omega );
+         sclp  = gmtl::Math::sin( ((DATA_TYPE)1.0 - t) * omega ) / sinom;
+         sclq  = gmtl::Math::sin( t * omega ) / sinom;
       }
       else
       {
