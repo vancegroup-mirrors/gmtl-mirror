@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: testSuite.cpp,v $
- * Date modified: $Date: 2002-09-15 16:24:39 $
- * Version:       $Revision: 1.56 $
+ * Date modified: $Date: 2003-01-10 06:11:19 $
+ * Version:       $Revision: 1.57 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -40,8 +40,9 @@
 //
 //------------------------------------------------------
 
+
 #include <cppunit/TestSuite.h>
-#include <cppunit/TextTestRunner.h>
+#include <cppunit/ui/text/TextTestRunner.h>
 #include <cppunit/extensions/MetricRegistry.h>
 
 #include <gmtl/Version.h>
