@@ -2,6 +2,7 @@ import os
 pj = os.path.join
 
 Import('baseEnv PREFIX')
+Import('GetPlatform')
 
 sources = Split("""
    testSuite.cpp
@@ -42,11 +43,15 @@ sources.extend(testcases_sources)
 
 # Setup the runtests executable target
 env = baseEnv.Copy()
-env['CXXFLAGS'].extend(['-fexceptions'])
+if GetPlatform() == 'linux':
+   env['CXXFLAGS'].extend(['-fexceptions'])
 env['CPPPATH'].extend(Split("""
                         #Test/TestSuite
                         #
                         #../../external/cppunit/include
                       """))
+if GetPlatform() == 'irix':
+   env['CPPPATH'].extend(['#../../external/boost/boost/compatibility/cpp_c_headers'])
+   env['LIBS'].extend(['m'])
 
 env.Program('runtests', source = sources)
