@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: LineSegTest.h,v $
- * Date modified: $Date: 2003-01-10 18:42:00 $
- * Version:       $Revision: 1.12 $
+ * Date modified: $Date: 2003-01-12 00:58:24 $
+ * Version:       $Revision: 1.13 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -222,12 +222,73 @@ public:
 
    void intersectLineSegTri()
    {
-      bool result;
-      gmtl::LineSeg<float> l( gmtl::Point3f( 0,1,0 ), gmtl::Point3f( 0,-1,0 ) );
-      gmtl::Tri<float> tri( gmtl::Point3f( -1,0,1 ), gmtl::Point3f( 1,0,1 ), gmtl::Point3f( 0,0,-1 ) );
-      float u, v, t;
-      result = gmtl::intersect( tri, l, u, v, t );
-      CPPUNIT_ASSERT( t == 0.5 && result == true );
+      // test t...
+      {
+         bool result;
+         gmtl::LineSeg<float> l( gmtl::Point3f( 0,1,0 ), gmtl::Point3f( 0,-1,0 ) );
+         gmtl::Tri<float> tri( gmtl::Point3f( -1,0,1 ), gmtl::Point3f( 1,0,1 ), gmtl::Point3f( 0,0,-1 ) );
+         float u, v, t;
+         result = gmtl::intersect( tri, l, u, v, t );
+         CPPUNIT_ASSERT( t == 0.5 && result == true );
+      }
+      // test u and v...
+      {
+         bool result;
+         gmtl::LineSeg<float> l( gmtl::Point3f( 0.25,1,-0.25 ), gmtl::Point3f( 0.25,-1,-0.25 ) );
+         gmtl::Tri<float> tri( gmtl::Point3f( 0,0,0 ), gmtl::Point3f( 1,0,0 ), gmtl::Point3f( 0,0,-1 ) );
+         float u, v, t;
+         result = gmtl::intersect( tri, l, u, v, t );
+         CPPUNIT_ASSERT( t == 0.5 && result == true );
+         CPPUNIT_ASSERT( u == 0.25 && v == 0.25 );
+      }
+
+      // test outside of tri
+      {
+         bool result;
+         gmtl::Tri<float> tri( gmtl::Point3f( 0,0,0 ), gmtl::Point3f( 1,0,0 ), gmtl::Point3f( 0,0,-1 ) );
+         float u, v, t;
+         result = gmtl::intersect( tri, gmtl::LineSeg<float>( gmtl::Point3f( -0.25,1,0 ), gmtl::Point3f( -0.25,-1,0 ) ), u, v, t );
+         CPPUNIT_ASSERT( result == false );
+         result = gmtl::intersect( tri, gmtl::LineSeg<float>( gmtl::Point3f( 0,1,0.25 ), gmtl::Point3f( 0,-1,0.25 ) ), u, v, t );
+         CPPUNIT_ASSERT( result == false );
+
+         // right on edge of tri should give intersection
+         result = gmtl::intersect( tri, gmtl::LineSeg<float>( gmtl::Point3f( 0,1,0 ), gmtl::Point3f( 0,-1,0 ) ), u, v, t );
+         CPPUNIT_ASSERT( t == 0.5 && result == true );
+         // right off edge of tri should not
+         result = gmtl::intersect( tri, gmtl::LineSeg<float>( gmtl::Point3f( -0.000001,1,0 ), gmtl::Point3f( -0.000001,-1,0 ) ), u, v, t );
+         CPPUNIT_ASSERT( result == false );
+      }
+      
+
+      // test other planes...
+      {
+         // x/y plane
+         bool result;
+         float u, v, t;
+         result = gmtl::intersect( gmtl::Tri<float>( gmtl::Point3f( -1,0,0 ), 
+                                                      gmtl::Point3f( 0,0,0 ), 
+                                                      gmtl::Point3f( 0,1,0 ) ), 
+                                   gmtl::LineSeg<float>( gmtl::Point3f( 0,0,1 ), gmtl::Point3f( 0,0,0 ) ), 
+                                   u, v, t );
+         CPPUNIT_ASSERT( t == 1.0 && result == true );
+
+         // try flipped about the x/y plane
+         result = gmtl::intersect( gmtl::Tri<float>( gmtl::Point3f( -1,0,0 ), 
+                                                      gmtl::Point3f( -2,0,0 ), 
+                                                      gmtl::Point3f( -1,1,0 ) ), 
+                                   gmtl::LineSeg<float>( gmtl::Point3f( -1.5,0,-1 ), gmtl::Point3f( -1.5,0,1 ) ), 
+                                   u, v, t );
+         CPPUNIT_ASSERT( t == 0.5 && result == true );
+
+         // make sure backfacing tri's don't intersect...
+         result = gmtl::intersect( gmtl::Tri<float>( gmtl::Point3f( -1,0,0 ), 
+                                                      gmtl::Point3f( -2,0,0 ), 
+                                                      gmtl::Point3f( -1,1,0 ) ), 
+                                   gmtl::LineSeg<float>( gmtl::Point3f( -1.5,0,1 ), gmtl::Point3f( -1.5,0,-1 ) ), 
+                                   u, v, t );
+         CPPUNIT_ASSERT( result == false );
+      }
    }
 
    void intersectRayPlane()
@@ -242,12 +303,74 @@ public:
 
    void intersectRayTri()
    {
-      bool result;
-      gmtl::Ray<float> r( gmtl::Point3f( 0,1,0 ), gmtl::Vec3f( 0,-1,0 ) );
-      gmtl::Tri<float> tri( gmtl::Point3f( -1,0,1 ), gmtl::Point3f( 1,0,1 ), gmtl::Point3f( 0,0,-1 ) );
-      float u, v, t;
-      result = gmtl::intersect( tri, r, u, v, t );
-      CPPUNIT_ASSERT( t == 1.0 && result == true );
+      // test t
+      {
+         bool result;
+         gmtl::Ray<float> r( gmtl::Point3f( 0,1,0 ), gmtl::Vec3f( 0,-1,0 ) );
+         gmtl::Tri<float> tri( gmtl::Point3f( -1,0,1 ), gmtl::Point3f( 1,0,1 ), gmtl::Point3f( 0,0,-1 ) );
+         float u, v, t;
+         result = gmtl::intersect( tri, r, u, v, t );
+         CPPUNIT_ASSERT( t == 1.0 && result == true );
+      }
+
+      // test u and v...
+      {
+         bool result;
+         gmtl::Ray<float> l( gmtl::Point3f( 0.25,1,-0.25 ), gmtl::Vec3f( 0,-1,0 ) );
+         gmtl::Tri<float> tri( gmtl::Point3f( 0,0,0 ), gmtl::Point3f( 1,0,0 ), gmtl::Point3f( 0,0,-1 ) );
+         float u, v, t;
+         result = gmtl::intersect( tri, l, u, v, t );
+         CPPUNIT_ASSERT( t == 1.0 && result == true );
+         CPPUNIT_ASSERT( u == 0.25 && v == 0.25 );
+      }
+
+      // test outside of tri
+      {
+         bool result;
+         gmtl::Tri<float> tri( gmtl::Point3f( 0,0,0 ), gmtl::Point3f( 1,0,0 ), gmtl::Point3f( 0,0,-1 ) );
+         float u, v, t;
+         result = gmtl::intersect( tri, gmtl::Ray<float>( gmtl::Point3f( -0.25,1,0 ), gmtl::Vec3f( 0,-1,0 ) ), u, v, t );
+         CPPUNIT_ASSERT( result == false );
+         result = gmtl::intersect( tri, gmtl::Ray<float>( gmtl::Point3f( 0,1,0.25 ), gmtl::Vec3f( 0,-1,0 ) ), u, v, t );
+         CPPUNIT_ASSERT( result == false );
+
+         // right on edge of tri should give intersection
+         result = gmtl::intersect( tri, gmtl::Ray<float>( gmtl::Point3f( 0,1,0 ), gmtl::Vec3f( 0,-1,0 ) ), u, v, t );
+         CPPUNIT_ASSERT( t == 1.0 && result == true );
+         // right off edge of tri should not
+         result = gmtl::intersect( tri, gmtl::Ray<float>( gmtl::Point3f( -0.000001,1,0 ), gmtl::Vec3f( 0,-1,0 ) ), u, v, t );
+         CPPUNIT_ASSERT( result == false );
+      }
+      
+
+      // test other planes...
+      {
+         // x/y plane
+         bool result;
+         float u, v, t;
+         result = gmtl::intersect( gmtl::Tri<float>( gmtl::Point3f( -1,0,0 ), 
+                                                      gmtl::Point3f( 0,0,0 ), 
+                                                      gmtl::Point3f( 0,1,0 ) ), 
+                                   gmtl::Ray<float>( gmtl::Point3f( 0,0,1 ), gmtl::Vec3f( 0,0,-1 ) ), 
+                                   u, v, t );
+         CPPUNIT_ASSERT( t == 1.0 && result == true );
+
+         // try flipped about the x/y plane
+         result = gmtl::intersect( gmtl::Tri<float>( gmtl::Point3f( -1,0,0 ), 
+                                                      gmtl::Point3f( -2,0,0 ), 
+                                                      gmtl::Point3f( -1,1,0 ) ), 
+                                   gmtl::Ray<float>( gmtl::Point3f( -1.5,0,-1 ), gmtl::Vec3f( 0,0,1 ) ), 
+                                   u, v, t );
+         CPPUNIT_ASSERT( t == 1.0 && result == true );
+
+         // make sure backfacing tri's don't intersect...
+         result = gmtl::intersect( gmtl::Tri<float>( gmtl::Point3f( -1,0,0 ), 
+                                                      gmtl::Point3f( -2,0,0 ), 
+                                                      gmtl::Point3f( -1,1,0 ) ), 
+                                   gmtl::Ray<float>( gmtl::Point3f( -1.5,0,1 ), gmtl::Vec3f( 0,0,-1 ) ), 
+                                   u, v, t );
+         CPPUNIT_ASSERT( result == false );
+      }
    }
 
    static CppUnit::Test* suite()
