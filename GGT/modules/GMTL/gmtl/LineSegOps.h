@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: LineSegOps.h,v $
- * Date modified: $Date: 2003-05-10 21:18:01 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2004-09-16 21:21:09 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -69,7 +69,7 @@ template< class DATA_TYPE >
 inline DATA_TYPE distance( const LineSeg<DATA_TYPE>& lineseg,
                            const Point<DATA_TYPE, 3>& pt )
 {
-   return gmtl::length( pt - findNearestPt( lineseg, pt ) );
+   return gmtl::length(gmtl::Vec<DATA_TYPE, 3>(pt - findNearestPt(lineseg, pt)));
 }
 
 /**
@@ -84,7 +84,7 @@ template< class DATA_TYPE >
 inline DATA_TYPE distanceSquared( const LineSeg<DATA_TYPE>& lineseg,
                            const Point<DATA_TYPE, 3>& pt )
 {
-   return gmtl::lengthSquared( pt - findNearestPt( lineseg, pt ) );
+   return gmtl::lengthSquared(gmtl::Vec<DATA_TYPE, 3>(pt - findNearestPt(lineseg, pt)));
 }
 
 
