@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: IntersectionTest.cpp,v $
- * Date modified: $Date: 2003-05-15 16:50:47 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2003-05-15 16:53:14 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -184,7 +184,7 @@ namespace gmtlTest
       //        in and out and on the edges...
    }
 
-   void IntersectionMetricTest::testIntersectLineSegPlane()
+   void IntersectionTest::testIntersectLineSegPlane()
    {
 	   gmtl::Planef plane( gmtl::Vec3f( 0,1,0 ), 0 );
 	   
@@ -212,7 +212,7 @@ namespace gmtlTest
 	   }
    }
    
-   void IntersectionMetricTest::testIntersectRayPlane()
+   void IntersectionTest::testIntersectRayPlane()
    {
 	   gmtl::Planef plane( gmtl::Vec3f( 0,1,0 ), 0 );
 
