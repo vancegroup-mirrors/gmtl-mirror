@@ -209,13 +209,13 @@ pkg.addExtraDist(Split("""
    docs/programmer.guide/Makefile
    docs/programmer.guide/guide.xml
    gmtl/gmtl.doxygen
-   gmtl/SConstruct
-   gmtl/External/SConstruct
-   gmtl/Util/SConstruct
-   Test/SConstruct
-   Test/TestSuite/SConstruct
-   Test/TestSuite/TestCases/SConstruct
-   Test/TestSuite/TestCases/InfoTests/SConstruct
+   gmtl/SConscript
+   gmtl/External/SConscript
+   gmtl/Util/SConscript
+   Test/SConscript
+   Test/TestSuite/SConscript
+   Test/TestSuite/TestCases/SConscript
+   Test/TestSuite/TestCases/InfoTests/SConscript
 """))
 Export('pkg')
 
@@ -244,6 +244,7 @@ env.Depends('gmtl-config', 'gmtl/Version.h')
 env.Install(pj(PREFIX, 'bin'), 'gmtl-config')
 
 pkg.build()
+MakeSourceDist(pkg, env)
 
 # Build everything by default
 Default('.')

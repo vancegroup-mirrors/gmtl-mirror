@@ -52,4 +52,4 @@ for s in subdirs:
 
 for h in headers:
    baseEnv.Install(pj(PREFIX, 'include', 'gmtl'), h)
-   pkg.addExtraDist([h])
+   pkg.addExtraDist([File(h)])
