@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Compare.h,v $
- * Date modified: $Date: 2002-02-12 05:46:22 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-02-15 21:47:49 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -41,9 +41,54 @@
 #include <gmtl/Vec.h>
 #include <gmtl/Point.h>
 #include <gmtl/Sphere.h>
+#include <gmtl/Matrix.h>
 
 namespace gmtl
 {
+// --- MATRIX comparisons -- //
+
+/** Compare two mats */
+template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
+inline bool operator==( const Matrix<DATA_TYPE, ROWS, COLS>& lhs, const Matrix<DATA_TYPE, ROWS, COLS>& rhs )
+{
+   for (unsigned int i = 0; i < ROWS*COLS; ++i)
+   {
+      if (lhs[i] != rhs[i])
+      {
+         return false;
+      }
+   }
+
+   return true;
+
+   /*  Would like this
+   return( lhs[0] == rhs[0] &&
+           lhs[1] == rhs[1] &&
+           lhs[2] == rhs[2] );
+   */
+}
+
+template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
+inline bool operator!=( const Matrix<DATA_TYPE, ROWS, COLS>& lhs, const Matrix<DATA_TYPE, ROWS, COLS>& rhs )
+{
+   return bool( !(lhs == rhs) );
+}
+
+/** Compare two vectors with a tolerance
+* @pre eps must be >= 0
+*/
+template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
+inline bool isEqual( const Matrix<DATA_TYPE, ROWS, COLS>& lhs, const Matrix<DATA_TYPE, ROWS, COLS>& rhs, const DATA_TYPE& eps = (DATA_TYPE)0 )
+{
+   ggtASSERT( eps >= (DATA_TYPE)0 );
+
+   for (unsigned int i = 0; i < ROWS*COLS; ++i)
+   {
+      if (!Math::isEqual( lhs[i], rhs[i], eps ))
+         return false;
+   }
+   return true;
+}
 
 
 // --- VEC comparisons -- //
@@ -51,7 +96,7 @@ namespace gmtl
 
 /** Compare two vecs */
 template<class DATA_TYPE, unsigned SIZE>
-bool operator ==(const VecBase<DATA_TYPE, SIZE>& v1, const VecBase<DATA_TYPE, SIZE>& v2)
+inline bool operator ==(const VecBase<DATA_TYPE, SIZE>& v1, const VecBase<DATA_TYPE, SIZE>& v2)
 {
    for(unsigned i=0;i<SIZE;++i)
    {
@@ -71,7 +116,7 @@ bool operator ==(const VecBase<DATA_TYPE, SIZE>& v1, const VecBase<DATA_TYPE, SI
 }
 
 template<class DATA_TYPE, unsigned SIZE>
-bool operator !=(const VecBase<DATA_TYPE, SIZE>& v1, const VecBase<DATA_TYPE, SIZE>& v2)
+inline bool operator !=(const VecBase<DATA_TYPE, SIZE>& v1, const VecBase<DATA_TYPE, SIZE>& v2)
 {
    return(! (v1 == v2));
 }
@@ -80,7 +125,7 @@ bool operator !=(const VecBase<DATA_TYPE, SIZE>& v1, const VecBase<DATA_TYPE, SI
 * @pre eps must be >= 0
 */
 template<class DATA_TYPE, unsigned SIZE>
-bool isEqual(const VecBase<DATA_TYPE, SIZE>& v1, const VecBase<DATA_TYPE, SIZE>& v2, const DATA_TYPE& eps)
+inline bool isEqual(const VecBase<DATA_TYPE, SIZE>& v1, const VecBase<DATA_TYPE, SIZE>& v2, const DATA_TYPE& eps)
 {
    ggtASSERT(eps >= 0);
 
@@ -105,7 +150,7 @@ bool isEqual(const VecBase<DATA_TYPE, SIZE>& v1, const VecBase<DATA_TYPE, SIZE>&
  * @return  true if they are equal, false otherwise
  */
 template< class DATA_TYPE >
-bool operator==( const Sphere<DATA_TYPE>& s1, const Sphere<DATA_TYPE>& s2 )
+inline bool operator==( const Sphere<DATA_TYPE>& s1, const Sphere<DATA_TYPE>& s2 )
 {
    return ( (s1.mCenter == s2.mCenter) && (s1.mRadius == s2.mRadius) );
 }
@@ -120,7 +165,7 @@ bool operator==( const Sphere<DATA_TYPE>& s1, const Sphere<DATA_TYPE>& s2 )
  * @return  true if they are not equal, false otherwise
  */
 template< class DATA_TYPE >
-bool operator!=( const Sphere<DATA_TYPE>& s1, const Sphere<DATA_TYPE>& s2 )
+inline bool operator!=( const Sphere<DATA_TYPE>& s1, const Sphere<DATA_TYPE>& s2 )
 {
    return (! (s1 == s2));
 }
@@ -137,7 +182,7 @@ bool operator!=( const Sphere<DATA_TYPE>& s1, const Sphere<DATA_TYPE>& s2 )
  * @return  true if they are equal, false otherwise
  */
 template< class DATA_TYPE >
-bool isEqual( const Sphere<DATA_TYPE>& s1, const Sphere<DATA_TYPE>& s2, const DATA_TYPE& eps )
+inline bool isEqual( const Sphere<DATA_TYPE>& s1, const Sphere<DATA_TYPE>& s2, const DATA_TYPE& eps )
 {
    ggtASSERT( eps >= 0 );
    return ( (isEqual(s1.mCenter, s2.mCenter, eps)) && (fabs(s1.mRadius - s2.mRadius) <= eps) );
