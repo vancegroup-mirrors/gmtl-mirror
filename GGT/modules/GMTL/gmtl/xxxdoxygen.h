@@ -5,11 +5,10 @@
 /** @mainpage Generic Math Template Library
  *  @section Using Using This Reference Guide
  *  Welcome to GMTL.  To use this reference guide effectively, we suggest 
- *  you click the <a href="modules.html">Modules</a> link
- *  This provides the most intuitive navigation of the reference guide.  
- *  Navigation on the
- *  <a href="modules.html">Modules</a> page is structured exactly how GMTL is 
- *  structured.  Be sure 
+ *  you see the <a href="modules.html">Modules</a> section first.
+ *  The <a href="modules.html">Modules</a> section provides the most 
+ *  intuitive navigation of the reference guide because this
+ *  section is structured very similar GMTL.  Be sure 
  *  to read the GMTL Programmer's Guide (available on the 
  *  <a href="http://ggt.sf.net">GMTL web site</a>) to 
  *  understand the philosophy behind GMTL.  Understanding abstractly what 
