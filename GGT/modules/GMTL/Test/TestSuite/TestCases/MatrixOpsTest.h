@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOpsTest.h,v $
- * Date modified: $Date: 2002-03-15 17:30:49 $
- * Version:       $Revision: 1.15 $
+ * Date modified: $Date: 2002-03-15 19:09:23 $
+ * Version:       $Revision: 1.16 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -333,7 +333,7 @@ public:
                     12, 13, 14, 15 );
       res_mat = test_mat2 = test_mat1;
 
-      const long iters(50000);
+      const long iters(5000);
       CPPUNIT_METRIC_START_TIMING();
       for( long iter=0;iter<iters; ++iter)
       {
@@ -358,7 +358,7 @@ public:
                     12, 13, 14, 15 );
       res_mat = test_mat2 = test_mat1;
 
-      const long iters(50000);
+      const long iters(5000);
       CPPUNIT_METRIC_START_TIMING();
       for( long iter=0;iter<iters; ++iter)
       {
