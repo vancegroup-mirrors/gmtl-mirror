@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixGenTest.h,v $
- * Date modified: $Date: 2002-03-15 19:21:23 $
- * Version:       $Revision: 1.17 $
+ * Date modified: $Date: 2002-03-15 19:26:13 $
+ * Version:       $Revision: 1.18 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -131,6 +131,20 @@ public:
                                 0, 0, 0, 1  );
          gmtl::makeTrans( mat44, gmtl::Vec4f( 32, 33, 34, 0.5f ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result44, mat44, eps ) );
+      }
+
+      // --- Test standalone makeTrans(trans) against makeTrans(mat,trans) -- //
+      {
+         gmtl::Matrix44f expected_mat;
+         gmtl::Vec3f trans3(1.0, 2.0, 3.0f);
+         gmtl::Vec4f trans4(1.0, 2.0, 3.0f);
+         gmtl::makeTrans(expected_mat, trans3);
+         CPPUNIT_ASSERT( gmtl::isEqual( gmtl::makeTrans<gmtl::Matrix44f>(trans3), 
+                                        expected_mat, eps ) );
+         gmtl::makeTrans(expected_mat, trans4);
+         CPPUNIT_ASSERT( gmtl::isEqual( gmtl::makeTrans<gmtl::Matrix44f>(trans4), 
+                                        expected_mat, eps ) );
+       
       }
    }
    
@@ -632,6 +646,54 @@ public:
                              gmtl::Math::deg2Rad( -361.0f ), gmtl::ZXY );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result44, mat, eps ) );
       }
+
+
+      // --- Test standalone makeRot(val,val,val) against makeRot(mat,val,val,val) -- //
+      {
+         gmtl::Matrix44f mat, expected_mat;
+         gmtl::makeRot(expected_mat, 0.1f, 2.3f, -2.1f, gmtl::XYZ);
+         mat = gmtl::makeRot<gmtl::Matrix44f>(0.1f, 2.3f, -2.1f, gmtl::XYZ);
+         CPPUNIT_ASSERT( gmtl::isEqual( mat, expected_mat, eps ) );
+
+         gmtl::makeRot(expected_mat, 0.1f, 2.3f, -2.1f, gmtl::ZXY );
+         mat = gmtl::makeRot<gmtl::Matrix44f>(0.1f, 2.3f, -2.1f, gmtl::ZXY);
+         CPPUNIT_ASSERT( gmtl::isEqual( mat, expected_mat, eps ) );
+
+         gmtl::makeRot(expected_mat, 0.1f, 2.3f, -2.1f, gmtl::ZYX);
+         CPPUNIT_ASSERT( gmtl::isEqual( gmtl::makeRot<gmtl::Matrix44f>(0.1f, 2.3f, -2.1f, gmtl::ZYX),
+                                        expected_mat, eps ) );
+      }
+
+      {
+         gmtl::Matrix33f mat, expected_mat;
+         gmtl::makeRot(expected_mat, 0.1f, 2.3f, -2.1f, gmtl::XYZ);
+         mat = gmtl::makeRot<gmtl::Matrix33f>(0.1f, 2.3f, -2.1f, gmtl::XYZ);
+         CPPUNIT_ASSERT( gmtl::isEqual( mat, expected_mat, eps ) );
+
+         gmtl::makeRot(expected_mat, 0.1f, 2.3f, -2.1f, gmtl::ZXY );
+         mat = gmtl::makeRot<gmtl::Matrix33f>(0.1f, 2.3f, -2.1f, gmtl::ZXY);
+         CPPUNIT_ASSERT( gmtl::isEqual( mat, expected_mat, eps ) );
+
+         gmtl::makeRot(expected_mat, 0.1f, 2.3f, -2.1f, gmtl::ZYX);
+         CPPUNIT_ASSERT( gmtl::isEqual( gmtl::makeRot<gmtl::Matrix33f>(0.1f, 2.3f, -2.1f, gmtl::ZYX), 
+                                        expected_mat, eps ) );
+      }
+      
+      {
+         gmtl::Matrix34f mat, expected_mat;
+         gmtl::makeRot(expected_mat, 0.1f, 2.3f, -2.1f, gmtl::XYZ);
+         mat = gmtl::makeRot<gmtl::Matrix34f>(0.1f, 2.3f, -2.1f, gmtl::XYZ);
+         CPPUNIT_ASSERT( gmtl::isEqual( mat, expected_mat, eps ) );
+
+         gmtl::makeRot(expected_mat, 0.1f, 2.3f, -2.1f, gmtl::ZXY );
+         mat = gmtl::makeRot<gmtl::Matrix34f>(0.1f, 2.3f, -2.1f, gmtl::ZXY);
+         CPPUNIT_ASSERT( gmtl::isEqual( mat, expected_mat, eps ) );
+
+         gmtl::makeRot(expected_mat, 0.1f, 2.3f, -2.1f, gmtl::ZYX);
+         CPPUNIT_ASSERT( gmtl::isEqual( gmtl::makeRot<gmtl::Matrix34f>(0.1f, 2.3f, -2.1f, gmtl::ZYX), 
+                                        expected_mat, eps ) );
+      }
+    
    }
          
    void testTimingMakeTrans()
