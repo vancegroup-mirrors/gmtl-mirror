@@ -29,8 +29,8 @@
 #
 # -----------------------------------------------------------------
 # File:          $RCSfile: Makefile,v $
-# Date modified: $Date: 2002-04-11 16:53:30 $
-# Version:       $Revision: 1.32 $
+# Date modified: $Date: 2002-05-24 22:29:49 $
+# Version:       $Revision: 1.33 $
 # -----------------------------------------------------------------
 # *************** <auto-copyright.pl END do not edit this line> ***************
 
@@ -38,7 +38,7 @@
 # Advanced template makefile for VR Juggler applications.  This is intended
 # for "power users" who really know what they are doing and want to abuse
 # Doozer's flexibility.  :)
-# $Id: Makefile,v 1.32 2002-04-11 16:53:30 patrickh Exp $
+# $Id: Makefile,v 1.33 2002-05-24 22:29:49 allenb Exp $
 #
 # *** IMPORTANT NOTES -- READ THESE FIRST ***
 #     1) This file _requires_ the use of GNU make (gmake).
@@ -190,6 +190,8 @@ CPPUNIT_SRCS	= Asserter.cpp			\
 EXTRA_CPPUNIT_SRCS_PATH	= $(CPPUNIT_DIR)/src/cppunit $(CPPUNIT_DIR)/src/cppunit/extensions
 
 SRCS = $(TEST_SRCS) $(CPPUNIT_SRCS)
+OBJDIR = $(DZR_HOSTTYPE).obj
+DEPDIR = $(DZR_HOSTTYPE).obj
 
 # This is for extra libraries needed specfically for your application.  The
 # general libraries needed for applications are in $(LIBS).
