@@ -216,6 +216,7 @@ pkg.addExtraDist(Split("""
    Test/TestSuite/SConscript
    Test/TestSuite/TestCases/SConscript
    Test/TestSuite/TestCases/InfoTests/SConscript
+   tools/build/AutoDist.py
 """))
 Export('pkg')
 
