@@ -113,24 +113,98 @@
  *
  *  @subsection Vectors Vectors
  *  <b>How do I rotate a vector?</b>
+ *  In most cases you can simply use the * operator with your vector and one of
+ *  the rotaional data types.
+ *  
+ *  gmtl::Vec3f myVec;
+ *  gmtl::AxisAngle myAA;
+ *  gmtl::Quaternion myQuat;
+ *  gmtl::Matrix44f myMat;
+ *  gmtl::EulerAngleXYZf myEuler;
+ * 
+ *  myVec = myVec * myAA;
+ *  myVec = myVec * myQuat;
+ *  myVec = myVec * myMat;
+ *  myVec = myVec * myEuler;
+ *
+ *
  *  <b>How do I find the cross product of 2 vectors?</b>
+ *  We can use the cross function, which returns another vector.
+ *
+ *  gmtl::Vec3f vecA, vecB, crossVec;
+ *  crossVec = gmtl::cross( vecA, vecB );
+ *
+ * 
  *  <b>How do I find the dot product of 2 vectors?</b>
+ *  Use the dot function, which returns a number (depending on the type of
+ *  data in the vectors). 
+ * 
+ *  gmtl::Vec3d vecA, vecB;
+ *  double x = gmtl::dot( vecA, vecB );
+ *
+ *
+ *
+ *  <b>How do I check if a vector is normalized?</b> 
  *  <b>How do I normalize a vector?</b>
+ *  <b>How do I check if 2 vectors are equal?</b>
  *  <b>How do I find the length of a vector?</b>
+ *  <b>How do I invert a vector?</b>
+ *  <b>How do I interpolate between 2 vectors?</b>
+ *  <b>How do I add, subtract, divide and multiply vectors?</b>
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
  *
  *  @subsection Matrices Matrices
  *  <b>How do I multiply matrices?</b>
+ *  The simplest way to multiply one matrix by another is to use the * operator.
  *
+ *  gmtl::Matrix44f A, B, C;
+ *  A = B * C;
  *
+ *  Note that when multiplying matrices, the ordering matters. The following
+ *  line of code could make matrix A have a different result:
  *
+ *  A = C * B;
  *
+ *  Alternatively, you can use the preMult and postMult functions. 
+ *
+ *  This preMult call is the same as "A = B * A;"
+ *  gmtl::preMult( A, B ); 
+ *
+ *  This postMult call is the same as "A = A * B;"
+ *  gmtl::postMult( A, B );
+ *  
+ *  The *= operator also acts as a postMult function.
+ *  A *= B;
  *
  *
  *  <b>How do I create a matrix?</b>
+ *  You can create a new matrix simply by instantiating it. You can use one of
+ *  the GMTL-provided type definitions. The first matrix is a 4x4 matrix of 
+ *  floating point numbers. The second is a 2x3 matrix of double precision
+ *  floating point numbers. 
  *
+ *  gmtl::Matrix44f myMat;
+ *  gmtl::Matrix23d otherMat;
+ * 
+ *  You can also create matrices of arbitrary size and data type using the
+ *  templated constructor. The templated arguments are (in order) the data type,
+ *  the number of rows, and the number of columns. For example, the following 
+ *  creates a 4x6 matrix of floating point numbers.
+ *  
+ *  gmtl::Matrix< float, 4, 6 > newMatrix;
  *
- *
- *
+ *  You can also create a matrix from any of the other transformation data
+ *  types. See below for examples.
  *
  *
  *  <b>How do I create a matrix from a vector?</b>
@@ -181,9 +255,6 @@
  *  gmtl::setScale( myMat, scale );
  *
  *
- *
- *
- *
  *  <b>How do I copy a matrix?</b>
  *  You can simply use the '=' operator to copy from one matrix to another.
  * 
@@ -191,6 +262,14 @@
  *  matA = matB;
  *
  *
+ *  <b>How do I access individual data elements of a matrix?</b>
+ *  You can simply use the [ row# ][ column# ] operators, just as you would 
+ *  if you were accessing elements of a double array.
+ *
+ *  gmtl::Matrix44f myMat;
+ *  float x = myMat[3][2];
+ *
+ *  
  *  <b>How do I extract just the rotation data from a matrix?</b>
  *  You can extract the rotational data as any of GMTL's rotation data types.
  *  In any case, you need to use the makeRot templated function. Note that you
@@ -220,13 +299,6 @@
  *  myPoint = gmtl::makeTrans< gmtl::Point3f >( myMat );
  *
  *
- *  <b>How do I extract the scale from a matrix?</b>
- *
- *
- *
- *
- *
- *
  *  <b>How do I set a matrix to be the identity matrix?</b>
  *  Matrices will automatically be identity matrices upon creation. If you
  *  want to set them to the identity later, use the identity function.
@@ -234,10 +306,12 @@
  *  gmtl::Matrix44f myMat;
  *  gmtl::identity( myMat );
  *
+ *
  *  <b>How do I set a matrix to contain all zeros?</b>
  *  gmtl::Matrix44f myMat;
  *  gmtl::zero( myMat );
  *
+ * 
  *  <b>How do I invert a matrix?</b>
  *  In most cases you can simply use the invert function. This will perform a
  *  "smart" inversion that selects an inversion method (full, affine, 
@@ -251,7 +325,14 @@
  * 
  *  gmtl::invertFull( myMat );
  *
+ *
+ *  <b>How do I transpose a matrix?</b>
+ *  Use the transpose function.
+ *
+ *  gmtl::Matrix44f myMat;
+ *  gmtl::transpose( myMat );
  * 
+ *
  *  <b>How do I transform a point using a matrix?</b>
  *  This will perform a full transformation on the point.
  *
@@ -290,10 +371,13 @@
  *
  *  @subsection General General Math
  *  <b>How do I use GMTL's C math abstraction?</b>
+ *
  *  <b>What operations does GMTL's C math abstraction have?</b>
+ *
  *  <b>What about PI?</b>
+ *
  *  <b>How do I get the ceiling of a floating point number?</b>
-
+ *
  *  <b>How do I convert from degrees to radians?</b>
  *  float degrees = 90;
  *  float radians = gmtl::Math::deg2Rad( degrees );
