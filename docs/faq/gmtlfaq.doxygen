@@ -441,21 +441,40 @@
  *
  *
  *  @subsection Quaternions Quaternions
+ *  <b>How do I create quaternions?</b>
+ *  <b>How do I multiply quaternions?</b>
+ *  <b>How do I combine quaternions?</b>
+ *  <b>How do I perform spherical interpolation with quaterions?</b>
  *
  *  @subsection General General Math
  *  <b>How do I use GMTL's C math abstraction?</b>
  *
  *  <b>What operations does GMTL's C math abstraction have?</b>
+ *  GMTL provides function calls for everything that the standard C math
+ *  library has. But they are templated functions, so you don't have to worry
+ *  about what data types you are providing for argments.
  *
+ *  
  *  <b>What about PI?</b>
+ *  There is a floating point value provided for the number Pi. You can 
+ *  reference it using 'gmtl::Math::PI'.
  *
- *  <b>How do I get the ceiling of a floating point number?</b>
+ *  There are also constants provided for Pi divided by 2 and Pi divided by 4, 
+ *  both of which are commonly used in graphical applications. These additional
+ *  values can be referenced by 'gmtl::Math::PI_OVER_2' and
+ *  'gmtl::Math::PI_OVER_4'. 
+ *
  *
  *  <b>How do I convert from degrees to radians?</b>
+ *  Use the deg2Rad function.
+ *
  *  float degrees = 90;
  *  float radians = gmtl::Math::deg2Rad( degrees );
  *
+ *
  *  <b>How do I convert from radians to degrees?</b>
+ *  Use the rad2Deg function.
+ *
  *  float radians = 1.57;
  *  float degrees = gmtl::Math::rad2Deg( radians );
  * 
