@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOps.h,v $
- * Date modified: $Date: 2002-03-15 04:23:55 $
- * Version:       $Revision: 1.13 $
+ * Date modified: $Date: 2002-03-15 15:28:27 $
+ * Version:       $Revision: 1.14 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -88,6 +88,47 @@ namespace gmtl
       }
       return result;
    }
+
+   // ---------- Matrix set functions -------- //
+   /** @name Matrix set functions */
+   //@{
+
+   /** Set matrix translation from vec.
+    * @pre if making an n x n matrix, then for
+    *    - <b>vector is homogeneous:</b> SIZE of vector needs to equal number of Matrix ROWS - 1
+    *    - <b>vector has scale component:</b> SIZE of vector needs to equal number of Matrix ROWS
+    * if making an n x n+1 matrix, then for
+    *    - <b>vector is homogeneous:</b> SIZE of vector needs to equal number of Matrix ROWS
+    *    - <b>vector has scale component:</b> SIZE of vector needs to equal number of Matrix ROWS + 1
+    * @post if preconditions are not met, then function is undefined (will not compile)
+    */
+   template< typename DATA_TYPE, unsigned ROWS, unsigned COLS, unsigned SIZE >
+   inline Matrix<DATA_TYPE, ROWS, COLS>& setTrans( Matrix<DATA_TYPE, ROWS, COLS>& result, const Vec<DATA_TYPE, SIZE>& trans )
+   {
+      /* @todo make this a compile time assert... */
+      // if n x n   then (homogeneous case) vecsize == rows-1 or (scale component case) vecsize == rows
+      // if n x n+1 then (homogeneous case) vecsize == rows   or (scale component case) vecsize == rows+1
+      gmtlASSERT( ((ROWS == COLS && (SIZE == (ROWS-1) || SIZE == ROWS)) ||
+               (COLS == (ROWS+1) && (SIZE == ROWS || SIZE == (ROWS+1)))) &&
+              "preconditions not met for vector size in call to makeTrans.  Read your documentation." );
+
+      // homogeneous case...
+      if ((ROWS == COLS && SIZE == ROWS) || (COLS == (ROWS+1) && SIZE == (ROWS+1)))
+      {
+         for (unsigned x = 0; x < COLS - 1; ++x)
+            result( x, COLS - 1 ) = trans[x] / trans[SIZE-1];
+      }
+
+      // non-homogeneous case...
+      else
+      {
+         for (unsigned x = 0; x < COLS - 1; ++x)
+            result( x, COLS - 1 ) = trans[x];
+      }
+      return result;
+   }
+
+   //@}
 
    /** matrix multiply.
     *  @PRE: if lhs is m x p, and rhs is p x n, then result is m x n (mult func undefined otherwise)
@@ -431,7 +472,9 @@ namespace gmtl
    }
    */
 
-   // --- MATRIX comparisons -- //
+// --------- MATRIX COMPARISONS ------ //
+   /** @name Matrix comparisons */
+   //@{
 
    /** Compare two mats */
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
@@ -475,6 +518,7 @@ namespace gmtl
       }
       return true;
    }
+   //@}
 
 } // end of namespace gmtl
 
