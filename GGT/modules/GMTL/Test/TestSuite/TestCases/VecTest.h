@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.h,v $
- * Date modified: $Date: 2002-03-21 16:30:17 $
- * Version:       $Revision: 1.22 $
+ * Date modified: $Date: 2002-04-11 00:02:10 $
+ * Version:       $Revision: 1.23 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -72,6 +72,7 @@ public:
    // -- Test comparison -- //
    void testEqualityCompare();
    void testIsEqual();
+   void testOpNegate();
    void testOpPlusEq();
    void testOpPlus();
    void testOpMinusEq();
