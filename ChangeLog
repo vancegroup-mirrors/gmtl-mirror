@@ -1,5 +1,6 @@
 DATE       AUTHOR       CHANGE
 ---------- --------     --------------------------------------------------------
+2003-02-06 nonchocoboy  Replaced build system with an SCons-based build system.
 2003-01-10 subatomic    Added new Ray.h
                         added Ray/Plane Ray/Tri intersect functions
                         added LineSeg/Plane LineSeg/Tri intersect functions
