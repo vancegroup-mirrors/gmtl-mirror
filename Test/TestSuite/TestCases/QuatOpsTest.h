@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatOpsTest.h,v $
- * Date modified: $Date: 2002-05-20 22:39:23 $
- * Version:       $Revision: 1.13 $
+ * Date modified: $Date: 2002-06-11 21:52:54 $
+ * Version:       $Revision: 1.14 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -120,6 +120,12 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>( "testQuatSlerp", &QuatOpsTest::testQuatSlerp ));
       test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>( "testQuatLerp", &QuatOpsTest::testQuatLerp ));
  
+      return test_suite;
+   }
+
+   static Test* perfSuite()
+   {
+      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("QuatTiming");
       test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>( "testQuatTimingOperatorMinus", &QuatOpsTest::testQuatTimingOperatorMinus ));
       test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>( "testQuatTimingNegate", &QuatOpsTest::testQuatTimingNegate ));
       test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>( "testQuatTimingMult", &QuatOpsTest::testQuatTimingMult ));
@@ -135,10 +141,9 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>( "testQuatTimingNormalize", &QuatOpsTest::testQuatTimingNormalize ));
       test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>( "testQuatTimingConj", &QuatOpsTest::testQuatTimingConj ));
       test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>( "testQuatTimingInvert", &QuatOpsTest::testQuatTimingInvert ));
-
       return test_suite;
    }
-
+   
    static CppUnit::Test* interactiveSuite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite( "InteractiveThreadTest" );

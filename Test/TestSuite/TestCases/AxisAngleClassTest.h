@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AxisAngleClassTest.h,v $
- * Date modified: $Date: 2002-06-10 20:16:39 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-06-11 21:52:53 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -70,8 +70,13 @@ namespace gmtlTest
       static CppUnit::Test* suite()
       {
          CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("AxisAngleClassTest");
-         
-         // perf_suite
+         test_suite->addTest( new CppUnit::TestCaller<AxisAngleClassTest>("testAxisAngleClassTestCreation", &AxisAngleClassTest::testAxisAngleClassTestCreation));
+         return test_suite;
+      }
+
+      static Test* perfSuite()
+      {
+         CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("AxisAngleTiming");
          test_suite->addTest( new CppUnit::TestCaller<AxisAngleClassTest>("testAxisAngleTimingDefaultConstructor", &AxisAngleClassTest::testAxisAngleTimingDefaultConstructor));
          test_suite->addTest( new CppUnit::TestCaller<AxisAngleClassTest>("testAxisAngleTimingElementConstructor", &AxisAngleClassTest::testAxisAngleTimingElementConstructor));
          test_suite->addTest( new CppUnit::TestCaller<AxisAngleClassTest>("testAxisAngleTimingCopyConstructor", &AxisAngleClassTest::testAxisAngleTimingCopyConstructor));
@@ -80,11 +85,9 @@ namespace gmtlTest
          test_suite->addTest( new CppUnit::TestCaller<AxisAngleClassTest>("testAxisAngleTimingGetData", &AxisAngleClassTest::testAxisAngleTimingGetData));
          test_suite->addTest( new CppUnit::TestCaller<AxisAngleClassTest>("testAxisAngleTimingOpEqual", &AxisAngleClassTest::testAxisAngleTimingOpEqual));
          
-         // gmtl_suite
-         test_suite->addTest( new CppUnit::TestCaller<AxisAngleClassTest>("testAxisAngleClassTestCreation", &AxisAngleClassTest::testAxisAngleClassTestCreation));
          return test_suite;
       }
-
+   
       static CppUnit::Test* interactiveSuite()
       {
          CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveAxisAngleClassTest");

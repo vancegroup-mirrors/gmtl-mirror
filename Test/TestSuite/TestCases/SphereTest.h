@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: SphereTest.h,v $
- * Date modified: $Date: 2002-05-20 22:39:23 $
- * Version:       $Revision: 1.13 $
+ * Date modified: $Date: 2002-06-11 21:52:54 $
+ * Version:       $Revision: 1.14 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -108,6 +108,12 @@ public:
       return test_suite;
    }
 
+   static Test* perfSuite()
+   {
+      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("SphereTiming");
+      return test_suite;
+   }
+   
    static CppUnit::Test* interactiveSuite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveSphereTest");

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixGenTest.h,v $
- * Date modified: $Date: 2002-05-20 22:39:23 $
- * Version:       $Revision: 1.25 $
+ * Date modified: $Date: 2002-06-11 21:52:53 $
+ * Version:       $Revision: 1.26 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -162,7 +162,7 @@ public:
 
       return test_suite;
    }
-
+   
    static CppUnit::Test* interactiveSuite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("bokbokbokbokbokbokbokbok");

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AxisAngleCompareTest.h,v $
- * Date modified: $Date: 2002-06-10 20:23:57 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-06-11 21:52:53 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -109,14 +109,20 @@ public:
    static CppUnit::Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("AxisAngleCompareTest");
-      test_suite->addTest( new CppUnit::TestCaller<AxisAngleCompareTest>("testAxisAngleTimingOpEqualityTest", &AxisAngleCompareTest::testAxisAngleTimingOpEqualityTest));
-      test_suite->addTest( new CppUnit::TestCaller<AxisAngleCompareTest>("testAxisAngleTimingIsEqualTest", &AxisAngleCompareTest::testAxisAngleTimingIsEqualTest));
-      test_suite->addTest( new CppUnit::TestCaller<AxisAngleCompareTest>("testAxisAngleTimingOpNotEqualityTest", &AxisAngleCompareTest::testAxisAngleTimingOpNotEqualityTest));
       test_suite->addTest( new CppUnit::TestCaller<AxisAngleCompareTest>("testAxisAngleEqualityFloatTest", &AxisAngleCompareTest::testAxisAngleEqualityFloatTest));
       test_suite->addTest( new CppUnit::TestCaller<AxisAngleCompareTest>("testAxisAngleEqualityDoubleTest", &AxisAngleCompareTest::testAxisAngleEqualityDoubleTest));
       return test_suite;
    }
 
+   static Test* perfSuite()
+   {
+      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("AATiming");
+      test_suite->addTest( new CppUnit::TestCaller<AxisAngleCompareTest>("testAxisAngleTimingOpEqualityTest", &AxisAngleCompareTest::testAxisAngleTimingOpEqualityTest));
+      test_suite->addTest( new CppUnit::TestCaller<AxisAngleCompareTest>("testAxisAngleTimingIsEqualTest", &AxisAngleCompareTest::testAxisAngleTimingIsEqualTest));
+      test_suite->addTest( new CppUnit::TestCaller<AxisAngleCompareTest>("testAxisAngleTimingOpNotEqualityTest", &AxisAngleCompareTest::testAxisAngleTimingOpNotEqualityTest));
+      return test_suite;
+   }
+   
    static CppUnit::Test* interactiveSuite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveThreadTest");

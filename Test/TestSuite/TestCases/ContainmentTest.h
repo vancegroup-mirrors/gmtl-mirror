@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: ContainmentTest.h,v $
- * Date modified: $Date: 2002-05-20 22:39:23 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-06-11 21:52:53 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -259,6 +259,12 @@ public:
       return test_suite;
    }
 
+   static Test* perfSuite()
+   {
+      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("ContainmentTiming");
+      return test_suite;
+   }
+   
    static Test* interactiveSuite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("ContainmentTestInteractive");

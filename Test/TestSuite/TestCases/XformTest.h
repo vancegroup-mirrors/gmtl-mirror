@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: XformTest.h,v $
- * Date modified: $Date: 2002-05-20 22:39:23 $
- * Version:       $Revision: 1.23 $
+ * Date modified: $Date: 2002-06-11 21:52:54 $
+ * Version:       $Revision: 1.24 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -233,17 +233,12 @@ public:
 
    static CppUnit::Test* suite()
    {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("Vec3Test");
+      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("XformTest");
       //test_suite->addTest( new CppUnit::TestCaller<XformTest>("testVec4_Mat_Xform", &XformTest::testVec4_Mat_Xform));
       //test_suite->addTest( new CppUnit::TestCaller<XformTest>("testVec3_Mat_Xform", &XformTest::testVec3_Mat_Xform));
       //test_suite->addTest( new CppUnit::TestCaller<XformTest>("testPoint3_Mat_Xform", &XformTest::testPoint3_Mat_Xform));
 
-      test_suite->addTest( new CppUnit::TestCaller<XformTest>("testTimingXformQuatVec3", &XformTest::testTimingXformQuatVec3));
-      test_suite->addTest( new CppUnit::TestCaller<XformTest>("testTimingXformMatPointComplete", &XformTest::testTimingXformMatPointComplete));
-      test_suite->addTest( new CppUnit::TestCaller<XformTest>("testTimingXformMatPointPartial", &XformTest::testTimingXformMatPointPartial));
-      test_suite->addTest( new CppUnit::TestCaller<XformTest>("testTimingXformMatVecComplete", &XformTest::testTimingXformMatVecComplete));
-      test_suite->addTest( new CppUnit::TestCaller<XformTest>("testTimingXformMatVecPartial", &XformTest::testTimingXformMatVecPartial));
-
+      
 
       test_suite->addTest( new CppUnit::TestCaller<XformTest>("testQuatVecXform", &XformTest::testQuatVecXform));
       test_suite->addTest( new CppUnit::TestCaller<XformTest>("weird_XformQuatVec_InvConj_SanityCheck", &XformTest::weird_XformQuatVec_InvConj_SanityCheck));
@@ -253,6 +248,18 @@ public:
       return test_suite;
    }
 
+   static Test* perfSuite()
+   {
+      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("XformTiming");
+      test_suite->addTest( new CppUnit::TestCaller<XformTest>("testTimingXformQuatVec3", &XformTest::testTimingXformQuatVec3));
+      test_suite->addTest( new CppUnit::TestCaller<XformTest>("testTimingXformMatPointComplete", &XformTest::testTimingXformMatPointComplete));
+      test_suite->addTest( new CppUnit::TestCaller<XformTest>("testTimingXformMatPointPartial", &XformTest::testTimingXformMatPointPartial));
+      test_suite->addTest( new CppUnit::TestCaller<XformTest>("testTimingXformMatVecComplete", &XformTest::testTimingXformMatVecComplete));
+      test_suite->addTest( new CppUnit::TestCaller<XformTest>("testTimingXformMatVecPartial", &XformTest::testTimingXformMatVecPartial));
+
+      return test_suite;
+   }
+   
    static CppUnit::Test* interactiveSuite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveThreadTest");
