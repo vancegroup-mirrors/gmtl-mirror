@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatOps.h,v $
- * Date modified: $Date: 2002-05-05 19:21:29 $
- * Version:       $Revision: 1.13 $
+ * Date modified: $Date: 2002-05-05 19:30:14 $
+ * Version:       $Revision: 1.14 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -162,7 +162,7 @@ namespace gmtl
     * @see Quat
     */
    template <typename DATA_TYPE>
-   Quat<DATA_TYPE>& operator*=( const Quat<DATA_TYPE>& q, DATA_TYPE s )
+   Quat<DATA_TYPE>& operator*=( Quat<DATA_TYPE>& q, DATA_TYPE s )
    {
       return mult( q, q, s );
    }
@@ -187,6 +187,20 @@ namespace gmtl
       result[1] = r[1] * sw_inv;
       result[2] = r[2] * sw_inv;
       result[3] = r[3] * sw_inv;
+      return result;
+   }
+
+   /** quaternion vector scale
+    * @post result = q / s
+    * @see Quat
+    */
+   template <typename DATA_TYPE>
+   Quat<DATA_TYPE>& div( Quat<DATA_TYPE>& result, const Quat<DATA_TYPE>& q, DATA_TYPE s )
+   {
+      result[0] = q[0] / s;
+      result[1] = q[1] / s;
+      result[2] = q[2] / s;
+      result[3] = q[3] / s;
       return result;
    }
 
@@ -224,25 +238,25 @@ namespace gmtl
       return result;
    }
 
-   /** vector scalar addition
+   /** vector addition
     * @post result' = [qx+s, qy+s, qz+s, qw+s]
     * @see Quat
     */
    template <typename DATA_TYPE>
-   Quat<DATA_TYPE> operator+( const Quat<DATA_TYPE>& q, DATA_TYPE s )
+   Quat<DATA_TYPE> operator+( const Quat<DATA_TYPE>& q1, const Quat<DATA_TYPE>& q2 )
    {
       Quat<DATA_TYPE> temporary;
-      return add( temporary, q, s );
+      return add( temporary, q1, q2 );
    }
 
-   /** vector scalar addition
+   /** vector addition
     * @post result' = [resultx+s, resulty+s, resultz+s, resultw+s]
     * @see Quat
     */
    template <typename DATA_TYPE>
-   Quat<DATA_TYPE>& operator+=( const Quat<DATA_TYPE>& q, DATA_TYPE s )
+   Quat<DATA_TYPE>& operator+=( Quat<DATA_TYPE>& q1, const Quat<DATA_TYPE>& q2 )
    {
-      return add( q, q, s );
+      return add( q1, q1, q2 );
    }
 
    /** vector subtraction
@@ -258,25 +272,25 @@ namespace gmtl
       return result;
    }
 
-   /** vector scalar subtraction
+   /** vector subtraction
     * @post result' = [qx-s, qy-s, qz-s, qw-s]
     * @see Quat
     */
    template <typename DATA_TYPE>
-   Quat<DATA_TYPE> operator-( const Quat<DATA_TYPE>& q, DATA_TYPE s )
+   Quat<DATA_TYPE> operator-( const Quat<DATA_TYPE>& q1, const Quat<DATA_TYPE>& q2 )
    {
       Quat<DATA_TYPE> temporary;
-      return sub( temporary, q, s );
+      return sub( temporary, q1, q2 );
    }
 
-   /** vector scalar subtraction
+   /** vector subtraction
     * @post result' = [resultx-s, resulty-s, resultz-s, resultw-s]
     * @see Quat
     */
    template <typename DATA_TYPE>
-   Quat<DATA_TYPE>& operator-=( const Quat<DATA_TYPE>& q, DATA_TYPE s )
+   Quat<DATA_TYPE>& operator-=( Quat<DATA_TYPE>& q1, const Quat<DATA_TYPE>& q2 )
    {
-      return sub( q, q, s );
+      return sub( q1, q1, q2 );
    }
 
    /** vector dot product between two quaternions.
