@@ -6,7 +6,7 @@
 #include <gmtl/EulerAngle.h>
 #include <gmtl/Quat.h>
 #include <gmtl/Util/Meta.h>
-//#include <gmtl/Util/StaticAssert.h>
+#include <gmtl/Util/StaticAssert.h>
 
 namespace gmtl
 {
@@ -59,8 +59,8 @@ public:
    //@{
    Coord( DataType a0, DataType a1, DataType a2, DataType a3, DataType a4, DataType a5 )
    {
-//      GMTL_STATIC_ASSERT((PosSize == 3) && "Using incorrect number of args for type size");
-//      GMTL_STATIC_ASSERT((RotSize == 3) && "Using incorrect number of args for type size");
+      GMTL_STATIC_ASSERT(PosSize == 3);   // "Using incorrect number of args for type size");
+      GMTL_STATIC_ASSERT(RotSize == 3);   // "Using incorrect number of args for type size");
       if(PosSize == 3)
       {
          mPos[0] = a0; mPos[1] = a1; mPos[2] = a2;
@@ -74,7 +74,7 @@ public:
 
    Coord( DataType a0, DataType a1, DataType a2, DataType a3, DataType a4, DataType a5, DataType a6 )
    {
-//      GMTL_STATIC_ASSERT(((PosSize == 3 && RotSize == 4) || (PosSize == 4 && RotSize == 3)) && "Using incorrect number of args for type size");
+      GMTL_STATIC_ASSERT( (PosSize == 3 && RotSize == 4) || (PosSize == 4 && RotSize == 3)); // "Using incorrect number of args for type size");
       if(PosSize == 3)
       {
          mPos[0] = a0; mPos[1] = a1; mPos[2] = a2;
@@ -94,8 +94,8 @@ public:
   
    Coord( DataType a0, DataType a1, DataType a2, DataType a3, DataType a4, DataType a5, DataType a6, DataType a7 )
    {
-//      GMTL_STATIC_ASSERT((PosSize == 4) && "Using incorrect number of args for type size");
-//      GMTL_STATIC_ASSERT((RotSize == 4) && "Using incorrect number of args for type size");
+      GMTL_STATIC_ASSERT(PosSize == 4);    // "Using incorrect number of args for type size"
+      GMTL_STATIC_ASSERT(RotSize == 4);    // "Using incorrect number of args for type size"
       if(PosSize == 4)
       {
          mPos[0] = a0; mPos[1] = a1; mPos[2] = a2; mPos[3] = a3;
