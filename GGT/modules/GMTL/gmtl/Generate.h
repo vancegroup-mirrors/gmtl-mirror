@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2004-11-12 01:34:48 $
- * Version:       $Revision: 1.87 $
+ * Date modified: $Date: 2004-11-16 15:37:12 $
+ * Version:       $Revision: 1.88 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -806,13 +806,13 @@ namespace gmtl
 
       // this might be faster if put into the switch statement... (testme)
       const int& order = ROT_ORDER::ID;
-      const float xRot = (order == XYZ::ID) ? euler[0] : ((order == ZXY::ID) ? euler[1] : euler[2]);
-      const float yRot = (order == XYZ::ID) ? euler[1] : ((order == ZXY::ID) ? euler[2] : euler[1]);
-      const float zRot = (order == XYZ::ID) ? euler[2] : ((order == ZXY::ID) ? euler[0] : euler[0]);
+      const DATA_TYPE xRot = (order == XYZ::ID) ? euler[0] : ((order == ZXY::ID) ? euler[1] : euler[2]);
+      const DATA_TYPE yRot = (order == XYZ::ID) ? euler[1] : ((order == ZXY::ID) ? euler[2] : euler[1]);
+      const DATA_TYPE zRot = (order == XYZ::ID) ? euler[2] : ((order == ZXY::ID) ? euler[0] : euler[0]);
 
-      float sx = Math::sin( xRot );  float cx = Math::cos( xRot );
-      float sy = Math::sin( yRot );  float cy = Math::cos( yRot );
-      float sz = Math::sin( zRot );  float cz = Math::cos( zRot );
+      DATA_TYPE sx = Math::sin( xRot );  DATA_TYPE cx = Math::cos( xRot );
+      DATA_TYPE sy = Math::sin( yRot );  DATA_TYPE cy = Math::cos( yRot );
+      DATA_TYPE sz = Math::sin( zRot );  DATA_TYPE cz = Math::cos( zRot );
 
       // @todo metaprogram this!
       switch (order)
