@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatOpsTest.cpp,v $
- * Date modified: $Date: 2003-03-16 21:20:05 $
- * Version:       $Revision: 1.10 $
+ * Date modified: $Date: 2003-03-17 04:13:36 $
+ * Version:       $Revision: 1.11 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -40,6 +40,7 @@
 #include <gmtl/Quat.h>
 #include <gmtl/QuatOps.h>
 #include <gmtl/Generate.h>
+#include <gmtl/Output.h>
 
 namespace gmtlTest
 {
@@ -299,39 +300,154 @@ namespace gmtlTest
 
    void QuatOpsTest::testQuatMult()
    {
-      // test out mult( result, quat, quat )
-      const float eps = 0.0001f;
-      gmtl::Quat<float> q3( 1, 2, 3, 4 ), q4( 5, 6, 7, 8 ), q5, q6;
-      gmtl::mult( q5, q3, q4 );
-      gmtl::mult( q6, q4, q3 );
+      // test matrix mult version against quat mult version, 
+      // make sure they all work the same.
+      // note: this test depends on the xforms functions working
+      {
+         const float eps = 0.0001f;
+         gmtl::Matrix44f q3( gmtl::makeRot<gmtl::Matrix44f>( gmtl::AxisAnglef( gmtl::Math::deg2Rad( 90.0f ), 0,1,0 ) ) ), 
+                           q4( gmtl::makeRot<gmtl::Matrix44f>( gmtl::AxisAnglef( gmtl::Math::deg2Rad( 90.0f ), 0,0,1 ) ) ), q6;
+         gmtl::Vec3f sx( 1,0,0 ), sy( 0,1,0 ), sz( 0,0,1 ), ex( 0,0,-1 ), ey( -1,0,0 ), ez( 0,1,0 ), tx, ty, tz;
 
-      gmtl::Quat<float> expected_result1( 32, 32, 56, -6 ), expected_result2( 24, 48, 48, -6 );
-      CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, q5, eps ) );
-      CPPUNIT_ASSERT( gmtl::isEqual( expected_result2, q6, eps ) );
+         // make sure the mult() func works
+         gmtl::mult( q6, q4, q3 );
+         tx = q6 * sx;
+         ty = q6 * sy;
+         tz = q6 * sz;
+         CPPUNIT_ASSERT( gmtl::isEqual( ex, tx, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( ey, ty, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( ez, tz, eps ) );
 
-      // operator* should be same
-      gmtl::Quat<float> q7, q8;
-      q7 = q3 * q4;
-      q8 = q4 * q3;
-      CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, q7, eps ) );
-      CPPUNIT_ASSERT( gmtl::isEqual( expected_result2, q8, eps ) );
+         // make sure the operator* works too
+         q6 = q4 * q3;
+         tx = q6 * sx;
+         ty = q6 * sy;
+         tz = q6 * sz;
+         CPPUNIT_ASSERT( gmtl::isEqual( ex, tx, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( ey, ty, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( ez, tz, eps ) );
 
-      gmtl::Quat<float>  bokbokbok( 9, 10, 11, 12 ), expected_result3( 186, 348, 702, -1296 );
-      q6 = q4 * q3 * bokbokbok;
-      CPPUNIT_ASSERT( gmtl::isEqual( expected_result3, q6, eps ) );
+         // make sure the operator*= works too
+         q6 = q4;
+         q6 *= q3;
+         tx = q6 * sx;
+         ty = q6 * sy;
+         tz = q6 * sz;
+         CPPUNIT_ASSERT( gmtl::isEqual( ex, tx, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( ey, ty, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( ez, tz, eps ) );
+      }
+      {
+         const float eps = 0.0001f;
+         gmtl::Quat<float> q3( gmtl::makeRot<gmtl::Quatf>( gmtl::AxisAnglef( gmtl::Math::deg2Rad( 90.0f ), 0,1,0 ) ) ), 
+                           q4( gmtl::makeRot<gmtl::Quatf>( gmtl::AxisAnglef( gmtl::Math::deg2Rad( 90.0f ), 0,0,1 ) ) ), q5, q6;
+         gmtl::Vec3f sx( 1,0,0 ), sy( 0,1,0 ), sz( 0,0,1 ), ex( 0,0,-1 ), ey( -1,0,0 ), ez( 0,1,0 ), tx, ty, tz;
+
+         // make sure the mult() func works
+         gmtl::mult( q6, q4, q3 ); 
+         tx = q6 * sx;
+         ty = q6 * sy;
+         tz = q6 * sz;
+         CPPUNIT_ASSERT( gmtl::isEqual( ex, tx, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( ey, ty, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( ez, tz, eps ) );
+
+         // make sure the operator* works too
+         q6 = q4 * q3; 
+         tx = q6 * sx;
+         ty = q6 * sy;
+         tz = q6 * sz;
+         CPPUNIT_ASSERT( gmtl::isEqual( ex, tx, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( ey, ty, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( ez, tz, eps ) );
+
+         // make sure the operator*= works too
+         q6 = q4;
+         q6 *= q3;
+         tx = q6 * sx;
+         ty = q6 * sy;
+         tz = q6 * sz;
+         CPPUNIT_ASSERT( gmtl::isEqual( ex, tx, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( ey, ty, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( ez, tz, eps ) );
+      }
    }
 
    void QuatOpsTest::testQuatDiv()
    {
-      // test out mult( result, quat, quat )
-      const float eps = 0.0001f;
-      gmtl::Quat<float> q3( 1, 2, 3, 4 ), q4( 5, 6, 7, 8 ), q5, q6;
-      gmtl::div( q5, q3, q4 );
-      gmtl::div( q6, q4, q3 );
+      // test matrix div version against quat div version, 
+      // make sure they all work the same.
+      // note: this test depends on the xforms functions working
+      {
+         const float eps = 0.0001f;
+         gmtl::Matrix44f q3( gmtl::makeRot<gmtl::Matrix44f>( gmtl::AxisAnglef( gmtl::Math::deg2Rad( 90.0f ), 0,1,0 ) ) ), 
+                           q4( gmtl::makeRot<gmtl::Matrix44f>( gmtl::AxisAnglef( gmtl::Math::deg2Rad( 90.0f ), 0,0,1 ) ) ), q6;
+         gmtl::Vec3f sx( 6,0,0 ), sy( 0,4,0 ), sz( 0,0,9 ), ex( 0,0,6 ), ey( -4,0,0 ), ez( 0,-9,0 ), tx, ty, tz;
 
-      gmtl::Quat<float> expected_result1( 0.173913f, 0.347826f, -0.0f, -1.52174f ), expected_result2( 4, 8, 0, 35 );
-      CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, q5, eps ) );
-      CPPUNIT_ASSERT( gmtl::isEqual( expected_result2, q6, eps ) );
+         gmtl::invert( q3 ); // there is no matrix div, so do this to simulate it.
+
+         // make sure the mult() func works
+         gmtl::mult( q6, q4, q3 );
+         tx = q6 * sx;
+         ty = q6 * sy;
+         tz = q6 * sz;
+         CPPUNIT_ASSERT( gmtl::isEqual( ex, tx, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( ey, ty, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( ez, tz, eps ) );
+
+         // make sure the operator* works too
+         q6 = q4 * q3;
+         tx = q6 * sx;
+         ty = q6 * sy;
+         tz = q6 * sz;
+         CPPUNIT_ASSERT( gmtl::isEqual( ex, tx, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( ey, ty, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( ez, tz, eps ) );
+
+         // make sure the operator*= works too
+         q6 = q4;
+         q6 *= q3;
+         tx = q6 * sx;
+         ty = q6 * sy;
+         tz = q6 * sz;
+         CPPUNIT_ASSERT( gmtl::isEqual( ex, tx, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( ey, ty, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( ez, tz, eps ) );
+      }
+      {
+         const float eps = 0.0001f;
+         gmtl::Quat<float> q3( gmtl::makeRot<gmtl::Quatf>( gmtl::AxisAnglef( gmtl::Math::deg2Rad( 90.0f ), 0,1,0 ) ) ), 
+                           q4( gmtl::makeRot<gmtl::Quatf>( gmtl::AxisAnglef( gmtl::Math::deg2Rad( 90.0f ), 0,0,1 ) ) ), q5, q6;
+         gmtl::Vec3f sx( 6,0,0 ), sy( 0,4,0 ), sz( 0,0,9 ), ex( 0,0,6 ), ey( -4,0,0 ), ez( 0,-9,0 ), tx, ty, tz;
+
+         // make sure the mult() func works
+         gmtl::div( q6, q4, q3 ); 
+         tx = q6 * sx;
+         ty = q6 * sy;
+         tz = q6 * sz;
+         CPPUNIT_ASSERT( gmtl::isEqual( ex, tx, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( ey, ty, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( ez, tz, eps ) );
+
+         // make sure the operator* works too
+         q6 = q4 / q3; 
+         tx = q6 * sx;
+         ty = q6 * sy;
+         tz = q6 * sz;
+         CPPUNIT_ASSERT( gmtl::isEqual( ex, tx, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( ey, ty, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( ez, tz, eps ) );
+
+         // make sure the operator*= works too
+         q6 = q4;
+         q6 /= q3;
+         tx = q6 * sx;
+         ty = q6 * sy;
+         tz = q6 * sz;
+         CPPUNIT_ASSERT( gmtl::isEqual( ex, tx, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( ey, ty, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( ez, tz, eps ) );
+      }
    }
 
    void QuatOpsTest::testQuatVectorMult()
