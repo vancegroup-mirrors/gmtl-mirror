@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-getData-wrappers.h,v $
- * Date modified: $Date: 2003-05-20 18:57:15 $
- * Version:       $Revision: 1.1.1.1 $
+ * Date modified: $Date: 2003-08-16 05:25:49 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -45,6 +45,7 @@ namespace gmtlWrappers
 
    template boost::python::tuple Matrix_3_3_getData(gmtl::Matrix<float, 3, 3>*);
 
+   // XXX: boost::python::tuple objectcs cannot be this big.  :(
 //   template<typename T>
 //   boost::python::tuple Matrix_float_4_4_getData(gmtl::Matrix<T, 4, 4>* m)
 //   {
@@ -52,6 +53,8 @@ namespace gmtlWrappers
 //                        m->mData[4],  m->mData[5],  m->mData[6],  m->mData[7],
 //                        m->mData[8],  m->mData[9],  m->mData[10], m->mData[11]);
 //   }
+//
+//   template boost::python::tuple Matrix_4_4_getData(gmtl::Matrix<float, 4, 4>*);
 
    template<typename T>
    boost::python::tuple VecBase_2_getData(gmtl::VecBase<T, 2>* v)
