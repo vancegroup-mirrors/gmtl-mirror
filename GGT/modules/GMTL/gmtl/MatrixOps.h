@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOps.h,v $
- * Date modified: $Date: 2003-04-11 04:16:08 $
- * Version:       $Revision: 1.31 $
+ * Date modified: $Date: 2003-04-12 03:11:25 $
+ * Version:       $Revision: 1.32 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -302,7 +302,7 @@ namespace gmtl
 
       if (&result != &src)
          result = src; // could optimise this a little more (skip the trans copy), favor simplicity for now...
-      for (int x = 0; x < (ROWS-1+(COLS-ROWS)); ++x)
+      for (unsigned x = 0; x < (ROWS-1+(COLS-ROWS)); ++x)
       {
          result[x][3] = -result[x][3];
       }
