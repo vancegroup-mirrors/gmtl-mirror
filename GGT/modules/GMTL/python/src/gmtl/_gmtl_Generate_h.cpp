@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _gmtl_Generate_h.cpp,v $
- * Date modified: $Date: 2003-08-17 06:32:59 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2003-09-24 05:29:11 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -226,4 +226,20 @@ void _Export_gmtl_Generate_h()
     def("setTrans", (gmtl::Matrix<float,3,3> & (*)(gmtl::Matrix<float,3,3> &, const gmtl::Vec<float,4> &))&gmtl::setTrans, return_internal_reference< 1 >());
     def("setTrans", (gmtl::Matrix<float,4,4> & (*)(gmtl::Matrix<float,4,4> &, const gmtl::Vec<float,3> &))&gmtl::setTrans, return_internal_reference< 1 >());
     def("setTrans", (gmtl::Matrix<double,4,4> & (*)(gmtl::Matrix<double,4,4> &, const gmtl::Vec<double,3> &))&gmtl::setTrans, return_internal_reference< 1 >());
+    def("setRow", (void (*)(gmtl::Vec<float, 3>&, const gmtl::Matrix<float, 3, 3>&, unsigned))&gmtl::setRow);
+    def("setRow", (void (*)(gmtl::Vec<double, 3>&, const gmtl::Matrix<double, 3, 3>&, unsigned))&gmtl::setRow);
+    def("setRow", (void (*)(gmtl::Vec<float, 4>&, const gmtl::Matrix<float, 4, 4>&, unsigned))&gmtl::setRow);
+    def("setRow", (void (*)(gmtl::Vec<double, 4>&, const gmtl::Matrix<double, 4, 4>&, unsigned))&gmtl::setRow);
+    def("makeRow", (gmtl::Vec<float, 3> (*)(const gmtl::Matrix<float, 3, 3>&, unsigned))&gmtl::makeRow);
+    def("makeRow", (gmtl::Vec<double, 3> (*)(const gmtl::Matrix<double, 3, 3>&, unsigned))&gmtl::makeRow);
+    def("makeRow", (gmtl::Vec<float, 4> (*)(const gmtl::Matrix<float, 4, 4>&, unsigned))&gmtl::makeRow);
+    def("makeRow", (gmtl::Vec<double, 4> (*)(const gmtl::Matrix<double, 4, 4>&, unsigned))&gmtl::makeRow);
+    def("setColumn", (void (*)(gmtl::Vec<float, 3>&, const gmtl::Matrix<float, 3, 3>&, unsigned))&gmtl::setColumn);
+    def("setColumn", (void (*)(gmtl::Vec<double, 3>&, const gmtl::Matrix<double, 3, 3>&, unsigned))&gmtl::setColumn);
+    def("setColumn", (void (*)(gmtl::Vec<float, 4>&, const gmtl::Matrix<float, 4, 4>&, unsigned))&gmtl::setColumn);
+    def("setColumn", (void (*)(gmtl::Vec<double, 4>&, const gmtl::Matrix<double, 4, 4>&, unsigned))&gmtl::setColumn);
+    def("makeColumn", (gmtl::Vec<float, 3> (*)(const gmtl::Matrix<float, 3, 3>&, unsigned))&gmtl::makeColumn);
+    def("makeColumn", (gmtl::Vec<double, 3> (*)(const gmtl::Matrix<double, 3, 3>&, unsigned))&gmtl::makeColumn);
+    def("makeColumn", (gmtl::Vec<float, 4> (*)(const gmtl::Matrix<float, 4, 4>&, unsigned))&gmtl::makeColumn);
+    def("makeColumn", (gmtl::Vec<double, 4> (*)(const gmtl::Matrix<double, 4, 4>&, unsigned))&gmtl::makeColumn);
 }
