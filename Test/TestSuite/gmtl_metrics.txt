@@ -142,12 +142,14 @@ gfxn3/Debug/QuatOpsTest/invert()                                   3.3572
 gfxn3/Debug/QuatOpsTest/invert(q)                                  0.5787
 gfxn3/Debug/QuatOpsTest/length(q)                                  0.9662
 gfxn3/Debug/QuatOpsTest/lengthSquared(q)                           0.7672
+gfxn3/Debug/QuatOpsTest/lerp()                                     0.7737
 gfxn3/Debug/QuatOpsTest/mult(q,scalar)                             0.2796
 gfxn3/Debug/QuatOpsTest/mult(q1,q2)                                1.34904
 gfxn3/Debug/QuatOpsTest/negate(quat)                               0.29424
 gfxn3/Debug/QuatOpsTest/normalize(q)                               0.47
 gfxn3/Debug/QuatOpsTest/operator*()                                1.0446
 gfxn3/Debug/QuatOpsTest/operator-(quat)                            0.26936
+gfxn3/Debug/QuatOpsTest/slerp()                                    0.7855
 gfxn3/Debug/QuatOpsTest/sub(r,q1,q2)                               0.3607
 gfxn3/Debug/QuatTest/CopyConstructor                               0.10426
 gfxn3/Debug/QuatTest/DefaultConstructor                            0.0817575
