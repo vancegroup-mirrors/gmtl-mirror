@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: testSuite.cpp,v $
- * Date modified: $Date: 2002-07-11 17:06:48 $
- * Version:       $Revision: 1.53 $
+ * Date modified: $Date: 2002-07-11 21:20:40 $
+ * Version:       $Revision: 1.54 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -88,6 +88,7 @@
 #include <TestCases/AABoxOpsTest.h>
 #include <TestCases/AABoxContainTest.h>
 
+#include <TestCases/MetaTest.h>
 
 #include <TestCases/InfoTests/OptTest.h>
 
@@ -144,6 +145,7 @@ int main (int ac, char **av)
    // Create the tests
    CppUnit::TestSuite* gmtl_suite = new CppUnit::TestSuite("gmtl_suite");
 
+   gmtl_suite->addTest( gmtlTest::MetaTest::suite() );
    gmtl_suite->addTest( gmtlTest::MathTest::suite() );
 	
    gmtl_suite->addTest( gmtlTest::VecBaseTest::suite() );
