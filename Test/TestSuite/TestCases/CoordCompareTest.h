@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: CoordCompareTest.h,v $
- * Date modified: $Date: 2002-03-21 21:06:57 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-03-21 21:10:53 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -82,7 +82,7 @@ public:
 
    static CppUnit::Test* perfSuite()
    {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("CoordClassPerfTest");
+      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("CoordComparePerfTest");
 
       test_suite->addTest( new CppUnit::TestCaller<CoordCompareTest>("testCoordTimingOpEqualityTest", &CoordCompareTest::testCoordTimingOpEqualityTest));
       test_suite->addTest( new CppUnit::TestCaller<CoordCompareTest>("testCoordTimingIsEqualTest", &CoordCompareTest::testCoordTimingIsEqualTest));
