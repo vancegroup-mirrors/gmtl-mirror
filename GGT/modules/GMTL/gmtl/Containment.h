@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Containment.h,v $
- * Date modified: $Date: 2002-02-18 20:27:54 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-03-10 03:56:23 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -41,11 +41,11 @@
 #include <gmtl/VecOps.h>
 
 // old stuff
-#include <gmtl/OOBox.h>
-#include <gmtl/AABox.h>
-#include <gmtl/Fit/GaussPointsFit.h>
-#include <gmtl/matVecFuncs.h>
-#include <gmtl/Quat.h>
+//#include <gmtl/OOBox.h>
+//#include <gmtl/AABox.h>
+//#include <gmtl/Fit/GaussPointsFit.h>
+//#include <gmtl/matVecFuncs.h>
+//#include <gmtl/Quat.h>
 
 namespace gmtl
 {
@@ -310,6 +310,7 @@ bool isOnVolume( const Sphere<DATA_TYPE>& container,
             <= tol );
 }
 
+/*
 //------------------------------------------------------------------------------
 // Begin old GMTL code
 //------------------------------------------------------------------------------
@@ -421,7 +422,7 @@ inline void computeContainment( OOBox& box, const std::vector<gmtl::Point3>& poi
     box.halfLen(2) = 0.5*(fY2Max - fY2Min);
 }
 
-
+*/
 /*
 inline void computeContainment (OOBox& out_box, const OOBox& box0, const OOBox& box1, bool fast=true)
 {
@@ -499,6 +500,6 @@ inline void computeContainment (OOBox& out_box, const OOBox& box0, const OOBox& 
 */
 
 
-};
+}
 
 #endif
