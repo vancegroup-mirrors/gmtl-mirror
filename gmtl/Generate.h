@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-03-15 20:50:22 $
- * Version:       $Revision: 1.27 $
+ * Date modified: $Date: 2002-03-15 20:51:09 $
+ * Version:       $Revision: 1.28 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -423,20 +423,7 @@ namespace gmtl
       return makeRot( result, rad, makeNormal( Vec<DATA_TYPE, 3>( x, y, z ) ) );
    }
 
-   /** Create a rotation matrix using an axis and an angle (in radians).   (static version)
-    *  to a rotation matrix defined by the rotation part of M
-    * @post this function only produces 3x3, 3x4, 4x3, and 4x4 matrices, and is undefined otherwise
-    */
-   /*
-   template< typename MATRIX_CLASS >
-   inline MATRIX_CLASS makeRot( MATRIX_CLASS::datatype radians, MATRIX_CLASS::datatype x, MATRIX_CLASS::datatype y, MATRIX_CLASS::datatype z, Type2Type<MATRIX_CLASS> t = Type2Type<MATRIX_CLASS>() )
-   {
-      // (slow -> uses a temporary)
-      MATRIX_CLASS temporary;
-      return makeRot( temporary, radians, x, y, z );
-   }
-   */
-
+  
    /** Create a rotation matrix using axis and angle
     * @post this function only produces 3x3, 3x4, 4x3, and 4x4 matrices, and is undefined otherwise
     * @todo Increase perf of makeRot(val,axis). Make it fast for mp
