@@ -7,15 +7,15 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Plane.h,v $
- * Date modified: $Date: 2002-01-26 23:47:53 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-02-10 04:45:24 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
 /*************************************************************** ggt-cpr beg
 *
 * GGT: The Generic Graphics Toolkit
-* Copyright (C) 2001,2002 Allen Bierbaum 
+* Copyright (C) 2001,2002 Allen Bierbaum
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU Lesser General Public
@@ -173,7 +173,7 @@ float Plane::findNearestPt(const Point3& pt, Point3& nearPt) const
 {
    // GGI: P 297
 	// GGII: Pg 223
-	gfxASSERT(mNorm.isNormalized());		   // Assert: Normalized
+	ggtASSERT(mNorm.isNormalized());		   // Assert: Normalized
 	float dist_to_plane(0.0);
 	dist_to_plane = mOffset + mNorm.dot(pt);		// Distance to plane
 	nearPt = pt - (mNorm*dist_to_plane);

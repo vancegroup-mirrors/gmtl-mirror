@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Quat.h,v $
- * Date modified: $Date: 2002-02-10 04:38:07 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-02-10 04:45:24 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -256,12 +256,12 @@ void Quat::makeQuat(const Matrix& mat)
 
    normalize();
 
-   gfxASSERT(GMTL_NEAR(norm(),1.0f,0.01) && "setMat(..) returned a non-unit quaternion");
+   ggtASSERT(GMTL_NEAR(norm(),1.0f,0.01) && "setMat(..) returned a non-unit quaternion");
 }
 
 void Quat::getMat(Matrix& mat) const
 {
-   gfxASSERT(GMTL_NEAR(norm(),1.0f,0.01) && "getMat(..) is trying to use a non-unit quaternion");
+   ggtASSERT(GMTL_NEAR(norm(),1.0f,0.01) && "getMat(..) is trying to use a non-unit quaternion");
 
    float Tx  = 2.0*vec[Xelt];
    float Ty  = 2.0*vec[Yelt];
@@ -314,7 +314,7 @@ void Quat::makeAxisAngle(const float angle, const Vec3& axis)
    //
    // The quaternion representing the rotation is
    //   q = cos(A/2)+sin(A/2)*(x*i+y*j+z*k)
-   gfxASSERT(GMTL_NEAR(axis.lengthSquared(),1.0f,0.00001f));
+   ggtASSERT(GMTL_NEAR(axis.lengthSquared(),1.0f,0.00001f));
 
    float half_angle = 0.5*angle;
    float sin_val = Math::sin(half_angle);
@@ -327,12 +327,12 @@ void Quat::makeAxisAngle(const float angle, const Vec3& axis)
 
 void Quat::makeAxes(const Vec3& xAxis, const Vec3& yAxis, const Vec3& zAxis)
 {
-   gfxASSERT((xAxis.isNormalized()) && (yAxis.isNormalized()) && (zAxis.isNormalized()) && "Called with non-normal axis");
-#ifdef GFX_DEBUG
+   ggtASSERT((xAxis.isNormalized()) && (yAxis.isNormalized()) && (zAxis.isNormalized()) && "Called with non-normal axis");
+#ifdef GMTL_DEBUG
    Vec3 cross;
    cross = xAxis.cross(yAxis);
    cross.normalize();
-   gfxASSERT( cross.equal(zAxis,0.01) && "Not an orthogonal set of axes");
+   ggtASSERT( cross.equal(zAxis,0.01) && "Not an orthogonal set of axes");
 #endif
 
    Matrix rot_mat;

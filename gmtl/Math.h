@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Math.h,v $
- * Date modified: $Date: 2002-02-10 04:38:07 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-02-10 04:45:24 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -211,7 +211,7 @@ inline float Math::unitRandom ()
     //return float(random())/float(RAND_MAX);
    float ret_val;
    ret_val = drand48();
-   gfxASSERT((ret_val >= 0.0f) && (ret_val <= 1.0f));
+   ggtASSERT((ret_val >= 0.0f) && (ret_val <= 1.0f));
    return drand48();
 }
 
