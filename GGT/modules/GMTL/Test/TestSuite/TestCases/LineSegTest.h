@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: LineSegTest.h,v $
- * Date modified: $Date: 2002-02-22 19:45:18 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-02-24 22:47:02 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -84,16 +84,20 @@ public:
 
       // Test overhead of creation
       const long iters(400000);
+      float use_value(0);
       CPPUNIT_METRIC_START_TIMING();
 
-      for( long iter=0;iter<iters; ++iter)
+      for( long iter=0; iter<iters; ++iter)
       {
          gmtl::LineSeg<float> test_lineseg;
-         test_lineseg.mDir[0] = 1.0f;
+         use_value += test_lineseg.mDir[0] + 1.0f;
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("LineSegTest/DefaultCreationOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      // make sure the compiler doesn't optimize this test out
+      CPPUNIT_ASSERT( use_value > 0 );
    }
 
    void testPtVecCreation()
@@ -115,16 +119,20 @@ public:
 
       // Test overhead of creation
       const long iters(400000);
+      float use_value(0);
       CPPUNIT_METRIC_START_TIMING();
 
-      for( long iter=0;iter<iters; ++iter)
+      for( long iter=0; iter<iters; ++iter)
       {
          gmtl::LineSeg<float> test_lineseg2(y1_pt, z1_v);
-         test_lineseg2.mDir[0] = 1.0f;
+         use_value += test_lineseg2.mDir[0] + 1.0f;
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("PlaneTest/PtVecCreationOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      // make sure the compiler doesn't optimize this test out
+      CPPUNIT_ASSERT( use_value > 0 );
    }
 
    void testPtPtCreation()
@@ -140,16 +148,20 @@ public:
 
       // Test overhead of creation
       const long iters(400000);
+      float use_value(0);
       CPPUNIT_METRIC_START_TIMING();
 
-      for( long iter=0;iter<iters; ++iter)
+      for( long iter=0; iter<iters; ++iter)
       {
          gmtl::LineSeg<float> test_lineseg2( x1_pt, z1_pt );
-         test_lineseg.mDir[0] = 1.0f;
+         use_value += test_lineseg2.mDir[0];
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("LineSegTest/PtPtCreationOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      // make sure the compiler doesn't optimize this test out
+      CPPUNIT_ASSERT( use_value != 0 );
    }
 
    void testCopyConstruct()
@@ -160,16 +172,124 @@ public:
 
       // Test overhead of creation
       const long iters(400000);
+      float use_value(0);
       CPPUNIT_METRIC_START_TIMING();
 
-      for( long iter=0;iter<iters; ++iter)
+      for( long iter=0; iter<iters; ++iter)
       {
          gmtl::LineSeg<float> test_lineseg2( test_lineseg );
-         test_lineseg.mDir[0] = 1.0f;
+         use_value += test_lineseg2.mDir[0];
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("LineSegTest/CopyConstructOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      // make sure the compiler doesn't optimize this test out
+      CPPUNIT_ASSERT( use_value > 0 );
+   }
+
+   void testGetOrigin()
+   {
+      CPPUNIT_ASSERT( x1_lineseg.getOrigin() == origin );
+      CPPUNIT_ASSERT( y1_lineseg.getOrigin() == origin );
+      CPPUNIT_ASSERT( z1_lineseg.getOrigin() == origin );
+
+      gmtl::Point<float, 3> pt( 25.0, 23.0 );
+      gmtl::LineSeg<float> test_lineseg( pt, x1_pt );
+      CPPUNIT_ASSERT( test_lineseg.getOrigin() == pt );
+
+      // Test overhead
+      const long iters(400000);
+      float use_value(0);
+      CPPUNIT_METRIC_START_TIMING();
+
+      for( long iter=0;iter<iters; ++iter)
+      {
+         gmtl::Point<float, 3> pt = test_lineseg.getOrigin();
+         use_value += pt[0] + 1.0f;
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("LineSegTest/GetOriginOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      // make sure the compiler doesn't optimize this test out
+      CPPUNIT_ASSERT( use_value > 0 );
+   }
+
+   void testSetOrigin()
+   {
+      gmtl::LineSeg<float> test_lineseg;
+      test_lineseg.setOrigin( x1_pt );
+      CPPUNIT_ASSERT( test_lineseg.getOrigin() == x1_pt );
+
+      // Test overhead
+      const long iters(400000);
+      float use_value(0);
+      CPPUNIT_METRIC_START_TIMING();
+
+      for( long iter=0;iter<iters; ++iter)
+      {
+         test_lineseg.setOrigin( x1_pt );
+         use_value += test_lineseg.mOrigin[0];
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("LineSegTest/SetOriginOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      // make sure the compiler doesn't optimize this test out
+      CPPUNIT_ASSERT( use_value > 0 );
+   }
+
+   void testGetDir()
+   {
+      CPPUNIT_ASSERT( x1_lineseg.getDir() == x1_v );
+      CPPUNIT_ASSERT( y1_lineseg.getDir() == y1_v );
+      CPPUNIT_ASSERT( z1_lineseg.getDir() == z1_v );
+
+      gmtl::Vec<float, 3> dir( 25.0, 23.0 );
+      gmtl::LineSeg<float> test_lineseg( x1_pt, dir );
+      CPPUNIT_ASSERT( test_lineseg.getDir() == dir );
+
+      // Test overhead
+      const long iters(400000);
+      float use_value(0);
+      CPPUNIT_METRIC_START_TIMING();
+
+      for( long iter=0;iter<iters; ++iter)
+      {
+         gmtl::Vec<float, 3> vec = test_lineseg.getDir();
+         use_value += vec[0] + 1.0f;
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("LineSegTest/GetDirOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      // make sure the compiler doesn't optimize this test out
+      CPPUNIT_ASSERT( use_value > 0 );
+   }
+
+   void testSetDir()
+   {
+      gmtl::LineSeg<float> test_lineseg;
+      test_lineseg.setDir( x1_v );
+      CPPUNIT_ASSERT( test_lineseg.getDir() == x1_v );
+
+      // Test overhead
+      const long iters(400000);
+      float use_value(0);
+      CPPUNIT_METRIC_START_TIMING();
+
+      for( long iter=0;iter<iters; ++iter)
+      {
+         test_lineseg.setDir( x1_v );
+         use_value += test_lineseg.mDir[0];
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("LineSegTest/SetDirOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      // make sure the compiler doesn't optimize this test out
+      CPPUNIT_ASSERT( use_value > 0 );
    }
 /*
    // --------------------------
@@ -401,6 +521,10 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<LineSegTest>("testCopyConstruct", &LineSegTest::testCopyConstruct));
 //      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testEqualityCompare", &PlaneTest::testEqualityCompare));
 //      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testIsEqual", &PlaneTest::testIsEqual));
+      test_suite->addTest( new CppUnit::TestCaller<LineSegTest>("testGetOrigin", &LineSegTest::testGetOrigin));
+      test_suite->addTest( new CppUnit::TestCaller<LineSegTest>("testSetOrigin", &LineSegTest::testSetOrigin));
+      test_suite->addTest( new CppUnit::TestCaller<LineSegTest>("testGetDir", &LineSegTest::testGetDir));
+      test_suite->addTest( new CppUnit::TestCaller<LineSegTest>("testSetDir", &LineSegTest::testSetDir));
 //      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testDistance", &PlaneTest::testDistance));
 //      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testWhichSide", &PlaneTest::testWhichSide));
 //      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testFindNearestPt", &PlaneTest::testFindNearestPt));

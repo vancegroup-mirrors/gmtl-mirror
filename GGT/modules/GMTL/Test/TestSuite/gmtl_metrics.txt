@@ -544,9 +544,13 @@ gfxn2/Debug/VecTest/const_vec-const_vec-const_vec:perf             0.8128
 gfxn2/Debug/VecTest/isEqualOverhead                                0.68005
 gfxn2/Debug/VecTest/vec+vec+vec:perf                               1.1465
 gfxn2/Debug/VecTest/vec-vec-vec:perf                               1.1271
-gfxn3/Debug/LineSegTest/CopyConstructOverhead                      0.207858
+gfxn3/Debug/LineSegTest/CopyConstructOverhead                      0.0695625
 gfxn3/Debug/LineSegTest/DefaultCreationOverhead                    0.146553
+gfxn3/Debug/LineSegTest/GetDirOverhead                             0.096995
+gfxn3/Debug/LineSegTest/GetOriginOverhead                          0.0987625
 gfxn3/Debug/LineSegTest/PtPtCreationOverhead                       0.500003
+gfxn3/Debug/LineSegTest/SetDirOverhead                             0.0670475
+gfxn3/Debug/LineSegTest/SetOriginOverhead                          0.0647325
 gfxn3/Debug/Main/MetricTest                                        1221.75
 gfxn3/Debug/MathTest/ZeroClamp[d]                                  0.205967
 gfxn3/Debug/MathTest/ZeroClamp[f]                                  0.07418
@@ -579,7 +583,7 @@ gfxn3/Debug/MatrixTest/SetOverhead                                 0.257125
 gfxn3/Debug/MatrixTest/SetPtrOverhead                              0.717973
 gfxn3/Debug/MatrixTest/SetTransposePtrOverhead                     1.55177
 gfxn3/Debug/PlaneTest/CopyConstructOverhead                        0.085195
-gfxn3/Debug/PlaneTest/DefaultCreationOverhead                      0.0730875
+gfxn3/Debug/PlaneTest/DefaultCreationOverhead                      0.06754
 gfxn3/Debug/PlaneTest/DistanceOverhead                             0.22041
 gfxn3/Debug/PlaneTest/EqualityCompareOverhead                      0.165093
 gfxn3/Debug/PlaneTest/FindNearestPtOverhead                        1.03216
@@ -631,7 +635,7 @@ gfxn3/Debug/QuatTest/operator=()                                   0.034895
 gfxn3/Debug/QuatTest/operator[]()                                  0.125117
 gfxn3/Debug/QuatTest/set()                                         0.050245
 gfxn3/Debug/SphereTest/ConstructorsOverhead                        0.145272
-gfxn3/Debug/SphereTest/CopyConstructOverhead                       0.113125
+gfxn3/Debug/SphereTest/CopyConstructOverhead                       0.102735
 gfxn3/Debug/SphereTest/EqualityCompareOverhead                     0.168102
 gfxn3/Debug/SphereTest/GetCenterOverhead                           0.0627
 gfxn3/Debug/SphereTest/GetRadiusOverhead                           0.01898
@@ -642,7 +646,7 @@ gfxn3/Debug/SphereTest/SphereCreationOverhead                      0.0702475
 gfxn3/Debug/SphereTest/extendVolumePointOverhead                   2.02204
 gfxn3/Debug/SphereTest/extendVolumeSphereOverhead                  2.03251
 gfxn3/Debug/SphereTest/isEqualOverhead                             0.686125
-gfxn3/Debug/SphereTest/isInVolumePointOverhead                     0.634955
+gfxn3/Debug/SphereTest/isInVolumePointOverhead                     0.580758
 gfxn3/Debug/SphereTest/isInVolumeSphereOverhead                    0.625905
 gfxn3/Debug/SphereTest/isOnVolumeOverhead                          1.23363
 gfxn3/Debug/SphereTest/makeVolumePointOverhead                     62.9729
@@ -650,7 +654,7 @@ gfxn3/Debug/TriTest/CenterOverhead                                 1.04619
 gfxn3/Debug/TriTest/ConstructorsOverhead                           0.49746
 gfxn3/Debug/TriTest/CopyConstructOverhead                          0.401097
 gfxn3/Debug/TriTest/EqualOpsOverhead                               1.49073
-gfxn3/Debug/TriTest/IsEqualOverhead                                1.1011
+gfxn3/Debug/TriTest/IsEqualOverhead                                1.01206
 gfxn3/Debug/TriTest/NormalOverhead                                 1.44706
 gfxn3/Debug/TriTest/TriCreationOverhead                            0.26111
 gfxn3/Debug/TriTest/edgeOverhead                                   0.41576
@@ -659,7 +663,7 @@ gfxn3/Debug/VecBaseTest/ConstructorsOverhead                       0.165327
 gfxn3/Debug/VecBaseTest/CopyConstructOverhead                      0.220095
 gfxn3/Debug/VecBaseTest/SetOverhead                                0.171145
 gfxn3/Debug/VecBaseTest/SetPtrOverhead                             0.26219
-gfxn3/Debug/VecBaseTest/VecCreationOverhead                        0.08095
+gfxn3/Debug/VecBaseTest/VecCreationOverhead                        0.0746325
 gfxn3/Debug/VecTest/(const_vec*scalar):perf                        0.5623
 gfxn3/Debug/VecTest/(vec*cross(vec,vec)):perf                      0.8677
 gfxn3/Debug/VecTest/(vec*dot(const_vec,vec)):perf                  0.9588
