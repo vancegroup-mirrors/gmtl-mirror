@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: SphereTest.h,v $
- * Date modified: $Date: 2002-02-22 21:48:34 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2002-03-11 18:17:42 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -138,7 +138,7 @@ public:
       {
          gmtl::Sphere<float> test_sph2( gmtl::Point<float, 3>(1.0f, 2.0f, 3.0f), 25.0f );
 
-         use_value = use_value + test_sph.mCenter[0];
+         use_value = use_value + test_sph2.mCenter[0];
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
