@@ -1,5 +1,6 @@
 DATE       AUTHOR   CHANGE
 ---------- -------- -----------------------------------------------------------
+2002-02-15 bscott   Added Sphere class and comparisons.
 2002-02-11 allenb   Added Vec and Point ops.
 2002-02-11 allenb   Vector comparisons added.
 2002-02-10 allenb   Added Vec and Point classes.
