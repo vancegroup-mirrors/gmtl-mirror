@@ -28,7 +28,7 @@
             <surname>Scott, </surname>
          </author>
       </authorgroup>
-      <pubdate>$Date: 2002-05-30 03:17:03 $</pubdate>
+      <pubdate>$Date: 2002-05-30 03:18:24 $</pubdate>
       <address><email>ggt-info@lists.sf.net</email></address>
    </articleinfo>
    <section>
@@ -314,7 +314,9 @@
                      <entry
                        align  = "left"
                        valign = "top"
-                     > Convert one type to another. For example, convert
+                     >
+                     <para>
+                     Convert one type to another. For example, convert
                      Matrix to Quat, Quat to Matrix, and others...
                      </para>
                      <para>
@@ -323,6 +325,7 @@
                      class.  The first parameter is always the source
                      (read-only), and the second is the destination of
                      the converstion (writable).
+                     </para>
                      </entry>
                   </row>
                   <row
