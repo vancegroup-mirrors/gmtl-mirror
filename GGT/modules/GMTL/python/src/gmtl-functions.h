@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-functions.h,v $
- * Date modified: $Date: 2003-05-20 18:57:15 $
- * Version:       $Revision: 1.1.1.1 $
+ * Date modified: $Date: 2003-06-13 15:22:22 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -293,11 +293,6 @@ namespace gmtl
 
    template float distanceSquared(const gmtl::LineSegf&, const gmtl::Point3f&);
    template double distanceSquared(const gmtl::LineSegd&, const gmtl::Point3d&);
-
-   template bool isEqual(const gmtl::LineSegf&, const gmtl::LineSegf&,
-                         const float&);
-   template bool isEqual(const gmtl::LineSegd&, const gmtl::LineSegd&,
-                         const double&);
 // ================================================== gmtl::LineSeg<> functions
 
 // gmtl::Plane<> functions ====================================================
