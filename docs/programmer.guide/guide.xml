@@ -28,12 +28,12 @@
             <surname>Scott</surname>
          </author>
       </authorgroup>
-      <pubdate>$Date: 2002-05-17 23:33:15 $</pubdate>
+      <pubdate>$Date: 2002-05-28 15:39:46 $</pubdate>
       <address><email>ggt-info@lists.sf.net</email></address>
    </articleinfo>
    <section>
       <title>Introduction</title>
-      <para> GMTL stands for (G)eneric (M)ath (T)emplate (L)ibrary. It is a math library whos API is designed to be high-performance, extensible, and generic. The design is based upon discussion with many experts in the field of computer graphics and virtual reality and is the culmination of many previous graphics math library efforts. GMTL gives the graphics programmer several core math types and a rich library of graphics/math operations on those types. </para>
+      <para> GMTL stands for (G)eneric (M)ath (T)emplate (L)ibrary. It is a math library designed to be high-performance, extensible, and generic. The design is based upon discussion with many experts in the field of computer graphics and virtual reality and is the culmination of many previous graphics math library efforts. GMTL gives the graphics programmer several core math types and a rich library of graphics/math operations on those types. </para>
       <section>
          <title>Design</title>
          <para> The design of GMTL allows extensibility while mantaining a stable core. Core data types are separated from operations. This allows anyone to write their own math routines to extend or replace parts of the GMTL. This feature allows a very stable core set of math primitives that seldom change due to extensions, maintainance, or programmer error. </para>
