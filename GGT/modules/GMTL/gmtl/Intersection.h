@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Intersection.h,v $
- * Date modified: $Date: 2003-09-06 20:22:07 $
- * Version:       $Revision: 1.14 $
+ * Date modified: $Date: 2003-09-06 21:28:24 $
+ * Version:       $Revision: 1.15 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -343,6 +343,16 @@ namespace gmtl
          {
             numhits = 1;
             t0 = t1;
+            return true;
+         }
+         // handle zero-length rays...
+         // if origin is within the sphere then raylength must be 0
+         // count this as an intersection
+         else if (c <= 0)
+         {
+            t1 = T(1);
+            t0 = T(0);
+            numhits = 2;
             return true;
          }
          else
