@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Tri.h,v $
- * Date modified: $Date: 2002-01-26 23:47:53 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-02-18 18:06:01 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,91 +35,100 @@
 #ifndef _GMTL_TRI_H_
 #define _GMTL_TRI_H_
 
-#include <gmtl/Point3.h>
-#include <gmtl/matVecFuncs.h>
+#include <gmtl/gmtlConfig.h>
+#include <gmtl/Point.h>
 
 namespace gmtl
 {
-// gmtl::Tri
-//    Triangle helper class
-//
-// Triangle points are tri(s,t) = b+s*e0+t*e1 where 0 <= s <= 1,
-// 0 <= t <= 1, and 0 <= s+t <= 1.
-//
-// This class defines a triangle as a set of 3 vert points
-// They are ordered CCW
+/**
+ * This class defines a triangle as a set of 3 points order in CCW fashion.
+ *
+ * Triangle points are tri(s,t) = b+s*e0+t*e1 where 0 <= s <= 1,
+ * 0 <= t <= 1, and 0 <= s+t <= 1.
+ */
+template< class DATA_TYPE >
 class  Tri
 {
 public:
-   Tri() {;}
-   Tri(const Point3& v1, const Point3& v2, const Point3& v3);
+   /**
+    * Constructs a new triangle with all vertices at the origin.
+    */
+   Tri() {}
 
-   const Point3& origin() const;
-   Vec3 edge0() const;
-   Vec3 edge1() const;
-   const Point3 center() const;
+   /**
+    * Constructs a new triangle with the given points. The points must be passed
+    * in in CCW order.
+    *
+    * @param p1   vertex0
+    * @param p2   vertex1
+    * @param p3   vertex2
+    *
+    * @pre p1, p2, p3 must be in CCW order
+    */
+   Tri( const Point<DATA_TYPE, 3>& p1, const Point<DATA_TYPE, 3>& p2,
+        const Point<DATA_TYPE, 3>& p3)
+   {
+      mVerts[0] = p1;
+      mVerts[1] = p2;
+      mVerts[2] = p3;
+   }
 
-   Point3& operator[](int i);
-   const Point3& operator[](int i) const;
+   /**
+    * Constructs a duplicate of the given triangle.
+    *
+    * @param tri     the triangle to copy
+    */
+   Tri( const Tri<DATA_TYPE>& tri )
+   {
+      mVerts[0] = tri[0];
+      mVerts[1] = tri[1];
+      mVerts[2] = tri[2];
+   }
 
-   // Comparison
-   inline bool operator ==(const Tri& rTri) const;
+   /**
+    * Gets the nth vertex in the triangle.
+    *
+    * @param idx     the index to the vertex in the triangle
+    * @pre 0 <= idx <= 2
+    *
+    * @return  the nth vertex
+    */
+   //@{
+   Point<DATA_TYPE, 3>& operator[]( int idx )
+   {
+      ggtASSERT( (0 <= idx) && (idx <= 2) );
+      return mVerts[idx];
+   }
+   const Point<DATA_TYPE, 3>& operator[]( int idx ) const
+   {
+      ggtASSERT( (0 <= idx) && (idx <= 2) );
+      return mVerts[idx];
+   }
+   //@}
 
-public:
-    Point3	mVerts[3];		// Triangle vertices  NOTE: 1 is origin
+   /**
+    * Gets the nth edge of the triangle where edge0 corresponds to the vector
+    * from vertex 0 to 1, edge1 corresponds to the vector from vertex 1 to 2 and
+    * edge2 corresponsds to the vector from vertex 2 to vertex 0.
+    *
+    * @param   idx     the ordered edge index
+    * @pre 0 <= idx <= 2
+    *
+    * @return  a vector from vertex idx to vertex (idx+1)mod size
+    */
+   Vec<DATA_TYPE, 3> edge( int idx ) const
+   {
+      ggtASSERT( (0 <= idx) && (idx <= 2) );
+      int idx2 = ( idx == 2 ) ? 0 : idx + 1;
+      return (mVerts[idx2] - mVerts[idx]);
+   }
+
+private:
+   /**
+    * The vertices of the triangle.
+    */
+   Point<DATA_TYPE, 3> mVerts[3];
 };
-
-
-inline
-Tri::Tri(const Point3& v1, const Point3& v2, const Point3& v3)
-{
-   mVerts[0] = v1;
-   mVerts[1] = v2;
-   mVerts[2] = v3;
-}
-
-inline
-const Point3& Tri::origin() const
-{
-   return mVerts[1];
-}
-inline
-Vec3 Tri::edge0() const
-{
-   return (mVerts[0]-mVerts[1]);
-}
-inline
-Vec3 Tri::edge1() const
-{
-   return (mVerts[2] - mVerts[1]);
-}
-
-inline const Point3 Tri::center() const
-{
-   const float one_third = (1.0f/3.0f);
-   return (mVerts[0]+mVerts[1]+mVerts[2])*one_third;
-}
-
-inline
-Point3& Tri::operator[](int i)
-{
-   return mVerts[i];
-}
-inline
-const Point3& Tri::operator[](int i) const
-{
-   return mVerts[i];
-}
-
-inline bool Tri::operator ==(const Tri& rTri) const
-{
-   return(mVerts[0] == rTri.mVerts[0] &&
-          mVerts[1] == rTri.mVerts[1] &&
-          mVerts[2] == rTri.mVerts[2]);
-}
-
-
-
 
 }
 
