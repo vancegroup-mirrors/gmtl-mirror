@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Tri.h,v $
- * Date modified: $Date: 2003-03-06 15:36:48 $
- * Version:       $Revision: 1.10 $
+ * Date modified: $Date: 2003-07-31 00:39:52 $
+ * Version:       $Revision: 1.11 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -124,6 +124,22 @@ public:
       int idx2 = ( idx == 2 ) ? 0 : idx + 1;
       return (mVerts[idx2] - mVerts[idx]);
    }
+
+   /** get edge vec from two verts 
+    *
+    * @param   idx,idy     the ordered vertex indicies
+    * @pre 0 <= id <= 2
+    *
+    * @return  a vector from vertex idx to vertex idy
+    */
+   Vec<DATA_TYPE, 3> edge( int idx, int idy ) const
+   {
+      gmtlASSERT( (0 <= idx) && (idx <= 2) );
+      gmtlASSERT( (0 <= idy) && (idy <= 2) );
+      return (mVerts[idy] - mVerts[idx]);
+   }
+
+ 
 
    /**
     * Set the triangle with the given points. The points must be passed
