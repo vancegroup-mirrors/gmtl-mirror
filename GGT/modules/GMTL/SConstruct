@@ -1,9 +1,13 @@
 import os, string, sys
+import re
 pj = os.path.join
 
 # Bring in the AutoDist build helper
 sys.path.append('tools/build')
 from AutoDist import *
+
+enable_python = False
+have_cppunit  = False
 
 #------------------------------------------------------------------------------
 # Define some generally useful functions
@@ -120,61 +124,140 @@ def BuildIRIXEnvironment():
    )
 
 def BuildWin32Environment():
-   return Environment(ENV = os.environ)
+   env = Environment(ENV = os.environ)
+   for t in ['msvc', 'mslink']:
+      Tool(i)(env)
 
-def HasCppUnit(env):
-   "Tests if the user has CppUnit available"
-   sys.stdout.write('checking for cppunit... ')
-   if env['with-cppunit'] == None:
-      found = 0
+   return env
+
+# ########################################
+# Options
+# ########################################
+def ValidateBoostOption(key, value, environ):
+   "Validate the boost option settings"
+   global enable_python
+   req_boost_version = 103000
+   sys.stdout.write("checking for %s [%s]...\n" % (key, value))
+
+   if "BoostPythonDir" == key:
+      # Get the boost version
+      boost_ver_filename = pj(value, 'include', 'boost', 'version.hpp')
+      if not os.path.isfile(boost_ver_filename):
+         sys.stdout.write("[%s] not found.\n" % boost_ver_filename)
+         Exit()
+         return False
+      ver_file = file(boost_ver_filename)
+
+      # Matches 103000
+      ver_num = int(re.search("define\s+?BOOST_VERSION\s+?(\d*)",
+                              ver_file.read()).group(1))
+      sys.stdout.write("found version: %s\n" % ver_num)
+
+      if ver_num < req_boost_version:
+         print "   Boost version to old: required version:%s\n" % req_boost_version
+         Exit()
+         return False
+
+      # Check on the libraries that I need to use
+      if enable_python:
+         boost_python_lib_name = pj(value, 'lib', 'libboost_python.a')
+         if not os.path.isfile(boost_python_lib_name):
+            print "[%s] not found."%boost_python_lib_name
+            Exit()
+            return False
+
+         environ.Append(BoostCPPPATH = [pj(value, 'include')])
+         environ.Append(BoostLIBPATH = [pj(value, 'lib')])
+         environ.Append(BoostLIBS = ['boost_python'])
+
    else:
-      cfg = os.path.join(env['with-cppunit'], 'bin', 'cppunit-config')
+      assert False, "Invalid Boost key"
+
+def ApplyBoostOptions(env):
+   global enable_python
+   env.Append(CPPPATH = env["BoostCPPPATH"])
+   env.Append(LIBPATH = env["BoostLIBPATH"])
+   if enable_python:
+      env.Append(LIBS = env["BoostLIBS"])
+
+def AddBoostOptions(opts):
+   opts.Add('BoostPythonDir',
+            help = 'Boost.Python installation directory (boost dir must exist under this directory": default: BoostPythonDir="/usr/local/include"',
+            default = '/usr/local/include', validator = ValidateBoostOption)
+
+def ValidatePythonOption(key, value, environ):
+   "Validate the Python option settings"
+   global enable_python
+   sys.stdout.write("checking for %s [%s]...\n" % (key, value))
+
+   if "EnablePython" == key:
+      enable_python = value
+
+      if enable_python:
+         required_version = 2.2
+         python = WhereIs('python')
+         if not python:
+            enable_python = False
+            print 'WARNING: Can\'t find python executable'
+            return False
+
+         py_cmd = python + ' -c \'import sys; print sys.prefix; print sys.version[:3]\''
+         (prefix, py_ver) = string.split(os.popen(py_cmd).read())
+
+         # Version must match
+         if py_ver != str(required_version):
+            print 'WARNING: Python version ' + py_ver + ' != ' + str(required_version)
+            enable_python = False
+         else:
+            # Build up the env information
+            environ.Append(PythonCPPPATH = [pj(prefix, 'include', 'python'+py_ver)])
+   else:
+      assert False, "Invalid Python key"
+
+   return enable_python
+
+def ApplyPythonOptions(env):
+   env.Append(CPPPATH = env["PythonCPPPATH"])
+
+def AddPythonOptions(opts):
+   opts.Add('EnablePython',
+            help = 'Enable compilation of PyGMTL; default: EnablePython=False',
+            default = False, validator = ValidatePythonOption)
+
+def ValidateCppUnitOption(key, value, environ):
+   "Validate the CppUnit option settings"
+   global have_cppunit
+   sys.stdout.write("checking for %s [%s]...\n" % (key, value))
+
+   if "CppUnitDir" == key:
+      cfg = os.path.join(environ['CppUnitDir'], 'bin', 'cppunit-config')
       found = os.path.isfile(cfg)
 
-   if found:
-      sys.stdout.write('yes\n')
+      if found:
+         sys.stdout.write('yes\n')
+         have_cppunit = True
+      else:
+         sys.stdout.write('no\n')
+         have_cppunit = False
    else:
-      sys.stdout.write('no\n')
+      assert False, "Invalid CppUnit key"
+      found = 0
+
    return found
 
-def SetupCppUnit(env):
-   "Sets up env for CppUnit"
-   if not HasCppUnit(env):
-      print 'ERROR: Could not find CppUnit installation.'
-      sys.exit(1)
-   cfg = pj(env['with-cppunit'], 'bin', 'cppunit-config')
-   ParseConfig(env, cfg + ' --cflags --libs')
+def ApplyCppUnitOptions(env):
+   global have_cppunit
+   if have_cppunit:
+      cfg = pj(env['CppUnitDir'], 'bin', 'cppunit-config')
+      ParseConfig(env, cfg + ' --cflags --libs')
 
-def SetupPython(env, requiredVersion):
-   "Sets up the environment for Python"
-   print 'Looking for python 2.2 ...'
-   python = WhereIs('python')
-   if not python:
-      print 'WARNING: Can\'t find python executable'
-      return
+def AddCppUnitOptions(opts):
+   opts.Add('CppUnitDir',
+            help = 'CppUnit installation directory (cppunit dir must exist under this directory": default: CppUnitDir="/usr/local/include"',
+            default = '/usr/local/include',
+            validator = ValidateCppUnitOption)
 
-   py_cmd = python + ' -c \'import sys; print sys.prefix; print sys.version[:3]\''
-   (prefix, py_ver) = string.split(os.popen(py_cmd).read())
-
-   # Version must match
-   if py_ver != str(requiredVersion):
-      print 'WARNING: Python version ' + py_ver + ' != ' + str(requiredVersion)
-      return
-
-   # Build up the env information
-   py_cpppath = pj(prefix, 'include', 'python'+py_ver)
-
-   # Setup the env
-   env.Append(CPPPATH   = [py_cpppath],
-              LIBS      = ['pthread'])
-
-def SetupBoostPython(env):
-   "Sets up the env for Boost Python"
-   env.Append(LIBS = ['boost_python'])
-
-
-Export('SetupCppUnit SetupPython SetupBoostPython')
-
+Export('ApplyBoostOptions ApplyPythonOptions ApplyCppUnitOptions')
 
 #------------------------------------------------------------------------------
 # Grok the arguments to this build
@@ -184,6 +267,8 @@ EnsureSConsVersion(0,10)
 # Figure out what version of GMTL we're building
 GMTL_VERSION = GetGMTLVersion()
 print 'Building GMTL Version: %i.%i.%i' % GMTL_VERSION
+
+help_text = "\n---- GMTL Build System ----\n"
 
 # Get command-line arguments
 optimize = ARGUMENTS.get('optimize', 'no')
@@ -208,80 +293,86 @@ elif GetPlatform() == 'win32':
 else:
    print 'Unsupported build environment: ' + GetPlatform()
    sys.exit(-1)
-baseEnv['enable-python'] = False
+baseEnv['enable_python'] = False
 Export('baseEnv')
 
 opts = Options('config.cache')
-opts.Add('with-cppunit',
-         'CppUnit installation directory',
-         '/usr/local',
-         lambda k,v,env=None: WhereIs(pj(v, 'bin', 'cppunit-config')) != None
-        )
-opts.Add('enable-python',
-         'Whether or not to build the Python bindings for GMTL',
-         False,
-         lambda k,v,ent=None: True
-        )
-opts.Update(baseEnv)
-Help(opts.GenerateHelpText(baseEnv))
+AddCppUnitOptions(opts)
+AddPythonOptions(opts)
+AddBoostOptions(opts)
 
+if not SCons.Script.options.help_msg:
+   opts.Update(baseEnv);
+   opts.Save('options.cache', baseEnv);
 
-# Create the GMTL package
-pkg = Package('gmtl', '%i.%i.%i' % GMTL_VERSION)
-pkg.addExtraDist(Split("""
-   AUTHORS
-   ChangeLog
-   COPYING
-   gmtl-config.in
-   SConstruct
-   docs/Makefile
-   docs/docbook.mk
-   docs/gmtl.doxy
-   docs/gmtl.latex.doxy
-   docs/gmtl.man.doxy
-   docs/version.mk.doxy
-   docs/programmer.guide/Makefile
-   docs/programmer.guide/guide.xml
-   gmtl/gmtl.doxygen
-   gmtl/SConscript
-   gmtl/External/SConscript
-   gmtl/Util/SConscript
-   Test/SConscript
-   Test/TestSuite/SConscript
-   Test/TestSuite/TestCases/SConscript
-   Test/TestSuite/TestCases/InfoTests/SConscript
-   tools/build/AutoDist.py
-"""))
-Export('pkg')
+help_text += "Platform: " + GetPlatform() + "\n";
+help_text += str(baseEnv["TOOLS"]) + "\n";
+help_text += opts.GenerateHelpText(baseEnv);
+help_text += """
+You can store configuration options in the file: options.custom
+This file will be loaded each time.  Note: Options are cached in the file: options.cache.
+"""
 
-# Process subdirectories
-subdirs = Split('gmtl')
-if baseEnv['enable-python']:
-   subdirs.append('python')
-if HasCppUnit(baseEnv):
-   subdirs.append('Test')
-SConscript(dirs = subdirs)
+if not SCons.Script.options.help_msg:
+   print "Preparing build settings...\n"
 
-# Setup the builder for gmtl-config
-env = baseEnv.Copy(BUILDERS = builders)
-env.ConfigBuilder('gmtl-config','gmtl-config.in',
-   submap = {
-      '@prefix@'                    : PREFIX,
-      '@exec_prefix@'               : '${prefix}',
-      '@gmtl_cxxflags@'             : '',
-      '@includedir@'                : pj(PREFIX, 'include'),
-      '@gmtl_extra_cxxflags@'       : '',
-      '@gmtl_extra_include_dirs@'   : '',
-      '@VERSION_MAJOR@'             : str(GMTL_VERSION[0]),
-      '@VERSION_MINOR@'             : str(GMTL_VERSION[1]),
-      '@VERSION_PATCH@'             : str(GMTL_VERSION[2]),
-   }
-)
-env.Depends('gmtl-config', 'gmtl/Version.h')
-env.Install(pj(PREFIX, 'bin'), 'gmtl-config')
+   # Create the GMTL package
+   pkg = Package('gmtl', '%i.%i.%i' % GMTL_VERSION)
+   pkg.addExtraDist(Split("""
+      AUTHORS
+      ChangeLog
+      COPYING
+      gmtl-config.in
+      SConstruct
+      docs/Makefile
+      docs/docbook.mk
+      docs/gmtl.doxy
+      docs/gmtl.latex.doxy
+      docs/gmtl.man.doxy
+      docs/version.mk.doxy
+      docs/programmer.guide/Makefile
+      docs/programmer.guide/guide.xml
+      gmtl/gmtl.doxygen
+      gmtl/SConscript
+      gmtl/External/SConscript
+      gmtl/Util/SConscript
+      python/SConscript
+      Test/SConscript
+      Test/TestSuite/SConscript
+      Test/TestSuite/TestCases/SConscript
+      Test/TestSuite/TestCases/InfoTests/SConscript
+      tools/build/AutoDist.py
+   """))
+   Export('pkg')
 
-pkg.build()
-MakeSourceDist(pkg, env)
+   # Process subdirectories
+   subdirs = Split('gmtl')
+   if enable_python:
+      subdirs.append('python')
+   if have_cppunit:
+      subdirs.append('Test')
+   SConscript(dirs = subdirs)
+
+   # Setup the builder for gmtl-config
+   env = baseEnv.Copy(BUILDERS = builders)
+   env.ConfigBuilder('gmtl-config','gmtl-config.in',
+      submap = {
+         '@prefix@'                    : PREFIX,
+         '@exec_prefix@'               : '${prefix}',
+         '@gmtl_cxxflags@'             : '',
+         '@includedir@'                : pj(PREFIX, 'include'),
+         '@gmtl_extra_cxxflags@'       : '',
+         '@gmtl_extra_include_dirs@'   : '',
+         '@VERSION_MAJOR@'             : str(GMTL_VERSION[0]),
+         '@VERSION_MINOR@'             : str(GMTL_VERSION[1]),
+         '@VERSION_PATCH@'             : str(GMTL_VERSION[2]),
+      }
+   )
+   env.Depends('gmtl-config', 'gmtl/Version.h')
+   env.Install(pj(PREFIX, 'bin'), 'gmtl-config')
+
+   pkg.build()
+   MakeSourceDist(pkg, env)
 
 # Build everything by default
 Default('.')
