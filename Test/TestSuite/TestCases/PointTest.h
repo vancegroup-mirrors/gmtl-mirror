@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PointTest.h,v $
- * Date modified: $Date: 2002-02-11 20:19:31 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-02-12 00:05:30 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -40,6 +40,7 @@
 #include <cppunit/TestCaller.h>
 
 #include <gmtl/Point.h>
+#include <gmtl/VecOps.h>
 
 namespace gmtlTest
 {
@@ -402,6 +403,216 @@ public:
       
    }
 
+   // ---------------------------------- //
+   // ---------- Math ops -------------- //
+   // ---------------------------------- //
+   void testOpPlusEq()
+   {
+      gmtl::Point<float,3> test_point1(1.0, 2.0, 3.0);
+      gmtl::Point<float,3> test_point2(2.0, 2.0, 2.0);
+
+      test_point1 += test_point2;
+      CPPUNIT_ASSERT( test_point1[0] == 3.0f &&
+                      test_point1[1] == 4.0f &&
+                      test_point1[2] == 5.0f );
+
+      // -- test op+= performance
+      const float iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+      gmtl::Point<float,3> test_point3(5.0, 7.0, 9.0);
+
+      for( float iter=0;iter<iters; ++iter)
+      {
+         test_point3.set(iter, iter+1, iter+2);
+         test_point1 += test_point3;         
+      }
+
+      test_point2 = test_point1;
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("PointTest/OpPlusEqOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+
+   void testOpPlus()
+   {
+      gmtl::Point<float,3> test_point1(1.0, 2.0, 3.0);
+      gmtl::Point<float,3> test_point2(2.0, 2.0, 2.0);
+      gmtl::Point<float,3> test_point3(1.0, 2.0, 3.0);
+
+      test_point1 = test_point3 + test_point2;
+      CPPUNIT_ASSERT( test_point1[0] == 3.0f &&
+                      test_point1[1] == 4.0f &&
+                      test_point1[2] == 5.0f );
+
+      // -- test op+ performance
+      const float iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+      test_point3.set(5.0, 7.0, 9.0);
+
+      for( float iter=0;iter<iters; ++iter)
+      {
+         test_point3.set(iter, iter+1, iter+2);
+         test_point1 = (test_point3 + test_point2);         
+      }
+
+      test_point2 = test_point1;
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("PointTest/OpPlusOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+
+   void testOpMinusEq()
+   {
+      gmtl::Point<float,3> test_point1(1.0, 2.0, 3.0);
+      gmtl::Point<float,3> test_point2(2.0, 2.0, 2.0);
+
+      test_point1 -= test_point2;
+      CPPUNIT_ASSERT( test_point1[0] == -1.0f &&
+                      test_point1[1] == 0.0f &&
+                      test_point1[2] == 1.0f );
+
+      // -- test op-= performance
+      const float iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+      gmtl::Point<float,3> test_point3(5.0, 7.0, 9.0);
+
+      for( float iter=0;iter<iters; ++iter)
+      {
+         test_point3.set(iter, iter+1, iter+2);
+         test_point1 -= test_point3;         
+      }
+
+      test_point2 = test_point1;
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("PointTest/OpMinusEqOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+
+   void testOpMinus()
+   {
+      gmtl::Point<float,3> test_point1(1.0, 2.0, 3.0);
+      gmtl::Point<float,3> test_point2(2.0, 2.0, 2.0);
+      gmtl::Point<float,3> test_point3(1.0, 2.0, 3.0);
+
+      test_point1 = test_point3 - test_point2;
+      CPPUNIT_ASSERT( test_point1[0] == -1.0f &&
+                      test_point1[1] == 0.0f &&
+                      test_point1[2] == 1.0f );
+
+      // -- test op- performance
+      const float iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+      test_point3.set(5.0, 7.0, 9.0);
+
+      for( float iter=0;iter<iters; ++iter)
+      {
+         test_point3.set(iter, iter+1, iter+2);
+         test_point1 = (test_point3 - test_point2);         
+      }
+
+      test_point2 = test_point1;
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("PointTest/OpMinusOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+
+   void testOpMultScalarEq()
+   {
+      gmtl::Point<float,3> test_point1(1.0, 2.0, 3.0);
+         
+      test_point1 *= 4.0f;
+      CPPUNIT_ASSERT( test_point1[0] == 4.0f &&
+                      test_point1[1] == 8.0f &&
+                      test_point1[2] == 12.0f );
+
+      // -- test op-= performance
+      const float iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+            
+      for( float iter=0;iter<iters; ++iter)
+      {
+         test_point1 *= 1.05f;         
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("PointTest/OpMultScalarEqOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+
+   void testOpMultScalar()
+   {
+      gmtl::Point<float,3> test_point1(1.0, 2.0, 3.0);
+      gmtl::Point<float,3> test_point2(2.0, 2.0, 2.0);
+      gmtl::Point<float,3> test_point3(1.0, 2.0, 3.0);
+
+      test_point1 = test_point3 * 4.0f;
+      CPPUNIT_ASSERT( test_point1[0] == 4.0f &&
+                      test_point1[1] == 8.0f &&
+                      test_point1[2] == 12.0f );
+
+      // -- test op- performance
+      const float iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+      test_point3.set(5.0, 7.0, 9.0);
+
+      for( float iter=0;iter<iters; ++iter)
+      {
+         test_point1 = test_point3 * 1.05f;
+         test_point3 = test_point1;         
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("PointTest/OpMultScalarOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+
+   void testOpDivScalarEq()
+   {
+      gmtl::Point<float,3> test_point1(12.0, 8.0, 4.0);
+         
+      test_point1 /= 4.0f;
+      CPPUNIT_ASSERT( test_point1[0] == 3.0f &&
+                      test_point1[1] == 2.0f &&
+                      test_point1[2] == 1.0f );
+
+      // -- test op-= performance
+      const float iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+            
+      for( float iter=0;iter<iters; ++iter)
+      {
+         test_point1 /= 0.95f;         
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("PointTest/OpDivScalarEqOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+
+   void testOpDivScalar()
+   {
+      gmtl::Point<float,3> test_point1(1.0, 2.0, 3.0);
+      gmtl::Point<float,3> test_point2(2.0, 2.0, 2.0);
+      gmtl::Point<float,3> test_point3(12.0, 8.0, 4.0);
+
+      test_point1 = test_point3 / 4.0f;
+      CPPUNIT_ASSERT( test_point1[0] == 3.0f &&
+                      test_point1[1] == 2.0f &&
+                      test_point1[2] == 1.0f );
+
+      // -- test op- performance
+      const float iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+      test_point3.set(5.0, 7.0, 9.0);
+
+      for( float iter=0;iter<iters; ++iter)
+      {
+         test_point1 = test_point3 / 0.95f;
+         test_point3 = test_point1;         
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("PointTest/OpDivScalarOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+
+
 
    static Test* suite()
    {
@@ -414,6 +625,16 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<PointTest>("testGetData", &PointTest::testGetData));
       test_suite->addTest( new CppUnit::TestCaller<PointTest>("testEqualityCompare", &PointTest::testEqualityCompare));
       test_suite->addTest( new CppUnit::TestCaller<PointTest>("testIsEqual", &PointTest::testIsEqual));
+
+      test_suite->addTest( new CppUnit::TestCaller<PointTest>("testOpPlusEq", &PointTest::testOpPlusEq));
+      test_suite->addTest( new CppUnit::TestCaller<PointTest>("testOpPlus", &PointTest::testOpPlus));
+      test_suite->addTest( new CppUnit::TestCaller<PointTest>("testOpMinusEq", &PointTest::testOpMinusEq));
+      test_suite->addTest( new CppUnit::TestCaller<PointTest>("testOpMinus", &PointTest::testOpMinus));
+      test_suite->addTest( new CppUnit::TestCaller<PointTest>("testOpMultScalarEq", &PointTest::testOpMultScalarEq)); 
+      test_suite->addTest( new CppUnit::TestCaller<PointTest>("testOpMultScalar", &PointTest::testOpMultScalar)); 
+      test_suite->addTest( new CppUnit::TestCaller<PointTest>("testOpDivScalarEq", &PointTest::testOpDivScalarEq)); 
+      test_suite->addTest( new CppUnit::TestCaller<PointTest>("testOpDivScalar", &PointTest::testOpDivScalar)); 
+
 
       return test_suite;
    }
