@@ -1,7 +1,7 @@
 import os
 pj = os.path.join
 
-Import('pkg baseEnv PREFIX')
+Import('pkg baseEnv PREFIX installed_targets')
 
 # XXX: Can't this be constructed automatically by scanning?  -PH 9/19/2004
 headers = Split("""
@@ -58,5 +58,5 @@ for s in subdirs:
    SConscript(dirs = s)
 
 for h in headers:
-   baseEnv.Install(pj(PREFIX, 'include', 'gmtl'), h)
+   installed_targets += baseEnv.Install(pj(PREFIX, 'include', 'gmtl'), h)
    pkg.addExtraDist([File(h)])

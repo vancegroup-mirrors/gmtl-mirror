@@ -27,8 +27,8 @@ Automatic distribution builder and packager for SCons.
 #
 # -----------------------------------------------------------------
 # File:          $RCSfile: AutoDist.py,v $
-# Date modified: $Date: 2003-05-26 03:38:17 $
-# Version:       $Revision: 1.4 $
+# Date modified: $Date: 2005-01-03 17:30:31 $
+# Version:       $Revision: 1.5 $
 # -----------------------------------------------------------------
 ############################################################## autodist-cpr end
 
@@ -105,6 +105,7 @@ class _Assembly:
       self.data['libs']          = []
       self.data['libpaths']      = []
       self.data['headers']       = []
+      self.data['installed']     = []
 
       # Clone the base environment if we have one
       if baseEnv:
@@ -207,7 +208,7 @@ class _Library(_Assembly):
          # Add on the prefix if this header has one
          if prefix:
             target = path.join(target, prefix)
-         self.data['env'].Install(target, filename)
+         sef.data['installed'] += self.data['env'].Install(target, filename)
 
 
 class SharedLibrary(_Library):
@@ -264,8 +265,7 @@ class Program(_Assembly):
       prog = self.data['env'].Program(self.data['name'], source  = self.data['sources'])
 
       # Install the binary
-      self.data['env'].Install(path.join(Prefix(), 'bin'), prog)
-
+      sef.data['installed'] += self.data['env'].Install(path.join(Prefix(), 'bin'), prog)
 
 class Package:
    """
@@ -352,13 +352,19 @@ class Package:
 
    def getExtraDist(self):
       return self.data['extra_dist']
+      
+   def getInstalledTargets(self):
+      installed_targets = []
+      for assembly in self.getAssemblies():
+         installed_targets += assembly.data['installed']
+      return installed_targets
 
    def build(self):
       """
       Sets up the build and install for this package. This will build all
       assemblies contained therein and set them up to be installed.
       """
-      Environment().Alias('install', Prefix())
+      #Environment().Alias('install', Prefix())
       for assembly in self.getAssemblies():
          assembly.build()
 
