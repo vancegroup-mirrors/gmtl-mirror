@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOps.h,v $
- * Date modified: $Date: 2002-03-15 03:26:57 $
- * Version:       $Revision: 1.12 $
+ * Date modified: $Date: 2002-03-15 04:23:55 $
+ * Version:       $Revision: 1.13 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -42,6 +42,30 @@
 
 namespace gmtl
 {
+   /** Make identity matrix out the matrix.
+    * make sure every elt is 0.
+    */
+   template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
+   inline Matrix<DATA_TYPE, ROWS, COLS>& identity( Matrix<DATA_TYPE, ROWS, COLS>& result )
+   {
+      if(result.mState != Matrix<DATA_TYPE, ROWS, COLS>::IDENTITY)   // if not already ident
+      {
+         // TODO: mp
+         for (unsigned int r = 0; r < ROWS; ++r)
+         for (unsigned int c = 0; c < COLS; ++c)
+            result( r, c ) = (DATA_TYPE)0.0;
+
+         // TODO: mp
+         for (unsigned int x = 0; x < Math::Min( COLS, ROWS ); ++x)
+            result( x, x ) = (DATA_TYPE)1.0;
+
+         result.mState = Matrix<DATA_TYPE, ROWS, COLS>::IDENTITY;
+      }
+
+      return result;
+   }
+
+
    /** zero out the matrix.
     * make sure every elt is 0.
     */
