@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-VecOps.h,v $
- * Date modified: $Date: 2003-08-30 17:22:10 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2004-05-25 16:59:56 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -92,13 +92,13 @@ namespace gmtl
    typedef gmtl::VecBase<double, 4> VecBase4d;
 
    template bool isEqual(const gmtl::VecBase3f&, const gmtl::VecBase3f&,
-                         const float&);
+                         const float);
    template bool isEqual(const gmtl::VecBase3d&, const gmtl::VecBase3d&,
-                         const double&);
+                         const double);
    template bool isEqual(const gmtl::VecBase4f&, const gmtl::VecBase4f&,
-                         const float&);
+                         const float);
    template bool isEqual(const gmtl::VecBase4d&, const gmtl::VecBase4d&,
-                         const double&);
+                         const double);
 }
 
 

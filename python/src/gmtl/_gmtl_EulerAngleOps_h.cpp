@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _gmtl_EulerAngleOps_h.cpp,v $
- * Date modified: $Date: 2003-08-30 17:22:10 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2004-05-25 17:00:23 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -52,10 +52,10 @@ BOOST_PYTHON_FUNCTION_OVERLOADS(isEqual_overloads_2_3, gmtl::isEqual, 2, 3)
 // Module ======================================================================
 void _Export_gmtl_EulerAngleOps_h()
 {
-    def("isEqual", (bool (*)(const gmtl::EulerAngle<float,gmtl::ZXY> &, const gmtl::EulerAngle<float,gmtl::ZXY> &, const float &))&gmtl::isEqual, isEqual_overloads_2_3());
-    def("isEqual", (bool (*)(const gmtl::EulerAngle<float,gmtl::ZYX> &, const gmtl::EulerAngle<float,gmtl::ZYX> &, const float &))&gmtl::isEqual, isEqual_overloads_2_3());
-    def("isEqual", (bool (*)(const gmtl::EulerAngle<double,gmtl::XYZ> &, const gmtl::EulerAngle<double,gmtl::XYZ> &, const double &))&gmtl::isEqual, isEqual_overloads_2_3());
-    def("isEqual", (bool (*)(const gmtl::EulerAngle<double,gmtl::ZYX> &, const gmtl::EulerAngle<double,gmtl::ZYX> &, const double &))&gmtl::isEqual, isEqual_overloads_2_3());
-    def("isEqual", (bool (*)(const gmtl::EulerAngle<double,gmtl::ZXY> &, const gmtl::EulerAngle<double,gmtl::ZXY> &, const double &))&gmtl::isEqual, isEqual_overloads_2_3());
-    def("isEqual", (bool (*)(const gmtl::EulerAngle<float,gmtl::XYZ> &, const gmtl::EulerAngle<float,gmtl::XYZ> &, const float &))&gmtl::isEqual, isEqual_overloads_2_3());
+    def("isEqual", (bool (*)(const gmtl::EulerAngle<float,gmtl::ZXY> &, const gmtl::EulerAngle<float,gmtl::ZXY> &, const float))&gmtl::isEqual, isEqual_overloads_2_3());
+    def("isEqual", (bool (*)(const gmtl::EulerAngle<float,gmtl::ZYX> &, const gmtl::EulerAngle<float,gmtl::ZYX> &, const float))&gmtl::isEqual, isEqual_overloads_2_3());
+    def("isEqual", (bool (*)(const gmtl::EulerAngle<double,gmtl::XYZ> &, const gmtl::EulerAngle<double,gmtl::XYZ> &, const double))&gmtl::isEqual, isEqual_overloads_2_3());
+    def("isEqual", (bool (*)(const gmtl::EulerAngle<double,gmtl::ZYX> &, const gmtl::EulerAngle<double,gmtl::ZYX> &, const double))&gmtl::isEqual, isEqual_overloads_2_3());
+    def("isEqual", (bool (*)(const gmtl::EulerAngle<double,gmtl::ZXY> &, const gmtl::EulerAngle<double,gmtl::ZXY> &, const double))&gmtl::isEqual, isEqual_overloads_2_3());
+    def("isEqual", (bool (*)(const gmtl::EulerAngle<float,gmtl::XYZ> &, const gmtl::EulerAngle<float,gmtl::XYZ> &, const float))&gmtl::isEqual, isEqual_overloads_2_3());
 }
