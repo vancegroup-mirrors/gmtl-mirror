@@ -27,8 +27,8 @@ Automatic distribution builder and packager for SCons.
 #
 # -----------------------------------------------------------------
 # File:          $RCSfile: AutoDist.py,v $
-# Date modified: $Date: 2003-05-26 03:34:59 $
-# Version:       $Revision: 1.3 $
+# Date modified: $Date: 2003-05-26 03:38:17 $
+# Version:       $Revision: 1.4 $
 # -----------------------------------------------------------------
 ############################################################## autodist-cpr end
 
@@ -329,8 +329,8 @@ class Package:
          # Make sure to skip files in the exclude list
          if not file in exclude:
             # If the file is a directory, recurse on it
-            if os.path.isdir(file):
-               self.addExtraDist(os.listdir(file), exclude)
+            if os.path.isdir(str(file)):
+               self.addExtraDist(os.listdir(str(file)), exclude)
             # If the file is not a directory, add in the extra dist list
             else:
                self.data['extra_dist'].append(file)
