@@ -445,6 +445,7 @@ PREFIX = ARGUMENTS.get('prefix', '/usr/local')
 Prefix(PREFIX)
 Export('PREFIX')
 Export('optimize')
+print "Install prefix: ", Prefix()
 
 # Create the extra builders
 # Define a builder for the gmtl-config script
@@ -491,6 +492,9 @@ help_text += """
 You can store configuration options in the file: options.custom
 This file will be loaded each time.  Note: Options are cached in the file: options.cache.
 """
+
+installed_targets = []   # List of targets in the install location
+Export('installed_targets')
 
 if not SCons.Script.options.help_msg:
    print "Preparing build settings...\n"
@@ -547,12 +551,13 @@ if not SCons.Script.options.help_msg:
       }
    env.ConfigBuilder('gmtl-config','gmtl-config.in',submap = gmtl_config_submap)
    env.Depends('gmtl-config', Value(gmtl_config_submap))
-   env.Install(pj(PREFIX, 'bin'), 'gmtl-config')
+   installed_targets += env.Install(pj(PREFIX, 'bin'), 'gmtl-config')
 
    pkg.build()
+   installed_targets += pkg.getInstalledTargets()
    MakeSourceDist(pkg, env)
 
 # Build everything by default
 Default('.')
-
+Alias('install',installed_targets)
 Help(help_text)
