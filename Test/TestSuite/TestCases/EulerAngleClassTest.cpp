@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: EulerAngleClassTest.cpp,v $
- * Date modified: $Date: 2002-06-12 19:38:53 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-06-12 19:52:39 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -100,7 +100,7 @@ namespace gmtlTest
       {
          // performance of def constructor
          gmtl::EulerAngleXYZf q;
-         use_value += q.mData[0];
+         use_value += q[0];
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("EulerAngleTest/DefaultConstructor", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
@@ -118,7 +118,7 @@ namespace gmtlTest
       {
          // performance of element constructor
          gmtl::EulerAngleXYZf q2( 10.0f, 11.0f, 12.0f );
-         use_value += q2.mData[0];
+         use_value += q2[0];
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("EulerAngleTest/ElementConstructor", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
@@ -137,7 +137,7 @@ namespace gmtlTest
       {
          // performance of copy constructor
          gmtl::EulerAngleXYZf q3( q );
-         use_value += q3.mData[0];
+         use_value += q3[0];
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("EulerAngleTest/CopyConstructor", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
