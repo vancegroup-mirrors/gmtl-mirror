@@ -513,12 +513,12 @@
  *
  *  <b>How do I find the cross product of 2 vectors?</b>
  *
- *  We can use the cross function, which returns another vector.
+ *  You can use the makeCross function, which returns another vector.
  *
  *  @code
  *
  *  gmtl::Vec3f vecA, vecB, crossVec;
- *  crossVec = gmtl::cross( vecA, vecB );
+ *  crossVec = gmtl::makeCross( vecA, vecB );
  *
  *  @endcode
  *
