@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixCompareTest.cpp,v $
- * Date modified: $Date: 2003-02-05 23:47:39 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2003-02-25 05:19:24 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -55,7 +55,7 @@ namespace gmtlTest
                        (T)89.2, (T)99.2,  (T) 10.9,  (T)11.9,
                        (T)12.5, (T)13.9,  (T)14.78,  (T)15.6,
                        (T)4.21, (T)57.9,  (T) 65.9,  (T)74.6,
-                       (T)89.2, (T)99.2,  (T) 10.9,  (T)11.9, 
+                       (T)89.2, (T)99.2,  (T) 10.9,  (T)11.9,
                        (T)89.2, (T)99.2,  (T) 10.9,  (T)11.9 };
          mat1.set( array );
          mat1 = mat2;
@@ -160,9 +160,9 @@ namespace gmtlTest
       gmtl::Matrix<double, 10, 1> src_mat101;
 
       // half will be equal
-      src_mat11[0] = 1.0f;
-      src_mat22[0] = 1.0f;
-      src_mat33[4] = 2.0f;
+      src_mat11.mData[0] = 1.0f;
+      src_mat22.mData[0] = 1.0f;
+      src_mat33.mData[4] = 2.0f;
 
       gmtl::Matrix<float, 1, 1> test_mat11( src_mat11 );
       gmtl::Matrix<float, 2, 2> test_mat22( src_mat22 );
@@ -172,9 +172,9 @@ namespace gmtlTest
       gmtl::Matrix<double, 10, 1> test_mat101( src_mat101 );
 
       // half will be not equal
-      src_mat34[5] = 2.0f;
-      src_mat44[15] = 3.0f;
-      src_mat101[9] = 1.0f;
+      src_mat34.mData[5] = 2.0f;
+      src_mat44.mData[15] = 3.0f;
+      src_mat101.mData[9] = 1.0f;
 
       unsigned true_count(0);
 
@@ -214,9 +214,9 @@ namespace gmtlTest
       gmtl::Matrix<double, 10, 1> src_mat101;
 
       // half will be equal
-      src_mat11[0] = 1.0f;
-      src_mat22[0] = 1.0f;
-      src_mat33[4] = 2.0f;
+      src_mat11.mData[0] = 1.0f;
+      src_mat22.mData[0] = 1.0f;
+      src_mat33.mData[4] = 2.0f;
 
       gmtl::Matrix<float, 1, 1> test_mat11( src_mat11 );
       gmtl::Matrix<float, 2, 2> test_mat22( src_mat22 );
@@ -226,9 +226,9 @@ namespace gmtlTest
       gmtl::Matrix<double, 10, 1> test_mat101( src_mat101 );
 
       // half will be not equal
-      src_mat34[5] = 2.0f;
-      src_mat44[15] = 3.0f;
-      src_mat101[9] = 1.0f;
+      src_mat34.mData[5] = 2.0f;
+      src_mat44.mData[15] = 3.0f;
+      src_mat101.mData[9] = 1.0f;
 
       unsigned true_count(0);
 
@@ -268,9 +268,9 @@ namespace gmtlTest
       gmtl::Matrix<double, 10, 1> src_mat101;
 
       // half will be equal
-      src_mat11[0] = 1.0f;
-      src_mat22[0] = 1.0f;
-      src_mat33[4] = 2.0f;
+      src_mat11.mData[0] = 1.0f;
+      src_mat22.mData[0] = 1.0f;
+      src_mat33.mData[4] = 2.0f;
 
       gmtl::Matrix<float, 1, 1> test_mat11( src_mat11 );
       gmtl::Matrix<float, 2, 2> test_mat22( src_mat22 );
@@ -280,9 +280,9 @@ namespace gmtlTest
       gmtl::Matrix<double, 10, 1> test_mat101( src_mat101 );
 
       // half will be not equal
-      src_mat34[5] = 2.0f;
-      src_mat44[15] = 3.0f;
-      src_mat101[9] = 1.0f;
+      src_mat34.mData[5] = 2.0f;
+      src_mat44.mData[15] = 3.0f;
+      src_mat101.mData[9] = 1.0f;
 
       unsigned true_count(0);
 
