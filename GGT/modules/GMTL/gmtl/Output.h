@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Output.h,v $
- * Date modified: $Date: 2002-03-20 19:20:56 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-03-20 19:38:54 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -48,6 +48,16 @@
 
 namespace gmtl
 {
+   /**
+    * Outputs a string representation of the given VecBase type to the given
+    * output stream. This works for both Point and Vec types. The output is
+    * formatted such that Vec<int, 4>(1,2,3,4) will appear as "(1, 2, 3, 4)".
+    *
+    * @param out     the stream to write to
+    * @param v       the VecBase type to output
+    *
+    * @return  out after it has been written to
+    */
    template< class DATA_TYPE, unsigned SIZE >
    std::ostream& operator<<( std::ostream& out,
                              const VecBase<DATA_TYPE, SIZE>& v )
@@ -65,6 +75,20 @@ namespace gmtl
       return out;
    }
 
+   /**
+    * Outputs a string representation of the given Matrix to the given output
+    * stream. The output is formatted along the lines of:
+    * <pre>
+    *    | 1 2 3 4 |
+    *    | 5 6 7 8 |
+    *    | 9 10 11 12 |
+    * </pre>
+    *
+    * @param out     the stream to write to
+    * @param m       the Matrix to output
+    *
+    * @return  out after it has been written to
+    */
    template< class DATA_TYPE, unsigned ROWS, unsigned COLS >
    std::ostream& operator<<( std::ostream& out,
                              const Matrix<DATA_TYPE, ROWS, COLS>& m )
@@ -78,6 +102,42 @@ namespace gmtl
          }
          out << " |" << std::endl;
       }
+      return out;
+   }
+
+   /**
+    * Outputs a string representation of the given Matrix to the given output
+    * stream. The output is formatted such that Quat<int>(1,2,3,4) will appear
+    * as "(1, 2, 3, 4)".
+    *
+    * @param out     the stream to write to
+    * @param q       the Quat to output
+    *
+    * @return  out after it has been written to
+    */
+   template< typename DATA_TYPE >
+   std::ostream& operator<<( std::ostream& out, const Quat<DATA_TYPE>& q )
+   {
+      out << q.mData;
+      return out;
+   }
+
+   /**
+    * Outputs a string representation of the given Tri to the given output
+    * stream. The output is formatted along the lines of:
+    * <pre>
+    *    (1, 2, 3), (4, 5, 6), (7, 8, 9)
+    * </pre>
+    *
+    * @param out     the stream to write to
+    * @param t       the Tri to output
+    *
+    * @return  out after it has been written to
+    */
+   template< typename DATA_TYPE >
+   std::ostream& operator<<( std::ostream& out, const Tri<DATA_TYPE> &t )
+   {
+      out << t[0] << ", " << t[1] << ", " << t[2];
       return out;
    }
 } // end namespace gmtl
