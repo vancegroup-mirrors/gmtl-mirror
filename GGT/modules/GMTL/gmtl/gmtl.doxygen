@@ -1,7 +1,3 @@
-/** @file gmtl.doxygen
- *  this file for documentation purposes only (for doxygen generation)
- */
-
 /** @mainpage Generic Math Template Library
  *  @section Using Using This Reference Guide
  *  Welcome to GMTL.  To use this reference guide effectively, we suggest 
@@ -15,6 +11,8 @@
  *  GMTL is and why it is designed this way will make
  *  your life with GMTL very easy.  Lastly, you should subscribe to the mailing
  *  lists so that you can ask questions, or propose extensions to the library.
+ *
+ *  Please see the @ref gmtlfaq "GMTL FAQ"  for more information.
  *
  *  @section API Quickly Understanding The GMTL API
  *  The GMTL API has two aspects you should keep in mind. The <i>data</i>

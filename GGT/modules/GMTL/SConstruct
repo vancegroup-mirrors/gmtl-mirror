@@ -78,6 +78,7 @@ def BuildLinuxEnvironment():
 
    return Environment(
       ENV         = os.environ,
+
       CXX         = CXX,
       CXXFLAGS    = CXXFLAGS,
       LINK        = LINK,
