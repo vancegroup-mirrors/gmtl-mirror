@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: XformTest.h,v $
- * Date modified: $Date: 2002-03-09 23:34:59 $
- * Version:       $Revision: 1.14 $
+ * Date modified: $Date: 2002-03-10 03:59:23 $
+ * Version:       $Revision: 1.15 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -380,9 +380,9 @@ public:
          gmtl::makeRot( rot, gmtl::Math::deg2Rad( 90.0f ), gmtl::makeNormal( gmtl::Vec3f( 1,0,0 ) ) );
          
          gmtl::Vec3f result1, result2;
-         result1 = makeVec( rot * makePure( vec ) * makeConj( rot ) );
+         result1 = gmtl::makeVec( rot * gmtl::makePure( vec ) * gmtl::makeConj( rot ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected, result1, eps ) );
-         result2 = makeVec( rot * makePure( vec ) * makeInvert( rot ) );
+         result2 = gmtl::makeVec( rot * gmtl::makePure( vec ) * gmtl::makeInvert( rot ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected, result2, eps ) );
          CPPUNIT_ASSERT( gmtl::isEqual( result1, result2, eps ) );
          //CPPUNIT_ASSERT( !gmtl::isEqual( makeConj( rot ), makeInvert( rot ), eps ) );
@@ -391,13 +391,13 @@ public:
       // same, but without the expected value (just check that the two are equal)
       {   
          float eps = 0.001f;
-         const gmtl::Vec3f vec( 123, -4.56, 78.910 );
+         const gmtl::Vec3f vec( 123.0f, -4.56f, 78.910f );
          gmtl::Quatf rot;
          gmtl::makeRot( rot, gmtl::Math::deg2Rad( 123.4556f ), gmtl::makeNormal( gmtl::Vec3f( -79,1000,234 ) ) );
          
          gmtl::Vec3f result1, result2;
-         result1 = makeVec( rot * makePure( vec ) * makeConj( rot ) );
-         result2 = makeVec( rot * makePure( vec ) * makeInvert( rot ) );
+         result1 = gmtl::makeVec( rot * gmtl::makePure( vec ) * gmtl::makeConj( rot ) );
+         result2 = gmtl::makeVec( rot * gmtl::makePure( vec ) * gmtl::makeInvert( rot ) );
          CPPUNIT_ASSERT( gmtl::isEqual( result1, result2, eps ) );
          //CPPUNIT_ASSERT( !gmtl::isEqual( makeConj( rot ), makeInvert( rot ), eps ) );
       }
@@ -600,7 +600,7 @@ public:
       // more "interesting" rotations...
       {
          const float eps = 0.0001f;
-         const gmtl::Vec<float, 3> vec( 2.0f, 5.0f, 10.0f ), expected( 6.32707, 0.67293, 9.40826 );
+         const gmtl::Vec<float, 3> vec( 2.0f, 5.0f, 10.0f ), expected( 6.32707f, 0.67293f, 9.40826f );
          gmtl::Matrix<float, 4, 4> mat;
          gmtl::makeRot( mat, gmtl::Math::deg2Rad( 35.0f ), 1.0f, 1.0f, 0.0f );
          
