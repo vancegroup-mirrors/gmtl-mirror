@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Matrix.h,v $
- * Date modified: $Date: 2003-04-11 05:46:41 $
- * Version:       $Revision: 1.33 $
+ * Date modified: $Date: 2003-04-21 01:21:13 $
+ * Version:       $Revision: 1.34 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -243,7 +243,7 @@ public:
 
       /** @todo Set initial state to IDENTITY and test other stuff */
       mState = IDENTITY;
-   };
+   }
 
    /** copy constructor */
    Matrix( const Matrix<DATA_TYPE, ROWS, COLS>& matrix )
