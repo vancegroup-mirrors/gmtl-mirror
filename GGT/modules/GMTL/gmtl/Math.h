@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Math.h,v $
- * Date modified: $Date: 2002-03-20 16:48:06 $
- * Version:       $Revision: 1.19 $
+ * Date modified: $Date: 2002-03-21 16:29:40 $
+ * Version:       $Revision: 1.20 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -40,6 +40,7 @@
 #include <math.h>
 #include <stdlib.h>
 
+/// @todo move lerp and isEqual to gmtl namespace to be consistant with other isEqual and lerps...
 namespace gmtl
 {
 
