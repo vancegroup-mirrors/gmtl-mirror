@@ -37,7 +37,9 @@ headers = Split("""
    TriOps
    Vec
    VecBase
+   VecExprMeta
    VecOps
+   VecOpsMeta
    Version
    Xforms
 """)
