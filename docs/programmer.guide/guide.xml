@@ -28,7 +28,7 @@
             <surname>Scott</surname>
          </author>
       </authorgroup>
-      <pubdate>$Date: 2002-04-26 20:26:26 $</pubdate>
+      <pubdate>$Date: 2002-05-17 23:33:15 $</pubdate>
       <address><email>ggt-info@lists.sf.net</email></address>
    </articleinfo>
    <section>
@@ -41,7 +41,7 @@
       </section>
       <section>
          <title>Implementation</title>
-         <para> GMTL is implemented using generic programming and template metaprogramming <xref linkend="ModernC++"/><xref linkend="GenerativeProgramming"/>. Generic programming allows selection by the user of size and type information for all data types in GMTL. For example, the generic Matrix type allows a programmer to select between any size (NxM) and any datatype (float, double, int...). The selection of these parameters is done through <emphasis>template parameters</emphasis>. To ease the use of these parameters, the system declares several typedefs that capture commonly used options.</para>
+         <para> GMTL is implemented using generic programming and template metaprogramming <xref linkend="ModernC++"/><xref linkend="GenerativeProgramming"/>. Generic programming allows selection by the user of size and type information for all data types in GMTL. For example, the generic Matrix type allows a programmer to select between any size (N x M) and any datatype (float, double, int...). The selection of these parameters is done through <emphasis>template parameters</emphasis>. To ease the use of these parameters, the system declares several typedefs that capture commonly used options.</para>
          <para> Requested data types are statically bound and optimized by the compiler. The operations supplied with GMTL are implemented generically using a technique called <emphasis>template metaprogramming</emphasis>. Template metaprogramming allows things such as loops to be unrolled and conditionals to be evaluated <emphasis>by the compiler</emphasis>. Things such as loops and conditionals are evaluated statically, rather than at runtime. In addition, advanced optimizations can be performed that do this such as eliminate temporary variables and other intermediate computations. The result is compiled code that can behave as fast (or faster) then using traditional hand-coding methods such as loop unrolling, etc..</para>
       </section>
       <section>
