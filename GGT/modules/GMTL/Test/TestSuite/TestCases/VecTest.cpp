@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.cpp,v $
- * Date modified: $Date: 2004-09-02 20:31:13 $
- * Version:       $Revision: 1.13.2.6 $
+ * Date modified: $Date: 2004-09-02 20:32:48 $
+ * Version:       $Revision: 1.13.2.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -628,8 +628,8 @@ namespace gmtlTest
       test_vec1.set(1,1,1);
       test_vec1 += (test_vec2 + test_vec3);
       CPPUNIT_ASSERT( test_vec1[0] == 6.0f &&
-                      test_vec1[1] == 7.0f &&
-                      test_vec1[2] == 8.0f );
+                      test_vec1[1] == 6.0f &&
+                      test_vec1[2] == 6.0f );
    }
 
    void VecMetricTest::testTimingOpPlusEq()
