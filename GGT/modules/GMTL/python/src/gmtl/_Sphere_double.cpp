@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Sphere_double.cpp,v $
- * Date modified: $Date: 2003-05-20 18:57:15 $
- * Version:       $Revision: 1.1.1.1 $
+ * Date modified: $Date: 2004-10-27 19:01:33 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -31,6 +31,7 @@
 #include <gmtl/Sphere.h>
 #include <gmtl/SphereOps.h>
 #include <gmtl/Output.h>
+#include <gmtl-pickle.h>
 
 // Using =======================================================================
 using namespace boost::python;
@@ -47,6 +48,7 @@ void _Export_Sphere_double()
         .def("getRadius", &gmtl::Sphere<double>::getRadius, return_value_policy< copy_const_reference >())
         .def("setCenter", &gmtl::Sphere<double>::setCenter)
         .def("setRadius", &gmtl::Sphere<double>::setRadius)
+        .def_pickle(gmtlPickle::Sphere_pickle<double>())
         .def(self == self)
         .def(self != self)
         .def(self_ns::str(self))

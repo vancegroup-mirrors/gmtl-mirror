@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Plane_double.cpp,v $
- * Date modified: $Date: 2003-05-20 18:57:15 $
- * Version:       $Revision: 1.1.1.1 $
+ * Date modified: $Date: 2004-10-27 19:01:33 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -31,6 +31,7 @@
 #include <gmtl/Plane.h>
 #include <gmtl/PlaneOps.h>
 #include <gmtl/Output.h>
+#include <gmtl-pickle.h>
 
 // Using =======================================================================
 using namespace boost::python;
@@ -49,6 +50,7 @@ void _Export_Plane_double()
         .def("setNormal", &gmtl::Plane<double>::setNormal)
         .def("getOffset", &gmtl::Plane<double>::getOffset, return_value_policy< copy_const_reference >())
         .def("setOffset", &gmtl::Plane<double>::setOffset)
+        .def_pickle(gmtlPickle::Plane_pickle<double>())
         .def(self == self)
         .def(self != self)
         .def(self_ns::str(self))

@@ -1,5 +1,7 @@
 DATE       AUTHOR       CHANGE
 ---------- ------------ -------------------------------------------------------
+2004-10-27 patrickh     PyGMTL data types can now be pickled.
+                        NEW VERSION: 0.4.2
 2004-09-22 allenb       Added build dependency for all settings used to create
                         gmtl-config script.
 2004-09-22 allenb       Added new Gauss-Jordan implace matrix invert.

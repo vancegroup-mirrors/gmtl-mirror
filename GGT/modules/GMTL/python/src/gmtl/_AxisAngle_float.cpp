@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _AxisAngle_float.cpp,v $
- * Date modified: $Date: 2003-05-20 18:57:15 $
- * Version:       $Revision: 1.1.1.1 $
+ * Date modified: $Date: 2004-10-27 19:01:33 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -30,6 +30,7 @@
 #include <boost/python.hpp>
 #include <gmtl/AxisAngle.h>
 #include <gmtl/Output.h>
+#include <gmtl-pickle.h>
 
 // Using =======================================================================
 using namespace boost::python;
@@ -48,6 +49,7 @@ void _Export_AxisAngle_float()
         .def("setAngle", &gmtl::AxisAngle<float>::setAngle)
         .def("getAxis", &gmtl::AxisAngle<float>::getAxis)
         .def("getAngle", &gmtl::AxisAngle<float>::getAngle, return_value_policy< copy_const_reference >())
+        .def_pickle(gmtlPickle::AxisAngle_pickle<float>())
         .def(self == self)
         .def(self != self)
         .def(self_ns::str(self))

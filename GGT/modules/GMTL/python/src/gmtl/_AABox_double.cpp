@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _AABox_double.cpp,v $
- * Date modified: $Date: 2003-05-20 18:57:15 $
- * Version:       $Revision: 1.1.1.1 $
+ * Date modified: $Date: 2004-10-27 19:01:32 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -31,6 +31,7 @@
 #include <gmtl/AABox.h>
 #include <gmtl/AABoxOps.h>
 #include <gmtl/Output.h>
+#include <gmtl-pickle.h>
 
 // Using =======================================================================
 using namespace boost::python;
@@ -50,6 +51,7 @@ void _Export_AABox_double()
         .def("setMin", &gmtl::AABox<double>::setMin)
         .def("setMax", &gmtl::AABox<double>::setMax)
         .def("setEmpty", &gmtl::AABox<double>::setEmpty)
+        .def_pickle(gmtlPickle::AABox_pickle<double>())
         .def(self == self)
         .def(self != self)
         .def(self_ns::str(self))

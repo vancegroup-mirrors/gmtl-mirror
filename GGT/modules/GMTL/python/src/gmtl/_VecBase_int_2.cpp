@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _VecBase_int_2.cpp,v $
- * Date modified: $Date: 2003-08-16 05:28:23 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2004-10-27 19:01:33 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -31,6 +31,7 @@
 #include <gmtl/Output.h>
 #include <gmtl-wrappers.h>
 #include <gmtl-getData-wrappers.h>
+#include <gmtl-pickle.h>
 
 // Using =======================================================================
 using namespace boost::python;
@@ -47,6 +48,7 @@ void _Export_VecBase_int_2()
         .add_property("data", (tuple (*)(gmtl::VecBase<int,2>*)) &gmtlWrappers::VecBase_2_getData)
         .def("__getitem__", (int& (gmtl::VecBase<int,2>::*)(const unsigned) ) &gmtl::VecBase<int,2>::operator[], return_value_policy<copy_non_const_reference>())
         .def("__setitem__", (void (*)(gmtl::VecBase<int,2>*, const unsigned, int)) &gmtlWrappers::setArrayElement)
+        .def_pickle(gmtlPickle::VecBase2_pickle<int>())
         .def(-self)
         .def(self += self)
         .def(self += self)

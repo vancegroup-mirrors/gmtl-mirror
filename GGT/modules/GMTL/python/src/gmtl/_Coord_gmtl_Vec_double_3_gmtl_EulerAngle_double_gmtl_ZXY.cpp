@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Coord_gmtl_Vec_double_3_gmtl_EulerAngle_double_gmtl_ZXY.cpp,v $
- * Date modified: $Date: 2003-05-20 18:57:15 $
- * Version:       $Revision: 1.1.1.1 $
+ * Date modified: $Date: 2004-10-27 19:01:33 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -31,6 +31,7 @@
 #include <gmtl/EulerAngleOps.h>
 #include <gmtl/CoordOps.h>
 #include <gmtl/Output.h>
+#include <gmtl-pickle.h>
 
 // Using =======================================================================
 using namespace boost::python;
@@ -48,6 +49,7 @@ void _Export_Coord_gmtl_Vec_double_3_gmtl_EulerAngle_double_gmtl_ZXY()
         .def("getRot", &gmtl::Coord<gmtl::Vec<double, 3>,gmtl::EulerAngle<double, gmtl::ZXY> >::getRot, return_internal_reference< 1 >())
         .def("pos", &gmtl::Coord<gmtl::Vec<double, 3>,gmtl::EulerAngle<double, gmtl::ZXY> >::pos, return_internal_reference< 1 >())
         .def("rot", &gmtl::Coord<gmtl::Vec<double, 3>,gmtl::EulerAngle<double, gmtl::ZXY> >::rot, return_internal_reference< 1 >())
+        .def_pickle(gmtlPickle::Coord_pickle< gmtl::Vec<double, 3>,gmtl::EulerAngle<double, gmtl::ZXY> >())
         .def(self == self)
         .def(self != self)
     );

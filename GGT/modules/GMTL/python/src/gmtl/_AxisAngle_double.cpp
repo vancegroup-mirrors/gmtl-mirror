@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _AxisAngle_double.cpp,v $
- * Date modified: $Date: 2003-05-20 18:57:15 $
- * Version:       $Revision: 1.1.1.1 $
+ * Date modified: $Date: 2004-10-27 19:01:32 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -30,6 +30,7 @@
 #include <boost/python.hpp>
 #include <gmtl/AxisAngle.h>
 #include <gmtl/Output.h>
+#include <gmtl-pickle.h>
 
 // Using =======================================================================
 using namespace boost::python;
@@ -48,6 +49,7 @@ void _Export_AxisAngle_double()
         .def("setAngle", &gmtl::AxisAngle<double>::setAngle)
         .def("getAxis", &gmtl::AxisAngle<double>::getAxis)
         .def("getAngle", &gmtl::AxisAngle<double>::getAngle, return_value_policy< copy_const_reference >())
+        .def_pickle(gmtlPickle::AxisAngle_pickle<double>())
         .def(self == self)
         .def(self != self)
         .def(self_ns::str(self))

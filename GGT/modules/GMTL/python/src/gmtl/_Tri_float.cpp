@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Tri_float.cpp,v $
- * Date modified: $Date: 2003-08-15 22:01:57 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2004-10-27 19:01:33 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -31,6 +31,7 @@
 #include <gmtl/Tri.h>
 #include <gmtl/TriOps.h>
 #include <gmtl/Output.h>
+#include <gmtl-pickle.h>
 
 // Using =======================================================================
 using namespace boost::python;
@@ -44,6 +45,7 @@ void _Export_Tri_float()
         .def("edge", (gmtl::Vec<float, 3> (gmtl::Tri<float>::*)(int) const) &gmtl::Tri<float>::edge)
         .def("edge", (gmtl::Vec<float, 3> (gmtl::Tri<float>::*)(int, int) const) &gmtl::Tri<float>::edge)
         .def("set", &gmtl::Tri<float>::set)
+        .def_pickle(gmtlPickle::Tri_pickle<float>())
         .def(self == self)
         .def(self != self)
         .def(self_ns::str(self))
