@@ -544,6 +544,7 @@ gfxn2/Debug/VecTest/const_vec-const_vec-const_vec:perf             0.8128
 gfxn2/Debug/VecTest/isEqualOverhead                                0.68005
 gfxn2/Debug/VecTest/vec+vec+vec:perf                               1.1465
 gfxn2/Debug/VecTest/vec-vec-vec:perf                               1.1271
+gfxn3/Debug/GenTest/getRot(quatf,f,f,f,f)                          0.80794
 gfxn3/Debug/GenTest/makeConj(quatd)                                0.451682
 gfxn3/Debug/GenTest/makeConj(quatf)                                0.431432
 gfxn3/Debug/GenTest/makeInvert(quatd)                              0.884082
