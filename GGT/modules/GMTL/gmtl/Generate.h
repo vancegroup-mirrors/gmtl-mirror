@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2004-09-16 19:40:35 $
- * Version:       $Revision: 1.84 $
+ * Date modified: $Date: 2004-09-22 20:38:09 $
+ * Version:       $Revision: 1.85 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -559,8 +559,8 @@ namespace gmtl
    /** Set an arbitrary projection matrix
     *  @result: set a projection matrix (similar to glFrustum).
     */
-   template <typename T, unsigned ROWS, unsigned COLS >
-   inline Matrix<T, ROWS, COLS>& setFrustum( Matrix<T, ROWS, COLS>& result,
+   template <typename T >
+   inline Matrix<T, 4,4>& setFrustum( Matrix<T, 4, 4>& result,
                                                    T left, T top, T right,
                                                    T bottom, T nr, T fr )
    {
@@ -584,7 +584,7 @@ namespace gmtl
       result.mData[14] = -( T( 2.0 ) * fr * nr ) / ( fr - nr );
       result.mData[15] = T( 0.0 );
 
-      result.mState = Matrix<T, ROWS, COLS>::FULL; // track state
+      result.mState = Matrix<T, 4, 4>::FULL; // track state
 
       return result;
    }
@@ -595,8 +595,8 @@ namespace gmtl
     *  @fr = -fr is the value of the far clipping plane (positive value for far is negative in the z direction)
     *  @result: set a orthographic matrix (similar to glOrtho).
     */
-   template <typename T, unsigned ROWS, unsigned COLS >
-   inline Matrix<T, ROWS, COLS>& setOrtho( Matrix<T, ROWS, COLS>& result,
+   template <typename T >
+   inline Matrix<T, 4,4>& setOrtho( Matrix<T,4,4>& result,
                                           T left, T top, T right,
                                           T bottom, T nr, T fr )
    {
@@ -632,8 +632,8 @@ namespace gmtl
     *   The distance from the viewer to the far clipping plane (always positive).
     * @result Set matrix to perspective transform
     */
-   template <typename T, unsigned COLS, unsigned ROWS >
-   inline Matrix<T, ROWS, COLS>& setPerspective( Matrix<T, ROWS, COLS>& result,
+   template <typename T>
+   inline Matrix<T, 4,4>& setPerspective( Matrix<T, 4, 4>& result,
                                                  T fovy, T aspect, T nr, T fr )
    {
       gmtlASSERT( nr > 0 && fr > nr && "invalid near and far values" );
