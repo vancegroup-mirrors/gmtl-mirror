@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MathTest.h,v $
- * Date modified: $Date: 2002-02-24 21:23:26 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-03-10 21:28:11 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -105,8 +105,14 @@ public:
    static CppUnit::Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("MathTest");
+// work around buggy VC7
+#ifndef _WIN32
       test_suite->addTest(new CppUnit::TestCaller<MathTest>("testZeroClampFloat", &MathTest::testZeroClamp<float>));
       test_suite->addTest(new CppUnit::TestCaller<MathTest>("testZeroClampDouble", &MathTest::testZeroClamp<double>));
+#else
+      test_suite->addTest(new CppUnit::TestCaller<MathTest>("testZeroClampFloat", MathTest::testZeroClamp<float>));
+      test_suite->addTest(new CppUnit::TestCaller<MathTest>("testZeroClampDouble", MathTest::testZeroClamp<double>));
+#endif // ! _WIN32
 
       return test_suite;
    }
