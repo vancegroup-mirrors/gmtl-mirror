@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PlaneTest.h,v $
- * Date modified: $Date: 2002-02-18 22:59:57 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-02-18 23:08:45 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -56,7 +56,6 @@ public:
 
    virtual void setUp()
    {
-      std::cout<<"Testing plane"<<std::endl;
       origin.set( 0,0,0 );
       x1_v.set( 1,0,0 );
       y1_v.set( 0,1,0 );
