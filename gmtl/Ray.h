@@ -6,9 +6,9 @@
  *   Allen Bierbaum
  *
  * -----------------------------------------------------------------
- * File:          $RCSfile: LineSeg.h,v $
+ * File:          $RCSfile: Ray.h,v $
  * Date modified: $Date: 2003-01-10 18:42:01 $
- * Version:       $Revision: 1.5 $
+ * Version:       $Revision: 1.1 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -32,20 +32,18 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 *
  ************************************************************ ggt-cpr end */
-#ifndef _GMTL_LINESEG_H_
-#define _GMTL_LINESEG_H_
+#ifndef _GMTL_RAY_H_
+#define _GMTL_RAY_H_
 
 #include <gmtl/Point.h>
 #include <gmtl/Vec.h>
 #include <gmtl/VecOps.h>
-#include <gmtl/Ray.h>
 
 namespace gmtl {
 
 /**
- * Describes a line segment. This is represented by a point origin O and a
- * vector spanning the length of the line segement originating at O. Thus any
- * point on the line segment can be described as
+ * Describes a ray. This is represented by a point origin O and a
+ * normalized vector direction. Any point on the ray can be described as
  *
  * P(s) = O + Vs
  *
@@ -53,62 +51,96 @@ namespace gmtl {
  *
  * @param DATA_TYPE     the internal type used for the point and vector
  */
-template <typename DATA_TYPE>
-class LineSeg : public Ray<DATA_TYPE>
+template< class DATA_TYPE >
+class Ray
 {
 public:
    /**
-    * Constructs a line segment at the origin with a zero vector.
+    * Constructs a ray at the origin with a zero vector.
     */
-   LineSeg()
+   Ray()
    {}
 
    /**
-    * Constructs a line segment with the given origin and vector.
+    * Constructs a ray with the given origin and vector.
     *
-    * @param origin     the point at which the line segment starts
+    * @param origin     the point at which the ray starts
     * @param dir        the vector describing the direction and length of the
-    *                   line segment starting at origin
+    *                   ray starting at origin
     */
-   LineSeg( const Point<DATA_TYPE, 3>& origin, const Vec<DATA_TYPE, 3>& dir )
-      : Ray<DATA_TYPE>( origin, dir )
+   Ray( const Point<DATA_TYPE, 3>& origin, const Vec<DATA_TYPE, 3>& dir )
+      : mOrigin( origin ), mDir( dir )
    {}
 
+   
+
    /**
-    * Constructs an exact duplicate of the given line segment.
+    * Constructs an exact duplicate of the given ray.
     *
-    * @param ray    the line segment to copy
+    * @param lineseg    the ray to copy
     */
-   LineSeg( const LineSeg& ray ) : Ray<DATA_TYPE>( ray )
+   Ray( const Ray& lineseg )
    {
+      mOrigin = lineseg.mOrigin;
+      mDir = lineseg.mDir;
    }
 
    /**
-    * Constructs a line segment with the given beginning and ending points.
+    * Gets the origin of the ray.
     *
-    * @param beg     the point at the beginning of the line segment
-    * @param end     the point at the end of the line segment
+    * @return  the point at the beginning of the line
     */
-   LineSeg( const Point<DATA_TYPE, 3>& beg, const Point<DATA_TYPE, 3>& end )
-      : Ray<DATA_TYPE>()
+   const Point<DATA_TYPE, 3>& getOrigin() const
    {
-      mOrigin = beg;
-      mDir = end - beg;
+      return mOrigin;
    }
 
    /**
-    * Gets the length of this line segment.
+    * Sets the origin point for this ray.
+    *
+    * @param origin     the point at which the ray starts
     */
-   DATA_TYPE getLength() const
+   void setOrigin( const Point<DATA_TYPE, 3>& origin )
    {
-      return length( mDir );
+      mOrigin = origin;
    }
+
+   /**
+    * Gets the vector describing the direction and length of the ray.
+    *
+    * @return  the ray's vector
+    */
+   const Vec<DATA_TYPE, 3>& getDir() const
+   {
+      return mDir;
+   }
+
+   /**
+    * Sets the vector describing the direction and length of the ray.
+    *
+    * @param dir     the ray's vector
+    */
+   void setDir( const Vec<DATA_TYPE, 3>& dir )
+   {
+      mDir = dir;
+   }
+
+public:
+   /**
+    * The origin of the ray.
+    */
+   Point<DATA_TYPE, 3> mOrigin;
+
+   /**
+    * The vector along which the ray lies.
+    */
+   Vec<DATA_TYPE, 3> mDir;
 };
 
 
 // --- helper types --- //
-typedef LineSeg<float>  LineSegf;
-typedef LineSeg<double> LineSegd;
+typedef Ray<float>  Rayf;
+typedef Ray<double> Rayd;
 }
 
 #endif

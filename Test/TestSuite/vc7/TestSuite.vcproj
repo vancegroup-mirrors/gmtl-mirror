@@ -395,6 +395,9 @@
 				RelativePath="..\..\..\gmtl\QuatOps.h">
 			</File>
 			<File
+				RelativePath="..\..\..\gmtl\Ray.h">
+			</File>
+			<File
 				RelativePath="..\..\..\gmtl\Sphere.h">
 			</File>
 			<File

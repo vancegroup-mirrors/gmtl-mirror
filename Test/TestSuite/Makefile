@@ -29,8 +29,8 @@
 #
 # -----------------------------------------------------------------
 # File:          $RCSfile: Makefile,v $
-# Date modified: $Date: 2003-01-10 06:44:31 $
-# Version:       $Revision: 1.45 $
+# Date modified: $Date: 2003-01-10 18:42:00 $
+# Version:       $Revision: 1.46 $
 # -----------------------------------------------------------------
 # *************** <auto-copyright.pl END do not edit this line> ***************
 
@@ -38,7 +38,7 @@
 # Advanced template makefile for VR Juggler applications.  This is intended
 # for "power users" who really know what they are doing and want to abuse
 # Doozer's flexibility.  :)
-# $Id: Makefile,v 1.45 2003-01-10 06:44:31 subatomic Exp $
+# $Id: Makefile,v 1.46 2003-01-10 18:42:00 subatomic Exp $
 #
 # *** IMPORTANT NOTES -- READ THESE FIRST ***
 #     1) This file _requires_ the use of GNU make (gmake).
@@ -56,7 +56,7 @@ default: all
 # -----------------------------------------------------------------------------
 
 # uncomment this if you're on Win32 using CYGWIN gcc...
-#COMPILER_TYPE = gcc
+COMPILER_TYPE = gcc
 
 GGT_ROOT	= ../../../../
 GMTL_ROOT   = ../../
