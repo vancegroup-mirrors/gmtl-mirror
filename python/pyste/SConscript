@@ -10,6 +10,6 @@ pyste_files = Split("""
 pyste_files = map(lambda n: n + '.pyste', pyste_files)
 
 for f in pyste_files:
-   baseEnv.Install(pj(PREFIX, 'python', 'pyste'), f)
+#   baseEnv.Install(pj(PREFIX, 'python', 'pyste'), f)
    pkg.addExtraDist([File(f)])
 
