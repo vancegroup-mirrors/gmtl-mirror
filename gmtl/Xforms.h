@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Xforms.h,v $
- * Date modified: $Date: 2002-03-09 04:07:12 $
- * Version:       $Revision: 1.13 $
+ * Date modified: $Date: 2002-03-09 19:50:46 $
+ * Version:       $Revision: 1.14 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -50,41 +50,33 @@ namespace gmtl
     * @pre give a vector
     * @post Rv = q P(v) q*
     * @post vector = rotquat * pure_quat_from_vector * rotquat_conj
-    * @see game programming gems #1 p199  (incorrectly states to use conj)
+    * @see game programming gems #1 p199
     * @see shoemake siggraph notes
+    * @notes for the implementation, inv and conj should both work for the "q*" in "Rv = q P(v) q*"
+    *        but conj is actually faster so we usually choose that.
     */
    template <typename DATA_TYPE>
    inline Vec<DATA_TYPE, 3>& xform( Vec<DATA_TYPE, 3>& result_vec, const Quat<DATA_TYPE>& rot, const Vec<DATA_TYPE, 3>& vector )
    {
       // easiest to write and understand (slowest too)
-      return result_vec = makeVec( rot * makePure( vector ) * makeInvert( rot ) );
-      
-      // longer, but maybe more optimal (faster by 8% than 1st method in gcc 2.96 debug mode.)
-      //Quat<DATA_TYPE> rot_conj( rot ); invert( rot_conj );
-      //Quat<DATA_TYPE> quat_vector( rot * Quat<DATA_TYPE>( vector[0], vector[1], vector[2], (DATA_TYPE)0.0 ) * rot_conj );
-      //result_vec[0] = quat_vector[0];
-      //result_vec[1] = quat_vector[1];
-      //result_vec[2] = quat_vector[2];
-      //return result_vec;
-      
+      //return result_vec = makeVec( rot * makePure( vector ) * makeConj( rot ) );
+
       // completely hand expanded 
-      // (faster by 28% than 1st method in gcc 2.96 debug mode.)
-      // (faster by 35% than 1st method in gcc 2.96 opt3 mode (78% for doubles))
-      /*
-      Quat<DATA_TYPE> rot_inv( makeInvert( rot ) ); 
+      // (faster by 28% in gcc 2.96 debug mode.)
+      // (faster by 35% in gcc 2.96 opt3 mode (78% for doubles))
+      Quat<DATA_TYPE> rot_conj( -rot[Xelt], -rot[Yelt], -rot[Zelt], rot[Welt] ); 
       Quat<DATA_TYPE> pure( vector[0], vector[1], vector[2], (DATA_TYPE)0.0 );
       Quat<DATA_TYPE> temp( 
-         pure[Welt]*rot_inv[Xelt] + pure[Xelt]*rot_inv[Welt] + pure[Yelt]*rot_inv[Zelt] - pure[Zelt]*rot_inv[Yelt],
-         pure[Welt]*rot_inv[Yelt] + pure[Yelt]*rot_inv[Welt] + pure[Zelt]*rot_inv[Xelt] - pure[Xelt]*rot_inv[Zelt],
-         pure[Welt]*rot_inv[Zelt] + pure[Zelt]*rot_inv[Welt] + pure[Xelt]*rot_inv[Yelt] - pure[Yelt]*rot_inv[Xelt],
-         pure[Welt]*rot_inv[Welt] - pure[Xelt]*rot_inv[Xelt] - pure[Yelt]*rot_inv[Yelt] - pure[Zelt]*rot_inv[Zelt] );
+         pure[Welt]*rot_conj[Xelt] + pure[Xelt]*rot_conj[Welt] + pure[Yelt]*rot_conj[Zelt] - pure[Zelt]*rot_conj[Yelt],
+         pure[Welt]*rot_conj[Yelt] + pure[Yelt]*rot_conj[Welt] + pure[Zelt]*rot_conj[Xelt] - pure[Xelt]*rot_conj[Zelt],
+         pure[Welt]*rot_conj[Zelt] + pure[Zelt]*rot_conj[Welt] + pure[Xelt]*rot_conj[Yelt] - pure[Yelt]*rot_conj[Xelt],
+         pure[Welt]*rot_conj[Welt] - pure[Xelt]*rot_conj[Xelt] - pure[Yelt]*rot_conj[Yelt] - pure[Zelt]*rot_conj[Zelt] );
       
       result_vec.set( 
          rot[Welt]*temp[Xelt] + rot[Xelt]*temp[Welt] + rot[Yelt]*temp[Zelt] - rot[Zelt]*temp[Yelt],
          rot[Welt]*temp[Yelt] + rot[Yelt]*temp[Welt] + rot[Zelt]*temp[Xelt] - rot[Xelt]*temp[Zelt],
          rot[Welt]*temp[Zelt] + rot[Zelt]*temp[Welt] + rot[Xelt]*temp[Yelt] - rot[Yelt]*temp[Xelt] );
       return result_vec;
-      */
    }
 
    /** transform a vector by a rotation quaternion.
@@ -95,30 +87,23 @@ namespace gmtl
    inline Vec<DATA_TYPE, 3> operator*( const Quat<DATA_TYPE>& rot, const Vec<DATA_TYPE, 3>& vector )
    {
       // easiest to write and understand (slowest too)
-      return makeVec( rot * makePure( vector ) * makeInvert( rot ) );
-      
-      // longer, but more optimal (faster by 8% than 1st method in gcc 2.96 debug mode.)
-      //Quat<DATA_TYPE> rot_conj( rot ); invert( rot_conj );
-      //Quat<DATA_TYPE> quat_vector( rot * Quat<DATA_TYPE>( vector[0], vector[1], vector[2], (DATA_TYPE)0.0 ) * rot_conj );
-      //return Vec<DATA_TYPE, 3>( quat_vector[0], quat_vector[1], quat_vector[2] );
+      //return makeVec( rot * makePure( vector ) * makeConj( rot ) );
       
       // completely hand expanded 
-      // (faster by 24% than 1st method in gcc 2.96 debug mode.)
-      // (faster by 29% than 1st method in gcc 2.96 opt3 mode (74% for doubles))
-      /*
-      Quat<DATA_TYPE> rot_inv( makeInvert( rot ) ); 
+      // (faster by 24% in gcc 2.96 debug mode.)
+      // (faster by 29% in gcc 2.96 opt3 mode (74% for doubles))
+      Quat<DATA_TYPE> rot_conj( -rot[Xelt], -rot[Yelt], -rot[Zelt], rot[Welt] ); 
       Quat<DATA_TYPE> pure( vector[0], vector[1], vector[2], (DATA_TYPE)0.0 );
       Quat<DATA_TYPE> temp( 
-         pure[Welt]*rot_inv[Xelt] + pure[Xelt]*rot_inv[Welt] + pure[Yelt]*rot_inv[Zelt] - pure[Zelt]*rot_inv[Yelt],
-         pure[Welt]*rot_inv[Yelt] + pure[Yelt]*rot_inv[Welt] + pure[Zelt]*rot_inv[Xelt] - pure[Xelt]*rot_inv[Zelt],
-         pure[Welt]*rot_inv[Zelt] + pure[Zelt]*rot_inv[Welt] + pure[Xelt]*rot_inv[Yelt] - pure[Yelt]*rot_inv[Xelt],
-         pure[Welt]*rot_inv[Welt] - pure[Xelt]*rot_inv[Xelt] - pure[Yelt]*rot_inv[Yelt] - pure[Zelt]*rot_inv[Zelt] );
+         pure[Welt]*rot_conj[Xelt] + pure[Xelt]*rot_conj[Welt] + pure[Yelt]*rot_conj[Zelt] - pure[Zelt]*rot_conj[Yelt],
+         pure[Welt]*rot_conj[Yelt] + pure[Yelt]*rot_conj[Welt] + pure[Zelt]*rot_conj[Xelt] - pure[Xelt]*rot_conj[Zelt],
+         pure[Welt]*rot_conj[Zelt] + pure[Zelt]*rot_conj[Welt] + pure[Xelt]*rot_conj[Yelt] - pure[Yelt]*rot_conj[Xelt],
+         pure[Welt]*rot_conj[Welt] - pure[Xelt]*rot_conj[Xelt] - pure[Yelt]*rot_conj[Yelt] - pure[Zelt]*rot_conj[Zelt] );
 
       return Vec<DATA_TYPE, 3>( 
          rot[Welt]*temp[Xelt] + rot[Xelt]*temp[Welt] + rot[Yelt]*temp[Zelt] - rot[Zelt]*temp[Yelt],
          rot[Welt]*temp[Yelt] + rot[Yelt]*temp[Welt] + rot[Zelt]*temp[Xelt] - rot[Xelt]*temp[Zelt],
          rot[Welt]*temp[Zelt] + rot[Zelt]*temp[Welt] + rot[Xelt]*temp[Yelt] - rot[Yelt]*temp[Xelt] );
-      */
    }
 
    
