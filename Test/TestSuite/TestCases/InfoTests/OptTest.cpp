@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: OptTest.cpp,v $
- * Date modified: $Date: 2002-02-12 03:32:03 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-02-12 04:42:36 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -262,29 +262,6 @@ namespace gmtlTest
       result.vec1 = lhs.vec1 + rhs.vec1;
       result.vec2 = lhs.vec2 + rhs.vec2;
    }
-
-   template< class T >
-   void passByVal( T val )
-   {
-      static T i = 0;
-      i += val;
-   }
-
-   template< class T >
-   void passByRef( T& val )
-   {
-      static T i = 0;
-      i += val;
-   }
-
-   template< class T >
-   void passByConstRef( const T& val )
-   {
-      static T i =0;
-      i += val;
-   }
-
-   const int TIMES_TO_RUN = 9999999;
 
    // listed in More Effective C++ p 107
    // this might be better, but it wont compile under gcc... :(
@@ -695,50 +672,4 @@ namespace gmtlTest
       }
    }
 
-   // test the performance of passing primitives into functions
-   template< class T >
-   void OptTest::testPassPrimitiveTypes()
-   {
-      T prim = 24;
-      std::cout << std::endl << "test performance of passing "<<(typeid(T).name())<<" into funcs" << std::endl;
-
-      // pass by value
-      {
-         CppUnit::MetricRegistry::TimeStamp start_t = CppUnit::MetricRegistry::instance()->getCurTime();
-         for (int x = 0; x < TIMES_TO_RUN; ++x)
-         {
-            prim = 12;
-            passByVal( prim );
-         }
-         CppUnit::MetricRegistry::TimeStamp end_t = CppUnit::MetricRegistry::instance()->getCurTime();
-         double avg = ((double)end_t - (double)start_t) / ((double)TIMES_TO_RUN);
-         std::cout << "["<<(typeid(T).name())<<"]testPassPrimitive (value):     " << avg << std::endl;
-      }
-
-      // pass by ref
-      {
-         CppUnit::MetricRegistry::TimeStamp start_t = CppUnit::MetricRegistry::instance()->getCurTime();
-         for (int x = 0; x < TIMES_TO_RUN; ++x)
-         {
-            prim = 12;
-            passByRef( prim );
-         }
-         CppUnit::MetricRegistry::TimeStamp end_t = CppUnit::MetricRegistry::instance()->getCurTime();
-         double avg = ((double)end_t - (double)start_t) / ((double)TIMES_TO_RUN);
-         std::cout << "["<<(typeid(T).name())<<"]testPassPrimitive (ref):       " << avg << std::endl;
-      }
-
-      // pass by const ref
-      {
-         CppUnit::MetricRegistry::TimeStamp start_t = CppUnit::MetricRegistry::instance()->getCurTime();
-         for (int x = 0; x < TIMES_TO_RUN; ++x)
-         {
-            prim = 12;
-            passByConstRef( prim );
-         }
-         CppUnit::MetricRegistry::TimeStamp end_t = CppUnit::MetricRegistry::instance()->getCurTime();
-         double avg = ((double)end_t - (double)start_t) / ((double)TIMES_TO_RUN);
-         std::cout << "["<<(typeid(T).name())<<"]testPassPrimitive (const ref): " << avg << std::endl;
-      }
-   }
 };
