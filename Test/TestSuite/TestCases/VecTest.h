@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.h,v $
- * Date modified: $Date: 2003-02-06 01:39:50 $
- * Version:       $Revision: 1.28 $
+ * Date modified: $Date: 2003-02-27 00:08:55 $
+ * Version:       $Revision: 1.29 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -64,7 +64,6 @@ namespace gmtlTest
       CPPUNIT_TEST(testOpScalarVecMult);
       CPPUNIT_TEST(testOpDivScalarEq);
       CPPUNIT_TEST(testOpDivScalar);
-      CPPUNIT_TEST(testGroupedOpsPerformance);
       CPPUNIT_TEST(testDot);
       CPPUNIT_TEST(testLength);
       CPPUNIT_TEST(testNormalize);
@@ -72,7 +71,6 @@ namespace gmtlTest
       CPPUNIT_TEST(testIsNormalizedEps);
       CPPUNIT_TEST(testCross);
       CPPUNIT_TEST(testReflect);
-      CPPUNIT_TEST(testVecTimingLerp);
       CPPUNIT_TEST(testLerp);
 
       CPPUNIT_TEST_SUITE_END();
@@ -98,7 +96,6 @@ namespace gmtlTest
       void testOpScalarVecMult();
       void testOpDivScalarEq();
       void testOpDivScalar();
-      void testGroupedOpsPerformance();
 
       // ---- Vec specific functions --- //
       void testDot();
@@ -108,9 +105,70 @@ namespace gmtlTest
       void testIsNormalizedEps();
       void testCross();
       void testReflect();
-
-      void testVecTimingLerp();
       void testLerp();
+   };
+
+   /**
+    * Metric tests
+    */
+   class VecMetricTest : public CppUnit::TestFixture
+   {
+      CPPUNIT_TEST_SUITE(VecMetricTest);
+
+      CPPUNIT_TEST(testTimingCreation);
+      CPPUNIT_TEST(testTimingCopyConstruct);
+      CPPUNIT_TEST(testTimingConstructors);
+      CPPUNIT_TEST(testTimingSet);
+      CPPUNIT_TEST(testTimingSetPtr);
+      CPPUNIT_TEST(testTimingEqualityCompare);
+      CPPUNIT_TEST(testTimingIsEqual);
+      CPPUNIT_TEST(testTimingOpNegate);
+      CPPUNIT_TEST(testTimingOpPlusEq);
+      CPPUNIT_TEST(testTimingOpPlus);
+      CPPUNIT_TEST(testTimingOpMinusEq);
+      CPPUNIT_TEST(testTimingOpMinus);
+      CPPUNIT_TEST(testTimingOpMultScalarEq);
+      CPPUNIT_TEST(testTimingOpMultScalar);
+      CPPUNIT_TEST(testTimingOpScalarVecMult);
+      CPPUNIT_TEST(testTimingOpDivScalarEq);
+      CPPUNIT_TEST(testTimingOpDivScalar);
+      CPPUNIT_TEST(testTimingGroupedOps);
+      CPPUNIT_TEST(testTimingDot);
+      CPPUNIT_TEST(testTimingLength);
+      CPPUNIT_TEST(testTimingNormalize);
+      CPPUNIT_TEST(testTimingIsNormalized);
+      CPPUNIT_TEST(testTimingIsNormalizedEps);
+      CPPUNIT_TEST(testTimingCross);
+      CPPUNIT_TEST(testTimingLerp);
+
+      CPPUNIT_TEST_SUITE_END();
+
+   public:
+      void testTimingCreation();
+      void testTimingCopyConstruct();
+      void testTimingConstructors();
+      void testTimingSet();
+      void testTimingSetPtr();
+      void testTimingEqualityCompare();
+      void testTimingIsEqual();
+      void testTimingOpNegate();
+      void testTimingOpPlusEq();
+      void testTimingOpPlus();
+      void testTimingOpMinusEq();
+      void testTimingOpMinus();
+      void testTimingOpMultScalarEq();
+      void testTimingOpMultScalar();
+      void testTimingOpScalarVecMult();
+      void testTimingOpDivScalarEq();
+      void testTimingOpDivScalar();
+      void testTimingGroupedOps();
+      void testTimingDot();
+      void testTimingLength();
+      void testTimingNormalize();
+      void testTimingIsNormalized();
+      void testTimingIsNormalizedEps();
+      void testTimingCross();
+      void testTimingLerp();
    };
 }
 
