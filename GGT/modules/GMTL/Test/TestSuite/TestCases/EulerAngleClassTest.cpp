@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: EulerAngleClassTest.cpp,v $
- * Date modified: $Date: 2002-06-06 19:30:25 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-06-10 18:27:47 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -41,7 +41,7 @@ namespace gmtlTest
    void EulerAngleClassTest::testEulerAngleClassTestCreation()
    {
       // test that it initializes to the identity
-      gmtl::EulerAngle3f q;
+      gmtl::EulerAnglef q;
       CPPUNIT_ASSERT( q[0] == 0.0f );
       CPPUNIT_ASSERT( q[1] == 0.0f );
       CPPUNIT_ASSERT( q[2] == 0.0f );
@@ -65,21 +65,21 @@ namespace gmtlTest
       CPPUNIT_ASSERT( q.getOrder() == gmtl::XYZ );
      
       // try out element constructor
-      gmtl::EulerAngle3f q2( 10.0f, 11.0f, 12.0f, gmtl::ZYX );
+      gmtl::EulerAnglef q2( 10.0f, 11.0f, 12.0f, gmtl::ZYX );
       CPPUNIT_ASSERT( q2[0] == 10.0f );
       CPPUNIT_ASSERT( q2[1] == 11.0f );
       CPPUNIT_ASSERT( q2[2] == 12.0f );
       CPPUNIT_ASSERT( q2.getOrder() == gmtl::ZYX );
 
       // try out copy constructor
-      gmtl::EulerAngle3f q3( q );
+      gmtl::EulerAnglef q3( q );
       CPPUNIT_ASSERT( q3[0] == 5.0f );
       CPPUNIT_ASSERT( q3[1] == 6.0f );
       CPPUNIT_ASSERT( q3[2] == 7.0f );
       CPPUNIT_ASSERT( q3.getOrder() == gmtl::XYZ );
 
       // try out operator=() function
-      gmtl::EulerAngle3f q4;
+      gmtl::EulerAnglef q4;
       CPPUNIT_ASSERT( q4[0] == 0.0f );
       CPPUNIT_ASSERT( q4[1] == 0.0f );
       CPPUNIT_ASSERT( q4[2] == 0.0f );
@@ -91,7 +91,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( q4.getOrder() == gmtl::ZYX );
 
       // check out the const identities...
-      gmtl::EulerAngle3f q9( gmtl::EULERANGLE_IDENTITY3F );
+      gmtl::EulerAnglef q9( gmtl::EULERANGLE_IDENTITYF );
       CPPUNIT_ASSERT( q9[0] == 0.0f );
       CPPUNIT_ASSERT( q9[1] == 0.0f );
       CPPUNIT_ASSERT( q9[2] == 0.0f );
@@ -107,7 +107,7 @@ namespace gmtlTest
       for (long iter = 0; iter < iters; ++iter)
       {
          // performance of def constructor
-         gmtl::EulerAngle3f q;
+         gmtl::EulerAnglef q;
          use_value += q.mData[0];
       }
       CPPUNIT_METRIC_STOP_TIMING();
@@ -125,7 +125,7 @@ namespace gmtlTest
       for (long iter = 0; iter < iters; ++iter)
       {
          // performance of element constructor
-         gmtl::EulerAngle3f q2( 10.0f, 11.0f, 12.0f, gmtl::XYZ );
+         gmtl::EulerAnglef q2( 10.0f, 11.0f, 12.0f, gmtl::XYZ );
          use_value += q2.mData[0];
       }
       CPPUNIT_METRIC_STOP_TIMING();
@@ -138,13 +138,13 @@ namespace gmtlTest
    {
       const long iters( 400000 );
       float use_value(1);
-      gmtl::EulerAngle3f q( 67.0f, 68.0f, 69.0f, gmtl::XYZ );
+      gmtl::EulerAnglef q( 67.0f, 68.0f, 69.0f, gmtl::XYZ );
 
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
          // performance of copy constructor
-         gmtl::EulerAngle3f q3( q );
+         gmtl::EulerAnglef q3( q );
          use_value += q3.mData[0];
       }
       CPPUNIT_METRIC_STOP_TIMING();
@@ -158,7 +158,7 @@ namespace gmtlTest
       const long iters( 400000 );
       float use_value(0);
       CPPUNIT_METRIC_START_TIMING();
-      gmtl::EulerAngle3f q;
+      gmtl::EulerAnglef q;
       for (long iter = 0; iter < iters; ++iter)
       {
          // performance of set...
@@ -176,7 +176,7 @@ namespace gmtlTest
       const long iters( 400000 );
       float use_value(0);
       CPPUNIT_METRIC_START_TIMING();
-      gmtl::EulerAngle3f q;
+      gmtl::EulerAnglef q;
       float x = 102.0f, y = 103.0f, z = 101.0f;
       gmtl::RotationOrder w = gmtl::XYZ;
       for (long iter = 0; iter < iters; ++iter)
@@ -199,7 +199,7 @@ namespace gmtlTest
       const long iters( 400000 );
       float use_value(0);
       CPPUNIT_METRIC_START_TIMING();
-      gmtl::EulerAngle3f q( 1, 2, 3, gmtl::XYZ );
+      gmtl::EulerAnglef q( 1, 2, 3, gmtl::XYZ );
       for (long iter = 0; iter < iters; ++iter)
       {
          // performance of getData...
@@ -215,7 +215,7 @@ namespace gmtlTest
    void EulerAngleClassTest::testEulerAngleTimingOpEqual()
    {
       const long iters( 400000 );
-      gmtl::EulerAngle3f q4, q2( 0.0f, 2.0f, 1.0f, gmtl::XYZ );
+      gmtl::EulerAnglef q4, q2( 0.0f, 2.0f, 1.0f, gmtl::XYZ );
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
