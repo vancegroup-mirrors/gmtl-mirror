@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Xforms.h,v $
- * Date modified: $Date: 2002-04-17 02:08:48 $
- * Version:       $Revision: 1.21 $
+ * Date modified: $Date: 2002-05-05 20:54:53 $
+ * Version:       $Revision: 1.22 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -157,13 +157,13 @@ namespace gmtl
       // do a standard [m x k] by [k x n] matrix multiplication (where n == 0).
 
       // copy the point to the correct size.
-      Point<DATA_TYPE, COLS> temp_vector, temp_result;
+      Vec<DATA_TYPE, COLS> temp_vector, temp_result;
       for (unsigned x = 0; x < VEC_SIZE; ++x)
          temp_vector[x] = vector[x];
       temp_vector[COLS-1] = (DATA_TYPE)0.0; // by definition of a vector, set the last unspecified elt to 0.0
 
       // transform it.
-      xform( temp_result, matrix, temp_vector );
+      xform<DATA_TYPE, ROWS, COLS>( temp_result, matrix, temp_vector );
 
       // convert result back to vec<DATA_TYPE, VEC_SIZE>
       // some matrices will make the W param large even if this is a true vector,
@@ -251,7 +251,7 @@ namespace gmtl
       temp_point[PNT_SIZE] = (DATA_TYPE)1.0; // by definition of a point, set the last unspecified elt to 1.0
 
       // transform it.
-      xform( temp_result, matrix, temp_point );
+      xform<DATA_TYPE, ROWS, COLS>( temp_result, matrix, temp_point );
 
       // convert result back to pnt<DATA_TYPE, PNT_SIZE>
       // some matrices will make the W param large even if this is a true vector,
