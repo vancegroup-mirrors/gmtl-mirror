@@ -131,12 +131,14 @@ def BuildWin32Environment():
       Tool(t)(env)
 
    # We need exception handling support turned on for Boost.Python.
-   env['CXXFLAGS'] += '/Zm800 /Z7 /Od /Ob0 /GX /GR /MDd /Op /DBOOST_PYTHON_DYNAMIC_LIB /Zc:wchar_t,forScope'
    env['LINKFLAGS'] += ' /subsystem:console /incremental:no'
+   env['CXXFLAGS'] += '/Zm800 /Ob0 /GX /GR /MD /Op /DBOOST_PYTHON_DYNAMIC_LIB /Zc:wchar_t,forScope'
 
    if optimize != 'no':
+      env['CXXFLAGS'] += ' /D_OPT'
       env['LINKFLAGS'] += ' /RELEASE'
    else:   
+      env['CXXFLAGS'] += ' /Z7 /Od /D_DEBUG'
       env['LINKFLAGS'] += ' /DEBUG'
 
    return env
@@ -314,6 +316,7 @@ profile = ARGUMENTS.get('profile', 'no')
 PREFIX = ARGUMENTS.get('prefix', '/usr/local')
 Prefix(PREFIX)
 Export('PREFIX')
+Export('optimize')
 
 # Create the extra builders
 # Define a builder for the gmtl-config script

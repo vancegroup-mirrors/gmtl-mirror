@@ -2,8 +2,8 @@ import glob
 import os
 pj = os.path.join
 
-Import('baseEnv pkg')
-Import('ApplyBoostOptions ApplyPythonOptions')
+Import('baseEnv optimize pkg')
+Import('GetPlatform ApplyBoostOptions ApplyPythonOptions')
 
 
 subdirs = Split("""
@@ -24,4 +24,12 @@ env = baseEnv.Copy()
 ApplyBoostOptions(env)
 ApplyPythonOptions(env)
 env.Append(CPPPATH   = ['#', '#python/src'])
-env.SharedLibrary('gmtl', sources, SHLIBPREFIX='')
+
+python_module = 'gmtl'
+
+# On Windows, it seems that a debug build of Python prefers that the modules
+# have file names that end in _d.
+if GetPlatform() == 'win32' and optimize != 'yes':
+   python_module += '_d'
+
+env.SharedLibrary(python_module, sources, SHLIBPREFIX='')
