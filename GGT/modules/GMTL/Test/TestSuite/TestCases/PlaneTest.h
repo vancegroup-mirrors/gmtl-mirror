@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PlaneTest.h,v $
- * Date modified: $Date: 2002-02-22 19:45:18 $
- * Version:       $Revision: 1.12 $
+ * Date modified: $Date: 2002-02-24 00:29:27 $
+ * Version:       $Revision: 1.13 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -351,22 +351,22 @@ public:
 
    void testWhichSide()
    {
-      gmtl::Plane<float>::Side answer;
+      gmtl::PlaneSide answer;
 
       answer = gmtl::whichSide(xy_plane, gmtl::Point<float, 3>(0.0,0.0,1.0));
-      CPPUNIT_ASSERT( answer == gmtl::Plane<float>::POS_SIDE );
+      CPPUNIT_ASSERT( answer == gmtl::POS_SIDE );
 
       answer = gmtl::whichSide(xy_plane, gmtl::Point<float, 3>(0.0,0.0,-12.0f));
-      CPPUNIT_ASSERT( answer == gmtl::Plane<float>::NEG_SIDE );
+      CPPUNIT_ASSERT( answer == gmtl::NEG_SIDE );
 
       answer = gmtl::whichSide(zx_plane, gmtl::Point<float, 3>(0.0,1e-10f,0.0f));
-      CPPUNIT_ASSERT( answer == gmtl::Plane<float>::POS_SIDE );
+      CPPUNIT_ASSERT( answer == gmtl::POS_SIDE );
 
       answer = gmtl::whichSide(zx_plane, gmtl::Point<float, 3>(0.0,-1e-10f,0.0f));
-      CPPUNIT_ASSERT( answer == gmtl::Plane<float>::NEG_SIDE );
+      CPPUNIT_ASSERT( answer == gmtl::NEG_SIDE );
 
       answer = gmtl::whichSide(xy_plane, gmtl::Point<float, 3>(0.0,0.0,0.0));
-      CPPUNIT_ASSERT( answer == gmtl::Plane<float>::ON_PLANE );
+      CPPUNIT_ASSERT( answer == gmtl::ON_PLANE );
 
       // Test whichSide performance
       const long iters(400000);
@@ -377,7 +377,7 @@ public:
 
       for( long iter=0; iter<iters; ++iter)
       {
-         if ( gmtl::distance(xy_plane, y1_pt) == gmtl::Plane<float>::POS_SIDE )
+         if ( gmtl::distance(xy_plane, y1_pt) == gmtl::POS_SIDE )
             ++true_count;
       }
 

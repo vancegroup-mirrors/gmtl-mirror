@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Plane.h,v $
- * Date modified: $Date: 2002-02-20 21:28:51 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-02-24 00:29:27 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -61,19 +61,6 @@ namespace gmtl
 template< class DATA_TYPE>
 class Plane
 {
-public:
-   /**
-    * Used to describe which side of the plane we are on.
-    * POS_SIDE: Side that the normal points
-    * NEG_SIDE: Side away from the normal
-    */
-   enum Side
-   {
-      ON_PLANE,
-      POS_SIDE,
-      NEG_SIDE
-   };
-
 public:
    /**
     * Creates an uninitialized Plane. In other words, the normal is (0,0,0) and
@@ -175,20 +162,7 @@ public:
    {
       mOffset = offset;
    }
-/*
-   // Helper distance functions
-   float distanceToPt(const Point3& pt) const;
 
-   Side whichSide(const Point3& pt) const;
-   inline Side whichSide(const Point3& pt, const float& eps) const;
-
-   //: Find nearest pt on the plane
-   //! RETURN: distance to the point
-   //+ If d is positive, pt lies on same side as normal
-   //+ If d is negative, pt lies on opposite side from normal
-   //+ if d is "near" zero, pt is on the plane
-   float findNearestPt(const Point3& pt, Point3& nearPt) const;
-*/
 public:
    // dot(Pt,mNorm) = mOffset
    /**
