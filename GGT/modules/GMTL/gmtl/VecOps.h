@@ -1,4 +1,4 @@
- /************************************************************** ggt-head beg
+/************************************************************** ggt-head beg
  *
  * GGT: Generic Graphics Toolkit
  *
@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecOps.h,v $
- * Date modified: $Date: 2002-03-20 16:06:20 $
- * Version:       $Revision: 1.11 $
+ * Date modified: $Date: 2002-03-21 16:29:48 $
+ * Version:       $Revision: 1.12 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -242,6 +242,28 @@ Vec<DATA_TYPE,3>& cross( Vec<DATA_TYPE,3>& result, const Vec<DATA_TYPE, 3>& v1, 
    return result;
 }
 
+//@}
+
+/** Vector interpolation operations */
+//@{
+
+/** Linear Interpolation between two vec types.
+ * @pre  lerpVal is a value between 0 and 1 that interpolates between from and to.
+ * @post undefined if lerpVal < 0 or lerpVal > 1
+ */
+template <typename DATA_TYPE, unsigned SIZE>
+VecBase<DATA_TYPE, SIZE>& lerp( VecBase<DATA_TYPE, SIZE>& result,
+                                const DATA_TYPE& lerpVal,
+                                const VecBase<DATA_TYPE, SIZE>& from, 
+                                const VecBase<DATA_TYPE, SIZE>& to )
+{
+   /// @todo metaprogramming...
+   for (unsigned int x = 0; x < SIZE; ++x)
+   {
+      Math::lerp( result[x], lerpVal, from[x], to[x] );
+   }
+   return result;
+}
 //@}
 
 
