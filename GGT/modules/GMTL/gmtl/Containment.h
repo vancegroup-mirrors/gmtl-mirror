@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Containment.h,v $
- * Date modified: $Date: 2002-02-16 04:11:35 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-02-18 20:27:54 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -168,6 +168,39 @@ void extendVolume( Sphere<DATA_TYPE>& container,
  *
  * @pre  pts must contain at least 2 points
  */
+template< class DATA_TYPE >
+void makeVolume( Sphere<DATA_TYPE>& container,
+                 const std::vector< Point<DATA_TYPE, 3> >& pts )
+{
+   ggtASSERT( pts.size() > 0  && "pts must contain at least 1 point" );
+
+   // Implementation based on the Sphere Centered at Average of Points algorithm
+   // found in "3D Game Engine Design" by Devud G, Eberly (pg. 27)
+   std::vector< Point<DATA_TYPE, 3> >::const_iterator itr = pts.begin();
+
+   // compute the average of the points as the center
+   Point<DATA_TYPE, 3> sum = *itr;
+   ++itr;
+   while ( itr != pts.end() )
+   {
+      sum += *itr;
+      ++itr;
+   }
+   container.mCenter = sum / pts.size();
+
+   // compute the distance from the computed center to point furthest from that
+   // center as the radius
+   DATA_TYPE radiusSqr(0);
+   for ( itr = pts.begin(); itr != pts.end(); ++itr )
+   {
+      float len = lengthSquared( *itr - container.mCenter );
+      if ( len > radiusSqr )
+         radiusSqr = len;
+   }
+
+   container.mRadius = Math::sqrt( radiusSqr );
+}
+
 /*
 template< class DATA_TYPE >
 void makeVolume( Sphere<DATA_TYPE>& container,

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: SphereTest.h,v $
- * Date modified: $Date: 2002-02-16 04:11:35 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-02-18 20:27:54 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -42,6 +42,7 @@
 #include <gmtl/Sphere.h>
 #include <gmtl/Compare.h>
 #include <gmtl/Containment.h>
+#include <gmtl/Math.h>
 
 namespace gmtlTest
 {
@@ -533,7 +534,7 @@ public:
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("SphereTest/extendVolumeSphereOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
-/*
+
    void testMakeVolumePoint()
    {
       gmtl::Sphere<float> test_sph;
@@ -546,14 +547,13 @@ public:
 
       makeVolume( test_sph, pts );
 
-      gmtl::Point<float, 3> pt(0.0f, 5.0f, 0.0f);
-      std::cout<<"( "<<test_sph.mCenter[0]<<", "<<test_sph.mCenter[1]<<", "<<test_sph.mCenter[2]<<" ) r="<<test_sph.mRadius<<std::endl;
-      CPPUNIT_ASSERT( test_sph.mRadius == 10.0f );
+      gmtl::Point<float, 3> pt(0.25f, 3.75f, 0.0f);
+      CPPUNIT_ASSERT( gmtl::Math::isEqual( test_sph.mRadius, 10.08f, 0.01f ) );
       CPPUNIT_ASSERT( test_sph.mCenter == pt);
 
       // test makeVolume performance
       const float iters(400000);
-      for ( unsigned i=0; i<1000; ++i )
+      for ( unsigned i=0; i<100; ++i )
       {
          gmtl::Point<float, 3> pt;
          pt[0] = gmtl::Math::rangeRandom( -10000.0f, 10000.0f );
@@ -565,13 +565,13 @@ public:
       CPPUNIT_METRIC_START_TIMING();
       for ( float iter=0; iter<iters; ++iter )
       {
-         pts[(int)iter % pts.size()][2] += 32.0f;
+         pts[(int)iter % pts.size()][2] += 12.0f;
          gmtl::makeVolume( test_sph, pts );
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("SphereTest/makeVolumePointOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
-
+/*
    void testMakeVolumeSphere()
    {
       gmtl::Sphere<float> test_sph;
@@ -629,7 +629,7 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<SphereTest>("testIsOnVolume", &SphereTest::testIsOnVolume));
       test_suite->addTest( new CppUnit::TestCaller<SphereTest>("testExtendVolumePoint", &SphereTest::testExtendVolumePoint));
       test_suite->addTest( new CppUnit::TestCaller<SphereTest>("testExtendVolumeSphere", &SphereTest::testExtendVolumeSphere));
-//      test_suite->addTest( new CppUnit::TestCaller<SphereTest>("testMakeVolumePoint", &SphereTest::testMakeVolumePoint));
+      test_suite->addTest( new CppUnit::TestCaller<SphereTest>("testMakeVolumePoint", &SphereTest::testMakeVolumePoint));
 //      test_suite->addTest( new CppUnit::TestCaller<SphereTest>("testMakeVolumeSphere", &SphereTest::testMakeVolumeSphere));
 
       return test_suite;
