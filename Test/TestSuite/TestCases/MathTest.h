@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MathTest.h,v $
- * Date modified: $Date: 2003-02-23 06:53:52 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2003-02-26 20:13:49 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -57,6 +57,20 @@ namespace gmtlTest
       void testSignf();
       void testZeroClampf();
       void testZeroClampd();
+   };
+
+   class MathMetricTest : public CppUnit::TestFixture
+   {
+      CPPUNIT_TEST_SUITE(MathMetricTest);
+
+      CPPUNIT_TEST(testTimingZeroClampf);
+      CPPUNIT_TEST(testTimingZeroClampd);
+
+      CPPUNIT_TEST_SUITE_END();
+
+   public:
+      void testTimingZeroClampf();
+      void testTimingZeroClampd();
    };
 }
 
