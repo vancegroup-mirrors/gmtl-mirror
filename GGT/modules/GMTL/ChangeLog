@@ -1,5 +1,7 @@
 DATE       AUTHOR       CHANGE
 ---------- --------     --------------------------------------------------------
+2002-11-01 nonchocoboy  Added sweep test for AABox.
+                        NEW VERSION: 0.1.12
 2002-10-28 nonchocoboy  set(AxisAngle, Quat) now guarantees that the AxisAngle
                         has a normalized axis.
                         NEW VERSION: 0.1.11
