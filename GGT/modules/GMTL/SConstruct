@@ -1,5 +1,6 @@
 import os, string, sys
 pj = os.path.join
+import re
 
 # Bring in the AutoDist build helper
 sys.path.append('tools/build')
@@ -146,6 +147,41 @@ def SetupCppUnit(env):
    ParseConfig(env, cfg + ' --cflags --libs')
 Export('SetupCppUnit')
 
+def ValidateBoostOption(key, value, environ):
+   "Validate the boost option settings"
+   req_boost_version = 103000;
+   sys.stdout.write("checking for %s [%s]..." % (key, value));
+
+   if "BoostDir" == key:
+      # Get the boost version
+      boost_ver_filename = pj(value, 'boost', 'version.hpp');
+      if not os.path.isfile(boost_ver_filename):
+         sys.stdout.write("[%s] not found.\n" % boost_ver_filename);
+         return False;
+      ver_file = file(boost_ver_filename);
+      ver_num = int(re.search("define\s+?BOOST_VERSION\s+?(\d*)", ver_file.read()).group(1));   # Matches 103000
+      sys.stdout.write("found version: %s\n" % ver_num);
+      if ver_num < req_boost_version:
+         print "   Boost version to old: required version:%s\n" % req_boost_version;
+         return False;
+   elif "BoostVariantDir" == key:
+      # Check for boost variant file
+      boost_variant_filename = pj(value, 'boost', 'variant.hpp');
+      if not os.path.isfile(boost_variant_filename):
+         sys.stdout.write("not found.\n");
+         return False;
+      else:
+         sys.stdout.write("found.\n");
+   else:
+      assert False, "Invalid boost key";
+
+
+def AddBoostOptions(opts):
+   opts.Add('BoostDir',
+           help = 'Boost installation directory (boost dir must exhist under this directory": default: CppUnitDir="/usr/local/include"',
+           finder = '/usr/local/include',
+           validater=ValidateBoostOption);
+
 
 
 #------------------------------------------------------------------------------
@@ -188,6 +224,7 @@ opts.Add('with-cppunit',
          '/usr/local',
          lambda k,v,env=None: WhereIs(pj(v, 'bin', 'cppunit-config')) != None
         )
+AddBoostOptions(opts);   
 opts.Update(baseEnv)
 Help(opts.GenerateHelpText(baseEnv))
 

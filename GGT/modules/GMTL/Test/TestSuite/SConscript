@@ -17,6 +17,7 @@ sources.extend(testcases_sources)
 env = baseEnv.Copy()
 SetupCppUnit(env)
 env.Append(CPPPATH = Split('#Test/TestSuite #'))
+env.Append(CPPPATH = env["BoostDir"]);
 
 # Win32 doesn't have libdl
 if GetPlatform() != 'win32':
