@@ -132,13 +132,13 @@ def BuildWin32Environment():
 
    # We need exception handling support turned on for Boost.Python.
    env['LINKFLAGS'] += ' /subsystem:console /incremental:no'
-   env['CXXFLAGS'] += '/Zm800 /Ob0 /GX /GR /MD /Op /DBOOST_PYTHON_DYNAMIC_LIB /Zc:wchar_t,forScope'
+   env['CXXFLAGS'] += '/Zm800 /GX /GR /Op /DBOOST_PYTHON_DYNAMIC_LIB /Zc:wchar_t,forScope'
 
    if optimize != 'no':
-      env['CXXFLAGS'] += ' /D_OPT'
+      env['CXXFLAGS'] += ' /Ogity /O2 /Gs /Ob2 /MD /D_OPT'
       env['LINKFLAGS'] += ' /RELEASE'
    else:   
-      env['CXXFLAGS'] += ' /Z7 /Od /D_DEBUG'
+      env['CXXFLAGS'] += ' /Z7 /Od /Ob0 /MDd /D_DEBUG'
       env['LINKFLAGS'] += ' /DEBUG'
 
    return env
@@ -148,7 +148,7 @@ def BuildWin32Environment():
 # ########################################
 def ValidateBoostOption(key, value, environ):
    "Validate the boost option settings"
-   global enable_python
+   global enable_python, optimize
    req_boost_version = 103000
    sys.stdout.write("checking for %s [%s]...\n" % (key, value))
 
@@ -189,7 +189,11 @@ def ValidateBoostOption(key, value, environ):
             environ.Append(BoostCPPPATH = [pj(value, 'include')])
 
          environ.Append(BoostLIBPATH = [pj(value, 'lib')])
-         environ.Append(BoostLIBS = ['boost_python'])
+
+         if GetPlatform() == 'win32' and optimize == 'no':
+            environ.Append(BoostLIBS = ['boost_python_debug'])
+         else:
+            environ.Append(BoostLIBS = ['boost_python'])
 
    else:
       assert False, "Invalid Boost key"
