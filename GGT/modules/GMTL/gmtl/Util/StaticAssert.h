@@ -4,12 +4,13 @@
 #ifndef GMTL_STATIC_ASSERT_HPP
 #define GMTL_STATIC_ASSERT_HPP
 
+#include <gmtl/Defines.h>
 #include <gmtl/Util/Meta.h>
 
 #ifdef __BORLANDC__
 //
 // workaround for buggy integral-constant expression support:
-#define BOOST_BUGGY_INTEGRAL_CONSTANT_EXPRESSIONS
+#define GMTL_BUGGY_INTEGRAL_CONSTANT_EXPRESSIONS
 #endif
 
 namespace gmtl
