@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Tri.h,v $
- * Date modified: $Date: 2003-07-31 00:39:52 $
- * Version:       $Revision: 1.11 $
+ * Date modified: $Date: 2004-10-27 23:43:39 $
+ * Version:       $Revision: 1.12 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -96,12 +96,12 @@ public:
     * @return  the nth vertex as a point
     */
    //@{
-   Point<DATA_TYPE, 3>& operator[]( int idx )
+   Point<DATA_TYPE, 3>& operator[]( const unsigned idx )
    {
       gmtlASSERT( (0 <= idx) && (idx <= 2) );
       return mVerts[idx];
    }
-   const Point<DATA_TYPE, 3>& operator[]( int idx ) const
+   const Point<DATA_TYPE, 3>& operator[]( const unsigned idx ) const
    {
       gmtlASSERT( (0 <= idx) && (idx <= 2) );
       return mVerts[idx];
