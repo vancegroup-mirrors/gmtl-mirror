@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Intersection.h,v $
- * Date modified: $Date: 2003-09-07 18:05:51 $
- * Version:       $Revision: 1.18 $
+ * Date modified: $Date: 2004-05-25 15:45:04 $
+ * Version:       $Revision: 1.19 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -546,7 +546,7 @@ namespace gmtl
    bool intersect( const Tri<DATA_TYPE>& tri, const Ray<DATA_TYPE>& ray, 
                         float& u, float& v, float& t )
    {
-      const float EPSILON = (DATA_TYPE)0.00001;
+      const float EPSILON = (DATA_TYPE)0.00001f;
       Vec<DATA_TYPE, 3> edge1, edge2, tvec, pvec, qvec;
       float det,inv_det;
 
