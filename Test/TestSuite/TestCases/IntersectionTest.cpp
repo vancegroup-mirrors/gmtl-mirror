@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: IntersectionTest.cpp,v $
- * Date modified: $Date: 2003-02-05 22:50:39 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2003-05-15 16:50:47 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -182,6 +182,55 @@ namespace gmtlTest
       
       // @todo, could use more rigorous testing here, test all sides of the box, 
       //        in and out and on the edges...
+   }
+
+   void IntersectionMetricTest::testIntersectLineSegPlane()
+   {
+	   gmtl::Planef plane( gmtl::Vec3f( 0,1,0 ), 0 );
+	   
+	   float d;
+	   bool res;
+	   // behind
+	   {
+		   gmtl::LineSegf seg( gmtl::Point3f( 0,-1,0 ), gmtl::Vec3f( 0,-1,0 ) );
+		   res = gmtl::intersect( plane, seg, d );
+		   assert( res == false );
+	   }
+	   // not long enough
+	   {
+		   gmtl::LineSegf seg( gmtl::Point3f( 0,5,0 ), gmtl::Vec3f( 0,-2.5,0 ) );
+		   res = gmtl::intersect( plane, seg, d );
+		   assert( res == false );
+		   assert( d == 2.0f );
+	   }
+	   // through
+	   {
+		   gmtl::LineSegf seg( gmtl::Point3f( 0,5,0 ), gmtl::Vec3f( 0,-10,0 ) );
+		   res = gmtl::intersect( plane, seg, d );
+		   assert( res == true );
+		   assert( d == 0.5f );
+	   }
+   }
+   
+   void IntersectionMetricTest::testIntersectRayPlane()
+   {
+	   gmtl::Planef plane( gmtl::Vec3f( 0,1,0 ), 0 );
+
+	   float d;
+	   bool res;
+	   // through
+	   {
+		   gmtl::Rayf ray( gmtl::Point3f( 0,5,0 ), gmtl::Vec3f( 0,-1,0 ) );
+		   res = gmtl::intersect( plane, ray, d );
+		   assert( res == true );
+		   assert( d == 5.0f );
+	   }
+	   // behind
+	   {
+		   gmtl::Rayf ray( gmtl::Point3f( 0,-1,0 ), gmtl::Vec3f( 0,-1,0 ) );
+		   res = gmtl::intersect( plane, ray, d );
+		   assert( res == false );
+	   }
    }
 
    void IntersectionMetricTest::testTimingIntersectAABoxPoint()
