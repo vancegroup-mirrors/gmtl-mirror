@@ -462,6 +462,7 @@ elif GetPlatform() == 'win32':
 else:
    print 'Unsupported build environment: ' + GetPlatform()
    sys.exit(-1)
+baseEnv['CXXFLAGS'].extend(['-DBOOST_PYTHON_MAX_ARITY=16'])
 baseEnv['enable_python'] = False
 Export('baseEnv')
 
