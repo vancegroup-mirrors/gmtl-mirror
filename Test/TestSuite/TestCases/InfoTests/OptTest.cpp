@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: OptTest.cpp,v $
- * Date modified: $Date: 2002-02-12 18:01:10 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2002-02-20 07:06:24 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -32,7 +32,7 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 *
  ************************************************************ ggt-cpr end */
-#include <OptTest.h>
+#include <TestCases/InfoTests/OptTest.h>
 
 namespace gmtlTest
 {
