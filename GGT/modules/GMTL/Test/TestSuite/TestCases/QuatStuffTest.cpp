@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatStuffTest.cpp,v $
- * Date modified: $Date: 2002-03-18 22:48:57 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-03-19 23:06:50 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -41,15 +41,19 @@ namespace gmtlTest
    {
       // make sure make rot produces a normalized quat (if not normalized, then it isn't a rotation)
       gmtl::Quatf q1, q2, q3, q4;
-      q3 = gmtl::makeRot( q1, gmtl::Math::deg2Rad( 45.0f ), 0.0f, 1.0f, 0.0f );
-      q4 = gmtl::makeRot( q2, gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f );
+      q3 = gmtl::setRot( q1, gmtl::Math::deg2Rad( 45.0f ), 0.0f, 1.0f, 0.0f );
+      q4 = gmtl::setRot( q2, gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f );
       gmtl::normalize( q3 );
       gmtl::normalize( q4 );
 
       // make sure that normalize doesn't change the rotation...
       CPPUNIT_ASSERT( gmtl::isEqual( q1, q3, 0.0001f ) );
       CPPUNIT_ASSERT( gmtl::isEqual( q2, q4, 0.0001f ) );
+      
+      CPPUNIT_ASSERT( gmtl::isEqual( q1, gmtl::makeRot<gmtl::Quatf>( gmtl::Math::deg2Rad( 45.0f ), 0.0f, 1.0f, 0.0f ), 0.0001f ) );
+      CPPUNIT_ASSERT( gmtl::isEqual( q2, gmtl::makeRot<gmtl::Quatf>( gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f ), 0.0001f ) );
 
+      
       float a, b, c, d;
       gmtl::getRot( q1, a, b, c, d );
       CPPUNIT_ASSERT( gmtl::Math::isEqual( a, gmtl::Math::deg2Rad( 45.0f ), 0.0001f ) );
@@ -68,14 +72,16 @@ namespace gmtlTest
    void QuatStuffTest::xformVecSweepTest()
    {
       // xform vector by quat (sweep over range of rotations)
-      gmtl::Quatf q;
+      gmtl::Quatf q, q2;
       gmtl::Vec3f v( 0.0f, 0.0f, 1.0f );
 
       // Should go from 0,0,1 to 0,-1,0 to 0,0,-1 ....
       for (float x = 0; x <= 180.0f; x += 90)
       {
-         gmtl::makeRot( q, gmtl::Math::deg2Rad( x ), 1.0f, 0.0f, 0.0f );
-
+         gmtl::setRot( q, gmtl::Math::deg2Rad( x ), 1.0f, 0.0f, 0.0f );
+         q2 = gmtl::makeRot<gmtl::Quatf>( gmtl::Math::deg2Rad( x ), 1.0f, 0.0f, 0.0f );
+         CPPUNIT_ASSERT( q2 == q );
+         
          gmtl::Vec3f result( q * v );
          if (x == 0)
             CPPUNIT_ASSERT( result[0] < 0.001 && result[1] < 0.001 && result[2] > 0.999 );
@@ -93,11 +99,16 @@ namespace gmtlTest
       {
          gmtl::Quatf q, q2;
          float rad, x, y, z;
-         gmtl::makeRot( q, gmtl::Math::deg2Rad(i), 1.0f, 0.0f, 0.0f );
-
+         gmtl::setRot( q, gmtl::Math::deg2Rad(i), 1.0f, 0.0f, 0.0f );
+         gmtl::Quatf sanity = gmtl::makeRot<gmtl::Quatf>( gmtl::Math::deg2Rad(i), 1.0f, 0.0f, 0.0f );
+         CPPUNIT_ASSERT( q == sanity );
+      
          gmtl::getRot( q, rad, x, y, z );
-         gmtl::makeRot( q2, rad, x, y, z );
-
+         gmtl::setRot( q2, rad, x, y, z );
+         sanity = gmtl::makeRot<gmtl::Quatf>( rad, x, y, z );
+         CPPUNIT_ASSERT( q2 == sanity );
+      
+         
          // make i a positive by x*360, store in b.  needed so I can use the % operator with neg values..
          CPPUNIT_ASSERT( gmtl::isEqual( q, q2, 0.0001f ) );
 
@@ -130,8 +141,13 @@ namespace gmtlTest
       // Quat product: no rotation * rotation
 
       gmtl::Quatf q1, q2, q3;
-      gmtl::makeRot( q1, 0.0f, 1.0f, 0.0f, 0.0f );
-      gmtl::makeRot( q2, gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f );
+      gmtl::setRot( q1, 0.0f, 1.0f, 0.0f, 0.0f );
+      gmtl::Quatf sanity = gmtl::makeRot<gmtl::Quatf>( 0.0f, 1.0f, 0.0f, 0.0f );
+      CPPUNIT_ASSERT( q1 == sanity );
+      
+      gmtl::setRot( q2, gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f );
+      sanity = gmtl::makeRot<gmtl::Quatf>( gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f );
+      CPPUNIT_ASSERT( q2 == sanity );
       // [0 rotation] * [90deg about x] should be [90deg about x]
 
       // first rotate by q2, then by q1
@@ -148,8 +164,8 @@ namespace gmtlTest
    {
       // Quat product: rotation * rotation
       gmtl::Quatf q1, q2, q3;
-      gmtl::makeRot( q1, gmtl::Math::deg2Rad( 45.0f ), 0.0f,1.0f,0.0f );
-      gmtl::makeRot( q2, gmtl::Math::deg2Rad( 90.0f ), 1.0f,0.0f,0.0f );
+      gmtl::setRot( q1, gmtl::Math::deg2Rad( 45.0f ), 0.0f,1.0f,0.0f );
+      gmtl::setRot( q2, gmtl::Math::deg2Rad( 90.0f ), 1.0f,0.0f,0.0f );
       // [45 about Y] * [90 about X] should be [90deg about .7,0,-.7]
 
       // first rotate by q2, then by q1
@@ -165,8 +181,8 @@ namespace gmtlTest
    {
       // xform vec by quat
       gmtl::Quatf q1, q2;//, q3;
-      gmtl::makeRot( q1, gmtl::Math::deg2Rad( 45.0f ), 0.0f, -1.0f, 0.0f );
-      gmtl::makeRot( q2, gmtl::Math::deg2Rad( 45.0f ), 1.0f,  0.0f, 0.0f );
+      gmtl::setRot( q1, gmtl::Math::deg2Rad( 45.0f ), 0.0f, -1.0f, 0.0f );
+      gmtl::setRot( q2, gmtl::Math::deg2Rad( 45.0f ), 1.0f,  0.0f, 0.0f );
 
       gmtl::Vec3f v( 0,1,0 ), r;
 
@@ -198,7 +214,7 @@ namespace gmtlTest
       //gmtl::Quatf qq( 0,0,0,0 );
       // make sure that makeRot(180,0,1,0) doesn't yield [0,0,0,0]
       gmtl::Quatf qqq;
-      gmtl::makeRot( qqq, gmtl::Math::deg2Rad( 180.0f ), 0.0f, 1.0f, 0.0f );
+      gmtl::setRot( qqq, gmtl::Math::deg2Rad( 180.0f ), 0.0f, 1.0f, 0.0f );
       CPPUNIT_ASSERT( gmtl::Math::isEqual( qqq[gmtl::Welt], 0.0f, 0.0001f ) &&
                       qqq[gmtl::Xelt] == 0.0f &&
                       gmtl::Math::isEqual( qqq[gmtl::Yelt], 1.0f, 0.0001f ) &&
@@ -218,7 +234,7 @@ namespace gmtlTest
       for (int x = 0; x < 360; ++x)
       {
          gmtl::Quatf q, q2;
-         gmtl::makeRot( q, gmtl::Math::deg2Rad( (float)x ), 0.7f, 0.0f, 0.7f );
+         gmtl::setRot( q, gmtl::Math::deg2Rad( (float)x ), 0.7f, 0.0f, 0.7f );
          gmtl::mult( q2, q, 0.5f );
 
          // no longer a valid rotation (non-unit length).
@@ -234,7 +250,7 @@ namespace gmtlTest
       for (int x = 0; x < 360; ++x)
       {
          gmtl::Quatf q, q2;
-         gmtl::makeRot( q, gmtl::Math::deg2Rad( (float)x ), 0.7f, 0.0f, 0.7f );
+         gmtl::setRot( q, gmtl::Math::deg2Rad( (float)x ), 0.7f, 0.0f, 0.7f );
          gmtl::mult( q2, q, 0.5f );
          gmtl::normalize( q2 );
 
@@ -250,15 +266,15 @@ namespace gmtlTest
 
       {
          gmtl::Quatf q, q1, q2;
-         gmtl::makeRot( q1, gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f );
-         gmtl::makeRot( q2, gmtl::Math::deg2Rad( 180.0f ), 1.0f, 0.0f, 0.0f );
+         gmtl::setRot( q1, gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f );
+         gmtl::setRot( q2, gmtl::Math::deg2Rad( 180.0f ), 1.0f, 0.0f, 0.0f );
 
          gmtl::add( q, q1, q2 );
          gmtl::normalize( q );
       }
 
       gmtl::Quatf q, q1;//, q2;
-      gmtl::makeRot( q1, gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f );
+      gmtl::setRot( q1, gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f );
 
       q = q1 * q;
    }
@@ -276,7 +292,7 @@ namespace gmtlTest
       {
          gmtl::Vec3f w( 0, x, 0 ); // angular velocity
          gmtl::Quatf q1, q2, wq( gmtl::makePure( w ) );
-         gmtl::makeRot( q1, gmtl::Math::deg2Rad( 90.0f ), 0.0f, 1.0f, 0.0f );
+         gmtl::setRot( q1, gmtl::Math::deg2Rad( 90.0f ), 0.0f, 1.0f, 0.0f );
 
          q2 = wq * q1;
          //////q2.normalize();  // don't normalize, will not work!!!!!!!!!
@@ -284,7 +300,7 @@ namespace gmtlTest
 
       gmtl::Vec3f ww( 0, 56, 0 );
       gmtl::Quatf q1, wq( gmtl::makePure( ww ) );
-      gmtl::makeRot( q1, gmtl::Math::deg2Rad( 90.0f ), 0.0f, 1.0f, 0.0f );
+      gmtl::setRot( q1, gmtl::Math::deg2Rad( 90.0f ), 0.0f, 1.0f, 0.0f );
 
       const float& w1( wq[gmtl::Welt] );
       const float& w2( q1[gmtl::Welt] );

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: ConvertTest.h,v $
- * Date modified: $Date: 2002-03-18 21:56:24 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2002-03-19 23:06:49 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -41,7 +41,7 @@ Quat [] -km Transforquations XformInterface? Xform.h   Collision detection Colli
 #include <gmtl/gmtlConfig.h>
 #include <gmtl/Convert.h>
 
-// @todo test convert( vec, matrix ), convert( matrix, vec )
+/// @todo test convert( vec, matrix ), convert( matrix, vec )
 
 namespace gmtlTest
 {
