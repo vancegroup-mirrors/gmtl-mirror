@@ -1,28 +1,8 @@
-import os
-pj = os.path.join
+import glob
 
 Import('pkg baseEnv PREFIX')
 
-headers = Split("""
-   gmtl-AABoxOps.h
-   gmtl-AxisAngleOps.h
-   gmtl-Containment.h
-   gmtl-CoordOps.h
-   gmtl-EulerAngleOps.h
-   gmtl-GenOps.h
-   gmtl-Generate.h
-   gmtl-LineSegOps.h
-   gmtl-MatrixOps.h
-   gmtl-PlaneOps.h
-   gmtl-QuatOps.h
-   gmtl-SphereOps.h
-   gmtl-TriOps.h
-   gmtl-VecOps.h
-   gmtl-Xforms.h
-   gmtl-getData-wrappers.h
-   gmtl-intersect-wrappers.h
-   gmtl-wrappers.h
-""")
+headers = glob.glob('*.h')
 
 subdirs = Split("""
    gmtl
@@ -32,6 +12,5 @@ for s in subdirs:
    SConscript(dirs = s)
 
 for h in headers:
-#   baseEnv.Install(pj(PREFIX, 'python', 'src'), h)
    pkg.addExtraDist([File(h)])
 
