@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOpsTest.h,v $
- * Date modified: $Date: 2002-02-16 00:12:09 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-02-16 00:24:25 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -418,7 +418,7 @@ public:
       {
          gmtl::Matrix<T, 3, 3> mat1, mat2, mat3, res_mat;
 
-         T eps = (T)0.0001;
+         T eps = (T)0.001;
 
          mat1.set((T) 1.1000, (T)2.2000,  (T) 3.3000, 
                   (T) 5.5000, (T)6.6000,  (T) 7.7000, 
@@ -498,7 +498,7 @@ public:
          gmtl::Matrix<T, 3, 3> res33, expected_answer33;
 
          
-         T eps = (T)0.0001;
+         T eps = (T)0.01;
 
          T v1[] = { 1.1000, 2.2000, 3.3000, 4.4000, 
                     5.5000, 6.6000, 7.7000, 8.8000,   
@@ -556,7 +556,7 @@ public:
       {
          gmtl::Matrix<T, 4, 4> mat1, mat2, mat3, res_mat;
 
-         T eps = (T)0.0001;
+         T eps = (T)0.001;
 
          mat1.set((T) 1.1000, (T)2.2000,  (T) 3.3000, (T) 4.4000,
                   (T) 5.5000, (T)6.6000,  (T) 7.7000, (T) 8.8000,
@@ -604,7 +604,7 @@ public:
                      1765.070,  1898.660,  2090.570,  2282.480,
                       185.960,    94.580,    83.390,    72.200,
                       545.440,   598.620,   668.810,   739.000 );
-         CPPUNIT_ASSERT( isEqual( res_mat, mat3, (T)0.05 ) );
+         CPPUNIT_ASSERT( isEqual( res_mat, mat3, eps ) );
          
          // test post and pre mult operators...
          {
@@ -646,7 +646,7 @@ public:
       {
          gmtl::Matrix<T, 4, 4> mat1, res_mat, expected_result;
 
-         T eps = (T)0.0001;
+         T eps = (T)0.001;
 
          mat1.set((T) 1.1000, (T)2.2000,  (T) 3.3000, (T) 4.4000,
                   (T) 5.5000, (T)6.6000,  (T) 7.7000, (T) 8.8000,
@@ -686,7 +686,7 @@ public:
       static void go()
       {
          gmtl::Matrix<DATA_TYPE, 4, 4> mat1, expected_value, result, identity;
-         DATA_TYPE eps = 0.0001;
+         DATA_TYPE eps = 0.001;
          mat1.set( 0.78,  1.4,   2.9, 3.45,
                    4.21, 57.9,  65.9, 74.6,
                    89.2, 99.2,  10.9, 11.9,

@@ -174,7 +174,7 @@ gfxn3/Debug/MatrixCompareTest/matOpNotEqualityTest                 2.21088
 gfxn3/Debug/MatrixOpsTest/matAdd44                                 1.24508
 gfxn3/Debug/MatrixOpsTest/matMult44                                6.25859
 gfxn3/Debug/MatrixOpsTest/matSub44                                 1.25822
-gfxn3/Debug/MatrixOpsTest/matTransposeTest                         0.95929
+gfxn3/Debug/MatrixOpsTest/matTransposeTest                         0.88732
 gfxn3/Debug/MatrixTest/matConstructorOverhead                      2.76557
 gfxn3/Debug/MatrixTest/matCopyConstructorOverhead                  1.06981
 gfxn3/Debug/MatrixTest/matGetDataOverhead                          0.0530875
