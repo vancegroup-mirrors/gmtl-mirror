@@ -9,8 +9,8 @@
 #
 # -----------------------------------------------------------------
 # File:          $RCSfile: gmtl-config.in,v $
-# Date modified: $Date: 2002-06-04 00:03:31 $
-# Version:       $Revision: 1.4 $
+# Date modified: $Date: 2002-08-23 03:35:56 $
+# Version:       $Revision: 1.5 $
 # -----------------------------------------------------------------
 #
 # ********************************************************** ggt-head end
@@ -34,9 +34,6 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 #
 # *********************************************************** ggt-cpr end
-
-%{
-%}
 
 gmtl_extra_cxxflags="@gmtl_extra_cxxflags@"
 gmtl_extra_include_dirs="@gmtl_extra_include_dirs@"
