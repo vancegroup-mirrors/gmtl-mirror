@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-02-15 22:14:27 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-02-18 19:59:55 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -34,5 +34,62 @@
  ************************************************************ ggt-cpr end */
 #ifndef _GMTL_GENERATE_H_
 #define _GMTL_GENERATE_H_
+
+#include <gmtl/Matrix.h>
+
+namespace gmtl
+{
+   /** Create a matrix using an axis and an angle.
+    *  to a rotation matrix defined by the rotation part of M
+    */
+   template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
+   inline Matrix<DATA_TYPE, ROWS, COLS>& makeRot( Matrix<DATA_TYPE, ROWS, COLS> result, DATA_TYPE radians, DATA_TYPE x, DATA_TYPE y, DATA_TYPE z )
+   {
+      // TODO: make this a compile time assert...
+      assert( ROWS >= 3 && COLS >= 3 && "this is undefined for Matrix smaller than 3x3" );
+      
+      // GGI: pg 466
+      DATA_TYPE s = Math::sin( radians );
+      DATA_TYPE c = Math::cos( radians );
+      DATA_TYPE t = 1-c;
+
+      /* From: Introduction to robotic.  Craig.  Pg. 52 */
+      result( 0, 0 ) = (t*x*x)+c;     result( 0, 1 ) = (t*x*y)-(s*z); result( 0, 2 ) = (t*x*z)+(s*y); 
+      result( 1, 0 ) = (t*x*y)+(s*z); result( 1, 1 ) = (t*y*y)+c;     result( 1, 2 ) = (t*y*z)-(s*x); 
+      result( 2, 0 ) = (t*x*z)-(s*y); result( 2, 1 ) = (t*y*z)+(s*x); result( 2, 2 ) = (t*z*z)+c;     
+
+      // if 4x3, 3x4, or 4x4, then fill in the rest with ident...
+      if (ROWS > 3)
+      {
+         result( 3, 0 ) = 0.0f; result( 3, 1 ) = 0.0f; result( 3, 2 ) = 0.0f;
+      }
+                  
+      if (COLS > 3)           
+      {
+         result( 0, 3 ) = 0.0f;
+         result( 1, 3 ) = 0.0f;
+         result( 2, 3 ) = 0.0f;
+         
+      }
+      
+      if (ROWS > 3 && COLS > 3)
+      {
+         result( 3, 3 ) = 1.0f;
+      }
+
+      return result;
+   }
+
+   /** Create a matrix using an axis and an angle. 
+    *  to a rotation matrix defined by the rotation part of M
+    */
+   template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
+   inline Matrix<DATA_TYPE, ROWS, COLS> makeRot( DATA_TYPE radians, DATA_TYPE x, DATA_TYPE y, DATA_TYPE z )
+   {
+      // (slow -> uses a temporary)
+      Matrix<DATA_TYPE, ROWS, COLS> temporary;
+      return makeRot( temporary, radians, x, y, z );
+   }
+} // end gmtl namespace.
 
 #endif
