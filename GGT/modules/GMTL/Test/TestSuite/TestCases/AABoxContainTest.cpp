@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AABoxContainTest.cpp,v $
- * Date modified: $Date: 2003-02-05 02:21:17 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2004-12-08 22:29:44 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -55,9 +55,16 @@ namespace gmtlTest
       gmtl::AABoxf box2(gmtl::Point3f(-1,-1,-1), gmtl::Point3f(1,1,1));
       gmtl::Point3f pt1(2,2,2);
       CPPUNIT_ASSERT(! gmtl::isInVolume(box2, pt1));
+      CPPUNIT_ASSERT(! gmtl::isInVolumeExclusive(box2, pt1));
 
-      //Test valid vox with pt inside
+      //Test valid box with pt inside
       CPPUNIT_ASSERT(gmtl::isInVolume(box2, origin));
+      CPPUNIT_ASSERT(gmtl::isInVolumeExclusive(box2, origin));
+
+      //Test valid box with pt on surface
+      gmtl::Point3f pt_on_surf(1,0,0);
+      CPPUNIT_ASSERT(gmtl::isInVolume(box2, pt_on_surf));
+      CPPUNIT_ASSERT(!gmtl::isInVolumeExclusive(box2, pt_on_surf));
    }
 
    void AABoxContainMetricTest::testTimingIsInVolumePt()
