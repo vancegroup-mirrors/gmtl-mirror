@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Math.h,v $
- * Date modified: $Date: 2002-05-20 22:36:13 $
- * Version:       $Revision: 1.26 $
+ * Date modified: $Date: 2002-05-28 14:46:15 $
+ * Version:       $Revision: 1.27 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -38,10 +38,6 @@
 #include <math.h>
 #include <stdlib.h>
 #include <gmtl/Assert.h>
-
-/** @defgroup Math C Math Abstraction: sin, cos, tan, Min, Max, PI
- *  We've abstracted C math to be cross platform and typesafe.
- */
 
 namespace gmtl
 {

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Xforms.h,v $
- * Date modified: $Date: 2002-05-20 22:39:22 $
- * Version:       $Revision: 1.24 $
+ * Date modified: $Date: 2002-05-28 14:46:15 $
+ * Version:       $Revision: 1.25 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -43,12 +43,6 @@
 #include <gmtl/QuatOps.h>
 #include <gmtl/Convert.h>
 #include <gmtl/Generate.h>
-
-/** @defgroup Transforms Spacial Transformers: xform( ... ), operator*( ... ).
- *  Transform points and vectors by Matrices and Quaternions.  Note that xform
- *  is defined differently for Point and Vec.  By Point is a full xform, by Vec 
- *  is only a rotation.
- */
 
 namespace gmtl
 {

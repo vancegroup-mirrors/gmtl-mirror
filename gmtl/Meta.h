@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Meta.h,v $
- * Date modified: $Date: 2002-05-17 23:07:11 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-05-28 14:46:15 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -34,9 +34,6 @@
  ************************************************************ ggt-cpr end */
 #ifndef _GMTL_METAPROGRAMMING_H
 #define _GMTL_METAPROGRAMMING_H
-
-/** @defgroup Meta Template Metaprogramming Utilities */
-/** @defgroup HelperMeta Template Metaprogramming Utilities (Helpers) */
 
 namespace gmtl
 {  

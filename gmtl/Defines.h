@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Defines.h,v $
- * Date modified: $Date: 2002-05-21 14:58:55 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-05-28 14:46:15 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -34,30 +34,6 @@
  ************************************************************ ggt-cpr end */
 #ifndef _GMTL_DEFINES_H
 #define _GMTL_DEFINES_H
-
-/** @defgroup Types Abstract Data Types: Matrix, Vec, Quat, Coord, Sphere, Plane
- *  GMTL comes with many math data types: Vec, Point, Matrix, Quat, Coord, Sphere.
- */
-
-/** @defgroup Ops Mathematical Operations: add(...), sub(...), mul(...), div(...), invert(...), dot(...), cross(...)
- *  Implements fundamental mathematical operations such as +, -, *, invert, dot product.
- */
-
-/** @defgroup Compare Comparison: isEqual(...), isEquiv(...), ==, !=
- *  Tests for equality between GMTL data types.
- */
-
-/** @defgroup Convert Conversion: convert(...)
- *  Conversion between gmtl data types...
- */
-
-/** @defgroup Interp Interpolation: lerp(...), slerp(...)
- *  Functions to interpolate between two values.
- */
-
-/** @defgroup Defines Global Flags: Xelt, XYZ, etc...
- *  Constant Static Global Flags
- */
 
 namespace gmtl
 {
