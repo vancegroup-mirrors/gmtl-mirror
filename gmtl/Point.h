@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Point.h,v $
- * Date modified: $Date: 2002-05-21 15:26:32 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2002-06-13 13:55:45 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -82,9 +82,6 @@ public:
    {;}
    Point(const VecBase<DATA_TYPE, SIZE>& rVec)
       : BaseType(rVec)
-   {;}
-   Point(const DATA_TYPE& val0)
-      : BaseType(val0)
    {;}
    Point(const DATA_TYPE& val0,const DATA_TYPE& val1)
    : BaseType(val0, val1)
