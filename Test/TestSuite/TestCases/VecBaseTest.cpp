@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecBaseTest.cpp,v $
- * Date modified: $Date: 2002-03-18 23:09:12 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-03-21 21:32:34 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -49,7 +49,10 @@ namespace gmtlTest
       CPPUNIT_ASSERT( vec[1] == 0.0f);
       CPPUNIT_ASSERT( vec[2] == 0.0f);
       */
+   }
 
+   void VecBaseTest::testTimingVecBaseCreation()
+   {
       // Test overhead of creation
       const long iters(400000);
       float use_value(0);
@@ -86,7 +89,10 @@ namespace gmtlTest
       CPPUNIT_ASSERT( test_vec_copy[0] == 2.0f);
       CPPUNIT_ASSERT( test_vec_copy[1] == 4.0f);
       CPPUNIT_ASSERT( test_vec_copy[2] == 8.0f);
+   }
 
+   void VecBaseTest::testTimingCopyConstruct()
+   {
       // Test copy construction overhead
       const long iters(400000);
       gmtl::VecBase<float, 2> test_vec2;
@@ -134,6 +140,10 @@ namespace gmtlTest
       gmtl::VecBase<float, 1> test_vec1(1.0f);
       CPPUNIT_ASSERT( test_vec1[0] == 1.0f);
 
+   }
+
+   void VecBaseTest::testTimingConstructors()
+   {
       // Test constructor
       const long iters(400000);
       float use_value(0.0f);     // A temp just here to use the objs so the copiler (hopefully) does not opt them out
@@ -177,8 +187,15 @@ namespace gmtlTest
       gmtl::VecBase<float, 1> test_vec1;
       test_vec1.set(1.0f);
       CPPUNIT_ASSERT( test_vec1[0] == 1.0f);
+   }
 
+   void VecBaseTest::testTimingSet()
+   {
       // Test constructor
+      gmtl::VecBase<float, 1> test_vec1;
+      gmtl::VecBase<float, 2> test_vec2;
+      gmtl::VecBase<float, 3> test_vec3;
+      gmtl::VecBase<float, 4> test_vec4;
       const float iters(400000);
       float use_value(0.0f);     // A temp just here to use the objs so the copiler (hopefully) does not opt them out
 
@@ -225,7 +242,15 @@ namespace gmtlTest
       gmtl::VecBase<float, 1> test_vec1;
       test_vec1.set(data);
       CPPUNIT_ASSERT( test_vec1[0] == 1.0f);
+   }
 
+   void VecBaseTest::testTimingSetPtr()
+   {
+      float data[4] = {1.0f, 2.0f, 3.0f, 4.0f};
+      gmtl::VecBase<float, 1> test_vec1;
+      gmtl::VecBase<float, 2> test_vec2;
+      gmtl::VecBase<float, 3> test_vec3;
+      gmtl::VecBase<float, 4> test_vec4;
       // Test constructor
       const float iters(400000);
       float use_value(0.0f);     // A temp just here to use the objs so the copiler (hopefully) does not opt them out

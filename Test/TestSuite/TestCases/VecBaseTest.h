@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecBaseTest.h,v $
- * Date modified: $Date: 2002-03-18 23:09:12 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-03-21 21:32:34 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -58,6 +58,7 @@ public:
    {
    }
 
+   // correctness tests
    void testVecBaseCreation();
    void testCopyConstruct();
    void testConstructors();
@@ -65,6 +66,15 @@ public:
    void testSet();
    void testSetPtr();
    void testGetData();
+
+   // performance tests
+   void testTimingVecBaseCreation();
+   void testTimingCopyConstruct();
+   void testTimingConstructors();
+
+   void testTimingSet();
+   void testTimingSetPtr();
+   void testTimingGetData();
 
    static CppUnit::Test* suite()
    {
@@ -75,6 +85,19 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<VecBaseTest>("testSet", &VecBaseTest::testSet));
       test_suite->addTest( new CppUnit::TestCaller<VecBaseTest>("testSetPtr", &VecBaseTest::testSetPtr));
       test_suite->addTest( new CppUnit::TestCaller<VecBaseTest>("testGetData", &VecBaseTest::testGetData));
+
+      return test_suite;
+   }
+
+   static CppUnit::Test* perfSuite()
+   {
+      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("VecBasePerfTest");
+
+      test_suite->addTest( new CppUnit::TestCaller<VecBaseTest>("testTimingVecBaseCreation", &VecBaseTest::testTimingVecBaseCreation));
+      test_suite->addTest( new CppUnit::TestCaller<VecBaseTest>("testTimingCopyConstruct", &VecBaseTest::testTimingCopyConstruct));
+      test_suite->addTest( new CppUnit::TestCaller<VecBaseTest>("testTimingConstructors", &VecBaseTest::testTimingConstructors));
+      test_suite->addTest( new CppUnit::TestCaller<VecBaseTest>("testTimingSet", &VecBaseTest::testTimingSet));
+      test_suite->addTest( new CppUnit::TestCaller<VecBaseTest>("testTimingSetPtr", &VecBaseTest::testTimingSetPtr));
 
       return test_suite;
    }
