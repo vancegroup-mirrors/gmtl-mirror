@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Quat.h,v $
- * Date modified: $Date: 2003-03-29 22:02:19 $
- * Version:       $Revision: 1.22 $
+ * Date modified: $Date: 2004-11-15 17:43:04 $
+ * Version:       $Revision: 1.23 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -119,7 +119,7 @@ public:
    /** get the raw data elements of the quaternion.
     *  @post sets the given variables to the quaternion's x, y, z, and w values
     */
-   void get( DATA_TYPE& x, DATA_TYPE& y, DATA_TYPE& z, DATA_TYPE& w )
+   void get( DATA_TYPE& x, DATA_TYPE& y, DATA_TYPE& z, DATA_TYPE& w ) const
    {
       x = mData[Xelt];
       y = mData[Yelt];
