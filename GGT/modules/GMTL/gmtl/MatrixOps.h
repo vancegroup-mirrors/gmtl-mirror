@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOps.h,v $
- * Date modified: $Date: 2003-03-17 18:34:36 $
- * Version:       $Revision: 1.30 $
+ * Date modified: $Date: 2003-04-11 04:16:08 $
+ * Version:       $Revision: 1.31 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -65,8 +65,8 @@ namespace gmtl
          for (unsigned int x = 0; x < Math::Min( COLS, ROWS ); ++x)
             result( x, x ) = (DATA_TYPE)1.0;
 
-//         result.mState = Matrix<DATA_TYPE, ROWS, COLS>::IDENTITY;
-         result.mState = Matrix<DATA_TYPE, ROWS, COLS>::FULL;
+         result.mState = Matrix<DATA_TYPE, ROWS, COLS>::IDENTITY;
+//         result.mState = Matrix<DATA_TYPE, ROWS, COLS>::FULL;
       }
 
       return result;
@@ -93,6 +93,7 @@ namespace gmtl
             result.mData[x] = (DATA_TYPE)0;
          }
       }
+      result.mState = Matrix<DATA_TYPE, ROWS, COLS>::ORTHOGONAL;
       return result;
    }
 
@@ -118,6 +119,8 @@ namespace gmtl
       for (unsigned int k = 0; k < INTERNAL; ++k)       // [k = 1 to p]
          ret_mat( i, j ) += lhs( i, k ) * rhs( k, j );
 
+      // track state
+      ret_mat.mState = combineMatrixStates( lhs.mState, rhs.mState );
       return result = ret_mat;
    }
 
@@ -151,6 +154,8 @@ namespace gmtl
       for (unsigned int j = 0; j < COLS; ++j)           // 1 <= j <= n
          result( i, j ) = lhs( i, j ) - rhs( i, j );
 
+      // track state
+      result.mState = combineMatrixStates( lhs.mState, rhs.mState );
       return result;
    }
 
@@ -171,6 +176,8 @@ namespace gmtl
       for (unsigned int j = 0; j < COLS; ++j)           // 1 <= j <= n
          result( i, j ) = lhs( i, j ) + rhs( i, j );
 
+      // track state
+      result.mState = combineMatrixStates( lhs.mState, rhs.mState );
       return result;
    }
 
@@ -217,6 +224,7 @@ namespace gmtl
    {
       for (unsigned i = 0; i < ROWS * COLS; ++i)
          result.mData[i] = mat.mData[i] * scalar;
+      result.mState = mat.mState;
       return result;
    }
 
@@ -275,11 +283,147 @@ namespace gmtl
             result( i, j ) = temp( j, i );
          }
       }
-
+      result.mState = temp.mState;
       return result;
    }
 
+   /** translational matrix inversion.
+    *  Matrix inversion that acts on a translational matrix (matrix with only translation)
+    *  Check for error with Matrix::isError().
+    * @pre: 4x3, 4x4 matrices only 
+    * @post: result' = inv( result )
+    * @post: If inversion failed, then error bit is set within the Matrix.
+    */
+   template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
+   inline Matrix<DATA_TYPE, ROWS, COLS>& invertTrans( Matrix<DATA_TYPE, ROWS, COLS>& result, 
+                                                       const Matrix<DATA_TYPE, ROWS, COLS>& src )
+   {
+      assert( ROWS == COLS || COLS == ROWS+1 && "invertTrans supports NxN or Nx(N-1) matrices only" );
 
+      if (&result != &src)
+         result = src; // could optimise this a little more (skip the trans copy), favor simplicity for now...
+      for (int x = 0; x < (ROWS-1+(COLS-ROWS)); ++x)
+      {
+         result[x][3] = -result[x][3];
+      }
+      return result;
+   }
+
+   /** orthogonal matrix inversion.
+    *  Matrix inversion that acts on a affine matrix (matrix with only trans, rot, uniform scale)
+    *  Check for error with Matrix::isError().
+    * @pre: any size matrix
+    * @post: result' = inv( result )
+    * @post: If inversion failed, then error bit is set within the Matrix.
+    */
+   template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
+   inline Matrix<DATA_TYPE, ROWS, COLS>& invertOrthogonal( Matrix<DATA_TYPE, ROWS, COLS>& result, 
+                                                       const Matrix<DATA_TYPE, ROWS, COLS>& src )
+   {
+      // in case result is == source... :(
+      Matrix<DATA_TYPE, ROWS, COLS> temp = src;
+
+      // if 3x4, 2x3, etc...  can't transpose the last column
+      const unsigned int size = Math::Min( ROWS, COLS );
+
+      // p. 149 Numerical Analysis (second ed.)
+      for (unsigned i = 0; i < size; ++i)
+      {
+         for (unsigned j = 0; j < size; ++j)
+         {
+            result( i, j ) = temp( j, i );
+         }
+      }
+      result.mState = temp.mState;
+      return result;
+   }
+
+   /** affine matrix inversion.
+    *  Matrix inversion that acts on a 4x3 affine matrix (matrix with only trans, rot, uniform scale)
+    *  Check for error with Matrix::isError().
+    * @pre: 3x3, 4x3, 4x4 matrices only 
+    * @POST: result' = inv( result )
+    * @POST: If inversion failed, then error bit is set within the Matrix.
+    */
+   template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
+   inline Matrix<DATA_TYPE, ROWS, COLS>& invertAffine( Matrix<DATA_TYPE, ROWS, COLS>& result, 
+                                                       const Matrix<DATA_TYPE, ROWS, COLS>& source )
+   {
+      static const float eps = 0.00000001f;
+
+      // in case &result is == &source... :(
+      Matrix<DATA_TYPE, ROWS, COLS> src = source;
+
+      // The rotational part of the matrix is simply the transpose of the
+      // original matrix.
+      for (int x = 0; x < 3; ++x)
+      for (int y = 0; y < 3; ++y)
+      {
+         result[x][y] = src[y][x];
+      }
+
+      // do non-uniform scale inversion
+      if (src.mState & Matrix<DATA_TYPE, ROWS, COLS>::NON_UNISCALE)
+      {
+         float l0 = gmtl::lengthSquared( gmtl::Vec3f( result[0][0], result[0][1], result[0][2] ) ); 
+         float l1 = gmtl::lengthSquared( gmtl::Vec3f( result[1][0], result[1][1], result[1][2] ) );
+         float l2 = gmtl::lengthSquared( gmtl::Vec3f( result[2][0], result[2][1], result[2][2] ) );
+         if (gmtl::Math::abs( l0 ) > eps) l0 = 1.0f / l0;
+         if (gmtl::Math::abs( l1 ) > eps) l1 = 1.0f / l1;
+         if (gmtl::Math::abs( l2 ) > eps) l2 = 1.0f / l2;
+         // apply the inverse scale to the 3x3
+         // for each axis: normalize it (1/length), and then mult by inverse scale (1/length)
+         result[0][0] *= l0;
+         result[0][1] *= l0;
+         result[0][2] *= l0;
+         result[1][0] *= l1;
+         result[1][1] *= l1;
+         result[1][2] *= l1;
+         result[2][0] *= l2;
+         result[2][1] *= l2;
+         result[2][2] *= l2;
+      }
+      
+      // handle matrices with translation
+      if (COLS == 4)
+      {
+         // The right column vector of the matrix should always be [ 0 0 0 s ]
+         // this represents some shear values
+         result[3][0] = result[3][1] = result[3][2] = 0;
+         
+         // The translation components of the original matrix.
+         const float& tx = src[0][3];
+         const float& ty = src[1][3];
+         const float& tz = src[2][3];
+         
+   
+         // Rresult = -(Tm * Rm) to get the translation part of the inverse
+         if (ROWS == 4)
+         {
+            // invert scale.
+            const float tw = (gmtl::Math::abs( src[3][3] ) > eps) ? 1.0f / src[3][3] : 0.0f;
+
+            // handle uniform scale in Nx4 matrices
+            result[0][3] = -( result[0][0] * tx + result[0][1] * ty + result[0][2] * tz ) * tw;
+            result[1][3] = -( result[1][0] * tx + result[1][1] * ty + result[1][2] * tz ) * tw;
+            result[2][3] = -( result[2][0] * tx + result[2][1] * ty + result[2][2] * tz ) * tw;
+            result[3][3] = tw;
+         }
+         else if (ROWS == 3)
+         {
+            result[0][3] = -( result[0][0] * tx + result[0][1] * ty + result[0][2] * tz );
+            result[1][3] = -( result[1][0] * tx + result[1][1] * ty + result[1][2] * tz );
+            result[2][3] = -( result[2][0] * tx + result[2][1] * ty + result[2][2] * tz );
+         }
+      }
+
+      
+
+      result.mState = src.mState;
+
+      return result;
+   }
+   
    /** full matrix inversion.
     *  Check for error with Matrix::isError().
     * @POST: result' = inv( result )
@@ -288,6 +432,8 @@ namespace gmtl
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
    inline Matrix<DATA_TYPE, ROWS, COLS>& invertFull( Matrix<DATA_TYPE, ROWS, COLS>& result, const Matrix<DATA_TYPE, ROWS, COLS>& src )
    {
+      assert( ROWS == COLS && "invertFull only works with nxn matrices" );
+
       /*---------------------------------------------------------------------------*
        | mat_inv: Compute the inverse of a n x n matrix, using the maximum pivot   |
        |          strategy.  n <= MAX1.                                            |
@@ -391,6 +537,7 @@ namespace gmtl
             b[ i * n +  j] = m[ row[ i]][ j + n];
 
       // It worked
+      result.mState = src.mState;
       return result;
    }
 
@@ -409,6 +556,13 @@ namespace gmtl
    {
       if (src.mState == Matrix<DATA_TYPE, ROWS, COLS>::IDENTITY )
          return result = src;
+      else if (src.mState == Matrix<DATA_TYPE, ROWS, COLS>::TRANS)
+         return invertTrans( result, src );
+      else if (src.mState == Matrix<DATA_TYPE, ROWS, COLS>::ORTHOGONAL)
+         return invertOrthogonal( result, src );
+      else if (src.mState == Matrix<DATA_TYPE, ROWS, COLS>::AFFINE ||
+               src.mState == (Matrix<DATA_TYPE, ROWS, COLS>::AFFINE | Matrix<DATA_TYPE, ROWS, COLS>::NON_UNISCALE))
+         return invertAffine( result, src );
       else
          return invertFull( result, src );
    }

@@ -1,5 +1,11 @@
 DATE       AUTHOR       CHANGE
 ---------- ------------ -------------------------------------------------------
+2003-04-10 subatomic    Matrix state tracking.  Extensive testing on this.
+                           Anyone writing their own matrix methods MUST also
+                           implement matrix state tracking in every method!!|
+                        Added const version of the [][] operator for Matrix
+                        Implemented invertAffine, invertOrtho,
+                           invertTrans for Matrix
 2003-04-01 subatomic    April Fools.
                         added setPerspective, setFrustum
 2003-03-31 patrickh     Removed unneeded second argument from the function
