@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2003-05-17 21:57:53 $
- * Version:       $Revision: 1.79 $
+ * Date modified: $Date: 2003-09-24 00:03:18 $
+ * Version:       $Revision: 1.80 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -1331,6 +1331,70 @@ namespace gmtl
    }
 
    /** @} */
+
+   /** Accesses a particular row in the matrix by copying the values in the row
+    * into the given vector.
+    *
+    * @param dest       the vector in which the values of the row will be placed
+    * @param src        the matrix being accessed
+    * @param row        the row of the matrix to access
+    */
+   template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
+   void setRow(Vec<DATA_TYPE, COLS>& dest, const Matrix<DATA_TYPE, ROWS, COLS>& src, unsigned row)
+   {
+      for (unsigned i=0; i<COLS; ++i)
+      {
+         dest[i] = src[row][i];
+      }
+   }
+
+   /** Accesses a particular row in the matrix by creating a new vector
+    * containing the values in the given matrix.
+    *
+    * @param src        the matrix being accessed
+    * @param row        the row of the matrix to access
+    *
+    * @return  a vector containing the values in the requested row
+    */
+   template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
+   Vec<DATA_TYPE, COLS> makeRow(const Matrix<DATA_TYPE, ROWS, COLS>& src, unsigned row)
+   {
+      Vec<DATA_TYPE, COLS> result;
+      setRow(result, src, row);
+      return result;
+   }
+
+   /** Accesses a particular column in the matrix by copying the values in the
+    * column into the given vector.
+    *
+    * @param dest       the vector in which the values of the column will be placed
+    * @param src        the matrix being accessed
+    * @param col        the column of the matrix to access
+    */
+   template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
+   void setColumn(Vec<DATA_TYPE, ROWS>& dest, const Matrix<DATA_TYPE, ROWS, COLS>& src, unsigned col)
+   {
+      for (unsigned i=0; i<ROWS; ++i)
+      {
+         dest[i] = src[i][col];
+      }
+   }
+
+   /** Accesses a particular column in the matrix by creating a new vector
+    * containing the values in the given matrix.
+    *
+    * @param src        the matrix being accessed
+    * @param col        the column of the matrix to access
+    *
+    * @return  a vector containing the values in the requested column
+    */
+   template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
+   Vec<DATA_TYPE, ROWS> makeColumn(const Matrix<DATA_TYPE, ROWS, COLS>& src, unsigned col)
+   {
+      Vec<DATA_TYPE, ROWS> result;
+      setColumn(result, src, col);
+      return result;
+   }
 
 } // end gmtl namespace.
 

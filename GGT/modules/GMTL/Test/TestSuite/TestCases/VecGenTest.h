@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecGenTest.h,v $
- * Date modified: $Date: 2003-02-06 01:39:50 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2003-09-24 00:03:18 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -48,12 +48,17 @@ namespace gmtlTest
 
       CPPUNIT_TEST(testMakeVecFromQuat);
       CPPUNIT_TEST(testMakeNormalVecFromVec);
+      CPPUNIT_TEST(testMatrixRowAccess);
+      CPPUNIT_TEST(testMatrixColumnAccess);
 
       CPPUNIT_TEST_SUITE_END();
 
    public:
       void testMakeVecFromQuat();
       void testMakeNormalVecFromVec();
+
+      void testMatrixRowAccess();
+      void testMatrixColumnAccess();
    };
 
    /**

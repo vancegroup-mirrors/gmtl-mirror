@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecGenTest.cpp,v $
- * Date modified: $Date: 2003-02-06 01:39:50 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2003-09-24 00:03:18 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -82,9 +82,108 @@ namespace gmtlTest
          CPPUNIT_ASSERT( gmtl::isEqual( expected, result, eps ) );
       }
    }
-   
-   
-   
+
+   template< typename T, unsigned ROWS, unsigned COLS >
+   class RowTest
+   {
+   public:
+      static void test()
+      {
+         // Create a matrix filled in linearly
+         gmtl::Matrix<T, ROWS, COLS> mat;
+         for (unsigned int i=0; i<(ROWS*COLS); ++i)
+         {
+            mat.mData[i] = T(i);
+         }
+
+         // Get each row and test it
+         for (unsigned int i=0; i<ROWS; ++i)
+         {
+            gmtl::Vec<T, COLS> row = gmtl::makeRow(mat, i);
+            // Test the row values
+            for (unsigned int col=0; col<COLS; ++col)
+            {
+               CPPUNIT_ASSERT(row[col] == (col*ROWS + i));
+            }
+         }
+      }
+   };
+
+   void VecGenTest::testMatrixRowAccess()
+   {
+      // Int
+      RowTest<int, 2, 2>::test();
+      RowTest<int, 2, 3>::test();
+      RowTest<int, 2, 4>::test();
+      RowTest<int, 3, 2>::test();
+      RowTest<int, 3, 3>::test();
+      RowTest<int, 3, 4>::test();
+      RowTest<int, 4, 2>::test();
+      RowTest<int, 4, 3>::test();
+      RowTest<int, 4, 4>::test();
+      // Float
+      RowTest<float, 2, 2>::test();
+      RowTest<float, 2, 3>::test();
+      RowTest<float, 2, 4>::test();
+      RowTest<float, 3, 2>::test();
+      RowTest<float, 3, 3>::test();
+      RowTest<float, 3, 4>::test();
+      RowTest<float, 4, 2>::test();
+      RowTest<float, 4, 3>::test();
+      RowTest<float, 4, 4>::test();
+   }
+
+   template< typename T, unsigned ROWS, unsigned COLS >
+   class ColumnTest
+   {
+   public:
+      static void test()
+      {
+         // Create a matrix filled in linearly
+         gmtl::Matrix<T, ROWS, COLS> mat;
+         for (unsigned int i=0; i<(ROWS*COLS); ++i)
+         {
+            mat.mData[i] = T(i);
+         }
+
+         // Get each column and test it
+         for (unsigned int i=0; i<COLS; ++i)
+         {
+            gmtl::Vec<T, ROWS> col = gmtl::makeColumn(mat, i);
+            // Test the row values
+            for (unsigned int row=0; row<ROWS; ++row)
+            {
+               CPPUNIT_ASSERT(col[row] == (i*ROWS + row));
+            }
+         }
+      }
+   };
+
+   void VecGenTest::testMatrixColumnAccess()
+   {
+      // Int
+      ColumnTest<int, 2, 2>::test();
+      ColumnTest<int, 2, 3>::test();
+      ColumnTest<int, 2, 4>::test();
+      ColumnTest<int, 3, 2>::test();
+      ColumnTest<int, 3, 3>::test();
+      ColumnTest<int, 3, 4>::test();
+      ColumnTest<int, 4, 2>::test();
+      ColumnTest<int, 4, 3>::test();
+      ColumnTest<int, 4, 4>::test();
+      // Float
+      ColumnTest<float, 2, 2>::test();
+      ColumnTest<float, 2, 3>::test();
+      ColumnTest<float, 2, 4>::test();
+      ColumnTest<float, 3, 2>::test();
+      ColumnTest<float, 3, 3>::test();
+      ColumnTest<float, 3, 4>::test();
+      ColumnTest<float, 4, 2>::test();
+      ColumnTest<float, 4, 3>::test();
+      ColumnTest<float, 4, 4>::test();
+   }
+
+
    //-- timing tests --//
    
    
