@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Xforms.h,v $
- * Date modified: $Date: 2002-03-09 22:54:50 $
- * Version:       $Revision: 1.15 $
+ * Date modified: $Date: 2002-03-09 23:17:54 $
+ * Version:       $Revision: 1.16 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -260,7 +260,7 @@ namespace gmtl
       // convert result back to pnt<DATA_TYPE, PNT_SIZE>
       // some matrices will make the W param large even if this is a true vector, 
       // we'll need to redistribute it to the other elts if W param is non-zero
-      if (Math::isEqual( temp_result[VEC_SIZE], (DATA_TYPE)0, (DATA_TYPE)0.0001 ) == false)
+      if (Math::isEqual( temp_result[PNT_SIZE], (DATA_TYPE)0, (DATA_TYPE)0.0001 ) == false)
       {
          DATA_TYPE w_coord_div = DATA_TYPE( 1.0 ) / temp_result[PNT_SIZE];
          for (int x = 0; x < PNT_SIZE; ++x)
