@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Matrix_float_3_3.cpp,v $
- * Date modified: $Date: 2004-10-27 19:01:33 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2004-10-27 23:57:32 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -43,10 +43,7 @@ void _Export_Matrix_float_3_3()
     class_< gmtl::Matrix<float,3,3> >("Matrix33f", init<  >())
         .def(init< const gmtl::Matrix<float,3,3> & >())
         .def_readwrite("mState", &gmtl::Matrix<float,3,3>::mState)
-        .def("set", (void (gmtl::Matrix<float,3,3>::*)(float, float, float, float) )&gmtl::Matrix<float,3,3>::set)
-        .def("set", (void (gmtl::Matrix<float,3,3>::*)(float, float, float, float, float, float) )&gmtl::Matrix<float,3,3>::set)
         .def("set", (void (gmtl::Matrix<float,3,3>::*)(float, float, float, float, float, float, float, float, float) )&gmtl::Matrix<float,3,3>::set)
-        .def("set", (void (gmtl::Matrix<float,3,3>::*)(float, float, float, float, float, float, float, float, float, float, float, float) )&gmtl::Matrix<float,3,3>::set)
         .def("set", (void (gmtl::Matrix<float,3,3>::*)(const float *) )&gmtl::Matrix<float,3,3>::set)
         .def("setTranspose", &gmtl::Matrix<float,3,3>::setTranspose)
         .def("getData", (list (*)(gmtl::Matrix<float,3,3>*)) &gmtlWrappers::Matrix_3_3_getData)
