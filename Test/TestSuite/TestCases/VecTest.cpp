@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.cpp,v $
- * Date modified: $Date: 2002-03-21 18:30:50 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-04-11 00:02:10 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -385,6 +385,34 @@ namespace gmtlTest
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/isEqualOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
 
+   }
+
+   void VecTest::testOpNegate()
+   {
+      gmtl::Vec<float,3> test_vec1(1.0, 2.0, 3.0);
+      gmtl::Vec<float,3> test_vec2;
+
+      test_vec2 = -test_vec1;
+      CPPUNIT_ASSERT( test_vec2[0] == -1.0f &&
+                      test_vec2[1] == -2.0f &&
+                      test_vec2[2] == -3.0f );
+
+      // -- test op+= performance
+      const float iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+      gmtl::Vec<float,3> test_vec3(5.0, 7.0, 9.0);
+
+      for( float iter=0;iter<iters; ++iter)
+      {
+         test_vec3.set(iter, iter+1, iter+2);
+         test_vec1 = -test_vec3;
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+
+      // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/OpNegateOverhead", iters,
+                                      0.075f, 0.1f);
    }
 
    void VecTest::testOpPlusEq()

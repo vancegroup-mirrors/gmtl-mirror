@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecOps.h,v $
- * Date modified: $Date: 2002-03-21 20:35:46 $
- * Version:       $Revision: 1.13 $
+ * Date modified: $Date: 2002-04-11 00:02:09 $
+ * Version:       $Revision: 1.14 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -45,6 +45,24 @@ namespace gmtl
 
 
 // --- Basic VEC types operations -- //
+
+/**
+ * Negates v1.  The result = -v1.
+ *
+ * @param v1   the vector.
+ *
+ * @return  the result of negating v1.
+ */
+template<typename DATA_TYPE, unsigned SIZE>
+Vec<DATA_TYPE, SIZE> operator- (const VecBase<DATA_TYPE, SIZE>& v1)
+{
+   Vec<DATA_TYPE, SIZE> ret_val;
+   for ( unsigned i=0; i < SIZE; ++i )
+   {
+      ret_val[i] = -v1[i];
+   }
+   return ret_val;
+}
 
 /**
  * Adds v2 to v1 and stores the result in v1. This is equivalent to the
