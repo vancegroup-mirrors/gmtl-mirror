@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-03-15 22:36:15 $
- * Version:       $Revision: 1.29 $
+ * Date modified: $Date: 2002-03-15 22:49:03 $
+ * Version:       $Revision: 1.30 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -75,11 +75,17 @@ namespace gmtl
       return vec;
    }
 
-
-
-
    /** @name QUATERNION GENERATORS */
    //@{
+
+   /** Set pure quaternion
+   * @todo Write test case for setPure
+   */
+   template <typename DATA_TYPE>
+   inline void setPure( Quat<DATA_TYPE>& quat, const Vec<DATA_TYPE, 3>& vec )
+   {
+      quat.set(vec[0], vec[1], vec[2], 0);      
+   }
 
    /** create a pure quaternion
     * @post quat = [v,0] = [v0,v1,v2,0]

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Convert.h,v $
- * Date modified: $Date: 2002-03-15 03:26:56 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2002-03-15 22:49:03 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -47,33 +47,13 @@ namespace gmtl
    template <typename DATA_TYPE>
    Quat<DATA_TYPE>& convert( Quat<DATA_TYPE>& pure_quat, const Vec<DATA_TYPE, 3>& vector )
    {
-      pure_quat.set( vector[0], vector[1], vector[2], (DATA_TYPE)0 );
+      gmtl::setPure(pure_quat, vector);
       return pure_quat;
    }
 
-   /** convert a vector to the translation part of a matrix. */
-   template <typename DATA_TYPE, unsigned ROWS, unsigned COLS, unsigned VECSIZE>
-   Matrix<DATA_TYPE, ROWS, COLS>& convert( Matrix<DATA_TYPE, ROWS, COLS>& mat, const Vec<DATA_TYPE, VECSIZE>& trans )
-   {
-      for (int x = 0; x < Math::Min( ROWS-1, VECSIZE ); ++x)
-      {
-         mat( x, COLS-1 ) = trans[x];
-      }
-      return mat;
-   }
-
-   /** convert the translation part of a matrix to a vector. */
-   template <typename DATA_TYPE, unsigned ROWS, unsigned COLS, unsigned VECSIZE>
-   Vec<DATA_TYPE, VECSIZE>& convert( Vec<DATA_TYPE, VECSIZE>& trans, const Matrix<DATA_TYPE, ROWS, COLS>& mat )
-   {
-      for (int x = 0; x < Math::Min( ROWS-1, VECSIZE ); ++x)
-      {
-         trans[x] = mat( x, COLS-1 );
-      }
-      return trans;
-   }
-
-   /** convert a quaternion to the rotation part of a 3x3, 3x4, 4x3, or 4x4 matrix. */
+   /** convert a quaternion to the rotation part of a 3x3, 3x4, 4x3, or 4x4 matrix. 
+   * @todo Implement using setRot
+   */
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
    Matrix<DATA_TYPE, ROWS, COLS>& convert( Matrix<DATA_TYPE, ROWS, COLS>& mat, const Quat<DATA_TYPE>& q )
    {
