@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Math.h,v $
- * Date modified: $Date: 2002-04-10 14:03:19 $
- * Version:       $Revision: 1.22 $
+ * Date modified: $Date: 2002-04-17 02:08:48 $
+ * Version:       $Revision: 1.23 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -39,9 +39,16 @@
 #include <math.h>
 #include <stdlib.h>
 
+/** @defgroup Math C Math Abstraction: sin, cos, tan, Min, Max, PI
+ *  We've abstracted C math to be cross platform and typesafe.
+ */
+
 namespace gmtl
 {
 
+   /** @addtogroup Math */
+   //@{
+   
 /** Rotation order enums
 * @todo Use tag dispatching here to optimize functions better.
 */
@@ -417,6 +424,8 @@ inline T factorial(T rhs)
    return lhs;
 }
 //----------------------------------------------------------------------------
+
+//@}
 
 } // end namespace Math
 } // end namespace gmtl

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Xforms.h,v $
- * Date modified: $Date: 2002-03-18 22:48:36 $
- * Version:       $Revision: 1.20 $
+ * Date modified: $Date: 2002-04-17 02:08:48 $
+ * Version:       $Revision: 1.21 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -45,8 +45,15 @@
 #include <gmtl/Convert.h>
 #include <gmtl/Generate.h>
 
+/** @defgroup Transforms Spacial Transformers: xform( ... ), operator*( ... ).
+ *  Transform points by Matrices and Quaternions.
+ */
+
 namespace gmtl
 {
+   /** @addtogroup Transforms */
+   //@{
+   
    /** transform a vector by a rotation quaternion.
     * @pre give a vector, and a rotation quaternion (by definition, a rotation quaternion is normalized).
     * @post v' = q P(v) q*  (where result is v', rot is q, and vector is v.  q* is conj(q), and P(v) is pure quaternion made from v)
@@ -278,7 +285,7 @@ namespace gmtl
 
 
 
-
+   //@}
 
 
 

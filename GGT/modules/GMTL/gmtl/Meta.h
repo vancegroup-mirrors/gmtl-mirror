@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Meta.h,v $
- * Date modified: $Date: 2002-02-20 17:48:25 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-04-17 02:08:48 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,8 +35,13 @@
 #ifndef _GMTL_METAPROGRAMMING_H
 #define _GMTL_METAPROGRAMMING_H
 
+/** @defgroup Meta Template Metaprogramming Utilities */
+
 namespace gmtl
 {  
+   /** @addtogroup Meta */
+   //@{
+   
    /** A lightweight identifier you can pass to overloaded functions 
     *  to typefy them.
     *
@@ -47,5 +52,7 @@ namespace gmtl
    {
       typedef T OriginalType;
    };
+   
+   //@}
 } // end namespace
 #endif

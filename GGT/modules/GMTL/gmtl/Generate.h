@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-04-11 00:39:57 $
- * Version:       $Revision: 1.43 $
+ * Date modified: $Date: 2002-04-17 02:08:47 $
+ * Version:       $Revision: 1.44 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -46,6 +46,11 @@
 #include <gmtl/Meta.h>
 #include <gmtl/Math.h>
 
+
+/** @defgroup Generate Generators: make( ... ), get( ... ), set( ... ), and convert( ... ).
+ *  Make get and set functions for all math types in gmtl.
+ */
+
 // @todo Vec& setNormal( Vec&, scalar, scalar, scalar ) (and other dimensions)  (might not need, use this instead - setNormal( Vec( scal, scal, scal ) ))
 // @todo getRot euler for quat
 // @todo getTrans(mat, vec)  (or is it called vec = setTrans(mat), or is it called convert( vec, mat ), convert( mat, vec ) )
@@ -57,8 +62,12 @@
 
 namespace gmtl
 {
-   //-- VEC GENERATORS --//
-
+   /** @addtogroup Generate */
+   //@{
+   
+   /** @name Vec Generators */
+   //@{
+   
    /** create a vector from the vector component of a quaternion
     * @post quat = [v,0] = [v0,v1,v2,0]
     * @todo should this be called convert?
@@ -78,9 +87,9 @@ namespace gmtl
       return vec;
    }
 
-   
+   //@}
       
-   /** @name QUATERNION GENERATORS */
+   /** @name Quat Generators */
    //@{
 
    /** Set pure quaternion
@@ -310,7 +319,7 @@ namespace gmtl
    //@}
 
 
-   /** @name MATRIX GENERATORS */
+   /** @name Matrix Generators */
    //@{
 
    /** Set matrix translation from vec.
@@ -906,7 +915,7 @@ namespace gmtl
    //@}
 
 
-   /** @name COORD get/set/make/convert */
+   /** @name Coord Generators */
    //@{
 
    /// @todo redundant set and convert funcs...
@@ -960,6 +969,8 @@ namespace gmtl
       return convert( temporary, coord, order );
    }
 
+   //@}
+   
    //@}
    
 } // end gmtl namespace.
