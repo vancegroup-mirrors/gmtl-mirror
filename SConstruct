@@ -173,7 +173,11 @@ def ValidateBoostOption(key, value, environ):
             Exit()
             return False
 
-         environ.Append(BoostCPPPATH = [pj(value, 'include')])
+         if GetPlatform() == 'irix':
+            environ.Append(BoostCPPPATH = [pj(value, 'include'), pj(value, 'include', 'boost', 'compatibility', 'cpp_c_headers')])
+         else:
+            environ.Append(BoostCPPPATH = [pj(value, 'include')])
+
          environ.Append(BoostLIBPATH = [pj(value, 'lib')])
          environ.Append(BoostLIBS = ['boost_python'])
 
@@ -182,9 +186,9 @@ def ValidateBoostOption(key, value, environ):
 
 def ApplyBoostOptions(env):
    global enable_python
-   env.Append(CPPPATH = env["BoostCPPPATH"])
-   env.Append(LIBPATH = env["BoostLIBPATH"])
    if enable_python:
+      env.Append(CPPPATH = env["BoostCPPPATH"])
+      env.Append(LIBPATH = env["BoostLIBPATH"])
       env.Append(LIBS = env["BoostLIBS"])
 
 def AddBoostOptions(opts):
