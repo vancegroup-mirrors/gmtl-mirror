@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixCompareTest.h,v $
- * Date modified: $Date: 2002-02-22 21:48:34 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2002-03-11 00:42:01 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -171,7 +171,7 @@ public:
    void testMatTimingOpEqualityTest()
    {
       // Test overhead of creation
-      const long iters(400000);
+      const long iters(25000);
       
       gmtl::Matrix<float, 1, 1> src_mat11;
       gmtl::Matrix<float, 2, 2> src_mat22;
@@ -225,7 +225,7 @@ public:
    void testMatTimingOpNotEqualityTest()
    {
       // Test overhead of creation
-      const long iters(400000);
+      const long iters(25000);
       
       gmtl::Matrix<float, 1, 1> src_mat11;
       gmtl::Matrix<float, 2, 2> src_mat22;
@@ -279,7 +279,7 @@ public:
    void testMatTimingIsEqualTest()
    {
       // Test overhead of creation
-      const long iters(400000);
+      const long iters(25000);
       
       gmtl::Matrix<float, 1, 1> src_mat11;
       gmtl::Matrix<float, 2, 2> src_mat22;
