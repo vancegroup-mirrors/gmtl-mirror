@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _VecBase_int_4.cpp,v $
- * Date modified: $Date: 2003-08-16 05:11:46 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2003-08-16 05:28:23 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -43,8 +43,8 @@ void _Export_VecBase_int_4()
         .def(init< const gmtl::VecBase<int,4> & >())
         .def(init< const int &, const int &, const int &, const int & >())
         .def("set", (void (gmtl::VecBase<int,4>::*)(const int &, const int &, const int &, const int &) )&gmtl::VecBase<int,4>::set)
-        .def("getData", (tuple (gmtlWrappers::*)(gmtl::VecBase<int,4>*)) &gmtlWrappers::VecBase_4_getData)
-        .add_property("data", (tuple (gmtlWrappers::*)(gmtl::VecBase<int,4>*)) &gmtlWrappers::VecBase_4_getData)
+        .def("getData", (tuple (*)(gmtl::VecBase<int,4>*)) &gmtlWrappers::VecBase_4_getData)
+        .add_property("data", (tuple (*)(gmtl::VecBase<int,4>*)) &gmtlWrappers::VecBase_4_getData)
         .def("__getitem__", (int& (gmtl::VecBase<int,4>::*)(const unsigned) ) &gmtl::VecBase<int,4>::operator[], return_value_policy<copy_non_const_reference>())
         .def("__setitem__", (void (*)(gmtl::VecBase<int,4>*, const unsigned, int)) &gmtlWrappers::setArrayElement)
         .def(-self)
