@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 #
 #  Script to process example doxygen format
 #
@@ -52,7 +53,9 @@ def parseCmdLine():
 # - Return it
 def replaceExInclude(match):
    # Load the file
+   # - Assume it is relative to the included file
    inc_file_name = match.groups()[0];
+   inc_file_name = os.path.join(os.path.dirname(inFileName), inc_file_name);
    inc_file = file(inc_file_name);
    file_contents = inc_file.read();
    
