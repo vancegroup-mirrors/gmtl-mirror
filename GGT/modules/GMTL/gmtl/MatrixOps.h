@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOps.h,v $
- * Date modified: $Date: 2003-03-03 00:54:05 $
- * Version:       $Revision: 1.29 $
+ * Date modified: $Date: 2003-03-17 18:34:36 $
+ * Version:       $Revision: 1.30 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -98,8 +98,9 @@ namespace gmtl
 
 
    /** matrix multiply.
-    *  @PRE: if lhs is m x p, and rhs is p x n, then result is m x n (mult func undefined otherwise)
-    *  @POST: returns a m x n matrix
+    *  @PRE: With regard to size (ROWS/COLS): if lhs is m x p, and rhs is p x n, then result is m x n (mult func undefined otherwise)
+    *  @POST: returns a m x n sized matrix
+    *  @post: result = lhs * rhs  (where rhs is applied first)
     */
    template <typename DATA_TYPE, unsigned ROWS, unsigned INTERNAL, unsigned COLS>
    inline Matrix<DATA_TYPE, ROWS, COLS>& mult( Matrix<DATA_TYPE, ROWS, COLS>& result,
@@ -121,8 +122,8 @@ namespace gmtl
    }
 
    /** matrix * matrix.
-    *  @PRE: if lhs is m x p, and rhs is p x n, then result is m x n (mult func undefined otherwise)
-    *  @POST: returns a m x n matrix == lhs * rhs
+    *  @PRE: With regard to size (ROWS/COLS): if lhs is m x p, and rhs is p x n, then result is m x n (mult func undefined otherwise)
+    *  @POST: returns a m x n sized matrix == lhs * rhs (where rhs is applied first)
     *  returns a temporary, is slower.
     */
    template <typename DATA_TYPE, unsigned ROWS, unsigned INTERNAL, unsigned COLS>
@@ -136,7 +137,7 @@ namespace gmtl
    /** matrix subtraction (algebraic operation for matrix).
     *  @PRE: if lhs is m x n, and rhs is m x n, then result is m x n (mult func undefined otherwise)
     *  @POST: returns a m x n matrix
-    *  TODO: <B>enforce the sizes with templates...</b>
+    *  @TODO: <B>enforce the sizes with templates...</b>
     */
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
    inline Matrix<DATA_TYPE, ROWS, COLS>& sub( Matrix<DATA_TYPE, ROWS, COLS>& result,
@@ -197,8 +198,8 @@ namespace gmtl
 
    /** matrix postmult (operator*=).
     * does a postmult on the matrix.
-    * @PRE: args must both be n x n (this function is undefined otherwise)
-    * @POST: result' = result * operand
+    * @PRE: args must both be n x n sized (this function is undefined otherwise)
+    * @POST: result' = result * operand  (where operand is applied first)
     */
    template <typename DATA_TYPE, unsigned SIZE>
    inline Matrix<DATA_TYPE, SIZE, SIZE>& operator*=( Matrix<DATA_TYPE, SIZE, SIZE>& result,
