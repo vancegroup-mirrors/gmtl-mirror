@@ -364,7 +364,7 @@ else:
 baseEnv['enable_python'] = False
 Export('baseEnv')
 
-opts = Options('config.cache')
+opts = Options('options.cache')
 AddCppUnitOptions(opts)
 AddPythonOptions(opts)
 AddBoostOptions(opts)
