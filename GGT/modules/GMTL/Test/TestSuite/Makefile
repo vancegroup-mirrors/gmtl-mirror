@@ -29,8 +29,8 @@
 #
 # -----------------------------------------------------------------
 # File:          $RCSfile: Makefile,v $
-# Date modified: $Date: 2003-01-10 06:29:27 $
-# Version:       $Revision: 1.44 $
+# Date modified: $Date: 2003-01-10 06:44:31 $
+# Version:       $Revision: 1.45 $
 # -----------------------------------------------------------------
 # *************** <auto-copyright.pl END do not edit this line> ***************
 
@@ -38,7 +38,7 @@
 # Advanced template makefile for VR Juggler applications.  This is intended
 # for "power users" who really know what they are doing and want to abuse
 # Doozer's flexibility.  :)
-# $Id: Makefile,v 1.44 2003-01-10 06:29:27 subatomic Exp $
+# $Id: Makefile,v 1.45 2003-01-10 06:44:31 subatomic Exp $
 #
 # *** IMPORTANT NOTES -- READ THESE FIRST ***
 #     1) This file _requires_ the use of GNU make (gmake).
@@ -54,6 +54,10 @@ default: all
 #
 # *** Be very careful with this section! ***
 # -----------------------------------------------------------------------------
+
+# uncomment this if you're on Win32 using CYGWIN gcc...
+#COMPILER_TYPE = gcc
+
 GGT_ROOT	= ../../../../
 GMTL_ROOT   = ../../
 CPPUNIT_DIR = $(GGT_ROOT)/external/cppunit
@@ -176,13 +180,14 @@ TEST_SRCS = ConvertTest.cpp \
             VecGenTest.cpp \
             VecTest.cpp \
             XformTest.cpp \
-            testSuite.cpp
+            runner.cpp
 CPPUNIT_UI_SRCS	= TextTestProgressListener.cpp	\
                   TextOutputter.cpp		\
                   TestRunner.cpp
 CPPUNIT_EXTS	= #MetricRegistry.cpp
 CPPUNIT_SRCS	= Asserter.cpp			\
                   Exception.cpp			\
+                  TestSuite.cpp			\
                   SourceLine.cpp		\
                   SynchronizedObject.cpp	\
                   TestAssert.cpp		\
@@ -191,7 +196,14 @@ CPPUNIT_SRCS	= Asserter.cpp			\
                   TestResult.cpp		\
                   TestResultCollector.cpp	\
                   TestSuccessListener.cpp	\
-                  TestSuite.cpp			\
+                  TextTestRunner.cpp \
+                  Test.cpp             \
+                  TestComposite.cpp     \
+                  TestPath.cpp \
+                  Message.cpp \
+                  Protector.cpp DefaultProtector.cpp ProtectorChain.cpp\
+                  TestLeaf.cpp \
+                  AdditionalMessage.cpp TypeInfoHelper.cpp \
                   $(CPPUNIT_UI_SRCS)		\
                   $(CPPUNIT_EXTS)             
 
