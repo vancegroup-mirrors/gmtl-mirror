@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-05-09 19:19:32 $
- * Version:       $Revision: 1.48 $
+ * Date modified: $Date: 2002-05-10 05:38:47 $
+ * Version:       $Revision: 1.49 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -75,6 +75,7 @@ namespace gmtl
    template <typename TARGET_MATRIX_TYPE, typename SOURCE_MATRIX_TYPE>
    inline TARGET_MATRIX_TYPE makeMatrix( const SOURCE_MATRIX_TYPE& src_mat, Type2Type< TARGET_MATRIX_TYPE > t = Type2Type< TARGET_MATRIX_TYPE >() )
    {
+      gmtl::ignore_unused_variable_warning(t);
       TARGET_MATRIX_TYPE target_mat;
       return convert( target_mat, src_mat );
    }
@@ -380,6 +381,7 @@ namespace gmtl
    template< typename MATRIX_TYPE, unsigned SIZE >
    inline MATRIX_TYPE makeTrans( const Vec<typename MATRIX_TYPE::DataType, SIZE>& trans, Type2Type< MATRIX_TYPE > t = Type2Type< MATRIX_TYPE >() )
    {
+      gmtl::ignore_unused_variable_warning(t);
       MATRIX_TYPE temporary;
       return setTrans( temporary, trans );
    }
@@ -436,6 +438,7 @@ namespace gmtl
    inline VEC_TYPE makeTrans( const Matrix<DATA_TYPE, ROWS, COLS>& arg,
                              Type2Type< VEC_TYPE > t = Type2Type< VEC_TYPE >())
    {
+      gmtl::ignore_unused_variable_warning(t);
       VEC_TYPE temporary;
       return setTrans( temporary, arg );
    }
@@ -471,6 +474,7 @@ namespace gmtl
    inline MATRIX_TYPE makeScale( const Vec<typename MATRIX_TYPE::DataType, SIZE>& scale,
                                Type2Type< MATRIX_TYPE > t = Type2Type< MATRIX_TYPE >() )
    {
+      gmtl::ignore_unused_variable_warning(t);
       MATRIX_TYPE temporary;
       return setScale( temporary, scale );
    }
@@ -493,6 +497,7 @@ namespace gmtl
    inline MATRIX_TYPE makeScale( const typename MATRIX_TYPE::DataType scale,
                                Type2Type< MATRIX_TYPE > t = Type2Type< MATRIX_TYPE >() )
    {
+      gmtl::ignore_unused_variable_warning(t);
       MATRIX_TYPE temporary;
       return setScale( temporary, scale );
    }
@@ -535,6 +540,7 @@ namespace gmtl
    inline ROTATION_TYPE makeRot( typename ROTATION_TYPE::DataType rad, const Vec<typename ROTATION_TYPE::DataType, 3> axis,
                                Type2Type< ROTATION_TYPE > t = Type2Type< ROTATION_TYPE >() )
    {
+      gmtl::ignore_unused_variable_warning(t);
       ROTATION_TYPE temporary;
       return setRot( temporary, rad, axis );
    }
@@ -557,6 +563,7 @@ namespace gmtl
                                const typename ROTATION_TYPE::DataType y, const typename ROTATION_TYPE::DataType z,
                                Type2Type< ROTATION_TYPE > t = Type2Type< ROTATION_TYPE >() )
    {
+      gmtl::ignore_unused_variable_warning(t);
       ROTATION_TYPE temporary;
       return setRot( temporary, rad, x, y, z );
    }
@@ -624,6 +631,7 @@ namespace gmtl
    inline ROTATION_TYPE makeRot( typename ROTATION_TYPE::DataType rotx, typename ROTATION_TYPE::DataType roty, typename ROTATION_TYPE::DataType rotz,
                                RotationOrder order, Type2Type< ROTATION_TYPE > t = Type2Type< ROTATION_TYPE >() )
    {
+      gmtl::ignore_unused_variable_warning(t);
       ROTATION_TYPE temporary;
       return setRot( temporary, rotx, roty, rotz, order );
    }
@@ -882,6 +890,7 @@ namespace gmtl
                                   const Vec<typename ROTATION_TYPE::DataType, 3>& zSrcAxis = Vec<typename ROTATION_TYPE::DataType, 3>(0,0,1),
                                Type2Type< ROTATION_TYPE > t = Type2Type< ROTATION_TYPE >() )
    {
+      gmtl::ignore_unused_variable_warning(t);
       ROTATION_TYPE temporary;
       return setDirCos( temporary, xDestAxis, yDestAxis, zDestAxis, xSrcAxis, ySrcAxis, zSrcAxis );
    }
@@ -935,6 +944,7 @@ namespace gmtl
                                   const Vec<typename ROTATION_TYPE::DataType, 3>& zAxis,
                                   Type2Type< ROTATION_TYPE > t = Type2Type< ROTATION_TYPE >() )
    {
+      gmtl::ignore_unused_variable_warning(t);
       ROTATION_TYPE temporary;
       return setAxes( temporary, xAxis, yAxis, zAxis );
    }
@@ -983,6 +993,7 @@ namespace gmtl
                                 RotationOrder order,
                                 Type2Type< COORD_TYPE > t = Type2Type< COORD_TYPE >() )
    {
+      gmtl::ignore_unused_variable_warning(t);
       COORD_TYPE temporary;
       return convert( temporary, mat, order );
    }
@@ -992,6 +1003,7 @@ namespace gmtl
                                 RotationOrder order,
                                 Type2Type< MATRIX_TYPE > t = Type2Type< MATRIX_TYPE >() )
    {
+      gmtl::ignore_unused_variable_warning(t);
       MATRIX_TYPE temporary;
       return convert( temporary, coord, order );
    }
