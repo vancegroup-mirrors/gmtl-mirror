@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Containment.h,v $
- * Date modified: $Date: 2002-03-15 03:26:56 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2002-05-20 22:19:00 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -36,7 +36,6 @@
 #define _GMTL_CONTAINMENT_H_
 
 // new stuff
-#include <gmtl/gmtlConfig.h>
 #include <gmtl/Sphere.h>
 #include <gmtl/VecOps.h>
 
@@ -364,7 +363,7 @@ inline void computeContainment( OOBox& box, const std::vector<gmtl::Point3>& poi
     // and max(y2).  The box center is then adjusted to be
     //   C' = C + 0.5*(min(y0)+max(y0))*U0 + 0.5*(min(y1)+max(y1))*U1 +
     //        0.5*(min(y2)+max(y2))*U2
-#ifdef GMTL_DEBUG
+#ifdef _DEBUG
    gmtl::OOBox box_test;
    box_test = box;
    gmtl::Vec3 ax0 = box_test.axis(0);
