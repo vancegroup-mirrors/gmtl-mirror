@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: IntersectionTest.cpp,v $
- * Date modified: $Date: 2002-11-26 06:04:52 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-11-26 06:32:26 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -200,6 +200,31 @@ namespace gmtlTest
       CPPUNIT_ASSERT_METRIC_TIMING_LE("IntersectionTest/IntersectAABoxPoint", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
 
       CPPUNIT_ASSERT(true_count == 0);
+   }
+
+   void IntersectionTest::testIntersectAABoxSphere()
+   {
+      // Overlapping
+      {
+         gmtl::AABoxf box(gmtl::Point3f(-1,-1,-1), gmtl::Point3f(0,0,0));
+         gmtl::Spheref sph(gmtl::Point3f(0,0,0), 2);
+         CPPUNIT_ASSERT(gmtl::intersect(box, sph));
+         CPPUNIT_ASSERT(gmtl::intersect(sph, box));
+      }
+      // Shared edge
+      {
+         gmtl::AABoxf box(gmtl::Point3f(-1,-1,-1), gmtl::Point3f(0,0,0));
+         gmtl::Spheref sph(gmtl::Point3f(2,0,0), 2);
+         CPPUNIT_ASSERT(gmtl::intersect(box, sph));
+         CPPUNIT_ASSERT(gmtl::intersect(sph, box));
+      }
+      // Non-overlapping
+      {
+         gmtl::AABoxf box(gmtl::Point3f(-1,-1,-1), gmtl::Point3f(0,0,0));
+         gmtl::Spheref sph(gmtl::Point3f(3,3,3), 2);
+         CPPUNIT_ASSERT(! gmtl::intersect(box, sph));
+         CPPUNIT_ASSERT(! gmtl::intersect(sph, box));
+      }
    }
 
    void IntersectionTest::testIntersectAABoxSweep()
