@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixGenTest.h,v $
- * Date modified: $Date: 2002-02-22 19:45:18 $
- * Version:       $Revision: 1.10 $
+ * Date modified: $Date: 2002-03-08 22:41:38 $
+ * Version:       $Revision: 1.11 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -343,6 +343,7 @@ public:
          gmtl::makeRot( mat, gmtl::Math::deg2Rad( 45.0f ), vec );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result34, mat, eps ) );
       }
+      // test that unnormalized vec works...
       {
          gmtl::Matrix44f mat, expected_result44;
          for (int x = 0; x < 16; ++x)
@@ -351,7 +352,7 @@ public:
                                 0.505879, 0.804738, -0.310617, 0,
                                 -0.310617, 0.505879, 0.804738, 0,
                                 0, 0, 0, 1 );
-         gmtl::Vec3f vec( 0.7f, 0.7f, 0.7f );
+         gmtl::Vec3f vec( 1.7f, 1.7f, 1.7f );
          gmtl::normalize( vec );
          gmtl::makeRot( mat, gmtl::Math::deg2Rad( 45.0f ), vec );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result44, mat, eps ) );
@@ -619,7 +620,7 @@ public:
       {
          // 2D translation
          gmtl::makeTrans( mat33, gmtl::Vec2f( 1, 2 ) );
-         gmtl::makeTrans( mat33, gmtl::Vec2f( 1, 2, 1.0f ) ); // homogeneous
+         gmtl::makeTrans( mat33, gmtl::Vec3f( 1, 2, 1.0f ) ); // homogeneous
          
          // 3D translation
          gmtl::makeTrans( mat34, gmtl::Vec3f( 30, 32, 121 ) );
