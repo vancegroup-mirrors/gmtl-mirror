@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: OptTest.cpp,v $
- * Date modified: $Date: 2002-02-22 20:12:58 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2002-02-22 22:27:06 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -118,6 +118,7 @@ namespace gmtlTest
       lhs.mat[14] = 0.0f;
       lhs.mat[15] = 1.0f;
       lhs.mat[16] = 0.0f;
+      return lhs;
    }
 
    inline Mat44 retvalopt( const Mat44& lhs, const Mat44& rhs )
