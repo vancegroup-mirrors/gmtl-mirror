@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-wrappers.h,v $
- * Date modified: $Date: 2004-04-21 22:05:54 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2004-10-28 00:04:56 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -32,6 +32,7 @@
 // needed for Boost.Python to do its thing.
 
 #include <gmtl/Generate.h>
+#include <gmtl/Tri.h>
 
 
 namespace gmtlWrappers
@@ -259,15 +260,8 @@ namespace gmtlWrappers
                                              const gmtl::Vec3d&,
                                              const gmtl::Vec3d&);
 
-   // XXX: This is pretty annoying.  Visual C++ is not very good at deducing
-   // types, I guess.
-#ifdef _MSC_VER
    template<typename T, typename DATA_TYPE>
-   void setArrayElement(T* obj, const unsigned i, typename DATA_TYPE value)
-#else
-   template<typename T>
-   void setArrayElement(T* obj, const unsigned i, typename T::DataType value)
-#endif
+   void setArrayElement(T* obj, const unsigned i, DATA_TYPE value)
    {
       (*obj)[i] = value;
    }
@@ -297,6 +291,12 @@ namespace gmtlWrappers
    template void setArrayElement(gmtl::EulerAngleZYXd*, const unsigned, double);
    template void setArrayElement(gmtl::EulerAngleZXYf*, const unsigned, float);
    template void setArrayElement(gmtl::EulerAngleZXYd*, const unsigned, double);
+   template void setArrayElement(gmtl::Tri<int>*, const unsigned,
+                                 const gmtl::Point<int, 3>&);
+   template void setArrayElement(gmtl::Tri<float>*, const unsigned,
+                                 const gmtl::Point<float, 3>&);
+   template void setArrayElement(gmtl::Tri<double>*, const unsigned,
+                                 const gmtl::Point<double, 3>&);
 }
 
 
