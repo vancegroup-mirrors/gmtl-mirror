@@ -26,7 +26,6 @@ headers = Split("""
    Math
    Matrix
    MatrixOps
-   OOBox
    Output
    Plane
    PlaneOps
