@@ -12,6 +12,11 @@ pj = os.path.join
 sys.path.append('tools/build')
 from AutoDist import *
 
+# True and False were not defined prior to Python 2.2.1.
+if sys.version[:3] == '2.2' and sys.version[3] != '.':
+   False = 0
+   True  = 1
+
 enable_python = False
 have_cppunit  = False
 
@@ -85,6 +90,38 @@ def BuildLinuxEnvironment():
    # Debug or optimize build?
    if optimize != 'no':
       CXXFLAGS.extend(['-DNDEBUG', '-g', '-O3'])
+   else:
+      CXXFLAGS.extend(['-D_DEBUG', '-g'])
+
+   return Environment(
+      ENV         = os.environ,
+
+      CXX         = CXX,
+      CXXFLAGS    = CXXFLAGS,
+      LINK        = LINK,
+      LINKFLAGS   = LINKFLAGS,
+      CPPPATH     = [],
+      LIBPATH     = [],
+      LIBS        = [],
+   )
+
+def BuildDarwinEnvironment():
+   "Builds a base environment for other modules to build on set up for Darwin."
+   global optimize, profile, builders
+
+   CXX = 'g++'
+   LINK = CXX
+   CXXFLAGS = ['-Wall', '-pipe']
+   LINKFLAGS = []
+
+   # Enable profiling?
+   if profile != 'no':
+      CXXFLAGS.extend(['-pg'])
+      LINKFLAGS.extend(['-pg'])
+
+   # Debug or optimize build?
+   if optimize != 'no':
+      CXXFLAGS.extend(['-DNDEBUG', '-g', '-O2'])
    else:
       CXXFLAGS.extend(['-D_DEBUG', '-g'])
 
@@ -356,6 +393,8 @@ if GetPlatform() == 'irix':
    baseEnv = BuildIRIXEnvironment()
 elif GetPlatform() == 'linux' or GetPlatform()[:7] == 'freebsd':
    baseEnv = BuildLinuxEnvironment()
+elif GetPlatform() == 'darwin':
+   baseEnv = BuildDarwinEnvironment()
 elif GetPlatform() == 'win32':
    baseEnv = BuildWin32Environment()
 else:
