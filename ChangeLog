@@ -1,6 +1,7 @@
 DATE       AUTHOR       CHANGE
 ---------- --------     -----------------------------------------------------------
 2002-06-06 subatomic    changed all convert() functions to set()
+                        NEW VERSION: 0.0.3
 2002-06-04 nonchocoboy  Added AABox class.
 2002-06-03 nonchocoboy  Version information is now centralized in Version.h.
                         NEW VERSION: 0.0.2
