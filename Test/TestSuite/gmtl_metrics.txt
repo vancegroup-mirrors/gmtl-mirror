@@ -838,6 +838,13 @@ gfxn3/Debug/CoordTest/DefaultConstructor                           0.145973
 gfxn3/Debug/CoordTest/ElementConstructor                           0.159442
 gfxn3/Debug/CoordTest/get()                                        0.10188
 gfxn3/Debug/CoordTest/operator=()                                  0.0878625
+gfxn3/Debug/EulerAngleTest/CopyConstructor                         0.0796325
+gfxn3/Debug/EulerAngleTest/DefaultConstructor                      0.08887
+gfxn3/Debug/EulerAngleTest/ElementConstructor                      0.079115
+gfxn3/Debug/EulerAngleTest/getData()                               0.0171575
+gfxn3/Debug/EulerAngleTest/operator=()                             0.0638325
+gfxn3/Debug/EulerAngleTest/operator[]()                            0.0736075
+gfxn3/Debug/EulerAngleTest/set()                                   0.0682225
 gfxn3/Debug/LineSegTest/CopyConstructOverhead                      0.20276
 gfxn3/Debug/LineSegTest/DefaultCreationOverhead                    0.145368
 gfxn3/Debug/LineSegTest/EqualityCompareOverhead                    0.104985
