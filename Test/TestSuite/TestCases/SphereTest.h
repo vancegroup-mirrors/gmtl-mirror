@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: SphereTest.h,v $
- * Date modified: $Date: 2002-07-02 02:07:02 $
- * Version:       $Revision: 1.15 $
+ * Date modified: $Date: 2003-02-05 02:21:17 $
+ * Version:       $Revision: 1.16 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -32,97 +32,62 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 *
  ************************************************************ ggt-cpr end */
-#include <iostream>
+#ifndef _SPHERE_TEST_H
+#define _SPHERE_TEST_H
 
-#include <cppunit/TestCase.h>
-#include <cppunit/TestSuite.h>
-#include <cppunit/TestCaller.h>
+#include <cppunit/extensions/HelperMacros.h>
 
 namespace gmtlTest
 {
-
-class SphereTest : public CppUnit::TestCase
-{
-public:
-   SphereTest( std::string name = "SphereTest" )
-   : CppUnit::TestCase (name)
-   {}
-
-   virtual ~SphereTest()
-   {}
-
-   virtual void setUp()
-   {}
-
-   virtual void tearDown()
+   class SphereTest : public CppUnit::TestFixture
    {
-   }
+      CPPUNIT_TEST_SUITE(SphereTest);
 
-   void testCreation();
-   void testCopyConstruct();
-   void testConstructors();
+      CPPUNIT_TEST(testCreation);
+      CPPUNIT_TEST(testCopyConstruct);
+      CPPUNIT_TEST(testConstructors);
+      CPPUNIT_TEST(testGetCenter);
+      CPPUNIT_TEST(testGetRadius);
+      CPPUNIT_TEST(testEqualityCompare);
+      CPPUNIT_TEST(testIsEqual);
+      CPPUNIT_TEST(testIsInVolumePoint);
+      CPPUNIT_TEST(testIsInVolumeSphere);
+      CPPUNIT_TEST(testIsOnVolume);
+      CPPUNIT_TEST(testExtendVolumePoint);
+      CPPUNIT_TEST(testExtendVolumeSphere);
+      CPPUNIT_TEST(testMakeVolumePoint);
+//      CPPUNIT_TEST(testMakeVolumeSphere);
 
-   // -- Test accessors --//
-   void testGetCenter();
-   void testGetRadius();
+      CPPUNIT_TEST_SUITE_END();
 
-   // -- Test setters --//
-   void testSetCenter();
-   void testSetRadius();
+   public:
+      void testCreation();
+      void testCopyConstruct();
+      void testConstructors();
 
-   // -- Test comparison -- //
-   void testEqualityCompare();
-   void testIsEqual();
+      // -- Test accessors --//
+      void testGetCenter();
+      void testGetRadius();
 
-   //---------------------------------------------------------------------------
-   // Containment tests
-   //---------------------------------------------------------------------------
-   void testIsInVolumePoint();
-   void testIsInVolumeSphere();
-   void testIsOnVolume();
-   void testExtendVolumePoint();
-   void testExtendVolumeSphere();
-   void testMakeVolumePoint();
-//   void testMakeVolumeSphere();
+      // -- Test setters --//
+      void testSetCenter();
+      void testSetRadius();
 
-   static CppUnit::Test* suite()
-   {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("SphereTest");
-      test_suite->addTest( new CppUnit::TestCaller<SphereTest>("testCreation", &SphereTest::testCreation));
-      test_suite->addTest( new CppUnit::TestCaller<SphereTest>("testCopyConstruct", &SphereTest::testCopyConstruct));
-      test_suite->addTest( new CppUnit::TestCaller<SphereTest>("testConstructors", &SphereTest::testConstructors));
-      test_suite->addTest( new CppUnit::TestCaller<SphereTest>("testEqualityCompare", &SphereTest::testEqualityCompare));
-      test_suite->addTest( new CppUnit::TestCaller<SphereTest>("testIsEqual", &SphereTest::testIsEqual));
-      test_suite->addTest( new CppUnit::TestCaller<SphereTest>("testGetCenter", &SphereTest::testGetCenter));
-      test_suite->addTest( new CppUnit::TestCaller<SphereTest>("testGetRadius", &SphereTest::testGetRadius));
-      test_suite->addTest( new CppUnit::TestCaller<SphereTest>("testSetCenter", &SphereTest::testSetCenter));
-      test_suite->addTest( new CppUnit::TestCaller<SphereTest>("testSetRadius", &SphereTest::testSetRadius));
-      test_suite->addTest( new CppUnit::TestCaller<SphereTest>("testIsInVolumePoint", &SphereTest::testIsInVolumePoint));
-      test_suite->addTest( new CppUnit::TestCaller<SphereTest>("testIsInVolumeSphere", &SphereTest::testIsInVolumeSphere));
-      test_suite->addTest( new CppUnit::TestCaller<SphereTest>("testIsOnVolume", &SphereTest::testIsOnVolume));
-      test_suite->addTest( new CppUnit::TestCaller<SphereTest>("testExtendVolumePoint", &SphereTest::testExtendVolumePoint));
-      test_suite->addTest( new CppUnit::TestCaller<SphereTest>("testExtendVolumeSphere", &SphereTest::testExtendVolumeSphere));
-      test_suite->addTest( new CppUnit::TestCaller<SphereTest>("testMakeVolumePoint", &SphereTest::testMakeVolumePoint));
-//      test_suite->addTest( new CppUnit::TestCaller<SphereTest>("testMakeVolumeSphere", &SphereTest::testMakeVolumeSphere));
+      // -- Test comparison -- //
+      void testEqualityCompare();
+      void testIsEqual();
 
-      return test_suite;
-   }
+      //---------------------------------------------------------------------------
+      // Containment tests
+      //---------------------------------------------------------------------------
+      void testIsInVolumePoint();
+      void testIsInVolumeSphere();
+      void testIsOnVolume();
+      void testExtendVolumePoint();
+      void testExtendVolumeSphere();
+      void testMakeVolumePoint();
+   //   void testMakeVolumeSphere();
+   };
+}
 
-   static CppUnit::Test* perfSuite()
-   {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("SphereTiming");
-      return test_suite;
-   }
-   
-   static CppUnit::Test* interactiveSuite()
-   {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveSphereTest");
-      //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
-      return test_suite;
-   }
-
-protected:
-
-};
-
-};
+#endif

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: runner.cpp,v $
- * Date modified: $Date: 2003-01-10 06:44:31 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2003-02-05 02:21:16 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -39,81 +39,25 @@
 // This is designed to test EVERY capability of GMTL
 //
 //------------------------------------------------------
+#include <stdexcept>
 
-
-#include <cppunit/TestSuite.h>
-#include <cppunit/ui/text/TextTestRunner.h>
+#include <cppunit/BriefTestProgressListener.h>
+#include <cppunit/CompilerOutputter.h>
+#include <cppunit/TestResult.h>
 #include <cppunit/extensions/MetricRegistry.h>
+#include <cppunit/extensions/TestFactoryRegistry.h>
+#include <cppunit/ui/text/TestRunner.h>
 
 #include <gmtl/Version.h>
-#include <gmtl/Output.h>
 
-// GMTL tests
-#include <TestCases/MathTest.h>
-
-#include <TestCases/VecBaseTest.h>
-#include <TestCases/VecTest.h>
-#include <TestCases/PointTest.h>
-#include <TestCases/SphereTest.h>
-#include <TestCases/TriTest.h>
-#include <TestCases/PlaneTest.h>
-#include <TestCases/LineSegTest.h>
-
-#include <TestCases/MatrixClassTest.h>
-#include <TestCases/MatrixCompareTest.h>
-#include <TestCases/MatrixOpsTest.h>
-#include <TestCases/MatrixGenTest.h>
-#include <TestCases/QuatGenTest.h>
-#include <TestCases/VecGenTest.h>
-
-#include <TestCases/CoordClassTest.h>
-#include <TestCases/CoordCompareTest.h>
-#include <TestCases/CoordGenTest.h>
-
-
-#include <TestCases/QuatClassTest.h>
-#include <TestCases/QuatCompareTest.h>
-#include <TestCases/QuatStuffTest.h>
-#include <TestCases/QuatOpsTest.h>
-
-#include <TestCases/ConvertTest.h>
-#include <TestCases/XformTest.h>
-
-#include <TestCases/OutputTest.h>
-#include <TestCases/EulerAngleClassTest.h>
-#include <TestCases/EulerAngleCompareTest.h>
-#include <TestCases/AxisAngleClassTest.h>
-#include <TestCases/AxisAngleCompareTest.h>
-
-#include <TestCases/AABoxTest.h>
-#include <TestCases/AABoxOpsTest.h>
-#include <TestCases/AABoxContainTest.h>
-
-#include <TestCases/IntersectionTest.h>
-
-#include <TestCases/MetaTest.h>
-
-#include <TestCases/InfoTests/OptTest.h>
-
-// old tests
-//#include <TestCases/Vec3Test.h>
-//#include <TestCases/MatrixTest.h>
-//#include <TestCases/Point3Test.h>
-//#include <TestCases/OOBoxTest.h>
-//#include <TestCases/PlaneTest.h>
-//#include <TestCases/ContainmentTest.h>
-//#include <TestCases/IntersectionTest.h>
-//#include <TestCases/TriTest.h>
+#include "Suites.h"
 
 std::string getHostname(void);
 
-void usage( char** av )
+int main(int argc, char** argv)
 {
-   std::cout << "\n\nusage: " << av[0] << " [gmtl|perf|info|all]\n\n" << std::endl;
-}
-
-int main (int ac, char **av)
-{
+   // Commandline parameter is the test path to use
+   std::string test_path = (argc > 1) ? std::string(argv[1]) : "noninteractive";
 
    // -------- CONFIGURE METRIC REGISTRY ------- //
    CppUnit::MetricRegistry* metric_reg = CppUnit::MetricRegistry::instance();
@@ -140,151 +84,57 @@ int main (int ac, char **av)
    std::cout<<std::endl;
 
    //------------------------------------
-   //  GMTL Tests
+   //  Test suites
    //------------------------------------
-   CppUnit::TextTestRunner runner;
+   CppUnit::TestFactoryRegistry& global_registry = CppUnit::TestFactoryRegistry::getRegistry();
+
+   // noninteractive
+   CppUnit::TestSuite* noninteractive_suite = new CppUnit::TestSuite("noninteractive");
+   noninteractive_suite->addTest(global_registry.makeTest());
+
+   // metric
+   CppUnit::TestSuite* metric_suite = new CppUnit::TestSuite(gmtlTest::Suites::metric());
+   metric_suite->addTest(CppUnit::TestFactoryRegistry::getRegistry(gmtlTest::Suites::metric()).makeTest());
+
+   //------------------------------------
+   // Test Runner
+   //------------------------------------
+   CppUnit::TextUi::TestRunner runner;
+
+   // Make it use a compiler outputter
+   CppUnit::Outputter* run_outputter =
+      CppUnit::CompilerOutputter::defaultOutputter(&runner.result(), std::cout);
+   runner.setOutputter(run_outputter);
+
+   // Add a listener that prints the test names as the tests progress
+   CppUnit::TestResult& result_event_manager = runner.eventManager();
+   CppUnit::BriefTestProgressListener progress;
+   result_event_manager.addListener(&progress);
+   
+   runner.addTest(noninteractive_suite);
+   runner.addTest(metric_suite);
 
 
-   // Create the tests
-   CppUnit::TestSuite* gmtl_suite = new CppUnit::TestSuite("gmtl_suite");
+   //------------------------------------
+   // Run Tests
+   //------------------------------------
+   bool success(false);
 
-   gmtl_suite->addTest( gmtlTest::MetaTest::suite() );
-   gmtl_suite->addTest( gmtlTest::MathTest::suite() );
-	
-   gmtl_suite->addTest( gmtlTest::VecBaseTest::suite() );
-   gmtl_suite->addTest( gmtlTest::VecTest::suite() );
-   gmtl_suite->addTest( gmtlTest::PointTest::suite() );
-
-   gmtl_suite->addTest( gmtlTest::SphereTest::suite() );
-   gmtl_suite->addTest( gmtlTest::TriTest::suite() );
-   gmtl_suite->addTest( gmtlTest::PlaneTest::suite() );
-   gmtl_suite->addTest( gmtlTest::LineSegTest::suite() );
-
-   gmtl_suite->addTest( gmtlTest::MatrixClassTest::suite() );
-   gmtl_suite->addTest( gmtlTest::MatrixCompareTest::suite() );
-   gmtl_suite->addTest( gmtlTest::MatrixOpsTest::suite() );
-   gmtl_suite->addTest( gmtlTest::MatrixGenTest::suite() );
-   gmtl_suite->addTest( gmtlTest::QuatGenTest::suite() );
-   gmtl_suite->addTest( gmtlTest::VecGenTest::suite() );
-
-   gmtl_suite->addTest( gmtlTest::CoordClassTest::suite() );
-   gmtl_suite->addTest( gmtlTest::CoordCompareTest::suite() );
-   gmtl_suite->addTest( gmtlTest::CoordGenTest::suite() );
-
-   gmtl_suite->addTest( gmtlTest::QuatClassTest::suite() );
-   gmtl_suite->addTest( gmtlTest::QuatCompareTest::suite() );
-   gmtl_suite->addTest( gmtlTest::QuatOpsTest::suite() );
-   gmtl_suite->addTest( gmtlTest::QuatStuffTest::suite() );
-
-   gmtl_suite->addTest( gmtlTest::XformTest::suite() );
-   gmtl_suite->addTest( gmtlTest::ConvertTest::suite() );
-
-   gmtl_suite->addTest( gmtlTest::OutputTest::suite() );
-   gmtl_suite->addTest( gmtlTest::AABoxTest::suite() );
-   gmtl_suite->addTest( gmtlTest::AABoxOpsTest::suite() );
-   gmtl_suite->addTest( gmtlTest::AABoxContainTest::suite() );
-   gmtl_suite->addTest( gmtlTest::EulerAngleClassTest::suite() );
-   gmtl_suite->addTest( gmtlTest::EulerAngleCompareTest::suite() );
-   gmtl_suite->addTest( gmtlTest::AxisAngleClassTest::suite() );
-   gmtl_suite->addTest( gmtlTest::AxisAngleCompareTest::suite() );
-
-   gmtl_suite->addTest( gmtlTest::IntersectionTest::suite() );
-
-   /*
-   gmtl_suite->addTest( gmtlTest::OOBoxTest::suite() );
-   gmtl_suite->addTest( gmtlTest::ContainmentTest::suite() );
-   gmtl_suite->addTest( gmtlTest::IntersectionTest::suite() );
-   */
-
-   // setup the perf suite
-   CppUnit::TestSuite* perf_suite = new CppUnit::TestSuite( "perf_suite" );
-   perf_suite->addTest( gmtlTest::MathTest::perfSuite() );
-	
-   perf_suite->addTest( gmtlTest::VecBaseTest::perfSuite() );
-   perf_suite->addTest( gmtlTest::VecTest::perfSuite() );
-   perf_suite->addTest( gmtlTest::PointTest::perfSuite() );
-
-   perf_suite->addTest( gmtlTest::SphereTest::perfSuite() );
-   perf_suite->addTest( gmtlTest::TriTest::perfSuite() );
-   perf_suite->addTest( gmtlTest::PlaneTest::perfSuite() );
-   perf_suite->addTest( gmtlTest::LineSegTest::perfSuite() );
-
-   perf_suite->addTest( gmtlTest::MatrixClassTest::perfSuite() );
-   perf_suite->addTest( gmtlTest::MatrixCompareTest::perfSuite() );
-   perf_suite->addTest( gmtlTest::MatrixOpsTest::perfSuite() );
-   perf_suite->addTest( gmtlTest::MatrixGenTest::perfSuite() );
-   perf_suite->addTest( gmtlTest::QuatGenTest::perfSuite() );
-   perf_suite->addTest( gmtlTest::VecGenTest::perfSuite() );
-
-   perf_suite->addTest( gmtlTest::CoordClassTest::perfSuite() );
-   perf_suite->addTest( gmtlTest::CoordCompareTest::perfSuite() );
-   perf_suite->addTest( gmtlTest::CoordGenTest::perfSuite() );
-
-   perf_suite->addTest( gmtlTest::QuatClassTest::perfSuite() );
-   perf_suite->addTest( gmtlTest::QuatCompareTest::perfSuite() );
-   perf_suite->addTest( gmtlTest::QuatOpsTest::perfSuite() );
-   perf_suite->addTest( gmtlTest::QuatStuffTest::perfSuite() );
-
-   perf_suite->addTest( gmtlTest::XformTest::perfSuite() );
-   perf_suite->addTest( gmtlTest::ConvertTest::perfSuite() );
-
-   perf_suite->addTest( gmtlTest::OutputTest::perfSuite() );
-   perf_suite->addTest( gmtlTest::AABoxTest::perfSuite() );
-   perf_suite->addTest( gmtlTest::AABoxOpsTest::perfSuite() );
-   perf_suite->addTest( gmtlTest::AABoxContainTest::perfSuite() );
-   perf_suite->addTest( gmtlTest::EulerAngleClassTest::perfSuite() );
-   perf_suite->addTest( gmtlTest::EulerAngleCompareTest::perfSuite() );
-   perf_suite->addTest( gmtlTest::AxisAngleClassTest::perfSuite() );
-   perf_suite->addTest( gmtlTest::AxisAngleCompareTest::perfSuite() );
-
-   perf_suite->addTest( gmtlTest::IntersectionTest::perfSuite() );
-
-   /*
-   perf_suite->addTest( gmtlTest::OOBoxTest::perfSuite() );
-   perf_suite->addTest( gmtlTest::ContainmentTest::perfSuite() );
-   perf_suite->addTest( gmtlTest::IntersectionTest::perfSuite() );
-   */
-
-   CppUnit::TestSuite* info_suite = new CppUnit::TestSuite( "info_suite" );
-   info_suite->addTest( gmtlTest::OptTest::suite() );
-
-   // Add the tests
-   runner.addTest( gmtl_suite );
-   runner.addTest( perf_suite );
-   runner.addTest( info_suite );
-
-   // --- RUN THEM --- //
-   if (ac > 1)
+   try
    {
-      std::string arg = av[1];
-      if (arg.size() > 0 && (arg[0] == 'g' || arg[0] == 'a'))
-      {
-         std::cout << "running gmtl_suite" << std::endl;
-         runner.run( "gmtl_suite" );
-      }
-      if (arg.size() > 0 && (arg[0] == 'p' || arg[0] == 'a'))
-      {
-         std::cout << "running perf_suite" << std::endl;
-         runner.run( "perf_suite" );
-      }
-      if (arg.size() > 0 && (arg[0] == 'i' || arg[0] == 'a'))
-      {
-         std::cout << "running info_suite" << std::endl;
-         runner.run( "info_suite" );
-      }
+      std::cout << "Running " << test_path << std::endl;
+      success = runner.run(test_path);
    }
-   else
+   catch (std::invalid_argument& e)
    {
-      std::cout << "Argument unrecognized... running defaults." << std::endl;
-      usage( av );
-         std::cout << "running gmtl_suite" << std::endl;
-      runner.run( "gmtl_suite" );
-         std::cout << "running perf_suite" << std::endl;
-      runner.run( "perf_suite" );
-      usage( av );
+      // Test path was not resolved
+      std::cerr   << std::endl
+                  << "ERROR: " << e.what()
+                  << std::endl;
+      success = false;
    }
 
-   return 0;
+   return (success ? 0 : 1);
 }
 
 #ifndef WIN32

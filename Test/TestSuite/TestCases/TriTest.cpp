@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: TriTest.cpp,v $
- * Date modified: $Date: 2002-03-18 23:04:13 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2003-02-05 02:21:17 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -33,6 +33,7 @@
 *
  ************************************************************ ggt-cpr end */
 #include "TriTest.h"
+#include <cppunit/extensions/HelperMacros.h>
 #include <cppunit/extensions/MetricRegistry.h>
 
 #include <gmtl/Tri.h>
@@ -41,6 +42,8 @@
 
 namespace gmtlTest
 {
+   CPPUNIT_TEST_SUITE_REGISTRATION(TriTest);
+
    void TriTest::testCreation()
    {
       gmtl::Tri<float> test_tri;

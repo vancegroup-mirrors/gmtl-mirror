@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: TriTest.h,v $
- * Date modified: $Date: 2002-07-02 02:07:02 $
- * Version:       $Revision: 1.12 $
+ * Date modified: $Date: 2003-02-05 02:21:17 $
+ * Version:       $Revision: 1.13 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -32,77 +32,48 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 *
  ************************************************************ ggt-cpr end */
-#include <iostream>
+#ifndef _TRI_TEST_H_
+#define _TRI_TEST_H_
 
-#include <cppunit/TestCase.h>
-#include <cppunit/TestSuite.h>
-#include <cppunit/TestCaller.h>
+#include <cppunit/extensions/HelperMacros.h>
 
 namespace gmtlTest
 {
-
-class TriTest : public CppUnit::TestCase
-{
-public:
-   TriTest( std::string name = "TriTest")
-   : CppUnit::TestCase (name)
-   {}
-
-   virtual ~TriTest()
-   {}
-
-   virtual void setUp()
-   {}
-
-   virtual void tearDown()
-   {}
-
-   void testCreation();
-   void testCopyConstruct();
-   void testConstructors();
-
-   //---------------------------------------------------------------------------
-   // Begin testing accessors
-   //---------------------------------------------------------------------------
-   void testVertexAccessor();
-   void testEdges();
-
-   //---------------------------------------------------------------------------
-   // Begin testing comparators
-   //---------------------------------------------------------------------------
-   void testEqualOps();
-   void testIsEqual();
-   void testCenter();
-   void testNormal();
-
-
-   static CppUnit::Test* suite()
+   class TriTest : public CppUnit::TestFixture
    {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("TriTest");
-      test_suite->addTest( new CppUnit::TestCaller<TriTest>("testCreation", &TriTest::testCreation));
-      test_suite->addTest( new CppUnit::TestCaller<TriTest>("testCopyConstruct", &TriTest::testCopyConstruct));
-      test_suite->addTest( new CppUnit::TestCaller<TriTest>("testConstructors", &TriTest::testConstructors));
-      test_suite->addTest( new CppUnit::TestCaller<TriTest>("testVertexAccessor", &TriTest::testVertexAccessor));
-      test_suite->addTest( new CppUnit::TestCaller<TriTest>("testEdges", &TriTest::testEdges));
-      test_suite->addTest( new CppUnit::TestCaller<TriTest>("testEqualOps", &TriTest::testEqualOps));
-      test_suite->addTest( new CppUnit::TestCaller<TriTest>("testIsEqual", &TriTest::testIsEqual));
-      test_suite->addTest( new CppUnit::TestCaller<TriTest>("testCenter", &TriTest::testCenter));
-      test_suite->addTest( new CppUnit::TestCaller<TriTest>("testNormal", &TriTest::testNormal));
-      return test_suite;
-   }
+      CPPUNIT_TEST_SUITE(TriTest);
 
-   static CppUnit::Test* perfSuite()
-   {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("TriTiming");
-      return test_suite;
-   }
-   
-   static CppUnit::Test* interactiveSuite()
-   {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveTriTest");
-      //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
-      return test_suite;
-   }
-};
+      CPPUNIT_TEST(testCreation);
+      CPPUNIT_TEST(testCopyConstruct);
+      CPPUNIT_TEST(testConstructors);
+      CPPUNIT_TEST(testVertexAccessor);
+      CPPUNIT_TEST(testEdges);
+      CPPUNIT_TEST(testEqualOps);
+      CPPUNIT_TEST(testIsEqual);
+      CPPUNIT_TEST(testCenter);
+      CPPUNIT_TEST(testNormal);
 
-} // namespace gmtlTest
+      CPPUNIT_TEST_SUITE_END();
+
+   public:
+      void testCreation();
+      void testCopyConstruct();
+      void testConstructors();
+
+      //---------------------------------------------------------------------------
+      // Begin testing accessors
+      //---------------------------------------------------------------------------
+      void testVertexAccessor();
+      void testEdges();
+
+      //---------------------------------------------------------------------------
+      // Begin testing comparators
+      //---------------------------------------------------------------------------
+      void testEqualOps();
+      void testIsEqual();
+      void testCenter();
+      void testNormal();
+   };
+}
+
+#endif

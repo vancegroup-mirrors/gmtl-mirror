@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AxisAngleClassTest.cpp,v $
- * Date modified: $Date: 2002-06-10 20:16:39 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2003-02-05 02:21:17 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -33,11 +33,16 @@
 *
  ************************************************************ ggt-cpr end */
 #include "AxisAngleClassTest.h"
+#include "../Suites.h"
+#include <cppunit/extensions/HelperMacros.h>
 #include <cppunit/extensions/MetricRegistry.h>
 #include <gmtl/AxisAngle.h>
 
 namespace gmtlTest
 {
+   CPPUNIT_TEST_SUITE_REGISTRATION(AxisAngleClassTest);
+   CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(AxisAngleClassMetricTest, Suites::metric());
+
    void AxisAngleClassTest::testAxisAngleClassTestCreation()
    {
       // test that it initializes to the identity
@@ -98,7 +103,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( q9[3] == 0.0f );
    }
 
-   void AxisAngleClassTest::testAxisAngleTimingDefaultConstructor()
+   void AxisAngleClassMetricTest::testAxisAngleTimingDefaultConstructor()
    {
       const long iters( 400000 );
       float use_value(1);
@@ -116,7 +121,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( use_value != 0 );
    }
 
-   void AxisAngleClassTest::testAxisAngleTimingElementConstructor()
+   void AxisAngleClassMetricTest::testAxisAngleTimingElementConstructor()
    {
       const long iters( 400000 );
       float use_value(1);
@@ -134,7 +139,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( use_value != 0 );
    }
 
-   void AxisAngleClassTest::testAxisAngleTimingCopyConstructor()
+   void AxisAngleClassMetricTest::testAxisAngleTimingCopyConstructor()
    {
       const long iters( 400000 );
       float use_value(1);
@@ -153,7 +158,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( use_value != 0 );
    }
 
-   void AxisAngleClassTest::testAxisAngleTimingSet()
+   void AxisAngleClassMetricTest::testAxisAngleTimingSet()
    {
       const long iters( 400000 );
       float use_value(0);
@@ -171,7 +176,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( use_value >= 0.0f );
    }
 
-   void AxisAngleClassTest::testAxisAngleTimingOpBracket()
+   void AxisAngleClassMetricTest::testAxisAngleTimingOpBracket()
    {
       const long iters( 400000 );
       float use_value(0);
@@ -194,7 +199,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( use_value > 0.0f );
    }
 
-   void AxisAngleClassTest::testAxisAngleTimingGetData()
+   void AxisAngleClassMetricTest::testAxisAngleTimingGetData()
    {
       const long iters( 400000 );
       float use_value(0);
@@ -212,7 +217,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( use_value > 0.0f );
    }
 
-   void AxisAngleClassTest::testAxisAngleTimingOpEqual()
+   void AxisAngleClassMetricTest::testAxisAngleTimingOpEqual()
    {
       const long iters( 400000 );
       gmtl::AxisAnglef q4, q2( 0.0f, 2.0f, 1.0f, 901 );

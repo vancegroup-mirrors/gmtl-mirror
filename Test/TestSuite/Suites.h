@@ -6,9 +6,9 @@
  *   Allen Bierbaum
  *
  * -----------------------------------------------------------------
- * File:          $RCSfile: AxisAngleCompareTest.h,v $
- * Date modified: $Date: 2003-02-05 02:21:17 $
- * Version:       $Revision: 1.4 $
+ * File:          $RCSfile: Suites.h,v $
+ * Date modified: $Date: 2003-02-05 02:21:16 $
+ * Version:       $Revision: 1.1 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -32,48 +32,30 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 *
  ************************************************************ ggt-cpr end */
-#ifndef _AXIS_ANGLE_COMPARE_TEST_H_
-#define _AXIS_ANGLE_COMPARE_TEST_H_
+#ifndef _SUITES_H_
+#define _SUITES_H_
 
-#include <cppunit/extensions/HelperMacros.h>
+#include <string>
 
 namespace gmtlTest
 {
-   /**
-    * Functionality tests
-    */
-   class AxisAngleCompareTest : public CppUnit::TestCase
+   namespace Suites
    {
-      CPPUNIT_TEST_SUITE(AxisAngleCompareTest);
+      inline std::string metric()
+      {
+        return "metric";
+      }
 
-      CPPUNIT_TEST(testAxisAngleEqualityFloatTest);
-      CPPUNIT_TEST(testAxisAngleEqualityDoubleTest);
+      inline std::string noninteractive()
+      {
+        return "noninteractive";
+      }
 
-      CPPUNIT_TEST_SUITE_END();
-
-   public:
-      void testAxisAngleEqualityFloatTest();
-      void testAxisAngleEqualityDoubleTest();
-   };
-
-   /**
-    * Metric tests.
-    */
-   class AxisAngleCompareMetricTest : public CppUnit::TestCase
-   {
-      CPPUNIT_TEST_SUITE(AxisAngleCompareMetricTest);
-
-      CPPUNIT_TEST(testAxisAngleTimingOpEqualityTest);
-      CPPUNIT_TEST(testAxisAngleTimingOpNotEqualityTest);
-      CPPUNIT_TEST(testAxisAngleTimingIsEqualTest);
-
-      CPPUNIT_TEST_SUITE_END();
-
-   public:
-      void testAxisAngleTimingOpEqualityTest();
-      void testAxisAngleTimingOpNotEqualityTest();
-      void testAxisAngleTimingIsEqualTest();
-   };
+      inline std::string interactive()
+      {
+        return "interactive";
+      }
+   }
 }
 
 #endif

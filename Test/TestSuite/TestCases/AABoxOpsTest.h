@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AABoxOpsTest.h,v $
- * Date modified: $Date: 2002-07-04 20:14:18 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2003-02-05 02:21:17 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -32,64 +32,46 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 *
  ************************************************************ ggt-cpr end */
-#ifndef _GMTL_AABOXOPSTEST_H_
-#define _GMTL_AABOXOPSTEST_H_
-#include <iostream>
+#ifndef _GMTL_AABOX_OPS_TEST_H_
+#define _GMTL_AABOX_OPS_TEST_H_
 
-#include <cppunit/TestCase.h>
-#include <cppunit/TestSuite.h>
-#include <cppunit/TestCaller.h>
+#include <cppunit/extensions/HelperMacros.h>
 
 namespace gmtlTest
 {
-
-class AABoxOpsTest : public CppUnit::TestCase
-{
-public:
-   AABoxOpsTest( std::string name = "AABoxOpsTest" )
-      : CppUnit::TestCase (name)
-   {}
-
-   //---------------------------------------------------------------------------
-   // Functionality tests
-   //---------------------------------------------------------------------------
-   void testEqualityCompare();
-   void testIsEqual();
-
-   //---------------------------------------------------------------------------
-   // Performance tests
-   //---------------------------------------------------------------------------
-   void testTimingEqualityCompare();
-   void testTimingIsEqual();
-
-   static CppUnit::Test* suite()
+   /**
+    * Functionality tests
+    */
+   class AABoxOpsTest : public CppUnit::TestFixture
    {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("AABoxOpsTest");
-#define ADD_TEST(x) test_suite->addTest(new CppUnit::TestCaller<AABoxOpsTest>( "test" #x, &AABoxOpsTest::test ## x))
-      ADD_TEST(EqualityCompare);
-      ADD_TEST(IsEqual);
-#undef ADD_TEST
-      return test_suite;
-   }
+      CPPUNIT_TEST_SUITE(AABoxOpsTest);
 
-   static CppUnit::Test* perfSuite()
+      CPPUNIT_TEST(testEqualityCompare);
+      CPPUNIT_TEST(testIsEqual);
+
+      CPPUNIT_TEST_SUITE_END();
+
+   public:
+      void testEqualityCompare();
+      void testIsEqual();
+   };
+
+   /**
+    * Metric tests.
+    */
+   class AABoxOpsMetricTest : public CppUnit::TestFixture
    {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("AABoxOpsPerfTest");
-#define ADD_TEST(x) test_suite->addTest(new CppUnit::TestCaller<AABoxOpsTest>( "testTiming" #x, &AABoxOpsTest::testTiming ## x))
-      ADD_TEST(EqualityCompare);
-      ADD_TEST(IsEqual);
-#undef ADD_TEST
-      return test_suite;
-   }
+      CPPUNIT_TEST_SUITE(AABoxOpsMetricTest);
 
-   static CppUnit::Test* interactiveSuite()
-   {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveAABoxOpsTest");
-      //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
-      return test_suite;
-   }
-};
+      CPPUNIT_TEST(testTimingEqualityCompare);
+      CPPUNIT_TEST(testTimingIsEqual);
 
+      CPPUNIT_TEST_SUITE_END();
+
+   public:
+      void testTimingEqualityCompare();
+      void testTimingIsEqual();
+   };
 }
 
 #endif

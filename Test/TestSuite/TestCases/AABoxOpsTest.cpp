@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AABoxOpsTest.cpp,v $
- * Date modified: $Date: 2002-07-11 17:06:48 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2003-02-05 02:21:17 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -33,12 +33,17 @@
 *
  ************************************************************ ggt-cpr end */
 #include "AABoxOpsTest.h"
+#include "../Suites.h"
+#include <cppunit/extensions/HelperMacros.h>
 #include <cppunit/extensions/MetricRegistry.h>
 
 #include <gmtl/AABoxOps.h>
 
 namespace gmtlTest
 {
+   CPPUNIT_TEST_SUITE_REGISTRATION(AABoxOpsTest);
+   CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(AABoxOpsMetricTest, Suites::metric());
+
    void AABoxOpsTest::testEqualityCompare()
    {
       {
@@ -82,7 +87,7 @@ namespace gmtlTest
       }
    }
 
-   void AABoxOpsTest::testTimingEqualityCompare()
+   void AABoxOpsMetricTest::testTimingEqualityCompare()
    {
       {
          // Equality
@@ -130,9 +135,11 @@ namespace gmtlTest
 
    void AABoxOpsTest::testIsEqual()
    {
+      CPPUNIT_ASSERT(false);
    }
 
-   void AABoxOpsTest::testTimingIsEqual()
+   void AABoxOpsMetricTest::testTimingIsEqual()
    {
+      CPPUNIT_ASSERT(false);
    }
 }

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: SphereTest.cpp,v $
- * Date modified: $Date: 2002-07-02 03:09:21 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2003-02-05 02:21:17 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -33,6 +33,7 @@
 *
  ************************************************************ ggt-cpr end */
 #include "SphereTest.h"
+#include <cppunit/extensions/HelperMacros.h>
 #include <cppunit/extensions/MetricRegistry.h>
 
 #include <gmtl/Sphere.h>
@@ -41,6 +42,8 @@
 
 namespace gmtlTest
 {
+   CPPUNIT_TEST_SUITE_REGISTRATION(SphereTest);
+
    void SphereTest::testCreation()
    {
       gmtl::Sphere<float> test_sph;

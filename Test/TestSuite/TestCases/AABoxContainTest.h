@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AABoxContainTest.h,v $
- * Date modified: $Date: 2002-11-26 07:41:17 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2003-02-05 02:21:17 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -32,77 +32,53 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 *
  ************************************************************ ggt-cpr end */
-#ifndef _GMTL_AABOXCONTAINTEST_H_
-#define _GMTL_AABOXCONTAINTEST_H_
-#include <iostream>
+#ifndef _GMTL_AABOX_CONTAIN_TEST_H_
+#define _GMTL_AABOX_CONTAIN_TEST_H_
 
-#include <cppunit/TestCase.h>
-#include <cppunit/TestSuite.h>
-#include <cppunit/TestCaller.h>
+#include <cppunit/extensions/HelperMacros.h>
 
 namespace gmtlTest
 {
-
-class AABoxContainTest : public CppUnit::TestCase
-{
-public:
-   AABoxContainTest( std::string name = "AABoxContainTest" )
-      : CppUnit::TestCase (name)
-   {}
-
-   //---------------------------------------------------------------------------
-   // Functionality tests
-   //---------------------------------------------------------------------------
-   void testIsInVolumePt();
-   void testIsInVolumeAABox();
-   void testExtendVolumePt();
-   void testExtendVolumeAABox();
-   void testMakeVolumeSphere();
-
-   //---------------------------------------------------------------------------
-   // Performance tests
-   //---------------------------------------------------------------------------
-   void testTimingIsInVolumePt();
-   void testTimingIsInVolumeAABox();
-   void testTimingExtendVolumePt();
-   void testTimingExtendVolumeAABox();
-
-   static CppUnit::Test* suite()
+   class AABoxContainTest : public CppUnit::TestFixture
    {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("AABoxContainTest");
-#define ADD_TEST(x) test_suite->addTest(new CppUnit::TestCaller<AABoxContainTest>( "test" #x, &AABoxContainTest::test ## x))
-      ADD_TEST(IsInVolumePt);
-      ADD_TEST(IsInVolumeAABox);
-      ADD_TEST(ExtendVolumePt);
-      ADD_TEST(ExtendVolumeAABox);
-      ADD_TEST(MakeVolumeSphere);
-#undef ADD_TEST
-      return test_suite;
-   }
+      CPPUNIT_TEST_SUITE(AABoxContainTest);
 
-   static CppUnit::Test* perfSuite()
+      CPPUNIT_TEST(testIsInVolumePt);
+      CPPUNIT_TEST(testIsInVolumeAABox);
+      CPPUNIT_TEST(testExtendVolumePt);
+      CPPUNIT_TEST(testExtendVolumeAABox);
+      CPPUNIT_TEST(testMakeVolumeSphere);
+
+      CPPUNIT_TEST_SUITE_END();
+
+   public:
+      void testIsInVolumePt();
+      void testIsInVolumeAABox();
+      void testExtendVolumePt();
+      void testExtendVolumeAABox();
+      void testMakeVolumeSphere();
+   };
+
+   class AABoxContainMetricTest : public CppUnit::TestFixture
    {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("AABoxContainPerfTest");
-#define ADD_TEST(x) test_suite->addTest(new CppUnit::TestCaller<AABoxContainTest>( "testTiming" #x, &AABoxContainTest::testTiming ## x))
-      ADD_TEST(IsInVolumePt);
-      ADD_TEST(IsInVolumeAABox);
-      ADD_TEST(ExtendVolumePt);
-      ADD_TEST(ExtendVolumeAABox);
-#undef ADD_TEST
-      return test_suite;
-   }
+      CPPUNIT_TEST_SUITE(AABoxContainMetricTest);
 
-   static CppUnit::Test* interactiveSuite()
-   {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveAABoxTest");
-      //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
-      return test_suite;
-   }
+      CPPUNIT_TEST(testTimingIsInVolumePt);
+      CPPUNIT_TEST(testTimingIsInVolumeAABox);
+      CPPUNIT_TEST(testTimingExtendVolumePt);
+      CPPUNIT_TEST(testTimingExtendVolumeAABox);
 
-protected:
+      CPPUNIT_TEST_SUITE_END();
 
-};
-
+   public:
+      //---------------------------------------------------------------------------
+      // Performance tests
+      //---------------------------------------------------------------------------
+      void testTimingIsInVolumePt();
+      void testTimingIsInVolumeAABox();
+      void testTimingExtendVolumePt();
+      void testTimingExtendVolumeAABox();
+   };
 }
 
 #endif

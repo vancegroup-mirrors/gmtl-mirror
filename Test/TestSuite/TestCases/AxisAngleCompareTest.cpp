@@ -8,8 +8,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AxisAngleCompareTest.cpp,v $
- * Date modified: $Date: 2002-06-10 20:23:57 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2003-02-05 02:21:17 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -34,11 +34,55 @@
 *
  ************************************************************ ggt-cpr end */
 #include "AxisAngleCompareTest.h"
+#include "../Suites.h"
+#include <cppunit/extensions/HelperMacros.h>
 #include <cppunit/extensions/MetricRegistry.h>
-#include "gmtl/AxisAngleOps.h"
+
+#include <gmtl/AxisAngle.h>
+#include <gmtl/AxisAngleOps.h>
 
 namespace gmtlTest
 {
+   CPPUNIT_TEST_SUITE_REGISTRATION(AxisAngleCompareTest);
+   CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(AxisAngleCompareMetricTest, Suites::metric());
+
+   template<typename T>
+   class testEqual
+   {
+   public:
+      static void go()
+      {
+         gmtl::AxisAngle<T> quat1, quat2;
+         quat1.set( (T)1.0, (T)2.0, (T)34.0, (T)980 );
+         quat1 = quat2;
+         CPPUNIT_ASSERT( quat1 == quat2 );
+         CPPUNIT_ASSERT( quat2 == quat1 );
+
+         // Test that != works on all elements
+         for (int j = 0; j < 4; ++j)
+         {
+            quat2[j] = (T)1221.0f;
+            CPPUNIT_ASSERT(  (quat1 != quat2) );
+            CPPUNIT_ASSERT( !(quat1 == quat2) );
+            quat2[j] = quat1[j]; // put it back
+         }
+
+         // Test for epsilon equals working
+         CPPUNIT_ASSERT( gmtl::isEqual( quat1, quat2 ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( quat1, quat2, (T)0.0f ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( quat2, quat1, (T)0.0f ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( quat2, quat1, (T)100000.0f ) );
+         T eps = (T)10.0;
+         for (int j = 0; j < 4; ++j)
+         {
+            quat2[j] = quat1[j] - (eps / (T)2.0);
+            CPPUNIT_ASSERT(  gmtl::isEqual( quat1, quat2, eps ) );
+            CPPUNIT_ASSERT( !gmtl::isEqual( quat1, quat2, (T)(eps / 3.0) ) );
+            quat2[j] = quat1[j]; // put it back
+         }
+      }
+   };
+
    void AxisAngleCompareTest::testAxisAngleEqualityFloatTest()
    {
       testEqual<float>::go();
@@ -75,7 +119,7 @@ namespace gmtlTest
       testEqual<double>::go();
    }
 
-   void AxisAngleCompareTest::testAxisAngleTimingOpEqualityTest()
+   void AxisAngleCompareMetricTest::testAxisAngleTimingOpEqualityTest()
    {
       // Test overhead of creation
       const long iters(400000);
@@ -130,7 +174,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( true_count > 0 );
    }
 
-   void AxisAngleCompareTest::testAxisAngleTimingOpNotEqualityTest()
+   void AxisAngleCompareMetricTest::testAxisAngleTimingOpNotEqualityTest()
    {
       // Test overhead of creation
       const long iters(400000);
@@ -185,7 +229,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( true_count > 0 );
    }
 
-   void AxisAngleCompareTest::testAxisAngleTimingIsEqualTest()
+   void AxisAngleCompareMetricTest::testAxisAngleTimingIsEqualTest()
    {
       // Test overhead of creation
       const long iters(400000);
