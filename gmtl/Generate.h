@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2004-10-30 18:24:32 $
- * Version:       $Revision: 1.86 $
+ * Date modified: $Date: 2004-11-12 01:34:48 $
+ * Version:       $Revision: 1.87 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -37,6 +37,7 @@
 
 #include <gmtl/Defines.h>
 #include <gmtl/Util/Assert.h>
+#include <gmtl/Util/StaticAssert.h>
 
 #include <gmtl/Vec.h>    // for Vec
 #include <gmtl/VecOps.h> // for lengthSquared

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Xforms.h,v $
- * Date modified: $Date: 2003-05-10 21:18:38 $
- * Version:       $Revision: 1.33 $
+ * Date modified: $Date: 2004-11-12 01:34:49 $
+ * Version:       $Revision: 1.34 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -43,6 +43,7 @@
 #include <gmtl/QuatOps.h>
 #include <gmtl/Ray.h>
 #include <gmtl/LineSeg.h>
+#include <gmtl/Util/StaticAssert.h>
 
 namespace gmtl
 {
@@ -185,7 +186,7 @@ namespace gmtl
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS, unsigned VEC_SIZE>
    inline Vec<DATA_TYPE, VEC_SIZE>& xform( Vec<DATA_TYPE, VEC_SIZE >& result, const Matrix<DATA_TYPE, ROWS, COLS>& matrix, const Vec<DATA_TYPE, VEC_SIZE >& vector )
    {
-      gmtlASSERT( VEC_SIZE == COLS - 1 );
+      GMTL_STATIC_ASSERT( VEC_SIZE == COLS - 1, Vec_of_wrong_size_for_xform );
       // do a standard [m x k] by [k x n] matrix multiplication (where n == 0).
 
       // copy the point to the correct size.
@@ -291,7 +292,8 @@ namespace gmtl
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS, unsigned PNT_SIZE>
    inline Point<DATA_TYPE, PNT_SIZE>& xform( Point<DATA_TYPE, PNT_SIZE>& result, const Matrix<DATA_TYPE, ROWS, COLS>& matrix, const Point<DATA_TYPE, PNT_SIZE>& point )
    {
-      gmtlASSERT( PNT_SIZE == COLS - 1 && "The precondition of this method is that the vector size must be one less than the number of columns in the matrix.  eg. if Mat<n,k>, then Vec<k-1>." );
+      //gmtlSERT( PNT_SIZE == COLS - 1 && "The precondition of this method is that the vector size must be one less than the number of columns in the matrix.  eg. if Mat<n,k>, then Vec<k-1>." );
+      GMTL_STATIC_ASSERT( PNT_SIZE == COLS-1, Point_not_of_size_mat_col_minus_1_as_required_for_xform);
 
       // copy the point to the correct size.
       Point<DATA_TYPE, PNT_SIZE+1> temp_point, temp_result;
