@@ -29,8 +29,8 @@
 #
 # -----------------------------------------------------------------
 # File:          $RCSfile: Makefile,v $
-# Date modified: $Date: 2002-03-11 17:08:49 $
-# Version:       $Revision: 1.13 $
+# Date modified: $Date: 2002-03-11 17:58:31 $
+# Version:       $Revision: 1.14 $
 # -----------------------------------------------------------------
 # *************** <auto-copyright.pl END do not edit this line> ***************
 
@@ -38,7 +38,7 @@
 # Advanced template makefile for VR Juggler applications.  This is intended
 # for "power users" who really know what they are doing and want to abuse
 # Doozer's flexibility.  :)
-# $Id: Makefile,v 1.13 2002-03-11 17:08:49 nonchocoboy Exp $
+# $Id: Makefile,v 1.14 2002-03-11 17:58:31 nonchocoboy Exp $
 #
 # *** IMPORTANT NOTES -- READ THESE FIRST ***
 #     1) This file _requires_ the use of GNU make (gmake).
@@ -102,7 +102,7 @@ USE_OPT?=           N
 OPTIM_FLAGS       = -O3 $(EXTRA_OPTIM_FLAGS)
 EXTRA_CFLAGS      =
 ifeq ($(HOSTTYPE), Linux)
-   EXTRA_CXXFLAGS = -pedantic
+   EXTRA_CXXFLAGS = -Wall
 else
    EXTRA_CXXFLAGS =
 endif
