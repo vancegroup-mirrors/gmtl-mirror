@@ -409,7 +409,6 @@ namespace gmtlTest
    
    void QuatOpsTest::testQuatLerp()
    {
-      // test out mult( result, quat, quat )
       const float eps = 0.0001f;
       gmtl::Quat<float> q1( 1, 2, 3, 4 ), q2( 9, 8, 7, 6 );
       gmtl::normalize( q1 ); // make sure they are valid rotation quaternions
@@ -427,7 +426,6 @@ namespace gmtlTest
    
    void QuatOpsTest::testQuatSlerp()
    {
-      // test out mult( result, quat, quat )
       const float eps = 0.0001f;
       gmtl::Quat<float> q1( 100, 2, 3, 4 ), q2( 9.01, 8.4, 7.1, 6 );
       gmtl::normalize( q1 ); // make sure they are valid rotation quaternions
