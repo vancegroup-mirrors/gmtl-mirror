@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-03-09 19:52:05 $
- * Version:       $Revision: 1.17 $
+ * Date modified: $Date: 2002-03-09 20:26:38 $
+ * Version:       $Revision: 1.18 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -61,13 +61,14 @@ namespace gmtl
    /** create a normalized vector from the given vector.
     */
    template <typename DATA_TYPE, unsigned SIZE>
-   inline Vec<DATA_TYPE, SIZE> makeNormalize( Vec<DATA_TYPE, SIZE> vec )
+   inline Vec<DATA_TYPE, SIZE> makeNormal( Vec<DATA_TYPE, SIZE> vec )
    {
       normalize( vec );
       return vec;
    }
    
-   
+
+      
    
    //-- QUATERNION GENERATORS --//
    
