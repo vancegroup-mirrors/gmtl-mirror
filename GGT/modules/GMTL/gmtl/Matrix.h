@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Matrix.h,v $
- * Date modified: $Date: 2002-03-15 03:26:56 $
- * Version:       $Revision: 1.13 $
+ * Date modified: $Date: 2002-03-15 19:25:30 $
+ * Version:       $Revision: 1.14 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -71,6 +71,10 @@ public:
    /** use this to declare single value types of the same type as this matrix.
     */
    typedef DATA_TYPE DataType;
+   enum 
+   {
+      Rows = ROWS, Cols = COLS
+   };
 
    /** describes the xforms that this matrix has been through. */
    enum XformState
