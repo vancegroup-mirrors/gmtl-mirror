@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-03-09 21:02:50 $
- * Version:       $Revision: 1.19 $
+ * Date modified: $Date: 2002-03-09 21:16:44 $
+ * Version:       $Revision: 1.20 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -111,8 +111,7 @@ namespace gmtl
    inline Quat<DATA_TYPE> makeInvert( const Quat<DATA_TYPE>& quat )
    {
       Quat<DATA_TYPE> temporary( quat );
-      conj( temporary );
-      return normalizeFast( temporary );
+      return invert( temporary );
    }
 
    /** make a rotation quaternion from an angle and an axis (fast).
