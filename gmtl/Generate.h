@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-03-09 04:46:27 $
- * Version:       $Revision: 1.16 $
+ * Date modified: $Date: 2002-03-09 19:52:05 $
+ * Version:       $Revision: 1.17 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -58,7 +58,14 @@ namespace gmtl
       return Vec<DATA_TYPE, 3>( quat[Xelt], quat[Yelt], quat[Zelt] );
    }
    
-   
+   /** create a normalized vector from the given vector.
+    */
+   template <typename DATA_TYPE, unsigned SIZE>
+   inline Vec<DATA_TYPE, SIZE> makeNormalize( Vec<DATA_TYPE, SIZE> vec )
+   {
+      normalize( vec );
+      return vec;
+   }
    
    
    
