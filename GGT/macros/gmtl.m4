@@ -7,8 +7,8 @@ dnl   Allen Bierbaum
 dnl
 dnl -----------------------------------------------------------------
 dnl File:          $RCSfile: gmtl.m4,v $
-dnl Date modified: $Date: 2002-04-02 22:19:54 $
-dnl Version:       $Revision: 1.3 $
+dnl Date modified: $Date: 2002-04-04 22:44:12 $
+dnl Version:       $Revision: 1.4 $
 dnl -----------------------------------------------------------------
 dnl
 dnl ************************************************************** ggt-head end
@@ -63,7 +63,7 @@ dnl                         test GMTL program], , enable_gmtltest=yes)
    GMTL_INCLUDES=''
 
    if test "x$gmtl_include" != "x" ; then
-      _save_CPPFLAGS="$CPPFLAGS"
+      gmtl_save_CPPFLAGS="$CPPFLAGS"
       CPPFLAGS="$CPPFLAGS -I$gmtl_include"
 
       AC_LANG_SAVE
@@ -73,7 +73,7 @@ dnl                         test GMTL program], , enable_gmtltest=yes)
          no_gmtl='no')
       AC_LANG_RESTORE
 
-      CPPFLAGS="${_save_CPPFLAGS}"
+      CPPFLAGS="$gmtl_save_CPPFLAGS"
    fi
 
    if test "x$no_gmtl" = "x" ; then
