@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _VecBase_float_3.cpp,v $
- * Date modified: $Date: 2003-08-16 05:28:23 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2004-10-27 19:01:33 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -31,6 +31,7 @@
 #include <gmtl/Output.h>
 #include <gmtl-wrappers.h>
 #include <gmtl-getData-wrappers.h>
+#include <gmtl-pickle.h>
 
 // Using =======================================================================
 using namespace boost::python;
@@ -47,6 +48,7 @@ void _Export_VecBase_float_3()
         .add_property("data", (tuple (*)(gmtl::VecBase<float,3>*)) &gmtlWrappers::VecBase_3_getData)
         .def("__getitem__", (float& (gmtl::VecBase<float,3>::*)(const unsigned) ) &gmtl::VecBase<float,3>::operator[], return_value_policy<copy_non_const_reference>())
         .def("__setitem__", (void (*)(gmtl::VecBase<float,3>*, const unsigned, float)) &gmtlWrappers::setArrayElement)
+        .def_pickle(gmtlPickle::VecBase3_pickle<float>())
         .def(-self)
         .def(self += self)
         .def(self += self)

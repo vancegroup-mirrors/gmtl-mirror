@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Quat_double.cpp,v $
- * Date modified: $Date: 2003-08-16 05:28:23 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2004-10-27 19:01:33 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -31,6 +31,7 @@
 #include <gmtl/Output.h>
 #include <gmtl-wrappers.h>
 #include <gmtl-getData-wrappers.h>
+#include <gmtl-pickle.h>
 
 // Using =======================================================================
 using namespace boost::python;
@@ -49,6 +50,7 @@ void _Export_Quat_double()
         .add_property("data", (tuple (*)(gmtl::Quat<double>*)) &gmtlWrappers::Quat_getData)
         .def("__getitem__", (double& (gmtl::Quat<double>::*)(const int)) &gmtl::Quat<double>::operator[], return_value_policy<copy_non_const_reference>())
         .def("__setitem__", (void (*)(gmtl::Quatd*, const unsigned, double)) &gmtlWrappers::setArrayElement)
+        .def_pickle(gmtlPickle::Quat_pickle<double>())
         .def(self * self)
         .def(self *= self)
         .def(-self)

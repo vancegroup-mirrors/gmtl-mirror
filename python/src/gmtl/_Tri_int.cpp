@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Tri_int.cpp,v $
- * Date modified: $Date: 2003-08-15 22:01:57 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2004-10-27 19:01:33 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -31,6 +31,7 @@
 #include <gmtl/Tri.h>
 #include <gmtl/TriOps.h>
 #include <gmtl/Output.h>
+#include <gmtl-pickle.h>
 
 // Using =======================================================================
 using namespace boost::python;
@@ -44,6 +45,7 @@ void _Export_Tri_int()
         .def("edge", (gmtl::Vec<int, 3> (gmtl::Tri<int>::*)(int) const) &gmtl::Tri<int>::edge)
         .def("edge", (gmtl::Vec<int, 3> (gmtl::Tri<int>::*)(int, int) const) &gmtl::Tri<int>::edge)
         .def("set", &gmtl::Tri<int>::set)
+        .def_pickle(gmtlPickle::Tri_pickle<int>())
         .def(self == self)
         .def(self != self)
         .def(self_ns::str(self))

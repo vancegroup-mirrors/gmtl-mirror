@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _EulerAngle_float_gmtl_ZYX.cpp,v $
- * Date modified: $Date: 2003-08-16 05:28:23 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2004-10-27 19:01:33 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -32,6 +32,7 @@
 #include <gmtl/Output.h>
 #include <gmtl-wrappers.h>
 #include <gmtl-getData-wrappers.h>
+#include <gmtl-pickle.h>
 
 // Using =======================================================================
 using namespace boost::python;
@@ -48,6 +49,7 @@ void _Export_EulerAngle_float_gmtl_ZYX()
         .add_property("data", (tuple (*)(gmtl::EulerAngle<float,gmtl::ZYX>*)) &gmtlWrappers::EulerAngle_getData)
         .def("__getitem__", (float& (gmtl::EulerAngle<float,gmtl::ZYX>::*)(const unsigned) ) &gmtl::EulerAngle<float,gmtl::ZYX>::operator[], return_value_policy<copy_non_const_reference>())
         .def("__setitem__", (void (*)(gmtl::EulerAngle<float,gmtl::ZYX>*, const unsigned, float)) &gmtlWrappers::setArrayElement)
+        .def_pickle(gmtlPickle::EulerAngle_pickle<float, gmtl::ZYX>())
         .def(self == self)
         .def(self != self)
         .def(self_ns::str(self))

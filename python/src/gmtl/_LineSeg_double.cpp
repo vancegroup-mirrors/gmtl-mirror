@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _LineSeg_double.cpp,v $
- * Date modified: $Date: 2003-05-20 18:57:15 $
- * Version:       $Revision: 1.1.1.1 $
+ * Date modified: $Date: 2004-10-27 19:01:33 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -31,6 +31,7 @@
 #include <gmtl/LineSeg.h>
 #include <gmtl/LineSegOps.h>
 #include <gmtl/Output.h>
+#include <gmtl-pickle.h>
 
 // Using =======================================================================
 using namespace boost::python;
@@ -43,6 +44,7 @@ void _Export_LineSeg_double()
         .def(init< const gmtl::LineSeg<double> & >())
         .def(init< const gmtl::Point<double,3> &, const gmtl::Point<double,3> & >())
         .def("getLength", &gmtl::LineSeg<double>::getLength)
+        .def_pickle(gmtlPickle::LineSeg_pickle<double>())
         .def(self == self)
         .def(self != self)
         .def(self_ns::str(self))

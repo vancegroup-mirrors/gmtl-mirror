@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _LineSeg_float.cpp,v $
- * Date modified: $Date: 2003-05-20 18:57:15 $
- * Version:       $Revision: 1.1.1.1 $
+ * Date modified: $Date: 2004-10-27 19:01:33 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -31,6 +31,7 @@
 #include <gmtl/LineSeg.h>
 #include <gmtl/LineSegOps.h>
 #include <gmtl/Output.h>
+#include <gmtl-pickle.h>
 
 // Using =======================================================================
 using namespace boost::python;
@@ -43,6 +44,7 @@ void _Export_LineSeg_float()
         .def(init< const gmtl::LineSeg<float> & >())
         .def(init< const gmtl::Point<float,3> &, const gmtl::Point<float,3> & >())
         .def("getLength", &gmtl::LineSeg<float>::getLength)
+        .def_pickle(gmtlPickle::LineSeg_pickle<float>())
         .def(self == self)
         .def(self != self)
         .def(self_ns::str(self))

@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Matrix_float_4_4.cpp,v $
- * Date modified: $Date: 2004-07-12 13:53:37 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2004-10-27 19:01:33 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -32,6 +32,7 @@
 #include <gmtl/Output.h>
 #include <gmtl-wrappers.h>
 #include <gmtl-getData-wrappers.h>
+#include <gmtl-pickle.h>
 
 // Using =======================================================================
 using namespace boost::python;
@@ -54,6 +55,7 @@ void _Export_Matrix_float_4_4()
         .def("isError", &gmtl::Matrix<float,4,4>::isError)
         .def("setError", &gmtl::Matrix<float,4,4>::setError)
         .def("__getitem__", (gmtl::Matrix<float,4,4>::RowAccessor (gmtl::Matrix<float,4,4>::*)(const unsigned) )&gmtl::Matrix<float,4,4>::operator[])
+        .def_pickle(gmtlPickle::Matrix44_pickle<float>())
         .def(self * self)
         .def(self *= self)
 //        .def(self * float())

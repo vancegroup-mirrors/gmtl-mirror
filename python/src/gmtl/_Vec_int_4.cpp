@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Vec_int_4.cpp,v $
- * Date modified: $Date: 2003-08-17 06:31:07 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2004-10-27 19:01:33 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -29,6 +29,7 @@
 // Includes ====================================================================
 #include <boost/python.hpp>
 #include <gmtl/Vec.h>
+#include <gmtl-pickle.h>
 
 // Using =======================================================================
 using namespace boost::python;
@@ -43,6 +44,7 @@ void _Export_Vec_int_4()
         .def(init< const int &, const int & >())
         .def(init< const int &, const int &, const int & >())
         .def(init< const int &, const int &, const int &, const int & >())
+        .def_pickle(gmtlPickle::Vec4_pickle<int>())
     );
 
     enum_< gmtl::Vec<int,4>::Params >("Params")
