@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatOpsTest.h,v $
- * Date modified: $Date: 2002-02-22 07:22:26 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-02-22 10:21:12 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -67,7 +67,7 @@ public:
    void output( gmtl::Quatf q )
    {
       std::cout<<q[0]<<" "<<q[1]<<" "<<q[2]<<" "<<q[3]<<std::endl;
-   }  
+   } 
    
    void testQuatMult()
    {
@@ -87,6 +87,10 @@ public:
       q8 = q4 * q3;
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, q7, eps ) );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result2, q8, eps ) );
+      
+      gmtl::Quatf  bokbokbok( 9, 10, 11, 12 ), expected_result3( 122, 476, 638, -1296 );
+      q6 = q4 * q3 * bokbokbok;
+      CPPUNIT_ASSERT( gmtl::isEqual( expected_result3, q6, eps ) );
    }
    
    void testQuatDiv()
@@ -161,7 +165,6 @@ public:
    
    void testQuatNormalize()
    {
-      // test out mult( result, quat, quat )
       const float eps = 0.0001f;
       gmtl::Quatf q3( 0,0,342334,0 ), q5( 342334,-342334,342334,-342334 );
       gmtl::normalize( q3 );
@@ -175,39 +178,54 @@ public:
       CPPUNIT_ASSERT( gmtl::isNormalized( expected_result2 ) );
    }
    
-   void testQuatInvert()
+   void testQuatNormalizeFast()
    {
-      // test out mult( result, quat, quat )
+      const float eps = 0.0001f;
+      gmtl::Quatf q3( 0,0,2,0 ), q5( 2,-2,2,-2 );
+      gmtl::normalizeFast( q3 );
+      gmtl::normalizeFast( q5 );
+
+      gmtl::Quatf expected_result1( 0, 0, 0.5, 0 ), expected_result2( 0.125, -0.125, 0.125, -0.125 );
+      CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, q3, eps ) );
+      CPPUNIT_ASSERT( gmtl::isEqual( expected_result2, q5, eps ) );
+   }
+   
+   void testQuatConj()
+   {
       const float eps = 0.0001f;
       gmtl::Quatf q3( 0,0,342334,0 ), q5( 342334,-342334,342334,-342334 );
-      gmtl::invert( q3 );
-      gmtl::invert( q5 );
+      gmtl::conj( q3 );
+      gmtl::conj( q5 );
 
       gmtl::Quatf expected_result1( 0, 0, -342334, 0 ), expected_result2( -342334,342334,-342334,-342334 );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, q3, eps ) );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result2, q5, eps ) );
    }
 
-   /** @todo, slerp, lerp, squad, meantangent, exp, log */
-   void testQuatMakeRot()
+   void testQuatInvert()
    {
-      /*
+      // test out mult( result, quat, quat )
       const float eps = 0.0001f;
-      gmtl::makeRot( q1, gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f );
-      gmtl::makeRot( q2, gmtl::Math::deg2Rad( 32.0f ), 0.0f, 1.0f, 0.0f );
-      gmtl::Quatf expected_result1( 0.707107, 0, 0, 0.707107 );
-      gmtl::Quatf expected_result2( 0, 0.275637, 0, 0.961262 );
-
-      CPPUNIT_ASSERT( isEqual( expected_result1, q1, eps ) );
-      CPPUNIT_ASSERT( isEqual( expected_result2, q2, eps ) );
-      */
+      gmtl::Quatf q( 0.2, 0.33, 0.44, 0.101 ), expected_result( -0.567053, -0.935637, -1.24752, 0.286362 );
+      gmtl::Quatf q2( q );
+      gmtl::Quatf q3( gmtl::invert( q2 ) );
+      output( q3 );
+      output( q2 );
+      output( expected_result );
+      CPPUNIT_ASSERT( gmtl::isEqual( expected_result, q3, eps ) );
+      CPPUNIT_ASSERT( gmtl::isEqual( expected_result, q2, eps ) );
+      
+      gmtl::Quatf q4( makeInvert( q ) );
+      CPPUNIT_ASSERT( gmtl::isEqual( expected_result, q4, eps ) );
    }
+
+   /** @todo, slerp, lerp, squad, meantangent, exp, log */
+   
 
    static Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("QuatOpsTest");
       test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatMult", &QuatOpsTest::testQuatMult));
-      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatMakeRot", &QuatOpsTest::testQuatMakeRot));
       test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatVectorMult", &QuatOpsTest::testQuatVectorMult));
       test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatDiv", &QuatOpsTest::testQuatDiv));
       test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatVectorAdd", &QuatOpsTest::testQuatVectorAdd));
@@ -216,6 +234,8 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatNorm", &QuatOpsTest::testQuatNorm));
       test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatMag", &QuatOpsTest::testQuatMag));
       test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatNormalize", &QuatOpsTest::testQuatNormalize));
+      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatNormalizeFast", &QuatOpsTest::testQuatNormalizeFast));
+      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatConj", &QuatOpsTest::testQuatConj));
       test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatInvert", &QuatOpsTest::testQuatInvert));
       return test_suite;
    }
