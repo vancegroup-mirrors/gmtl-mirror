@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Math.h,v $
- * Date modified: $Date: 2004-07-21 18:39:21 $
- * Version:       $Revision: 1.37 $
+ * Date modified: $Date: 2004-08-03 04:17:05 $
+ * Version:       $Revision: 1.38 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -528,6 +528,7 @@ inline T clamp( T number, T lo, T hi )
  */
 
 /** Linear Interpolation between number [a] and [b].
+ *  lerp=0.0 returns a, lerp=1.0 returns b
  *  @pre use double or float only...
  */
 template <class T, typename U>
