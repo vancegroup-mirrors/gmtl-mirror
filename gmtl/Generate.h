@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-02-28 14:37:09 $
- * Version:       $Revision: 1.14 $
+ * Date modified: $Date: 2002-03-09 04:06:12 $
+ * Version:       $Revision: 1.15 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -356,6 +356,7 @@ namespace gmtl
    /** Create a rotation matrix using an axis and an angle (in radians).
     *  to a rotation matrix defined by the rotation part of M
     * @post this function only produces 3x3, 3x4, 4x3, and 4x4 matrices, and is undefined otherwise
+    * @pre you must pass a normalized vector in for the axis.
     */
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
    inline Matrix<DATA_TYPE, ROWS, COLS>& makeRot( Matrix<DATA_TYPE, ROWS, COLS>& result, const DATA_TYPE radians, const Vec<DATA_TYPE, 3>& vec )
@@ -396,6 +397,18 @@ namespace gmtl
       }
 
       return result;
+   }
+   
+   /** make a rotation matrix from an angle and an axis.
+    * @pre axis [xyz] will be normalized for you, no need to worry about it.
+    * @post q = [ cos(rad/2), sin(rad/2) * [x,y,z] ]
+    */
+   template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
+   inline Matrix<DATA_TYPE, ROWS, COLS>& makeRot( Matrix<DATA_TYPE, ROWS, COLS>& result, const DATA_TYPE rad, const DATA_TYPE x, const DATA_TYPE y, const DATA_TYPE z )
+   {
+      Vec<DATA_TYPE, 3> axis( x, y, z );
+      normalize( axis );
+      return makeRot( result, rad, axis );
    }
    
    /** Create a rotation matrix using an axis and an angle (in radians).   (static version)
