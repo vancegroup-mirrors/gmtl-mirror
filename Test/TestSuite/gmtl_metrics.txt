@@ -202,7 +202,11 @@ gfxn3/Debug/PointTest/pointCreationOverhead                        0.214007
 gfxn3/Debug/SphereTest/ConstructorsOverhead                        0.14113
 gfxn3/Debug/SphereTest/CopyConstructOverhead                       0.103445
 gfxn3/Debug/SphereTest/EqualityCompareOverhead                     0.17098
+gfxn3/Debug/SphereTest/GetCenterOverhead                           0.0625325
+gfxn3/Debug/SphereTest/GetRadiusOverhead                           0.018375
 gfxn3/Debug/SphereTest/InequalityCompareOverhead                   0.19509
+gfxn3/Debug/SphereTest/SetCenterOverhead                           0.0769175
+gfxn3/Debug/SphereTest/SetRadiusOverhead                           0.02203
 gfxn3/Debug/SphereTest/SphereCreationOverhead                      0.07019
 gfxn3/Debug/SphereTest/isEqualOverhead                             0.547048
 gfxn3/Debug/VecBaseTest/ConstructorsOverhead                       0.152227
