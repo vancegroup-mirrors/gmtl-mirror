@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.cpp,v $
- * Date modified: $Date: 2002-03-18 23:16:15 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-03-20 16:06:50 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -541,8 +541,39 @@ namespace gmtlTest
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/OpMultScalarOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/OpVecMultScalarOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
+
+   /** Test scalar * vec */
+   void VecTest::testOpScalarVecMult()
+   {
+      gmtl::Vec<float,3> test_vec1(1.0, 2.0, 3.0);
+      gmtl::Vec<float,3> test_vec3(1.0, 2.0, 3.0);
+
+      test_vec1 = 4.0f * test_vec3;
+      CPPUNIT_ASSERT( test_vec1[0] == 4.0f &&
+                      test_vec1[1] == 8.0f &&
+                      test_vec1[2] == 12.0f );
+
+      // -- test op- performance
+      const float iters(400000);
+      float bogus_value(0.0f);
+      CPPUNIT_METRIC_START_TIMING();
+      test_vec3.set(5.0, 7.0, 9.0);
+
+      for( float iter=0;iter<iters; ++iter)
+      {
+         test_vec1 = 1.05f * test_vec3;
+         test_vec3 = test_vec1;
+         bogus_value += test_vec1[0];
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/OpScalarMultVecOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      CPPUNIT_ASSERT(bogus_value > 5.0f);
+   }
+
 
    void VecTest::testOpDivScalarEq()
    {
@@ -932,14 +963,14 @@ namespace gmtlTest
       CPPUNIT_ASSERT( gmtl::isNormalized(v1) );
       CPPUNIT_ASSERT( gmtl::isNormalized(v2) );
       CPPUNIT_ASSERT( gmtl::isNormalized(v3) );
-      
+
       CPPUNIT_ASSERT( ! gmtl::isNormalized(v4) );
 
       // test performance
       const unsigned long iters(100000);
       long true_count(0);
       v4.set( 0.5f, 0.5f, 0.5f );
-      
+
       CPPUNIT_METRIC_START_TIMING();
       for ( unsigned long iter=0; iter<iters; ++iter )
       {

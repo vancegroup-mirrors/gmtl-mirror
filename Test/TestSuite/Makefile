@@ -29,8 +29,8 @@
 #
 # -----------------------------------------------------------------
 # File:          $RCSfile: Makefile,v $
-# Date modified: $Date: 2002-03-19 23:16:53 $
-# Version:       $Revision: 1.25 $
+# Date modified: $Date: 2002-03-20 16:06:49 $
+# Version:       $Revision: 1.26 $
 # -----------------------------------------------------------------
 # *************** <auto-copyright.pl END do not edit this line> ***************
 
@@ -38,7 +38,7 @@
 # Advanced template makefile for VR Juggler applications.  This is intended
 # for "power users" who really know what they are doing and want to abuse
 # Doozer's flexibility.  :)
-# $Id: Makefile,v 1.25 2002-03-19 23:16:53 subatomic Exp $
+# $Id: Makefile,v 1.26 2002-03-20 16:06:49 allenb Exp $
 #
 # *** IMPORTANT NOTES -- READ THESE FIRST ***
 #     1) This file _requires_ the use of GNU make (gmake).
@@ -96,13 +96,13 @@ srcdir  	= $(shell pwd)
 #    EXTRA_UI_LIBS     - Extra user interface libraries needed for linking.
 #    PF_PATH           - Path (including -L option) to the Performer libraries
 #
-#CXX              = g++3
+CXX              = g++3
 USE_OPT?=           N
 #DEBUG_FLAGS      =
 OPTIM_FLAGS       = -O3 $(EXTRA_OPTIM_FLAGS)
 EXTRA_CFLAGS      =
 ifeq ($(HOSTTYPE), Linux)
-   EXTRA_CXXFLAGS = -Wall
+   EXTRA_CXXFLAGS = -Wall -fexceptions
 else
    EXTRA_CXXFLAGS =
 endif
@@ -141,24 +141,24 @@ EXTRA_UI_FLAGS =
 # This can be done for as many lists of object files as necessary.
 # This is helpful for compiling multiple applications.
 TEST_SRCS = ConvertTest.cpp \
-            VecGenTest.cpp \
-            QuatGenTest.cpp \
             LineSegTest.cpp \
             MatrixClassTest.cpp \
             MatrixCompareTest.cpp \
             MatrixGenTest.cpp \
             MatrixOpsTest.cpp \
+            OptTest.cpp \
             PlaneTest.cpp \
             PointTest.cpp \
             QuatClassTest.cpp \
             QuatCompareTest.cpp \
+            QuatGenTest.cpp \
             QuatStuffTest.cpp \
             SphereTest.cpp \
             TriTest.cpp \
             VecBaseTest.cpp \
-            VecTest.cpp \
+            VecGenTest.cpp \
+			VecTest.cpp \
             XformTest.cpp \
-            OptTest.cpp \
             testSuite.cpp
 CPPUNIT_UI_SRCS	= TextTestResult.cpp	\
                   TextTestRunner.cpp

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.h,v $
- * Date modified: $Date: 2002-03-18 23:16:15 $
- * Version:       $Revision: 1.20 $
+ * Date modified: $Date: 2002-03-20 16:06:50 $
+ * Version:       $Revision: 1.21 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -78,6 +78,7 @@ public:
    void testOpMinus();
    void testOpMultScalarEq();
    void testOpMultScalar();
+   void testOpScalarVecMult();
    void testOpDivScalarEq();
    void testOpDivScalar();
    void testGroupedOpsPerformance();
@@ -109,6 +110,7 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpMinus", &VecTest::testOpMinus));
       test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpMultScalarEq", &VecTest::testOpMultScalarEq));
       test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpMultScalar", &VecTest::testOpMultScalar));
+      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpScalarVecMult", &VecTest::testOpScalarVecMult));
       test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpDivScalarEq", &VecTest::testOpDivScalarEq));
       test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpDivScalar", &VecTest::testOpDivScalar));
 

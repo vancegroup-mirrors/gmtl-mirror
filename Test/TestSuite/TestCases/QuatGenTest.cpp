@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatGenTest.cpp,v $
- * Date modified: $Date: 2002-03-20 00:06:51 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-03-20 16:06:50 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -37,7 +37,7 @@ Quat [] -km Transforquations XformInterface? Xform.h   Collision detection Colli
 #include <cppunit/extensions/MetricRegistry.h>
 
 namespace gmtlTest
-{  
+{
    //-- quat tests --//
 
    void QuatGenTest::testQuatMakePure()
@@ -47,31 +47,31 @@ namespace gmtlTest
       CPPUNIT_ASSERT( quat[gmtl::Xelt] == 121 );
       CPPUNIT_ASSERT( quat[gmtl::Yelt] == 232 );
       CPPUNIT_ASSERT( quat[gmtl::Zelt] == 343 );
-      
+
       // make sure set works the same
       gmtl::setPure( q2, vec );
       CPPUNIT_ASSERT( q2[gmtl::Xelt] == 121 );
       CPPUNIT_ASSERT( q2[gmtl::Yelt] == 232 );
       CPPUNIT_ASSERT( q2[gmtl::Zelt] == 343 );
    }
-   
+
    void QuatGenTest::testQuatMakeConj()
    {
       gmtl::Quat<float> quat( 0.0f,21.0f,31.0f,1234.0f );
       gmtl::Quat<float> quat2 = gmtl::makeConj( quat );
-      
+
       // make sure the func didn't munge the data...
       CPPUNIT_ASSERT( quat[gmtl::Xelt] == 0.0f );
       CPPUNIT_ASSERT( quat[gmtl::Yelt] == 21.0f );
       CPPUNIT_ASSERT( quat[gmtl::Zelt] == 31.0f );
       CPPUNIT_ASSERT( quat[gmtl::Welt] == 1234.0f );
-      
+
       // make sure conj worked.
       CPPUNIT_ASSERT( quat2[gmtl::Xelt] == -0.0f );
       CPPUNIT_ASSERT( quat2[gmtl::Yelt] == -21.0f );
       CPPUNIT_ASSERT( quat2[gmtl::Zelt] == -31.0f );
       CPPUNIT_ASSERT( quat2[gmtl::Welt] == 1234.0f );
-      
+
       // make sure set works the same
       /// @todo no impl
       // gmtl::Quat<float> q2;
@@ -81,7 +81,7 @@ namespace gmtlTest
       //CPPUNIT_ASSERT( q2[gmtl::Zelt] == -31.0f );
       //CPPUNIT_ASSERT( q2[gmtl::Welt] == 1234.0f );
    }
-   
+
    void QuatGenTest::testQuatMakeInvert()
    {
       // test out mult( result, quat, quat )
@@ -89,14 +89,14 @@ namespace gmtlTest
       gmtl::Quat<float> q( 0.2, 0.33, 0.44, 0.101 ), expected_result( -0.567053, -0.935637, -1.24752, 0.286362 );
       gmtl::Quat<float> q4( gmtl::makeInvert( q ) );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result, q4, eps ) );
-      
+
       // make sure set works the same
       /// @todo no impl
       // gmtl::Quat<float> q5;
       //gmtl::setInvert( q5, q );
       //CPPUNIT_ASSERT( gmtl::isEqual( expected_result, q5, eps ) );
    }
-   
+
    void QuatGenTest::testQuatMakeRot()
    {
       const float eps = 0.0001f;
@@ -110,7 +110,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result2, q2, eps ) );
       CPPUNIT_ASSERT( gmtl::isNormalized( q1, eps ) );
       CPPUNIT_ASSERT( gmtl::isNormalized( q2, eps ) );
-      
+
       // values from VR Juggler math lib...
       std::vector< gmtl::Quat<float> > quats;
       quats.push_back( gmtl::Quat<float>( 0, 0, 0, -1       ) );
@@ -150,7 +150,7 @@ namespace gmtlTest
       quats.push_back( gmtl::Quat<float>( 0, 0.34202, 0, -0.939693    ) );
       quats.push_back( gmtl::Quat<float>( 0, 0.173648, 0, -0.984808   ) );
       quats.push_back( gmtl::Quat<float>( -0, 0, -0, -1    ) );
-      
+
       /// @todo check this against another math lib other than VR Juggler...
       int count = 0;
       for (int x = -360; x <= 360; x += 20)
@@ -161,12 +161,13 @@ namespace gmtlTest
          gmtl::setRot( q3, gmtl::Math::deg2Rad( float(x) ), gmtl::Vec3f( 0.0f, 1.0f, 0.0f ) );
          CPPUNIT_ASSERT( gmtl::isEqual( quats[count], q2, eps ) );
          CPPUNIT_ASSERT( gmtl::isEqual( q3, q2, eps ) );
-         
+
          // make sure that makeRot and setRot do the same thing...
          CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Quat<float> >( gmtl::Math::deg2Rad( float(x) ), 0.0f, 1.0f, 0.0f ) == q2 );
          CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Quat<float> >( gmtl::Math::deg2Rad( float(x) ), gmtl::Vec3f( 0.0f, 1.0f, 0.0f ) ) == q3 );
          count++;
       }
+
    }
 
    void QuatGenTest::testQuatGetRot()
@@ -210,7 +211,7 @@ namespace gmtlTest
       quats.push_back( gmtl::Vec4f( 5.58505, 0, 1, 0           ) );
       quats.push_back( gmtl::Vec4f( 5.93412, 0, 1, 0           ) );
       quats.push_back( gmtl::Vec4f( 6.28319, 2, 0, 0           ) );
-      
+
       /// @todo check this against another math lib other than VR Juggler...   (all the vals above look sane, but... )
       float a, b, c, fg;
       gmtl::Quat<float> q2;
@@ -223,7 +224,7 @@ namespace gmtlTest
          ++count;
       }
    }
-   
+
    void QuatGenTest::testQuatMakeGetMakeRot()
    {
       const float eps = 0.0001f;
@@ -236,7 +237,7 @@ namespace gmtlTest
          q3 = gmtl::makeRot<gmtl::Quat<float> >( fg, a, b, c );
          gmtl::getRot( q3, fg1, a1, b1, c1 );
          CPPUNIT_ASSERT( gmtl::isEqual( q3, q2, eps ) );
-         
+
          CPPUNIT_ASSERT( gmtl::Math::isEqual( fg1, fg, eps ) );
          CPPUNIT_ASSERT( gmtl::Math::isEqual( a1, a, eps ) );
          CPPUNIT_ASSERT( gmtl::Math::isEqual( b1, b, eps ) );
@@ -244,7 +245,7 @@ namespace gmtlTest
       }
    }
 
-   
+
    //-- timing tests --//
    void QuatGenTest::testGenTimingMakeInvert1()
    {
@@ -258,11 +259,11 @@ namespace gmtlTest
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/makeInvert(quatd)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
 
-      // force intelligent compilers to do all the iterations (ie. to not optimize them out), 
+      // force intelligent compilers to do all the iterations (ie. to not optimize them out),
       // by using the variables computed...
       CPPUNIT_ASSERT( q1[0] != 10000.0f );
    }
-   
+
    void QuatGenTest::testGenTimingMakeInvert2()
    {
       gmtl::Quat<float> q2;
@@ -274,18 +275,18 @@ namespace gmtlTest
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/makeInvert(quatf)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
-   
-      // force intelligent compilers to do all the iterations (ie. to not optimize them out), 
+
+      // force intelligent compilers to do all the iterations (ie. to not optimize them out),
       // by using the variables computed...
       CPPUNIT_ASSERT( q2[0] != 10000.0f );
    }
-   
+
    void QuatGenTest::testGenTimingMakeConj()
    {
       gmtl::Quat<double> q1;
       const long iters(50000);
       CPPUNIT_METRIC_START_TIMING();
-      
+
       for (long iter = 0; iter < iters; ++iter)
       {
          q1 = gmtl::makeConj( q1 );
@@ -301,20 +302,20 @@ namespace gmtlTest
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/makeConj(quatf)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
-   
-      // force intelligent compilers to do all the iterations (ie. to not optimize them out), 
+
+      // force intelligent compilers to do all the iterations (ie. to not optimize them out),
       // by using the variables computed...
       CPPUNIT_ASSERT( q2[0] != 10000.0f );
       CPPUNIT_ASSERT( q1[0] != 10000.0f );
-   }   
-   
+   }
+
    void QuatGenTest::testGenTimingMakePure()
    {
       gmtl::Quat<double> q1;
       gmtl::Vec<double, 3> v1;
       const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
-      
+
       for (long iter = 0; iter < iters; ++iter)
       {
          q1 = gmtl::makePure( v1 );
@@ -333,19 +334,19 @@ namespace gmtlTest
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/makePure(vec3f)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
-   
-      // force intelligent compilers to do all the iterations (ie. to not optimize them out), 
+
+      // force intelligent compilers to do all the iterations (ie. to not optimize them out),
       // by using the variables computed...
       CPPUNIT_ASSERT( q2[0] != 10000.0f );
       CPPUNIT_ASSERT( q1[0] != 10000.0f );
-   }   
-   
+   }
+
    void QuatGenTest::testGenTimingMakeNormalQuat()
    {
       gmtl::Quat<double> q1;
       const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
-      
+
       for (long iter = 0; iter < iters; ++iter)
       {
          q1 = gmtl::makeNormal( q1 );
@@ -361,13 +362,13 @@ namespace gmtlTest
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/makeNormal(quatf)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
-   
-      // force intelligent compilers to do all the iterations (ie. to not optimize them out), 
+
+      // force intelligent compilers to do all the iterations (ie. to not optimize them out),
       // by using the variables computed...
       CPPUNIT_ASSERT( q2[0] != 10000.0f );
       CPPUNIT_ASSERT( q1[0] != 10000.0f );
-   }  
-   
+   }
+
    void QuatGenTest::testGenTimingMakeRot()
    {
       double bokd = 1;
@@ -375,7 +376,7 @@ namespace gmtlTest
       gmtl::Quat<double> q1;
       const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
-      
+
       for (long iter = 0; iter < iters; ++iter)
       {
          q1 = gmtl::makeRot<gmtl::Quat<double> >( bokd, bokd, bokd, bokd );
@@ -394,7 +395,7 @@ namespace gmtlTest
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/makeRot(quatf,f,f,f,f)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
 
-      
+
       gmtl::Quat<double> q3; bokd = 1.0f;
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
@@ -414,8 +415,8 @@ namespace gmtlTest
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/makeRot(quatf,f,vecf)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
-      
-      
+
+
       gmtl::Quat<double> q5;
       gmtl::Vec<double, 3> v4, v5;
       CPPUNIT_METRIC_START_TIMING();
@@ -427,7 +428,7 @@ namespace gmtlTest
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/makeRot(quatd,vec3d,vec3d)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
-      
+
       gmtl::Quat<float> q6;
       gmtl::Vec<float, 3> v6, v7;
       CPPUNIT_METRIC_START_TIMING();
@@ -453,8 +454,8 @@ namespace gmtlTest
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/getRot(quatf,f,f,f,f)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
-      
-      // force intelligent compilers to do all the iterations (ie. to not optimize them out), 
+
+      // force intelligent compilers to do all the iterations (ie. to not optimize them out),
       // by using the variables computed...
       CPPUNIT_ASSERT( bokf != 0.998f );
       CPPUNIT_ASSERT( bokd != 0.0998 );
@@ -465,8 +466,8 @@ namespace gmtlTest
       CPPUNIT_ASSERT( q5[0] != 10000.0f );
       CPPUNIT_ASSERT( q6[1] != 10000.0f );
    }
-   
-   
+
+
    void QuatGenTest::testGenTimingSetRot()
    {
       double bokd = 1;
@@ -474,7 +475,7 @@ namespace gmtlTest
       gmtl::Quat<double> q1;
       const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
-      
+
       for (long iter = 0; iter < iters; ++iter)
       {
          gmtl::setRot( q1, bokd, bokd, bokd, bokd );
@@ -493,7 +494,7 @@ namespace gmtlTest
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/setRot(quatf,f,f,f,f)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
 
-      
+
       gmtl::Quat<double> q3; bokd = 1.0f;
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
@@ -513,8 +514,8 @@ namespace gmtlTest
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/setRot(quatf,f,vecf)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
-      
-      
+
+
       gmtl::Quat<double> q5;
       gmtl::Vec<double, 3> v4, v5;
       CPPUNIT_METRIC_START_TIMING();
@@ -526,7 +527,7 @@ namespace gmtlTest
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/setRot(quatd,vec3d,vec3d)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
-      
+
       gmtl::Quat<float> q6;
       gmtl::Vec<float, 3> v6, v7;
       CPPUNIT_METRIC_START_TIMING();
@@ -539,7 +540,7 @@ namespace gmtlTest
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/setRot(quatf,vec3f,vec3f)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
 
-      // force intelligent compilers to do all the iterations (ie. to not optimize them out), 
+      // force intelligent compilers to do all the iterations (ie. to not optimize them out),
       // by using the variables computed...
       CPPUNIT_ASSERT( bokf != 0.998f );
       CPPUNIT_ASSERT( bokd != 0.0998 );
