@@ -2,15 +2,16 @@
   *
   */
 
-/** @mainpage Generic Math Template Library FAQ
+/** @page gmtlfaq Generic Math Template Library FAQ
  *  Welcome to the GMTL frequently asked questions list.
  *
  *
  * 
  *
- *  @section General General Questions about GMTL
+ *  @section faqgeneral General Questions about GMTL
  *
- *  <b>Why do you use templated code?</b>
+ *  @subsection faqwhytemplates Why do you use templated code?
+ *
  *  There are several benefits to using the templated code approach. First, it
  *  allows us to easily support multiple versions of very similar data types.
  *  For instance, there are many different types of matrices, varying in both
@@ -803,6 +804,7 @@
  *
  *
  *  @subsection Collision Collision and Containment Detection
+ *
  *  <b>How do I perform collision detection and containment tests?</b>
  *  GMTL provides various spatial objects, including spheres, line segments, 
  *  rays, points, triangles, planes, axially-aligned bounding boxes, and 
@@ -1063,4 +1065,5 @@
  *
  *  float radians = 1.57;
  *  float degrees = gmtl::Math::rad2Deg( radians );
- * 
+ *
+ */ 
