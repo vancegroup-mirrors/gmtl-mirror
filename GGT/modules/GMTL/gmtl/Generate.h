@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2003-12-04 04:14:24 $
- * Version:       $Revision: 1.81 $
+ * Date modified: $Date: 2004-02-23 17:10:12 $
+ * Version:       $Revision: 1.82 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -636,7 +636,7 @@ namespace gmtl
    inline Matrix<T, ROWS, COLS>& setPerspective( Matrix<T, ROWS, COLS>& result, 
                                                  T fovy, T aspect, T nr, T fr )
    {
-      assert( nr > 0 && fr > nr && "invalid near and far values" );
+      gmtlASSERT( nr > 0 && fr > nr && "invalid near and far values" );
       T theta = Math::deg2Rad( fovy * T( 0.5 ) );
       T tangentTheta = Math::tan( theta );
       
