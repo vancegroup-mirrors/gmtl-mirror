@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-03-20 21:05:36 $
- * Version:       $Revision: 1.35 $
+ * Date modified: $Date: 2002-03-20 22:31:29 $
+ * Version:       $Revision: 1.36 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -358,7 +358,7 @@ namespace gmtl
       return setTrans( temporary, trans );
    }
 
-   /** Set matrix translation from vec.
+   /** Set vector from matrix translation.
     * @pre if making an n x n matrix, then for
     *    - <b>vector is homogeneous:</b> SIZE of vector needs to equal number of Matrix ROWS - 1
     *    - <b>vector has scale component:</b> SIZE of vector needs to equal number of Matrix ROWS
@@ -368,8 +368,7 @@ namespace gmtl
     * @post if preconditions are not met, then function is undefined (will not compile)
     */
    template<typename VEC_TYPE, typename DATA_TYPE, unsigned ROWS, unsigned COLS >
-   inline VEC_TYPE getTrans( const Matrix<DATA_TYPE, ROWS, COLS>& arg,
-                             Type2Type< VEC_TYPE > t = Type2Type< VEC_TYPE >())
+   inline VEC_TYPE& setTrans( VEC_TYPE& ret_trans, const Matrix<DATA_TYPE, ROWS, COLS>& arg )
    {
       // ASSERT: There are as many
 
@@ -378,8 +377,6 @@ namespace gmtl
       gmtlASSERT( ((ROWS == COLS && ( VEC_TYPE::Size == (ROWS-1) ||  VEC_TYPE::Size == ROWS)) ||
                (COLS == (ROWS+1) && ( VEC_TYPE::Size == ROWS ||  VEC_TYPE::Size == (ROWS+1)))) &&
               "preconditions not met for vector size in call to makeTrans.  Read your documentation." );
-
-      VEC_TYPE ret_trans;
 
       // homogeneous case...
       if ((ROWS == COLS &&  VEC_TYPE::Size == ROWS)              // Square matrix and vec so assume homogeneous vector. ex. 4x4 with vec 4
@@ -399,12 +396,29 @@ namespace gmtl
 
       return ret_trans;
    }
+   
+   /** Make vector from matrix translation.
+    * @pre if making an n x n matrix, then for
+    *    - <b>vector is homogeneous:</b> SIZE of vector needs to equal number of Matrix ROWS - 1
+    *    - <b>vector has scale component:</b> SIZE of vector needs to equal number of Matrix ROWS
+    * if making an n x n+1 matrix, then for
+    *    - <b>vector is homogeneous:</b> SIZE of vector needs to equal number of Matrix ROWS
+    *    - <b>vector has scale component:</b> SIZE of vector needs to equal number of Matrix ROWS + 1
+    * @post if preconditions are not met, then function is undefined (will not compile)
+    */
+   template<typename VEC_TYPE, typename DATA_TYPE, unsigned ROWS, unsigned COLS >
+   inline VEC_TYPE makeTrans( const Matrix<DATA_TYPE, ROWS, COLS>& arg,
+                             Type2Type< VEC_TYPE > t = Type2Type< VEC_TYPE >())
+   {
+      VEC_TYPE temporary;
+      return setTrans( temporary, arg );
+   }
 
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
    inline void getTrans( const Matrix<DATA_TYPE, ROWS, COLS>& arg,
                              DATA_TYPE& x, DATA_TYPE& y, DATA_TYPE& z)
    {
-      gmtl::Vec<DATA_TYPE,3> trans_vec( getTrans<gmtl::Vec<DATA_TYPE,3> >(arg) );
+      gmtl::Vec<DATA_TYPE,3> trans_vec( makeTrans<gmtl::Vec<DATA_TYPE,3> >(arg) );
       x = trans_vec[0];
       y = trans_vec[1];
       z = trans_vec[2];
@@ -572,6 +586,8 @@ namespace gmtl
 
       return result;
    }
+   
+   
 
    /** Create a rotation matrix or quaternion (or any other rotation data type) using euler angles (in radians)
     * @post this function only produces 3x3, 3x4, 4x3, and 4x4 matrices, and is undefined otherwise
@@ -584,6 +600,95 @@ namespace gmtl
    {
       ROTATION_TYPE temporary;
       return setRot( temporary, rotx, roty, rotz, order );
+   }
+   
+   
+   /** get euler angles (in radians) from a rotation matrix
+    * @pre pass in your args in the same order as the RotationOrder you specify
+    * @post this function only reads 3x3, 3x4, 4x3, and 4x4 matrices, and is undefined otherwise
+    */
+   template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
+   inline void getRot( const Matrix<DATA_TYPE, ROWS, COLS>& mat, DATA_TYPE param0,
+                                                 DATA_TYPE param1, DATA_TYPE param2, const RotationOrder order )
+   {
+      // @todo set this a compile time assert...
+      gmtlASSERT( ROWS >= 3 && COLS >= 3 && ROWS <= 4 && COLS <= 4 && "this is undefined for Matrix smaller than 3x3 or bigger than 4x4" );
+
+      DATA_TYPE sx;
+      DATA_TYPE cz;
+      DATA_TYPE xRot = 0, zRot = 0, yRot = 0;
+
+      // @todo metaprogram this!
+      switch (order)
+      {
+      case XYZ:
+         {
+            zRot = Math::aTan2(-mat(0,1), mat(0,0));     // -(-cy*sz)/(cy*cz) - cy falls out
+            xRot = Math::aTan2(-mat(1,2), mat(2,2));     // -(sx*cy)/(cx*cy) - cy falls out
+            cz = Math::cos(zRot);
+            yRot = Math::aTan2(mat(0,2), mat(0,0)/cz);   // (sy)/((cy*cz)/cz)
+         }
+         break;
+      case ZYX:
+         {
+            zRot = Math::aTan2(mat(1,0), mat(0,0));      // (cy*sz)/(cy*cz) - cy falls out
+            xRot = Math::aTan2(mat(2,1), mat(2,2));      // (sx*cy)/(cx*cy) - cy falls out
+            sx = Math::sin(xRot);
+            yRot = Math::aTan2(-mat(2,0),(mat(2,1)/sx) );   // -(-sy)/((sx*cy)/sx)
+         }
+         break;
+      case ZXY:
+         {
+            // Extract the rotation directly fromt he matrix
+            DATA_TYPE x_angle;
+            DATA_TYPE y_angle;
+            DATA_TYPE z_angle;
+            DATA_TYPE cos_y, sin_y;
+            DATA_TYPE cos_x, sin_x;
+            DATA_TYPE cos_z, sin_z;
+
+            sin_x = mat(2,1);
+            x_angle = Math::aSin(sin_x);     // Get x angle
+            cos_x = Math::cos(x_angle);
+            
+            // Check if cos_x = Zero
+            if(cos_x != 0.0f)     // ASSERT: cos_x != 0
+            {
+                  // Get y Angle
+               cos_y = mat(2,2)/cos_x;
+               sin_y = -mat(2,0)/cos_x;
+               y_angle = Math::aTan2(cos_y, sin_y);
+
+                  // Get z Angle
+               cos_z = mat(1,1)/cos_x;
+               sin_z = -mat(0,1)/cos_x;
+               z_angle = Math::aTan2(cos_z, sin_z);
+            }
+            else
+            {
+               // Arbitrarily set z_angle = 0
+               z_angle = 0;
+
+                  // Get y Angle
+               cos_y = mat(0,0);
+               sin_y = mat(1,0);
+               y_angle = Math::aTan2(cos_y, sin_y);
+            }
+
+            xRot = x_angle;
+            yRot = y_angle;
+            zRot = z_angle;
+         }
+         break;
+      default:
+         gmtlASSERT( false && "unknown rotation order passed to setRot" );
+         break;
+      }
+
+      // this might be faster if put into the switch statement... (testme)
+      ((order == XYZ) ? param0 : ((order == ZXY) ? param1 : param2)) = xRot;
+      ((order == XYZ) ? param1 : ((order == ZXY) ? param2 : param1)) = yRot;
+      ((order == XYZ) ? param2 : ((order == ZXY) ? param0 : param0)) = zRot;
    }
    //*/
 
@@ -690,10 +795,11 @@ namespace gmtl
    //@{
 
    template <typename DATATYPE, unsigned POSSIZE, unsigned MATCOLS, unsigned MATROWS >
-   inline void setCoord( Coord<DATATYPE, POSSIZE, 3>& eulercoord, const Matrix<DATATYPE, MATROWS, MATCOLS>& mat, RotationOrder order = gmtl::XYZ )
+   inline Coord<DATATYPE, POSSIZE, 3>& setCoord( Coord<DATATYPE, POSSIZE, 3>& eulercoord, const Matrix<DATATYPE, MATROWS, MATCOLS>& mat, RotationOrder order = gmtl::XYZ )
    {
       getRot( mat, eulercoord.rot()[0], eulercoord.rot()[1], eulercoord.rot()[2], order );
-      getTrans( mat, eulercoord.pos()[0], eulercoord.pos()[1], eulercoord.pos()[2] );
+      setTrans( eulercoord.pos(), mat );
+      return eulercoord;
    }
 
    template <typename COORD_TYPE, unsigned MATCOLS, unsigned MATROWS >
@@ -706,10 +812,11 @@ namespace gmtl
    }
 
    template <typename DATATYPE, unsigned POSSIZE, unsigned MATCOLS, unsigned MATROWS >
-   inline void convert( Coord<DATATYPE, POSSIZE, 3>& eulercoord, const Matrix<DATATYPE, MATROWS, MATCOLS>& mat, RotationOrder order = gmtl::XYZ )
+   inline Coord<DATATYPE, POSSIZE, 3>& convert( Coord<DATATYPE, POSSIZE, 3>& eulercoord, const Matrix<DATATYPE, MATROWS, MATCOLS>& mat, RotationOrder order = gmtl::XYZ )
    {
       getRot( mat, eulercoord.rot()[0], eulercoord.rot()[1], eulercoord.rot()[2], order );
-      getTrans( mat, eulercoord.pos()[0], eulercoord.pos()[1], eulercoord.pos()[2] );
+      setTrans( eulercoord.pos(), mat );
+      return eulercoord;
    }
 
    //@}
