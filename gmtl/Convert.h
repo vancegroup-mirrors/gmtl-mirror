@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Convert.h,v $
- * Date modified: $Date: 2002-03-08 17:27:40 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-03-11 00:31:44 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,6 +35,10 @@
 #ifndef _GMTL_CONVERT_H_
 #define _GMTL_CONVERT_H_
 
+#include <gmtl/Matrix.h>
+#include <gmtl/Vec.h>
+#include <gmtl/Quat.h>
+
 namespace gmtl
 {
    /** convert vector to a "pure" quaternion.
@@ -47,14 +51,37 @@ namespace gmtl
       return pure_quat;
    }
    
-   /** convert a quaternion to the rotation part of a 3x3, 3x4, or 4x4 matrix. */
+   /** convert a vector to the translation part of a matrix. */
+   template <typename DATA_TYPE, unsigned ROWS, unsigned COLS, unsigned VECSIZE>
+   Matrix<DATA_TYPE, ROWS, COLS>& convert( Matrix<DATA_TYPE, ROWS, COLS>& mat, const Vec<DATA_TYPE, VECSIZE>& trans )
+   {
+      for (int x = 0; x < Math::Min( ROWS-1, VECSIZE ); ++x)
+      {
+         mat( x, COLS-1 ) = trans[x];
+      }
+      return mat;
+   }
+   
+   /** convert the translation part of a matrix to a vector. */
+   template <typename DATA_TYPE, unsigned ROWS, unsigned COLS, unsigned VECSIZE>
+   Vec<DATA_TYPE, VECSIZE>& convert( Vec<DATA_TYPE, VECSIZE>& trans, const Matrix<DATA_TYPE, ROWS, COLS>& mat )
+   {
+      for (int x = 0; x < Math::Min( ROWS-1, VECSIZE ); ++x)
+      {
+         trans[x] = mat( x, COLS-1 );
+      }
+      return trans;
+   }
+   
+   /** convert a quaternion to the rotation part of a 3x3, 3x4, 4x3, or 4x4 matrix. */
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
    Matrix<DATA_TYPE, ROWS, COLS>& convert( Matrix<DATA_TYPE, ROWS, COLS>& mat, const Quat<DATA_TYPE>& q )
    {
       ggtASSERT( ((ROWS == 3 && COLS == 3) ||
                (ROWS == 3 && COLS == 4) ||
+               (ROWS == 4 && COLS == 3) ||
                (ROWS == 4 && COLS == 4)) && 
-               "pre conditions not met on convert( mat, quat )" );
+               "pre conditions not met on convert( mat, quat ) which only converts a quaternion to the rotation part of a 3x3, 3x4, 4x3, or 4x4 matrix." );
 
       // From Watt & Watt
       DATA_TYPE wx, wy, wz, xx, yy, yz, xy, xz, zz, xs, ys, zs;
@@ -94,6 +121,67 @@ namespace gmtl
          mat( 3, 3 ) = DATA_TYPE(1.0);
       
       return mat;
+   }
+   
+   /** convert a matrix (3x3, 3x4, 4x3, or 4x4) to a quaternion.
+    */
+   template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
+   inline Quat<DATA_TYPE>& convert( Quat<DATA_TYPE>& quat, const Matrix<DATA_TYPE, ROWS, COLS>& mat  )
+   {
+      ggtASSERT( ((ROWS == 3 && COLS == 3) ||
+               (ROWS == 3 && COLS == 4) ||
+               (ROWS == 4 && COLS == 3) ||
+               (ROWS == 4 && COLS == 4)) && 
+               "pre conditions not met on convert( quat, pos, mat ) which only converts a quaternion to the rotation part of a 3x3, 3x4, 4x3, or 4x4 matrix." );
+
+      DATA_TYPE tr( mat( 0, 0 ) + mat( 1, 1 ) + mat( 2, 2 ) ), s( 0.0f );
+
+      // If diagonal is positive
+      if (tr > (DATA_TYPE)0.0)
+      {
+         s = Math::sqrt( tr + (DATA_TYPE)1.0 );
+         quat[Welt] = s * (DATA_TYPE)0.5;
+         s = DATA_TYPE(0.5) / s;
+
+         quat[Xelt] = (mat( 2, 1 ) - mat( 1, 2 )) * s;
+         quat[Yelt] = (mat( 0, 2 ) - mat( 2, 0 )) * s;
+         quat[Zelt] = (mat( 1, 0 ) - mat( 0, 1 )) * s;
+      }
+      
+      // when Diagonal is negative
+      else     
+      {
+         static const unsigned int nxt[3] = { 1, 2, 0 };
+         unsigned int i( Xelt ), j, k;
+         
+         if (mat( 1, 1 ) > mat( 0, 0 ))
+            i = 1;
+         
+         if (mat( 2, 2 ) > mat( i, i ))
+            i = 2;
+         
+         j = nxt[i];
+         k = nxt[j];
+
+         s = Math::sqrt( (mat( i, i )-(mat( j, j )+mat( k, k ))) + (DATA_TYPE)1.0 );
+
+         DATA_TYPE q[4];
+         q[i] = s * (DATA_TYPE)0.5;
+
+         if (s != (DATA_TYPE)0.0)
+            s = DATA_TYPE(0.5) / s;
+         
+         q[3] = (mat( k, j ) - mat( j, k )) * s;
+         q[j] = (mat( j, i ) + mat( i, j )) * s;
+         q[k] = (mat( k, i ) + mat( i, k )) * s;
+         
+         quat[Xelt] = q[0];
+         quat[Yelt] = q[1];
+         quat[Zelt] = q[2];
+         quat[Welt] = q[3];
+      }
+      
+      return quat;
    }
    
 } // end namespace gmtl.
