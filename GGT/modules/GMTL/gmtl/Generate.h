@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2003-04-11 04:16:06 $
- * Version:       $Revision: 1.73 $
+ * Date modified: $Date: 2003-04-18 22:55:21 $
+ * Version:       $Revision: 1.74 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -217,6 +217,27 @@ namespace gmtl
    {
       normalize( vec );
       return vec;
+   }
+
+   /**
+    * Computes the cross product between v1 and v2 and returns the result. Note
+    * that this only applies to 3-dimensional vectors.
+    *
+    * @pre  v1 and v2 must be 3-D vectors
+    * @post result = v1 x v2
+    *
+    * @param v1   the first vector
+    * @param v2   the second vector
+    *
+    * @return  the result of the cross product between v1 and v2
+    */
+   template<class DATA_TYPE>
+   Vec<DATA_TYPE,3> makeCross(const Vec<DATA_TYPE, 3>& v1,
+                              const Vec<DATA_TYPE, 3>& v2)
+   {
+      return Vec<DATA_TYPE,3>( ((v1[Yelt]*v2[Zelt]) - (v1[Zelt]*v2[Yelt])),
+                               ((v1[Zelt]*v2[Xelt]) - (v1[Xelt]*v2[Zelt])),
+                               ((v1[Xelt]*v2[Yelt]) - (v1[Yelt]*v2[Xelt])) );
    }
 
    /** Set vector using translation portion of the matrix.

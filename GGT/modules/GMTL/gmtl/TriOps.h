@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: TriOps.h,v $
- * Date modified: $Date: 2003-03-03 00:54:05 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2003-04-18 22:55:21 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -36,6 +36,7 @@
 #define _GMTL_TRIOPS_H_
 
 #include <gmtl/Tri.h>
+#include <gmtl/Generate.h>
 
 namespace gmtl
 {
@@ -68,7 +69,7 @@ Point<DATA_TYPE, 3> center( const Tri<DATA_TYPE>& tri )
 template< class DATA_TYPE >
 Vec<DATA_TYPE, 3> normal( const Tri<DATA_TYPE>& tri )
 {
-   Vec<DATA_TYPE, 3> normal = cross( tri[1] - tri[0], tri[2] - tri[0] );
+   Vec<DATA_TYPE, 3> normal = makeCross( tri[1] - tri[0], tri[2] - tri[0] );
    normalize( normal );
    return normal;
 }

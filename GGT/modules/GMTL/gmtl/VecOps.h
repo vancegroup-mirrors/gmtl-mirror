@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecOps.h,v $
- * Date modified: $Date: 2003-03-03 00:54:05 $
- * Version:       $Revision: 1.24 $
+ * Date modified: $Date: 2003-04-18 22:55:21 $
+ * Version:       $Revision: 1.25 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -349,26 +349,6 @@ bool isNormalized( const Vec<DATA_TYPE, SIZE>& v1,
                    const DATA_TYPE eps = (DATA_TYPE)0.0001 )
 {
    return Math::isEqual( lengthSquared( v1 ), (DATA_TYPE)1.0, eps );
-}
-
-/**
- * Computes the cross product between v1 and v2 and returns the result. Note
- * that this only applies to 3-dimensional vectors.
- *
- * @pre  v1 and v2 must be 3-D vectors
- * @post result = v1 x v2
- *
- * @param v1   the first vector
- * @param v2   the second vector
- *
- * @return  the result of the cross product between v1 and v2
- */
-template<class DATA_TYPE>
-Vec<DATA_TYPE,3> cross(const Vec<DATA_TYPE, 3>& v1, const Vec<DATA_TYPE, 3>& v2)
-{
-   return Vec<DATA_TYPE,3>( ((v1[Yelt]*v2[Zelt]) - (v1[Zelt]*v2[Yelt])),
-                            ((v1[Zelt]*v2[Xelt]) - (v1[Xelt]*v2[Zelt])),
-                            ((v1[Xelt]*v2[Yelt]) - (v1[Yelt]*v2[Xelt])) );
 }
 
 /**
