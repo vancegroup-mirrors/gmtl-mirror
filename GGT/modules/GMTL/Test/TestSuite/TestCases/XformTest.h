@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: XformTest.h,v $
- * Date modified: $Date: 2002-02-25 20:29:31 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2002-02-28 15:14:06 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -79,10 +79,10 @@ public:
          for (long iter = 0; iter < iters; ++iter)
          {
             v1 = q1 * v2;
-            bok += v1[0];
          }
          CPPUNIT_METRIC_STOP_TIMING();
          CPPUNIT_ASSERT_METRIC_TIMING_LE( n.c_str(), iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+         bok += v2[0];
          
          n = "XformTest/xform(vec,quat4,vec3)";
          n += name;
@@ -90,10 +90,10 @@ public:
          for (long iter = 0; iter < iters; ++iter)
          {
             gmtl::xform( v1, q1, v2 );
-            bok += v1[0];
          }
          CPPUNIT_METRIC_STOP_TIMING();
          CPPUNIT_ASSERT_METRIC_TIMING_LE( n.c_str(), iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+         bok += v2[0];
          CPPUNIT_ASSERT( bok != 0 );
       }
    };
@@ -365,25 +365,37 @@ public:
    
    void testQuatVecXform()
    {
-      // test out mult( result, quat, quat )
+      // xform a vector by a quat.  verify the rotation worked...
       const float eps = 0.0001f;
-      gmtl::Quat<float> q3( 1, 2, 3, 4 ), q4( 5, 6, 7, 8 );
-      gmtl::Vec<float, 3> vec( 0.7, -0.42, -0.999 ), res1, res2;
-      gmtl::xform( res1, q3, vec );
-      gmtl::xform( res2, q4, vec );
-
-      gmtl::Vec<float, 3> ex1( -0.359267, 0.380133, -1.17933 );
-      gmtl::Vec<float, 3> ex2( -0.81146, 0.60623, -0.799011 );
+      gmtl::Quat<float> q1, q2, q3, qident;
+      gmtl::Vec<float, 3> vec( 0.0f, 0.0f, 1.0f ), res1, res2, res3, resi;
+      gmtl::makeRot( q1, gmtl::Math::deg2Rad( 90.0f ), 0.0f, 1.0f, 0.0f );
+      gmtl::makeRot( q2, gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f );
+      gmtl::makeRot( q3, gmtl::Math::deg2Rad( 35.0f ), 1.0f, 1.0f, 0.0f );
+      gmtl::xform( res1, q1, vec );
+      gmtl::xform( res2, q2, vec );
+      gmtl::xform( res3, q3, vec );
+      gmtl::xform( resi, qident, vec );
+      
+      gmtl::Vec<float, 3> ex1( 1.0f, 0.0f, 0.0f );
+      gmtl::Vec<float, 3> ex2( 0.0f, -1.0f, 0.0f );
+      gmtl::Vec<float, 3> ex3( 0.286788f, -0.286788f, 0.864364f );
 
       CPPUNIT_ASSERT( gmtl::isEqual( ex1, res1, eps ) );
       CPPUNIT_ASSERT( gmtl::isEqual( ex2, res2, eps ) );
+      CPPUNIT_ASSERT( gmtl::isEqual( ex3, res3, eps ) );
+      CPPUNIT_ASSERT( gmtl::isEqual( vec, resi, eps ) );
       
       // operator* should be same
-      gmtl::Vec<float, 3> res3, res4;
-      res3 = q3 * vec;
-      res4 = q4 * vec;
-      CPPUNIT_ASSERT( gmtl::isEqual( ex1, res3, eps ) );
-      CPPUNIT_ASSERT( gmtl::isEqual( ex2, res4, eps ) );
+      gmtl::Vec<float, 3> res4, res5, res6;
+      res4 = q1 * vec;
+      res5 = q2 * vec;
+      res6 = q3 * vec;
+      resi = qident * vec;
+      CPPUNIT_ASSERT( gmtl::isEqual( ex1, res4, eps ) );
+      CPPUNIT_ASSERT( gmtl::isEqual( ex2, res5, eps ) );
+      CPPUNIT_ASSERT( gmtl::isEqual( ex3, res6, eps ) );
+      CPPUNIT_ASSERT( gmtl::isEqual( vec, resi, eps ) );
    }
 
 
