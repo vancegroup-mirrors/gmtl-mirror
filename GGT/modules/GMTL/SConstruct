@@ -241,6 +241,8 @@ def BuildPlatformEnv():
       env = BuildDarwinEnvironment()
    elif GetPlatform() == 'win32':
       env = BuildWin32Environment()
+   elif GetPlatform() == 'cygwin':
+      env = BuildCygwinEnvironment()
    else:
       print 'Unsupported build environment: ' + GetPlatform(), "Trying default"
       env = Environment()
