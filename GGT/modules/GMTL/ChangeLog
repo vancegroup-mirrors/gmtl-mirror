@@ -1,13 +1,21 @@
 DATE       AUTHOR       CHANGE
 ---------- --------     -----------------------------------------------------------
+2002-06-10 subatomic    Generators all use Euler and Axis now.
+                        Changed to set() and make() naming on functions
+                        that were actually set (like setRot(quat,axisangle)
+                        Templatized many of the Generate funcs.  Now you can
+                        set(anytype, anyothertype) and make<anytype>(anyother).
+                        Coord is now templatized on POS_TYPE, ROT_TYPE.
+                        Default Coord typedefs are with Vec/Euler, Vec/Axis now.
+2002-06-10 subatomic    Authored EulerAngle, AxisAngle, and Ops, tests
 2002-06-06 subatomic    changed all get*****() functions to set****()
                         NEW VERSION: 0.0.4
 2002-06-06 subatomic    changed all convert() functions to set()
                         NEW VERSION: 0.0.3
-2002-06-04 nonchocoboy  Added AABox class.
+2002-06-04 nonchocoboy  Authored AABox class.
 2002-06-03 nonchocoboy  Version information is now centralized in Version.h.
                         NEW VERSION: 0.0.2
-2002-06-03 nonchocoboy  Added Version.h
+2002-06-03 nonchocoboy  Authored Version.h
 2002-05-21 nonchocoboy  Removed Types.h. Apps will now need to define their own
                         types if they wish to use anything other than the
                         built-in primitive types.

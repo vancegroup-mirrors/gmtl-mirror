@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatGenTest.cpp,v $
- * Date modified: $Date: 2002-06-06 17:08:48 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-06-11 21:23:33 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,6 +35,8 @@ Quat [] -km Transforquations XformInterface? Xform.h   Collision detection Colli
  ************************************************************ ggt-cpr end */
 #include "QuatGenTest.h"
 #include <cppunit/extensions/MetricRegistry.h>
+#include <gmtl/AxisAngle.h>
+#include <gmtl/AxisAngleOps.h>
 
 namespace gmtlTest
 {
@@ -101,8 +103,8 @@ namespace gmtlTest
    {
       const float eps = 0.0001f;
       gmtl::Quat<float> q1, q2;
-      q1 = gmtl::makeRot<gmtl::Quat<float> >( gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f );
-      q2 = gmtl::makeRot<gmtl::Quat<float> >( gmtl::Math::deg2Rad( 32.0f ), 0.0f, 1.0f, 0.0f );
+      q1 = gmtl::make<gmtl::Quat<float> >( gmtl::AxisAnglef( gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f ) );
+      q2 = gmtl::make<gmtl::Quat<float> >( gmtl::AxisAnglef( gmtl::Math::deg2Rad( 32.0f ), 0.0f, 1.0f, 0.0f ) );
       gmtl::Quat<float> expected_result1( 0.707107, 0, 0, 0.707107 );
       gmtl::Quat<float> expected_result2( 0, 0.275637, 0, 0.961262 );
 
@@ -157,14 +159,14 @@ namespace gmtlTest
       {
          gmtl::Quat<float> q3;
          CPPUNIT_ASSERT( count >= 0 );
-         gmtl::setRot( q2, gmtl::Math::deg2Rad( float(x) ), 0.0f, 1.0f, 0.0f );
-         gmtl::setRot( q3, gmtl::Math::deg2Rad( float(x) ), gmtl::Vec3f( 0.0f, 1.0f, 0.0f ) );
+         gmtl::set( q2, gmtl::AxisAnglef( gmtl::Math::deg2Rad( float(x) ), 0.0f, 1.0f, 0.0f ) );
+         gmtl::set( q3, gmtl::AxisAnglef( gmtl::Math::deg2Rad( float(x) ), gmtl::Vec3f( 0.0f, 1.0f, 0.0f ) ) );
          CPPUNIT_ASSERT( gmtl::isEqual( quats[count], q2, eps ) );
          CPPUNIT_ASSERT( gmtl::isEqual( q3, q2, eps ) );
 
          // make sure that makeRot and setRot do the same thing...
-         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Quat<float> >( gmtl::Math::deg2Rad( float(x) ), 0.0f, 1.0f, 0.0f ) == q2 );
-         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Quat<float> >( gmtl::Math::deg2Rad( float(x) ), gmtl::Vec3f( 0.0f, 1.0f, 0.0f ) ) == q3 );
+         CPPUNIT_ASSERT( gmtl::make<gmtl::Quat<float> >( gmtl::AxisAnglef( gmtl::Math::deg2Rad( float(x) ), 0.0f, 1.0f, 0.0f ) ) == q2 );
+         CPPUNIT_ASSERT( gmtl::make<gmtl::Quat<float> >( gmtl::AxisAnglef( gmtl::Math::deg2Rad( float(x) ), gmtl::Vec3f( 0.0f, 1.0f, 0.0f ) ) ) == q3 );
          count++;
       }
 
@@ -174,7 +176,7 @@ namespace gmtlTest
    {
       const float eps = 0.0001f;
       std::vector<gmtl::Vec4f> quats;
-      quats.push_back( gmtl::Vec4f( 6.28319, 2, 0, 0           ) );
+      quats.push_back( gmtl::Vec4f( 6.28319, 1, 0, 0           ) );
       quats.push_back( gmtl::Vec4f( 5.93412, -0, -1, -0        ) );
       quats.push_back( gmtl::Vec4f( 5.58505, -0, -1, -0        ) );
       quats.push_back( gmtl::Vec4f( 5.23599, -0, -1, -0        ) );
@@ -192,7 +194,7 @@ namespace gmtlTest
       quats.push_back( gmtl::Vec4f( 1.0472, -0, -1, -0         ) );
       quats.push_back( gmtl::Vec4f( 0.698132, -0, -1, -0       ) );
       quats.push_back( gmtl::Vec4f( 0.349066, -0, -0.999999, -0 ) );
-      quats.push_back( gmtl::Vec4f( 0, 0, 0, 0                 ) );
+      quats.push_back( gmtl::Vec4f( 0, 1, 0, 0                 ) );
       quats.push_back( gmtl::Vec4f( 0.349066, 0, 0.999999, 0   ) );
       quats.push_back( gmtl::Vec4f( 0.698132, 0, 1, 0          ) );
       quats.push_back( gmtl::Vec4f( 1.0472, 0, 1, 0            ) );
@@ -210,17 +212,17 @@ namespace gmtlTest
       quats.push_back( gmtl::Vec4f( 5.23599, 0, 1, 0           ) );
       quats.push_back( gmtl::Vec4f( 5.58505, 0, 1, 0           ) );
       quats.push_back( gmtl::Vec4f( 5.93412, 0, 1, 0           ) );
-      quats.push_back( gmtl::Vec4f( 6.28319, 2, 0, 0           ) );
+      quats.push_back( gmtl::Vec4f( 6.28319, 1, 0, 0           ) );
 
       /// @todo check this against another math lib other than VR Juggler...   (all the vals above look sane, but... )
-      float a, b, c, fg;
       gmtl::Quat<float> q2;
+      gmtl::AxisAnglef axisAngle;
       int count = 0;
       for (int x = -360; x <= 360; x += 20)
       {
-         q2 = gmtl::makeRot<gmtl::Quat<float> >( gmtl::Math::deg2Rad( float(x) ), 0.0f, 1.0f, 0.0f );
-         gmtl::setRot( fg, a, b, c, q2 );
-         CPPUNIT_ASSERT( gmtl::isEqual( quats[count], gmtl::Vec4f( fg, a, b, c ), eps ) );
+         q2 = gmtl::make<gmtl::Quat<float> >( gmtl::AxisAnglef( gmtl::Math::deg2Rad( float(x) ), 0.0f, 1.0f, 0.0f ) );
+         gmtl::set( axisAngle, q2 );
+         CPPUNIT_ASSERT( gmtl::isEqual( quats[count], gmtl::Vec4f(axisAngle), eps ) );
          ++count;
       }
    }
@@ -228,20 +230,17 @@ namespace gmtlTest
    void QuatGenTest::testQuatMakeGetMakeRot()
    {
       const float eps = 0.0001f;
+      gmtl::AxisAnglef axisAngle;
+      gmtl::AxisAnglef axisAngle1;
       gmtl::Quat<float> q2, q3;
-      float fg, a, b, c, fg1, a1, b1, c1;
       for (int x = -360; x <= 360; x += 20)
       {
-         q2 = gmtl::makeRot<gmtl::Quat<float> >( gmtl::Math::deg2Rad( float(x) ), 0.0f, 1.0f, 0.0f );
-         gmtl::setRot( fg, a, b, c, q2 );
-         q3 = gmtl::makeRot<gmtl::Quat<float> >( fg, a, b, c );
-         gmtl::setRot( fg1, a1, b1, c1, q3 );
+         q2 = gmtl::make<gmtl::Quat<float> >( gmtl::AxisAnglef( gmtl::Math::deg2Rad( float(x) ), 0.0f, 1.0f, 0.0f ) );
+         gmtl::set( axisAngle, q2 );
+         q3 = gmtl::make<gmtl::Quat<float> >( axisAngle );
+         gmtl::set( axisAngle1, q3 );
          CPPUNIT_ASSERT( gmtl::isEqual( q3, q2, eps ) );
-
-         CPPUNIT_ASSERT( gmtl::Math::isEqual( fg1, fg, eps ) );
-         CPPUNIT_ASSERT( gmtl::Math::isEqual( a1, a, eps ) );
-         CPPUNIT_ASSERT( gmtl::Math::isEqual( b1, b, eps ) );
-         CPPUNIT_ASSERT( gmtl::Math::isEqual( c1, c, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( axisAngle1, axisAngle, eps ) );
       }
    }
 
@@ -379,81 +378,81 @@ namespace gmtlTest
 
       for (long iter = 0; iter < iters; ++iter)
       {
-         q1 = gmtl::makeRot<gmtl::Quat<double> >( bokd, bokd, bokd, bokd );
+         q1 = gmtl::make<gmtl::Quat<double> >( gmtl::makeNormal( gmtl::AxisAngled( bokd, bokd, bokd, bokd ) ) );
          bokd += q1[2];
       }
       CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/makeRot(quatd,d,d,d,d)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/make<quatd>(axisangled)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
 
       gmtl::Quat<float> q2; bokf = 1.0f;
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
-         q2 = gmtl::makeRot<gmtl::Quat<float> >( bokf, bokf, bokf, bokf );
+         q2 = gmtl::make<gmtl::Quat<float> >( gmtl::makeNormal( gmtl::AxisAnglef( bokf, bokf, bokf, bokf ) ) );
          bokf -= q2[3];
       }
       CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/makeRot(quatf,f,f,f,f)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/make<quatf>(axisanglef)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
 
 
       gmtl::Quat<double> q3; bokd = 1.0f;
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
-         q3  = gmtl::makeRot<gmtl::Quat<double> >( bokd, gmtl::makeNormal( gmtl::Vec<double, 3>( bokd, bokd, bokd ) ) );
-         bokd *= q3[1];
+         q3 = gmtl::make<gmtl::Quat<double> >( gmtl::makeNormal( gmtl::AxisAngled( bokd, gmtl::Vec<double, 3>( bokd, bokd, bokd ) ) ) );
+         bokd *= q3[1] + 1.234;
       }
       CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/makeRot(quatd,d,vecd)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/make<quatd>(axisangled(r,vec))", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
 
       gmtl::Quat<float> q4; bokf = 1.0f;
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
-         q4 = gmtl::makeRot<gmtl::Quat<float> >( bokf, gmtl::makeNormal( gmtl::Vec<float, 3>( bokf, bokf, bokf ) ) );
-         bokf += q4[1];
+         q4 = gmtl::make<gmtl::Quat<float> >( gmtl::makeNormal( gmtl::AxisAnglef( bokf, gmtl::Vec<float, 3>( bokf, bokf, bokf ) ) ) );
+         bokf += q4[1] + 1.234;
       }
       CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/makeRot(quatf,f,vecf)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/make<quatf>(axisanglef(r,vec))", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
 
 
       gmtl::Quat<double> q5;
-      gmtl::Vec<double, 3> v4, v5;
+      gmtl::Vec<double, 3> v4(1,2,3), v5(1,2,3);
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
-         q5 = gmtl::makeRot<gmtl::Quat<double> >( v4, v5 );
-         v4[2] += q5[1];
-         v5[0] -= q5[2];
+         q5 = gmtl::makeRot<gmtl::Quat<double> >( gmtl::makeNormal(v4), gmtl::makeNormal(v5) );
+         v4[2] += q5[1] + 1.234;
+         v5[0] -= q5[2] + 1.234;
       }
       CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/makeRot(quatd,vec3d,vec3d)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/make<quatd>(vec3d,vec3d)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
 
       gmtl::Quat<float> q6;
-      gmtl::Vec<float, 3> v6, v7;
+      gmtl::Vec<float, 3> v6(1,2,3), v7(1,2,3);
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
-         q6 = gmtl::makeRot<gmtl::Quat<float> >( v6, v7 );
-         v6[2] += q6[1];
-         v7[0] -= q6[2];
+         q6 = gmtl::makeRot<gmtl::Quat<float> >( gmtl::makeNormal(v6), gmtl::makeNormal(v7) );
+         v6[2] += q6[1] + 1.234;
+         v7[0] -= q6[2] + 1.234;
       }
       CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/makeRot(quatf,vec3f,vec3f)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/make<quatf>(vec3f,vec3f)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
 
-      float a, b, c, d;
+      gmtl::AxisAnglef axisAngle;
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
-         gmtl::setRot( a, b, c, d, q6 );
-         q6[0] = a + b - c - d;
-         a += q6[1];
-         b -= q6[2] * -0.22;
-         c += q6[1] + 0.1f;
-         d -= q6[2] - 0.99;
+         gmtl::set( axisAngle, q6 );
+         q6[0] = axisAngle[0] + axisAngle[1] - axisAngle[2] - axisAngle[3];
+         axisAngle[0] += q6[1] + 1.234;
+         axisAngle[1] -= q6[2] * -0.22 + 1.234;
+         axisAngle[2] += q6[1] + 0.1f;
+         axisAngle[3] -= q6[2] - 0.99;
       }
       CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/setRot(f,f,f,f,quatf)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/set(axisangle,quatf)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
 
       // force intelligent compilers to do all the iterations (ie. to not optimize them out),
       // by using the variables computed...
@@ -478,64 +477,64 @@ namespace gmtlTest
 
       for (long iter = 0; iter < iters; ++iter)
       {
-         gmtl::setRot( q1, bokd, bokd, bokd, bokd );
+         gmtl::set( q1, gmtl::makeNormal( gmtl::AxisAngled( bokd, bokd, bokd, bokd ) ) );
          bokd += q1[2];
       }
       CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/setRot(quatd,d,d,d,d)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/setRot(quatd,axisangled)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
 
       gmtl::Quat<float> q2; bokf = 1.0f;
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
-         gmtl::setRot( q2, bokf, bokf, bokf, bokf );
+         gmtl::set( q2, gmtl::makeNormal( gmtl::AxisAnglef( bokf, bokf, bokf, bokf ) ) );
          bokf -= q2[3];
       }
       CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/setRot(quatf,f,f,f,f)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/setRot(quatf,axisanglef)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
 
 
       gmtl::Quat<double> q3; bokd = 1.0f;
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
-         gmtl::setRot( q3, bokd, gmtl::makeNormal( gmtl::Vec<double, 3>( bokd, bokd, bokd ) ) );
-         bokd *= q3[1];
+         gmtl::set( q3, gmtl::makeNormal( gmtl::AxisAngled( bokd, gmtl::Vec<double, 3>( bokd, bokd, bokd ) ) ) );
+         bokd *= q3[1] + 1.2;
       }
       CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/setRot(quatd,d,vecd)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/setRot(quatd,axisangled(r,vec))", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
 
       gmtl::Quat<float> q4; bokf = 1.0f;
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
-         gmtl::setRot( q4, bokf, gmtl::makeNormal( gmtl::Vec<float, 3>( bokf, bokf, bokf ) ) );
-         bokf += q4[1];
+         gmtl::set( q4, gmtl::makeNormal( gmtl::AxisAnglef( bokf, gmtl::Vec<float, 3>( bokf, bokf, bokf ) ) ) );
+         bokf += q4[1] + 1.2f;
       }
       CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/setRot(quatf,f,vecf)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/setRot(quatf,axisanglef(r,vec))", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
 
 
       gmtl::Quat<double> q5;
-      gmtl::Vec<double, 3> v4, v5;
+      gmtl::Vec<double, 3> v4(1,2,3), v5(1,2,3);
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
-         gmtl::setRot( q5, v4, v5 );
-         v4[2] += q5[1];
-         v5[0] -= q5[2];
+         gmtl::setRot( q5, gmtl::makeNormal( v4 ), gmtl::makeNormal( v5 ) );
+         v4[2] += q5[1] + 1.2;
+         v5[0] -= q5[2] + 1.2;
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/setRot(quatd,vec3d,vec3d)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
 
       gmtl::Quat<float> q6;
-      gmtl::Vec<float, 3> v6, v7;
+      gmtl::Vec<float, 3> v6(1,2,3), v7(1,2,3);
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
-         gmtl::setRot( q6, v6, v7 );
-         v6[2] += q6[1];
-         v7[0] -= q6[2];
+         gmtl::setRot( q6, gmtl::makeNormal( v6 ), gmtl::makeNormal( v7 ) );
+         v6[2] += q6[1] + 1.2f;
+         v7[0] -= q6[2] + 1.2f;
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE( "QuatGenTest/setRot(quatf,vec3f,vec3f)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: CoordGenTest.cpp,v $
- * Date modified: $Date: 2002-06-06 15:16:34 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2002-06-11 21:23:33 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -38,6 +38,12 @@ Coord [] -km Transforcoordions XformInterface? Xform.h   Collision detection Col
 
 #include <gmtl/Generate.h>
 #include <gmtl/MatrixOps.h>
+#include <gmtl/EulerAngle.h>
+#include <gmtl/EulerAngleOps.h>
+#include <gmtl/Vec.h>
+#include <gmtl/VecOps.h>
+#include <gmtl/Coord.h>
+#include <gmtl/CoordOps.h>
 
 namespace gmtlTest
 {
@@ -45,12 +51,12 @@ namespace gmtlTest
    {
       gmtl::RotationOrder order = gmtl::XYZ;
       gmtl::Matrix44f mat;
-      gmtl::Coord<float, 3, 3> q1;
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > q1;
       
       // test translation with makeCoord
       /// @todo test rotation
       mat = gmtl::makeTrans<gmtl::Matrix44f>( gmtl::Vec3f( 1.0f, 2.0f, 3.0f ) );
-      q1 = gmtl::makeCoord<gmtl::Coord<float, 3, 3> >( mat, order );
+      q1 = gmtl::make<gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > >( mat, order );
       CPPUNIT_ASSERT( q1.getPos()[0] == 1.0f );
       CPPUNIT_ASSERT( q1.getPos()[1] == 2.0f );
       CPPUNIT_ASSERT( q1.getPos()[2] == 3.0f );
@@ -58,7 +64,7 @@ namespace gmtlTest
       // test translation with setCoord
       /// @todo test rotation
       mat = gmtl::makeTrans<gmtl::Matrix44f>( gmtl::Vec3f( 4.0f, 5.0f, 6.0f ) );
-      gmtl::setCoord( q1, mat, order );
+      gmtl::set( q1, mat );
       CPPUNIT_ASSERT( q1.getPos()[0] == 4.0f );
       CPPUNIT_ASSERT( q1.getPos()[1] == 5.0f );
       CPPUNIT_ASSERT( q1.getPos()[2] == 6.0f );
@@ -66,7 +72,7 @@ namespace gmtlTest
       
       // make sure this compiles...
       ///@todo testme
-      gmtl::set( q1, mat, order );
+      gmtl::set( q1, mat );
    }
 
    void CoordGenTest::testCoordGetMatrix()
@@ -74,12 +80,12 @@ namespace gmtlTest
       gmtl::RotationOrder order = gmtl::XYZ;
       gmtl::Matrix44f mat;
       gmtl::Vec3f trans( 1, 2, 3 );
-      gmtl::Vec3f rot( 4, 5, 6 );
-      gmtl::Coord<float, 3, 3> q1( trans, rot );
+      gmtl::EulerAngle<float> rot( 4, 5, 6, order );
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > q1( trans, rot );
     
-      // test translation with makeMatrix
+      // test translation with make
       /// @todo test rotation
-      mat = gmtl::makeMatrix<gmtl::Matrix44f>( q1, order );
+      mat = gmtl::make<gmtl::Matrix44f>( q1 );
       
       // test translation 
       gmtl::Vec3f v2 = gmtl::makeTrans<gmtl::Vec3f>( mat );
@@ -87,7 +93,7 @@ namespace gmtlTest
       
       // make sure this compiles...
       ///@todo testme
-      gmtl::set( mat, q1, order );
+      gmtl::set( mat, q1 );
 
             
       // do some of the euler tests to test out rotation...
@@ -100,8 +106,9 @@ namespace gmtlTest
          q1.rot()[0] = gmtl::Math::deg2Rad( 90.0f );
          q1.rot()[1] = gmtl::Math::deg2Rad( 45.0f );
          q1.rot()[2] = gmtl::Math::deg2Rad( 15.0f );
+         q1.rot().setOrder( gmtl::XYZ );
          
-         mat = gmtl::makeMatrix<gmtl::Matrix33f>( q1, gmtl::XYZ );
+         mat = gmtl::make<gmtl::Matrix33f>( q1 );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
       }
       
@@ -116,7 +123,8 @@ namespace gmtlTest
          q1.rot()[0] = gmtl::Math::deg2Rad( 156.0f );
          q1.rot()[1] = gmtl::Math::deg2Rad( -45.0f );
          q1.rot()[2] = gmtl::Math::deg2Rad( -15.0f );
-         mat = gmtl::makeMatrix<gmtl::Matrix34f>( q1, gmtl::ZYX );
+         q1.rot().setOrder( gmtl::ZYX );
+         mat = gmtl::make<gmtl::Matrix34f>( q1 );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result34, mat, eps ) );
       }
       
@@ -133,8 +141,9 @@ namespace gmtlTest
          q1.rot()[0] = gmtl::Math::deg2Rad( -156.0f  );
          q1.rot()[1] = gmtl::Math::deg2Rad(  45.7892892f );
          q1.rot()[2] = gmtl::Math::deg2Rad( -361.0f );
+         q1.rot().setOrder( gmtl::ZXY );
          
-         mat = gmtl::makeMatrix<gmtl::Matrix44f>( q1, gmtl::ZXY );
+         mat = gmtl::make<gmtl::Matrix44f>( q1 );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result44, mat, eps ) );
       }
    }
@@ -142,19 +151,19 @@ namespace gmtlTest
 
    void CoordGenTest::testGenTimingMakeCoord()
    {
-      gmtl::RotationOrder order = gmtl::XYZ;
       gmtl::Matrix44f mat;
-      gmtl::Coord<float, 3, 3> q1;
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > q1;
+      q1.rot().setOrder( gmtl::XYZ );
       const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
 
       for (long iter = 0; iter < iters; ++iter)
       {
-         q1 = gmtl::makeCoord<gmtl::Coord<float, 3, 3> >( mat, order );
+         q1 = gmtl::make<gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > >( mat, q1.rot().getOrder() );
          mat[3] += q1.getPos()[2];
       }
       CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE( "CoordGenTest/makeCoord<33f>(mat,XYZ)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT_METRIC_TIMING_LE( "CoordGenTest/makeCoord<Matrix33f>(mat,XYZ)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
 
       
       CPPUNIT_ASSERT( q1.pos()[1] != 10000.0f );
@@ -162,38 +171,38 @@ namespace gmtlTest
    
    void CoordGenTest::testGenTimingMakeMatrix()
    {
-      gmtl::RotationOrder order = gmtl::XYZ;
       gmtl::Matrix44f mat;
-      gmtl::Coord<float, 3, 3> q1;
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > q1;
+      q1.rot().setOrder( gmtl::XYZ );
       const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
 
       for (long iter = 0; iter < iters; ++iter)
       {
-         mat = gmtl::makeMatrix<gmtl::Matrix44f>( q1, order );
+         mat = gmtl::make<gmtl::Matrix44f>( q1 );
          q1.pos()[2] += mat[3];
       }
       CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE( "CoordGenTest/makeMatrix<44f>(q1,XYZ)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT_METRIC_TIMING_LE( "CoordGenTest/make<Matrix44f>(q1,XYZ)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
       CPPUNIT_ASSERT( q1.pos()[1] != 10000.0f );
    }
 
 
    void CoordGenTest::testGenTimingSetCoord()
    {
-      gmtl::RotationOrder order = gmtl::XYZ;
       gmtl::Matrix44f mat;
-      gmtl::Coord<float, 3, 3> q1;
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > q1;
+      q1.rot().setOrder( gmtl::XYZ );
       const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
 
       for (long iter = 0; iter < iters; ++iter)
       {
-         gmtl::setCoord( q1, mat, order );
+         gmtl::set( q1, mat );
          mat[3] += q1.getPos()[2];
       }
       CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE( "CoordGenTest/setCoord(coord,mat,XYZ)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT_METRIC_TIMING_LE( "CoordGenTest/set(coord,mat)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
 
       CPPUNIT_ASSERT( q1.pos()[1] != 10000.0f );
    }

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixGenTest.cpp,v $
- * Date modified: $Date: 2002-06-06 17:08:48 $
- * Version:       $Revision: 1.10 $
+ * Date modified: $Date: 2002-06-11 21:23:33 $
+ * Version:       $Revision: 1.11 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -363,17 +363,17 @@ namespace gmtlTest
                                 0, 1, 0 );
          gmtl::Vec3f vec( 1.0f, 0.0f, 0.0f );
          gmtl::normalize( vec );
-         gmtl::setRot( mat, gmtl::Math::deg2Rad( 90.0f ), vec );
+         gmtl::setRot( mat, gmtl::AxisAnglef( gmtl::Math::deg2Rad( 90.0f ), vec ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
 
          // make sure that the other version works the same...
          gmtl::Matrix33f mat2;
-         gmtl::setRot( mat2, gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f );
+         gmtl::setRot( mat2, gmtl::makeNormal( gmtl::AxisAnglef( gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f ) ) );
          CPPUNIT_ASSERT( gmtl::isEqual( mat2, mat, eps ) );
 
          // make sure set and make are the same...
-         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix33f>( gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f ) == mat2 );
-         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix33f>( gmtl::Math::deg2Rad( 90.0f ), vec ) == mat2 );
+         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix33f>( gmtl::makeNormal( gmtl::AxisAnglef( gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f ) ) ) == mat2 );
+         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix33f>( gmtl::AxisAnglef( gmtl::Math::deg2Rad( 90.0f ), vec ) ) == mat2 );
       }
       {
          gmtl::Matrix33f mat, expected_result33;
@@ -384,17 +384,17 @@ namespace gmtlTest
                                 0, 0, 1 );
          gmtl::Vec3f vec( -1.0f, 1.0f, -1.0f );
          gmtl::normalize( vec );
-         gmtl::setRot( mat, gmtl::Math::deg2Rad( -360.0f ), vec );
+         gmtl::setRot( mat, gmtl::AxisAnglef( gmtl::Math::deg2Rad( -360.0f ), vec ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
 
          // make sure that the other version works the same...
          gmtl::Matrix33f mat2;
-         gmtl::setRot( mat2, gmtl::Math::deg2Rad( -360.0f ), -1.0f, 1.0f, -1.0f );
+         gmtl::setRot( mat2, gmtl::makeNormal( gmtl::AxisAnglef( gmtl::Math::deg2Rad( -360.0f ), -1.0f, 1.0f, -1.0f ) ) );
          CPPUNIT_ASSERT( gmtl::isEqual( mat2, mat, eps ) );
 
          // make sure set and make are the same...
-         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix33f>( gmtl::Math::deg2Rad( -360.0f ), -1.0f, 1.0f, -1.0f ) == mat2 );
-         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix33f>( gmtl::Math::deg2Rad( -360.0f ), vec ) == mat2 );
+         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix33f>( gmtl::makeNormal( gmtl::AxisAnglef( gmtl::Math::deg2Rad( -360.0f ), -1.0f, 1.0f, -1.0f ) ) ) == mat2 );
+         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix33f>( gmtl::AxisAnglef( gmtl::Math::deg2Rad( -360.0f ), vec ) ) == mat2 );
       }
 
       {
@@ -406,22 +406,22 @@ namespace gmtlTest
                                 0, -1, 0, a );
          gmtl::Vec3f vec( 1.0f, 0.0f, 0.0f );
          gmtl::normalize( vec );
-         gmtl::setRot( mat, gmtl::Math::deg2Rad( -90.0f ), vec );
+         gmtl::setRot( mat, gmtl::AxisAnglef( gmtl::Math::deg2Rad( -90.0f ), vec ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result34, mat, eps ) );
 
          // make sure that the other version works the same...
          gmtl::Matrix34f mat2;
          for (int x = 0; x < 12; ++x)
             mat2[x] = a;
-         gmtl::setRot( mat2, gmtl::Math::deg2Rad( -90.0f ), 1.0f, 0.0f, 0.0f );
+         gmtl::setRot( mat2, gmtl::makeNormal( gmtl::AxisAnglef( gmtl::Math::deg2Rad( -90.0f ), 1.0f, 0.0f, 0.0f ) ) );
          CPPUNIT_ASSERT( gmtl::isEqual( mat2, mat, eps ) );
 
          // make sure set and make are the same...
          gmtl::Matrix34f new_mat;
-         gmtl::setRot( new_mat, gmtl::Math::deg2Rad( -90.0f ), 1.0f, 0.0f, 0.0f );
-         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix34f>( gmtl::Math::deg2Rad( -90.0f ), 1.0f, 0.0f, 0.0f ) == new_mat );
-         gmtl::setRot( new_mat, gmtl::Math::deg2Rad( -90.0f ), vec );
-         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix34f>( gmtl::Math::deg2Rad( -90.0f ), vec ) == new_mat );
+         gmtl::setRot( new_mat, gmtl::makeNormal( gmtl::AxisAnglef( gmtl::Math::deg2Rad( -90.0f ), 1.0f, 0.0f, 0.0f ) ) );
+         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix34f>( gmtl::makeNormal( gmtl::AxisAnglef( gmtl::Math::deg2Rad( -90.0f ), 1.0f, 0.0f, 0.0f ) ) ) == new_mat );
+         gmtl::setRot( new_mat, gmtl::AxisAnglef( gmtl::Math::deg2Rad( -90.0f ), vec ) );
+         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix34f>( gmtl::AxisAnglef( gmtl::Math::deg2Rad( -90.0f ), vec ) ) == new_mat );
       }
       {
          gmtl::Matrix34f mat, expected_result34;
@@ -432,22 +432,22 @@ namespace gmtlTest
                                 0.310617f, 0.505879f, 0.804738f, a  );
          gmtl::Vec3f vec( 0.7f, -0.7f, -0.7f );
          gmtl::normalize( vec );
-         gmtl::setRot( mat, gmtl::Math::deg2Rad( 45.0f ), vec );
+         gmtl::setRot( mat, gmtl::AxisAnglef( gmtl::Math::deg2Rad( 45.0f ), vec ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result34, mat, eps ) );
 
          // make sure that the other version works the same...
          gmtl::Matrix34f mat2;
          for (int x = 0; x < 12; ++x)
             mat2[x] = a;
-         gmtl::setRot( mat2, gmtl::Math::deg2Rad( 45.0f ), 0.7f, -0.7f, -0.7f );
+         gmtl::setRot( mat2, gmtl::makeNormal( gmtl::AxisAnglef( gmtl::Math::deg2Rad( 45.0f ), 0.7f, -0.7f, -0.7f ) ) );
          CPPUNIT_ASSERT( gmtl::isEqual( mat2, mat, eps ) );
 
          // make sure set and make are the same...
          gmtl::Matrix34f new_mat;
-         gmtl::setRot( new_mat, gmtl::Math::deg2Rad( 45.0f ), 0.7f, -0.7f, -0.7f );
-         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix34f>( gmtl::Math::deg2Rad( 45.0f ), 0.7f, -0.7f, -0.7f ) == new_mat );
-         gmtl::setRot( new_mat, gmtl::Math::deg2Rad( 45.0f ), vec );
-         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix34f>( gmtl::Math::deg2Rad( 45.0f ), vec ) == new_mat );
+         gmtl::setRot( new_mat, gmtl::makeNormal( gmtl::AxisAnglef( gmtl::Math::deg2Rad( 45.0f ), 0.7f, -0.7f, -0.7f ) ) );
+         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix34f>( gmtl::makeNormal( gmtl::AxisAnglef( gmtl::Math::deg2Rad( 45.0f ), 0.7f, -0.7f, -0.7f ) ) ) == new_mat );
+         gmtl::setRot( new_mat, gmtl::AxisAnglef( gmtl::Math::deg2Rad( 45.0f ), vec ) );
+         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix34f>( gmtl::AxisAnglef( gmtl::Math::deg2Rad( 45.0f ), vec ) ) == new_mat );
       }
       // test that unnormalized vec works...
       {
@@ -460,45 +460,45 @@ namespace gmtlTest
                                 a, a, a, a );
          gmtl::Vec3f vec( 1.7f, 1.7f, 1.7f );
          gmtl::normalize( vec );
-         gmtl::setRot( mat, gmtl::Math::deg2Rad( 45.0f ), vec );
+         gmtl::setRot( mat, gmtl::AxisAnglef( gmtl::Math::deg2Rad( 45.0f ), vec ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result44, mat, eps ) );
 
          // make sure that the other version works the same...
          gmtl::Matrix44f mat2;
          for (int x = 0; x < 16; ++x)
             mat2[x] = a;
-         gmtl::setRot( mat2, gmtl::Math::deg2Rad( 45.0f ), 1.7f, 1.7f, 1.7f );
+         gmtl::setRot( mat2, gmtl::makeNormal( gmtl::AxisAnglef( gmtl::Math::deg2Rad( 45.0f ), 1.7f, 1.7f, 1.7f ) ) );
          CPPUNIT_ASSERT( gmtl::isEqual( mat2, mat, eps ) );
 
          // make sure set and make are the same...
          gmtl::Matrix44f new_mat;
-         gmtl::setRot( new_mat, gmtl::Math::deg2Rad( 45.0f ), 1.7f, 1.7f, 1.7f );
-         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix44f>( gmtl::Math::deg2Rad( 45.0f ), 1.7f, 1.7f, 1.7f ) == new_mat );
-         gmtl::setRot( new_mat, gmtl::Math::deg2Rad( 45.0f ), vec );
-         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix44f>( gmtl::Math::deg2Rad( 45.0f ), vec ) == new_mat );
+         gmtl::setRot( new_mat, gmtl::makeNormal( gmtl::AxisAnglef( gmtl::Math::deg2Rad( 45.0f ), 1.7f, 1.7f, 1.7f ) ) );
+         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix44f>( gmtl::makeNormal( gmtl::AxisAnglef( gmtl::Math::deg2Rad( 45.0f ), 1.7f, 1.7f, 1.7f ) ) ) == new_mat );
+         gmtl::setRot( new_mat, gmtl::AxisAnglef( gmtl::Math::deg2Rad( 45.0f ), vec ) );
+         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix44f>( gmtl::AxisAnglef( gmtl::Math::deg2Rad( 45.0f ), vec ) ) == new_mat );
       }
 
       // ---- Test standalone one ---- //
       {
          gmtl::Matrix44f mat, expected_mat;
          gmtl::Vec3f rot_axis(1.0f, 2.0f, 3.0f);
-         gmtl::normalize(rot_axis);
-         gmtl::setRot(expected_mat, 1.1f, rot_axis);
-         mat = gmtl::makeRot<gmtl::Matrix44f>(1.1f, rot_axis);
+         gmtl::normalize( rot_axis );
+         gmtl::AxisAnglef axisAngle( 1.1f, rot_axis );
+         gmtl::setRot( expected_mat, axisAngle );
+         mat = gmtl::makeRot<gmtl::Matrix44f>( axisAngle );
          CPPUNIT_ASSERT( gmtl::isEqual( mat, expected_mat, eps ) );
-
-         CPPUNIT_ASSERT( gmtl::isEqual( gmtl::makeRot<gmtl::Matrix44f>(1.1f, rot_axis), expected_mat, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( gmtl::makeRot<gmtl::Matrix44f>( axisAngle ), expected_mat, eps ) );
       }
 
       {
          gmtl::Matrix34f mat, expected_mat;
          gmtl::Vec3f rot_axis(1.0f, 2.0f, 3.0f);
          gmtl::normalize(rot_axis);
-         gmtl::setRot(expected_mat, 1.1f, rot_axis);
-         mat = gmtl::makeRot<gmtl::Matrix34f>(1.1f, rot_axis);
+         gmtl::AxisAnglef axisAngle( 1.1f, rot_axis );
+         gmtl::setRot(expected_mat, axisAngle);
+         mat = gmtl::makeRot<gmtl::Matrix34f>( axisAngle );
          CPPUNIT_ASSERT( gmtl::isEqual( mat, expected_mat, eps ) );
-
-         CPPUNIT_ASSERT( gmtl::isEqual( gmtl::makeRot<gmtl::Matrix34f>(1.1f, rot_axis), expected_mat, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( gmtl::makeRot<gmtl::Matrix34f>( axisAngle ), expected_mat, eps ) );
       }
 
    }
@@ -506,97 +506,100 @@ namespace gmtlTest
    void MatrixGenTest::testMatrixgetRotEuler()
    {
       float eps = 0.0001f;
-      float a = 999, b = 999, c = 999;
       gmtl::Matrix44f matrix;
       // XYZ
       {
-         gmtl::setRot( matrix, gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f );
-         gmtl::setRot( a, b, c, gmtl::XYZ, matrix );
-         std::cout<<gmtl::Math::rad2Deg( a )<<" "
-            <<gmtl::Math::rad2Deg( b )<<" "
-            <<gmtl::Math::rad2Deg( c )<<" "<<std::endl;
-         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( a ), 90.0f, eps ) );
-         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( b ), 0.0f, eps ) );
-         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( c ), 0.0f, eps ) );
+         gmtl::EulerAnglef euler;
+         euler.setOrder( gmtl::XYZ );
+         gmtl::set( matrix, gmtl::AxisAnglef( gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f ) );
+         gmtl::set( euler, matrix );
+         std::cout<<gmtl::Math::rad2Deg( euler[0] )<<" "
+                  <<gmtl::Math::rad2Deg( euler[1] )<<" "
+                  <<gmtl::Math::rad2Deg( euler[2] )<<" "<<std::endl;
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( euler[0] ), 90.0f, eps ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( euler[1] ), 0.0f, eps ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( euler[2] ), 0.0f, eps ) );
 
-         gmtl::setRot( matrix, gmtl::Math::deg2Rad( -90.0f ), 1.0f, 0.0f, 0.0f );
-         gmtl::setRot( a, b, c, gmtl::XYZ, matrix );
-         std::cout<<gmtl::Math::rad2Deg( a )<<" "
-            <<gmtl::Math::rad2Deg( b )<<" "
-            <<gmtl::Math::rad2Deg( c )<<" "<<std::endl;
-         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( a ), -90.0f, eps ) );
-         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( b ), 0.0f, eps ) );
-         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( c ), 0.0f, eps ) );
+         gmtl::set( matrix, gmtl::AxisAnglef( gmtl::Math::deg2Rad( -90.0f ), 1.0f, 0.0f, 0.0f ) );
+         gmtl::set( euler, matrix );
+         std::cout<<gmtl::Math::rad2Deg( euler[0] )<<" "
+                  <<gmtl::Math::rad2Deg( euler[1] )<<" "
+                  <<gmtl::Math::rad2Deg( euler[2] )<<" "<<std::endl;
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( euler[0] ), -90.0f, eps ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( euler[1] ), 0.0f, eps ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( euler[2] ), 0.0f, eps ) );
 
-         gmtl::setRot( matrix, gmtl::Math::deg2Rad( 35.0f ), 0.0f, 1.0f, 0.0f );
-         gmtl::setRot( a, b, c, gmtl::XYZ, matrix );
-         std::cout<<gmtl::Math::rad2Deg( a )<<" "
-            <<gmtl::Math::rad2Deg( b )<<" "
-            <<gmtl::Math::rad2Deg( c )<<" "<<std::endl;
-         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( a ), 0.0f, eps ) );
-         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( b ), 35.0f, eps ) );
-         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( c ), 0.0f, eps ) );
+         gmtl::set( matrix, gmtl::AxisAnglef( gmtl::Math::deg2Rad( 35.0f ), 0.0f, 1.0f, 0.0f ) );
+         gmtl::set( euler, matrix );
+         std::cout<<gmtl::Math::rad2Deg( euler[0] )<<" "
+                  <<gmtl::Math::rad2Deg( euler[1] )<<" "
+                  <<gmtl::Math::rad2Deg( euler[2] )<<" "<<std::endl;
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( euler[0] ), 0.0f, eps ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( euler[1] ), 35.0f, eps ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( euler[2] ), 0.0f, eps ) );
 
          // test cos y = 0 singularity
-         gmtl::setRot( matrix, gmtl::Math::deg2Rad( 90.0f ), 0.0f, 1.0f, 0.0f );
-         gmtl::setRot( a, b, c, gmtl::XYZ, matrix );
-         std::cout<<gmtl::Math::rad2Deg( a )<<" "
-            <<gmtl::Math::rad2Deg( b )<<" "
-            <<gmtl::Math::rad2Deg( c )<<" "<<std::endl;
-         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( a ), 0.0f, eps ) );
-         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( b ), 90.0f, eps ) );
-         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( c ), 0.0f, eps ) );
+         gmtl::set( matrix, gmtl::AxisAnglef( gmtl::Math::deg2Rad( 90.0f ), 0.0f, 1.0f, 0.0f ) );
+         gmtl::set( euler, matrix );
+         std::cout<<gmtl::Math::rad2Deg( euler[0] )<<" "
+                  <<gmtl::Math::rad2Deg( euler[1] )<<" "
+                  <<gmtl::Math::rad2Deg( euler[2] )<<" "<<std::endl;
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( euler[0] ), 0.0f, eps ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( euler[1] ), 90.0f, eps ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( euler[2] ), 0.0f, eps ) );
 
          // test cos z = 0 singularity
-         gmtl::setRot( matrix, gmtl::Math::deg2Rad( 90.0f ), 0.0f, 0.0f, 1.0f );
-         gmtl::setRot( a, b, c, gmtl::XYZ, matrix );
-         std::cout<<gmtl::Math::rad2Deg( a )<<" "
-            <<gmtl::Math::rad2Deg( b )<<" "
-            <<gmtl::Math::rad2Deg( c )<<" "<<std::endl;
-         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( a ), 0.0f, eps ) );
-         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( b ), 0.0f, eps ) );
-         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( c ), 90.0f, eps ) );
+         gmtl::set( matrix, gmtl::AxisAnglef( gmtl::Math::deg2Rad( 90.0f ), 0.0f, 0.0f, 1.0f ) );
+         gmtl::set( euler, matrix );
+         std::cout<<gmtl::Math::rad2Deg( euler[0] )<<" "
+                  <<gmtl::Math::rad2Deg( euler[1] )<<" "
+                  <<gmtl::Math::rad2Deg( euler[2] )<<" "<<std::endl;
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( euler[0] ), 0.0f, eps ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( euler[1] ), 0.0f, eps ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( euler[2] ), 90.0f, eps ) );
       }
       
       // ZYX
       {
-         gmtl::setRot( matrix, gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f );
-         gmtl::setRot( a, b, c, gmtl::ZYX, matrix );
-         std::cout<<gmtl::Math::rad2Deg( a )<<" "
-            <<gmtl::Math::rad2Deg( b )<<" "
-            <<gmtl::Math::rad2Deg( c )<<" "<<std::endl;
-         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( a ), 0.0f, eps ) );
-         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( b ), 0.0f, eps ) );
-         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( c ), 90.0f, eps ) );
+         gmtl::EulerAnglef euler;
+         euler.setOrder( gmtl::ZYX );
+         gmtl::set( matrix, gmtl::AxisAnglef( gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f ) );
+         gmtl::set( euler, matrix );
+         std::cout<<gmtl::Math::rad2Deg( euler[0] )<<" "
+                  <<gmtl::Math::rad2Deg( euler[1] )<<" "
+                  <<gmtl::Math::rad2Deg( euler[2] )<<" "<<std::endl;
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( euler[0] ), 0.0f, eps ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( euler[1] ), 0.0f, eps ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( euler[2] ), 90.0f, eps ) );
 
-         gmtl::setRot( matrix, gmtl::Math::deg2Rad( -90.0f ), 1.0f, 0.0f, 0.0f );
-         gmtl::setRot( a, b, c, gmtl::ZYX, matrix );
-         std::cout<<gmtl::Math::rad2Deg( a )<<" "
-            <<gmtl::Math::rad2Deg( b )<<" "
-            <<gmtl::Math::rad2Deg( c )<<" "<<std::endl;
-         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( a ), 0.0f, eps ) );
-         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( b ), 0.0f, eps ) );
-         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( c ), -90.0f, eps ) );
+         gmtl::set( matrix, gmtl::AxisAnglef( gmtl::Math::deg2Rad( -90.0f ), 1.0f, 0.0f, 0.0f ) );
+         gmtl::set( euler, matrix );
+         std::cout<<gmtl::Math::rad2Deg( euler[0] )<<" "
+                  <<gmtl::Math::rad2Deg( euler[1] )<<" "
+                  <<gmtl::Math::rad2Deg( euler[2] )<<" "<<std::endl;
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( euler[0] ), 0.0f, eps ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( euler[1] ), 0.0f, eps ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( euler[2] ), -90.0f, eps ) );
 
          // test sin x = 0 singularity
-         gmtl::setRot( matrix, gmtl::Math::deg2Rad( 35.0f ), 0.0f, 1.0f, 0.0f );
-         gmtl::setRot( a, b, c, gmtl::ZYX, matrix );
-         std::cout<<gmtl::Math::rad2Deg( a )<<" "
-            <<gmtl::Math::rad2Deg( b )<<" "
-            <<gmtl::Math::rad2Deg( c )<<" "<<std::endl;
-         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( a ), 0.0f, eps ) );
-         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( b ), 35.0f, eps ) );
-         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( c ), 0.0f, eps ) );
+         gmtl::set( matrix, gmtl::AxisAnglef( gmtl::Math::deg2Rad( 35.0f ), 0.0f, 1.0f, 0.0f ) );
+         gmtl::set( euler, matrix );
+         std::cout<<gmtl::Math::rad2Deg( euler[0] )<<" "
+                  <<gmtl::Math::rad2Deg( euler[1] )<<" "
+                  <<gmtl::Math::rad2Deg( euler[2] )<<" "<<std::endl;
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( euler[0] ), 0.0f, eps ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( euler[1] ), 35.0f, eps ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( euler[2] ), 0.0f, eps ) );
 
          // test cos y = 0 singularity
-         gmtl::setRot( matrix, gmtl::Math::deg2Rad( 35.0f ), 0.0f, 1.0f, 0.0f );
-         gmtl::setRot( a, b, c, gmtl::ZYX, matrix );
-         std::cout<<gmtl::Math::rad2Deg( a )<<" "
-            <<gmtl::Math::rad2Deg( b )<<" "
-            <<gmtl::Math::rad2Deg( c )<<" "<<std::endl;
-         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( a ), 0.0f, eps ) );
-         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( b ), 90.0f, eps ) );
-         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( c ), 0.0f, eps ) );
+         gmtl::set( matrix, gmtl::AxisAnglef( gmtl::Math::deg2Rad( 35.0f ), 0.0f, 1.0f, 0.0f ) );
+         gmtl::set( euler, matrix );
+         std::cout<<gmtl::Math::rad2Deg( euler[0] )<<" "
+                  <<gmtl::Math::rad2Deg( euler[1] )<<" "
+                  <<gmtl::Math::rad2Deg( euler[2] )<<" "<<std::endl;
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( euler[0] ), 0.0f, eps ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( euler[1] ), 90.0f, eps ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( euler[2] ), 0.0f, eps ) );
       }
    }
 
@@ -611,9 +614,11 @@ namespace gmtlTest
          expected_result33.set( 0.683013f, -0.183013f, 0.707107f,
                                 0.683013f, -0.183013f, -0.707107f,
                                 0.258819f, 0.965926f, 0.0f );
-         gmtl::setRot( mat, gmtl::Math::deg2Rad( 90.0f ),
+         gmtl::setRot( mat, gmtl::EulerAnglef( 
+                             gmtl::Math::deg2Rad( 90.0f ),
                              gmtl::Math::deg2Rad( 45.0f ),
-                             gmtl::Math::deg2Rad( 15.0f ), gmtl::XYZ );
+                             gmtl::Math::deg2Rad( 15.0f ), 
+                             gmtl::XYZ ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
       }
       {
@@ -623,11 +628,14 @@ namespace gmtlTest
          expected_result33.set( 1, 0,  0,
                                 0, 0, -1,
                                 0, 1,  0  );
-         gmtl::setRot( mat, gmtl::Math::deg2Rad( 90.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::XYZ );
+         gmtl::setRot( mat, gmtl::EulerAnglef( gmtl::Math::deg2Rad( 90.0f ), 
+                                               gmtl::Math::deg2Rad( 0.0f ), 
+                                               gmtl::Math::deg2Rad( 0.0f ), 
+                                             gmtl::XYZ ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
 
          // make sure set and make are the same...
-         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix33f>( gmtl::Math::deg2Rad( 90.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::XYZ ) == mat );
+         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix33f>( gmtl::EulerAnglef( gmtl::Math::deg2Rad( 90.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::XYZ ) ) == mat );
       }
       {
          gmtl::Matrix33f mat, expected_result33;
@@ -636,11 +644,11 @@ namespace gmtlTest
          expected_result33.set( 0, 0, 1,
                                 0, 1, 0,
                                 -1, 0, 0  );
-         gmtl::setRot( mat, gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 90.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::XYZ );
+         gmtl::setRot( mat, gmtl::EulerAnglef( gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 90.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::XYZ ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
 
          // make sure set and make are the same...
-         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix33f>( gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 90.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::XYZ ) == mat );
+         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix33f>( gmtl::EulerAnglef( gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 90.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::XYZ ) ) == mat );
       }
       {
          gmtl::Matrix33f mat, expected_result33;
@@ -649,11 +657,11 @@ namespace gmtlTest
          expected_result33.set( 0, -1, 0,
                                 1, 0, 0,
                                 0, 0, 1  );
-         gmtl::setRot( mat, gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 90.0f ), gmtl::XYZ );
+         gmtl::setRot( mat, gmtl::EulerAnglef( gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 90.0f ), gmtl::XYZ ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
 
          // make sure set and make are the same...
-         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix33f>( gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 90.0f ), gmtl::XYZ ) == mat );
+         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix33f>( gmtl::EulerAnglef( gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 90.0f ), gmtl::XYZ ) ) == mat );
       }
 
       {
@@ -663,13 +671,13 @@ namespace gmtlTest
          expected_result34.set( 0.683013f, 0.183013f, -0.707107f, a,
                                -0.0413633f, -0.956855f, -0.287606f, a,
                                -0.729234f, 0.225687f, -0.645974f, a   );
-         gmtl::setRot( mat, gmtl::Math::deg2Rad( 156.0f ), gmtl::Math::deg2Rad( -45.0f ), gmtl::Math::deg2Rad( -15.0f ), gmtl::XYZ );
+         gmtl::setRot( mat, gmtl::EulerAnglef( gmtl::Math::deg2Rad( 156.0f ), gmtl::Math::deg2Rad( -45.0f ), gmtl::Math::deg2Rad( -15.0f ), gmtl::XYZ ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result34, mat, eps ) );
 
          // make sure set and make are the same...
          gmtl::Matrix34f new_mat;
-         gmtl::setRot( new_mat, gmtl::Math::deg2Rad( 156.0f ), gmtl::Math::deg2Rad( -45.0f ), gmtl::Math::deg2Rad( -15.0f ), gmtl::XYZ );
-         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix34f>( gmtl::Math::deg2Rad( 156.0f ), gmtl::Math::deg2Rad( -45.0f ), gmtl::Math::deg2Rad( -15.0f ), gmtl::XYZ ) == new_mat );
+         gmtl::setRot( new_mat, gmtl::EulerAnglef( gmtl::Math::deg2Rad( 156.0f ), gmtl::Math::deg2Rad( -45.0f ), gmtl::Math::deg2Rad( -15.0f ), gmtl::XYZ ) );
+         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix34f>( gmtl::EulerAnglef( gmtl::Math::deg2Rad( 156.0f ), gmtl::Math::deg2Rad( -45.0f ), gmtl::Math::deg2Rad( -15.0f ), gmtl::XYZ ) ) == new_mat );
       }
       {
          gmtl::Matrix34f mat, expected_result34;
@@ -678,19 +686,19 @@ namespace gmtlTest
          expected_result34.set( 0, 0, 1, a,
                                 0, 1, 0, a,
                                 -1, 0, 0, a );
-         gmtl::setRot( mat, gmtl::Math::deg2Rad( 0.0f ),
+         gmtl::setRot( mat, gmtl::EulerAnglef( gmtl::Math::deg2Rad( 0.0f ),
                              gmtl::Math::deg2Rad( 90.0f ),
-                             gmtl::Math::deg2Rad( 0.0f ), gmtl::XYZ );
+                             gmtl::Math::deg2Rad( 0.0f ), gmtl::XYZ ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result34, mat, eps ) );
 
          // make sure set and make are the same...
          gmtl::Matrix34f new_mat;
-         gmtl::setRot( new_mat, gmtl::Math::deg2Rad( 0.0f ),
+         gmtl::setRot( new_mat, gmtl::EulerAnglef( gmtl::Math::deg2Rad( 0.0f ),
                              gmtl::Math::deg2Rad( 90.0f ),
-                             gmtl::Math::deg2Rad( 0.0f ), gmtl::XYZ );
-         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix34f>( gmtl::Math::deg2Rad( 0.0f ),
+                             gmtl::Math::deg2Rad( 0.0f ), gmtl::XYZ ) );
+         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix34f>( gmtl::EulerAnglef( gmtl::Math::deg2Rad( 0.0f ),
                              gmtl::Math::deg2Rad( 90.0f ),
-                             gmtl::Math::deg2Rad( 0.0f ), gmtl::XYZ ) == new_mat );
+                             gmtl::Math::deg2Rad( 0.0f ), gmtl::XYZ ) ) == new_mat );
       }
 
       {
@@ -701,13 +709,13 @@ namespace gmtlTest
                                -0.275553f, -0.918494f, 0.283617f, a,
                                 0.66181f, -0.395247f, -0.637014f, a,
                                 a, a, a, a );
-         gmtl::setRot( mat, gmtl::Math::deg2Rad( -156.0f ), gmtl::Math::deg2Rad( 45.7892892f ), gmtl::Math::deg2Rad( -361.0f ), gmtl::XYZ );
+         gmtl::setRot( mat, gmtl::EulerAnglef( gmtl::Math::deg2Rad( -156.0f ), gmtl::Math::deg2Rad( 45.7892892f ), gmtl::Math::deg2Rad( -361.0f ), gmtl::XYZ ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result44, mat, eps ) );
 
          // make sure set and make are the same...
          gmtl::Matrix44f new_mat;
-         gmtl::setRot( new_mat, gmtl::Math::deg2Rad( -156.0f ), gmtl::Math::deg2Rad( 45.7892892f ), gmtl::Math::deg2Rad( -361.0f ), gmtl::XYZ );
-         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix44f>( gmtl::Math::deg2Rad( -156.0f ), gmtl::Math::deg2Rad( 45.7892892f ), gmtl::Math::deg2Rad( -361.0f ), gmtl::XYZ ) == new_mat );
+         gmtl::setRot( new_mat, gmtl::EulerAnglef( gmtl::Math::deg2Rad( -156.0f ), gmtl::Math::deg2Rad( 45.7892892f ), gmtl::Math::deg2Rad( -361.0f ), gmtl::XYZ ) );
+         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix44f>( gmtl::EulerAnglef( gmtl::Math::deg2Rad( -156.0f ), gmtl::Math::deg2Rad( 45.7892892f ), gmtl::Math::deg2Rad( -361.0f ), gmtl::XYZ ) ) == new_mat );
       }
 
 
@@ -719,19 +727,19 @@ namespace gmtlTest
          expected_result33.set( 0.0f, -0.965926f, 0.258819f,
                                 0.707107f, 0.183013f, 0.683013f,
                                 -0.707107f, 0.183013f, 0.683013f );
-         gmtl::setRot( mat, gmtl::Math::deg2Rad( 90.0f ),
+         gmtl::setRot( mat, gmtl::EulerAnglef( gmtl::Math::deg2Rad( 90.0f ),
                              gmtl::Math::deg2Rad( 45.0f ),
-                             gmtl::Math::deg2Rad( 15.0f ), gmtl::ZYX );
+                             gmtl::Math::deg2Rad( 15.0f ), gmtl::ZYX ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
 
          // make sure set and make are the same...
          gmtl::Matrix33f new_mat;
-         gmtl::setRot( new_mat, gmtl::Math::deg2Rad( 90.0f ),
+         gmtl::setRot( new_mat, gmtl::EulerAnglef( gmtl::Math::deg2Rad( 90.0f ),
                              gmtl::Math::deg2Rad( 45.0f ),
-                             gmtl::Math::deg2Rad( 15.0f ), gmtl::ZYX );
-         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix33f>( gmtl::Math::deg2Rad( 90.0f ),
-                             gmtl::Math::deg2Rad( 45.0f ),
-                             gmtl::Math::deg2Rad( 15.0f ), gmtl::ZYX ) == new_mat );
+                             gmtl::Math::deg2Rad( 15.0f ), gmtl::ZYX ) );
+         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix33f>( gmtl::EulerAnglef( 
+                             gmtl::Math::deg2Rad( 90.0f ), gmtl::Math::deg2Rad( 45.0f ),
+                             gmtl::Math::deg2Rad( 15.0f ), gmtl::ZYX ) ) == new_mat );
       }
       {
          gmtl::Matrix33f mat, expected_result33;
@@ -740,13 +748,13 @@ namespace gmtlTest
          expected_result33.set( 0, -1, 0,
                                 1, 0, 0,
                                 0, 0, 1  );
-         gmtl::setRot( mat, gmtl::Math::deg2Rad( 90.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::ZYX );
+         gmtl::setRot( mat, gmtl::EulerAnglef( gmtl::Math::deg2Rad( 90.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::ZYX ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
 
          // make sure set and make are the same...
          gmtl::Matrix33f new_mat;
-         gmtl::setRot( new_mat, gmtl::Math::deg2Rad( 90.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::ZYX );
-         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix33f>( gmtl::Math::deg2Rad( 90.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::ZYX ) == new_mat );
+         gmtl::setRot( new_mat, gmtl::EulerAnglef( gmtl::Math::deg2Rad( 90.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::ZYX ) );
+         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix33f>( gmtl::EulerAnglef( gmtl::Math::deg2Rad( 90.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::ZYX ) ) == new_mat );
       }
       {
          gmtl::Matrix33f mat, expected_result33;
@@ -755,13 +763,13 @@ namespace gmtlTest
          expected_result33.set( 0, 0, 1,
                                 0, 1, 0,
                                 -1, 0, 0  );
-         gmtl::setRot( mat, gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 90.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::ZYX );
+         gmtl::setRot( mat, gmtl::EulerAnglef( gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 90.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::ZYX ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
 
          // make sure set and make are the same...
          gmtl::Matrix33f new_mat;
-         gmtl::setRot( new_mat, gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 90.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::ZYX );
-         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix33f>( gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 90.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::ZYX ) == new_mat );
+         gmtl::setRot( new_mat, gmtl::EulerAnglef( gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 90.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::ZYX ) );
+         CPPUNIT_ASSERT( gmtl::makeRot<gmtl::Matrix33f>( gmtl::EulerAnglef( gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 90.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::ZYX ) ) == new_mat );
       }
       {
          gmtl::Matrix33f mat, expected_result33;
@@ -770,7 +778,7 @@ namespace gmtlTest
          expected_result33.set( 1, 0, 0,
                                 0, 0, -1,
                                 0, 1, 0  );
-         gmtl::setRot( mat, gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 90.0f ), gmtl::ZYX );
+         gmtl::setRot( mat, gmtl::EulerAnglef( gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 90.0f ), gmtl::ZYX ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
       }
 
@@ -781,7 +789,7 @@ namespace gmtlTest
          expected_result34.set( -0.645974f, -0.560068f, 0.518692f, a,
                                  0.287606f, -0.807979f, -0.514249f, a,
                                  0.707107f, -0.183013f, 0.683013f, a  );
-         gmtl::setRot( mat, gmtl::Math::deg2Rad( 156.0f ), gmtl::Math::deg2Rad( -45.0f ), gmtl::Math::deg2Rad( -15.0f ), gmtl::ZYX );
+         gmtl::setRot( mat, gmtl::EulerAnglef( gmtl::Math::deg2Rad( 156.0f ), gmtl::Math::deg2Rad( -45.0f ), gmtl::Math::deg2Rad( -15.0f ), gmtl::ZYX ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result34, mat, eps ) );
       }
       {
@@ -791,7 +799,7 @@ namespace gmtlTest
          expected_result34.set( 0, 0, 1, a,
                                 0, 1, 0, a,
                                 -1, 0, 0, a );
-         gmtl::setRot( mat, gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 90.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::ZYX );
+         gmtl::setRot( mat, gmtl::EulerAnglef( gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 90.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::ZYX ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result34, mat, eps ) );
       }
 
@@ -803,7 +811,7 @@ namespace gmtlTest
                                 -0.283617f, -0.908318f, -0.30744f, a,
                                 -0.71678f, -0.0121696f, 0.697193f, a,
                                  a, a, a, a );
-         gmtl::setRot( mat, gmtl::Math::deg2Rad( -156.0f ), gmtl::Math::deg2Rad( 45.7892892f ), gmtl::Math::deg2Rad( -361.0f ), gmtl::ZYX );
+         gmtl::setRot( mat, gmtl::EulerAnglef( gmtl::Math::deg2Rad( -156.0f ), gmtl::Math::deg2Rad( 45.7892892f ), gmtl::Math::deg2Rad( -361.0f ), gmtl::ZYX ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result44, mat, eps ) );
       }
 
@@ -816,9 +824,9 @@ namespace gmtlTest
          expected_result33.set( -0.183013f, -0.707107f, 0.683013f,
                                  0.965926f, 0.0f,       0.258819f,
                                 -0.183013f, 0.707107f,  0.683013f );
-         gmtl::setRot( mat, gmtl::Math::deg2Rad( 90.0f ),
+         gmtl::setRot( mat, gmtl::EulerAnglef( gmtl::Math::deg2Rad( 90.0f ),
                              gmtl::Math::deg2Rad( 45.0f ),
-                             gmtl::Math::deg2Rad( 15.0f ), gmtl::ZXY );
+                             gmtl::Math::deg2Rad( 15.0f ), gmtl::ZXY ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
       }
       {
@@ -828,9 +836,9 @@ namespace gmtlTest
          expected_result33.set( 0, -1, 0,
                                 1, 0, 0,
                                 0, 0, 1  );
-         gmtl::setRot( mat, gmtl::Math::deg2Rad( 90.0f ),
+         gmtl::setRot( mat, gmtl::EulerAnglef( gmtl::Math::deg2Rad( 90.0f ),
                              gmtl::Math::deg2Rad( 0.0f ),
-                             gmtl::Math::deg2Rad( 0.0f ), gmtl::ZXY );
+                             gmtl::Math::deg2Rad( 0.0f ), gmtl::ZXY ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
       }
       {
@@ -840,9 +848,9 @@ namespace gmtlTest
          expected_result33.set( 1, 0,  0,
                                 0, 0, -1,
                                 0, 1,  0  );
-         gmtl::setRot( mat, gmtl::Math::deg2Rad( 0.0f ),
+         gmtl::setRot( mat, gmtl::EulerAnglef( gmtl::Math::deg2Rad( 0.0f ),
                              gmtl::Math::deg2Rad( 90.0f ),
-                             gmtl::Math::deg2Rad( 0.0f ), gmtl::ZXY );
+                             gmtl::Math::deg2Rad( 0.0f ), gmtl::ZXY ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
       }
       {
@@ -852,9 +860,9 @@ namespace gmtlTest
          expected_result33.set(  0, 0, 1,
                                  0, 1, 0,
                                 -1, 0, 0  );
-         gmtl::setRot( mat, gmtl::Math::deg2Rad( 0.0f ),
+         gmtl::setRot( mat, gmtl::EulerAnglef( gmtl::Math::deg2Rad( 0.0f ),
                              gmtl::Math::deg2Rad( 0.0f ),
-                             gmtl::Math::deg2Rad( 90.0f ), gmtl::ZXY );
+                             gmtl::Math::deg2Rad( 90.0f ), gmtl::ZXY ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
       }
 
@@ -865,9 +873,9 @@ namespace gmtlTest
          expected_result34.set( -0.956855f, -0.287606f, -0.0413633f, a,
                                  0.225687f, -0.645974f, -0.729234f,  a,
                                  0.183013f, -0.707107f,  0.683013f,  a  );
-         gmtl::setRot( mat, gmtl::Math::deg2Rad( 156.0f ),
+         gmtl::setRot( mat, gmtl::EulerAnglef( gmtl::Math::deg2Rad( 156.0f ),
                              gmtl::Math::deg2Rad( -45.0f ),
-                             gmtl::Math::deg2Rad( -15.0f ), gmtl::ZXY );
+                             gmtl::Math::deg2Rad( -15.0f ), gmtl::ZXY ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result34, mat, eps ) );
       }
       {
@@ -877,9 +885,9 @@ namespace gmtlTest
          expected_result34.set( 1, 0,  0, a,
                                 0, 0, -1, a,
                                 0, 1,  0, a );
-         gmtl::setRot( mat, gmtl::Math::deg2Rad( 0.0f ),
+         gmtl::setRot( mat, gmtl::EulerAnglef( gmtl::Math::deg2Rad( 0.0f ),
                              gmtl::Math::deg2Rad( 90.0f ),
-                             gmtl::Math::deg2Rad( 0.0f ), gmtl::ZXY );
+                             gmtl::Math::deg2Rad( 0.0f ), gmtl::ZXY ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result34, mat, eps ) );
       }
 
@@ -891,9 +899,9 @@ namespace gmtlTest
                                 -0.395247f, -0.637014f, 0.66181f, a,
                                  0.0121696f, 0.71678f, 0.697193f, a,
                                  a, a, a, a );
-         gmtl::setRot( mat, gmtl::Math::deg2Rad( -156.0f ),
+         gmtl::setRot( mat, gmtl::EulerAnglef( gmtl::Math::deg2Rad( -156.0f ),
                              gmtl::Math::deg2Rad( 45.7892892f ),
-                             gmtl::Math::deg2Rad( -361.0f ), gmtl::ZXY );
+                             gmtl::Math::deg2Rad( -361.0f ), gmtl::ZXY ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result44, mat, eps ) );
       }
 
@@ -901,46 +909,47 @@ namespace gmtlTest
       // --- Test standalone setRot(val,val,val) against setRot(mat,val,val,val) -- //
       {
          gmtl::Matrix44f mat, expected_mat;
-         gmtl::setRot(expected_mat, 0.1f, 2.3f, -2.1f, gmtl::XYZ);
-         mat = gmtl::makeRot<gmtl::Matrix44f>(0.1f, 2.3f, -2.1f, gmtl::XYZ);
+         gmtl::setRot(expected_mat, gmtl::EulerAnglef( 0.1f, 2.3f, -2.1f, gmtl::XYZ ) );
+         mat = gmtl::makeRot<gmtl::Matrix44f>( gmtl::EulerAnglef( 0.1f, 2.3f, -2.1f, gmtl::XYZ ) );
          CPPUNIT_ASSERT( gmtl::isEqual( mat, expected_mat, eps ) );
 
-         gmtl::setRot(expected_mat, 0.1f, 2.3f, -2.1f, gmtl::ZXY );
-         mat = gmtl::makeRot<gmtl::Matrix44f>(0.1f, 2.3f, -2.1f, gmtl::ZXY);
+         gmtl::setRot(expected_mat, gmtl::EulerAnglef( 0.1f, 2.3f, -2.1f, gmtl::ZXY ) );
+         mat = gmtl::makeRot<gmtl::Matrix44f>( gmtl::EulerAnglef( 0.1f, 2.3f, -2.1f, gmtl::ZXY ) );
          CPPUNIT_ASSERT( gmtl::isEqual( mat, expected_mat, eps ) );
 
-         gmtl::setRot(expected_mat, 0.1f, 2.3f, -2.1f, gmtl::ZYX);
-         CPPUNIT_ASSERT( gmtl::isEqual( gmtl::makeRot<gmtl::Matrix44f>(0.1f, 2.3f, -2.1f, gmtl::ZYX),
+         gmtl::setRot(expected_mat, gmtl::EulerAnglef( 0.1f, 2.3f, -2.1f, gmtl::ZYX ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( gmtl::makeRot<gmtl::Matrix44f>( 
+                                        gmtl::EulerAnglef( 0.1f, 2.3f, -2.1f, gmtl::ZYX ) ),
                                         expected_mat, eps ) );
       }
 
       {
          gmtl::Matrix33f mat, expected_mat;
-         gmtl::setRot(expected_mat, 0.1f, 2.3f, -2.1f, gmtl::XYZ);
-         mat = gmtl::makeRot<gmtl::Matrix33f>(0.1f, 2.3f, -2.1f, gmtl::XYZ);
+         gmtl::setRot(expected_mat, gmtl::EulerAnglef( 0.1f, 2.3f, -2.1f, gmtl::XYZ));
+         mat = gmtl::makeRot<gmtl::Matrix33f>( gmtl::EulerAnglef( 0.1f, 2.3f, -2.1f, gmtl::XYZ));
          CPPUNIT_ASSERT( gmtl::isEqual( mat, expected_mat, eps ) );
 
-         gmtl::setRot(expected_mat, 0.1f, 2.3f, -2.1f, gmtl::ZXY );
-         mat = gmtl::makeRot<gmtl::Matrix33f>(0.1f, 2.3f, -2.1f, gmtl::ZXY);
+         gmtl::setRot(expected_mat, gmtl::EulerAnglef( 0.1f, 2.3f, -2.1f, gmtl::ZXY ) );
+         mat = gmtl::makeRot<gmtl::Matrix33f>( gmtl::EulerAnglef( 0.1f, 2.3f, -2.1f, gmtl::ZXY ));
          CPPUNIT_ASSERT( gmtl::isEqual( mat, expected_mat, eps ) );
 
-         gmtl::setRot(expected_mat, 0.1f, 2.3f, -2.1f, gmtl::ZYX);
-         CPPUNIT_ASSERT( gmtl::isEqual( gmtl::makeRot<gmtl::Matrix33f>(0.1f, 2.3f, -2.1f, gmtl::ZYX),
+         gmtl::setRot(expected_mat, gmtl::EulerAnglef( 0.1f, 2.3f, -2.1f, gmtl::ZYX ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( gmtl::makeRot<gmtl::Matrix33f>( gmtl::EulerAnglef( 0.1f, 2.3f, -2.1f, gmtl::ZYX ) ),
                                         expected_mat, eps ) );
       }
 
       {
          gmtl::Matrix34f mat, expected_mat;
-         gmtl::setRot(expected_mat, 0.1f, 2.3f, -2.1f, gmtl::XYZ);
-         mat = gmtl::makeRot<gmtl::Matrix34f>(0.1f, 2.3f, -2.1f, gmtl::XYZ);
+         gmtl::setRot(expected_mat, gmtl::EulerAnglef( 0.1f, 2.3f, -2.1f, gmtl::XYZ ));
+         mat = gmtl::makeRot<gmtl::Matrix34f>( gmtl::EulerAnglef( 0.1f, 2.3f, -2.1f, gmtl::XYZ ) );
          CPPUNIT_ASSERT( gmtl::isEqual( mat, expected_mat, eps ) );
 
-         gmtl::setRot(expected_mat, 0.1f, 2.3f, -2.1f, gmtl::ZXY );
-         mat = gmtl::makeRot<gmtl::Matrix34f>(0.1f, 2.3f, -2.1f, gmtl::ZXY);
+         gmtl::setRot(expected_mat, gmtl::EulerAnglef( 0.1f, 2.3f, -2.1f, gmtl::ZXY ) );
+         mat = gmtl::makeRot<gmtl::Matrix34f>( gmtl::EulerAnglef( 0.1f, 2.3f, -2.1f, gmtl::ZXY ) );
          CPPUNIT_ASSERT( gmtl::isEqual( mat, expected_mat, eps ) );
 
-         gmtl::setRot(expected_mat, 0.1f, 2.3f, -2.1f, gmtl::ZYX);
-         CPPUNIT_ASSERT( gmtl::isEqual( gmtl::makeRot<gmtl::Matrix34f>(0.1f, 2.3f, -2.1f, gmtl::ZYX),
+         gmtl::setRot(expected_mat, gmtl::EulerAnglef( 0.1f, 2.3f, -2.1f, gmtl::ZYX ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( gmtl::makeRot<gmtl::Matrix34f>( gmtl::EulerAnglef( 0.1f, 2.3f, -2.1f, gmtl::ZYX ) ),
                                         expected_mat, eps ) );
       }
 
@@ -1191,7 +1200,7 @@ namespace gmtlTest
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
-         gmtl::setRot( mat, gmtl::Math::deg2Rad( a ), gmtl::Vec3f( 1.0f, 0.0f, 0.0f ) );
+         gmtl::setRot( mat, gmtl::AxisAnglef( gmtl::Math::deg2Rad( a ), 1.0f, 0.0f, 0.0f ) );
          a += mat[3];
       }
       CPPUNIT_METRIC_STOP_TIMING();
@@ -1208,7 +1217,7 @@ namespace gmtlTest
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
-         gmtl::setRot( mat, gmtl::Math::deg2Rad( a ), gmtl::Vec3f( 1.0f, 0.0f, 0.0f ) );
+         gmtl::setRot( mat, gmtl::AxisAnglef( gmtl::Math::deg2Rad( a ), 1.0f, 0.0f, 0.0f ) );
          a += mat[3];
       }
       CPPUNIT_METRIC_STOP_TIMING();
@@ -1224,7 +1233,7 @@ namespace gmtlTest
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
-         gmtl::setRot( mat, gmtl::Math::deg2Rad( a ), gmtl::Vec3f( 1.0f, 0.0f, 0.0f ) );
+         gmtl::setRot( mat, gmtl::AxisAnglef( gmtl::Math::deg2Rad( a ), 1.0f, 0.0f, 0.0f ) );
          a += mat[3];
       }
       CPPUNIT_METRIC_STOP_TIMING();
@@ -1285,7 +1294,7 @@ namespace gmtlTest
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
-         gmtl::setRot( mat, a, 45.0f, 35.0f, gmtl::ZXY );
+         gmtl::setRot( mat, gmtl::EulerAnglef( a, 45.0f, 35.0f, gmtl::ZXY ) );
          a -= mat[4];
       }
       CPPUNIT_METRIC_STOP_TIMING();
@@ -1295,7 +1304,7 @@ namespace gmtlTest
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
-         gmtl::setRot( mat, a, 45.0f, 35.0f, gmtl::ZYX );
+         gmtl::setRot( mat, gmtl::EulerAnglef( a, 45.0f, 35.0f, gmtl::ZYX ) );
          a += mat[4];
       }
       CPPUNIT_METRIC_STOP_TIMING();
@@ -1305,7 +1314,7 @@ namespace gmtlTest
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
-         gmtl::setRot( mat, a, 45.0f, 35.0f, gmtl::XYZ );
+         gmtl::setRot( mat, gmtl::EulerAnglef( a, 45.0f, 35.0f, gmtl::XYZ ) );
          a -= mat[4];
       }
       CPPUNIT_METRIC_STOP_TIMING();
@@ -1321,7 +1330,7 @@ namespace gmtlTest
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
-         gmtl::setRot( mat, a, 45.0f, 35.0f, gmtl::ZXY );
+         gmtl::setRot( mat, gmtl::EulerAnglef( a, 45.0f, 35.0f, gmtl::ZXY ) );
          a -= mat[4];
       }
       CPPUNIT_METRIC_STOP_TIMING();
@@ -1331,7 +1340,7 @@ namespace gmtlTest
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
-         gmtl::setRot( mat, a, 45.0f, 35.0f, gmtl::ZYX );
+         gmtl::setRot( mat, gmtl::EulerAnglef( a, 45.0f, 35.0f, gmtl::ZYX ) );
          a += mat[4];
       }
       CPPUNIT_METRIC_STOP_TIMING();
@@ -1341,7 +1350,7 @@ namespace gmtlTest
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
-         gmtl::setRot( mat, a, 45.0f, 35.0f, gmtl::XYZ );
+         gmtl::setRot( mat, gmtl::EulerAnglef( a, 45.0f, 35.0f, gmtl::XYZ ) );
          a -= mat[4];
       }
       CPPUNIT_METRIC_STOP_TIMING();
@@ -1357,7 +1366,7 @@ namespace gmtlTest
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
-         gmtl::setRot( mat, a, 45.0f, 35.0f, gmtl::ZXY );
+         gmtl::setRot( mat, gmtl::EulerAnglef( a, 45.0f, 35.0f, gmtl::ZXY ) );
          a -= mat[4];
       }
       CPPUNIT_METRIC_STOP_TIMING();
@@ -1367,7 +1376,7 @@ namespace gmtlTest
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
-         gmtl::setRot( mat, a, 45.0f, 35.0f, gmtl::ZYX );
+         gmtl::setRot( mat, gmtl::EulerAnglef( a, 45.0f, 35.0f, gmtl::ZYX ) );
          a += mat[4];
       }
       CPPUNIT_METRIC_STOP_TIMING();
@@ -1377,7 +1386,7 @@ namespace gmtlTest
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
-         gmtl::setRot( mat, a, 45.0f, 35.0f, gmtl::XYZ );
+         gmtl::setRot( mat, gmtl::EulerAnglef( a, 45.0f, 35.0f, gmtl::XYZ ) );
          a -= mat[4];
       }
       CPPUNIT_METRIC_STOP_TIMING();
