@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.h,v $
- * Date modified: $Date: 2002-07-02 02:07:02 $
- * Version:       $Revision: 1.26 $
+ * Date modified: $Date: 2002-11-27 05:37:43 $
+ * Version:       $Revision: 1.27 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -90,6 +90,7 @@ public:
    void testIsNormalized();
    void testIsNormalizedEps();
    void testCross();
+   void testReflect();
 
    void testVecTimingLerp();
    void testLerp();
@@ -122,6 +123,7 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<VecTest>("testGroupedOpsPerformance", &VecTest::testGroupedOpsPerformance));
 
       test_suite->addTest( new CppUnit::TestCaller<VecTest>("testDot", &VecTest::testDot));
+      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testReflect", &VecTest::testReflect));
       test_suite->addTest( new CppUnit::TestCaller<VecTest>("testLength", &VecTest::testLength));
       test_suite->addTest( new CppUnit::TestCaller<VecTest>("testNormalize", &VecTest::testNormalize));
       test_suite->addTest( new CppUnit::TestCaller<VecTest>("testIsNormalized", &VecTest::testIsNormalized));
