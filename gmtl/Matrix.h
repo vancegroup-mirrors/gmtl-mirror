@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Matrix.h,v $
- * Date modified: $Date: 2003-04-11 04:16:08 $
- * Version:       $Revision: 1.28 $
+ * Date modified: $Date: 2003-04-11 05:20:37 $
+ * Version:       $Revision: 1.29 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -43,30 +43,71 @@ namespace gmtl
 {
 
 /**
- * Matrix: 4x4 Matrix class (Column major ordering)
+ * Matrix: 4x4 Matrix class (ordered in memory by Column)
  * 
+ * gmtl::Matrix stores its elements in column major order.  
+ * That is, it stores each column end-to-end in memory.
+ *
+ * Typically, for 3D transform matrices, the 3x3 rotation is 
+ * in the first three columns, while the translation is in the last column.
  * 
+ * This memory alignment is chosen for compatibility with the OpenGL graphics
+ * API and others, which take matrices in this specific column major ordering 
+ * described above.
+ * 
+ * See the interfaces for operator[r][c] and operator(r,c) for how to iterate 
+ * over columns and rows for a GMTL Matrix.
  *
- * C/C++ uses matrices in row major order.  In other words the access
- * indices look like: mat[row][col] <br>
- * (0,0) (0,1) (0,2) (0,3)   <=== Array      <br>
- * (1,0) (1,1) (1,2) (1,3)   <=== Array      <br>
- * (2,0) (2,1) (2,2) (2,3)   <=== Array      <br>
- * (3,0) (3,1) (3,2) (3,3)   <=== Array      <br>
- * <br>
- * OpenGL ordering specifies that the matrix has to be column major in memory,
- * so we need to access it more like: <br>
- *    NOTE: The given indexes are what the cells have to be called in C/C++
- *          notation.  Since we are putting the columns into memory
- *          back-to-back.        <br>
- * (0,0) (1,0) (2,0) (3,0)       <br>
- * (0,1) (1,1) (2,1) (3,1)       <br>
- * (0,2) (1,2) (2,2) (3,2)       <br>
- * (0,3) (1,3) (2,3) (3,3)       <br>
- *   ^     ^     ^     ^         <br>
- *   ====================== Arrays     <br>
+ * <b>NOTES on Matrix memory layout and [][] accessors:</b>
+ * <ul>
+ * <li> gmtl Matrix memory is "column major" ordered, where columns are end 
+ *      to end in memory, while a C/C++ Matrix accessed the same way as a 
+ *      gmtl Matrix is "row major" ordered.
  *
- * So basically OpenGL ordering is the Transpose of the way C++ accesses the array
+ * <li> As a result, a gmtl matrix stores elements in memory transposed from 
+ *      the equivelent matrix defined using a double array in the C/C++ 
+ *      language (see example).
+ * <ul>
+ *    <li> Illustrative Example:                                           <br>
+ *         Given two flavors of matrix, C/C++, and gmtl:                   <br>
+ *             float cmat[n][m];   and    gmtl::Matrix<float, n, m> mat;   <br>
+ *         Writing values into each, while accessing them the same:        <br>
+ *             cmat[row][col] = mat[row][col] = some_values[x];            <br>
+ *         Then reading values from the matrix array:                      <br>
+ *             ((float*)cmat)   and    mat.getData()                       <br>
+ *         Will yield pointers to memory containing matrices that are the transpose of each other.
+ * </ul>
+ * <li> In practice, the differences between GMTL and C/C++ defined matrices
+ *      all depends how you iterate over your matrix.                                              <br>
+ *      If gmtl is accessed mat[row][col] and C/C++ is accessed mat[col][row], then 
+ *      memory-wise, these two will yield the same memory mapping (column major as described above),
+ *      thus, are equivelent and can both be used interchangably in many popular graphics APIs 
+ *      such as OpenGL, DirectX, and others.
+ *
+ * <li> In C/C++ access of a matrix via mat[row][col] yields this memory mapping after using ((float*)mat) to return it:<br>
+ *  <pre>
+ *    (0,0) (0,1) (0,2) (0,3)   <=== Contiguous memory arranged by row
+ *    (1,0) (1,1) (1,2) (1,3)   <=== Contiguous
+ *    (2,0) (2,1) (2,2) (2,3)   <=== Contiguous
+ *    (3,0) (3,1) (3,2) (3,3)   <=== Contiguous
+ *
+ *  or linearly if you prefer:
+ *    (0,0) (0,1) (0,2) (0,3) (1,0) (1,1) (1,2) (1,3) (2,0) (2,1) (2,2) (2,3) (3,0) (3,1) (3,2) (3,3) 
+ *  </pre>
+ *
+ * <li> In gmtl, access of a matrix via mat[row][col] yields this memory mapping after using getData() to return it:<br>
+ *  <pre>
+ *    (0,0) (0,1) (0,2) (0,3)   
+ *    (1,0) (1,1) (1,2) (1,3)   
+ *    (2,0) (2,1) (2,2) (2,3)   
+ *    (3,0) (3,1) (3,2) (3,3)
+ *      ^     ^     ^     ^    
+ *    --1-----2-----3-----4---- Contiguous memory arranged by column
+ *  
+ *  or linearly if you prefer:
+ *    (0,0) (1,0) (2,0) (3,0) (0,1) (1,1) (2,1) (3,1) (0,2) (1,2) (2,2) (3,2) (0,3) (1,3) (2,3) (3,3)
+ *  </pre>
+ * </ul>
  *
  * @see Matrix44f
  * @see Matrix44d
