@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-06-11 21:23:34 $
- * Version:       $Revision: 1.59 $
+ * Date modified: $Date: 2002-06-11 22:09:19 $
+ * Version:       $Revision: 1.60 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -557,13 +557,21 @@ namespace gmtl
       }
    }
    
+   /** redundant to set(axisangle,quat), this is provided for template compatibility.
+    *  unless you're writing template functions, you should use set(axisangle,quat) for clarity.
+    */
+   template <typename DATA_TYPE>
+   inline AxisAngle<DATA_TYPE>& setRot( AxisAngle<DATA_TYPE>& result, Quat<DATA_TYPE> quat )
+   {
+      return set( result, quat );
+   }
+   
    /** make a normalized axisangle. */
    template <typename DATA_TYPE>
    AxisAngle<DATA_TYPE> makeNormal( const AxisAngle<DATA_TYPE>& a )
    {
       return AxisAngle<DATA_TYPE>( a.getAngle(), makeNormal( a.getAxis() ) );
    }
-   
    /** @} */
           
    /** @ingroup Generate 
@@ -661,6 +669,14 @@ namespace gmtl
       }
    }
    
+   /** redundant to set(eulerangle,quat), this is provided for template compatibility.
+    *  unless you're writing template functions, you should use set(eulerangle,quat) for clarity.
+    */
+   template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
+   inline EulerAngle<DATA_TYPE>& setRot( EulerAngle<DATA_TYPE>& result, const Matrix<DATA_TYPE, ROWS, COLS>& mat )
+   {
+      return set( result, mat );
+   }
    /** @} */
      
    /** @ingroup Generate 
