@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatOpsTest.h,v $
- * Date modified: $Date: 2002-06-11 21:52:54 $
- * Version:       $Revision: 1.14 $
+ * Date modified: $Date: 2002-07-02 02:07:02 $
+ * Version:       $Revision: 1.15 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -123,7 +123,7 @@ public:
       return test_suite;
    }
 
-   static Test* perfSuite()
+   static CppUnit::Test* perfSuite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("QuatTiming");
       test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>( "testQuatTimingOperatorMinus", &QuatOpsTest::testQuatTimingOperatorMinus ));

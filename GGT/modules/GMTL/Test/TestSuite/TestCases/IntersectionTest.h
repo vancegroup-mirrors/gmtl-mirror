@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: IntersectionTest.h,v $
- * Date modified: $Date: 2002-06-11 21:52:53 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-07-02 02:07:01 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -268,7 +268,7 @@ public:
    }
 
 
-   static Test* suite()
+   static CppUnit::Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("IntersectionTest");
       test_suite->addTest( new CppUnit::TestCaller<IntersectionTest>("testStaticObbObbIntersection", &IntersectionTest::testStaticObbObbIntersection));
@@ -278,13 +278,13 @@ public:
       return test_suite;
    }
 
-   static Test* perfSuite()
+   static CppUnit::Test* perfSuite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("ISectTiming");
       return test_suite;
    }
    
-   static Test* interactiveSuite()
+   static CppUnit::Test* interactiveSuite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("IntersectionTestInteractive");
       //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));

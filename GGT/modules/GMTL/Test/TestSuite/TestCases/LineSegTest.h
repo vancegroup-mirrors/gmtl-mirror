@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: LineSegTest.h,v $
- * Date modified: $Date: 2002-06-11 21:52:53 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2002-07-02 02:07:01 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -222,7 +222,7 @@ public:
       return test_suite;
    }
 
-   static Test* perfSuite()
+   static CppUnit::Test* perfSuite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("LineSegTiming");
       return test_suite;
