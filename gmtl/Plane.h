@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Plane.h,v $
- * Date modified: $Date: 2002-02-24 00:29:27 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2002-03-20 19:48:28 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -107,7 +107,7 @@ public:
     * @param norm          the normal of the plane
     * @param dPlaneConst   the plane offset constant
     */
-   Plane( const Vec<DATA_TYPE, 3>& norm, float dPlaneConst )
+   Plane( const Vec<DATA_TYPE, 3>& norm, const DATA_TYPE& dPlaneConst )
       : mNorm( norm ), mOffset( dPlaneConst )
    {}
 
