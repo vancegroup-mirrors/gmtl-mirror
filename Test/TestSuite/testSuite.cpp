@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: testSuite.cpp,v $
- * Date modified: $Date: 2002-07-11 21:20:40 $
- * Version:       $Revision: 1.54 $
+ * Date modified: $Date: 2002-07-28 23:55:18 $
+ * Version:       $Revision: 1.55 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -87,6 +87,8 @@
 #include <TestCases/AABoxTest.h>
 #include <TestCases/AABoxOpsTest.h>
 #include <TestCases/AABoxContainTest.h>
+
+#include <TestCases/IntersectionTest.h>
 
 #include <TestCases/MetaTest.h>
 
@@ -185,6 +187,8 @@ int main (int ac, char **av)
    gmtl_suite->addTest( gmtlTest::AxisAngleClassTest::suite() );
    gmtl_suite->addTest( gmtlTest::AxisAngleCompareTest::suite() );
 
+   gmtl_suite->addTest( gmtlTest::IntersectionTest::suite() );
+
    /*
    gmtl_suite->addTest( gmtlTest::OOBoxTest::suite() );
    gmtl_suite->addTest( gmtlTest::ContainmentTest::suite() );
@@ -231,6 +235,8 @@ int main (int ac, char **av)
    perf_suite->addTest( gmtlTest::EulerAngleCompareTest::perfSuite() );
    perf_suite->addTest( gmtlTest::AxisAngleClassTest::perfSuite() );
    perf_suite->addTest( gmtlTest::AxisAngleCompareTest::perfSuite() );
+
+   perf_suite->addTest( gmtlTest::IntersectionTest::perfSuite() );
 
    /*
    perf_suite->addTest( gmtlTest::OOBoxTest::perfSuite() );
