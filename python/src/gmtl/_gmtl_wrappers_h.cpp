@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _gmtl_wrappers_h.cpp,v $
- * Date modified: $Date: 2003-05-20 18:57:15 $
- * Version:       $Revision: 1.1.1.1 $
+ * Date modified: $Date: 2003-06-13 15:25:07 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -75,6 +75,8 @@ void _Export_gmtl_wrappers_h()
     def("makeRotMatrix44", (gmtl::Matrix<float,4,4> (*)(const gmtl::Vec<float,3> &, const gmtl::Vec<float,3> &))&gmtlWrapper::makeRotMatrix44);
     def("makeRotQuat", (gmtl::Quat<float> (*)(const gmtl::Matrix<float,4,4> &))&gmtlWrapper::makeRotQuat);
     def("makeRotQuat", (gmtl::Quat<double> (*)(const gmtl::Matrix<double,4,4> &))&gmtlWrapper::makeRotQuat);
+    def("makeRotQuat", (gmtl::Quat<float> (*)(const gmtl::AxisAngle<float> &))&gmtlWrapper::makeRotQuat);
+    def("makeRotQuat", (gmtl::Quat<double> (*)(const gmtl::AxisAngle<double> &))&gmtlWrapper::makeRotQuat);
     def("makeRotQuat", (gmtl::Quat<float> (*)(const gmtl::Vec<float,3> &, const gmtl::Vec<float,3> &))&gmtlWrapper::makeRotQuat);
     def("makeRotQuat", (gmtl::Quat<double> (*)(const gmtl::Vec<double,3> &, const gmtl::Vec<double,3> &))&gmtlWrapper::makeRotQuat);
     def("makeScaleMatrix44", (gmtl::Matrix<double,4,4> (*)(const double))&gmtlWrapper::makeScaleMatrix44);

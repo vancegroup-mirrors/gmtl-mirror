@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-wrappers.h,v $
- * Date modified: $Date: 2003-05-20 18:57:15 $
- * Version:       $Revision: 1.1.1.1 $
+ * Date modified: $Date: 2003-06-13 15:25:07 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -72,6 +72,12 @@ namespace gmtlWrapper
       return gmtl::makeRot< gmtl::Quat<DATA_TYPE> >(m);
    }
 
+   template<typename DATA_TYPE>
+   gmtl::Quat<DATA_TYPE> makeRotQuat(const gmtl::AxisAngle<DATA_TYPE>& a)
+   {
+      return gmtl::makeRot< gmtl::Quat<DATA_TYPE> >(a);
+   }
+
    template<typename DATA_TYPE, unsigned ROW, unsigned COL>
    gmtl::EulerAngle<DATA_TYPE, gmtl::XYZ> makeRotEulerAngleXYZ(const gmtl::Matrix<DATA_TYPE, ROW, COL>& m)
    {
@@ -104,6 +110,8 @@ namespace gmtlWrapper
    template gmtl::Matrix44d      makeRotMatrix44(const gmtl::AxisAngled&);
    template gmtl::Quatf          makeRotQuat(const gmtl::Matrix44f&);
    template gmtl::Quatd          makeRotQuat(const gmtl::Matrix44d&);
+   template gmtl::Quatf          makeRotQuat(const gmtl::AxisAnglef&);
+   template gmtl::Quatd          makeRotQuat(const gmtl::AxisAngled&);
    template gmtl::EulerAngleXYZf makeRotEulerAngleXYZ(const gmtl::Matrix44f&);
    template gmtl::EulerAngleZYXf makeRotEulerAngleZYX(const gmtl::Matrix44f&);
    template gmtl::EulerAngleZXYf makeRotEulerAngleZXY(const gmtl::Matrix44f&);
