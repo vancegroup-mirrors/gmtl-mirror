@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.cpp,v $
- * Date modified: $Date: 2004-09-01 19:26:37 $
- * Version:       $Revision: 1.13.2.2 $
+ * Date modified: $Date: 2004-09-01 21:54:35 $
+ * Version:       $Revision: 1.13.2.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -95,9 +95,13 @@ namespace gmtlTest
       vecb_2.set(1,2,3);
       vecb_1 = gm::sum(vecb_2, 10.0f);
 
+      std::cout << "vecb_1: " << vecb_1[0] << ", " << vecb_1[1] << ", " << vecb_1[2] << std::endl;
+
       CPPUNIT_ASSERT(11.0f == vecb_1[0]);
       CPPUNIT_ASSERT(12.0f == vecb_1[1]);
       CPPUNIT_ASSERT(13.0f == vecb_1[2]);
+
+      std::cout << "ctr cnt after scalar: " << gmtl::helpers::VecCtrCounterInstance()->get() << std::endl;
 
       /*
       gmtl::meta::VecArg<gmtl::Vec<float,3> > va1(test_vec1);
