@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Math.h,v $
- * Date modified: $Date: 2002-02-12 21:26:07 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2002-02-15 21:48:30 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -361,6 +361,13 @@ template <class T>
 inline T Max( const T& w, const T& x, const T& y, const T& z )
 {
    return Math::Max( Math::Max( w, x ), Math::Max( y, z ) );
+}
+//----------------------------------------------------------------------------
+template <class T>
+inline void swap( T& a, T& b )
+{
+   T a_temp;
+   a_temp = a; a = b; b = a_temp;
 }
 //----------------------------------------------------------------------------
 /** Compute the factorial.
