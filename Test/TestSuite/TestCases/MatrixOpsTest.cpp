@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOpsTest.cpp,v $
- * Date modified: $Date: 2003-02-25 05:19:24 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2004-09-22 20:37:26 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -41,6 +41,7 @@
 #include <gmtl/Matrix.h>
 #include <gmtl/MatrixOps.h>
 #include <gmtl/Generate.h>
+#include <gmtl/Output.h>
 
 namespace gmtlTest
 {
@@ -1008,7 +1009,7 @@ namespace gmtlTest
    }
 
    template <typename DATA_TYPE>
-   class matInvertFull
+   class matInvertKnownFull
    {
       typedef DATA_TYPE T;
    public:
@@ -1041,10 +1042,117 @@ namespace gmtlTest
       }
    };
 
+   template <typename DATA_TYPE, unsigned SIZE>
+   class matInvertFull
+   {
+   public:
+      static void go()
+      {
+         unsigned const iters(100);
+         float eps(0.01f);
+
+         gmtl::Matrix<DATA_TYPE, SIZE, SIZE> mat, inv_mat, mult_mat, expected_mat;
+
+         for(unsigned i=0;i<iters;++i)
+         {
+            // Fill matrix with random values in range 0.1 to 1.0;
+            for(unsigned r=0;r<SIZE;++r)
+            {
+               for(unsigned c=0;c<SIZE;++c)
+               { mat(r,c) = gmtl::Math::rangeRandom(0.1,1.0); }
+            }
+            mat.setState(gmtl::Matrix<DATA_TYPE,SIZE,SIZE>::FULL);
+
+            gmtl::invert(inv_mat, mat);
+            mult_mat = mat * inv_mat;
+            assert( gmtl::isEqual(mult_mat, expected_mat, DATA_TYPE(eps)));
+
+            inv_mat = mat;
+            gmtl::invert(inv_mat);
+            assert( gmtl::isEqual(mult_mat, expected_mat, DATA_TYPE(eps)));
+         }
+      }
+   };
+
    void MatrixOpsTest::testMatInvert()
    {
-      matInvertFull<float>::go();
-      matInvertFull<double>::go();
+      matInvertKnownFull<float>::go();
+      matInvertKnownFull<double>::go();
+
+      float eps(0.001f);
+
+      // -- Test translation creation and inversion -- //
+      const float trans_range(100), trans_inc(20);
+      for(float x=-trans_range;x<trans_range;x+=trans_inc)
+      {
+         for(float y=-trans_range;y<trans_range;y+=trans_inc)
+         {
+            for(float z=-trans_range;z<trans_range;z+=trans_inc)
+            {
+               gmtl::Matrix44f expected_inv;
+               expected_inv.set(1, 0, 0, -x,
+                                0, 1, 0, -y,
+                                0, 0, 1, -z,
+                                0, 0, 0, 1);
+               gmtl::Matrix44f src_mat, inv_mat;
+               gmtl::setTrans(src_mat,gmtl::Vec3f(x,y,z));
+               gmtl::invertFull_orig(inv_mat, src_mat);
+               CPPUNIT_ASSERT( gmtl::isEqual(inv_mat, expected_inv, eps));
+               gmtl::identity(inv_mat);
+               gmtl::invertFull_GJ(inv_mat, src_mat);
+               CPPUNIT_ASSERT( gmtl::isEqual(inv_mat, expected_inv, eps));
+               gmtl::identity(inv_mat);
+               gmtl::invert(inv_mat, src_mat);
+               CPPUNIT_ASSERT( gmtl::isEqual(inv_mat, expected_inv, eps));
+            }
+         }
+      }
+
+      // -- Test rotation matrix creation and inversion -- //
+      /*
+      {
+         const float trans_range(360), trans_inc(30);
+         for(float x=-trans_range;x<trans_range;x+=trans_inc)
+         {
+            for(float y=-trans_range;y<trans_range;y+=trans_inc)
+            {
+               for(float z=-trans_range;z<trans_range;z+=trans_inc)
+               {
+                  std::cout << "-------- x:" << x << " y:" << y << " z:" << z << std::endl;
+
+                  gmtl::Matrix44f inv_mat, rot_mat, expected_mult, mult_mat;
+
+                  gmtl::setRot( rot_mat, gmtl::EulerAngleXYZf(
+                                         gmtl::Math::deg2Rad( x ),
+                                         gmtl::Math::deg2Rad( y ),
+                                         gmtl::Math::deg2Rad( z ) ) );
+
+                  std::cout << "rot_mat: \n" << rot_mat << std::endl;
+
+                  gmtl::invertFull_orig(inv_mat, rot_mat);
+                  mult_mat = inv_mat * rot_mat;
+                  std::cout << "inv_mat orig: \n" << inv_mat << std::endl
+                            << "mult_mat orig: \n" << mult_mat << std::endl;
+                  assert( gmtl::isEqual(mult_mat, expected_mult, eps));
+
+                  gmtl::identity(inv_mat);
+                  gmtl::invertFull_GJ(inv_mat, rot_mat);
+                  mult_mat = inv_mat * rot_mat;
+                  std::cout << "inv_mat gj: \n" << inv_mat << std::endl
+                            << "mult_mat gj: \n" << mult_mat << std::endl;
+
+                  assert( gmtl::isEqual(mult_mat, expected_mult, eps));
+
+                  gmtl::identity(inv_mat);
+                  gmtl::invert(inv_mat, rot_mat);
+                  mult_mat = inv_mat * rot_mat;
+                  assert( gmtl::isEqual(mult_mat, expected_mult, eps));
+               }
+            }
+         }
+      }
+      */
+
 
       /*
       // Test rotation inversions
@@ -1061,6 +1169,18 @@ namespace gmtlTest
       result = trans_mat1*trans_mat1_inv;
       CPPUNIT_ASSERT(result.equal(identity));
       */
+
+      matInvertFull<float,2>::go();
+      matInvertFull<float,3>::go();
+      matInvertFull<float,4>::go();
+      matInvertFull<float,5>::go();
+      matInvertFull<float,8>::go();
+
+      matInvertFull<double,2>::go();
+      matInvertFull<double,3>::go();
+      matInvertFull<double,4>::go();
+      matInvertFull<double,5>::go();
+      matInvertFull<double,8>::go();
    }
 
    /*
