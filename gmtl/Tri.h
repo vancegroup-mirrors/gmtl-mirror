@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Tri.h,v $
- * Date modified: $Date: 2003-03-03 00:54:05 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2003-03-06 15:36:48 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -125,6 +125,24 @@ public:
       return (mVerts[idx2] - mVerts[idx]);
    }
 
+   /**
+    * Set the triangle with the given points. The points must be passed
+    * in in CCW order.
+    *
+    * @param p1   vertex0
+    * @param p2   vertex1
+    * @param p3   vertex2
+    *
+    * @pre p1, p2, p3 must be in CCW order
+    */
+   void set( const Point<DATA_TYPE, 3>& p1, const Point<DATA_TYPE, 3>& p2,
+           const Point<DATA_TYPE, 3>& p3 )
+   {
+      mVerts[0] = p1;
+      mVerts[1] = p2;
+      mVerts[2] = p3;
+   }
+
 private:
    /**
     * The vertices of the triangle.
@@ -132,6 +150,10 @@ private:
    Point<DATA_TYPE, 3> mVerts[3];
 };
 
+// convenience typedefs
+typedef Tri<float> Trif;
+typedef Tri<double> Trid;
+typedef Tri<int> Trii;
 }
 
 /*
