@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: TriOps.h,v $
- * Date modified: $Date: 2002-05-17 23:07:11 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-05-20 22:39:22 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,7 +35,6 @@
 #ifndef _GMTL_TRIOPS_H_
 #define _GMTL_TRIOPS_H_
 
-#include <gmtl/gmtlConfig.h>
 #include <gmtl/Tri.h>
 
 namespace gmtl

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatStuffTest.h,v $
- * Date modified: $Date: 2002-03-18 22:48:57 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2002-05-20 22:39:23 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -37,7 +37,6 @@
 #include <cppunit/TestSuite.h>
 #include <cppunit/TestCaller.h>
 
-#include <gmtl/gmtlConfig.h>
 #include <gmtl/Quat.h>
 #include <gmtl/QuatOps.h>
 #include <gmtl/Generate.h>

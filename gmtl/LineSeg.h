@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: LineSeg.h,v $
- * Date modified: $Date: 2002-02-24 22:47:02 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-05-20 22:39:22 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,7 +35,6 @@
 #ifndef _GMTL_LINESEG_H_
 #define _GMTL_LINESEG_H_
 
-#include <gmtl/gmtlConfig.h>
 #include <gmtl/Point.h>
 #include <gmtl/Vec.h>
 #include <gmtl/VecOps.h>

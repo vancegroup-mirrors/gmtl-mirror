@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: CoordGenTest.cpp,v $
- * Date modified: $Date: 2002-05-05 21:14:41 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-05-20 22:39:23 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -38,6 +38,7 @@ Coord [] -km Transforcoordions XformInterface? Xform.h   Collision detection Col
 
 #include <gmtl/Generate.h>
 #include <gmtl/MatrixOps.h>
+#include <gmtl/Convert.h>
 
 namespace gmtlTest
 {

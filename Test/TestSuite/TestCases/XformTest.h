@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: XformTest.h,v $
- * Date modified: $Date: 2002-03-18 23:23:45 $
- * Version:       $Revision: 1.22 $
+ * Date modified: $Date: 2002-05-20 22:39:23 $
+ * Version:       $Revision: 1.23 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -39,7 +39,6 @@
 #include <cppunit/TestCaller.h>
 #include <cppunit/extensions/MetricRegistry.h>
 
-#include <gmtl/gmtlConfig.h>
 #include <gmtl/Xforms.h>
 //#include <gmtl/gmtlOutput.h>
 

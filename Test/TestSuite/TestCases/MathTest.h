@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MathTest.h,v $
- * Date modified: $Date: 2002-03-10 21:28:11 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-05-20 22:39:23 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,7 +35,6 @@
 #ifndef _GMTL_MATHTEST_H_
 #define _GMTL_MATHTEST_H_
 
-#include <gmtl/gmtlConfig.h>
 #include <iostream>
 
 #include <cppunit/TestCase.h>

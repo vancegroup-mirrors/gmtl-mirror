@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatGenTest.h,v $
- * Date modified: $Date: 2002-03-20 00:06:51 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-05-20 22:39:23 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -33,7 +33,6 @@ Quat [] -km Transforquations XformInterface? Xform.h   Collision detection Colli
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 *
  ************************************************************ ggt-cpr end */
-#include <gmtl/gmtlConfig.h>
 #include <iostream>
 
 #include <cppunit/TestCase.h>

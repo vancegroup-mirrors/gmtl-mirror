@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Convert.h,v $
- * Date modified: $Date: 2002-05-17 23:09:27 $
- * Version:       $Revision: 1.10 $
+ * Date modified: $Date: 2002-05-20 22:39:22 $
+ * Version:       $Revision: 1.11 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -38,6 +38,7 @@
 #include <gmtl/Matrix.h>
 #include <gmtl/Vec.h>
 #include <gmtl/Quat.h>
+#include <gmtl/Coord.h>
 
 namespace gmtl
 {

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: OutputTest.h,v $
- * Date modified: $Date: 2002-03-20 20:06:35 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-05-20 22:39:23 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -34,8 +34,6 @@
  ************************************************************ ggt-cpr end */
 #ifndef _GMTL_OUTPUTTEST_H_
 #define _GMTL_OUTPUTTEST_H_
-
-#include <gmtl/gmtlConfig.h>
 
 #include <cppunit/TestCase.h>
 #include <cppunit/TestSuite.h>

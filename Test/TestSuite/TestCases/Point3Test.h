@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Point3Test.h,v $
- * Date modified: $Date: 2002-02-10 04:38:06 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-05-20 22:39:23 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -32,7 +32,6 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 *
  ************************************************************ ggt-cpr end */
-#include <gmtl/gmtlConfig.h>
 #include <iostream>
 
 #include <cppunit/TestCase.h>
