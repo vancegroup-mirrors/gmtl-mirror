@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.h,v $
- * Date modified: $Date: 2002-02-11 23:53:04 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-02-12 00:05:30 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -612,6 +612,8 @@ public:
    }
 
 
+   // ---- Vec specific functions --- //
+
    void testDot()
    {
       gmtl::Vec<float,3> v1(1,0,0);
@@ -815,10 +817,10 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpMinusEq", &VecTest::testOpMinusEq));
       test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpMinus", &VecTest::testOpMinus));
       test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpMultScalarEq", &VecTest::testOpMultScalarEq)); 
-
       test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpMultScalar", &VecTest::testOpMultScalar)); 
       test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpDivScalarEq", &VecTest::testOpDivScalarEq)); 
       test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpDivScalar", &VecTest::testOpDivScalar)); 
+      
       test_suite->addTest( new CppUnit::TestCaller<VecTest>("testDot", &VecTest::testDot)); 
       test_suite->addTest( new CppUnit::TestCaller<VecTest>("testLength", &VecTest::testLength)); 
       test_suite->addTest( new CppUnit::TestCaller<VecTest>("testNormalize", &VecTest::testNormalize)); 

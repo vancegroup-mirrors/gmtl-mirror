@@ -19,6 +19,14 @@ gfxn1/Debug/PointTest/ConstructorsOverhead                         0.221812
 gfxn1/Debug/PointTest/CopyConstructOverhead                        0.2482
 gfxn1/Debug/PointTest/EqualityCompareOverhead                      0.217067
 gfxn1/Debug/PointTest/InequalityCompareOverhead                    0.2411
+gfxn1/Debug/PointTest/OpDivScalarEqOverhead                        0.473452
+gfxn1/Debug/PointTest/OpDivScalarOverhead                          0.704735
+gfxn1/Debug/PointTest/OpMinusEqOverhead                            0.165368
+gfxn1/Debug/PointTest/OpMinusOverhead                              0.392898
+gfxn1/Debug/PointTest/OpMultScalarEqOverhead                       0.444277
+gfxn1/Debug/PointTest/OpMultScalarOverhead                         0.680233
+gfxn1/Debug/PointTest/OpPlusEqOverhead                             0.165123
+gfxn1/Debug/PointTest/OpPlusOverhead                               0.393998
 gfxn1/Debug/PointTest/SetOverhead                                  0.166302
 gfxn1/Debug/PointTest/SetPtrOverhead                               0.260082
 gfxn1/Debug/PointTest/isEqualOverhead                              0.631243
