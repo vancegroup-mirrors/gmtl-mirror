@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Xforms.h,v $
- * Date modified: $Date: 2002-05-28 14:46:15 $
- * Version:       $Revision: 1.25 $
+ * Date modified: $Date: 2002-06-05 23:51:21 $
+ * Version:       $Revision: 1.26 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -62,7 +62,7 @@ namespace gmtl
     *        then this might not give the correct result, since conj and invert is only equiv when normalized...
     */
    template <typename DATA_TYPE>
-   inline Vec<DATA_TYPE, 3>& xform( Vec<DATA_TYPE, 3>& result, const Quat<DATA_TYPE>& rot, const Vec<DATA_TYPE, 3>& vector )
+   inline VecBase<DATA_TYPE, 3>& xform( VecBase<DATA_TYPE, 3>& result, const Quat<DATA_TYPE>& rot, const VecBase<DATA_TYPE, 3>& vector )
    {
       // check preconditions...
       gmtlASSERT( Math::isEqual( length( rot ), (DATA_TYPE)1.0, (DATA_TYPE)0.0001 ) && "must pass a rotation quaternion to xform(result,quat,vec) - by definition, a rotation quaternion is normalized).  if you need non-rotation quaternion support, let us know." );
@@ -93,9 +93,9 @@ namespace gmtl
     * @post v' = q P(v) q*  (where result is v', rot is q, and vector is v.  q* is conj(q), and P(v) is pure quaternion made from v)
     */
    template <typename DATA_TYPE>
-   inline Vec<DATA_TYPE, 3> operator*( const Quat<DATA_TYPE>& rot, const Vec<DATA_TYPE, 3>& vector )
+   inline VecBase<DATA_TYPE, 3> operator*( const Quat<DATA_TYPE>& rot, const VecBase<DATA_TYPE, 3>& vector )
    {
-      Vec<DATA_TYPE, 3> temporary;
+      VecBase<DATA_TYPE, 3> temporary;
       return xform( temporary, rot, vector );
    }
 
