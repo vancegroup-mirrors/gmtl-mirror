@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Compare.h,v $
- * Date modified: $Date: 2002-02-18 18:06:01 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-02-18 22:59:57 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -43,6 +43,7 @@
 #include <gmtl/Sphere.h>
 #include <gmtl/Tri.h>
 #include <gmtl/Matrix.h>
+#include <gmtl/Plane.h>
 
 namespace gmtl
 {
@@ -241,6 +242,58 @@ inline bool isEqual( const Sphere<DATA_TYPE>& s1, const Sphere<DATA_TYPE>& s2, c
    ggtASSERT( eps >= 0 );
    return ( (isEqual(s1.mCenter, s2.mCenter, eps)) && (fabs(s1.mRadius - s2.mRadius) <= eps) );
 }
+
+//--- Plane Comparisons --//
+/**
+ * Compare two planes to see if they are EXACTLY the same. In other words, this
+ * comparison is done with zero tolerance.
+ *
+ * @param p1      the first plane to compare
+ * @param p2      the second plane to compare
+ *
+ * @return  true if they are equal, false otherwise
+ */
+template< class DATA_TYPE >
+inline bool operator==( const Plane<DATA_TYPE>& p1, const Plane<DATA_TYPE>& p2 )
+{
+   return ( (p1.mNorm == p2.mNorm) && (p1.mOffset == p2.mOffset) );
+}
+
+/**
+ * Compare two planes to see if they are not EXACTLY the same. In other words,
+ * this comparison is done with zero tolerance.
+ *
+ * @param p1      the first plane to compare
+ * @param p2      the second plane to compare
+ *
+ * @return  true if they are not equal, false otherwise
+ */
+template< class DATA_TYPE >
+inline bool operator!=( const Plane<DATA_TYPE>& p1, const Plane<DATA_TYPE>& p2 )
+{
+   return (! (p1 == p2));
+}
+
+/**
+ * Compare two planes to see if they are the same within the given tolerance.
+ *
+ * @param p1      the first plane to compare
+ * @param p2      the second plane to compare
+ * @param eps     the tolerance value to use
+ *
+ * @pre eps must be >= 0
+ *
+ * @return  true if they are equal, false otherwise
+ */
+template< class DATA_TYPE >
+inline bool isEqual( const Plane<DATA_TYPE>& p1, const Plane<DATA_TYPE>& p2,
+                     const DATA_TYPE& eps )
+{
+   ggtASSERT( eps >= 0 );
+   return ( (isEqual(p1.mNorm, p2.mNorm, eps)) &&
+            (Math::isEqual(p1.mOffset, p2.mOffset, eps)) );
+}
+
 
 };
 

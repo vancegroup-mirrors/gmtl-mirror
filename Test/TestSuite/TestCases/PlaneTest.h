@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PlaneTest.h,v $
- * Date modified: $Date: 2002-02-18 21:56:11 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-02-18 22:59:57 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -202,6 +202,116 @@ public:
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("PlaneTest/CopyConstructOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
+
+   // --------------------------
+   // Comparison tests
+   // --------------------------
+   void testEqualityCompare()
+   {
+      gmtl::Plane<float> test_plane1( x1_v, 35.0f );
+      gmtl::Plane<float> test_plane2( test_plane1 );
+
+      CPPUNIT_ASSERT( test_plane1 == test_plane2 );
+      CPPUNIT_ASSERT( !(test_plane1 != test_plane2) );
+
+      // set equal, vary normal
+      test_plane2 = test_plane1;
+      test_plane2.mNorm[0] += 2.0f;
+      CPPUNIT_ASSERT( test_plane1 != test_plane2 );
+      CPPUNIT_ASSERT( !(test_plane1 == test_plane2) );
+
+      // set equal, vary offset
+      test_plane2 = test_plane1;
+      test_plane2.mOffset += 2.0f;
+      CPPUNIT_ASSERT( test_plane1 != test_plane2 );
+      CPPUNIT_ASSERT( !(test_plane1 == test_plane2) );
+
+      // test comparison performance
+      const long iters(400000);
+      unsigned true_count(0);
+
+      // -- Equality
+      test_plane2 = test_plane1;
+
+      CPPUNIT_METRIC_START_TIMING();
+      for( long iter=0; iter<iters; ++iter )
+      {
+         test_plane1.mOffset += 1.0f;
+         test_plane2.mOffset += 2.0f;
+         if ( test_plane1 == test_plane2 )
+            true_count++;
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("PlaneTest/EqualityCompareOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      // -- Inequality
+      test_plane1.mNorm = x1_v;
+      test_plane1.mOffset = 0.0f;
+      test_plane2 = test_plane1;
+
+      CPPUNIT_METRIC_START_TIMING();
+      for( long iter=0; iter<iters; ++iter )
+      {
+         test_plane1.mOffset += 1.0f;
+         test_plane2.mOffset += 2.0f;
+         if ( test_plane1 == test_plane2 )
+            true_count++;
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("PlaneTest/InequalityCompareOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+
+   void testIsEqual()
+   {
+      gmtl::Plane<float> test_plane1( x1_v, 0.0f );
+      gmtl::Plane<float> test_plane2( test_plane1 );
+      float eps(0.0f);
+
+      for( eps=0.0f; eps<10.0f; eps+=0.05f )
+      {
+         CPPUNIT_ASSERT( gmtl::isEqual(test_plane1, test_plane2, eps) );
+      }
+
+      for ( unsigned elt=0; elt<4; ++elt )
+      {
+         test_plane2 = test_plane1;
+         if ( elt < 3 ) {
+            test_plane2.mNorm[elt] += 20.0f;
+         } else {
+            test_plane2.mOffset += 20.0f;
+         }
+         CPPUNIT_ASSERT( !gmtl::isEqual(test_plane1, test_plane2, 10.0f) );
+         CPPUNIT_ASSERT( !gmtl::isEqual(test_plane1, test_plane2, 19.9f) );
+         CPPUNIT_ASSERT( gmtl::isEqual(test_plane1, test_plane2, 20.1f) );
+         CPPUNIT_ASSERT( gmtl::isEqual(test_plane1, test_plane2, 22.0f) );
+      }
+
+      // Test comparison performance
+      const long iters(400000);
+      unsigned true_count(0);
+
+      // -- Equality
+      CPPUNIT_METRIC_START_TIMING();
+      test_plane2 = test_plane1;
+
+      for( long iter=0;iter<iters; ++iter)
+      {
+         test_plane1.mOffset += 1.0f;
+         test_plane2.mOffset += 2.0f;
+         if(gmtl::isEqual(test_plane1, test_plane2, 1.0f) )
+            true_count++;
+         if(gmtl::isEqual(test_plane1, test_plane2, 0.1f) )
+            true_count++;
+         if(gmtl::isEqual(test_plane1, test_plane2, 100000.0f) )
+            true_count++;
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("PlaneTest/isEqualOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+
 /*
    // --------------------------
    // Dist and side tests
@@ -274,6 +384,8 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testNormPtCreation", &PlaneTest::testNormPtCreation));
       test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testNormOffsetCreation", &PlaneTest::testNormOffsetCreation));
       test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testCopyConstruct", &PlaneTest::testCopyConstruct));
+      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testEqualityCompare", &PlaneTest::testEqualityCompare));
+      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testIsEqual", &PlaneTest::testIsEqual));
 //      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testDistToPt", &PlaneTest::testDistToPt));
 //      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testWhichSide", &PlaneTest::testWhichSide));
 //      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testFindNearestPt", &PlaneTest::testFindNearestPt));
