@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Quat.h,v $
- * Date modified: $Date: 2002-06-24 04:33:00 $
- * Version:       $Revision: 1.19 $
+ * Date modified: $Date: 2002-09-11 07:04:42 $
+ * Version:       $Revision: 1.20 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -79,6 +79,8 @@ public:
    /** use this to declare single value types of the same type as this matrix.
     */
    typedef DATA_TYPE DataType;
+
+   enum { Size = 4 };
 
    /** default constructor, initializes to quaternion multiplication identity
     *  [x,y,z,w] == [0,0,0,1].
