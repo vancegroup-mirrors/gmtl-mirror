@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.cpp,v $
- * Date modified: $Date: 2003-02-06 01:39:50 $
- * Version:       $Revision: 1.11 $
+ * Date modified: $Date: 2003-02-27 00:08:54 $
+ * Version:       $Revision: 1.12 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -34,7 +34,6 @@
  ************************************************************ ggt-cpr end */
 #include "VecTest.h"
 #include "../Suites.h"
-#include <cppunit/extensions/HelperMacros.h>
 #include <cppunit/extensions/MetricRegistry.h>
 
 #include <gmtl/Vec.h>
@@ -44,6 +43,7 @@
 namespace gmtlTest
 {
    CPPUNIT_TEST_SUITE_REGISTRATION(VecTest);
+   CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(VecMetricTest, Suites::metric());
 
    void VecTest::testCreation()
    {
@@ -52,7 +52,10 @@ namespace gmtlTest
       CPPUNIT_ASSERT( vec[0] == 0.0f);
       CPPUNIT_ASSERT( vec[1] == 0.0f);
       CPPUNIT_ASSERT( vec[2] == 0.0f);
+   }
 
+   void VecMetricTest::testTimingCreation()
+   {
       // Test overhead of creation
       const long iters(400000);
       float use_value(0);
@@ -89,7 +92,10 @@ namespace gmtlTest
       CPPUNIT_ASSERT( test_vec_copy[0] == 2.0f);
       CPPUNIT_ASSERT( test_vec_copy[1] == 4.0f);
       CPPUNIT_ASSERT( test_vec_copy[2] == 8.0f);
+   }
 
+   void VecMetricTest::testTimingCopyConstruct()
+   {
       // Test copy construction overhead
       const long iters(400000);
       gmtl::Vec<float, 2> test_vec2;
@@ -137,7 +143,10 @@ namespace gmtlTest
       gmtl::Vec<float, 1> test_vec1;
       test_vec1.set(1.0f);
       CPPUNIT_ASSERT( test_vec1[0] == 1.0f);
+   }
 
+   void VecMetricTest::testTimingConstructors()
+   {
       // Test constructor
       const long iters(400000);
       float use_value(0.0f);     // A temp just here to use the objs so the copiler (hopefully) does not opt them out
@@ -182,6 +191,14 @@ namespace gmtlTest
       gmtl::Vec<float, 1> test_vec1;
       test_vec1.set(1.0f);
       CPPUNIT_ASSERT( test_vec1[0] == 1.0f);
+   }
+
+   void VecMetricTest::testTimingSet()
+   {
+      gmtl::Vec<float, 4> test_vec4;
+      gmtl::Vec<float, 3> test_vec3;
+      gmtl::Vec<float, 2> test_vec2;
+      gmtl::Vec<float, 1> test_vec1;
 
       // Test constructor
       const float iters(400000);
@@ -230,6 +247,15 @@ namespace gmtlTest
       gmtl::Vec<float, 1> test_vec1;
       test_vec1.set(data);
       CPPUNIT_ASSERT( test_vec1[0] == 1.0f);
+   }
+
+   void VecMetricTest::testTimingSetPtr()
+   {
+      float data[4] = {1.0f, 2.0f, 3.0f, 4.0f};
+      gmtl::Vec<float, 4> test_vec4;
+      gmtl::Vec<float, 3> test_vec3;
+      gmtl::Vec<float, 2> test_vec2;
+      gmtl::Vec<float, 1> test_vec1;
 
       // Test constructor
       const float iters(400000);
@@ -306,6 +332,12 @@ namespace gmtlTest
       test_vec2[3] = 21.10f;
       CPPUNIT_ASSERT( test_vec1 != test_vec2);
       CPPUNIT_ASSERT(! (test_vec1 == test_vec2));
+   }
+
+   void VecMetricTest::testTimingEqualityCompare()
+   {
+      gmtl::Vec<float, 4> test_vec1(1.0f, 2.0f, 3.0f, 4.0f);
+      gmtl::Vec<float, 4> test_vec2(test_vec1);
 
       // Test comparison performance
       // Test constructor
@@ -369,6 +401,12 @@ namespace gmtlTest
          CPPUNIT_ASSERT( gmtl::isEqual(test_vec1, test_vec2, 20.1f) );
          CPPUNIT_ASSERT( gmtl::isEqual(test_vec1, test_vec2, 22.0f) );
       }
+   }
+
+   void VecMetricTest::testTimingIsEqual()
+   {
+      gmtl::Vec<float, 4> test_vec1(1.0f, 2.0f, 3.0f, 4.0f);
+      gmtl::Vec<float, 4> test_vec2(test_vec1);
 
       // Test comparison performance
       // Test constructor
@@ -406,11 +444,16 @@ namespace gmtlTest
       CPPUNIT_ASSERT( test_vec2[0] == -1.0f &&
                       test_vec2[1] == -2.0f &&
                       test_vec2[2] == -3.0f );
+   }
+
+   void VecMetricTest::testTimingOpNegate()
+   {
+      gmtl::Vec<float,3> test_vec1(1.0, 2.0, 3.0);
+      gmtl::Vec<float,3> test_vec3(5.0, 7.0, 9.0);
 
       // -- test op+= performance
       const float iters(400000);
       CPPUNIT_METRIC_START_TIMING();
-      gmtl::Vec<float,3> test_vec3(5.0, 7.0, 9.0);
 
       for( float iter=0;iter<iters; ++iter)
       {
@@ -434,11 +477,17 @@ namespace gmtlTest
       CPPUNIT_ASSERT( test_vec1[0] == 3.0f &&
                       test_vec1[1] == 4.0f &&
                       test_vec1[2] == 5.0f );
+   }
+
+   void VecMetricTest::testTimingOpPlusEq()
+   {
+      gmtl::Vec<float,3> test_vec1(1.0, 2.0, 3.0);
+      gmtl::Vec<float,3> test_vec2(2.0, 2.0, 2.0);
+      gmtl::Vec<float,3> test_vec3(5.0, 7.0, 9.0);
 
       // -- test op+= performance
       const float iters(400000);
       CPPUNIT_METRIC_START_TIMING();
-      gmtl::Vec<float,3> test_vec3(5.0, 7.0, 9.0);
 
       for( float iter=0;iter<iters; ++iter)
       {
@@ -446,10 +495,10 @@ namespace gmtlTest
          test_vec1 += test_vec3;
       }
 
-      test_vec2 = test_vec1;
-
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/OpPlusEqOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      test_vec2 = test_vec1;
    }
 
    void VecTest::testOpPlus()
@@ -462,6 +511,13 @@ namespace gmtlTest
       CPPUNIT_ASSERT( test_vec1[0] == 3.0f &&
                       test_vec1[1] == 4.0f &&
                       test_vec1[2] == 5.0f );
+   }
+
+   void VecMetricTest::testTimingOpPlus()
+   {
+      gmtl::Vec<float,3> test_vec1(1.0, 2.0, 3.0);
+      gmtl::Vec<float,3> test_vec2(2.0, 2.0, 2.0);
+      gmtl::Vec<float,3> test_vec3(1.0, 2.0, 3.0);
 
       // -- test op+ performance
       const float iters(400000);
@@ -489,11 +545,17 @@ namespace gmtlTest
       CPPUNIT_ASSERT( test_vec1[0] == -1.0f &&
                       test_vec1[1] == 0.0f &&
                       test_vec1[2] == 1.0f );
+   }
+
+   void VecMetricTest::testTimingOpMinusEq()
+   {
+      gmtl::Vec<float,3> test_vec1(1.0, 2.0, 3.0);
+      gmtl::Vec<float,3> test_vec2(2.0, 2.0, 2.0);
+      gmtl::Vec<float,3> test_vec3(5.0, 7.0, 9.0);
 
       // -- test op-= performance
       const float iters(400000);
       CPPUNIT_METRIC_START_TIMING();
-      gmtl::Vec<float,3> test_vec3(5.0, 7.0, 9.0);
 
       for( float iter=0;iter<iters; ++iter)
       {
@@ -501,10 +563,10 @@ namespace gmtlTest
          test_vec1 -= test_vec3;
       }
 
-      test_vec2 = test_vec1;
-
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/OpMinusEqOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      test_vec2 = test_vec1;
    }
 
    void VecTest::testOpMinus()
@@ -517,6 +579,13 @@ namespace gmtlTest
       CPPUNIT_ASSERT( test_vec1[0] == -1.0f &&
                       test_vec1[1] == 0.0f &&
                       test_vec1[2] == 1.0f );
+   }
+
+   void VecMetricTest::testTimingOpMinus()
+   {
+      gmtl::Vec<float,3> test_vec1(1.0, 2.0, 3.0);
+      gmtl::Vec<float,3> test_vec2(2.0, 2.0, 2.0);
+      gmtl::Vec<float,3> test_vec3(1.0, 2.0, 3.0);
 
       // -- test op- performance
       const float iters(400000);
@@ -529,10 +598,10 @@ namespace gmtlTest
          test_vec1 = (test_vec3 - test_vec2);
       }
 
-      test_vec2 = test_vec1;
-
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/OpMinusOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      test_vec2 = test_vec1;
    }
 
    void VecTest::testOpMultScalarEq()
@@ -543,6 +612,11 @@ namespace gmtlTest
       CPPUNIT_ASSERT( test_vec1[0] == 4.0f &&
                       test_vec1[1] == 8.0f &&
                       test_vec1[2] == 12.0f );
+   }
+
+   void VecMetricTest::testTimingOpMultScalarEq()
+   {
+      gmtl::Vec<float,3> test_vec1(1.0, 2.0, 3.0);
 
       // -- test op-= performance
       const float iters(400000);
@@ -566,6 +640,12 @@ namespace gmtlTest
       CPPUNIT_ASSERT( test_vec1[0] == 4.0f &&
                       test_vec1[1] == 8.0f &&
                       test_vec1[2] == 12.0f );
+   }
+
+   void VecMetricTest::testTimingOpMultScalar()
+   {
+      gmtl::Vec<float,3> test_vec1(1.0, 2.0, 3.0);
+      gmtl::Vec<float,3> test_vec3(1.0, 2.0, 3.0);
 
       // -- test op- performance
       const float iters(400000);
@@ -592,12 +672,17 @@ namespace gmtlTest
       CPPUNIT_ASSERT( test_vec1[0] == 4.0f &&
                       test_vec1[1] == 8.0f &&
                       test_vec1[2] == 12.0f );
+   }
+
+   void VecMetricTest::testTimingOpScalarVecMult()
+   {
+      gmtl::Vec<float,3> test_vec1(1.0, 2.0, 3.0);
+      gmtl::Vec<float,3> test_vec3(5.0, 7.0, 9.0);
 
       // -- test op- performance
       const float iters(400000);
       float bogus_value(0.0f);
       CPPUNIT_METRIC_START_TIMING();
-      test_vec3.set(5.0, 7.0, 9.0);
 
       for( float iter=0;iter<iters; ++iter)
       {
@@ -621,6 +706,11 @@ namespace gmtlTest
       CPPUNIT_ASSERT( test_vec1[0] == 3.0f &&
                       test_vec1[1] == 2.0f &&
                       test_vec1[2] == 1.0f );
+   }
+
+   void VecMetricTest::testTimingOpDivScalarEq()
+   {
+      gmtl::Vec<float,3> test_vec1(12.0, 8.0, 4.0);
 
       // -- test op-= performance
       const float iters(400000);
@@ -644,11 +734,16 @@ namespace gmtlTest
       CPPUNIT_ASSERT( test_vec1[0] == 3.0f &&
                       test_vec1[1] == 2.0f &&
                       test_vec1[2] == 1.0f );
+   }
+
+   void VecMetricTest::testTimingOpDivScalar()
+   {
+      gmtl::Vec<float,3> test_vec1(1.0, 2.0, 3.0);
+      gmtl::Vec<float,3> test_vec3(5.0, 7.0, 9.0);
 
       // -- test op- performance
       const float iters(400000);
       CPPUNIT_METRIC_START_TIMING();
-      test_vec3.set(5.0, 7.0, 9.0);
 
       for( float iter=0;iter<iters; ++iter)
       {
@@ -660,7 +755,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/OpDivScalarOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
 
-   void VecTest::testGroupedOpsPerformance()
+   void VecMetricTest::testTimingGroupedOps()
    {
       gmtl::Vec<float,4> const_vec1(4.0f, 5.0f, 6.0f, 7.8f);
       gmtl::Vec<float,4> const_vec2(1.0f, 2.0f, 3.0f, 4.8f);
@@ -918,6 +1013,12 @@ namespace gmtlTest
       CPPUNIT_ASSERT(GMTL_NEAR(dot,ans,0.01));
       dot = gmtl::dot(v3,v2);
       CPPUNIT_ASSERT(GMTL_NEAR(dot,ans,0.01));
+   }
+
+   void VecMetricTest::testTimingDot()
+   {
+      gmtl::Vec<float,3> v1(1,0,0);
+      gmtl::Vec<float,3> v2(0,1,0);
 
       // -- test op- performance
       const float iters(100000);
@@ -968,6 +1069,11 @@ namespace gmtlTest
       ans = gmtl::Math::sqrt(ans);
       len = gmtl::length(v2);
       CPPUNIT_ASSERT(GMTL_NEAR(len,ans,0.01));
+   }
+
+   void VecMetricTest::testTimingLength()
+   {
+      gmtl::Vec<float,3> v1(2.0f, 4.0f, 5.0f);
 
       // -- test length performance
       const float iters(100000);
@@ -1016,12 +1122,17 @@ namespace gmtlTest
       v2 = v1;
       gmtl::normalize(v1);
       CPPUNIT_ASSERT( gmtl::isEqual(v2, (v1*gmtl::length(v2)),0.01f ) );
+   }
+
+   void VecMetricTest::testTimingNormalize()
+   {
+      gmtl::Vec<float,3> v1(12.0f, 21.0f, 75.0f);
+      gmtl::Vec<float,3> v2(0,1,0);
 
       // -- test performance
       const float iters(100000);
       CPPUNIT_METRIC_START_TIMING();
       float val(0.0f);
-      v1.set(12.0f, 21.0f, 75.0f);
 
       for( float iter=0;iter<iters; ++iter)
       {
@@ -1048,11 +1159,15 @@ namespace gmtlTest
       CPPUNIT_ASSERT( gmtl::isNormalized(v3) );
 
       CPPUNIT_ASSERT( ! gmtl::isNormalized(v4) );
+   }
+
+   void VecMetricTest::testTimingIsNormalized()
+   {
+      gmtl::Vec<float,3> v4(0.5f, 0.5f, 0.5f);
 
       // test performance
       const unsigned long iters(100000);
       long true_count(0);
-      v4.set( 0.5f, 0.5f, 0.5f );
 
       CPPUNIT_METRIC_START_TIMING();
       for ( unsigned long iter=0; iter<iters; ++iter )
@@ -1081,11 +1196,15 @@ namespace gmtlTest
       CPPUNIT_ASSERT( ! gmtl::isNormalized(v2, 19.9f * 19.9f) );
       CPPUNIT_ASSERT( gmtl::isNormalized(v2, 21.0f * 21.0f - 0.9f) );
       CPPUNIT_ASSERT( gmtl::isNormalized(v2, 21.0f * 21.0f + 0.9f) );
+   }
+
+   void VecMetricTest::testTimingIsNormalizedEps()
+   {
+      gmtl::Vec<float,3> v2(0.5f, 0.5f, 0.5f);
 
       // test performance
       const unsigned long iters(100000);
       long true_count(0);
-      v2.set( 0.5f, 0.5f, 0.5f );
       float tol = 0.25f;
 
       CPPUNIT_METRIC_START_TIMING();
@@ -1125,12 +1244,18 @@ namespace gmtlTest
 
       // Test for compilability
       //cross = gmtl::cross((v1+v2),(v2+v3));
+   }
+
+   void VecMetricTest::testTimingCross()
+   {
+      gmtl::Vec<float,3> v1(12.0f, 21.0f, 75.0f);
+      gmtl::Vec<float,3> v2(0,1,0);
+      gmtl::Vec<float,3> v3(0,0,1);
+      gmtl::Vec<float,3> cross;
 
       // -- test performance
       const float iters(100000);
       CPPUNIT_METRIC_START_TIMING();
-
-      v1.set(12.0f, 21.0f, 75.0f);
 
       for( float iter=0;iter<iters; ++iter)
       {
@@ -1141,21 +1266,6 @@ namespace gmtlTest
 
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/CrossOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
-   }
-   
-   void VecTest::testVecTimingLerp()
-   {
-      gmtl::Vec<float, 4> from, result;
-      const long iters(10000);
-      CPPUNIT_METRIC_START_TIMING();
-      for (long iter = 0; iter < iters; ++iter)
-      {
-         gmtl::lerp( result, ((float)iter) / ((float)iters), from, result );
-      }
-      CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecOpsTest/lerp()", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
-      // Make sure the compiler doesn't optimize out
-      CPPUNIT_ASSERT( result[2] != 1234.5f );
    }
    
    void VecTest::testLerp()
@@ -1221,5 +1331,21 @@ namespace gmtlTest
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result3, res3, eps ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result4, res4, eps ) );
       }
-   }   
+   }
+
+   void VecMetricTest::testTimingLerp()
+   {
+      gmtl::Vec<float, 4> from, result;
+      const long iters(10000);
+      CPPUNIT_METRIC_START_TIMING();
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         gmtl::lerp( result, ((float)iter) / ((float)iters), from, result );
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecOpsTest/lerp()", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      // Make sure the compiler doesn't optimize out
+      CPPUNIT_ASSERT( result[2] != 1234.5f );
+   }
+   
 }
