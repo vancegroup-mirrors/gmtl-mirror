@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: testSuite.cpp,v $
- * Date modified: $Date: 2002-02-20 21:59:45 $
- * Version:       $Revision: 1.18 $
+ * Date modified: $Date: 2002-02-21 21:37:07 $
+ * Version:       $Revision: 1.19 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -67,6 +67,7 @@
 //#include <TestCases/ContainmentTest.h>
 //#include <TestCases/IntersectionTest.h>
 #include <TestCases/QuatClassTest.h>
+#include <TestCases/QuatOpsTest.h>
 //#include <TestCases/TriTest.h>
 #include <TestCases/InfoTests/OptTest.h>
 
@@ -123,16 +124,17 @@ int main (int ac, char **av)
    gmtl_suite->addTest(gmtlTest::MatrixGenTest::suite());
    gmtl_suite->addTest(gmtlTest::Point3Test::suite());
    gmtl_suite->addTest(gmtlTest::QuatClassTest::suite());
+   gmtl_suite->addTest(gmtlTest::QuatOpsTest::suite());
    /*
-   gmtl_suite->addTest(gmtlTest::XformTest::suite());
-   gmtl_suite->addTest(gmtlTest::OOBoxTest::suite());
-   gmtl_suite->addTest(gmtlTest::PlaneTest::suite());
-   gmtl_suite->addTest(gmtlTest::ContainmentTest::suite());
-   gmtl_suite->addTest(gmtlTest::IntersectionTest::suite());
-   gmtl_suite->addTest(gmtlTest::TriTest::suite());
+   gmtl_suite->addTest( gmtlTest::XformTest::suite() );
+   gmtl_suite->addTest( gmtlTest::OOBoxTest::suite() );
+   gmtl_suite->addTest( gmtlTest::PlaneTest::suite() );
+   gmtl_suite->addTest( gmtlTest::ContainmentTest::suite() );
+   gmtl_suite->addTest( gmtlTest::IntersectionTest::suite() );
+   gmtl_suite->addTest( gmtlTest::TriTest::suite() );
    */
-   CppUnit::TestSuite* info_suite = new CppUnit::TestSuite("info_suite");
-   info_suite->addTest(gmtlTest::OptTest::suite());
+   CppUnit::TestSuite* info_suite = new CppUnit::TestSuite( "info_suite" );
+   info_suite->addTest( gmtlTest::OptTest::suite() );
 
    // Add the tests
    runner.addTest( gmtl_suite );
@@ -143,14 +145,14 @@ int main (int ac, char **av)
    {
       std::string arg = av[1];
       if (arg.size() > 0 && (arg[0] == 'i' || arg[0] == 'a'))
-         runner.run("info_suite");
+         runner.run( "info_suite" );
       if (arg.size() > 0 && (arg[0] == 'g' || arg[0] == 'a'))
-         runner.run("gmtl_suite");
+         runner.run( "gmtl_suite" );
    }
    else
    {
       usage( av );
-      runner.run("gmtl_suite");
+      runner.run( "gmtl_suite" );
       usage( av );
    }   
 

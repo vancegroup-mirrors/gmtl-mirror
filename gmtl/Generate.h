@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-02-20 21:39:40 $
- * Version:       $Revision: 1.10 $
+ * Date modified: $Date: 2002-02-21 21:37:08 $
+ * Version:       $Revision: 1.11 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -37,16 +37,223 @@
 
 #include <gmtl/Vec.h>    // for Vec
 #include <gmtl/VecOps.h> // for lengthSquared
+#include <gmtl/Quat.h>
+#include <gmtl/QuatOps.h>
 #include <gmtl/Matrix.h>
 #include <gmtl/Meta.h>
 
 namespace gmtl
 {
-   // VEC
+   //-- VEC GENERATORS --//
    // TODO: Vec& makeNormalized( Vec&, x, y )
    // TODO: Vec& makeNormalized( Vec&, x, y, z )
    // TODO: Vec& makeNormalized( Vec&, x, y, z, w )
 
+   
+   
+   //-- QUATERNION GENERATORS --//
+   
+   /** create a pure quaternion
+    * @post quat = [v,0] = [v0,v1,v2,0]
+    */
+   template <typename DATA_TYPE>
+   Quat<DATA_TYPE> makePure( const Vec<DATA_TYPE, 3>& vec )
+   {
+      return Quat<DATA_TYPE>( vec[0], vec[1], vec[2], 0 );
+   }
+   
+   /** create quaternion from the complex conjugate (invers) of another quaternion.
+    *  When quat is a rotation, this is also the same as the inverse of the rotation.
+    *  @post set result to the complex conjugate of result.
+    *  @post result'[x,y,z,w] == result[-x,-y,-z,w]
+    *  @see Quat
+    */
+   template <typename DATA_TYPE>
+   Quat<DATA_TYPE> makeInvert( const Quat<DATA_TYPE>& quat )
+   {
+      return Quat<DATA_TYPE>( -result[Xelt], -result[Yelt], -result[Zelt], result[Welt] );
+   }
+
+   /** make a rotation quaternion from an angle and an axis (fast).
+    * @pre axis must be normalized prior to calling this.
+    * @post q = [ cos(rad/2), sin(rad/2) * [x,y,z] ]
+    */
+   template <typename DATA_TYPE>
+   Quat<DATA_TYPE>& makeRot( Quat<DATA_TYPE>& result, const DATA_TYPE rad, const Vec<DATA_TYPE, 3>& axis )
+   {
+      ggtASSERT( isNormalized( axis ) && "preconditions not met for makeRot, axis must be normalized" );
+
+      DATA_TYPE half_angle = rad * 0.5f;
+      DATA_TYPE sin_half_angle = Math::sin( half_angle );
+
+      result[Welt] = Math::cos( half_angle );
+      result[Xelt] = sin_half_angle * axis[0];
+      result[Yelt] = sin_half_angle * axis[1];
+      result[Zelt] = sin_half_angle * axis[2];
+
+      // should automagically be normalized (unit magnitude) now...
+      return result;
+   }
+   
+   /** make a rotation quaternion from an angle and an axis (slow).
+    * @pre axis [xyz] will be normalized for you, no need to worry about it.
+    * @post q = [ cos(rad/2), sin(rad/2) * [x,y,z] ]
+    */
+   template <typename DATA_TYPE>
+   Quat<DATA_TYPE>& makeRot( Quat<DATA_TYPE>& result, const DATA_TYPE rad, const DATA_TYPE x, const DATA_TYPE y, const DATA_TYPE z )
+   {
+      Vec<DATA_TYPE, 3> vec_normalized( x, y, z );
+      if (isNormalized( vec_normalized ))
+      {
+         normalize( vec_normalized );
+      }
+      return makeRot( result, rad, vec_normalized );
+   }
+   
+   /** make a rotation quaternion that will xform first vector to the second.
+    *  @post generate rotation quaternion that is the rotation between the vectors.
+    */
+   template <typename DATA_TYPE>
+   Quat<DATA_TYPE>& makeRot( Quat<DATA_TYPE>& result, const Vec<DATA_TYPE, 3>& from, const Vec<DATA_TYPE, 3>& to )
+   {
+      const DATA_TYPE epsilon = 0.00001;
+      DATA_TYPE cosangle = dot( from * to );
+
+      // if cosangle is close to 1, so the vectors are close to being coincident
+      // Need to generate an angle of zero with any vector we like
+      // We'll choose identity (no rotation)
+      if ( isEqual( cosangle, 1.0, epsilon ) )
+      {
+         return result = Quat<DATA_TYPE>();
+      }
+
+      // vectors are close to being opposite, so rotate one a little...
+      else if ( isEqual( cosangle, -1.0, epsilon ) )
+      {
+         Vec<DATA_TYPE, 3> to_rot( to[0] + 0.3, to[1] - 0.15, to[2] - 0.15 ), axis;
+         cross( axis, from, to_rot );
+         DATA_TYPE angle = Math::acos( cosangle );
+         return makeRot( result, angle, axis );
+      }
+
+      // This is the usual situation - take a cross-product of vec1 and vec2
+      // and that is the axis around which to rotate.
+      else
+      {
+         Vec<DATA_TYPE, 3> axis;
+         cross( axis, from, to );
+         DATA_TYPE angle = Math::acos( cosangle );
+         return makeRot( result, angle, axis );
+      }
+   }
+   
+   /** get the angle/axis from the rotation quaternion.
+    *
+    * @post returns an angle in radians, and a normalized axis equivelent to the quaternion's rotation.
+    * @post returns rad and xyz such that
+    * <ul>
+    * <li>  rad = acos( w ) * 2.0
+    * <li>  vec = v / (asin( w ) * 2.0)   [where v is the xyz or vector component of the quat]
+    * </ul>
+    */
+   template <typename DATA_TYPE>
+   void getRot( DATA_TYPE& rad, DATA_TYPE& x, DATA_TYPE& y, DATA_TYPE& z, Quat<DATA_TYPE> quat ) 
+   {
+      // make sure we don't get a NaN result from acos...
+      if (Math::abs( quat[Welt] ) > 1.0f)
+      {
+         normalize( quat );
+      }
+      ggtASSERT( Math::abs( quat[Welt] ) <= 1.0f && "acos returns NaN when quat[Welt] > 1, try normalizing your quat." );
+
+      // [acos( w ) * 2.0, v / (asin( w ) * 2.0)]
+
+      // get the angle:
+      rad = Math::acos( quat[Welt] ) * 2.0f;
+
+      // get the axis: (use sin(rad) instead of asin(w))
+      DATA_TYPE sin_half_angle = Math::sin( rad * 0.5f );
+      if (sin_half_angle >= 0.0001f)  // some arbitrary epsillon close to zero
+      {
+         DATA_TYPE sin_half_angle_inv = 1.0f / sin_half_angle;
+         x = quat[Xelt] * sin_half_angle_inv;
+         y = quat[Yelt] * sin_half_angle_inv;
+         z = quat[Zelt] * sin_half_angle_inv;
+      }
+
+      // avoid NAN
+      else 
+      {
+         x = 1.0f - quat[Welt]; // one of the terms should be a 1,
+         y = 0.0f;                  // so we can maintain unit-ness
+         z = 0.0f;                  // in case w is 0 (which here w is 0)
+      }
+   }
+   
+   enum RotationOrder
+   {
+      XYZ, ZYX, ZXY
+   };
+   
+   /** Create a rotation quaternion using euler angles (each in radians)
+    * @pre pass in your angles in the same order as the RotationOrder you specify
+    */
+   template <typename DATA_TYPE>
+   void makeRot( Quat<DATA_TYPE>& result, const DATA_TYPE param0, 
+                 const DATA_TYPE param1, const DATA_TYPE param2, const RotationOrder order )
+   {
+      // this might be faster if put into the switch statement... (testme)
+      const DATA_TYPE xRot = (order == XYZ) ? param0 : ((order == ZXY) ? param1 : param2);
+      const DATA_TYPE yRot = (order == XYZ) ? param1 : ((order == ZXY) ? param2 : param1);
+      const DATA_TYPE zRot = (order == XYZ) ? param2 : ((order == ZXY) ? param0 : param0);
+
+      // this could be written better for each rotation order, but this is really general...
+      Quat<DATA_TYPE> qx, qy, qz;
+
+      // precompute half angles
+      DATA_TYPE xOver2 = xRot * 0.5f;
+      DATA_TYPE yOver2 = yRot * 0.5f;
+      DATA_TYPE zOver2 = zRot * 0.5f;
+
+      // make the pitch quat
+      qx.vec[Xelt] = Math::sin( xOver2 ); 
+      qx.vec[Yelt] = 0.0f; 
+      qx.vec[Zelt] = 0.0f; 
+      qx.vec[Welt] = Math::cos( xOver2 );
+
+      // make the yaw quat
+      qy.vec[Xelt] = 0.0f;
+      qy.vec[Yelt] = Math::sin( yOver2 );
+      qy.vec[Zelt] = 0.0f;
+      qy.vec[Welt] = Math::cos( yOver2 );
+
+      // make the roll quat
+      qz.vec[Xelt] = 0.0f;
+      qz.vec[Yelt] = 0.0f;
+      qz.vec[Zelt] = Math::sin( zOver2 );
+      qz.vec[Welt] = Math::cos( zOver2 );
+
+      // compose the three in pyr order...
+      switch (order)
+      {
+      case XYZ: result = qx * qy * qz; break;
+      case ZYX: result = qz * qy * qx; break;
+      case ZXY: result = qz * qx * qy; break;
+      default:
+         ggtASSERT( false && "unknown rotation order passed to makeRot" );
+         break;
+      }
+
+      // ensure the quaternion is normalized
+      normalize( result );
+      return result;
+   }   
+   
+   
+   
+   
+   //-- MATRIX GENERATORS --//
+   
    
    /** Create a translation matrix from vec.
     * @pre if making an n x n matrix, then for
@@ -170,10 +377,7 @@ namespace gmtl
    }
    */
          
-   enum RotationOrder
-   {
-      XYZ, ZYX, ZXY
-   };
+   
    
    /** Create a rotation matrix using euler angles (in radians)
     * @pre pass in your args in the same order as the RotationOrder you specify
@@ -181,8 +385,7 @@ namespace gmtl
     */
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
    inline Matrix<DATA_TYPE, ROWS, COLS>& makeRot( Matrix<DATA_TYPE, ROWS, COLS>& result, const DATA_TYPE param0, 
-                                                 const DATA_TYPE param1, const DATA_TYPE param2, const RotationOrder order, 
-                                                 Type2Type<Matrix<DATA_TYPE, ROWS, COLS> > t = Type2Type<Matrix<DATA_TYPE, ROWS, COLS> >() )
+                                                 const DATA_TYPE param1, const DATA_TYPE param2, const RotationOrder order )
    {
       // @todo make this a compile time assert...
       ggtASSERT( ROWS >= 3 && COLS >= 3 && ROWS <= 4 && COLS <= 4 && "this is undefined for Matrix smaller than 3x3 or bigger than 4x4" );
@@ -262,8 +465,12 @@ namespace gmtl
     *  @post this function only produces 3x3, 3x4, 4x3, and 4x4 matrices
     */
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
-   inline Matrix<DATA_TYPE, ROWS, COLS>& makeDirCos( Matrix<DATA_TYPE, ROWS, COLS>& result, const Vec<DATA_TYPE, 3>& xDestAxis, const Vec<DATA_TYPE, 3>& yDestAxis, const Vec<DATA_TYPE, 3>& zDestAxis,
-         const Vec<DATA_TYPE, 3>& xSrcAxis = Vec<DATA_TYPE, 3>(1,0,0), const Vec<DATA_TYPE, 3>& ySrcAxis = Vec<DATA_TYPE, 3>(0,1,0), const Vec<DATA_TYPE, 3>& zSrcAxis = Vec<DATA_TYPE, 3>(0,0,1) )
+   inline Matrix<DATA_TYPE, ROWS, COLS>& makeDirCos( Matrix<DATA_TYPE, ROWS, COLS>& result,
+                                                     const Vec<DATA_TYPE, 3>& xDestAxis,
+                                                     const Vec<DATA_TYPE, 3>& yDestAxis, const Vec<DATA_TYPE, 3>& zDestAxis,
+                                                     const Vec<DATA_TYPE, 3>& xSrcAxis = Vec<DATA_TYPE, 3>(1,0,0), 
+                                                     const Vec<DATA_TYPE, 3>& ySrcAxis = Vec<DATA_TYPE, 3>(0,1,0), 
+                                                     const Vec<DATA_TYPE, 3>& zSrcAxis = Vec<DATA_TYPE, 3>(0,0,1) )
    {
       // @todo make this a compile time assert...
       ggtASSERT( ROWS >= 3 && COLS >= 3 && ROWS <= 4 && COLS <= 4 && "this is undefined for Matrix smaller than 3x3 or bigger than 4x4" );

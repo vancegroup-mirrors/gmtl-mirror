@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Matrix.h,v $
- * Date modified: $Date: 2002-02-19 23:18:46 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2002-02-21 21:37:08 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -69,8 +69,11 @@ template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
 class Matrix
 {
 public:
-   typedef DATA_TYPE datatype;
+   /** use this to declare single value types of the same type as this matrix. 
+    */
+   typedef DATA_TYPE DataType;
 
+   /** describes the xforms that this matrix has been through. */
    enum XformState
    {
       IDENTITY = 1, 
@@ -103,8 +106,8 @@ public:
       mState = matrix.mState;
    }
 
-   /** element wise setter for 2x2
-    * TODO: needs mp!!
+   /** element wise setter for 2x2.
+    *  TODO: needs mp!!
     */
    void set( DATA_TYPE v00, DATA_TYPE v01,
              DATA_TYPE v10, DATA_TYPE v11 )
@@ -117,7 +120,7 @@ public:
       mState = FULL;
    }
    
-   /** element wise setter for 2x3
+   /** element wise setter for 2x3.
     * TODO: needs mp!!
     */
    void set( DATA_TYPE v00, DATA_TYPE v01, DATA_TYPE v02,
@@ -133,7 +136,7 @@ public:
       mState = FULL;
    }
    
-   /** element wise setter for 3x3
+   /** element wise setter for 3x3.
     * TODO: needs mp!!
     */
    void set( DATA_TYPE v00, DATA_TYPE v01, DATA_TYPE v02,
@@ -155,7 +158,7 @@ public:
       mState = FULL;
    }
    
-   /** element wise setter for 3x4
+   /** element wise setter for 3x4.
     * TODO: needs mp!!  currently no way for a 4x3, ....
     */
    void set( DATA_TYPE v00, DATA_TYPE v01, DATA_TYPE v02, DATA_TYPE v03,
@@ -180,7 +183,7 @@ public:
       mState = FULL;
    }
    
-   /** element wise setter for 4x4
+   /** element wise setter for 4x4.
     * TODO: needs mp!!  currently no way for a 4x3, ....
     */
    void set( DATA_TYPE v00, DATA_TYPE v01, DATA_TYPE v02, DATA_TYPE v03,
@@ -212,7 +215,9 @@ public:
       mState = FULL;
    }
    
-   // TODO do this!
+   /** comma operator 
+    *  @todo implement this!
+    */
    //void operator,()( DATA_TYPE b ) {}
    
    /** set the matrix to the given data.

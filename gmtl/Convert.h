@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Convert.h,v $
- * Date modified: $Date: 2002-02-20 21:39:41 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-02-21 21:37:08 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -37,6 +37,16 @@
 
 namespace gmtl
 {
+   /** convert vector to a "pure" quaternion.
+    * @post quat = [v,0] = [v0,v1,v2,0]
+    */
+   template <typename DATA_TYPE>
+   Quat<DATA_TYPE>& convert( Quat<DATA_TYPE>& pure_quat, const Vec<DATA_TYPE, 3>& vector )
+   {
+      pure_quat.set( vector[0], vector[1], vector[2], 0 );
+      return pure_quat;
+   }
+   
    /** convert a quaternion to the rotation part of a 3x3, 3x4, or 4x4 matrix. */
    /*
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
