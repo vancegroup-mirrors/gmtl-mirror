@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Math.h,v $
- * Date modified: $Date: 2002-03-15 19:25:50 $
- * Version:       $Revision: 1.18 $
+ * Date modified: $Date: 2002-03-20 16:48:06 $
+ * Version:       $Revision: 1.19 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -249,6 +249,17 @@ inline double sin( double fValue )
 inline float sin( float fValue )
 {
     return float( ::sinf( fValue ) );
+}
+//----------------------------------------------------------------------------
+template <typename T>
+inline T tan( T fValue );
+inline double tan( double fValue )
+{
+    return double( ::tan( fValue ) );
+}
+inline float tan( float fValue )
+{
+    return float( ::tanf( fValue ) );
 }
 //----------------------------------------------------------------------------
 template <typename T>
