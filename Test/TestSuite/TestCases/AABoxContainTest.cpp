@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AABoxContainTest.cpp,v $
- * Date modified: $Date: 2002-07-11 17:06:48 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-11-26 07:41:17 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -233,5 +233,19 @@ namespace gmtlTest
       CPPUNIT_ASSERT_METRIC_TIMING_LE("AABoxContainTest/ExtendVolumeAABox", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
 
       CPPUNIT_ASSERT(use_value > 0.0f);
+   }
+
+   void AABoxContainTest::testMakeVolumeSphere()
+   {
+      gmtl::Spheref sph(gmtl::Point3f(1,1,1), 2);
+      gmtl::AABoxf box;
+
+      gmtl::Point3f expected_min(-1,-1,-1);
+      gmtl::Point3f expected_max( 3, 3, 3);
+
+      gmtl::makeVolume(box, sph);
+      CPPUNIT_ASSERT(box.getMin() == expected_min);
+      CPPUNIT_ASSERT(box.getMax() == expected_max);
+      CPPUNIT_ASSERT(! box.isEmpty());
    }
 }
