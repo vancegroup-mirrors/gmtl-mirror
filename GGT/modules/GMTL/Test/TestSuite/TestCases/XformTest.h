@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: XformTest.h,v $
- * Date modified: $Date: 2002-03-10 20:22:11 $
- * Version:       $Revision: 1.20 $
+ * Date modified: $Date: 2002-03-11 17:08:50 $
+ * Version:       $Revision: 1.21 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -68,10 +68,9 @@ public:
    public:
       static void go( char* name )
       {
-         T bok = 88;
          std::string n = "XformTest/operator*(quat4,vec3)";
          n += name;
-         gmtl::Quat<T> q1( makeNormal( gmtl::Quatf<T>( (T)1, (T)2, (T)3, (T)4 ) ) );
+         gmtl::Quat<T> q1( gmtl::makeNormal( gmtl::Quat<T>( (T)1, (T)2, (T)3, (T)4 ) ) );
          gmtl::Vec<T, 3> v2;
          v2[0] = (T)1;
          const long iters(25000);
@@ -100,10 +99,12 @@ public:
    {
       XformQuatVec3<float>::go( "f" );
       XformQuatVec3<double>::go( "d" );
-   }   
-   
+   }
 
-   
+
+// mips pro and VC7 can't handle template template params
+#ifdef __GNUC__
+   /** @todo Get XformMatByVecType to work outside gcc */
    template <
          template <typename, unsigned> class VEC_TYPE,
          typename T,
@@ -158,8 +159,13 @@ public:
          CPPUNIT_ASSERT( v2[0] != 1.0 );
       }   
    };
+#endif // __GNUC__
+
+   /** @todo Get testTimingXformMatVecComplete to work outside gcc */
    void testTimingXformMatVecComplete()
    {
+// mips pro and VC7 can't handle template template params
+#ifdef __GNUC__
       XformMatByVecType<gmtl::Vec, float, 2, 2, 2>::go( "vec" );
       XformMatByVecType<gmtl::Vec, float, 3, 2, 3>::go( "vec" );
       XformMatByVecType<gmtl::Vec, float, 3, 3, 3>::go( "vec" );
@@ -175,10 +181,14 @@ public:
       XformMatByVecType<gmtl::Vec, short, 4, 4, 4>::go( "vec" );
       XformMatByVecType<gmtl::Vec, int, 4, 4, 4>::go( "vec" );
       XformMatByVecType<gmtl::Vec, long, 4, 4, 4>::go( "vec" );
+#endif // __GNUC__
    }
 
+   /** @todo Get testTimingXformMatVecPartial to work outside gcc */
    void testTimingXformMatVecPartial() 
    {
+// mips pro and VC7 can't handle template template params
+#ifdef __GNUC__
       XformMatByVecType<gmtl::Vec, float, 2, 2, 3>::go( "vec" );
       XformMatByVecType<gmtl::Vec, float, 2, 3, 3>::go( "vec" );
       XformMatByVecType<gmtl::Vec, float, 3, 3, 4>::go( "vec" );
@@ -192,9 +202,14 @@ public:
       XformMatByVecType<gmtl::Vec, short, 3, 4, 4>::go( "vec" );
       XformMatByVecType<gmtl::Vec, int, 3, 4, 4>::go( "vec" );
       XformMatByVecType<gmtl::Vec, long, 3, 4, 4>::go( "vec" );
+#endif // __GNUC__
    }
+
+   /** @todo Get testTimingXformMatPointComplete to work outside gcc */
    void testTimingXformMatPointComplete()
    {
+// mips pro and VC7 can't handle template template params
+#ifdef __GNUC__
       XformMatByVecType<gmtl::Point, float, 2, 2, 2>::go( "pnt" );
       XformMatByVecType<gmtl::Point, float, 3, 2, 3>::go( "pnt" );
       XformMatByVecType<gmtl::Point, float, 3, 3, 3>::go( "pnt" );
@@ -210,9 +225,13 @@ public:
       XformMatByVecType<gmtl::Point, short, 4, 4, 4>::go( "pnt" );
       XformMatByVecType<gmtl::Point, int, 4, 4, 4>::go( "pnt" );
       XformMatByVecType<gmtl::Point, long, 4, 4, 4>::go( "pnt" );
+#endif // __GNUC__
    }
+   /** @todo Get testTimingXformMatPointPartial to work outside gcc */
    void testTimingXformMatPointPartial()
    {
+// mips pro and VC7 can't handle template template params
+#ifdef __GNUC__
       XformMatByVecType<gmtl::Point, float, 2, 2, 3>::go( "pnt" );
       XformMatByVecType<gmtl::Point, float, 2, 3, 3>::go( "pnt" );
       XformMatByVecType<gmtl::Point, float, 3, 3, 4>::go( "pnt" );
@@ -226,6 +245,7 @@ public:
       XformMatByVecType<gmtl::Point, short, 3, 4, 4>::go( "pnt" );
       XformMatByVecType<gmtl::Point, int, 3, 4, 4>::go( "pnt" );
       XformMatByVecType<gmtl::Point, long, 3, 4, 4>::go( "pnt" );
+#endif // __GNUC__
    }
    
    
