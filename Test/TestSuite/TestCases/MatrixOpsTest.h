@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOpsTest.h,v $
- * Date modified: $Date: 2002-03-15 19:09:23 $
- * Version:       $Revision: 1.16 $
+ * Date modified: $Date: 2002-03-15 22:36:15 $
+ * Version:       $Revision: 1.17 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -225,7 +225,7 @@ public:
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixOpsTest/setTrans(mat44f,vec4f)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
       CPPUNIT_ASSERT( mat44[3] != 1234.0456f && a != 987654.321f  );
    }
-
+   
 
    void testMatrixTimeTranspose44f()
    {
