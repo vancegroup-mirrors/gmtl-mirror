@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Xforms.h,v $
- * Date modified: $Date: 2002-02-28 16:48:57 $
- * Version:       $Revision: 1.11 $
+ * Date modified: $Date: 2002-03-08 17:27:04 $
+ * Version:       $Revision: 1.12 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -59,7 +59,7 @@ namespace gmtl
       // easiest to write and understand (slowest too)
       // return result_vec = makeVec( rot * makePure( vector ) * makeConj( rot ) );
       
-      // longer, but maybe more optimal (faster by 8% than 1st method in debug mode.)
+      // longer, but maybe more optimal (faster by 8% than 1st method in gcc 2.96 debug mode.)
       //Quat<DATA_TYPE> rot_conj( rot ); conj( rot_conj );
       //Quat<DATA_TYPE> quat_vector( rot * Quat<DATA_TYPE>( vector[0], vector[1], vector[2], (DATA_TYPE)0.0 ) * rot_conj );
       //result_vec[0] = quat_vector[0];
@@ -95,7 +95,7 @@ namespace gmtl
       // easiest to write and understand (slowest too)
       // return makeVec( rot * makePure( vector ) * makeConj( rot ) );
       
-      // longer, but more optimal (faster by 8% than 1st method in debug mode.)
+      // longer, but more optimal (faster by 8% than 1st method in gcc 2.96 debug mode.)
       //Quat<DATA_TYPE> rot_conj( rot ); conj( rot_conj );
       //Quat<DATA_TYPE> quat_vector( rot * Quat<DATA_TYPE>( vector[0], vector[1], vector[2], (DATA_TYPE)0.0 ) * rot_conj );
       //return Vec<DATA_TYPE, 3>( quat_vector[0], quat_vector[1], quat_vector[2] );
@@ -118,7 +118,7 @@ namespace gmtl
    }
 
    /** matrix * vector xform.
-    *  multiplication of [m x n] matrix by a [n x 1] matrix (aka, a Vector... :).
+    *  multiplication of [m x k] matrix by a [k x 1] matrix (also known as a Vector...).
     *  @post This results in a full matrix xform of the vector (assumes you know what you are doing - 
     *  i.e. that you know that the last component of a vector by definition is 0.0, and changing 
     *  this might make the xform different that what you may expect).
@@ -126,86 +126,90 @@ namespace gmtl
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
    Vec<DATA_TYPE, COLS> operator*( const Matrix<DATA_TYPE, ROWS, COLS>& matrix, const Vec<DATA_TYPE, COLS>& vector )
    {
-      // do a standard [m x n] by [n x k] matrix multiplication (k == 1).
-      Vec<DATA_TYPE, COLS> ret_vec( 0, 0, 0, 0 );
+      // do a standard [m x k] by [k x n] matrix multiplication (n == 1).
+      Vec<DATA_TYPE, COLS> ret_vec;
       for (int iRow = 0; iRow < ROWS; ++iRow)
       {
          for (int iCol = 0; iCol < COLS; ++iCol)
          {
-            ret_vec[iCol] += vector[iCol] * matrix( iRow, iCol );
+            ret_vec[iCol] += matrix( iRow, iCol ) * vector[iCol];
          }
       }
       return ret_vec;
    }
    
    /** matrix * vector xform (partial).
-    *  multiplication of [m x n] matrix by a [n-1 x 1] matrix (aka, a Vector... :).
-    *  @post the [n-1 x 1] vector you pass in is treated as a [vector, 0.0]
+    *  multiplication of [m x k] matrix by a [k-1 x 1] matrix (also known as a Vector [with w == 0 for vectors by definition] ).
+    *  @post the [k-1 x 1] vector you pass in is treated as a [vector, 0.0]
     *  @post This ends up being a partial xform using only the rotation from the matrix (vector xformed result is untranslated).
     */
-   /*
-   template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
-   Vec<DATA_TYPE, (COLS-1)> operator*( const Matrix<DATA_TYPE, ROWS, COLS>& matrix, const Vec<DATA_TYPE, (COLS-1)>& vector )
+   template <typename DATA_TYPE, unsigned ROWS, unsigned COLS, unsigned COLS_MINUS_ONE>
+   Vec<DATA_TYPE, COLS_MINUS_ONE> operator*( const Matrix<DATA_TYPE, ROWS, COLS>& matrix, const Vec<DATA_TYPE, COLS_MINUS_ONE>& vector )
    {
-      //assert( SIZE == COLS-1 );
-      Vec<DATA_TYPE, (COLS-1)> ret_vec( 0, 0, 0, 0 );
+      ggtASSERT( COLS_MINUS_ONE == COLS - 1 );
+      Vec<DATA_TYPE, COLS_MINUS_ONE> ret_vec;
       for (int iRow = 0; iRow < ROWS; ++iRow)
       {
-         for (int iCol = 0; iCol < COLS - 1; ++iCol)
+         for (int iCol = 0; iCol < COLS_MINUS_ONE; ++iCol)
          {
-            ret_vec[iCol] += vector[iCol] * matrix( iRow, iCol );
+            ret_vec[iCol] += matrix( iRow, iCol ) * vector[iCol];
          }
-         //ret_vec[iCol] += 0.0f * matrix( iRow, iCol+1 );
+         //w_coord += matrix( iRow, iCol+1 ) * 0.0f;
       }
       return ret_vec;
    }
-   */
    
    /** matrix * point xform.
-    *  multiplication of [m x n] matrix by a [n x 1] matrix (aka, a Point... :).
+    *  multiplication of [m x k] matrix by a [k x 1] matrix (also known as a Point...).
     *  @post This results in a full matrix xform of the point.
     */
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
    Point<DATA_TYPE, COLS> operator*( const Matrix<DATA_TYPE, ROWS, COLS>& matrix, const Point<DATA_TYPE, COLS>& point )
    {
-      // do a standard [m x n] by [n x k] matrix multiplication (k == 1).
-      Point<DATA_TYPE, COLS> result( 0, 0, 0, 0 );
+      // do a standard [m x k] by [k x n] matrix multiplication (n == 1).
+      Point<DATA_TYPE, COLS> result;
       for (int iRow = 0; iRow < ROWS; ++iRow)
       {
          for (int iCol = 0; iCol < COLS; ++iCol)
          {
-            result[iCol] += point[iCol] * matrix( iRow, iCol );
+            result[iCol] += matrix( iRow, iCol ) * point[iCol];
          }
       }
       return result;
    }
 
    /** matrix * point xform (partial).
-    *  multiplication of [m x n] matrix by a [n-1 x 1] matrix (aka, a Point... :).
-    *  @post the [n-1 x 1] vector you pass in is treated as a [point, 1.0]
+    *  multiplication of [m x k] matrix by a [k-1 x 1] matrix (also known as a Point [with w == 1 for points by definition] ).
+    *  @post the [k-1 x 1] vector you pass in is treated as a [point, 1.0]
     *  @post This results in a full matrix xform of the point.
     */
-   /*
-   template <typename DATA_TYPE, unsigned ROWS, unsigned COLS, unsigned SIZE>
-   Point<DATA_TYPE, SIZE> operator*( const Matrix<DATA_TYPE, ROWS, COLS>& matrix, const Point<DATA_TYPE, SIZE>& point )
+   template <typename DATA_TYPE, unsigned ROWS, unsigned COLS, unsigned COLS_MINUS_ONE>
+   Point<DATA_TYPE, COLS_MINUS_ONE> operator*( const Matrix<DATA_TYPE, ROWS, COLS>& matrix, const Point<DATA_TYPE, COLS_MINUS_ONE>& point )
    {
-      assert( SIZE == COLS-1 );
-      Point<DATA_TYPE, SIZE> result( 0, 0, 0, 0 );
+      ggtASSERT( COLS_MINUS_ONE == COLS - 1 );
+      
+      Point<DATA_TYPE, COLS_MINUS_ONE> result;
+      DATA_TYPE w_coord( (DATA_TYPE)0 );
       for (int iRow = 0; iRow < ROWS; ++iRow)
       {
          int iCol;
-         for (iCol = 0; iCol < COLS - 1; ++iCol)
+         for (iCol = 0; iCol < COLS_MINUS_ONE; ++iCol)
          {
-            result[iCol] += point[iCol] * matrix( iRow, iCol );
+            result[iCol] += matrix( iRow, iCol ) * point[iCol];
          }
-         result[iCol] += matrix( iRow, iCol+1 );  // vec[c] += 1.0 * matrix( r, c )
+         w_coord += matrix( iRow, iCol );  // vec[c] += matrix( r, c ) * 1.0
       }
+      
+      // distribute the w param to the result, we don't want to lose this data... 
+      // (divide the other elts by it)
+      DATA_TYPE w_coord_div = DATA_TYPE( 1.0 ) / w_coord;
+      for (int x = 0; x < COLS_MINUS_ONE; ++x)
+      {
+         result[x] *= w_coord_div;
+      }
+            
       return result;
    }
-   
-   */
-   
-   
    
    
    
