@@ -2,6 +2,8 @@ gfxn3/Debug/CoordCompareTest/isEqual(...)                          2.15404
 gfxn3/Debug/CoordCompareTest/operator!=                            1.4234
 gfxn3/Debug/CoordCompareTest/operator==                            1.30259
 gfxn3/Debug/CoordGenTest/makeCoord(mat,XYZ)                        1.00636
+gfxn3/Debug/CoordGenTest/makeCoord<33f>(mat,XYZ)                   1.11052
+gfxn3/Debug/CoordGenTest/makeMatrix<44f>(q1,XYZ)                   1.77696
 gfxn3/Debug/CoordGenTest/setCoord(coord,mat,XYZ)                   0.70776
 gfxn3/Debug/CoordTest/CopyConstructor                              0.163675
 gfxn3/Debug/CoordTest/DefaultConstructor                           0.145973

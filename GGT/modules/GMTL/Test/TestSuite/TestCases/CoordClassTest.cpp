@@ -8,8 +8,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: CoordClassTest.cpp,v $
- * Date modified: $Date: 2002-03-20 21:43:36 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-03-20 22:54:48 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -52,7 +52,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( q.rot()[2] == 0.0f );
 
       // try out element constructor
-      gmtl::Point3f p( 1, 2, 3 );
+      gmtl::Vec3f p( 1, 2, 3 );
       gmtl::Vec3f r( 4, 5, 6 );
       gmtl::Coord<float, 3, 3> q2( p, r );
       CPPUNIT_ASSERT( q2.pos()[0] == 1.0f );
@@ -111,7 +111,7 @@ namespace gmtlTest
       const long iters( 400000 );
       float use_value(1);
 
-      gmtl::Point3f p( 1, 2, 3 );
+      gmtl::Vec3f p( 1, 2, 3 );
       gmtl::Vec3f r( 4, 5, 6 );
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
