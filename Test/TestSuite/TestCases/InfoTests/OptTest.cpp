@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: OptTest.cpp,v $
- * Date modified: $Date: 2002-02-12 00:33:45 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-02-12 03:32:03 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -39,9 +39,9 @@ namespace gmtlTest
    class Mat44
    {
    public:
-      Mat44() 
+      Mat44()
       {
-         mat[1]  = mat[2]  = mat[3]  = mat[5]  = mat[6]  = mat[7]  = mat[9] = 
+         mat[1]  = mat[2]  = mat[3]  = mat[5]  = mat[6]  = mat[7]  = mat[9] =
          mat[10] = mat[11] = mat[13] = mat[14] = mat[15] = mat[16] = 0.0f;
          mat[0]  = mat[4]  = mat[8]  = mat[12] = 1.0f;
       }
@@ -68,7 +68,7 @@ namespace gmtlTest
 
       float mat[16];
    };
-   
+
    inline Mat44& setEqual( Mat44& lhs, const Mat44& rhs )
    {
       lhs.mat[0]  = rhs.mat[0];
@@ -110,11 +110,11 @@ namespace gmtlTest
       lhs.mat[15] = 1.0f;
       lhs.mat[16] = 0.0f;
    }
-      
+
    class ArrayVec3
    {
    public:
-      ArrayVec3() 
+      ArrayVec3()
       {
          vec[0] = 0.0f;
          vec[1] = 0.0f;
@@ -141,7 +141,7 @@ namespace gmtlTest
       lhs.vec[1] += rhs.vec[1];
       lhs.vec[2] += rhs.vec[2];
       return lhs;
-   }  
+   }
    inline ArrayVec3& inplaceModify( ArrayVec3& lhs )
    {
       lhs.vec[0] += lhs.vec[0];
@@ -162,7 +162,7 @@ namespace gmtlTest
       lhs.vec[1] = 0.0f;
       lhs.vec[2] = 0.0f;
       return lhs;
-   }  
+   }
    inline ArrayVec3 retvalopt( const ArrayVec3& lhs, const ArrayVec3& rhs )
    {
       return ArrayVec3( lhs.vec[0] + rhs.vec[0], lhs.vec[1] + rhs.vec[1], lhs.vec[2] + rhs.vec[2] );
@@ -189,11 +189,11 @@ namespace gmtlTest
       temporary.vec[2] = lhs.vec[2] + rhs.vec[2];
       return temporary;
    }
-   
+
    class SeparateVec3
    {
    public:
-      SeparateVec3() 
+      SeparateVec3()
       {
          vec1 = 0.0f;
          vec2 = 0.0f;
@@ -220,14 +220,14 @@ namespace gmtlTest
       lhs.vec1 = rhs.vec1;
       lhs.vec2 = rhs.vec2;
       return lhs;
-   }  
+   }
    inline SeparateVec3& setEqualConst( SeparateVec3& lhs )
    {
       lhs.vec0 = 0.0f;
       lhs.vec1 = 0.0f;
       lhs.vec2 = 0.0f;
       return lhs;
-   }  
+   }
    inline SeparateVec3& inplaceModify( SeparateVec3& lhs )
    {
       lhs.vec0 += lhs.vec0;
@@ -241,8 +241,8 @@ namespace gmtlTest
       lhs.vec1 += rhs.vec1;
       lhs.vec2 += rhs.vec2;
       return lhs;
-   }   
-   
+   }
+
    // listed in More Effective C++
    inline SeparateVec3 retvalopt( const SeparateVec3& lhs, const SeparateVec3& rhs )
    {
@@ -266,23 +266,26 @@ namespace gmtlTest
    template< class T >
    void passByVal( T val )
    {
-      int i = 0;
+      static T i = 0;
+      i += val;
    }
 
    template< class T >
    void passByRef( T& val )
    {
-      int i = 0;
+      static T i = 0;
+      i += val;
    }
 
    template< class T >
    void passByConstRef( const T& val )
    {
-      int i = 0;
+      static T i =0;
+      i += val;
    }
-   
+
    const int TIMES_TO_RUN = 9999999;
-      
+
    // listed in More Effective C++ p 107
    // this might be better, but it wont compile under gcc... :(
    /*
@@ -310,7 +313,7 @@ namespace gmtlTest
    // two possibilities:
    //    invert( srcAndResult )
    //    invert( result, source )
-   // 
+   //
    void OptTest::testInPlace()
    {
       SeparateVec3 destvec;
@@ -339,7 +342,7 @@ namespace gmtlTest
          double avg = ((double)end_t - (double)start_t) / ((double)TIMES_TO_RUN);
          std::cout << "[a]testInPlace (inplaceModify( destvec );): " << avg << std::endl;
       }
-      
+
       // do operation to temp
       // operator+=( result, v1 );
       {
@@ -366,7 +369,7 @@ namespace gmtlTest
          std::cout << "[a]testInPlace (operator+=( destvec, srcvec );): " << avg << std::endl;
       }
    }
-   
+
    // test perf of copy ops
    void OptTest::testSetEqual()
    {
@@ -409,7 +412,7 @@ namespace gmtlTest
          double avg = ((double)end_t - (double)start_t) / ((double)TIMES_TO_RUN);
          std::cout << "[m]testSetEqual (setEqual( destmat, srcmat ) ): " << avg << std::endl;
       }
-      
+
       // set destvec from const values
       // setEqualConst( result );
       {
@@ -444,7 +447,7 @@ namespace gmtlTest
          double avg = ((double)end_t - (double)start_t) / ((double)TIMES_TO_RUN);
          std::cout << "[m]testSetEqual (setEqualConst( destmat );): " << avg << std::endl;
       }
-      
+
       // let compiler make the operator=
       {
          CppUnit::MetricRegistry::TimeStamp start_t = CppUnit::MetricRegistry::instance()->getCurTime();
@@ -480,7 +483,7 @@ namespace gmtlTest
          std::cout << "[m]testSetEqual (destmat = srcmat from compiler): " << avg << std::endl;
       }
    }
-   
+
    // test perf of returning result by reference (no temporary)
    void OptTest::testRetByReference()
    {
@@ -522,7 +525,7 @@ namespace gmtlTest
          double avg = ((double)end_t - (double)start_t) / ((double)TIMES_TO_RUN);
          std::cout << "[a]testRetValOpt (destvec = destvec + srcvec2 with retbyref): " << avg << std::endl;
       }
-      
+
       {
          CppUnit::MetricRegistry::TimeStamp start_t = CppUnit::MetricRegistry::instance()->getCurTime();
          for (int x = 0; x < TIMES_TO_RUN; ++x)
@@ -556,7 +559,7 @@ namespace gmtlTest
          std::cout << "[a]testRetValOpt (destvec = srcvec1; destvec += srcvec2): " << avg << std::endl;
       }
    }
-   
+
    // test perf of returning internal temporary by value
    void OptTest::testRetValOptUsingInternalTemporary()
    {
@@ -597,7 +600,7 @@ namespace gmtlTest
          std::cout << "[a]testRetValOpt (destvec = destvec + srcvec2 with noretvalopt): " << avg << std::endl;
       }
    }
-   
+
    // test perf of the the return value optimization when returning a temporary by value
    void OptTest::testRetValOpt()
    {
@@ -640,9 +643,9 @@ namespace gmtlTest
          std::cout << "[a]testRetValOpt (destvec = destvec + srcvec2 with retvalopt): " << avg << std::endl;
       }
    }
-   
-   
-   
+
+
+
    // test performance of loop unrolling
    void OptTest::testLoopUnrolling()
    {
@@ -663,7 +666,7 @@ namespace gmtlTest
          double avg = ((double)end_t - (double)start_t) / ((double)TIMES_TO_RUN);
          std::cout << "\n[a]testLoopUnrolling (forloop ++y): " << avg << std::endl;
       }
-      
+
       {
          CppUnit::MetricRegistry::TimeStamp start_t = CppUnit::MetricRegistry::instance()->getCurTime();
          for (int x = 0; x < TIMES_TO_RUN; ++x)
@@ -677,7 +680,7 @@ namespace gmtlTest
          double avg = ((double)end_t - (double)start_t) / ((double)TIMES_TO_RUN);
          std::cout << "[a]testLoopUnrolling (forloop y++): " << avg << std::endl;
       }
-      
+
       {
          CppUnit::MetricRegistry::TimeStamp start_t = CppUnit::MetricRegistry::instance()->getCurTime();
          for (int x = 0; x < TIMES_TO_RUN; ++x)
@@ -685,7 +688,7 @@ namespace gmtlTest
             destvec.vec[0] += srcvec.vec[0];
             destvec.vec[1] += srcvec.vec[1];
             destvec.vec[2] += srcvec.vec[2];
-         }  
+         }
          CppUnit::MetricRegistry::TimeStamp end_t = CppUnit::MetricRegistry::instance()->getCurTime();
          double avg = ((double)end_t - (double)start_t) / ((double)TIMES_TO_RUN);
          std::cout << "[a]testLoopUnrolling (unrolled): " << avg << std::endl;
@@ -704,6 +707,7 @@ namespace gmtlTest
          CppUnit::MetricRegistry::TimeStamp start_t = CppUnit::MetricRegistry::instance()->getCurTime();
          for (int x = 0; x < TIMES_TO_RUN; ++x)
          {
+            prim = 12;
             passByVal( prim );
          }
          CppUnit::MetricRegistry::TimeStamp end_t = CppUnit::MetricRegistry::instance()->getCurTime();
@@ -716,6 +720,7 @@ namespace gmtlTest
          CppUnit::MetricRegistry::TimeStamp start_t = CppUnit::MetricRegistry::instance()->getCurTime();
          for (int x = 0; x < TIMES_TO_RUN; ++x)
          {
+            prim = 12;
             passByRef( prim );
          }
          CppUnit::MetricRegistry::TimeStamp end_t = CppUnit::MetricRegistry::instance()->getCurTime();
@@ -728,6 +733,7 @@ namespace gmtlTest
          CppUnit::MetricRegistry::TimeStamp start_t = CppUnit::MetricRegistry::instance()->getCurTime();
          for (int x = 0; x < TIMES_TO_RUN; ++x)
          {
+            prim = 12;
             passByConstRef( prim );
          }
          CppUnit::MetricRegistry::TimeStamp end_t = CppUnit::MetricRegistry::instance()->getCurTime();
