@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: testSuite.cpp,v $
- * Date modified: $Date: 2002-02-11 20:48:55 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2002-02-11 22:47:30 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -65,6 +65,10 @@
 
 std::string getHostname(void);
 
+void usage( char** av )
+{
+   std::cout << "\n\nusage: " << av[0] << " [gmtl|info|all]\n\n" << std::endl;
+}
 
 int main (int ac, char **av)
 {
@@ -131,7 +135,9 @@ int main (int ac, char **av)
    }
    else
    {
-      std::cout << "usage: " << av[0] << " [gmtl|info|all]" << std::endl;
+      usage( av );
+      runner.run("gmtl_suite");
+      usage( av );
    }   
 
    return 0;
