@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixClassTest.h,v $
- * Date modified: $Date: 2002-03-11 02:19:32 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2002-03-11 17:13:25 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -688,7 +688,6 @@ public:
       matrixSetPtr<double>::go();
       matrixSetPtr<int>::go();
       matrixSetPtr<long>::go();
-      matrixSetPtr<long long>::go();
       matrixSetPtr<char>::go();
       matrixSetPtr<short>::go();
    }
@@ -802,7 +801,6 @@ public:
       matrixSetTransposePtr<double>::go();
       matrixSetTransposePtr<int>::go();
       matrixSetTransposePtr<long>::go();
-      matrixSetTransposePtr<long long>::go();
       matrixSetTransposePtr<char>::go();
       matrixSetTransposePtr<short>::go();
    }   
