@@ -18,6 +18,7 @@ if sys.version[:3] == '2.2' and sys.version[3] != '.':
    True  = 1
 
 enable_python = False
+boost_version = '1.31'
 have_cppunit  = False
 
 #------------------------------------------------------------------------------
@@ -25,7 +26,6 @@ have_cppunit  = False
 #------------------------------------------------------------------------------
 def GetGMTLVersion():
    "Gets the GMTL version from the gmtl/Version.h header"
-   import re
 
    contents = open('gmtl/Version.h', 'r').read()
    major = re.compile('.*(#define *GMTL_VERSION_MAJOR *(\d+)).*', re.DOTALL).sub(r'\2', contents)
@@ -53,7 +53,6 @@ Export('GetPlatform')
 
 def CreateConfig(target, source, env):
    "Creates the xxx-config file users use to compile against this library"
-   import re
 
    targets = map(lambda x: str(x), target)
    sources = map(lambda x: str(x), source)
@@ -110,8 +109,6 @@ def BuildLinuxEnvironment():
 def BuildDarwinEnvironment():
    "Builds a base environment for other modules to build on set up for Darwin."
    global optimize, profile, builders
-
-   import re
 
    exp = re.compile('^(.*)\/Python\.framework.*$')
    m = exp.search(distutils.sysconfig.get_config_var('prefix'))
@@ -205,6 +202,17 @@ def BuildWin32Environment():
 # ########################################
 # Options
 # ########################################
+def ValidateBoostVersion(key, value, environ):
+   global boost_version
+
+   if "BoostVersion" == key:
+      exp = re.compile('^(\d+\.\d+)\D*$')
+      match = exp.search(value)
+      boost_version = match.group(1)
+      print "Using Boost version", boost_version
+   else:
+      assert False, "Invalid Boost key"
+
 def ValidateBoostOption(key, value, environ):
    "Validate the boost option settings"
    global enable_python, optimize
@@ -212,12 +220,25 @@ def ValidateBoostOption(key, value, environ):
    sys.stdout.write("checking for %s [%s]...\n" % (key, value))
 
    if "BoostPythonDir" == key:
-      # Get the boost version
-      boost_ver_filename = pj(value, 'include', 'boost', 'version.hpp')
+      boost_inc_dir = pj(value, 'include')
+
+      # Get the boost version.
+      boost_ver_filename = pj(boost_inc_dir, 'boost', 'version.hpp')
       if not os.path.isfile(boost_ver_filename):
-         sys.stdout.write("[%s] not found.\n" % boost_ver_filename)
-         enable_python = False
-         return False
+         sys.stdout.write("%s not found.\n" % boost_ver_filename)
+
+         # Try the versioned Boost include path.
+         version_dir = 'boost-' + re.sub(r'\.', '_', boost_version)
+         boost_inc_dir = pj(value, 'include', version_dir)
+         boost_ver_filename = pj(boost_inc_dir, 'boost', 'version.hpp')
+
+         sys.stdout.write("Trying %s\n" % boost_ver_filename)
+
+         if not os.path.isfile(boost_ver_filename):
+            sys.stdout.write("%s not found.\n" % boost_ver_filename)
+            enable_python = False
+            return False
+
       ver_file = file(boost_ver_filename)
 
       # Matches 103000
@@ -274,9 +295,11 @@ def ValidateBoostOption(key, value, environ):
             return False
 
          if platform == 'irix':
-            environ.Append(BoostCPPPATH = [pj(value, 'include'), pj(value, 'include', 'boost', 'compatibility', 'cpp_c_headers')])
+            environ.Append(BoostCPPPATH = [pj(boost_inc_dir),
+                                           pj(boost_inc_dir, 'compatibility',
+                                              'cpp_c_headers')])
          else:
-            environ.Append(BoostCPPPATH = [pj(value, 'include')])
+            environ.Append(BoostCPPPATH = [pj(boost_inc_dir)])
 
          environ.Append(BoostLIBPATH = [pj(value, 'lib')])
 
@@ -302,9 +325,12 @@ def ApplyBoostOptions(env):
       env.Append(LIBS = env["BoostLIBS"])
 
 def AddBoostOptions(opts):
+   opts.Add('BoostVersion',
+            help = 'Boost version number in the form major.minor',
+            default = boost_version, validator = ValidateBoostVersion)
    opts.Add('BoostPythonDir',
-            help = 'Boost.Python installation directory (boost dir must exist under this directory": default: BoostPythonDir="/usr/local/include"',
-            default = '/usr/local/include', validator = ValidateBoostOption)
+            help = 'Boost.Python installation directory (boost include dir must exist under this directory)',
+            default = '/usr/local', validator = ValidateBoostOption)
 
 def ValidatePythonOption(key, value, environ):
    "Validate the Python option settings"
