@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatOps.h,v $
- * Date modified: $Date: 2002-05-05 19:30:14 $
- * Version:       $Revision: 1.14 $
+ * Date modified: $Date: 2002-05-05 19:41:36 $
+ * Version:       $Revision: 1.15 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -104,6 +104,16 @@ namespace gmtl
                               q1[Welt]*q2[Yelt] + q1[Yelt]*q2[Welt] + q1[Zelt]*q2[Xelt] - q1[Xelt]*q2[Zelt],
                               q1[Welt]*q2[Zelt] + q1[Zelt]*q2[Welt] + q1[Xelt]*q2[Yelt] - q1[Yelt]*q2[Xelt],
                               q1[Welt]*q2[Welt] - q1[Xelt]*q2[Xelt] - q1[Yelt]*q2[Yelt] - q1[Zelt]*q2[Zelt] );
+   }
+
+   /** quaternion postmult
+    * @post result' = result * q2
+    * @see Quat
+    */
+   template <typename DATA_TYPE>
+   Quat<DATA_TYPE>& operator*=( Quat<DATA_TYPE>& result, const Quat<DATA_TYPE>& q2 )
+   {
+      return mult( result, result, q2 );
    }
 
    /** negate each element in the quaternion vector.
