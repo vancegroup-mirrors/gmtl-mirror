@@ -1,5 +1,7 @@
 DATE       AUTHOR       CHANGE
 ---------- ------------ -------------------------------------------------------
+2003-04-25 subatomic    changed makeInverse(mat) to makeInverse for consistency
+                        NEW VERSION 0.3.1
 2003-04-18 patrickh     Renamed the vector version of gmtl::cross() that
                         returns a newly created vector to gmtl::makeCross and
                         moved it to Generate.h.
