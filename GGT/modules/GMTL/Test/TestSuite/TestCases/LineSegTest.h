@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: LineSegTest.h,v $
- * Date modified: $Date: 2002-03-11 18:31:08 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-03-11 18:43:20 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -128,7 +128,7 @@ public:
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE("PlaneTest/PtVecCreationOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("LineSegTest/PtVecCreationOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
 
       // make sure the compiler doesn't optimize this test out
       CPPUNIT_ASSERT( use_value > 0 );
@@ -371,7 +371,7 @@ public:
          if ( elt < 3 ) {
             test_lineseg2.mOrigin[elt] += 20.0f;
          } else {
-            test_lineseg2.mDir[elt] += 20.0f;
+            test_lineseg2.mDir[elt-3] += 20.0f;
          }
          CPPUNIT_ASSERT( !gmtl::isEqual(test_lineseg1, test_lineseg2, 10.0f) );
          CPPUNIT_ASSERT( !gmtl::isEqual(test_lineseg1, test_lineseg2, 19.9f) );
@@ -521,8 +521,8 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<LineSegTest>("testPtVecCreation", &LineSegTest::testPtVecCreation));
       test_suite->addTest( new CppUnit::TestCaller<LineSegTest>("testPtPtCreation", &LineSegTest::testPtPtCreation));
       test_suite->addTest( new CppUnit::TestCaller<LineSegTest>("testCopyConstruct", &LineSegTest::testCopyConstruct));
-      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testEqualityCompare", &PlaneTest::testEqualityCompare));
-      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testIsEqual", &PlaneTest::testIsEqual));
+      test_suite->addTest( new CppUnit::TestCaller<LineSegTest>("testEqualityCompare", &LineSegTest::testEqualityCompare));
+      test_suite->addTest( new CppUnit::TestCaller<LineSegTest>("testIsEqual", &LineSegTest::testIsEqual));
       test_suite->addTest( new CppUnit::TestCaller<LineSegTest>("testGetOrigin", &LineSegTest::testGetOrigin));
       test_suite->addTest( new CppUnit::TestCaller<LineSegTest>("testSetOrigin", &LineSegTest::testSetOrigin));
       test_suite->addTest( new CppUnit::TestCaller<LineSegTest>("testGetDir", &LineSegTest::testGetDir));
