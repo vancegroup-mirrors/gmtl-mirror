@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtlConfig.h,v $
- * Date modified: $Date: 2002-02-10 04:45:24 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-02-22 22:28:35 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -131,7 +131,6 @@
 #define GMTL_EPS 1e-8
 #define GMTL_DEG2RAD(x) ((x)*M_PI/180.0)
 #define GMTL_RAD2DEG(x) ((x)*180.0/M_PI)
-#define GMTL_ZERO_CLAMP(x) ((fabs(x) < GMTL_EPS)? 0.0f : x)
 #define GMTL_IS_ZERO(x) (fabs(x) < GMTL_EPS)
 #define GMTL_CLAMP(x,y) ((x>y)? y : x)
 #define GMTL_MIN2(x,y) ((x>y)? y : x)

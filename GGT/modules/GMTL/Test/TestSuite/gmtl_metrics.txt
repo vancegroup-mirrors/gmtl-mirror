@@ -45,6 +45,8 @@ gfxn0/Debug/LineSegTest/CopyConstructOverhead                      0.20678
 gfxn0/Debug/LineSegTest/DefaultCreationOverhead                    0.14836
 gfxn0/Debug/LineSegTest/PtPtCreationOverhead                       0.484003
 gfxn0/Debug/Main/MetricTest                                        1221.75
+gfxn0/Debug/MathTest/ZeroClamp[d]                                  0.20685
+gfxn0/Debug/MathTest/ZeroClamp[f]                                  0.0741025
 gfxn0/Debug/MatrixCompareTest/IsEqualTest                          3.80046
 gfxn0/Debug/MatrixCompareTest/OpEqualityTest                       2.05208
 gfxn0/Debug/MatrixCompareTest/OpNotEqualityTest                    2.15451
