@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AABoxOps.h,v $
- * Date modified: $Date: 2003-03-17 02:13:36 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2003-03-17 02:14:48 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -93,7 +93,7 @@ template< class DATA_TYPE >
 inline bool isEqual( const AABox<DATA_TYPE>& b1, const AABox<DATA_TYPE>& b2, const DATA_TYPE& eps )
 {
    gmtlASSERT( eps >= 0 );
-   return b1.isEmpty() == b2.isEmpty() &&
+   return (b1.isEmpty() == b2.isEmpty()) &&
           isEqual( b1.getMin(), b2.getMin(), eps ) &&
           isEqual( b1.getMax(), b2.getMax(), eps );
 }
