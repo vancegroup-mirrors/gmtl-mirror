@@ -184,7 +184,7 @@ Export('baseEnv')
 opts = Options('config.cache')
 opts.Add('with-cppunit',
          'CppUnit installation directory',
-         '/usr',
+         '/usr/local',
          lambda k,v: WhereIs(pj(v, 'bin', 'cppunit-config')) != None
         )
 opts.Update(baseEnv)
