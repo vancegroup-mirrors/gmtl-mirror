@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatOpsTest.h,v $
- * Date modified: $Date: 2002-02-22 10:21:12 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-02-22 10:41:40 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -68,6 +68,203 @@ public:
    {
       std::cout<<q[0]<<" "<<q[1]<<" "<<q[2]<<" "<<q[3]<<std::endl;
    } 
+   
+   void testQuatTimingMult()
+   {
+      gmtl::Quatf<float> q1, q2, q3, q4;
+      const long iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+      bool result = false;
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         q4 = mult( q1, q2, q3 );
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatOpsTest/mult(q1,q2)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+   void testQuatTimingOperatorMult()
+   {
+      gmtl::Quatf<float> q1, q2, q3, q4;
+      const long iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+      bool result = false;
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         q4 = q2 * q3;
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatOpsTest/operator*()", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+   
+   void testQuatTimingDiv()
+   {
+      gmtl::Quatf<float> q1, q2, q3, q4;
+      const long iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+      bool result = false;
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         q4 = div( q1, q2, q3 );
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatOpsTest/invert()", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+   
+   void testQuatTimingVectorMult()
+   {
+      gmtl::Quatf<float> q1, q2, q3, q4;
+      float bok;
+      const long iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+      bool result = false;
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         q4 = mult( q1, q2, bok );
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatOpsTest/mult(q,scalar)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+   
+   void testQuatTimingVectorAdd()
+   {
+      gmtl::Quatf<float> q1, q2, q3, q4;
+      const long iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+      bool result = false;
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         q4 = add( q1, q2, q3 );
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatOpsTest/add(r,q1,q2)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+   
+   void testQuatTimingVectorSub()
+   {
+      gmtl::Quatf<float> q1, q2, q3, q4;
+      const long iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+      bool result = false;
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         q4 = sub( q1, q2, q3 );
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatOpsTest/sub(r,q1,q2)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+   
+   void testQuatTimingVectorDot()
+   {
+      gmtl::Quatf<float> q1, q2, q3, q4;
+      float bok;
+      const long iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+      bool result = false;
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         bok = dot( q1, q2 );
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatOpsTest/dot(q1,q2)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+   
+   void testQuatTimingNorm()
+   {
+      gmtl::Quatf<float> q1, q2, q3, q4;
+      float bok;
+      const long iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+      bool result = false;
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         bok = lengthSquared( q1 );
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatOpsTest/lengthSquared(q)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+   
+   void testQuatTimingMag()
+   {
+      gmtl::Quatf<float> q1, q2, q3, q4;
+      float bok;
+      const long iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+      bool result = false;
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         bok = length( q1 );
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatOpsTest/length(q)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+   
+   void testQuatTimingNormalize()
+   {
+      gmtl::Quatf<float> q1, q2, q3, q4;
+      const long iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+      bool result = false;
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         q4 = normalize( q1 );
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatOpsTest/normalize(q)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+   
+   void testQuatTimingNormalizeFast()
+   {
+      gmtl::Quatf<float> q1, q2, q3, q4;
+      const long iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+      bool result = false;
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         q4 = normalizeFast( q1 );
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatOpsTest/normalizeFast(q)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+   
+   void testQuatTimingConj()
+   {
+      gmtl::Quatf<float> q1, q2, q3, q4;
+      const long iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+      bool result = false;
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         q4 = conj( q1 );
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatOpsTest/conj(q)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+
+   void testQuatTimingInvert()
+   {
+      gmtl::Quatf<float> q1, q2, q3, q4;
+      const long iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+      bool result = false;
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         q4 = invert( q1 );
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatOpsTest/invert(q)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+   
+   
+   
+   
+   
+   ///////////////////////////////////////////////
+   // real tests...
+   ///////////////////////////////////////////////
+   
+   
+   
+   
    
    void testQuatMult()
    {
@@ -209,9 +406,6 @@ public:
       gmtl::Quatf q( 0.2, 0.33, 0.44, 0.101 ), expected_result( -0.567053, -0.935637, -1.24752, 0.286362 );
       gmtl::Quatf q2( q );
       gmtl::Quatf q3( gmtl::invert( q2 ) );
-      output( q3 );
-      output( q2 );
-      output( expected_result );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result, q3, eps ) );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result, q2, eps ) );
       
@@ -237,6 +431,21 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatNormalizeFast", &QuatOpsTest::testQuatNormalizeFast));
       test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatConj", &QuatOpsTest::testQuatConj));
       test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatInvert", &QuatOpsTest::testQuatInvert));
+      
+      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatTimingMult", &QuatOpsTest::testQuatTimingMult));
+      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatTimingOperatorMult", &QuatOpsTest::testQuatTimingOperatorMult));
+      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatTimingVectorMult", &QuatOpsTest::testQuatTimingVectorMult));
+      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatTimingDiv", &QuatOpsTest::testQuatTimingDiv));
+      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatTimingVectorAdd", &QuatOpsTest::testQuatTimingVectorAdd));
+      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatTimingVectorSub", &QuatOpsTest::testQuatTimingVectorSub));
+      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatTimingVectorDot", &QuatOpsTest::testQuatTimingVectorDot));
+      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatTimingNorm", &QuatOpsTest::testQuatTimingNorm));
+      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatTimingMag", &QuatOpsTest::testQuatTimingMag));
+      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatTimingNormalize", &QuatOpsTest::testQuatTimingNormalize));
+      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatTimingNormalizeFast", &QuatOpsTest::testQuatTimingNormalizeFast));
+      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatTimingConj", &QuatOpsTest::testQuatTimingConj));
+      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatTimingInvert", &QuatOpsTest::testQuatTimingInvert));
+
       return test_suite;
    }
 
