@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.h,v $
- * Date modified: $Date: 2002-02-11 18:56:00 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-02-11 23:53:04 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -41,6 +41,7 @@
 
 #include <gmtl/Vec.h>
 #include <gmtl/Compare.h>
+#include <gmtl/VecOps.h>
 
 namespace gmtlTest
 {
@@ -404,6 +405,398 @@ public:
       
    }
 
+   void testOpPlusEq()
+   {
+      gmtl::Vec<float,3> test_vec1(1.0, 2.0, 3.0);
+      gmtl::Vec<float,3> test_vec2(2.0, 2.0, 2.0);
+
+      test_vec1 += test_vec2;
+      CPPUNIT_ASSERT( test_vec1[0] == 3.0f &&
+                      test_vec1[1] == 4.0f &&
+                      test_vec1[2] == 5.0f );
+
+      // -- test op+= performance
+      const float iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+      gmtl::Vec<float,3> test_vec3(5.0, 7.0, 9.0);
+
+      for( float iter=0;iter<iters; ++iter)
+      {
+         test_vec3.set(iter, iter+1, iter+2);
+         test_vec1 += test_vec3;         
+      }
+
+      test_vec2 = test_vec1;
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/OpPlusEqOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+
+   void testOpPlus()
+   {
+      gmtl::Vec<float,3> test_vec1(1.0, 2.0, 3.0);
+      gmtl::Vec<float,3> test_vec2(2.0, 2.0, 2.0);
+      gmtl::Vec<float,3> test_vec3(1.0, 2.0, 3.0);
+
+      test_vec1 = test_vec3 + test_vec2;
+      CPPUNIT_ASSERT( test_vec1[0] == 3.0f &&
+                      test_vec1[1] == 4.0f &&
+                      test_vec1[2] == 5.0f );
+
+      // -- test op+ performance
+      const float iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+      test_vec3.set(5.0, 7.0, 9.0);
+
+      for( float iter=0;iter<iters; ++iter)
+      {
+         test_vec3.set(iter, iter+1, iter+2);
+         test_vec1 = (test_vec3 + test_vec2);         
+      }
+
+      test_vec2 = test_vec1;
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/OpPlusOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+
+   void testOpMinusEq()
+   {
+      gmtl::Vec<float,3> test_vec1(1.0, 2.0, 3.0);
+      gmtl::Vec<float,3> test_vec2(2.0, 2.0, 2.0);
+
+      test_vec1 -= test_vec2;
+      CPPUNIT_ASSERT( test_vec1[0] == -1.0f &&
+                      test_vec1[1] == 0.0f &&
+                      test_vec1[2] == 1.0f );
+
+      // -- test op-= performance
+      const float iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+      gmtl::Vec<float,3> test_vec3(5.0, 7.0, 9.0);
+
+      for( float iter=0;iter<iters; ++iter)
+      {
+         test_vec3.set(iter, iter+1, iter+2);
+         test_vec1 -= test_vec3;         
+      }
+
+      test_vec2 = test_vec1;
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/OpMinusEqOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+
+   void testOpMinus()
+   {
+      gmtl::Vec<float,3> test_vec1(1.0, 2.0, 3.0);
+      gmtl::Vec<float,3> test_vec2(2.0, 2.0, 2.0);
+      gmtl::Vec<float,3> test_vec3(1.0, 2.0, 3.0);
+
+      test_vec1 = test_vec3 - test_vec2;
+      CPPUNIT_ASSERT( test_vec1[0] == -1.0f &&
+                      test_vec1[1] == 0.0f &&
+                      test_vec1[2] == 1.0f );
+
+      // -- test op- performance
+      const float iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+      test_vec3.set(5.0, 7.0, 9.0);
+
+      for( float iter=0;iter<iters; ++iter)
+      {
+         test_vec3.set(iter, iter+1, iter+2);
+         test_vec1 = (test_vec3 - test_vec2);         
+      }
+
+      test_vec2 = test_vec1;
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/OpMinusOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+
+   void testOpMultScalarEq()
+   {
+      gmtl::Vec<float,3> test_vec1(1.0, 2.0, 3.0);
+         
+      test_vec1 *= 4.0f;
+      CPPUNIT_ASSERT( test_vec1[0] == 4.0f &&
+                      test_vec1[1] == 8.0f &&
+                      test_vec1[2] == 12.0f );
+
+      // -- test op-= performance
+      const float iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+            
+      for( float iter=0;iter<iters; ++iter)
+      {
+         test_vec1 *= 1.05f;         
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/OpMultScalarEqOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+
+   void testOpMultScalar()
+   {
+      gmtl::Vec<float,3> test_vec1(1.0, 2.0, 3.0);
+      gmtl::Vec<float,3> test_vec2(2.0, 2.0, 2.0);
+      gmtl::Vec<float,3> test_vec3(1.0, 2.0, 3.0);
+
+      test_vec1 = test_vec3 * 4.0f;
+      CPPUNIT_ASSERT( test_vec1[0] == 4.0f &&
+                      test_vec1[1] == 8.0f &&
+                      test_vec1[2] == 12.0f );
+
+      // -- test op- performance
+      const float iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+      test_vec3.set(5.0, 7.0, 9.0);
+
+      for( float iter=0;iter<iters; ++iter)
+      {
+         test_vec1 = test_vec3 * 1.05f;
+         test_vec3 = test_vec1;         
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/OpMultScalarOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+
+   void testOpDivScalarEq()
+   {
+      gmtl::Vec<float,3> test_vec1(12.0, 8.0, 4.0);
+         
+      test_vec1 /= 4.0f;
+      CPPUNIT_ASSERT( test_vec1[0] == 3.0f &&
+                      test_vec1[1] == 2.0f &&
+                      test_vec1[2] == 1.0f );
+
+      // -- test op-= performance
+      const float iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+            
+      for( float iter=0;iter<iters; ++iter)
+      {
+         test_vec1 /= 0.95f;         
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/OpDivScalarEqOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+
+   void testOpDivScalar()
+   {
+      gmtl::Vec<float,3> test_vec1(1.0, 2.0, 3.0);
+      gmtl::Vec<float,3> test_vec2(2.0, 2.0, 2.0);
+      gmtl::Vec<float,3> test_vec3(12.0, 8.0, 4.0);
+
+      test_vec1 = test_vec3 / 4.0f;
+      CPPUNIT_ASSERT( test_vec1[0] == 3.0f &&
+                      test_vec1[1] == 2.0f &&
+                      test_vec1[2] == 1.0f );
+
+      // -- test op- performance
+      const float iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+      test_vec3.set(5.0, 7.0, 9.0);
+
+      for( float iter=0;iter<iters; ++iter)
+      {
+         test_vec1 = test_vec3 / 0.95f;
+         test_vec3 = test_vec1;         
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/OpDivScalarOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+
+
+   void testDot()
+   {
+      gmtl::Vec<float,3> v1(1,0,0);
+      gmtl::Vec<float,3> v2(0,1,0);
+      gmtl::Vec<float,3> v3(0,0,1);
+      float dot, ans;
+
+      // Base Vectors
+      dot = gmtl::dot(v1,v2);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0f, gmtl::dot(v1,v2), 0.05);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0f, gmtl::dot(v1,v3), 0.05);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0f, gmtl::dot(v2,v3), 0.05);
+
+      // Other Vectors
+      v1.set(13.45, -7.8, 0.056);
+      v2.set(0.777, 5.333,12.21);
+      v3.set(3.4, -1.6, 0.23);
+
+      ans = -30.463;
+      dot = gmtl::dot(v1,v2);
+      CPPUNIT_ASSERT(GMTL_NEAR(dot,ans,0.01));
+      dot = gmtl::dot(v2,v1);
+      CPPUNIT_ASSERT(GMTL_NEAR(dot,ans,0.01));
+      ans = -3.0827;
+      dot = gmtl::dot(v2,v3);
+      CPPUNIT_ASSERT(GMTL_NEAR(dot,ans,0.01));
+      dot = gmtl::dot(v3,v2);
+      CPPUNIT_ASSERT(GMTL_NEAR(dot,ans,0.01));
+
+      // -- test op- performance
+      const float iters(100000);
+      CPPUNIT_METRIC_START_TIMING();
+      float val;      
+      
+      for( float iter=0;iter<iters; ++iter)
+      {
+         val += gmtl::dot(v1,v2);
+         v1 *= 1.0025;                 // Make it grow a little         
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/DotOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+
+   void testLength()
+   {
+      gmtl::Vec<float,3> v1(1,0,0);
+      gmtl::Vec<float,3> v2(0,1,0);
+      gmtl::Vec<float,3> v3(0,0,1);
+      float len, ans;
+
+      // Base Vectors
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(gmtl::length(v1),1.0f, 0.05f);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(gmtl::length(v2),1.0f, 0.05f);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(gmtl::length(v3),1.0f, 0.05f);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(gmtl::lengthSquared(v1), 1.0f, 0.05f);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(gmtl::lengthSquared(v2), 1.0f, 0.05f);
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(gmtl::lengthSquared(v3), 1.0f, 0.05f);
+
+      // Other Vectors
+      v1.set(2.0f, 4.0f, 5.0f);
+      v2.set(12.0f, -2.0f, -4.0f);
+            
+      ans = 4.0f + 16.0f + 25.0f;
+      len = gmtl::lengthSquared(v1);
+      CPPUNIT_ASSERT(GMTL_NEAR(len,ans,0.01));
+
+      ans = gmtl::Math::sqrt(ans);
+      len = gmtl::length(v1);
+      CPPUNIT_ASSERT(GMTL_NEAR(len,ans,0.01));
+      
+      ans = 144.0f + 4.0f + 16.0f;
+      len = gmtl::lengthSquared(v2);
+      CPPUNIT_ASSERT(GMTL_NEAR(len,ans,0.01));
+
+      ans = gmtl::Math::sqrt(ans);
+      len = gmtl::length(v2);
+      CPPUNIT_ASSERT(GMTL_NEAR(len,ans,0.01));
+            
+      // -- test length performance
+      const float iters(100000);
+      float val(0.0f);      
+
+      CPPUNIT_METRIC_START_TIMING();
+      
+      for( float iter=0;iter<iters; ++iter)
+      {
+         val += gmtl::length(v1);
+         v1 *= 1.0025f;                 // Make it grow a little         
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/LengthOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      // -- test lengthSquared performance
+      CPPUNIT_METRIC_START_TIMING();
+      val = 0.0f;
+      v1.set(1.0f, 2.0f, 4.0f);
+      
+      for( float iter=0;iter<iters; ++iter)
+      {
+         val += gmtl::lengthSquared(v1);
+         v1 *= 1.0025f;                 // Make it grow a little         
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/LengthSquaredOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+
+
+   void testNormalize()
+   {
+      gmtl::Vec<float,3> v1(1,0,0);
+      gmtl::Vec<float,3> v2(0,1,0);
+      gmtl::Vec<float,3> v3(0,0,1);
+            
+      // Other Vectors
+      v1.set(2.0f, 4.0f, 5.0f);
+      v2 = v1;
+      gmtl::normalize(v1);
+      gmtl::Vec<float,3> temp = (v1*gmtl::length(v2));
+      CPPUNIT_ASSERT( gmtl::isEqual(v2, temp, 0.01f ) );
+
+      v1.set(12.0f, -2.0f, -4.0f);
+      v2 = v1;
+      gmtl::normalize(v1);
+      CPPUNIT_ASSERT( gmtl::isEqual(v2, (v1*gmtl::length(v2)),0.01f ) );
+            
+      // -- test performance
+      const float iters(100000);
+      CPPUNIT_METRIC_START_TIMING();
+      float val(0.0f);      
+      v1.set(12.0f, 21.0f, 75.0f);
+
+      for( float iter=0;iter<iters; ++iter)
+      {
+         v1 *= 1.0025f;                 // Make it grow a little
+         v2 = v1;
+         val += gmtl::normalize(v2);
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/NormalizeOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%      
+   }
+
+
+   void testCross()
+   {
+      gmtl::Vec<float,3> v1(1,0,0);
+      gmtl::Vec<float,3> v2(0,1,0);
+      gmtl::Vec<float,3> v3(0,0,1);
+      gmtl::Vec<float,3> cross;
+
+      // Base Vectors
+      cross = gmtl::cross(v1,v2);
+      CPPUNIT_ASSERT( gmtl::isEqual(cross, v3, 0.01f) );
+      cross = gmtl::cross(v2,v1);
+      CPPUNIT_ASSERT( gmtl::isEqual(cross, (v3 * -1.0f), 0.01f) );
+
+      v1.set(13.45, -7.8, 0.056);
+      v2.set(0.777, 5.333,12.21);
+      v3.set(-95.537, -164.181, 77.789);
+
+      cross = gmtl::cross(v1,v2);
+      CPPUNIT_ASSERT( gmtl::isEqual(cross, v3, 0.01f));
+      cross = gmtl::cross(v2, v1);
+      CPPUNIT_ASSERT(gmtl::isEqual(cross, (v3 * -1.0f), 0.01f));
+
+      // -- test performance
+      const float iters(100000);
+      CPPUNIT_METRIC_START_TIMING();
+      
+      v1.set(12.0f, 21.0f, 75.0f);
+
+      for( float iter=0;iter<iters; ++iter)
+      {
+         cross = gmtl::cross(v2,v1);
+         v1 *= 1.0025f;
+         v3 += cross;         
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/CrossOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%      
+   }
+
 
    static Test* suite()
    {
@@ -416,6 +809,21 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<VecTest>("testGetData", &VecTest::testGetData));
       test_suite->addTest( new CppUnit::TestCaller<VecTest>("testEqualityCompare", &VecTest::testEqualityCompare));
       test_suite->addTest( new CppUnit::TestCaller<VecTest>("testIsEqual", &VecTest::testIsEqual));
+
+      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpPlusEq", &VecTest::testOpPlusEq));
+      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpPlus", &VecTest::testOpPlus));
+      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpMinusEq", &VecTest::testOpMinusEq));
+      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpMinus", &VecTest::testOpMinus));
+      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpMultScalarEq", &VecTest::testOpMultScalarEq)); 
+
+      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpMultScalar", &VecTest::testOpMultScalar)); 
+      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpDivScalarEq", &VecTest::testOpDivScalarEq)); 
+      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testOpDivScalar", &VecTest::testOpDivScalar)); 
+      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testDot", &VecTest::testDot)); 
+      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testLength", &VecTest::testLength)); 
+      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testNormalize", &VecTest::testNormalize)); 
+      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testCross", &VecTest::testCross)); 
+
       
       return test_suite;
    }

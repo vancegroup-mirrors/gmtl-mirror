@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Vec.h,v $
- * Date modified: $Date: 2002-02-11 05:55:42 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-02-11 23:53:04 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -66,6 +66,9 @@ public:
    //@{
    Vec(const Vec<DATA_TYPE, SIZE>& rVec)
       : BaseType(static_cast<BaseType>(rVec))
+   {;}
+   Vec(const VecBase<DATA_TYPE, SIZE>& rVec)
+      : BaseType(rVec)
    {;}
    Vec(const DATA_TYPE& val0)
       : BaseType(val0)
