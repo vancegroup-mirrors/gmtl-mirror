@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: OptTest.h,v $
- * Date modified: $Date: 2002-02-11 20:51:14 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2002-02-12 00:33:45 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -75,8 +75,10 @@ public:
    
    // test performance of loop unrolling
    void testLoopUnrolling();
-   
-   
+
+   // test perf of passing a primitive by value/ref/const ref
+   template< class T >
+   void testPassPrimitiveTypes();
 
    static Test* suite()
    {
@@ -87,6 +89,14 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<OptTest>("testRetValOptUsingInternalTemporary", &OptTest::testRetValOptUsingInternalTemporary));
       test_suite->addTest( new CppUnit::TestCaller<OptTest>("testRetValOpt", &OptTest::testRetValOpt));
       test_suite->addTest( new CppUnit::TestCaller<OptTest>("testLoopUnrolling", &OptTest::testLoopUnrolling));
+
+      // passing primitives
+      test_suite->addTest( new CppUnit::TestCaller<OptTest>("testPassPrimitiveTypes<char>", &OptTest::testPassPrimitiveTypes<char>));
+      test_suite->addTest( new CppUnit::TestCaller<OptTest>("testPassPrimitiveTypes<short>", &OptTest::testPassPrimitiveTypes<short>));
+      test_suite->addTest( new CppUnit::TestCaller<OptTest>("testPassPrimitiveTypes<int>", &OptTest::testPassPrimitiveTypes<int>));
+      test_suite->addTest( new CppUnit::TestCaller<OptTest>("testPassPrimitiveTypes<long>", &OptTest::testPassPrimitiveTypes<long>));
+      test_suite->addTest( new CppUnit::TestCaller<OptTest>("testPassPrimitiveTypes<float>", &OptTest::testPassPrimitiveTypes<float>));
+      test_suite->addTest( new CppUnit::TestCaller<OptTest>("testPassPrimitiveTypes<double>", &OptTest::testPassPrimitiveTypes<double>));
       return test_suite;
    }
 
