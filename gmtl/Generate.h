@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-05-28 14:46:15 $
- * Version:       $Revision: 1.53 $
+ * Date modified: $Date: 2002-05-29 17:09:50 $
+ * Version:       $Revision: 1.54 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -46,7 +46,7 @@
 #include <gmtl/Meta.h>
 #include <gmtl/Math.h>
 #include <gmtl/Convert.h>
-
+#include <gmtl/Xforms.h>
 
 // @todo Vec& setNormal( Vec&, scalar, scalar, scalar ) (and other dimensions)  (might not need, use this instead - setNormal( Vec( scal, scal, scal ) ))
 // @todo getRot euler for quat
