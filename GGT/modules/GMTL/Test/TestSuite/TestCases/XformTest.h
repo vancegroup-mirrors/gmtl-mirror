@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: XformTest.h,v $
- * Date modified: $Date: 2002-02-10 04:38:06 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-02-22 10:21:12 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -39,12 +39,8 @@
 #include <cppunit/TestSuite.h>
 #include <cppunit/TestCaller.h>
 
-#include <gmtl/Vec3.h>
-#include <gmtl/Point3.h>
-#include <gmtl/Matrix.h>
-#include <gmtl/Vec4.h>
 #include <gmtl/Xforms.h>
-#include <gmtl/gmtlOutput.h>
+//#include <gmtl/gmtlOutput.h>
 
 namespace gmtlTest
 {
@@ -66,6 +62,7 @@ public:
    {
    }
 
+   /*
    void testVec4_Mat_Xform()
    {
       gmtl::Vec4  v1, v1_trans, v1_trans_ans;
@@ -114,13 +111,49 @@ public:
 
       CPPUNIT_ASSERT(p1_xform.equal(p1_xform_ans,0.0001));
    }
+   */
+         
+   void output( gmtl::Quatf q )
+   {
+      std::cout<<q[0]<<" "<<q[1]<<" "<<q[2]<<" "<<q[3]<<std::endl;
+   } 
+   
+   void output( gmtl::Vec3f q )
+   {
+      std::cout<<q[0]<<" "<<q[1]<<" "<<q[2]<<std::endl;
+   } 
+   
+   void testQuatVecXform()
+   {
+      // test out mult( result, quat, quat )
+      const float eps = 0.0001f;
+      gmtl::Quatf q3( 1, 2, 3, 4 ), q4( 5, 6, 7, 8 );
+      gmtl::Vec3f vec( 0.7, -0.42, -0.999 ), res1, res2;
+      xform( res1, q3, vec );
+      xform( res2, q4, vec );
+
+      gmtl::Vec3f ex1( -0.359267, 0.380133, -1.17933 );
+      gmtl::Vec3f ex2( -0.81146, 0.60623, -0.799011 );
+
+      CPPUNIT_ASSERT( gmtl::isEqual( ex1, res1, eps ) );
+      CPPUNIT_ASSERT( gmtl::isEqual( ex2, res2, eps ) );
+      
+      // operator* should be same
+      gmtl::Vec3f res3, res4;
+      res3 = q3 * vec;
+      res4 = q4 * vec;
+      CPPUNIT_ASSERT( gmtl::isEqual( ex1, res3, eps ) );
+      CPPUNIT_ASSERT( gmtl::isEqual( ex2, res4, eps ) );
+   }
+
 
    static Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("Vec3Test");
-      test_suite->addTest( new CppUnit::TestCaller<XformTest>("testVec4_Mat_Xform", &XformTest::testVec4_Mat_Xform));
-      test_suite->addTest( new CppUnit::TestCaller<XformTest>("testVec3_Mat_Xform", &XformTest::testVec3_Mat_Xform));
-      test_suite->addTest( new CppUnit::TestCaller<XformTest>("testPoint3_Mat_Xform", &XformTest::testPoint3_Mat_Xform));
+      //test_suite->addTest( new CppUnit::TestCaller<XformTest>("testVec4_Mat_Xform", &XformTest::testVec4_Mat_Xform));
+      //test_suite->addTest( new CppUnit::TestCaller<XformTest>("testVec3_Mat_Xform", &XformTest::testVec3_Mat_Xform));
+      //test_suite->addTest( new CppUnit::TestCaller<XformTest>("testPoint3_Mat_Xform", &XformTest::testPoint3_Mat_Xform));
+      test_suite->addTest( new CppUnit::TestCaller<XformTest>("testQuatVecXform", &XformTest::testQuatVecXform));
 
       return test_suite;
    }

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: ConvertTest.h,v $
- * Date modified: $Date: 2002-02-22 08:38:13 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-02-22 10:21:12 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -63,6 +63,7 @@ public:
 
    void testConvertVecToPureQuat()
    {
+      const float eps = 0.0001;
       gmtl::Vec<float, 3> vec( 1,2,3 );
       gmtl::Quat<float> quat( 4,5,6 ), bok, expected( 1, 2, 3, 0 );
       bok = convert( quat, vec );

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: GenerateTest.h,v $
- * Date modified: $Date: 2002-02-22 08:38:13 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-02-22 10:21:12 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -71,6 +71,8 @@ public:
       std::cout<<q[0]<<" "<<q[1]<<" "<<q[2]<<" "<<q[3]<<std::endl;
    } 
 
+   //-- vec tests --//
+   
    void testMakeVecFromQuat()
    {
       gmtl::Quat<float> quat( 0.0f,21.0f,31.0f,1234.0f );
@@ -80,6 +82,8 @@ public:
       CPPUNIT_ASSERT( vec[2] == 31.0f );
    }
    
+   //-- quat tests --//
+
    void testQuatMakePure()
    {
       gmtl::Vec<float, 3> vec( 121, 232, 343 );
@@ -89,10 +93,10 @@ public:
       CPPUNIT_ASSERT( quat[gmtl::Zelt] == 343 );
    }
    
-   void testQuatMakeInvert()
+   void testQuatMakeConj()
    {
       gmtl::Quat<float> quat( 0.0f,21.0f,31.0f,1234.0f );
-      gmtl::Quat<float> quat2 = makeInvert( quat );
+      gmtl::Quat<float> quat2 = makeConj( quat );
       
       // make sure the func didn't munge the data...
       CPPUNIT_ASSERT( quat[gmtl::Xelt] == 0.0f );
@@ -105,6 +109,15 @@ public:
       CPPUNIT_ASSERT( quat2[gmtl::Yelt] == -21.0f );
       CPPUNIT_ASSERT( quat2[gmtl::Zelt] == -31.0f );
       CPPUNIT_ASSERT( quat2[gmtl::Welt] == 1234.0f );
+   }
+   
+   void testQuatMakeInvert()
+   {
+      // test out mult( result, quat, quat )
+      const float eps = 0.0001f;
+      gmtl::Quatf q( 0.2, 0.33, 0.44, 0.101 ), expected_result( -0.567053, -0.935637, -1.24752, 0.286362 );
+      gmtl::Quatf q4( makeInvert( q ) );
+      CPPUNIT_ASSERT( gmtl::isEqual( expected_result, q4, eps ) );
    }
    
    void testQuatMakeRot()
@@ -218,6 +231,7 @@ public:
       quats.push_back( gmtl::Vec4f( 6.28319, 2, 0, 0           ) );
       
       // @todo check this against another math lib other than VR Juggler...
+      //   (all the vals above look sane, but... )
       float a, b, c, fg;
       gmtl::Quatf q2;
       int count = 0;
@@ -230,14 +244,37 @@ public:
       }
    }
    
+   void testQuatMakeGetMakeRot()
+   {
+      const float eps = 0.0001f;
+      gmtl::Quatf q2, q3;
+      float fg, a, b, c, fg1, a1, b1, c1;
+      for (int x = -360; x <= 360; x += 20)
+      {
+         gmtl::makeRot( q2, gmtl::Math::deg2Rad( float(x) ), 0.0f, 1.0f, 0.0f );
+         gmtl::getRot( q2, fg, a, b, c );
+         gmtl::makeRot( q3, fg, a, b, c );
+         gmtl::getRot( q3, fg1, a1, b1, c1 );
+         CPPUNIT_ASSERT( gmtl::isEqual( q3, q2, eps ) );
+         
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( fg1, fg, eps ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( a1, a, eps ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( b1, b, eps ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( c1, c, eps ) );
+      }
+   }
+
+   /** @todo implement quat makeRot Euler */
    static Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite( "GenerateTest" );
       test_suite->addTest( new CppUnit::TestCaller<GenerateTest>( "testMakeVecFromQuat", &GenerateTest::testMakeVecFromQuat ) );
       test_suite->addTest( new CppUnit::TestCaller<GenerateTest>( "testQuatMakePure", &GenerateTest::testQuatMakePure ) );
+      test_suite->addTest( new CppUnit::TestCaller<GenerateTest>( "testQuatMakeConj", &GenerateTest::testQuatMakeConj ) );
       test_suite->addTest( new CppUnit::TestCaller<GenerateTest>( "testQuatMakeInvert", &GenerateTest::testQuatMakeInvert ) );
       test_suite->addTest( new CppUnit::TestCaller<GenerateTest>( "testQuatMakeRot", &GenerateTest::testQuatMakeRot ) );
       test_suite->addTest( new CppUnit::TestCaller<GenerateTest>( "testQuatGetRot", &GenerateTest::testQuatGetRot ) );
+      test_suite->addTest( new CppUnit::TestCaller<GenerateTest>( "testQuatMakeGetMakeRot", &GenerateTest::testQuatMakeGetMakeRot ) );
       return test_suite;
    }
 
