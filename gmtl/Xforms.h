@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Xforms.h,v $
- * Date modified: $Date: 2002-02-22 10:42:53 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-02-25 17:48:47 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -32,8 +32,8 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 *
  ************************************************************ ggt-cpr end */
-#ifndef _XFORMS_H_
-#define _XFORMS_H_
+#ifndef _GMTL___XFORMS_H_
+#define _GMTL___XFORMS_H_
 
 #include <gmtl/gmtlConfig.h>
 #include <gmtl/Vec.h>
@@ -64,7 +64,7 @@ namespace gmtl
     * @pre give a vector
     * @post result = quat * vector
     */
-   template<class DATA_TYPE>
+   template <typename DATA_TYPE>
    inline Vec<DATA_TYPE, 3> operator*( const Quat<DATA_TYPE>& rot, const Vec<DATA_TYPE, 3>& vector )
    {
       // shoemake original (left hand rule):
@@ -74,29 +74,105 @@ namespace gmtl
       return makeVec( rot * makePure( vector ) * makeInvert( rot ) );
    }
 
-/*
-   Vec4 operator*(const Matrix& _m, const Vec4& _v)
-{
-   // Take _v by value in case it is me
-   // Treating Vector like a column vector
-   // (4x4)(4x1) = (4x1)
-   // | A B C D | | X |   | AX+BY+CZ+DW |
-   // | E F G H | | Y | = | EY+FY+GY+HY |
-   // | I J K L | | Z |   | IZ+JZ+KZ+LZ |
-   // | M N O P | | W |   | MX+NY+OZ+PW |
-
-   Vec4 ret_vec;
-   for(int iRow=0;iRow<4;iRow++)
+   /** matrix * vector xform.
+    *  multiplication of [m x n] matrix by a [n x 1] matrix (aka, a Vector... :).
+    *  @post This results in a full matrix xform of the vector (assumes you know what you are doing - 
+    *  i.e. that you know that the last component of a vector by definition is 0.0, and changing 
+    *  this might make the xform different that what you may expect).
+    */
+   template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
+   Vec<DATA_TYPE, COLS> operator*( const Matrix<DATA_TYPE, ROWS, COLS>& matrix, const Vec<DATA_TYPE, COLS>& vector )
    {
-      ret_vec[iRow] = (_v[0]* (_m[0][iRow]))
-                    + (_v[1]* (_m[1][iRow]))
-                    + (_v[2]* (_m[2][iRow]))
-                    + (_v[3]* (_m[3][iRow]));
+      // do a standard [m x n] by [n x k] matrix multiplication (k == 1).
+      Vec<DATA_TYPE, COLS> ret_vec( 0, 0, 0, 0 );
+      for (int iRow = 0; iRow < ROWS; ++iRow)
+      {
+         for (int iCol = 0; iCol < COLS; ++iCol)
+         {
+            ret_vec[iCol] += vector[iCol] * matrix( iRow, iCol );
+         }
+      }
+      return ret_vec;
    }
-   return ret_vec;
-}
+   
+   /** matrix * vector xform (partial).
+    *  multiplication of [m x n] matrix by a [n-1 x 1] matrix (aka, a Vector... :).
+    *  @post the [n-1 x 1] vector you pass in is treated as a [vector, 0.0]
+    *  @post This ends up being a partial xform using only the rotation from the matrix (vector xformed result is untranslated).
+    */
+   /*
+   template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
+   Vec<DATA_TYPE, (COLS-1)> operator*( const Matrix<DATA_TYPE, ROWS, COLS>& matrix, const Vec<DATA_TYPE, (COLS-1)>& vector )
+   {
+      //assert( SIZE == COLS-1 );
+      Vec<DATA_TYPE, (COLS-1)> ret_vec( 0, 0, 0, 0 );
+      for (int iRow = 0; iRow < ROWS; ++iRow)
+      {
+         for (int iCol = 0; iCol < COLS - 1; ++iCol)
+         {
+            ret_vec[iCol] += vector[iCol] * matrix( iRow, iCol );
+         }
+         //ret_vec[iCol] += 0.0f * matrix( iRow, iCol+1 );
+      }
+      return ret_vec;
+   }
+   */
+   
+   /** matrix * point xform.
+    *  multiplication of [m x n] matrix by a [n x 1] matrix (aka, a Point... :).
+    *  @post This results in a full matrix xform of the point.
+    */
+   template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
+   Point<DATA_TYPE, COLS> operator*( const Matrix<DATA_TYPE, ROWS, COLS>& matrix, const Point<DATA_TYPE, COLS>& point )
+   {
+      // do a standard [m x n] by [n x k] matrix multiplication (k == 1).
+      Point<DATA_TYPE, COLS> result( 0, 0, 0, 0 );
+      for (int iRow = 0; iRow < ROWS; ++iRow)
+      {
+         for (int iCol = 0; iCol < COLS; ++iCol)
+         {
+            result[iCol] += point[iCol] * matrix( iRow, iCol );
+         }
+      }
+      return result;
+   }
 
-
+   /** matrix * point xform (partial).
+    *  multiplication of [m x n] matrix by a [n-1 x 1] matrix (aka, a Point... :).
+    *  @post the [n-1 x 1] vector you pass in is treated as a [point, 1.0]
+    *  @post This results in a full matrix xform of the point.
+    */
+   /*
+   template <typename DATA_TYPE, unsigned ROWS, unsigned COLS, unsigned SIZE>
+   Point<DATA_TYPE, SIZE> operator*( const Matrix<DATA_TYPE, ROWS, COLS>& matrix, const Point<DATA_TYPE, SIZE>& point )
+   {
+      assert( SIZE == COLS-1 );
+      Point<DATA_TYPE, SIZE> result( 0, 0, 0, 0 );
+      for (int iRow = 0; iRow < ROWS; ++iRow)
+      {
+         int iCol;
+         for (iCol = 0; iCol < COLS - 1; ++iCol)
+         {
+            result[iCol] += point[iCol] * matrix( iRow, iCol );
+         }
+         result[iCol] += matrix( iRow, iCol+1 );  // vec[c] += 1.0 * matrix( r, c )
+      }
+      return result;
+   }
+   
+   */
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   // old xform stuff...
+/*
 // XXX: Assuming that there is no projective portion to the matrix or homogeneous coord
 // NOTE: It is a vec, so we don't deal with the translation
 Vec3 operator*(const Matrix& mat, const Vec3& vec)
