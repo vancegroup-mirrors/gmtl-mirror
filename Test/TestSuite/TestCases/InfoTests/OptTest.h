@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: OptTest.h,v $
- * Date modified: $Date: 2002-02-11 15:51:09 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-02-11 18:15:56 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -518,7 +518,20 @@ public:
             }
          }
          CppUnit::MetricRegistry::TimeStamp end_t = CppUnit::MetricRegistry::instance()->getCurTime();
-         std::cout << "\n[a]testLoopUnrolling (forloop): " << end_t - start_t << std::endl;
+         std::cout << "\n[a]testLoopUnrolling (forloop ++y): " << end_t - start_t << std::endl;
+      }
+      
+      {
+         CppUnit::MetricRegistry::TimeStamp start_t = CppUnit::MetricRegistry::instance()->getCurTime();
+         for (int x = 0; x < TIMES_TO_RUN; ++x)
+         {
+            for (int y = 0; y < 3; y++)
+            {
+               destvec.vec[y] += srcvec.vec[y];
+            }
+         }
+         CppUnit::MetricRegistry::TimeStamp end_t = CppUnit::MetricRegistry::instance()->getCurTime();
+         std::cout << "\n[a]testLoopUnrolling (forloop y++): " << end_t - start_t << std::endl;
       }
       
       {
