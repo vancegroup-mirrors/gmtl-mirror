@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecExprMeta.h,v $
- * Date modified: $Date: 2004-09-16 19:40:35 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2004-11-11 21:34:33 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -71,7 +71,7 @@ struct ScalarArg
    const T mScalar;
 
    inline ScalarArg(const T scalar) : mScalar(scalar) {}
-   inline T operator[](const unsigned i) const
+   inline T operator[](const unsigned) const
    { return mScalar; }
 };
 
