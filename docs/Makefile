@@ -63,8 +63,8 @@ tarball:
 	cd $(tempdirname) && tar -zcvf $(tarballname).tgz $(tarballname) && mv $(tarballname).tgz ../ && rm $(tempdirname)
 
 clean c:
-	-rm -rf html man pdf latex installed tempdirname
+	-rm -rf html man pdf latex installed $(tempdirname)
 	-cd programmer.guide && gmake clean clobber
 
-clobber:
+clobber: clean
 	-rm $(tarballname).tgz
