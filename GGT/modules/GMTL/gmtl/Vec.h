@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Vec.h,v $
- * Date modified: $Date: 2002-02-19 18:08:21 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-02-22 21:45:57 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -56,8 +56,8 @@ public:
     */
    Vec()
    {
-      for(unsigned i=0;i<SIZE;++i)
-         mData[i] = 0.0f;
+      for (unsigned i = 0; i < SIZE; ++i)
+         mData[i] = (DATA_TYPE)0;
    }
 
    /** @name Value constructors
