@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2003-03-03 00:54:04 $
- * Version:       $Revision: 1.67 $
+ * Date modified: $Date: 2003-03-30 00:53:17 $
+ * Version:       $Revision: 1.68 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -530,9 +530,9 @@ namespace gmtl
       if (sin_half_angle >= (DATA_TYPE)0.0001) // because (PI >= rad >= 0)
       {
          DATA_TYPE sin_half_angle_inv = DATA_TYPE(1.0) / sin_half_angle;
-         Vec3f axis( quat[Xelt] * sin_half_angle_inv,
-                     quat[Yelt] * sin_half_angle_inv,
-                     quat[Zelt] * sin_half_angle_inv );
+         Vec<DATA_TYPE, 3> axis( quat[Xelt] * sin_half_angle_inv,
+                                 quat[Yelt] * sin_half_angle_inv,
+                                 quat[Zelt] * sin_half_angle_inv );
          normalize( axis );
          axisAngle.setAxis( axis );
       }
@@ -543,7 +543,7 @@ namespace gmtl
          // one of the terms should be a 1,
          // so we can maintain unit-ness
          // in case w is 0 (which here w is 0)
-         axisAngle.setAxis( gmtl::Vec3f(
+         axisAngle.setAxis( gmtl::Vec<DATA_TYPE, 3>(
                              DATA_TYPE( 1.0 ) /*- gmtl::Math::abs( quat[Welt] )*/,
                             (DATA_TYPE)0.0,
                             (DATA_TYPE)0.0 ) );
@@ -869,23 +869,24 @@ namespace gmtl
     * @post Returned value is from -180 to 180, where 0 is none.
     */
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
-   inline float makeYRot( const Matrix<DATA_TYPE, ROWS, COLS>& mat )
+   inline DATA_TYPE makeYRot( const Matrix<DATA_TYPE, ROWS, COLS>& mat )
    {
-      const gmtl::Vec3f forward_point(0.0f, 0.0f, -1.0f);   // -Z
-      const gmtl::Vec3f origin_point(0.0f, 0.0f, 0.0f);
-      gmtl::Vec3f end_point, start_point;
+      const gmtl::Vec<DATA_TYPE, 3> forward_point(0.0f, 0.0f, -1.0f);   // -Z
+      const gmtl::Vec<DATA_TYPE, 3> origin_point(0.0f, 0.0f, 0.0f);
+      gmtl::Vec<DATA_TYPE, 3> end_point, start_point;
 
       gmtl::xform(end_point, mat, forward_point);
       gmtl::xform(start_point, mat, origin_point);
-      gmtl::Vec3f direction_vector = end_point - start_point;
+      gmtl::Vec<DATA_TYPE, 3> direction_vector = end_point - start_point;
 
       // Constrain the direction to XZ-plane only.
       direction_vector[1] = 0.0f;                  // Eliminate Y value
       gmtl::normalize(direction_vector);
-      float y_rot = gmtl::Math::aCos(gmtl::dot(direction_vector,
-                                               forward_point));
+      DATA_TYPE y_rot = gmtl::Math::aCos(gmtl::dot(direction_vector,
+                                                   forward_point));
 
-      gmtl::Vec3f which_side = gmtl::cross(forward_point, direction_vector);
+      gmtl::Vec<DATA_TYPE, 3> which_side = gmtl::cross(forward_point,
+                                                       direction_vector);
 
       // If direction vector to "right" (negative) side of forward
       if ( which_side[1] < 0.0f )
@@ -901,23 +902,24 @@ namespace gmtl
     * @post Returned value is from -180 to 180, where 0 is no rotation.
     */
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
-   inline float makeXRot( const Matrix<DATA_TYPE, ROWS, COLS>& mat )
+   inline DATA_TYPE makeXRot( const Matrix<DATA_TYPE, ROWS, COLS>& mat )
    {
-      const gmtl::Vec3f forward_point(0.0f, 0.0f, -1.0f);   // -Z
-      const gmtl::Vec3f origin_point(0.0f, 0.0f, 0.0f);
-      gmtl::Vec3f end_point, start_point;
+      const gmtl::Vec<DATA_TYPE, 3> forward_point(0.0f, 0.0f, -1.0f);   // -Z
+      const gmtl::Vec<DATA_TYPE, 3> origin_point(0.0f, 0.0f, 0.0f);
+      gmtl::Vec<DATA_TYPE, 3> end_point, start_point;
 
       gmtl::xform(end_point, mat, forward_point);
       gmtl::xform(start_point, mat, origin_point);
-      gmtl::Vec3f direction_vector = end_point - start_point;
+      gmtl::Vec<DATA_TYPE, 3> direction_vector = end_point - start_point;
 
       // Constrain the direction to YZ-plane only.
       direction_vector[0] = 0.0f;                  // Eliminate X value
       gmtl::normalize(direction_vector);
-      float x_rot = gmtl::Math::aCos(gmtl::dot(direction_vector,
-                                               forward_point));
+      DATA_TYPE x_rot = gmtl::Math::aCos(gmtl::dot(direction_vector,
+                                                   forward_point));
 
-      gmtl::Vec3f which_side = gmtl::cross(forward_point, direction_vector);
+      gmtl::Vec<DATA_TYPE, 3> which_side = gmtl::cross(forward_point,
+                                                       direction_vector);
 
       // If direction vector to "bottom" (negative) side of forward
       if ( which_side[0] < 0.0f )
@@ -933,23 +935,24 @@ namespace gmtl
     * @post Returned value is from -180 to 180, where 0 is no rotation.
     */
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
-   inline float makeZRot( const Matrix<DATA_TYPE, ROWS, COLS>& mat )
+   inline DATA_TYPE makeZRot( const Matrix<DATA_TYPE, ROWS, COLS>& mat )
    {
-      const gmtl::Vec3f forward_point(0.0f, 0.0f, -1.0f);   // -Z
-      const gmtl::Vec3f origin_point(0.0f, 0.0f, 0.0f);
-      gmtl::Vec3f end_point, start_point;
+      const gmtl::Vec<DATA_TYPE, 3> forward_point(0.0f, 0.0f, -1.0f);   // -Z
+      const gmtl::Vec<DATA_TYPE, 3> origin_point(0.0f, 0.0f, 0.0f);
+      gmtl::Vec<DATA_TYPE, 3> end_point, start_point;
 
       gmtl::xform(end_point, mat, forward_point);
       gmtl::xform(start_point, mat, origin_point);
-      gmtl::Vec3f direction_vector = end_point - start_point;
+      gmtl::Vec<DATA_TYPE, 3> direction_vector = end_point - start_point;
 
       // Constrain the direction to XY-plane only.
       direction_vector[2] = 0.0f;                  // Eliminate Z value
       gmtl::normalize(direction_vector);
-      float z_rot = gmtl::Math::aCos(gmtl::dot(direction_vector,
-                                               forward_point));
+      DATA_TYPE z_rot = gmtl::Math::aCos(gmtl::dot(direction_vector,
+                                                   forward_point));
 
-      gmtl::Vec3f which_side = gmtl::cross(forward_point, direction_vector);
+      gmtl::Vec<DATA_TYPE, 3> which_side = gmtl::cross(forward_point,
+                                                       direction_vector);
 
       // If direction vector to "right" (negative) side of forward
       if ( which_side[2] < 0.0f )
