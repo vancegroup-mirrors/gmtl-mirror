@@ -7,8 +7,8 @@
 #
 # -----------------------------------------------------------------
 # File:          $RCSfile: Makefile.in,v $
-# Date modified: $Date: 2002-08-16 13:25:06 $
-# Version:       $Revision: 1.11 $
+# Date modified: $Date: 2002-10-17 09:45:04 $
+# Version:       $Revision: 1.12 $
 # -----------------------------------------------------------------
 #
 # ********************************************************** ggt-head end
@@ -62,10 +62,6 @@ install:
 	cp -p $(GMTLROOT_ABS)/gmtl/*.h $(includedir)/gmtl
 	@$(SHELL) $(MKINSTALLDIRS) $(includedir)/gmtl/External
 	cp -p $(GMTLROOT_ABS)/gmtl/External/*.h $(includedir)/gmtl/External
-	@$(SHELL) $(MKINSTALLDIRS) $(includedir)/gmtl/Fit
-	cp -p $(GMTLROOT_ABS)/gmtl/Fit/*.h $(includedir)/gmtl/Fit
-	@$(SHELL) $(MKINSTALLDIRS) $(includedir)/gmtl/Numerics
-	cp -p $(GMTLROOT_ABS)/gmtl/Numerics/*.h $(includedir)/gmtl/Numerics
 	@$(SHELL) $(MKINSTALLDIRS) $(includedir)/gmtl/Util
 	cp -p $(GMTLROOT_ABS)/gmtl/Util/*.h $(includedir)/gmtl/Util
 	@$(SHELL) $(MKINSTALLDIRS) $(bindir)
