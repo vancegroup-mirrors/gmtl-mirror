@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-03-09 04:06:12 $
- * Version:       $Revision: 1.15 $
+ * Date modified: $Date: 2002-03-09 04:46:27 $
+ * Version:       $Revision: 1.16 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -108,33 +108,26 @@ namespace gmtl
    }
 
    /** make a rotation quaternion from an angle and an axis (fast).
-    * @pre axis must be normalized prior to calling this.
+    * @pre axis must be normalized, or length == 0, prior to calling this.
     * @post q = [ cos(rad/2), sin(rad/2) * [x,y,z] ]
     */
    template <typename DATA_TYPE>
    inline Quat<DATA_TYPE>& makeRot( Quat<DATA_TYPE>& result, const DATA_TYPE rad, Vec<DATA_TYPE, 3> axis )
    {
-      // normalize if possible...
-      float l = length( axis );
-      if (l > (DATA_TYPE)0.0001)
-      {
-         l = (DATA_TYPE)1.0 / l;
-         axis *= l;
-      }   
+      ggtASSERT( (Math::isEqual( lengthSquared( axis ), (DATA_TYPE)1.0, (DATA_TYPE)0.001 ) || Math::isEqual( lengthSquared( axis ), (DATA_TYPE)0.0, (DATA_TYPE)0.001 )) && "you must pass in a normalized vector to makeRot( quat, rad, vec )" );
       
-      // do it...
       DATA_TYPE half_angle = rad * (DATA_TYPE)0.5;
       DATA_TYPE sin_half_angle = Math::sin( half_angle );
 
       result[Welt] = Math::cos( half_angle );
-      result[Xelt] = sin_half_angle * axis[0] * l;
-      result[Yelt] = sin_half_angle * axis[1] * l;
-      result[Zelt] = sin_half_angle * axis[2] * l;
+      result[Xelt] = sin_half_angle * axis[0];
+      result[Yelt] = sin_half_angle * axis[1];
+      result[Zelt] = sin_half_angle * axis[2];
 
       // should automagically be normalized (unit magnitude) now...
       return result;
    }
-   
+      
    /** make a rotation quaternion from an angle and an axis (slow).
     * @pre axis [xyz] will be normalized for you, no need to worry about it.
     * @post q = [ cos(rad/2), sin(rad/2) * [x,y,z] ]
@@ -142,7 +135,9 @@ namespace gmtl
    template <typename DATA_TYPE>
    inline Quat<DATA_TYPE>& makeRot( Quat<DATA_TYPE>& result, const DATA_TYPE rad, const DATA_TYPE x, const DATA_TYPE y, const DATA_TYPE z )
    {
-      return makeRot( result, rad, Vec<DATA_TYPE, 3>( x, y, z ) );
+      Vec<DATA_TYPE, 3> axis( x, y, z );
+      normalize( axis );
+      return makeRot( result, rad, axis );
    }
    
    /** make a rotation quaternion that will xform first vector to the second.
@@ -363,7 +358,7 @@ namespace gmtl
    {
       /* @todo make this a compile time assert... */
       ggtASSERT( ROWS >= 3 && COLS >= 3 && ROWS <= 4 && COLS <= 4 && "this func is undefined for Matrix smaller than 3x3 or bigger than 4x4" );
-      ggtASSERT( Math::isEqual( lengthSquared( vec ), (DATA_TYPE)1.0, (DATA_TYPE)0.001 ) && "you must pass in a normalized vector to makeRot( rad, vec )" );
+      ggtASSERT( Math::isEqual( lengthSquared( vec ), (DATA_TYPE)1.0, (DATA_TYPE)0.001 ) && "you must pass in a normalized vector to makeRot( mat, rad, vec )" );
       
       // GGI: pg 466
       DATA_TYPE s = Math::sin( radians );
