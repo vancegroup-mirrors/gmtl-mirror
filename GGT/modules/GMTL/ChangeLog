@@ -1,5 +1,10 @@
 DATE       AUTHOR       CHANGE
 ---------- --------     -----------------------------------------------------------
+2002-05-20 subatomic    Removed gmtlConfig.h.
+                        Added support to Math.h to compile out the float trig
+                        functions.  Define NO_XXXF (where XXX is SIN, COS, ASIN
+                        etc...) to work around compilers that dont support
+                        these trig functions.
 2002-05-17 subatomic    Doxygen: grouped everything into "modules", logical 
                         groupings that make the reference guide much easier
                         to use.
