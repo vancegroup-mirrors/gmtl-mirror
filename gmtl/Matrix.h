@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Matrix.h,v $
- * Date modified: $Date: 2003-04-11 05:41:40 $
- * Version:       $Revision: 1.30 $
+ * Date modified: $Date: 2003-04-11 05:43:46 $
+ * Version:       $Revision: 1.31 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -80,8 +80,8 @@ namespace gmtl
  * <b>NOTES on Matrix memory layout and [][] accessors:</b>
  * <ul>
  * <li> gmtl Matrix memory is "column major" ordered, where columns are end 
- *      to end in memory, while a C/C++ Matrix accessed the same way as a 
- *      gmtl Matrix is "row major" ordered.
+ *      to end in memory, while a C/C++ Matrix accessed the same way 
+ *      (using operator[][]) as a gmtl Matrix is "row major" ordered.
  *
  * <li> As a result, a gmtl matrix stores elements in memory transposed from 
  *      the equivelent matrix defined using a double array in the C/C++ 
