@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AABoxOps.h,v $
- * Date modified: $Date: 2002-07-03 00:29:21 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-07-04 20:14:18 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -36,7 +36,7 @@
 #define _GMTL_AABOXOPS_H_
 
 #include <gmtl/AABox.h>
-#include <gmtl/Math.h>
+#include <gmtl/VecOps.h>
 
 namespace gmtl
 {
