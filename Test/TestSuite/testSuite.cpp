@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: testSuite.cpp,v $
- * Date modified: $Date: 2002-03-20 21:43:36 $
- * Version:       $Revision: 1.31 $
+ * Date modified: $Date: 2002-03-20 22:32:22 $
+ * Version:       $Revision: 1.32 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -65,6 +65,7 @@
 
 #include <TestCases/CoordClassTest.h>
 #include <TestCases/CoordCompareTest.h>
+#include <TestCases/CoordGenTest.h>
 
 
 #include <TestCases/QuatClassTest.h>
@@ -149,6 +150,7 @@ int main (int ac, char **av)
    
    gmtl_suite->addTest( gmtlTest::CoordClassTest::suite() );
    gmtl_suite->addTest( gmtlTest::CoordCompareTest::suite() );
+   gmtl_suite->addTest( gmtlTest::CoordGenTest::suite() );
 
    gmtl_suite->addTest( gmtlTest::QuatClassTest::suite() );
    gmtl_suite->addTest( gmtlTest::QuatCompareTest::suite() );
