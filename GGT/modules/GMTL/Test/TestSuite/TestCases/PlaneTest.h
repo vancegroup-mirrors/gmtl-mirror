@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PlaneTest.h,v $
- * Date modified: $Date: 2002-02-18 23:22:15 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2002-02-18 23:53:19 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -312,28 +312,46 @@ public:
       CPPUNIT_ASSERT_METRIC_TIMING_LE("PlaneTest/isEqualOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
 
+   // --------------------------
+   // Operations tests
+   // --------------------------
+   void testDistance()
+   {
+      gmtl::Plane<float> test_plane( x1_v, 25.0f );
+      CPPUNIT_ASSERT( gmtl::distance(test_plane, origin) == -25.0f );
+      CPPUNIT_ASSERT( gmtl::distance(test_plane, x1_pt) == -24.0f );
+
+      CPPUNIT_ASSERT( gmtl::distance(xy_plane, z1_pt) == 1.0f );
+
+      gmtl::Point<float, 3> pt(-12.0f, 5.0f, -17.0f);
+      CPPUNIT_ASSERT( gmtl::distance(xy_plane, pt) == -17.0f );
+
+      gmtl::Plane<float> slanted_plane( gmtl::Vec<float, 3>(1.0f,1.0f,1.0f), origin );
+      CPPUNIT_ASSERT( gmtl::distance(slanted_plane, origin) == 0.0f );
+
+      pt.set(1.0f, 1.0f, 1.0f );
+      CPPUNIT_ASSERT( gmtl::distance(slanted_plane, pt) > 0.0f ); 
+
+      // Test distance performance
+      const long iters(400000);
+      float use_value(0.0f);
+
+      // -- Equality
+      CPPUNIT_METRIC_START_TIMING();
+
+      for( long iter=0;iter<iters; ++iter)
+      {
+         test_plane.mOffset += 1.0f;
+         use_value = use_value + gmtl::distance(test_plane, y1_pt);
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("PlaneTest/DistanceOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
 /*
    // --------------------------
    // Dist and side tests
    // --------------------------
-   void testDistToPt()
-   {
-      float dist;
-
-      dist = xy_plane.distanceToPt(gmtl::ZUnitVec3);
-      CPPUNIT_ASSERT(dist == 1.0f);
-
-      dist = xy_plane.distanceToPt(gmtl::Point3(-12.0,5.0,-17.0f));
-      CPPUNIT_ASSERT(dist == -17.0f);
-
-      gmtl::Plane slanted_plane(gmtl::Vec3(1.0f,1.0f,1.0f), origin);
-      dist = slanted_plane.distanceToPt(origin);
-      CPPUNIT_ASSERT(dist == 0.0f);
-
-      dist = slanted_plane.distanceToPt(gmtl::Vec3(1.0f,1.0f,1.0f));
-      CPPUNIT_ASSERT(dist > 0.0f);
-   }
-
    void testWhichSide()
    {
       gmtl::Plane::Side answer;
@@ -386,6 +404,7 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testCopyConstruct", &PlaneTest::testCopyConstruct));
       test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testEqualityCompare", &PlaneTest::testEqualityCompare));
       test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testIsEqual", &PlaneTest::testIsEqual));
+      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testDistance", &PlaneTest::testDistance));
 //      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testDistToPt", &PlaneTest::testDistToPt));
 //      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testWhichSide", &PlaneTest::testWhichSide));
 //      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testFindNearestPt", &PlaneTest::testFindNearestPt));
