@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixGenTest.cpp,v $
- * Date modified: $Date: 2002-03-20 07:11:22 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-03-20 22:29:56 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -51,7 +51,7 @@ namespace gmtlTest
                                 0, 1, 33 );
          gmtl::setTrans( mat23, trans_vec );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result23, mat23, eps ) );
-         CPPUNIT_ASSERT( gmtl::getTrans<gmtl::Vec2f>(mat23) == trans_vec );
+         CPPUNIT_ASSERT( gmtl::makeTrans<gmtl::Vec2f>(mat23) == trans_vec );
 
          // make sure that make and set return the same...
          CPPUNIT_ASSERT( expected_result23 == gmtl::makeTrans<gmtl::Matrix23f>( gmtl::Vec2f( 32, 33 ) ) );
@@ -65,7 +65,7 @@ namespace gmtlTest
                                 0, 0, 1 );
          gmtl::setTrans( mat33, trans_vec);
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat33, eps ) );
-         CPPUNIT_ASSERT( gmtl::getTrans<gmtl::Vec2f>(mat33) == trans_vec);
+         CPPUNIT_ASSERT( gmtl::makeTrans<gmtl::Vec2f>(mat33) == trans_vec);
 
          // make sure that make and set return the same...
          CPPUNIT_ASSERT( expected_result33 == gmtl::makeTrans<gmtl::Matrix33f>( gmtl::Vec2f( 32, 33 ) ) );
@@ -79,7 +79,7 @@ namespace gmtlTest
                                 0, 0, 1 );
          gmtl::setTrans( mat33, trans_vec );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat33, eps ) );
-         CPPUNIT_ASSERT( gmtl::getTrans<gmtl::Vec3f>(mat33) == gmtl::Vec3f(64.0f, 66.0f, 1.0f) );
+         CPPUNIT_ASSERT( gmtl::makeTrans<gmtl::Vec3f>(mat33) == gmtl::Vec3f(64.0f, 66.0f, 1.0f) );
       }
       // 3D rot/trans
       {
@@ -90,7 +90,7 @@ namespace gmtlTest
                                 0, 0, 1, 34 );
          gmtl::setTrans( mat34, trans_vec );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result34, mat34, eps ) );
-         CPPUNIT_ASSERT( gmtl::getTrans<gmtl::Vec3f>(mat34) == trans_vec );
+         CPPUNIT_ASSERT( gmtl::makeTrans<gmtl::Vec3f>(mat34) == trans_vec );
       }
       // 3D rot/trans set by homogeneous vector
       {
@@ -101,7 +101,7 @@ namespace gmtlTest
                                 0, 0, 1, 68 );
          gmtl::setTrans( mat34, trans_vec );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result34, mat34, eps ) );
-         CPPUNIT_ASSERT( gmtl::getTrans<gmtl::Vec3f>(mat34) == gmtl::Vec3f(64.0f, 66.0f, 68.0f) );
+         CPPUNIT_ASSERT( gmtl::makeTrans<gmtl::Vec3f>(mat34) == gmtl::Vec3f(64.0f, 66.0f, 68.0f) );
       }
       // 3D rot/trans/skew
       {
