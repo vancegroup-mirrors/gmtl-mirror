@@ -1,5 +1,7 @@
 DATE       AUTHOR   CHANGE
 ---------- -------- -----------------------------------------------------------
+2001-01-30 allenb   Moved all code to header files to prepare the way for
+                    future refactoring.
 2002-01-30 allenb   Removed static const member variables from classes.
 2002-01-25 allenb   Initial version
 
