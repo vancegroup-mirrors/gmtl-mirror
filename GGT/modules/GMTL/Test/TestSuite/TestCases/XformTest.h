@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: XformTest.h,v $
- * Date modified: $Date: 2002-03-10 18:29:46 $
- * Version:       $Revision: 1.16 $
+ * Date modified: $Date: 2002-03-10 18:44:49 $
+ * Version:       $Revision: 1.17 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -71,7 +71,7 @@ public:
          T bok = 88;
          std::string n = "XformTest/operator*(quat4,vec3)";
          n += name;
-         gmtl::Quatf<T> q1( (T)1, (T)2, (T)3, (T)4 );
+         gmtl::Quat<T> q1( (T)1, (T)2, (T)3, (T)4 );
          gmtl::Vec<T, 3> v2;
          v2[0] = (T)1;
          const long iters(50000);
