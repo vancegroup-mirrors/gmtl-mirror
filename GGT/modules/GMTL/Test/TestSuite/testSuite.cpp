@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: testSuite.cpp,v $
- * Date modified: $Date: 2002-03-21 21:57:50 $
- * Version:       $Revision: 1.38 $
+ * Date modified: $Date: 2002-03-21 22:06:21 $
+ * Version:       $Revision: 1.39 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -178,6 +178,7 @@ int main (int ac, char **av)
 
    perf_suite->addTest( gmtlTest::MatrixClassTest::perfSuite() );
    perf_suite->addTest( gmtlTest::MatrixCompareTest::perfSuite() );
+   perf_suite->addTest( gmtlTest::MatrixOpsTest::perfSuite() );
 
    perf_suite->addTest( gmtlTest::CoordClassTest::perfSuite() );
    perf_suite->addTest( gmtlTest::CoordCompareTest::perfSuite() );

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOpsTest.h,v $
- * Date modified: $Date: 2002-03-19 23:06:50 $
- * Version:       $Revision: 1.19 $
+ * Date modified: $Date: 2002-03-21 22:06:21 $
+ * Version:       $Revision: 1.20 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -66,9 +66,17 @@ public:
    {
    }
 
+   // correctness tests
    void testMatrixIdentity();
    void testMatrixTimeIdentity44f();
    void testMatrixSetTrans();
+   void testMatrixTranspose();
+   void testMatrixAddSub();
+   void testMatrixMult();
+   void testMatrixScalarMult();
+   void testMatInvert();
+
+   // performance tests
    void testTimingMakeTrans();
    void testMatrixTimeTranspose44f();
    void testMatrixTimeTranspose33d();
@@ -80,11 +88,6 @@ public:
    void testMatrixTimeMult33d_operatorStarStar();
    void testMatrixTimeAdd44();
    void testMatrixTimeSub44();
-   void testMatrixTranspose();
-   void testMatrixAddSub();
-   void testMatrixMult();
-   void testMatrixScalarMult();
-   void testMatInvert();
 
    static CppUnit::Test* suite()
    {
@@ -100,6 +103,12 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatInvert", &MatrixOpsTest::testMatInvert ) );
       //test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testGetSetAxes", &MatrixOpsTest::testGetSetAxes ) );
 
+      return test_suite;
+   }
+
+   static CppUnit::Test* perfSuite()
+   {
+      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite( "MatrixOpsPerfTest" );
 
       test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixTimeIdentity44f", &MatrixOpsTest::testMatrixTimeIdentity44f ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testTimingMakeTrans", &MatrixOpsTest::testTimingMakeTrans ) );
@@ -113,6 +122,7 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixTimeMult33d_operatorStarStar", &MatrixOpsTest::testMatrixTimeMult33d_operatorStarStar ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixTimeAdd44", &MatrixOpsTest::testMatrixTimeAdd44 ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixTimeSub44", &MatrixOpsTest::testMatrixTimeSub44 ) );
+
       return test_suite;
    }
 
