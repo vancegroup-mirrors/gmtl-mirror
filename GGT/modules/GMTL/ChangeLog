@@ -1,5 +1,6 @@
 DATE       AUTHOR       CHANGE
 ---------- --------     -----------------------------------------------------------
+2002-05-10 nonchocoboy  Added makeInverse for matrices.
 2002-05-10 subatomic    Added typedefs for Planef and Planed
 2002-05-10 allenb       Added gmtl::ignore_unused_variable_warning to get rid
                         of unused variable warnings for Type2Type<> usage.
