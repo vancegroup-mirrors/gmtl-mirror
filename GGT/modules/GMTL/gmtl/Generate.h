@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2003-09-24 00:03:18 $
- * Version:       $Revision: 1.80 $
+ * Date modified: $Date: 2003-12-04 04:14:24 $
+ * Version:       $Revision: 1.81 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -750,8 +750,8 @@ namespace gmtl
       /* @todo set this a compile time assert... */
       gmtlASSERT( ROWS >= 3 && COLS >= 3 && ROWS <= 4 && COLS <= 4 &&
                      "this func is undefined for Matrix smaller than 3x3 or bigger than 4x4" );
-      gmtlASSERT( Math::isEqual( lengthSquared( axisAngle.getAxis() ), (DATA_TYPE)1.0, (DATA_TYPE)0.001 ) &&
-                     "you must pass in a normalized vector to setRot( mat, rad, vec )" );
+      gmtlASSERT( Math::isEqual( lengthSquared( axisAngle.getAxis() ), (DATA_TYPE)1.0, (DATA_TYPE)0.001 ) /* &&
+                     "you must pass in a normalized vector to setRot( mat, rad, vec )" */ );
 
       // GGI: pg 466
       DATA_TYPE s = Math::sin( axisAngle.getAngle() );
