@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Math.h,v $
- * Date modified: $Date: 2002-07-09 21:28:11 $
- * Version:       $Revision: 1.29 $
+ * Date modified: $Date: 2002-07-11 21:17:37 $
+ * Version:       $Revision: 1.30 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -38,7 +38,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <gmtl/Defines.h>
-#include <gmtl/Assert.h>
+#include <gmtl/Util/Assert.h>
 
 namespace gmtl
 {

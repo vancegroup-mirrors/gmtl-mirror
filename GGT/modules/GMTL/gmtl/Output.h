@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Output.h,v $
- * Date modified: $Date: 2002-05-28 14:46:15 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2002-07-11 21:17:37 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -36,7 +36,7 @@
 #define _GMTL_OUTPUT_H_
 
 #include <iostream>
-#include <gmtl/Assert.h>
+#include <gmtl/Util/Assert.h>
 #include <gmtl/VecBase.h>
 #include <gmtl/Matrix.h>
 #include <gmtl/Quat.h>

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecBase.h,v $
- * Date modified: $Date: 2002-06-13 14:19:05 $
- * Version:       $Revision: 1.12 $
+ * Date modified: $Date: 2002-07-11 21:17:37 $
+ * Version:       $Revision: 1.13 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,7 +35,7 @@
 #ifndef _GMTL_VECBASE_H_
 #define _GMTL_VECBASE_H_
 
-#include "gmtl/Assert.h"
+#include <gmtl/Util/Assert.h>
 
 namespace gmtl
 {
