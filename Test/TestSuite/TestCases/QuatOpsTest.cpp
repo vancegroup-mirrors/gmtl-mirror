@@ -455,6 +455,7 @@ namespace gmtlTest
       gmtl::Quatf q0[8], q180[8], q90[8], q_0001[8];
       for (unsigned int x = 0; x < 8; ++x)
       {
+         gmtl::normalize( quadrant[x] );
          gmtl::setRot( q0[x],     gmtl::AxisAnglef( gmtl::Math::deg2Rad( 0.0f ),    quadrant[x] ) );
          gmtl::setRot( q180[x],   gmtl::AxisAnglef( gmtl::Math::deg2Rad( 180.0f ),  quadrant[x] ) );
          gmtl::setRot( q90[x],    gmtl::AxisAnglef( gmtl::Math::deg2Rad( 90.0f ),   quadrant[x] ) );
