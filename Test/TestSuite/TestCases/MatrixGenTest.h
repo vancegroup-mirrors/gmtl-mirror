@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixGenTest.h,v $
- * Date modified: $Date: 2002-03-10 20:18:03 $
- * Version:       $Revision: 1.14 $
+ * Date modified: $Date: 2002-03-11 19:01:31 $
+ * Version:       $Revision: 1.15 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -1241,9 +1241,9 @@ public:
    // is this a convert test?
    void testTimingMakeAxes()
    {
-      gmtl::Matrix44f mat1, mat2;
-      gmtl::Vec3f xAxis1,yAxis1,zAxis1;
-      gmtl::Vec3f xAxis2,yAxis2,zAxis2;
+//      gmtl::Matrix44f mat1, mat2;
+//      gmtl::Vec3f xAxis1,yAxis1,zAxis1;
+//      gmtl::Vec3f xAxis2,yAxis2,zAxis2;
 
       
       
