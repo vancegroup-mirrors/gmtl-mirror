@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixGenTest.h,v $
- * Date modified: $Date: 2002-03-08 22:41:38 $
- * Version:       $Revision: 1.11 $
+ * Date modified: $Date: 2002-03-08 22:46:30 $
+ * Version:       $Revision: 1.12 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -305,6 +305,11 @@ public:
          gmtl::normalize( vec );
          gmtl::makeRot( mat, gmtl::Math::deg2Rad( 90.0f ), vec );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
+         
+         // make sure that the other version works the same...
+         gmtl::Matrix33f mat2;
+         gmtl::makeRot( mat2, gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f );
+         CPPUNIT_ASSERT( gmtl::isEqual( mat2, mat, eps ) );
       }
       {
          gmtl::Matrix33f mat, expected_result33;
@@ -317,6 +322,11 @@ public:
          gmtl::normalize( vec );
          gmtl::makeRot( mat, gmtl::Math::deg2Rad( -360.0f ), vec );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
+         
+         // make sure that the other version works the same...
+         gmtl::Matrix33f mat2;
+         gmtl::makeRot( mat2, gmtl::Math::deg2Rad( -360.0f ), -1.0f, 1.0f, -1.0f );
+         CPPUNIT_ASSERT( gmtl::isEqual( mat2, mat, eps ) );
       }
       
       {
@@ -330,6 +340,11 @@ public:
          gmtl::normalize( vec );
          gmtl::makeRot( mat, gmtl::Math::deg2Rad( -90.0f ), vec );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result34, mat, eps ) );
+         
+         // make sure that the other version works the same...
+         gmtl::Matrix34f mat2;
+         gmtl::makeRot( mat2, gmtl::Math::deg2Rad( -90.0f ), 1.0f, 0.0f, 0.0f );
+         CPPUNIT_ASSERT( gmtl::isEqual( mat2, mat, eps ) );
       }
       {
          gmtl::Matrix34f mat, expected_result34;
@@ -342,6 +357,11 @@ public:
          gmtl::normalize( vec );
          gmtl::makeRot( mat, gmtl::Math::deg2Rad( 45.0f ), vec );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result34, mat, eps ) );
+         
+         // make sure that the other version works the same...
+         gmtl::Matrix34f mat2;
+         gmtl::makeRot( mat2, gmtl::Math::deg2Rad( 45.0f ), 0.7f, -0.7f, -0.7f );
+         CPPUNIT_ASSERT( gmtl::isEqual( mat2, mat, eps ) );
       }
       // test that unnormalized vec works...
       {
@@ -356,6 +376,11 @@ public:
          gmtl::normalize( vec );
          gmtl::makeRot( mat, gmtl::Math::deg2Rad( 45.0f ), vec );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result44, mat, eps ) );
+         
+         // make sure that the other version works the same...
+         gmtl::Matrix44f mat2;
+         gmtl::makeRot( mat2, gmtl::Math::deg2Rad( 45.0f ), 1.7f, 1.7f, 1.7f );
+         CPPUNIT_ASSERT( gmtl::isEqual( mat2, mat, eps ) );
       }
    }
    
