@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOps.h,v $
- * Date modified: $Date: 2002-11-23 05:24:45 $
- * Version:       $Revision: 1.27 $
+ * Date modified: $Date: 2003-02-25 05:17:00 $
+ * Version:       $Revision: 1.28 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -90,7 +90,7 @@ namespace gmtl
       {
          for (unsigned int x = 0; x < ROWS*COLS; ++x)
          {
-            result[x] = (DATA_TYPE)0;
+            result.mData[x] = (DATA_TYPE)0;
          }
       }
       return result;
@@ -215,7 +215,7 @@ namespace gmtl
    inline Matrix<DATA_TYPE, ROWS, COLS>& mult( Matrix<DATA_TYPE, ROWS, COLS>& result, const Matrix<DATA_TYPE, ROWS, COLS>& mat, float scalar )
    {
       for (unsigned i = 0; i < ROWS * COLS; ++i)
-         result[i] = mat[i] * scalar;
+         result.mData[i] = mat.mData[i] * scalar;
       return result;
    }
 
@@ -227,7 +227,7 @@ namespace gmtl
    inline Matrix<DATA_TYPE, ROWS, COLS>& mult( Matrix<DATA_TYPE, ROWS, COLS>& result, DATA_TYPE scalar )
    {
       for (unsigned i = 0; i < ROWS * COLS; ++i)
-         result[i] *= scalar;
+         result.mData[i] *= scalar;
       return result;
    }
 
@@ -430,7 +430,7 @@ namespace gmtl
 
 /** @} */
 
-/** @ingroup Compare 
+/** @ingroup Compare
  * @name Matrix Comparitors
  * @{
  */
@@ -441,7 +441,7 @@ namespace gmtl
    {
       for (unsigned int i = 0; i < ROWS*COLS; ++i)
       {
-         if (lhs[i] != rhs[i])
+         if (lhs.mData[i] != rhs.mData[i])
          {
             return false;
          }
@@ -472,7 +472,7 @@ namespace gmtl
 
       for (unsigned int i = 0; i < ROWS*COLS; ++i)
       {
-         if (!Math::isEqual( lhs[i], rhs[i], eps ))
+         if (!Math::isEqual( lhs.mData[i], rhs.mData[i], eps ))
             return false;
       }
       return true;
