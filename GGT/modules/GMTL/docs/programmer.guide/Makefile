@@ -1,7 +1,7 @@
-# $Id: Makefile,v 1.1 2002-04-23 22:01:19 subatomic Exp $
+# $Id: Makefile,v 1.2 2002-04-23 22:06:06 subatomic Exp $
 
 NAME =  guide
-MK_PATH=.
+MK_PATH=..
 default: html pdf chunk-html
 
 docs: html chunk-html pdf
