@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PlaneTest.h,v $
- * Date modified: $Date: 2002-02-24 00:29:27 $
- * Version:       $Revision: 1.13 $
+ * Date modified: $Date: 2002-03-10 04:00:39 $
+ * Version:       $Revision: 1.14 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -402,7 +402,7 @@ public:
       CPPUNIT_ASSERT(answer == correct_result);
 
       // XY dist to point on plane at -17.05, 0.334
-      test_point = gmtl::Point<float, 3>(-17.05,0.334,0.0);
+      test_point = gmtl::Point<float, 3>(-17.05f,0.334f,0.0f);
       CPPUNIT_ASSERT(gmtl::distance(xy_plane, test_point) == gmtl::findNearestPt(xy_plane, test_point, answer));
       CPPUNIT_ASSERT(answer == test_point);
 
