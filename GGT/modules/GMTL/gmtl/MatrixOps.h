@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOps.h,v $
- * Date modified: $Date: 2002-06-06 00:28:00 $
- * Version:       $Revision: 1.26 $
+ * Date modified: $Date: 2002-11-23 05:24:45 $
+ * Version:       $Revision: 1.27 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -350,7 +350,7 @@ namespace gmtl
 
          if ( gmtl::Math::abs( pivot) <= 1e-20)
          {
-            std::cerr << "*** pivot = %f in mat_inv. ***\n";
+            std::cerr << "*** pivot = " << pivot << " in mat_inv. ***\n";
             result.setError();
             return result;
          }
