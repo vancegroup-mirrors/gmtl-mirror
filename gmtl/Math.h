@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Math.h,v $
- * Date modified: $Date: 2004-08-03 04:17:05 $
- * Version:       $Revision: 1.38 $
+ * Date modified: $Date: 2004-08-19 16:50:21 $
+ * Version:       $Revision: 1.39 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -373,6 +373,42 @@ inline double sqrt( double fValue )
 {
     return double( ::sqrt( fValue ) );
 }
+
+/** Fast inverse square root.
+ */
+inline float fastInvSqrt(float x)
+{
+   const float xhalf(0.5f*x);
+   long i = *(long*)&x;
+   i = 0x5f3759df - (i>>1);    // This hides a good amount of math
+   x = *(float*)&i;
+   x = x*(1.5f - xhalf*x*x);   // Repeat for more accuracy
+   return x;
+}
+
+inline float fastInvSqrt2(float x)
+{
+   const float xhalf(0.5f*x);
+   long i = *(long*)&x;
+   i = 0x5f3759df - (i>>1);    // This hides a good amount of math
+   x = *(float*)&i;
+   x = x*(1.5f - xhalf*x*x);   // Repeat for more accuracy
+   x = x*(1.5f - xhalf*x*x);
+   return x;
+}
+
+inline float fastInvSqrt3(float x)
+{
+   const float xhalf(0.5f*x);
+   long i = *(long*)&x;
+   i = 0x5f3759df - (i>>1);    // This hides a good amount of math
+   x = *(float*)&i;
+   x = x*(1.5f - xhalf*x*x);   // Repeat for more accuracy
+   x = x*(1.5f - xhalf*x*x);
+   x = x*(1.5f - xhalf*x*x);
+   return x;
+}
+
 
 //----------------------------------------------------------------------------
 /**

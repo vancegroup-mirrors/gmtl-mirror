@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MathTest.cpp,v $
- * Date modified: $Date: 2003-02-26 20:13:48 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2004-08-19 16:50:22 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -22,7 +22,7 @@
 * License as published by the Free Software Foundation; either
 * version 2.1 of the License, or (at your option) any later version.
 *
-* This library is distributed in the hope that it will be useful, 
+* This library is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 * Lesser General Public License for more details.
@@ -38,6 +38,7 @@
 #include <cppunit/extensions/MetricRegistry.h>
 
 #include <gmtl/Math.h>
+#include <iostream>
 
 namespace gmtlTest
 {
@@ -80,7 +81,7 @@ namespace gmtlTest
    void testZeroClamp()
    {
       T val;
-      
+
       val = T(0.5);
       CPPUNIT_ASSERT( gmtl::Math::zeroClamp(val) == val );
       CPPUNIT_ASSERT( gmtl::Math::zeroClamp(val, T(0.49)) == val );
@@ -147,4 +148,114 @@ namespace gmtlTest
    {
       testTimingZeroClamp<double>();
    }
+
+   void MathMetricTest::testFastInvSqrt()
+   {
+
+      /*
+      std::cout << "--- Inverse sqrts ---" << std::endl;
+      for(float x=0.001;x<10.0f;x+=0.05f)
+      {
+         std::cout << x << ", "
+                   << 1.0/gmtl::Math::sqrt(x) << ", "
+                   << gmtl::Math::fastInvSqrt(x) << ", "
+                   << gmtl::Math::fastInvSqrt2(x) << ", "
+                   << gmtl::Math::fastInvSqrt3(x) << std::endl;
+      }
+
+      std::cout << "---- more ----" << std::endl;
+      for(float x=1;x<10000.0f;x+=100.0f)
+      {
+         std::cout << x << ", "
+                   << 1.0/gmtl::Math::sqrt(x) << ", "
+                   << gmtl::Math::fastInvSqrt(x) << ", "
+                   << gmtl::Math::fastInvSqrt2(x) << ", "
+                   << gmtl::Math::fastInvSqrt3(x) << std::endl;
+      }
+      */
+
+      const long iters(100000);
+
+      {
+         // stdInvSqrt
+         float use_val(0);
+         float val(0.001f);
+
+        CPPUNIT_METRIC_START_TIMING();
+        for (long iter = 0; iter < iters; ++iter)
+        {
+           val += 0.05f;
+           use_val += (1.0f/gmtl::Math::sqrt(val));
+        }
+
+        CPPUNIT_METRIC_STOP_TIMING();
+        std::string typeName = std::string("MathTest/stdInvSqrt");
+        CPPUNIT_ASSERT_METRIC_TIMING_LE(typeName, iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+        // make sure the compiler doesn't optimize out use_val
+        CPPUNIT_ASSERT( use_val > 0 );
+      }
+
+      {
+         // fastInvSqrt
+         float use_val(0);
+         float val(0.001f);
+
+        CPPUNIT_METRIC_START_TIMING();
+        for (long iter = 0; iter < iters; ++iter)
+        {
+           val += 0.05f;
+           use_val += gmtl::Math::fastInvSqrt(val);
+        }
+
+        CPPUNIT_METRIC_STOP_TIMING();
+        std::string typeName = std::string("MathTest/fastInvSqrt");
+        CPPUNIT_ASSERT_METRIC_TIMING_LE(typeName, iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+        // make sure the compiler doesn't optimize out use_val
+        CPPUNIT_ASSERT( use_val > 0 );
+      }
+
+      {
+         // fastInvSqrt2
+         float use_val(0);
+         float val(0.001f);
+
+        CPPUNIT_METRIC_START_TIMING();
+        for (long iter = 0; iter < iters; ++iter)
+        {
+           val += 0.05f;
+           use_val += gmtl::Math::fastInvSqrt2(val);
+        }
+
+        CPPUNIT_METRIC_STOP_TIMING();
+        std::string typeName = std::string("MathTest/fastInvSqrt2");
+        CPPUNIT_ASSERT_METRIC_TIMING_LE(typeName, iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+        // make sure the compiler doesn't optimize out use_val
+        CPPUNIT_ASSERT( use_val > 0 );
+      }
+
+      {
+         // fastInvSqrt3
+         float use_val(0);
+         float val(0.001f);
+
+        CPPUNIT_METRIC_START_TIMING();
+        for (long iter = 0; iter < iters; ++iter)
+        {
+           val += 0.05f;
+           use_val += gmtl::Math::fastInvSqrt3(val);
+        }
+
+        CPPUNIT_METRIC_STOP_TIMING();
+        std::string typeName = std::string("MathTest/fastInvSqrt3");
+        CPPUNIT_ASSERT_METRIC_TIMING_LE(typeName, iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+        // make sure the compiler doesn't optimize out use_val
+        CPPUNIT_ASSERT( use_val > 0 );
+      }
+
+   }
+
 }

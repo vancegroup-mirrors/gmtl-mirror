@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MathTest.h,v $
- * Date modified: $Date: 2003-02-26 20:13:49 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2004-08-19 16:50:22 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -22,7 +22,7 @@
 * License as published by the Free Software Foundation; either
 * version 2.1 of the License, or (at your option) any later version.
 *
-* This library is distributed in the hope that it will be useful, 
+* This library is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 * Lesser General Public License for more details.
@@ -48,7 +48,6 @@ namespace gmtlTest
       CPPUNIT_TEST(testSignf);
       CPPUNIT_TEST(testZeroClampf);
       CPPUNIT_TEST(testZeroClampd);
-
       CPPUNIT_TEST_SUITE_END();
 
    public:
@@ -57,6 +56,7 @@ namespace gmtlTest
       void testSignf();
       void testZeroClampf();
       void testZeroClampd();
+
    };
 
    class MathMetricTest : public CppUnit::TestFixture
@@ -65,12 +65,14 @@ namespace gmtlTest
 
       CPPUNIT_TEST(testTimingZeroClampf);
       CPPUNIT_TEST(testTimingZeroClampd);
+      CPPUNIT_TEST(testFastInvSqrt);
 
       CPPUNIT_TEST_SUITE_END();
 
    public:
       void testTimingZeroClampf();
       void testTimingZeroClampd();
+      void testFastInvSqrt();
    };
 }
 
