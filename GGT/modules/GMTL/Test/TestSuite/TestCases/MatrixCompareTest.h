@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixCompareTest.h,v $
- * Date modified: $Date: 2002-02-12 22:41:27 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-02-15 21:50:19 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -173,8 +173,7 @@ public:
    {
       // Test overhead of creation
       const long iters(400000);
-      CPPUNIT_METRIC_START_TIMING();
-
+      
       gmtl::Matrix<float, 1, 1> src_mat11;
       gmtl::Matrix<float, 2, 2> src_mat22;
       gmtl::Matrix<float, 3, 3> src_mat33;
@@ -199,6 +198,8 @@ public:
       src_mat44[15] = 3.0f;
       src_mat101[9] = 1.0f;
       
+      CPPUNIT_METRIC_START_TIMING();
+
       bool result = false;
       for( long iter=0;iter<iters; ++iter)
       {
@@ -211,15 +212,14 @@ public:
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixTest/matOpEqualityTest", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixCompareTest/matOpEqualityTest", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
    
    void testMatTimingOpNotEqualityTest()
    {
       // Test overhead of creation
       const long iters(400000);
-      CPPUNIT_METRIC_START_TIMING();
-
+      
       gmtl::Matrix<float, 1, 1> src_mat11;
       gmtl::Matrix<float, 2, 2> src_mat22;
       gmtl::Matrix<float, 3, 3> src_mat33;
@@ -244,6 +244,8 @@ public:
       src_mat44[15] = 3.0f;
       src_mat101[9] = 1.0f;
       
+      CPPUNIT_METRIC_START_TIMING();
+
       bool result = false;
       for( long iter=0;iter<iters; ++iter)
       {
@@ -256,15 +258,14 @@ public:
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixTest/matOpNotEqualityTest", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixCompareTest/matOpNotEqualityTest", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
    
    void testMatTimingIsEqualTest()
    {
       // Test overhead of creation
       const long iters(400000);
-      CPPUNIT_METRIC_START_TIMING();
-
+      
       gmtl::Matrix<float, 1, 1> src_mat11;
       gmtl::Matrix<float, 2, 2> src_mat22;
       gmtl::Matrix<float, 3, 3> src_mat33;
@@ -289,6 +290,8 @@ public:
       src_mat44[15] = 3.0f;
       src_mat101[9] = 1.0f;
       
+      CPPUNIT_METRIC_START_TIMING();
+
       bool result = false;
       for( long iter=0;iter<iters; ++iter)
       {
@@ -301,7 +304,7 @@ public:
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixTest/matIsEqualTest", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixCompareTest/matIsEqualTest", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }   
    
    static Test* suite()
