@@ -15,6 +15,7 @@ sources = Split("""
    EulerAngleCompareTest
    IntersectionTest
    LineSegTest
+   MathTest
    MatrixClassTest
    MatrixCompareTest
    MatrixGenTest

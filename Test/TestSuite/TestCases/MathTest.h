@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MathTest.h,v $
- * Date modified: $Date: 2002-11-26 05:10:28 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2003-02-06 02:09:15 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -32,122 +32,28 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 *
  ************************************************************ ggt-cpr end */
-#ifndef _GMTL_MATHTEST_H_
-#define _GMTL_MATHTEST_H_
+#ifndef _GMTL_MATH_TEST_H_
+#define _GMTL_MATH_TEST_H_
 
-#include <iostream>
-
-#include <cppunit/TestCase.h>
-#include <cppunit/TestSuite.h>
-#include <cppunit/TestCaller.h>
-
-#include <gmtl/Math.h>
+#include <cppunit/extensions/HelperMacros.h>
 
 namespace gmtlTest
 {
-
-class MathTest : public CppUnit::TestCase
-{
-public:
-   MathTest( std::string name = "MathTest" )
-   : CppUnit::TestCase (name)
-   {}
-
-   virtual ~MathTest()
-   {}
-
-   virtual void setUp()
-   {}
-
-   virtual void tearDown()
+   class MathTest : public CppUnit::TestFixture
    {
-   }
+      CPPUNIT_TEST_SUITE(MathTest);
 
-   void testQuadraticFormula()
-   {
-      float r1, r2;
+      CPPUNIT_TEST(testQuadraticFormula);
+      CPPUNIT_TEST(testZeroClampf);
+      CPPUNIT_TEST(testZeroClampd);
 
-      // Real roots
-      CPPUNIT_ASSERT(gmtl::Math::quadraticFormula(r1, r2, 1.0f, 3.0f, 2.0f));
-      CPPUNIT_ASSERT(r1 == -1);
-      CPPUNIT_ASSERT(r2 == -2);
+      CPPUNIT_TEST_SUITE_END();
 
-      CPPUNIT_ASSERT(gmtl::Math::quadraticFormula(r1, r2, 1.0f, 5.0f, 6.0f));
-      CPPUNIT_ASSERT(r1 == -2);
-      CPPUNIT_ASSERT(r2 == -3);
-
-      // Imaginary roots
-      CPPUNIT_ASSERT(! gmtl::Math::quadraticFormula(r1, r2, 1.0f, 2.0f, 3.0f));
-   }
-
-   template< class T >
-   void testZeroClamp()
-   {
-      T val;
-      
-      val = T(0.5);
-      CPPUNIT_ASSERT( gmtl::Math::zeroClamp(val) == val );
-      CPPUNIT_ASSERT( gmtl::Math::zeroClamp(val, T(0.49)) == val );
-      CPPUNIT_ASSERT( gmtl::Math::zeroClamp(val, T(0.50)) == T(0) );
-      CPPUNIT_ASSERT( gmtl::Math::zeroClamp(val, T(0.51)) == T(0) );
-
-      val = T(25.0);
-      CPPUNIT_ASSERT( gmtl::Math::zeroClamp(val) == val );
-      CPPUNIT_ASSERT( gmtl::Math::zeroClamp(val, T(24.9)) == val );
-      CPPUNIT_ASSERT( gmtl::Math::zeroClamp(val, T(25.0)) == T(0) );
-      CPPUNIT_ASSERT( gmtl::Math::zeroClamp(val, T(25.1)) == T(0) );
-
-      // test performance
-      const long iters(400000);
-      T use_val(0);
-      val = T(0);
-
-      CPPUNIT_METRIC_START_TIMING();
-      for (long iter = 0; iter < iters; ++iter)
-      {
-         val += T(0.5);
-         use_val += gmtl::Math::zeroClamp( val, T(0.4) );
-         use_val += gmtl::Math::zeroClamp( val, T(0.2) );
-      }
-
-      CPPUNIT_METRIC_STOP_TIMING();
-      std::string typeName = std::string("MathTest/ZeroClamp[") + std::string(typeid(T).name()) + std::string("]");
-      CPPUNIT_ASSERT_METRIC_TIMING_LE(typeName, iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
-
-      // make sure the compiler doesn't optimize out use_val
-      CPPUNIT_ASSERT( use_val > 0 );
-   }
-
-   static CppUnit::Test* suite()
-   {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("MathTest");
-      test_suite->addTest(new CppUnit::TestCaller<MathTest>("testQuadraticFormula", &MathTest::testQuadraticFormula));
-// work around buggy VC7
-#ifndef _WIN32
-      test_suite->addTest(new CppUnit::TestCaller<MathTest>("testZeroClampFloat", &MathTest::testZeroClamp<float>));
-      test_suite->addTest(new CppUnit::TestCaller<MathTest>("testZeroClampDouble", &MathTest::testZeroClamp<double>));
-#else
-      test_suite->addTest(new CppUnit::TestCaller<MathTest>("testZeroClampFloat", MathTest::testZeroClamp<float>));
-      test_suite->addTest(new CppUnit::TestCaller<MathTest>("testZeroClampDouble", MathTest::testZeroClamp<double>));
-#endif // ! _WIN32
-
-      return test_suite;
-   }
-
-   static CppUnit::Test* perfSuite()
-   {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("MathTiming");
-      return test_suite;
-   }
-   
-   static CppUnit::Test* interactiveSuite()
-   {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveThreadTest");
-      //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
-      return test_suite;
-   }
-};
-
-} // namespace gmtlTest
+   public:
+      void testQuadraticFormula();
+      void testZeroClampf();
+      void testZeroClampd();
+   };
+}
 
 #endif
