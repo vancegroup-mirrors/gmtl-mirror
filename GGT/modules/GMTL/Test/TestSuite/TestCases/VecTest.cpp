@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.cpp,v $
- * Date modified: $Date: 2004-09-16 19:40:33 $
- * Version:       $Revision: 1.14 $
+ * Date modified: $Date: 2004-09-22 20:39:21 $
+ * Version:       $Revision: 1.15 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -1085,7 +1085,7 @@ namespace gmtlTest
 
 
    // ---- Vec specific functions --- //
-   
+
    void VecTest::testReflect()
    {
       {
@@ -1108,7 +1108,7 @@ namespace gmtlTest
       gmtl::reflect( res, v3, n3 );
       CPPUNIT_ASSERT( gmtl::isEqual( res, ex3, eps ) == true );
       }
-      
+
       {
       gmtl::Vec<float,3> v1(1,1,1);  // point or vec...
       gmtl::Vec<float,3> v2(3,1,2);
@@ -1130,7 +1130,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( gmtl::isEqual( res, ex3, eps ) == true );
       }
    }
-   
+
    void VecTest::testDot()
    {
       gmtl::Vec<float,3> v1(1,0,0);
@@ -1413,7 +1413,7 @@ namespace gmtlTest
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/CrossOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
-   
+
    void VecTest::testLerp()
    {
       const float eps = 0.0001f;
@@ -1493,5 +1493,5 @@ namespace gmtlTest
       // Make sure the compiler doesn't optimize out
       CPPUNIT_ASSERT( result[2] != 1234.5f );
    }
-   
+
 }
