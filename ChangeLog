@@ -1,5 +1,7 @@
 DATE       AUTHOR       CHANGE
 ---------- ------------ -------------------------------------------------------
+2004-12-08 allenb       Added new isInVolumeExclusive method for AABox.
+                        NEW VERSION: 0.4.6
 2004-11-25 allenb       Disable vector creation counting.  Only use this
                         when testing meta programming.  To much overhead.
                         NEW VERSION: 0.4.5

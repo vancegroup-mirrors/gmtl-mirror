@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Containment.h,v $
- * Date modified: $Date: 2004-09-16 19:40:35 $
- * Version:       $Revision: 1.15 $
+ * Date modified: $Date: 2004-12-08 22:29:45 $
+ * Version:       $Revision: 1.16 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -320,7 +320,7 @@ bool isOnVolume( const Sphere<DATA_TYPE>& container,
 //-----------------------------------------------------------------------------
 
 /**
- * Tests if the given point is inside or on the surface of the given AABox
+ * Tests if the given point is inside (or on) the surface of the given AABox
  * volume.
  *
  * @param container  the AABox to test against
@@ -328,7 +328,7 @@ bool isOnVolume( const Sphere<DATA_TYPE>& container,
  *
  * @return  true if pt is inside container, false otherwise
  */
-template< class DATA_TYPE >
+template< class DATA_TYPE>
 bool isInVolume(const AABox<DATA_TYPE>& container,
                 const Point<DATA_TYPE, 3>& pt)
 {
@@ -346,6 +346,38 @@ bool isInVolume(const AABox<DATA_TYPE>& container,
       return false;
    }
 }
+
+/**
+ * Tests if the given point is inside (not on) the surface of the given AABox
+ * volume.  This method is "exclusive" because it does not consider the surface
+ * to be a part of the space.
+ *
+ * @param container  the AABox to test against
+ * @param pt         the point to test with
+ *
+ * @return  true if pt is inside container (but not on surface), false otherwise
+ */
+template< class DATA_TYPE>
+bool isInVolumeExclusive(const AABox<DATA_TYPE>& container,
+                const Point<DATA_TYPE, 3>& pt)
+{
+   if (! container.isEmpty())
+   {
+      return ( pt[0] > container.mMin[0] &&
+               pt[1] > container.mMin[1] &&
+               pt[2] > container.mMin[2] &&
+               pt[0] < container.mMax[0] &&
+               pt[1] < container.mMax[1] &&
+               pt[2] < container.mMax[2]);
+   }
+   else
+   {
+      return false;
+   }
+}
+
+
+
 
 /**
  * Tests if the given AABox is completely inside or on the surface of the given
