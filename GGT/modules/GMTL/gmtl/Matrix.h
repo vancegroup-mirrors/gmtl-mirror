@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Matrix.h,v $
- * Date modified: $Date: 2002-02-15 21:46:42 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2002-02-19 23:18:46 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -69,6 +69,8 @@ template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
 class Matrix
 {
 public:
+   typedef DATA_TYPE datatype;
+
    enum XformState
    {
       IDENTITY = 1, 
@@ -112,6 +114,22 @@ public:
       mData[1] = v10;
       mData[2] = v01;
       mData[3] = v11;
+      mState = FULL;
+   }
+   
+   /** element wise setter for 2x3
+    * TODO: needs mp!!
+    */
+   void set( DATA_TYPE v00, DATA_TYPE v01, DATA_TYPE v02,
+             DATA_TYPE v10, DATA_TYPE v11, DATA_TYPE v12  )
+   {
+      ggtASSERT( ROWS == 2 && COLS == 3 ); // could be at compile time...
+      mData[0] = v00;
+      mData[1] = v10;
+      mData[2] = v01;
+      mData[3] = v11;
+      mData[4] = v02;
+      mData[5] = v12;
       mState = FULL;
    }
    
@@ -308,6 +326,8 @@ public:
 
 typedef Matrix<float, 2, 2> Matrix22f;
 typedef Matrix<double, 2, 2> Matrix22d;
+typedef Matrix<float, 2, 3> Matrix23f;
+typedef Matrix<double, 2, 3> Matrix23d;
 typedef Matrix<float, 3, 3> Matrix33f;
 typedef Matrix<double, 3, 3> Matrix33d;
 typedef Matrix<float, 3, 4> Matrix34f;
@@ -320,6 +340,12 @@ const Matrix22f MAT_IDENTITY22F = Matrix22f();
 
 /** 64bit floating point 2x2 identity matrix */
 const Matrix22d MAT_IDENTITY22D = Matrix22d();
+
+/** 32bit floating point 2x2 identity matrix */
+const Matrix23f MAT_IDENTITY23F = Matrix23f();  
+
+/** 64bit floating point 2x2 identity matrix */
+const Matrix23d MAT_IDENTITY23D = Matrix23d();
 
 /** 32bit floating point 3x3 identity matrix */
 const Matrix33f MAT_IDENTITY33F = Matrix33f();  
