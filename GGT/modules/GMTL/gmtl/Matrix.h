@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Matrix.h,v $
- * Date modified: $Date: 2004-09-22 20:38:50 $
- * Version:       $Revision: 1.36 $
+ * Date modified: $Date: 2004-10-27 18:59:51 $
+ * Version:       $Revision: 1.37 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -135,6 +135,14 @@ template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
 class Matrix
 {
 public:
+   // This is a hack to work around a bug with GCC 3.3 on Mac OS X where
+   // boost::is_polymorphic returns a false positive.  The details can be
+   // found in the Boost.Python FAQ:
+   //    http://www.boost.org/libs/python/doc/v2/faq.html#macosx
+#if defined(__MACH__) && defined(__APPLE_CC__) && __APPLE_CC__ <= 1666
+   bool dummy_;
+#endif
+
    /** use this to declare single value types of the same type as this matrix.
     */
    typedef DATA_TYPE DataType;
