@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: CoordGenTest.cpp,v $
- * Date modified: $Date: 2002-03-20 22:54:49 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-03-20 23:00:17 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -46,19 +46,22 @@ namespace gmtlTest
       gmtl::Matrix44f mat;
       gmtl::Coord<float, 3, 3> q1;
       
+      // test translation with makeCoord
+      /// @todo test rotation
       mat = gmtl::makeTrans<gmtl::Matrix44f>( gmtl::Vec3f( 1.0f, 2.0f, 3.0f ) );
       q1 = gmtl::makeCoord<gmtl::Coord<float, 3, 3> >( mat, order );
       CPPUNIT_ASSERT( q1.getPos()[0] == 1.0f );
       CPPUNIT_ASSERT( q1.getPos()[1] == 2.0f );
       CPPUNIT_ASSERT( q1.getPos()[2] == 3.0f );
       
+      // test translation with setCoord
+      /// @todo test rotation
       mat = gmtl::makeTrans<gmtl::Matrix44f>( gmtl::Vec3f( 4.0f, 5.0f, 6.0f ) );
       gmtl::setCoord( q1, mat, order );
       CPPUNIT_ASSERT( q1.getPos()[0] == 4.0f );
       CPPUNIT_ASSERT( q1.getPos()[1] == 5.0f );
       CPPUNIT_ASSERT( q1.getPos()[2] == 6.0f );
 
-      /// @todo test rotation
       
       // make sure this compiles...
       ///@todo testme
@@ -69,10 +72,20 @@ namespace gmtlTest
    {
       gmtl::RotationOrder order = gmtl::XYZ;
       gmtl::Matrix44f mat;
-      gmtl::Coord<float, 3, 3> q1;
+      gmtl::Vec3f trans( 1, 2, 3 );
+      gmtl::Vec3f rot( 4, 5, 6 );
+      gmtl::Coord<float, 3, 3> q1( trans, rot );
     
-      ///@todo testme
-      mat = gmtl::makeMatrix<gmtl::Matrix44f >( q1, order );
+      // test translation with makeMatrix
+      /// @todo test rotation
+      mat = gmtl::makeMatrix<gmtl::Matrix44f>( q1, order );
+      
+      // test translation 
+      gmtl::Vec3f v2 = gmtl::makeTrans<gmtl::Vec3f>( mat );
+      CPPUNIT_ASSERT( v2 == trans );
+      
+      ///@todo test rotation
+      
       
       // make sure this compiles...
       ///@todo testme
