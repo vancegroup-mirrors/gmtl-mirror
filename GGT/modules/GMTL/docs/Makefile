@@ -23,8 +23,7 @@ ref-latex rl:
 ref-pdf rp: rl
 	-rm -r pdf
 	-mkdir  pdf
-	cd latex && make ps && ps2pdf *.ps ../pdf/ref-guide.pdf
-	-rm -r latex
+	cd latex && make ps && ps2pdf *.ps ../pdf/ref-guide.pdf && rm -r latex
 
 man ref-man rm manpage m:
 	doxygen gmtl.man.doxy
@@ -51,7 +50,17 @@ install:
 	-cp programmer.guide/guide.pdf $(prefix)/gmtlProgrammersGuide-$(version).pdf
 	-mkdir $(prefix)/gmtlProgrammersGuide-$(version)-html
 	-cp programmer.guide/guide.html $(prefix)/gmtlProgrammersGuide-$(version)-html/index.html
-         
+
+tarballname ?=gmtldocs-$(version)
+tempdirname ?=temp-gmtldoc16981418215
+tarball:
+	-mkdir $(tempdirname)
+	$(MAKE) prefix=$(tempdirname)/$(tarballname) install
+	cd $(tempdirname) && tar -zcvf $(tarballname).tgz $(tarballname) && mv $(tarballname).tgz ../ && rm $(tempdirname)
+
 clean c:
-	-rm -rf html man pdf latex installed
+	-rm -rf html man pdf latex installed tempdirname
 	-cd programmer.guide && gmake clean clobber
+
+clobber:
+	-rm $(tarballname).tgz
