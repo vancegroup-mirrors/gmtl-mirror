@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2004-04-13 19:50:53 $
- * Version:       $Revision: 1.83 $
+ * Date modified: $Date: 2004-09-16 14:58:42 $
+ * Version:       $Revision: 1.83.2.1 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -560,32 +560,32 @@ namespace gmtl
     *  @result: set a projection matrix (similar to glFrustum).
     */
    template <typename T, unsigned ROWS, unsigned COLS >
-   inline Matrix<T, ROWS, COLS>& setFrustum( Matrix<T, ROWS, COLS>& result, 
-                                                   T left, T top, T right, 
+   inline Matrix<T, ROWS, COLS>& setFrustum( Matrix<T, ROWS, COLS>& result,
+                                                   T left, T top, T right,
                                                    T bottom, T nr, T fr )
    {
       result.mData[0] = ( T( 2.0 ) * nr ) / ( right - left );
       result.mData[1] = T( 0.0 );
       result.mData[2] = T( 0.0 );
       result.mData[3] = T( 0.0 );
-                  
+
       result.mData[4] = T( 0.0 );
       result.mData[5] = ( T( 2.0 ) * nr ) / ( top - bottom );
       result.mData[6] = T( 0.0 );
       result.mData[7] = T( 0.0 );
-                                  
+
       result.mData[8] = ( right + left ) / ( right - left );
       result.mData[9] = ( top + bottom ) / ( top - bottom );
       result.mData[10] = -( fr + nr ) / ( fr - nr );
       result.mData[11] = T( -1.0 );
-   
+
       result.mData[12] = T( 0.0 );
       result.mData[13] = T( 0.0 );
       result.mData[14] = -( T( 2.0 ) * fr * nr ) / ( fr - nr );
       result.mData[15] = T( 0.0 );
 
       result.mState = Matrix<T, ROWS, COLS>::FULL; // track state
-      
+
       return result;
    }
 
@@ -596,12 +596,12 @@ namespace gmtl
     *  @result: set a orthographic matrix (similar to glOrtho).
     */
    template <typename T, unsigned ROWS, unsigned COLS >
-   inline Matrix<T, ROWS, COLS>& setOrtho( Matrix<T, ROWS, COLS>& result, 
-                                          T left, T top, T right, 
+   inline Matrix<T, ROWS, COLS>& setOrtho( Matrix<T, ROWS, COLS>& result,
+                                          T left, T top, T right,
                                           T bottom, T nr, T fr )
    {
-      result.mData[1] = result.mData[2] = result.mData[3] = 
-      result.mData[4] = result.mData[6] = result.mData[7] = 
+      result.mData[1] = result.mData[2] = result.mData[3] =
+      result.mData[4] = result.mData[6] = result.mData[7] =
       result.mData[8] = result.mData[9] = result.mData[11] = T(0);
 
       T rl_inv = T(1) / (right - left);
@@ -619,38 +619,48 @@ namespace gmtl
 
       return result;
    }
- 
+
    /** Set a symmetric perspective projection matrix
-    * @param fovy 
-    *   The field of view angle, in degrees, about the y-axis. 
-    * @param aspect 
-    *   The aspect ratio that determines the field of view about the x-axis. 
+    * @param fovy
+    *   The field of view angle, in degrees, about the y-axis.
+    * @param aspect
+    *   The aspect ratio that determines the field of view about the x-axis.
     *   The aspect ratio is the ratio of x (width) to y (height).
-    * @param zNear 
-    *   The distance from the viewer to the near clipping plane (always positive). 
-    * @param zFar 
-    *   The distance from the viewer to the far clipping plane (always positive). 
-    * @result Set matrix to perspective transform 
+    * @param zNear
+    *   The distance from the viewer to the near clipping plane (always positive).
+    * @param zFar
+    *   The distance from the viewer to the far clipping plane (always positive).
+    * @result Set matrix to perspective transform
     */
    template <typename T, unsigned COLS, unsigned ROWS >
-   inline Matrix<T, ROWS, COLS>& setPerspective( Matrix<T, ROWS, COLS>& result, 
+   inline Matrix<T, ROWS, COLS>& setPerspective( Matrix<T, ROWS, COLS>& result,
                                                  T fovy, T aspect, T nr, T fr )
    {
       gmtlASSERT( nr > 0 && fr > nr && "invalid near and far values" );
       T theta = Math::deg2Rad( fovy * T( 0.5 ) );
       T tangentTheta = Math::tan( theta );
-      
+
       // tan(theta) = right / nr
       // top = tan(theta) * nr
       // right = tan(theta) * nr * aspect
-      
+
       T top = tangentTheta * nr;
       T right = top * aspect; // aspect determines the fieald of view in the x-axis
-      
+
       // TODO: args need to match...
       return setFrustum( result, -right, top, right, -top, nr, fr );
    }
 
+
+   /*
+   template< typename DATA_TYPE, unsigned ROWS, unsigned COLS, unsigned SIZE, typename REP >
+   inline Matrix<DATA_TYPE, ROWS, COLS>& setTrans( Matrix<DATA_TYPE, ROWS, COLS>& result,
+                                                   const VecBase<DATA_TYPE, SIZE, REP>& trans )
+   {
+      const Vec<DATA_TYPE,SIZE,meta::DefaultVecTag> temp_vec(trans);
+      return setTrans(result,trans);
+   }
+   */
 
    /** Set matrix translation from vec.
     * @pre if making an n x n matrix, then for
@@ -661,9 +671,9 @@ namespace gmtl
     *    - <b>vector has scale component:</b> SIZE of vector needs to equal number of Matrix ROWS + 1
     * @post if preconditions are not met, then function is undefined (will not compile)
     */
-   template< typename DATA_TYPE, unsigned ROWS, unsigned COLS, unsigned SIZE >
+   template< typename DATA_TYPE, unsigned ROWS, unsigned COLS, unsigned SIZE, typename REP >
    inline Matrix<DATA_TYPE, ROWS, COLS>& setTrans( Matrix<DATA_TYPE, ROWS, COLS>& result,
-                                                   const Vec<DATA_TYPE, SIZE>& trans )
+                                                   const VecBase<DATA_TYPE, SIZE, REP>& trans )
    {
       /* @todo make this a compile time assert... */
       // if n x n   then (homogeneous case) vecsize == rows-1 or (scale component case) vecsize == rows
@@ -676,8 +686,9 @@ namespace gmtl
       if ((ROWS == COLS && SIZE == ROWS) /* Square matrix and vec so assume homogeneous vector. ex. 4x4 with vec 4 */
           || (COLS == (ROWS+1) && SIZE == (ROWS+1)))  /* ex: 3x4 with vec4 */
       {
+         DATA_TYPE homog_val = trans[SIZE-1];
          for (unsigned x = 0; x < COLS - 1; ++x)
-            result( x, COLS - 1 ) = trans[x] / trans[SIZE-1];
+            result( x, COLS - 1 ) = trans[x] / homog_val;
       }
 
       // non-homogeneous case...
@@ -727,7 +738,7 @@ namespace gmtl
    }
 
    /** Create a scale matrix.
-    *  @param scale  You'll typically pass in a Vec or a float here.  
+    *  @param scale  You'll typically pass in a Vec or a float here.
     *  @seealso      setScale() for all possible argument types for this function.
     */
    template <typename MATRIX_TYPE, typename INPUT_TYPE>
