@@ -1,7 +1,9 @@
 #ifndef _SINGLETON_TEMPLATE_H_
 #define _SINGLETON_TEMPLATE_H_
 
-#include <gfxConfig.h>
+// may need to include packageConfig.h file
+// Removed the old gfx one
+
 #include <Threads/Mutex.h>
 #include <Threads/Guard.h>
 #include <iostream>
