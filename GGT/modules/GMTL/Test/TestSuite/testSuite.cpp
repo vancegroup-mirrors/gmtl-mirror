@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: testSuite.cpp,v $
- * Date modified: $Date: 2002-01-26 23:10:48 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-01-26 23:55:36 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -32,6 +32,14 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 *
  ************************************************************ ggt-cpr end */
+
+//------------------------------------------------------
+// Test suite for GMTL
+//
+// This is designed to test EVERY capability of GMTL
+//
+//------------------------------------------------------
+
 #include <cppunit/TestSuite.h>
 #include <cppunit/TextTestRunner.h>
 #include <cppunit/extensions/MetricRegistry.h>
