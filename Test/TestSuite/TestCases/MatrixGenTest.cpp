@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixGenTest.cpp,v $
- * Date modified: $Date: 2002-03-20 23:33:19 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-04-10 14:39:01 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -347,6 +347,8 @@ namespace gmtlTest
       }
    }
 
+   /// @todo test out getRot (just like this set rot function, but reversed)...
+   
    void MatrixGenTest::testMatrixsetRot()
    {
       const float eps = 0.01f;
@@ -500,9 +502,72 @@ namespace gmtlTest
 
    }
 
-   /// @todo test out getRot (just like this set rot function, but reversed)...
+   void MatrixGenTest::testMatrixgetRotEuler()
+   {
+      float eps = 0.0001f;
+      float a = 999, b = 999, c = 999;
+      gmtl::Matrix44f hi;
+      // XYZ
+      {
+         gmtl::setRot( hi, gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f );
+         gmtl::getRot( hi, a, b, c, gmtl::XYZ );
+         std::cout<<gmtl::Math::rad2Deg( a )<<" "
+            <<gmtl::Math::rad2Deg( b )<<" "
+            <<gmtl::Math::rad2Deg( c )<<" "<<std::endl;
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( a ), 90.0f, eps ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( b ), 0.0f, eps ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( c ), 0.0f, eps ) );
 
-   
+         gmtl::setRot( hi, gmtl::Math::deg2Rad( -90.0f ), 1.0f, 0.0f, 0.0f );
+         gmtl::getRot( hi, a, b, c, gmtl::XYZ );
+         std::cout<<gmtl::Math::rad2Deg( a )<<" "
+            <<gmtl::Math::rad2Deg( b )<<" "
+            <<gmtl::Math::rad2Deg( c )<<" "<<std::endl;
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( a ), -90.0f, eps ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( b ), 0.0f, eps ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( c ), 0.0f, eps ) );
+
+         gmtl::setRot( hi, gmtl::Math::deg2Rad( 35.0f ), 0.0f, 1.0f, 0.0f );
+         gmtl::getRot( hi, a, b, c, gmtl::XYZ );
+         std::cout<<gmtl::Math::rad2Deg( a )<<" "
+            <<gmtl::Math::rad2Deg( b )<<" "
+            <<gmtl::Math::rad2Deg( c )<<" "<<std::endl;
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( a ), 0.0f, eps ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( b ), 35.0f, eps ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( c ), 0.0f, eps ) );
+      }
+      
+      // ZYX
+      {
+         gmtl::setRot( hi, gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f );
+         gmtl::getRot( hi, a, b, c, gmtl::ZYX );
+         std::cout<<gmtl::Math::rad2Deg( a )<<" "
+            <<gmtl::Math::rad2Deg( b )<<" "
+            <<gmtl::Math::rad2Deg( c )<<" "<<std::endl;
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( a ), 0.0f, eps ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( b ), 0.0f, eps ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( c ), 90.0f, eps ) );
+
+         gmtl::setRot( hi, gmtl::Math::deg2Rad( -90.0f ), 1.0f, 0.0f, 0.0f );
+         gmtl::getRot( hi, a, b, c, gmtl::ZYX );
+         std::cout<<gmtl::Math::rad2Deg( a )<<" "
+            <<gmtl::Math::rad2Deg( b )<<" "
+            <<gmtl::Math::rad2Deg( c )<<" "<<std::endl;
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( a ), 0.0f, eps ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( b ), 0.0f, eps ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( c ), -90.0f, eps ) );
+
+         gmtl::setRot( hi, gmtl::Math::deg2Rad( 35.0f ), 0.0f, 1.0f, 0.0f );
+         gmtl::getRot( hi, a, b, c, gmtl::ZYX );
+         std::cout<<gmtl::Math::rad2Deg( a )<<" "
+            <<gmtl::Math::rad2Deg( b )<<" "
+            <<gmtl::Math::rad2Deg( c )<<" "<<std::endl;
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( a ), 0.0f, eps ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( b ), 35.0f, eps ) );
+         CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( c ), 0.0f, eps ) );
+      }
+   }
+
    void MatrixGenTest::testMatrixsetRotEuler()
    {
       const float eps = 0.001f;
