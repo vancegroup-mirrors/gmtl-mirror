@@ -1,0 +1,73 @@
+/** @file gmtlfaq.doxygen
+  *
+  */
+
+/** @mainpage Generic Math Template Library FAQ
+ *  Welcome to the GMTL frequently asked questions list.
+ *
+ *
+ * 
+ *
+ *  @section General General Questions about GMTL
+ *
+ *  <b>Why do you use templated code?</b>
+ *  <b>Why do you use namespaces?</b>
+ *  <b>Why would I want to use your C math abstraction rather than the regular C math headers?
+ *  <b>What is an AABox?</b>
+ *  <b>What is an AxisAngle?</b>
+ *  <b>What is a Coord?</b>
+ *  <b>What is an EulerAngle?</b>
+ *  <b>What is a Matrix?</b>
+ *  <b>What is a Plane?</b>
+ *  <b>What is a Point?</b>
+ *  <b>What is a Quat?</b>
+ *  <b>What is a Sphere?</b>
+ *  <b>What is a Tri?</b>
+ *  <b>What is a Vec?</b>
+ *  <b>What is the difference between a point and a vector?</b>
+ *  <b>Why doesn't my vector move?</b>
+ *  <b>What is the difference between AxisAngle, EulerAngle and Quat?</b>
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *  @section Howto How Do I ...?
+ *
+ *  @subsection Vectors Vectors
+ *  <b>How do I rotate a vector?</b>
+ *  <b>How do I find the cross product of 2 vectors?</b>
+ *  <b>How do I find the dot product of 2 vectors?</b>
+ *
+ *  @subsection Matrices Matrices
+ *  <b>How do I multiply matrices?</b>
+ *  <b>How do I create a matrix?</b>
+ *  <b>How do I create a matrix from a vector?</b>
+ *  <b>How do I create a matrix from a point?</b>
+ *  <b>How do I create a matrix from a quaterion?</b>
+ *  <b>How do I create a matrix from an Euler angle?</b>
+ *  <b>How do I create a matrix from an axis angle?</b>
+ *  <b>How do I scale a matrix?</b>
+ *  <b>How do I copy a matrix?</b>
+ *  <b>How do I extract just the rotation data from a matrix?</b>
+ *  <b>How do I extract just the translation data from a matrix?</b>
+ *  <b>How do I extract the scale from a matrix?</b>
+ *  <b>How do I set a matrix to be the identity matrix?</b>
+ *  <b>How do I transform a point using a matrix?</b>
+ *  <b>How do I transform a vector using a matrix?</b>
+ *  <b>How do I use my matrix data with OpenGL?</b>
+ *  <b>How do I use my matrix data with DirectX?</b>
+ *
+ *  @subsection General General Math
+ *  <b>How do I use GMTL's C math abstraction?</b>
+ *  <b>What operations does GMTL's C math abstraction have?</b>
+ *  <b>What about PI?</b>
+ *  <b>How do I get the ceiling of a floating point number?</b>
+ *  <b>How do I convert from degrees to radians?</b>
+ *  <b>How do I convert from radians to degrees?</b>
