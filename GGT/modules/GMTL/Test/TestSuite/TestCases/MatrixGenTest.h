@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixGenTest.h,v $
- * Date modified: $Date: 2002-03-15 19:26:13 $
- * Version:       $Revision: 1.18 $
+ * Date modified: $Date: 2002-03-15 20:50:22 $
+ * Version:       $Revision: 1.19 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -396,6 +396,30 @@ public:
          gmtl::makeRot( mat2, gmtl::Math::deg2Rad( 45.0f ), 1.7f, 1.7f, 1.7f );
          CPPUNIT_ASSERT( gmtl::isEqual( mat2, mat, eps ) );
       }
+
+      // ---- Test standalone one ---- //
+      {
+         gmtl::Matrix44f mat, expected_mat;
+         gmtl::Vec3f rot_axis(1.0f, 2.0f, 3.0f);
+         gmtl::normalize(rot_axis);
+         gmtl::makeRot(expected_mat, 1.1f, rot_axis);
+         mat = gmtl::makeRot<gmtl::Matrix44f>(1.1f, rot_axis);
+         CPPUNIT_ASSERT( gmtl::isEqual( mat, expected_mat, eps ) );
+   
+         CPPUNIT_ASSERT( gmtl::isEqual( gmtl::makeRot<gmtl::Matrix44f>(1.1f, rot_axis), expected_mat, eps ) );
+      }
+
+      {
+         gmtl::Matrix34f mat, expected_mat;
+         gmtl::Vec3f rot_axis(1.0f, 2.0f, 3.0f);
+         gmtl::normalize(rot_axis);
+         gmtl::makeRot(expected_mat, 1.1f, rot_axis);
+         mat = gmtl::makeRot<gmtl::Matrix34f>(1.1f, rot_axis);
+         CPPUNIT_ASSERT( gmtl::isEqual( mat, expected_mat, eps ) );
+   
+         CPPUNIT_ASSERT( gmtl::isEqual( gmtl::makeRot<gmtl::Matrix34f>(1.1f, rot_axis), expected_mat, eps ) );
+      }
+
    }
    
    void testMatrixMakeRotEuler()
