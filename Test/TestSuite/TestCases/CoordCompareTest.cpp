@@ -8,8 +8,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: CoordCompareTest.cpp,v $
- * Date modified: $Date: 2002-03-20 22:54:49 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-06-11 21:23:33 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,6 +35,12 @@
  ************************************************************ ggt-cpr end */
 #include "CoordCompareTest.h"
 #include <cppunit/extensions/MetricRegistry.h>
+#include <gmtl/Coord.h>
+#include <gmtl/CoordOps.h>
+#include <gmtl/EulerAngle.h>
+#include <gmtl/EulerAngleOps.h>
+#include <gmtl/Vec.h>
+#include <gmtl/VecOps.h>
 
 namespace gmtlTest
 {
@@ -45,8 +51,8 @@ namespace gmtlTest
       static void go()
       {
          gmtl::Vec<T, 3> p( 1, 2, 3 );
-         gmtl::Vec<T, 3> r( 4, 5, 6 );
-         gmtl::Coord<T, 3, 3> coord1(p,r), coord2;
+         gmtl::EulerAngle<T> r( 4, 5, 6, gmtl::XYZ );
+         gmtl::Coord<gmtl::Vec<T,3>, gmtl::EulerAngle<T> > coord1(p,r), coord2;
          coord1 = coord2;
          CPPUNIT_ASSERT( coord1 == coord2 );
          CPPUNIT_ASSERT( coord2 == coord1 );
@@ -127,24 +133,24 @@ namespace gmtlTest
       // Test overhead of creation
       const long iters(400000);
 
-      gmtl::Coord<float, 3, 3> src_coord11;
-      gmtl::Coord<float, 3, 3> src_coord22;
-      gmtl::Coord<float, 3, 3> src_coord33;
-      gmtl::Coord<float, 3, 3> src_coord34;
-      gmtl::Coord<float, 3, 3> src_coord44;
-      gmtl::Coord<double, 3, 3> src_coord101;
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > src_coord11;
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > src_coord22;
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > src_coord33;
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > src_coord34;
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > src_coord44;
+      gmtl::Coord<gmtl::Vec<double,3>, gmtl::EulerAngle<double> > src_coord101;
 
       // half of them will be equal
       src_coord11.pos()[0] = 1.0f;
       src_coord22.pos()[1] = 1.0f;
       src_coord33.pos()[2] = 2.0f;
 
-      gmtl::Coord<float, 3, 3> test_coord11( src_coord11 );
-      gmtl::Coord<float, 3, 3> test_coord22( src_coord22 );
-      gmtl::Coord<float, 3, 3> test_coord33( src_coord33 );
-      gmtl::Coord<float, 3, 3> test_coord34( src_coord34 );
-      gmtl::Coord<float, 3, 3> test_coord44( src_coord44 );
-      gmtl::Coord<double, 3, 3> test_coord101( src_coord101 );
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > test_coord11( src_coord11 );
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > test_coord22( src_coord22 );
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > test_coord33( src_coord33 );
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > test_coord34( src_coord34 );
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > test_coord44( src_coord44 );
+      gmtl::Coord<gmtl::Vec<double,3>, gmtl::EulerAngle<double> > test_coord101( src_coord101 );
 
       // half will be not equal
       src_coord34.pos()[0] = 2.0f;
@@ -182,24 +188,24 @@ namespace gmtlTest
       // Test overhead of creation
       const long iters(400000);
 
-      gmtl::Coord<float, 3, 3> src_coord11;
-      gmtl::Coord<float, 3, 3> src_coord22;
-      gmtl::Coord<float, 3, 3> src_coord33;
-      gmtl::Coord<float, 3, 3> src_coord34;
-      gmtl::Coord<float, 3, 3> src_coord44;
-      gmtl::Coord<double, 3, 3> src_coord101;
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > src_coord11;
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > src_coord22;
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > src_coord33;
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > src_coord34;
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > src_coord44;
+      gmtl::Coord<gmtl::Vec<double,3>, gmtl::EulerAngle<double> > src_coord101;
 
       // half will be equal
       src_coord11.pos()[0] = 1.0f;
       src_coord22.pos()[1] = 1.0f;
       src_coord33.pos()[2] = 2.0f;
 
-      gmtl::Coord<float, 3, 3> test_coord11( src_coord11 );
-      gmtl::Coord<float, 3, 3> test_coord22( src_coord22 );
-      gmtl::Coord<float, 3, 3> test_coord33( src_coord33 );
-      gmtl::Coord<float, 3, 3> test_coord34( src_coord34 );
-      gmtl::Coord<float, 3, 3> test_coord44( src_coord44 );
-      gmtl::Coord<double, 3, 3> test_coord101( src_coord101 );
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > test_coord11( src_coord11 );
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > test_coord22( src_coord22 );
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > test_coord33( src_coord33 );
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > test_coord34( src_coord34 );
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > test_coord44( src_coord44 );
+      gmtl::Coord<gmtl::Vec<double,3>, gmtl::EulerAngle<double> > test_coord101( src_coord101 );
 
       // half will be not equal
       src_coord34.pos()[0] = 2.0f;
@@ -237,24 +243,24 @@ namespace gmtlTest
       // Test overhead of creation
       const long iters(400000);
 
-      gmtl::Coord<float, 3, 3> src_coord11;
-      gmtl::Coord<float, 3, 3> src_coord22;
-      gmtl::Coord<float, 3, 3> src_coord33;
-      gmtl::Coord<float, 3, 3> src_coord34;
-      gmtl::Coord<float, 3, 3> src_coord44;
-      gmtl::Coord<double, 3, 3> src_coord101;
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > src_coord11;
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > src_coord22;
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > src_coord33;
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > src_coord34;
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > src_coord44;
+      gmtl::Coord<gmtl::Vec<double,3>, gmtl::EulerAngle<double> > src_coord101;
 
       // half will be equal
       src_coord11.pos()[0] = 1.0f;
       src_coord22.pos()[1] = 1.0f;
       src_coord33.pos()[2] = 2.0f;
 
-      gmtl::Coord<float, 3, 3> test_coord11( src_coord11 );
-      gmtl::Coord<float, 3, 3> test_coord22( src_coord22 );
-      gmtl::Coord<float, 3, 3> test_coord33( src_coord33 );
-      gmtl::Coord<float, 3, 3> test_coord34( src_coord34 );
-      gmtl::Coord<float, 3, 3> test_coord44( src_coord44 );
-      gmtl::Coord<double, 3, 3> test_coord101( src_coord101 );
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > test_coord11( src_coord11 );
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > test_coord22( src_coord22 );
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > test_coord33( src_coord33 );
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > test_coord34( src_coord34 );
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > test_coord44( src_coord44 );
+      gmtl::Coord<gmtl::Vec<double,3>, gmtl::EulerAngle<double> > test_coord101( src_coord101 );
 
       // half will be not equal
       src_coord34.pos()[0] = 23.0f;

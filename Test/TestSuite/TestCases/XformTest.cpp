@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: XformTest.cpp,v $
- * Date modified: $Date: 2002-03-19 23:06:50 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-06-11 21:23:33 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -33,6 +33,7 @@
 *
  ************************************************************ ggt-cpr end */
 #include "XformTest.h"
+#include <gmtl/Output.h>
 
 namespace gmtlTest {
    void XformTest::testTimingXformQuatVec3()
@@ -135,9 +136,9 @@ namespace gmtlTest {
          const float eps = 0.0001f;
          gmtl::Quat<float> q1, q2, q3, qident;
          gmtl::Vec<float, 3> vec( 0.0f, 0.0f, 1.0f ), res1, res2, res3, res4, resi, vec2( 2.0f, 5.0f, 10.0f );
-         gmtl::setRot( q1, gmtl::Math::deg2Rad( 90.0f ), 0.0f, 1.0f, 0.0f );
-         gmtl::setRot( q2, gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f );
-         gmtl::setRot( q3, gmtl::Math::deg2Rad( 35.0f ), 1.0f, 1.0f, 0.0f );
+         gmtl::setRot( q1, gmtl::AxisAnglef( gmtl::Math::deg2Rad( 90.0f ), 0.0f, 1.0f, 0.0f ) );
+         gmtl::setRot( q2, gmtl::AxisAnglef( gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f ) );
+         gmtl::setRot( q3, gmtl::makeNormal( gmtl::AxisAnglef( gmtl::Math::deg2Rad( 35.0f ), 1.0f, 1.0f, 0.0f ) ) );
 
          gmtl::Vec<float, 3> ex1( 1.0f, 0.0f, 0.0f );
          gmtl::Vec<float, 3> ex2( 0.0f, -1.0f, 0.0f );
@@ -171,7 +172,7 @@ namespace gmtlTest {
 
          // make sure that xform(quat) yields same result as xform(mat).
          gmtl::Matrix<float, 4,4> mat;
-         gmtl::setRot( mat, gmtl::Math::deg2Rad( 35.0f ), 1.0f, 1.0f, 0.0f );
+         gmtl::setRot( mat, gmtl::makeNormal( gmtl::AxisAnglef( gmtl::Math::deg2Rad( 35.0f ), 1.0f, 1.0f, 0.0f ) ) );
          res8 = mat * vec2;
          CPPUNIT_ASSERT( gmtl::isEqual( ex4, res8, eps ) );
       }
@@ -181,7 +182,7 @@ namespace gmtlTest {
          float eps = 0.001f;
          const gmtl::Vec3f vec( 10.0f,100.0f,200.0f ), expected( 10.0f, -200.0f, 100.0f );
          gmtl::Quatf rot;
-         gmtl::setRot( rot, gmtl::Math::deg2Rad( 90.0f ), gmtl::makeNormal( gmtl::Vec3f( 1.0f,0.0f,0.0f ) ) );
+         gmtl::setRot( rot, gmtl::AxisAnglef( gmtl::Math::deg2Rad( 90.0f ), 1.0f,0.0f,0.0f ) );
 
          gmtl::Vec3f result;
          gmtl::xform( result, rot, vec );
@@ -198,7 +199,7 @@ namespace gmtlTest {
          float eps = 0.001f;
          const gmtl::Vec3f vec( 10.0f,-100.0f,-2000.0f ), expected( 10.0f, 2000.0f, -100.0f );
          gmtl::Quatf rot;
-         gmtl::setRot( rot, gmtl::Math::deg2Rad( 90.0f ), gmtl::makeNormal( gmtl::Vec3f( 1.0f,0.0f,0.0f ) ) );
+         gmtl::setRot( rot, gmtl::AxisAnglef( gmtl::Math::deg2Rad( 90.0f ), 1.0f,0.0f,0.0f ) );
 
          gmtl::Vec3f result1, result2;
          result1 = gmtl::makeVec( rot * gmtl::makePure( vec ) * gmtl::makeConj( rot ) );
@@ -216,7 +217,7 @@ namespace gmtlTest {
          float eps = 0.001f;
          const gmtl::Vec3f vec( 123.0f, -4.56f, 78.910f );
          gmtl::Quatf rot;
-         gmtl::setRot( rot, gmtl::Math::deg2Rad( 123.4556f ), gmtl::makeNormal( gmtl::Vec3f( -79.0f,1000.0f,234.0f ) ) );
+         gmtl::setRot( rot, gmtl::AxisAnglef( gmtl::Math::deg2Rad( 123.4556f ), gmtl::makeNormal( gmtl::Vec3f( -79.0f,1000.0f,234.0f ) ) ) );
 
          gmtl::Vec3f result1, result2;
          result1 = gmtl::makeVec( rot * gmtl::makePure( vec ) * gmtl::makeConj( rot ) );
@@ -331,7 +332,8 @@ namespace gmtlTest {
          const float eps = 0.0001f;
          const gmtl::Vec<float, 3> vec( 2.0f, 5.0f, 10.0f ), expected( 6.32707f, 0.67293f, 9.40826f );
          gmtl::Matrix<float, 4, 4> mat;
-         gmtl::setRot( mat, gmtl::Math::deg2Rad( 35.0f ), 1.0f, 1.0f, 0.0f );
+         gmtl::setRot( mat, gmtl::makeNormal( gmtl::AxisAnglef( gmtl::Math::deg2Rad( 35.0f ), 1.0f, 1.0f, 0.0f ) ) );
+         
 
          // xform a vector by a mat.  verify the rotation worked...
          gmtl::Vec<float, 3> result1;
@@ -345,7 +347,7 @@ namespace gmtlTest {
 
          // make sure that xform by quat yields same result as xform by mat.
          gmtl::Quat<float> quat;
-         gmtl::setRot( quat, gmtl::Math::deg2Rad( 35.0f ), 1.0f, 1.0f, 0.0f );
+         gmtl::setRot( quat, gmtl::makeNormal( gmtl::AxisAnglef( gmtl::Math::deg2Rad( 35.0f ), 1.0f, 1.0f, 0.0f ) ) );
 
          gmtl::Vec<float, 3> result3;
          gmtl::xform( result3, quat, vec );
@@ -621,7 +623,7 @@ namespace gmtlTest {
          const float eps = 0.0001f;
          const gmtl::Point<float, 3> vec( 2.0f, 5.0f, 10.0f ), expected( 6.32707f, 0.67293f, 9.40826f );
          gmtl::Matrix<float, 4, 4> mat;
-         gmtl::setRot( mat, gmtl::Math::deg2Rad( 35.0f ), 1.0f, 1.0f, 0.0f );
+         gmtl::setRot( mat, gmtl::makeNormal(  gmtl::AxisAnglef( gmtl::Math::deg2Rad( 35.0f ), 1.0f, 1.0f, 0.0f ) ) );
 
          // xform a vector by a mat.  verify the rotation worked...
          gmtl::Point<float, 3> result1;

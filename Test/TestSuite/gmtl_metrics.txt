@@ -860,7 +860,7 @@ gfxn3/Debug/EulerAngleTest/operator[]()                            0.0736075
 gfxn3/Debug/EulerAngleTest/set()                                   0.0682225
 gfxn3/Debug/LineSegTest/CopyConstructOverhead                      0.20276
 gfxn3/Debug/LineSegTest/DefaultCreationOverhead                    0.145368
-gfxn3/Debug/LineSegTest/EqualityCompareOverhead                    0.104985
+gfxn3/Debug/LineSegTest/EqualityCompareOverhead                    0.0970525
 gfxn3/Debug/LineSegTest/GetDirOverhead                             0.09506
 gfxn3/Debug/LineSegTest/GetOriginOverhead                          0.0932225
 gfxn3/Debug/LineSegTest/InequalityCompareOverhead                  0.104847
@@ -963,6 +963,12 @@ gfxn3/Debug/QuatCompareTest/isEquiv(quat,quat,tol)                 0.71027
 gfxn3/Debug/QuatCompareTest/operator!=                             1.31658
 gfxn3/Debug/QuatCompareTest/operator==                             1.20434
 gfxn3/Debug/QuatGenTest/getRot(quatf,f,f,f,f)                      1.53092
+gfxn3/Debug/QuatGenTest/make<quatd>(axisangled(r,vec))             2.22804
+gfxn3/Debug/QuatGenTest/make<quatd>(axisangled)                    2.25524
+gfxn3/Debug/QuatGenTest/make<quatd>(vec3d,vec3d)                   2.5604
+gfxn3/Debug/QuatGenTest/make<quatf>(axisanglef(r,vec))             2.16384
+gfxn3/Debug/QuatGenTest/make<quatf>(axisanglef)                    2.08708
+gfxn3/Debug/QuatGenTest/make<quatf>(vec3f,vec3f)                   2.30148
 gfxn3/Debug/QuatGenTest/makeConj(quatd)                            0.42838
 gfxn3/Debug/QuatGenTest/makeConj(quatf)                            0.40006
 gfxn3/Debug/QuatGenTest/makeInvert(quatd)                          0.80712
@@ -977,10 +983,15 @@ gfxn3/Debug/QuatGenTest/makeRot(quatd,vec3d,vec3d)                 2.00708
 gfxn3/Debug/QuatGenTest/makeRot(quatf,f,f,f,f)                     1.39072
 gfxn3/Debug/QuatGenTest/makeRot(quatf,f,vecf)                      1.43472
 gfxn3/Debug/QuatGenTest/makeRot(quatf,vec3f,vec3f)                 1.83832
+gfxn3/Debug/QuatGenTest/set(axisangle,quatf)                       0.75708
 gfxn3/Debug/QuatGenTest/setRot(f,f,f,f,quatf)                      1.52588
+gfxn3/Debug/QuatGenTest/setRot(quatd,axisangled(r,vec))            2.00268
+gfxn3/Debug/QuatGenTest/setRot(quatd,axisangled)                   1.8716
 gfxn3/Debug/QuatGenTest/setRot(quatd,d,d,d,d)                      1.29912
 gfxn3/Debug/QuatGenTest/setRot(quatd,d,vecd)                       1.11016
 gfxn3/Debug/QuatGenTest/setRot(quatd,vec3d,vec3d)                  1.84612
+gfxn3/Debug/QuatGenTest/setRot(quatf,axisanglef(r,vec))            1.9728
+gfxn3/Debug/QuatGenTest/setRot(quatf,axisanglef)                   1.73484
 gfxn3/Debug/QuatGenTest/setRot(quatf,f,f,f,f)                      1.17748
 gfxn3/Debug/QuatGenTest/setRot(quatf,f,vecf)                       1.17532
 gfxn3/Debug/QuatGenTest/setRot(quatf,vec3f,vec3f)                  1.61076

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: ConvertTest.cpp,v $
- * Date modified: $Date: 2002-06-06 15:16:34 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-06-11 21:23:33 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -46,7 +46,7 @@ namespace gmtlTest
       gmtl::Vec<float, 3> vec( 1.0f, 2.0f, 3.0f );
       gmtl::Quat<float> quat( 4.0f, 5.0f, 6.0f ), bok, expected( 1.0f, 2.0f, 3.0f, 0.0f );
 
-      bok = gmtl::set( quat, vec );
+      bok = gmtl::setPure( quat, vec );
       CPPUNIT_ASSERT( gmtl::isEqual( expected, quat, eps ) );
       CPPUNIT_ASSERT( gmtl::isEqual( expected, bok, eps ) );
    }
@@ -77,7 +77,8 @@ namespace gmtlTest
       CPPUNIT_ASSERT( gmtl::isEqual( quat0, quat1, eps ) );
 
       // Simple rotation around XAxis  
-      mat1 = gmtl::makeRot<gmtl::Matrix44f>(  gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f );
+      mat1 = gmtl::make<gmtl::Matrix44f>( gmtl::makeNormal( gmtl::AxisAnglef( 
+                                                gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f) ) );
       gmtl::set( quat0, mat1 ); // quat0 = mat1
       gmtl::set( mat2, quat0 ); // mat2 = quat0
       CPPUNIT_ASSERT( gmtl::isEqual( mat1, mat2, eps ) );
@@ -86,7 +87,8 @@ namespace gmtlTest
       CPPUNIT_ASSERT( gmtl::isEqual( quat0, quat1, eps ) );
 
       // more complex rotation  mat1 -> quat0 -> mat2 -> quat1
-      mat1 = gmtl::makeRot<gmtl::Matrix44f>(  gmtl::Math::deg2Rad( 123.4f ), 1.0f, 1.0f, -1.0f );
+      mat1 = gmtl::make<gmtl::Matrix44f>( gmtl::makeNormal( gmtl::AxisAnglef( 
+                                                gmtl::Math::deg2Rad( 123.4f ), 1.0f, 1.0f, -1.0f ) ) );
       gmtl::set( quat0, mat1 ); // quat0 = mat1
       gmtl::set( mat2, quat0 ); // mat2 = quat0
       CPPUNIT_ASSERT( gmtl::isEqual( mat1, mat2, eps ) );
@@ -95,7 +97,8 @@ namespace gmtlTest
       CPPUNIT_ASSERT( gmtl::isEqual( quat0, quat1, eps ) );
       
       // more complex rotation  quat0 -> mat1 -> quat1 -> mat2
-      quat0 = gmtl::makeRot<gmtl::Quatf>( gmtl::Math::deg2Rad( 123.4f ), 1.0f, 1.0f, -1.0f );
+      quat0 = gmtl::make<gmtl::Quatf>( gmtl::makeNormal( gmtl::AxisAnglef( 
+                                                gmtl::Math::deg2Rad( 123.4f ), 1.0f, 1.0f, -1.0f ) ) );
       CPPUNIT_ASSERT( gmtl::isEqual( quat0, quat1, eps ) );
       gmtl::set( mat1, quat0 ); // mat1 = quat0
       gmtl::set( quat1, mat1 ); // quat1 = mat1
@@ -105,7 +108,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( gmtl::isEqual( mat2, mat1, eps ) );
 
       // more complex rotation
-      mat1 = gmtl::makeRot<gmtl::Matrix44f>(  45.0f, -89.0f, 32.45f, gmtl::XYZ );
+      mat1 = gmtl::make<gmtl::Matrix44f>( gmtl::EulerAnglef( 45.0f, -89.0f, 32.45f, gmtl::XYZ ) );
       gmtl::set( quat0, mat1 ); // quat0 = mat1
       gmtl::set( mat2, quat0 ); // mat2 = quat0
       CPPUNIT_ASSERT( gmtl::isEqual( mat1, mat2, eps ) );
@@ -119,7 +122,7 @@ namespace gmtlTest
       for (float z = -360.0f; z < 360.0f; z += 17)
       {
          // more complex rotation
-         mat1 = gmtl::makeRot<gmtl::Matrix44f>(  x, y, z, gmtl::XYZ );
+         mat1 = gmtl::make<gmtl::Matrix44f>( gmtl::EulerAnglef( x, y, z, gmtl::XYZ ) );
          gmtl::set( quat0, mat1 ); // quat0 = mat1
          gmtl::set( mat2, quat0 ); // mat2 = quat0
          CPPUNIT_ASSERT( gmtl::isEqual( mat1, mat2, eps ) );
@@ -134,7 +137,7 @@ namespace gmtlTest
       for (float z = -360.0f; z < 360.0f; z += 20)
       {
          // more complex rotation
-         quat0 = gmtl::makeRot<gmtl::Quatf>( x, y, z, gmtl::XYZ );
+         quat0 = gmtl::make<gmtl::Quatf>( gmtl::EulerAnglef( x, y, z, gmtl::XYZ ) );
          gmtl::set( mat1, quat0 ); // quat0 = mat1
          gmtl::set( quat1, mat1 ); // mat2 = quat0
          CPPUNIT_ASSERT( gmtl::isEquiv( quat0, quat1, eps ) );

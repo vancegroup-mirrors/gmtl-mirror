@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOpsTest.cpp,v $
- * Date modified: $Date: 2002-03-19 23:06:50 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-06-11 21:23:33 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -83,24 +83,24 @@ namespace gmtlTest
       // 3D trans
       {
          gmtl::Matrix34f mat34, expected_result34;
-         gmtl::setRot( expected_result34, 0.5f, 1.0f, -1.0f, gmtl::XYZ );
+         gmtl::setRot( expected_result34, gmtl::EulerAnglef( 0.5f, 1.0f, -1.0f, gmtl::XYZ ) );
          expected_result34(0,3) = 21;
          expected_result34(1,3) = 22;
          expected_result34(2,3) = 23;
 
-         gmtl::setRot(mat34, 0.5f, 1.0f, -1.0f, gmtl::XYZ);
+         gmtl::setRot(mat34, gmtl::EulerAnglef( 0.5f, 1.0f, -1.0f, gmtl::XYZ ) );
          gmtl::setTrans( mat34, gmtl::Vec3f( 21, 22, 23 ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result34, mat34, eps ) );
       }
       // 3D rot/trans set by homogeneous vector
       {
          gmtl::Matrix34f mat34, expected_result34;
-         gmtl::setRot(expected_result34, 0.5f, 1.0f, -1.0f, gmtl::XYZ);
+         gmtl::setRot(expected_result34, gmtl::EulerAnglef( 0.5f, 1.0f, -1.0f, gmtl::XYZ ) );
          expected_result34(0,3) = 42;
          expected_result34(1,3) = 44;
          expected_result34(2,3) = 46;
 
-         gmtl::setRot(mat34, 0.5f, 1.0f, -1.0f, gmtl::XYZ);
+         gmtl::setRot(mat34, gmtl::EulerAnglef( 0.5f, 1.0f, -1.0f, gmtl::XYZ ) );
          gmtl::setTrans( mat34, gmtl::Vec4f( 21, 22, 23, 0.5f ) );
 
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result34, mat34, eps ) );
@@ -108,12 +108,12 @@ namespace gmtlTest
       // 3D trans
       {
          gmtl::Matrix44f mat44, expected_result44;
-         gmtl::setRot(expected_result44, 0.5f, 1.0f, -1.0f, gmtl::XYZ);
+         gmtl::setRot(expected_result44, gmtl::EulerAnglef( 0.5f, 1.0f, -1.0f, gmtl::XYZ ) );
          expected_result44(0,3) = 21;
          expected_result44(1,3) = 22;
          expected_result44(2,3) = 23;
 
-         gmtl::setRot( mat44, 0.5f, 1.0f, -1.0f, gmtl::XYZ);
+         gmtl::setRot( mat44, gmtl::EulerAnglef( 0.5f, 1.0f, -1.0f, gmtl::XYZ ) );
          gmtl::setTrans( mat44, gmtl::Vec3f( 21.0f, 22.0f, 23.0f ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result44, mat44, eps ) );
       }
@@ -121,12 +121,12 @@ namespace gmtlTest
       {
          gmtl::Matrix44f mat44, expected_result44;
 
-         gmtl::setRot(expected_result44, 0.5f, 1.0f, -1.0f, gmtl::XYZ);
+         gmtl::setRot(expected_result44, gmtl::EulerAnglef( 0.5f, 1.0f, -1.0f, gmtl::XYZ ) );
          expected_result44(0,3) = 42;
          expected_result44(1,3) = 44;
          expected_result44(2,3) = 46;
 
-         gmtl::setRot( mat44, 0.5f, 1.0f, -1.0f, gmtl::XYZ);
+         gmtl::setRot( mat44, gmtl::EulerAnglef( 0.5f, 1.0f, -1.0f, gmtl::XYZ ) );
          gmtl::setTrans( mat44, gmtl::Vec4f( 21, 22, 23, 0.5f ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result44, mat44, eps ) );
       }
