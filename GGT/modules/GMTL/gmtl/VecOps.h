@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecOps.h,v $
- * Date modified: $Date: 2002-07-02 03:09:21 $
- * Version:       $Revision: 1.19 $
+ * Date modified: $Date: 2002-11-27 05:38:40 $
+ * Version:       $Revision: 1.20 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -391,6 +391,15 @@ Vec<DATA_TYPE,3>& cross( Vec<DATA_TYPE,3>& result, const Vec<DATA_TYPE, 3>& v1,
    result.set( (v1[Yelt]*v2[Zelt]) - (v1[Zelt]*v2[Yelt]),
                (v1[Zelt]*v2[Xelt]) - (v1[Xelt]*v2[Zelt]),
                (v1[Xelt]*v2[Yelt]) - (v1[Yelt]*v2[Xelt]) );
+   return result;
+}
+
+template<class DATA_TYPE>
+Vec<DATA_TYPE,3>& reflect( Vec<DATA_TYPE,3>& result, const
+                           Vec<DATA_TYPE, 3>& vec,
+                           const Vec<DATA_TYPE, 3>& normal )
+{
+   result = vec - DATA_TYPE( 2.0 ) * dot( vec, normal ) * normal;
    return result;
 }
 
