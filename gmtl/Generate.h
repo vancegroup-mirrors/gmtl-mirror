@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-06-30 17:54:52 $
- * Version:       $Revision: 1.63 $
+ * Date modified: $Date: 2002-07-11 21:17:36 $
+ * Version:       $Revision: 1.64 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,7 +35,7 @@
 #ifndef _GMTL_GENERATE_H_
 #define _GMTL_GENERATE_H_
 
-#include <gmtl/Assert.h>
+#include <gmtl/Util/Assert.h>
 
 #include <gmtl/Vec.h>    // for Vec
 #include <gmtl/VecOps.h> // for lengthSquared
@@ -43,7 +43,7 @@
 #include <gmtl/QuatOps.h>
 #include <gmtl/Coord.h>
 #include <gmtl/Matrix.h>
-#include <gmtl/Meta.h>
+#include <gmtl/Util/Meta.h>
 #include <gmtl/Math.h>
 #include <gmtl/Xforms.h>
 

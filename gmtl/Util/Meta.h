@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Meta.h,v $
- * Date modified: $Date: 2002-05-28 14:46:15 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2002-07-11 21:17:37 $
+ * Version:       $Revision: 1.1 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,6 +35,32 @@
 #ifndef _GMTL_METAPROGRAMMING_H
 #define _GMTL_METAPROGRAMMING_H
 
+
+/*** STRINGIZE and JOIN macros */
+/* Taken from boost (see boost.org) */
+
+//
+// Helper macro GMTL_STRINGIZE:
+// Converts the parameter X to a string after macro replacement
+// on X has been performed.
+//
+#define GMTL_STRINGIZE(X) GMTL_DO_STRINGIZE(X)
+#define GMTL_DO_STRINGIZE(X) #X
+
+//
+// Helper macro GMTL_JOIN:
+// The following piece of macro magic joins the two 
+// arguments together, even when one of the arguments is
+// itself a macro (see 16.3.1 in C++ standard).  The key
+// is that macro expansion of macro arguments does not
+// occur in BOOST_DO_JOIN2 but does in BOOST_DO_JOIN.
+//
+#define GMTL_JOIN( X, Y ) GMTL_DO_JOIN( X, Y )
+#define GMTL_DO_JOIN( X, Y ) GMTL_DO_JOIN2(X,Y)
+#define GMTL_DO_JOIN2( X, Y ) X##Y
+
+
+/** Meta programming classes */
 namespace gmtl
 {  
    /** @ingroup Meta */

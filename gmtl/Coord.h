@@ -4,6 +4,8 @@
 #include <gmtl/Vec.h>
 #include <gmtl/AxisAngle.h>
 #include <gmtl/EulerAngle.h>
+#include <gmtl/Util/Meta.h>
+#include <gmtl/Util/StaticAssert.h>
 
 namespace gmtl
 {
@@ -48,7 +50,61 @@ public:
    Coord( const POS_TYPE& pos, const ROT_TYPE& rot ) : mPos( pos ), mRot( rot )
    {
    }
-   
+
+   /** @name Multi-arg Constructors 
+   *  Construct objects from primitive types
+   *  Just assigns values in order to the pos and rot members' members.
+   */
+   //@{
+   Coord(DataType a0, DataType a1, DataType a2, DataType a3, DataType a4, DataType a5)
+   {
+      GMTL_STATIC_ASSERT(((PosSize + RotSize) == 6) && "Using incorrect number of args for type size");
+      if(PosSize == 3)
+      {
+         mPos[0] = a0; mPos[1] = a1; mPos[2] = a2;
+         mRot[0] = a3; mRot[1] = a4; mRot[2] = a5; 
+      }
+      else
+      {
+         gmtlASSERT(false && "Constructor not supported for pos size");
+      }
+   }
+
+   Coord(DataType a0, DataType a1, DataType a2, DataType a3, DataType a4, DataType a5, DataType a6)
+   {
+      GMTL_STATIC_ASSERT(((PosSize + RotSize) == 7) && "Using incorrect number of args for type size");
+      if(PosSize == 3)
+      {
+         mPos[0] = a0; mPos[1] = a1; mPos[2] = a2;
+         mRot[0] = a3; mRot[1] = a4; mRot[2] = a5; mRot[3] = a6; 
+      }
+      else if(PosSize == 4)
+      {
+         mPos[0] = a0; mPos[1] = a1; mPos[2] = a2; mPos[3] = a3;
+         mRot[0] = a4; mRot[1] = a5; mRot[2] = a6; 
+      }
+      else
+      {
+         gmtlASSERT(false && "Constructor not supported for pos size");
+      }
+
+   }
+
+   Coord(DataType a0, DataType a1, DataType a2, DataType a3, DataType a4, DataType a5, DataType a6, DataType a7)
+   {
+      GMTL_STATIC_ASSERT(((PosSize + RotSize) == 8) && "Using incorrect number of args for type size");;
+      if(PosSize == 4)
+      {
+         mPos[0] = a0; mPos[1] = a1; mPos[2] = a2; mPos[3] = a3;
+         mRot[0] = a4; mRot[1] = a5; mRot[2] = a6; mRot[3] = a7;   
+      }
+      else
+      {
+         gmtlASSERT(false && "Constructor not supported for pos size");
+      }
+   }
+   //@}
+
    const POS_TYPE& getPos() const { return mPos; }
    const ROT_TYPE& getRot() const { return mRot; }
    
@@ -91,6 +147,24 @@ typedef Coord<Vec3d, AxisAngled> CoordVec3AxisAngled;
 typedef Coord<Vec3f, AxisAnglef> CoordVec3AxisAnglef;
 typedef Coord<Vec4d, AxisAngled> CoordVec4AxisAngled;
 typedef Coord<Vec4f, AxisAnglef> CoordVec4AxisAnglef;
+
+
+/** 3 elt types */
+typedef Coord<Vec3f, EulerAngleXYZf> Coord3fXYZ;
+typedef Coord<Vec3f, EulerAngleZYXf> Coord3fZYX;
+typedef Coord<Vec3f, EulerAngleZXYf> Coord3fZXY;
+typedef Coord<Vec3d, EulerAngleXYZd> Coord3dXYZ;
+typedef Coord<Vec3d, EulerAngleZYXd> Coord3dZYX;
+typedef Coord<Vec3d, EulerAngleZXYd> Coord3dZXY;
+
+/** 4 elt types */
+typedef Coord<Vec4f, EulerAngleXYZf> Coord4fXYZ;
+typedef Coord<Vec4f, EulerAngleZYXf> Coord4fZYX;
+typedef Coord<Vec4f, EulerAngleZXYf> Coord4fZXY;
+typedef Coord<Vec4d, EulerAngleXYZd> Coord4dXYZ;
+typedef Coord<Vec4d, EulerAngleZYXd> Coord4dZYX;
+typedef Coord<Vec4d, EulerAngleZXYd> Coord4dZXY;
+
 
 }
 
