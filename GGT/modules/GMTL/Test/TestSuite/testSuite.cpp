@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: testSuite.cpp,v $
- * Date modified: $Date: 2002-06-05 02:43:13 $
- * Version:       $Revision: 1.44 $
+ * Date modified: $Date: 2002-06-06 15:16:33 $
+ * Version:       $Revision: 1.45 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -209,16 +209,27 @@ int main (int ac, char **av)
    {
       std::string arg = av[1];
       if (arg.size() > 0 && (arg[0] == 'g' || arg[0] == 'a'))
+      {
+         std::cout << "running gmtl_suite" << std::endl;
          runner.run( "gmtl_suite" );
+      }
       if (arg.size() > 0 && (arg[0] == 'p' || arg[0] == 'a'))
+      {
+         std::cout << "running perf_suite" << std::endl;
          runner.run( "perf_suite" );
+      }
       if (arg.size() > 0 && (arg[0] == 'i' || arg[0] == 'a'))
+      {
+         std::cout << "running info_suite" << std::endl;
          runner.run( "info_suite" );
+      }
    }
    else
    {
       usage( av );
+         std::cout << "running gmtl_suite" << std::endl;
       runner.run( "gmtl_suite" );
+         std::cout << "running perf_suite" << std::endl;
       runner.run( "perf_suite" );
       usage( av );
    }

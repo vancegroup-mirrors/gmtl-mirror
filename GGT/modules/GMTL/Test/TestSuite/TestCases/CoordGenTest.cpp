@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: CoordGenTest.cpp,v $
- * Date modified: $Date: 2002-05-20 22:39:23 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-06-06 15:16:34 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -38,7 +38,6 @@ Coord [] -km Transforcoordions XformInterface? Xform.h   Collision detection Col
 
 #include <gmtl/Generate.h>
 #include <gmtl/MatrixOps.h>
-#include <gmtl/Convert.h>
 
 namespace gmtlTest
 {
@@ -67,7 +66,7 @@ namespace gmtlTest
       
       // make sure this compiles...
       ///@todo testme
-      gmtl::convert( q1, mat, order );
+      gmtl::set( q1, mat, order );
    }
 
    void CoordGenTest::testCoordGetMatrix()
@@ -88,7 +87,7 @@ namespace gmtlTest
       
       // make sure this compiles...
       ///@todo testme
-      gmtl::convert( mat, q1, order );
+      gmtl::set( mat, q1, order );
 
             
       // do some of the euler tests to test out rotation...
