@@ -36,9 +36,31 @@ def GetPlatform():
       return sys.platform
 Export('GetPlatform')
 
+def CreateConfig(target, source, env, submap):
+   "Creates the prefix-config file users use to compile against this library"
+   import re
+
+   targets = map(lambda x: str(x), target)
+   sources = map(lambda x: str(x), source)
+
+   # Build each target from its source
+   for i in range(len(targets)):
+      print "Generating config file " + targets[i]
+      contents = open(sources[i], 'r').read()
+
+      # Go through the substitution dictionary and modify the contents read in
+      # from the source file
+      for key, value in submap.items():
+         contents = re.sub(re.escape(key), re.escape(value), contents)
+
+      # Write out the target file with the new contents
+      open(targets[0], 'w').write(contents)
+      os.chmod(targets[0], 0755)
+   return 0
+
 def BuildLinuxEnvironment():
    "Builds a base environment for other modules to build on set up for linux"
-   global optimize, profile
+   global optimize, profile, builders
 
    CXX = 'g++3'
    LINK = 'g++3'
@@ -64,11 +86,12 @@ def BuildLinuxEnvironment():
       LINKFLAGS   = LINKFLAGS,
       CPPPATH     = [],
       LIBPATH     = [],
-      LIBS        = [])
+      LIBS        = [],
+   )
 
 def BuildIRIXEnvironment():
    "Builds a base environment for other modules to build on set up for IRIX"
-   global optimize, profile
+   global optimize, profile, builders
 
    CXX = 'CC'
    LINK = 'CC'
@@ -94,7 +117,8 @@ def BuildIRIXEnvironment():
       LINKFLAGS   = LINKFLAGS,
       CPPPATH     = [],
       LIBPATH     = [],
-      LIBS        = [])
+      LIBS        = [],
+   )
 
 
 #------------------------------------------------------------------------------
@@ -112,6 +136,12 @@ profile = ARGUMENTS.get('--profile', 'no')
 PREFIX = ARGUMENTS.get('--prefix', '/usr/local')
 Export('PREFIX')
 
+# Create the extra builders
+# Define a builder for the gmtl-config script
+builders = {
+   'ConfigBuilder'   : Builder(action = CreateConfig)
+}
+
 # Create and export the base environment
 if GetPlatform() == 'irix':
    baseEnv = BuildIRIXEnvironment()
@@ -123,35 +153,6 @@ else:
    print 'Unsupported build environment: ' + GetPlatform()
    sys.exit(-1)
 Export('baseEnv')
-
-
-def CreateConfig(target, source, env):
-   "Creates the prefix-config file users use to compile against this library"
-   global GMTL_VERSION
-   import re
-
-   targets = map(lambda x: str(x), target)
-   sources = map(lambda x: str(x), source)
-
-   print "Generating " + targets[0]
-
-   contents = open(sources[0], 'r').read()
-
-   contents = re.sub('(%[{}])', r'#\1', contents)
-   contents = re.sub('@prefix@', PREFIX, contents)
-   contents = re.sub('@exec_prefix@', '${prefix}', contents)
-   contents = re.sub('@gmtl_extra_cxxflags@', '', contents)
-   contents = re.sub('@gmtl_extra_include_dirs@', '', contents)
-   contents = re.sub('@VERSION_MAJOR@', str(GMTL_VERSION[0]), contents)
-   contents = re.sub('@VERSION_MINOR@', str(GMTL_VERSION[1]), contents)
-   contents = re.sub('@VERSION_PATCH@', str(GMTL_VERSION[2]), contents)
-   contents = re.sub('@includedir@', PREFIX+'/include', contents)
-   contents = re.sub('@gmtl_cxxflags@', '', contents)
-
-   open(targets[0], 'w').write(contents)
-   os.chmod(targets[0], 0755)
-
-   return 0
 
 # Process subdirectories
 subdirs = Split("""
@@ -165,13 +166,23 @@ for s in subdirs:
 # install target
 baseEnv.Alias('install', PREFIX)
 
-# Define a builder for the gmtl-config script
-config_builder = Builder(action = CreateConfig)
+env = baseEnv.Copy(BUILDERS = builders)
+env.ConfigBuilder('gmtl-config','gmtl-config.in',
+   submap = {
+      '@prefix@'                    : PREFIX,
+      '@exec_prefix@'               : '${prefix}',
+      '@gmtl_cxxflags@'             : '',
+      '@includedir@'                : pj(PREFIX, 'include'),
+      '@gmtl_extra_cxxflags@'       : '',
+      '@gmtl_extra_include_dirs@'   : '',
+      '@VERSION_MAJOR@'             : str(GMTL_VERSION[0]),
+      '@VERSION_MINOR@'             : str(GMTL_VERSION[1]),
+      '@VERSION_PATCH@'             : str(GMTL_VERSION[2]),
+   }
+)
+env.Depends('gmtl-config', 'gmtl/Version.h')
+env.Install(pj(PREFIX, 'bin'), 'gmtl-config')
 
 # Build everything by default
 Default('.')
 
-env = baseEnv.Copy(BUILDERS = {'ConfigBuilder' : config_builder})
-env.ConfigBuilder('gmtl-config','gmtl-config.in')
-env.Depends('gmtl-config', 'gmtl/Version.h')
-env.Install(pj(PREFIX, 'bin'), 'gmtl-config')
