@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecGenTest.h,v $
- * Date modified: $Date: 2002-07-02 02:07:02 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2003-02-06 01:39:50 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -18,8 +18,7 @@
 * Copyright (C) 2001,2002 Allen Bierbaum
 *
 * This library is free software; you can redistribute it and/or
-* modify it under th MathPrimitives  [PrimName]Ops.h  Vec & Point [100%] -ab
-Quat [] -km Transforquations XformInterface? Xform.h   Collision detection CollisionInterface? Intersection.h   Bounding volumes BoundingInterface? Containment.h   Math factories MathFactories Builder.h  e terms of the GNU Lesser General Public
+* modify it under the terms of the GNU Lesser General Public
 * License as published by the Free Software Foundation; either
 * version 2.1 of the License, or (at your option) any later version.
 *
@@ -33,83 +32,53 @@ Quat [] -km Transforquations XformInterface? Xform.h   Collision detection Colli
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 *
  ************************************************************ ggt-cpr end */
-#include <iostream>
+#ifndef _GMTL_VEC_GEN_TEST_H_
+#define _GMTL_VEC_GEN_TEST_H_
 
-#include <cppunit/TestCase.h>
-#include <cppunit/TestSuite.h>
-#include <cppunit/TestCaller.h>
-
-#include <gmtl/Vec.h>
-#include <gmtl/VecOps.h>
-#include <gmtl/Quat.h>
-#include <gmtl/QuatOps.h>
-#include <gmtl/Generate.h>
-
-
-/// @todo test/timing on makeRot( quat ) (euler version)
+#include <cppunit/extensions/HelperMacros.h>
 
 namespace gmtlTest
 {
-
-class VecGenTest : public CppUnit::TestCase
-{
-public:
-   VecGenTest( std::string name = "VecGenTest" )
-   : CppUnit::TestCase (name)
-   {;}
-
-   virtual ~VecGenTest()
-   {}
-
-   virtual void setUp()
-   {;}
-
-   virtual void tearDown()
+   /**
+    * Functionality tests
+    */
+   class VecGenTest : public CppUnit::TestFixture
    {
-   }
+      CPPUNIT_TEST_SUITE(VecGenTest);
 
+      CPPUNIT_TEST(testMakeVecFromQuat);
+      CPPUNIT_TEST(testMakeNormalVecFromVec);
 
-   //-- vec tests --//
-   void testMakeVecFromQuat();
-   void testMakeNormalVecFromVec();
+      CPPUNIT_TEST_SUITE_END();
 
-   //-- timing tests --//
-   void testGenTimingMakeNormalVec1();
-   void testGenTimingMakeNormalVec2();
-   void testGenTimingMakeNormalVec3();
-   void testGenTimingMakeNormalVec4();
-   void testGenTimingMakeVec();
+   public:
+      void testMakeVecFromQuat();
+      void testMakeNormalVecFromVec();
+   };
 
-   /** @todo implement quat makeRot Euler */
-   static CppUnit::Test* suite()
+   /**
+    * Metric tests.
+    */
+   class VecGenMetricTest : public CppUnit::TestFixture
    {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite( "VecGenTest" );
-      test_suite->addTest( new CppUnit::TestCaller<VecGenTest>( "testMakeVecFromQuat", &VecGenTest::testMakeVecFromQuat ) );
-      test_suite->addTest( new CppUnit::TestCaller<VecGenTest>( "testMakeNormalVecFromVec", &VecGenTest::testMakeNormalVecFromVec ) );
+      CPPUNIT_TEST_SUITE(VecGenMetricTest);
 
-      return test_suite;
-   }
+      CPPUNIT_TEST(testGenTimingMakeNormalVec1);
+      CPPUNIT_TEST(testGenTimingMakeNormalVec2);
+      CPPUNIT_TEST(testGenTimingMakeNormalVec3);
+      CPPUNIT_TEST(testGenTimingMakeNormalVec4);
+      CPPUNIT_TEST(testGenTimingMakeVec);
 
-   static CppUnit::Test* perfSuite()
-   {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("VecGenTiming");
-      test_suite->addTest( new CppUnit::TestCaller<VecGenTest>( "testGenTimingMakeNormalVec1", &VecGenTest::testGenTimingMakeNormalVec1 ) );
-      test_suite->addTest( new CppUnit::TestCaller<VecGenTest>( "testGenTimingMakeNormalVec2", &VecGenTest::testGenTimingMakeNormalVec2 ) );
-      test_suite->addTest( new CppUnit::TestCaller<VecGenTest>( "testGenTimingMakeNormalVec3", &VecGenTest::testGenTimingMakeNormalVec3 ) );
-      test_suite->addTest( new CppUnit::TestCaller<VecGenTest>( "testGenTimingMakeNormalVec4", &VecGenTest::testGenTimingMakeNormalVec4 ) );
-      test_suite->addTest( new CppUnit::TestCaller<VecGenTest>( "testGenTimingMakeVec", &VecGenTest::testGenTimingMakeVec ) );
-      return test_suite;
-   }
-   
-   static CppUnit::Test* interactiveSuite()
-   {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite( "InteractiveThreadTest" );
-      //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>( "interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
-      return test_suite;
-   }
+      CPPUNIT_TEST_SUITE_END();
 
-protected:
+   public:
+      //-- timing tests --//
+      void testGenTimingMakeNormalVec1();
+      void testGenTimingMakeNormalVec2();
+      void testGenTimingMakeNormalVec3();
+      void testGenTimingMakeNormalVec4();
+      void testGenTimingMakeVec();
+   };
+}
 
-};
-
-};
+#endif
