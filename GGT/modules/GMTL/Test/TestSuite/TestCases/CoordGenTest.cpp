@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: CoordGenTest.cpp,v $
- * Date modified: $Date: 2002-03-20 23:00:17 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-03-20 23:35:43 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -37,6 +37,7 @@ Coord [] -km Transforcoordions XformInterface? Xform.h   Collision detection Col
 #include <cppunit/extensions/MetricRegistry.h>
 
 #include <gmtl/Generate.h>
+#include <gmtl/MatrixOps.h>
 
 namespace gmtlTest
 {
@@ -84,12 +85,58 @@ namespace gmtlTest
       gmtl::Vec3f v2 = gmtl::makeTrans<gmtl::Vec3f>( mat );
       CPPUNIT_ASSERT( v2 == trans );
       
-      ///@todo test rotation
-      
-      
       // make sure this compiles...
       ///@todo testme
       convert( mat, q1, order );
+
+            
+      // do some of the euler tests to test out rotation...
+      float eps = 0.001f;
+      {
+         gmtl::Matrix33f mat, expected_result33;
+         expected_result33.set( 0.683013f, -0.183013f, 0.707107f,
+                                0.683013f, -0.183013f, -0.707107f,
+                                0.258819f, 0.965926f, 0.0f );
+         q1.rot()[0] = gmtl::Math::deg2Rad( 90.0f );
+         q1.rot()[1] = gmtl::Math::deg2Rad( 45.0f );
+         q1.rot()[2] = gmtl::Math::deg2Rad( 15.0f );
+         
+         mat = gmtl::makeMatrix<gmtl::Matrix33f>( q1, gmtl::XYZ );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
+      }
+      
+      {
+         gmtl::Matrix34f mat, expected_result34;
+         expected_result34.set( -0.645974f, -0.560068f, 0.518692f, gmtl::Math::deg2Rad( 1.0f ),
+                                 0.287606f, -0.807979f, -0.514249f,gmtl::Math::deg2Rad( 2.0f ),
+                                 0.707107f, -0.183013f, 0.683013f, gmtl::Math::deg2Rad( 3.0f ) );
+         q1.pos()[0] = gmtl::Math::deg2Rad( 1.0f );
+         q1.pos()[1] = gmtl::Math::deg2Rad( 2.0f );
+         q1.pos()[2] = gmtl::Math::deg2Rad( 3.0f );
+         q1.rot()[0] = gmtl::Math::deg2Rad( 156.0f );
+         q1.rot()[1] = gmtl::Math::deg2Rad( -45.0f );
+         q1.rot()[2] = gmtl::Math::deg2Rad( -15.0f );
+         mat = gmtl::makeMatrix<gmtl::Matrix34f>( q1, gmtl::ZYX );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result34, mat, eps ) );
+      }
+      
+      {
+         gmtl::Matrix44f mat, expected_result44;
+         expected_result44.set( -0.918494f, 0.283617f, -0.275553f,gmtl::Math::deg2Rad( 1.0f ),
+                                -0.395247f, -0.637014f, 0.66181f, gmtl::Math::deg2Rad( 2.0f ),
+                                 0.0121696f, 0.71678f, 0.697193f, gmtl::Math::deg2Rad( 3.0f ),
+                                 0,0,0,1 );
+         
+         q1.pos()[0] = gmtl::Math::deg2Rad( 1.0f );
+         q1.pos()[1] = gmtl::Math::deg2Rad( 2.0f );
+         q1.pos()[2] = gmtl::Math::deg2Rad( 3.0f );
+         q1.rot()[0] = gmtl::Math::deg2Rad( -156.0f  );
+         q1.rot()[1] = gmtl::Math::deg2Rad(  45.7892892f );
+         q1.rot()[2] = gmtl::Math::deg2Rad( -361.0f );
+         
+         mat = gmtl::makeMatrix<gmtl::Matrix44f>( q1, gmtl::ZXY );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result44, mat, eps ) );
+      }
    }
 
 
