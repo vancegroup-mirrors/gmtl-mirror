@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PlaneTest.h,v $
- * Date modified: $Date: 2002-02-20 20:30:47 $
- * Version:       $Revision: 1.10 $
+ * Date modified: $Date: 2002-02-20 21:28:50 $
+ * Version:       $Revision: 1.11 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -384,28 +384,44 @@ public:
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("PlaneTest/WhichSideOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
-/*
+
    void testFindNearestPt()
    {
-      gmtl::Point3 answer, test_point;
-      //float dist;
+      gmtl::Point<float, 3> answer, test_point, correct_result;
+      float dist;
 
       // XY dist to point off origin
-      test_point = gmtl::Point3(0.0,0.0,1.0);
-      CPPUNIT_ASSERT(xy_plane.distanceToPt(test_point) == xy_plane.findNearestPt(test_point, answer));
-      CPPUNIT_ASSERT(answer == gmtl::Point3(0.0,0.0,0.0));
+      test_point = gmtl::Point<float, 3>(0.0,0.0,1.0);
+      CPPUNIT_ASSERT(distance(xy_plane, test_point) == findNearestPt(xy_plane, test_point, answer));
+      CPPUNIT_ASSERT(answer == origin);
 
       // XY dist to point at 12,21
-      test_point = gmtl::Point3(12.0,-21.0,-13.0);
-      CPPUNIT_ASSERT(xy_plane.distanceToPt(test_point) == xy_plane.findNearestPt(test_point, answer));
-      CPPUNIT_ASSERT(answer == gmtl::Point3(12.0,-21.0,0.0));
+      test_point = gmtl::Point<float, 3>(12.0,-21.0,-13.0);
+      correct_result = gmtl::Point<float, 3>(12.0,-21.0,0.0);
+      CPPUNIT_ASSERT(distance(xy_plane, test_point) == findNearestPt(xy_plane, test_point, answer));
+      CPPUNIT_ASSERT(answer == correct_result);
 
       // XY dist to point on plane at -17.05, 0.334
-      test_point = gmtl::Point3(-17.05,0.334,0.0);
-      CPPUNIT_ASSERT(xy_plane.distanceToPt(test_point) == xy_plane.findNearestPt(test_point, answer));
+      test_point = gmtl::Point<float, 3>(-17.05,0.334,0.0);
+      CPPUNIT_ASSERT(distance(xy_plane, test_point) == findNearestPt(xy_plane, test_point, answer));
       CPPUNIT_ASSERT(answer == test_point);
+
+      // Test findNearestPt performance
+      const long iters(400000);
+      float use_value(0.0f);
+
+      // -- Equality
+      CPPUNIT_METRIC_START_TIMING();
+
+      for( long iter=0; iter<iters; ++iter)
+      {
+         dist = gmtl::findNearestPt(xy_plane, test_point, answer);
+         use_value = use_value + dist + answer[0];
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("PlaneTest/FindNearestPtOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
-*/
 
    static Test* suite()
    {
@@ -419,7 +435,7 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testIsEqual", &PlaneTest::testIsEqual));
       test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testDistance", &PlaneTest::testDistance));
       test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testWhichSide", &PlaneTest::testWhichSide));
-//      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testFindNearestPt", &PlaneTest::testFindNearestPt));
+      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testFindNearestPt", &PlaneTest::testFindNearestPt));
 
       return test_suite;
    }

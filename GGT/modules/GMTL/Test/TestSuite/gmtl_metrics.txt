@@ -74,6 +74,7 @@ gfxn0/Debug/PlaneTest/CopyConstructOverhead                        0.0864825
 gfxn0/Debug/PlaneTest/DefaultCreationOverhead                      0.0672975
 gfxn0/Debug/PlaneTest/DistanceOverhead                             0.21783
 gfxn0/Debug/PlaneTest/EqualityCompareOverhead                      0.166155
+gfxn0/Debug/PlaneTest/FindNearestPtOverhead                        1.06112
 gfxn0/Debug/PlaneTest/InequalityCompareOverhead                    0.164525
 gfxn0/Debug/PlaneTest/NormOffsetCreationOverhead                   0.0888325
 gfxn0/Debug/PlaneTest/NormPtCreationOverhead                       0.303055
@@ -137,6 +138,8 @@ gfxn0/Debug/VecTest/CrossOverhead                                  1.65612
 gfxn0/Debug/VecTest/DotOverhead                                    1.01097
 gfxn0/Debug/VecTest/EqualityCompareOverhead                        0.221938
 gfxn0/Debug/VecTest/InequalityCompareOverhead                      0.247865
+gfxn0/Debug/VecTest/IsNormalizedEpsOverhead                        1.29802
+gfxn0/Debug/VecTest/IsNormalizedOverhead                           1.16347
 gfxn0/Debug/VecTest/LengthOverhead                                 1.25822
 gfxn0/Debug/VecTest/LengthSquaredOverhead                          1.06177
 gfxn0/Debug/VecTest/NormalizeOverhead                              1.69906

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PlaneOps.h,v $
- * Date modified: $Date: 2002-02-20 20:30:48 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-02-20 21:28:51 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -105,6 +105,31 @@ Plane<DATA_TYPE>::Side whichSide( const Plane<DATA_TYPE>& plane,
    else
       return Plane<DATA_TYPE>::ON_PLANE;
 }
+
+/**
+ * Finds the point on the plane that is nearest to the given point. As a
+ * convenience, the distance between pt and result is returned.
+ *
+ * @param plane  [in]   the plane to compare the point to
+ * @param pt     [in]   the point to test
+ * @param result [out]  the point on plane closest to pt
+ *
+ * @return  the distance between pt and result
+ */
+template< class DATA_TYPE >
+DATA_TYPE findNearestPt( const Plane<DATA_TYPE>& plane,
+                         const Point<DATA_TYPE, 3>& pt,
+                         Point<DATA_TYPE, 3>& result )
+{
+   // GGI:  p297
+   // GGII: p223
+   ggtASSERT( isNormalized(plane.mNorm) );   // Assert: Normalized
+   DATA_TYPE dist_to_plane(0);
+   dist_to_plane = plane.mOffset + dot( plane.mNorm, static_cast< Vec<DATA_TYPE, 3> >(pt) );
+   result = pt - (plane.mNorm * dist_to_plane);
+   return dist_to_plane;
+}
+
 
 //--- Plane Comparisons --//
 /**
