@@ -12,7 +12,7 @@ usage u help h:
 	@echo "- gmake clean      (remove everything that was built)"
 	@echo ""
 
-reference ref r:
+reference ref r html:
 	doxygen gmtl.doxy
 
 manpage man m:
