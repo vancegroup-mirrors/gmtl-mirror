@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Matrix.h,v $
- * Date modified: $Date: 2003-02-25 05:17:00 $
- * Version:       $Revision: 1.25 $
+ * Date modified: $Date: 2003-03-29 22:02:19 $
+ * Version:       $Revision: 1.26 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -77,7 +77,7 @@ public:
    /** use this to declare single value types of the same type as this matrix.
     */
    typedef DATA_TYPE DataType;
-   enum
+   enum Params
    {
       Rows = ROWS, Cols = COLS
    };

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Coord.h,v $
- * Date modified: $Date: 2003-03-03 00:54:04 $
- * Version:       $Revision: 1.13 $
+ * Date modified: $Date: 2003-03-29 22:02:18 $
+ * Version:       $Revision: 1.14 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -72,7 +72,7 @@ public:
    typedef typename POS_TYPE::DataType DataType;
    typedef POS_TYPE PosDataType;
    typedef ROT_TYPE RotDataType;
-   enum
+   enum Params
    {
        PosSize = POS_TYPE::Size,
        RotSize = ROT_TYPE::Size

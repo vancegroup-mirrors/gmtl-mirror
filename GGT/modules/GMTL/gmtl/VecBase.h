@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecBase.h,v $
- * Date modified: $Date: 2002-07-11 21:17:37 $
- * Version:       $Revision: 1.13 $
+ * Date modified: $Date: 2003-03-29 22:02:19 $
+ * Version:       $Revision: 1.14 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -56,7 +56,7 @@ public:
    typedef DATA_TYPE DataType;
 
    /// The number of components this VecBase has.
-   enum { Size = SIZE };
+   enum Params { Size = SIZE };
 
 public:
    /**
