@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOps.h,v $
- * Date modified: $Date: 2002-03-20 07:11:23 $
- * Version:       $Revision: 1.18 $
+ * Date modified: $Date: 2002-03-21 15:34:33 $
+ * Version:       $Revision: 1.19 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -421,17 +421,6 @@ namespace gmtl
    {
       return invert( result, result );
    }
-
-   //: Clamps the values of the matrix to zero
-   //!POST: Any values in matrix < GMTL_EPSILON are set to 0.0f
-   /*
-   void zeroClamp()
-   {
-      for(int i=0;i<4;i++)
-         for(int j=0;j<4;j++)
-            mData[i][j] = GMTL_ZERO_CLAMP(mData[i][j]);
-   }
-   */
 
 // --------- MATRIX COMPARISONS ------ //
    /** @name Matrix comparisons */
