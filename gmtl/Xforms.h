@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Xforms.h,v $
- * Date modified: $Date: 2002-02-28 15:47:12 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2002-02-28 16:47:14 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -67,7 +67,9 @@ namespace gmtl
       //result_vec[2] = quat_vector[2];
       //return result_vec;
       
-      // completely hand expanded (faster by 28% than 1st method in debug mode.)
+      // completely hand expanded 
+      // (faster by 28% than 1st method in gcc 2.96 debug mode.)
+      // (faster by 35% than 1st method in gcc 2.96 opt3 mode (78% for doubles))
       Quat<DATA_TYPE> rot_conj( -rot[Xelt], -rot[Yelt], -rot[Zelt], rot[Welt] ); 
       Quat<DATA_TYPE> pure( vector[0], vector[1], vector[2], (DATA_TYPE)0.0 );
       Quat<DATA_TYPE> temp( 
@@ -98,7 +100,9 @@ namespace gmtl
       //Quat<DATA_TYPE> quat_vector( rot * Quat<DATA_TYPE>( vector[0], vector[1], vector[2], (DATA_TYPE)0.0 ) * rot_conj );
       //return Vec<DATA_TYPE, 3>( quat_vector[0], quat_vector[1], quat_vector[2] );
       
-      // completely hand expanded (faster by 24% than 1st method in debug mode.)
+      // completely hand expanded 
+      // (faster by 24% than 1st method in gcc 2.96 debug mode.)
+      // (faster by 29% than 1st method in gcc 2.96 opt3 mode (74% for doubles))
       Quat<DATA_TYPE> rot_conj( -rot[Xelt], -rot[Yelt], -rot[Zelt], rot[Welt] ); 
       Quat<DATA_TYPE> pure( vector[0], vector[1], vector[2], (DATA_TYPE)0.0 );
       Quat<DATA_TYPE> temp( 
