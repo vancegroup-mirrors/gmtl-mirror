@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Math.h,v $
- * Date modified: $Date: 2002-02-10 04:45:24 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-02-11 23:22:21 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -45,168 +45,206 @@ namespace gmtl
 
 namespace Math
 {
-   int iAbs (int iValue);
-   int iCeil (float fValue);
-   int iFloor (float fValue);
-   int iSign (int iValue);
-
-   float abs (float fValue);
-   float aCos (float fValue);
-   float aSin (float fValue);
-   float aTan (float fValue);
-   float aTan2 (float fY, float fX);
-   float ceil (float fValue);
-   float cos (float fValue);
-   float exp (float fValue);
-   float floor (float fValue);
-   float log (float fValue);
-   float pow (float kBase, float kExponent);
-   float sign (float fValue);
-   float sin (float fValue);
-   float sqr (float fValue);
-   float sqrt (float fValue);
-   float unitRandom ();  // in [0,1]
-    /*
-    static float symmetricRandom ();  // in [-1,1]
-    */
-
-   float deg2Rad(float fVal);
-   float rad2Deg(float fVal);
-
-    //static const float PI;       //     = 3.14159265358979323846;
-    //static const float PI_2;     //     = 1.57079632679489661923;
-
    /** @name Mathematical constants */
    //@{
-   const float PI = 3.14159265358979323846;
+   const float PI = 3.14159265358979323846; //3.14159265358979323846264338327950288419716939937510;
    const float PI_2 = 1.57079632679489661923;
+   const float PI_4 = 0.78539816339744830962;
    //@}
-};
-
 
 //----------------------------------------------------------------------------
-inline int Math::iAbs (int iValue)
+template <typename T>
+inline T Math::abs( T iValue )
 {
-    return ( iValue >= 0 ? iValue : -iValue );
+    return T( iValue >= ((T)0) ? iValue : -iValue );
 }
 //----------------------------------------------------------------------------
-inline int Math::iCeil (float fValue)
+template <typename T>
+inline T Math::ceil( T fValue );
+inline float Math::ceil( float fValue )
 {
-    return int(::ceil(fValue));
+    return float( ::ceilf( fValue ) );
+}
+inline double Math::ceil( double fValue )
+{
+    return double( ::ceil( fValue ) );
 }
 //----------------------------------------------------------------------------
-inline int Math::iFloor (float fValue)
+template <typename T>
+inline T Math::floor( T fValue ); // why do a floor of int?  shouldn't compile...
+inline float Math::floor( float fValue )
 {
-    return int(::floor(fValue));
+    return float( ::floorf( fValue ) );
+}
+inline double Math::floor( double fValue )
+{
+    return double( ::floor( fValue ) );
 }
 //----------------------------------------------------------------------------
-inline int Math::iSign (int iValue)
+template <typename T>
+inline T Math::sign( int iValue )
 {
-    return ( iValue > 0 ? +1 : ( iValue < 0 ? -1 : 0 ) );
+    return ( iValue > ((T)0) ? ((T)+1) : ( iValue < ((T)0) ? ((T)-1) : ((T)0) ) );
 }
 //----------------------------------------------------------------------------
-inline float Math::abs (float fValue)
+// don't allow non-float types, because their ret val wont be correct
+// i.e. with int, the int retval will be rounded up or down.  
+//      we'd need a float retval to do it right, but we can't specialize by ret
+template <typename T>
+inline T Math::aCos( T fValue );
+inline float Math::aCos( float fValue )
 {
-    return float(::fabs(fValue));
+    if ( -1.0f < fValue )
+    {
+        if ( fValue < 1.0f )
+            return float( ::acosf( fValue ) );
+        else
+            return 0.0f;
+    }
+    else
+    {
+        return (float)Math::PI;
+    }
 }
-//----------------------------------------------------------------------------
-inline float Math::aCos (float fValue)
+inline double Math::aCos( double fValue )
 {
     if ( -1.0 < fValue )
     {
         if ( fValue < 1.0 )
-            return float(::acos(fValue));
+            return double( ::acos( fValue ) );
         else
             return 0.0;
     }
     else
     {
-        return Math::PI;
+        return (double)Math::PI;
     }
 }
 //----------------------------------------------------------------------------
-inline float Math::aSin (float fValue)
+template <typename T>
+inline T Math::aSin( T fValue );
+inline float Math::aSin( float fValue )
+{
+    if ( -1.0f < fValue )
+    {
+        if ( fValue < 1.0f )
+            return float( ::asinf( fValue ) );
+        else
+            return (float)-Math::PI_2;
+    }
+    else
+    {
+        return (float)Math::PI_2;
+    }
+}
+inline double Math::aSin( double fValue )
 {
     if ( -1.0 < fValue )
     {
         if ( fValue < 1.0 )
-            return float(::asin(fValue));
+            return double( ::asin( fValue ) );
         else
-            return -Math::PI_2;
+            return (double)-Math::PI_2;
     }
     else
     {
-        return Math::PI_2;
+        return (double)Math::PI_2;
     }
 }
 //----------------------------------------------------------------------------
-inline float Math::aTan (float fValue)
+template <typename T>
+inline T Math::aTan( T fValue );
+inline float Math::aTan( float fValue )
 {
-    return float(::atan(fValue));
+    return float( ::atanf( fValue ) );
+}
+inline double Math::aTan( double fValue )
+{
+    return ::atan( fValue );
 }
 //----------------------------------------------------------------------------
-inline float Math::aTan2 (float fY, float fX)
+template <typename T>
+inline T Math::atan2( T fY, T fX );
+inline float Math::aTan2( float fY, float fX )
 {
-    return float(::atan2(fY,fX));
+    return float( ::atan2f( fY, fX ) );
+}
+inline double Math::aTan2( double fY, double fX )
+{
+    return double( ::atan2( fY, fX ) );
 }
 //----------------------------------------------------------------------------
-inline float Math::ceil (float fValue)
+template <typename T>
+inline T Math::cos( T fValue );
+inline float Math::cos( float fValue )
 {
-    return float(::ceil(fValue));
+    return float( ::cosf( fValue ) );
+}
+inline double Math::cos( double fValue )
+{
+    return double( ::cos( fValue ) );
 }
 //----------------------------------------------------------------------------
-inline float Math::cos (float fValue)
+template <typename T>
+inline T Math::exp( T fValue );
+inline float Math::exp( float fValue )
 {
-    return float(::cos(fValue));
+    return float( ::expf( fValue ) );
+}
+inline double Math::exp( double fValue )
+{
+    return double( ::exp( fValue ) );
 }
 //----------------------------------------------------------------------------
-inline float Math::exp (float fValue)
+template <typename T>
+inline T Math::log( T fValue );
+inline double Math::log( double fValue )
 {
-    return float(::exp(fValue));
+    return double( ::log( fValue ) );
+}
+inline float Math::log( float fValue )
+{
+    return float( ::logf( fValue ) );
 }
 //----------------------------------------------------------------------------
-inline float Math::floor (float fValue)
+inline double Math::pow( double fBase, double fExponent)
 {
-    return float(::floor(fValue));
+    return double( ::pow( fBase, fExponent ) );
+}
+inline float Math::pow( float fBase, float fExponent)
+{
+    return float( ::powf( fBase, fExponent ) );
 }
 //----------------------------------------------------------------------------
-inline float Math::log (float fValue)
+template <typename T>
+inline T Math::sin( T fValue );
+inline double Math::sin( double fValue )
 {
-    return float(::log(fValue));
+    return double( ::sin( fValue ) );
+}
+inline float Math::sin( float fValue )
+{
+    return float( ::sinf( fValue ) );
 }
 //----------------------------------------------------------------------------
-inline float Math::pow (float fBase, float fExponent)
+template <typename T>
+inline T Math::sqr( T fValue )
 {
-    return float(::pow(fBase,fExponent));
+    return T( fValue * fValue );
 }
 //----------------------------------------------------------------------------
-inline float Math::sign (float fValue)
+template <typename T>
+inline T Math::sqrt( T fValue )
 {
-    if ( fValue > 0.0 )
-        return 1.0;
+    return T( ::sqrtf( ((float)fValue) ) );
+}
+inline double Math::sqrt( double fValue )
+{
+    return double( ::sqrt( fValue ) );
+}
 
-    if ( fValue < 0.0 )
-        return -1.0;
-
-    return 0.0;
-}
 //----------------------------------------------------------------------------
-inline float Math::sin (float fValue)
-{
-    return float(::sin(fValue));
-}
-//----------------------------------------------------------------------------
-inline float Math::sqr (float fValue)
-{
-    return fValue*fValue;
-}
-//----------------------------------------------------------------------------
-inline float Math::sqrt (float fValue)
-{
-    return float(::sqrt(fValue));
-}
-
-inline float Math::unitRandom ()
+inline float Math::unitRandom()
 {
     //return float(random())/float(RAND_MAX);
    float ret_val;
@@ -215,23 +253,134 @@ inline float Math::unitRandom ()
    return drand48();
 }
 
+/** return a random number between x1 and x2
+ * RETURNS: random number between x1 and x2
+ */
+inline float rangeRandom( float x1, float x2 )
+{
+   float r = Math::unitRandom();
+   float size = x2 - x1;
+   return float( r * size + x1 );
+}
+   
 /*
 float Math::SymmetricRandom ()
 {
     return 2.0*float(rand())/float(RAND_MAX) - 1.0;
 }
 */
+//----------------------------------------------------------------------------
 
-inline float Math::deg2Rad(float fVal)
+inline float Math::deg2Rad( float fVal )
 {
-   return float(fVal*(Math::PI/180.0f));
+   return float( fVal * (float)(Math::PI/180.0) );
 }
-
-inline float Math::rad2Deg(float fVal)
+inline double Math::deg2Rad( double fVal )
 {
-   return float(fVal*(180.0/Math::PI));
+   return double( fVal * (double)(Math::PI/180.0) );
 }
 
+inline float Math::rad2Deg( float fVal )
+{
+   return float( fVal * (float)(180.0/Math::PI) );
 }
+inline double Math::rad2Deg( double fVal )
+{
+   return double( fVal * (double)(180.0/Math::PI) );
+}
+//----------------------------------------------------------------------------
+
+/** Is almost equal?
+ * test for equality with tolerance...
+ */
+template <class T>
+inline bool isEqual( const T& a, const T& b, const T& tolerance )
+{
+   return bool( Math::abs( a - b ) <= tolerance );
+}
+//----------------------------------------------------------------------------
+/** cut off the digits after the decimal place */
+template <class T>
+inline T trunc( T val )
+{
+   return T( (val < ((T)0)) ? Math::ceil( val ) : Math::floor( val ) );
+}
+/** round to nearest integer */
+template <class T>
+inline T round( T p )
+{
+   return T( Math::floor( p + (T)0.5 ) );
+}
+//----------------------------------------------------------------------------
+/** Linear Interpolation between number [a] and [b]
+ * use double or float only...
+ */
+template <class T, typename U>
+inline void lerp( T& result, const U& lerp, const T& a, const T& b )
+{
+    T size = b - a;
+    result = ((U)a) + (((U)size) * lerp);
+}
+
+//----------------------------------------------------------------------------
+/** min returns the minimum of 2 values */
+template <class T>
+inline T Min( const T& x, const T& y )
+{
+   return ( x > y ) ? y : x;
+}
+/** min returns the minimum of 3 values */
+template <class T>
+inline T Min( const T& x, const T& y, const T& z )
+{
+   return Math::Min( Math::Min( x, y ), z );
+}
+/** min returns the minimum of 4 values */
+template <class T>
+inline T Min( const T& w, const T& x, const T& y, const T& z )
+{
+   return Math::Min( Math::Min( w, x ), Math::Min( y, z ) );
+}
+
+/** max returns the maximum of 2 values */
+template <class T>
+inline T Max( const T& x, const T& y )
+{
+   return ( x > y ) ? x : y;
+}
+/** max returns the maximum of 3 values */
+template <class T>
+inline T Max( const T& x, const T& y, const T& z )
+{
+   return Math::Max( Math::Max( x, y ), z );
+}
+/** max returns the maximum of 4 values */
+template <class T>
+inline T Max( const T& w, const T& x, const T& y, const T& z )
+{
+   return Math::Max( Math::Max( w, x ), Math::Max( y, z ) );
+}
+//----------------------------------------------------------------------------
+/** Compute the factorial.
+ * give - an object who's type has operator++, operator=, operator<=, and operator*= defined.
+ *        it should be a single valued scalar type such as an int, float, double etc....
+ * NOTE: This could be faster with a lookup table, but then wouldn't work templated : kevin
+ */
+template<class T>
+inline T factorial(T rhs)
+{
+   T lhs = (T)1;
+
+   for( T x = (T)1; x <= rhs; ++x )
+   {
+      lhs *= x;
+   }
+
+   return lhs;
+}
+//----------------------------------------------------------------------------
+
+} // end namespace Math 
+} // end namespace gmtl
 
 #endif
