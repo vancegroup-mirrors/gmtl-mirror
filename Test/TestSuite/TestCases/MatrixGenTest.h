@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixGenTest.h,v $
- * Date modified: $Date: 2002-03-15 18:18:17 $
- * Version:       $Revision: 1.16 $
+ * Date modified: $Date: 2002-03-15 19:21:23 $
+ * Version:       $Revision: 1.17 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -641,7 +641,7 @@ public:
       gmtl::Matrix44f mat44;
       float a = 1.0f;
       
-      const long iters(100000);
+      const long iters(25000);
       
       // 2D translation
       CPPUNIT_METRIC_START_TIMING();
@@ -729,7 +729,7 @@ public:
       gmtl::Matrix34f mat34;
       gmtl::Matrix44f mat44;
       gmtl::Matrix<float, 4, 3> mat43;
-      const long iters(100000);
+      const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
@@ -842,7 +842,7 @@ public:
    {
       gmtl::Matrix33f mat;
       float a = 0.0f;
-      const long iters(100000);
+      const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
@@ -859,7 +859,7 @@ public:
    {
       gmtl::Matrix34f mat;
       float a = 0.0f;
-      const long iters(100000);
+      const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
@@ -875,7 +875,7 @@ public:
    {
       gmtl::Matrix44f mat;
       float a = 0.0f;
-      const long iters(100000);
+      const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
@@ -936,7 +936,7 @@ public:
    {
       gmtl::Matrix33f mat;
       float a = 0;
-      const long iters(100000);
+      const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
@@ -972,7 +972,7 @@ public:
    {
       gmtl::Matrix34f mat;
       float a = 0;
-      const long iters(100000);
+      const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
@@ -1008,7 +1008,7 @@ public:
    {
       gmtl::Matrix44f mat;
       float a = 0;
-      const long iters(100000);
+      const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
@@ -1078,7 +1078,7 @@ public:
    {
       gmtl::Matrix33f mat;
       float a = 0.0f;
-      const long iters(100000);
+      const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
@@ -1094,7 +1094,7 @@ public:
    {
       gmtl::Matrix34f mat;
       float a = 0.0f;
-      const long iters(100000);
+      const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
@@ -1110,7 +1110,7 @@ public:
    {
       gmtl::Matrix44f mat;
       float a = 0.0f;
-      const long iters(100000);
+      const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
@@ -1160,7 +1160,7 @@ public:
    {
       gmtl::Matrix33f mat;
       float a = 0.0f;
-      const long iters(100000);
+      const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
@@ -1176,7 +1176,7 @@ public:
    {
       gmtl::Matrix34f mat;
       float a = 0.0f;
-      const long iters(100000);
+      const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
@@ -1192,7 +1192,7 @@ public:
    {
       gmtl::Matrix44f mat;
       float a = 0.0f;
-      const long iters(100000);
+      const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
