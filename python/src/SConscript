@@ -4,17 +4,21 @@ pj = os.path.join
 Import('pkg baseEnv PREFIX')
 
 headers = Split("""
+   gmtl-AABoxOps.h
+   gmtl-AxisAngleOps.h
    gmtl-Containment.h
+   gmtl-CoordOps.h
+   gmtl-EulerAngleOps.h
    gmtl-GenOps.h
    gmtl-Generate.h
    gmtl-LineSegOps.h
    gmtl-MatrixOps.h
    gmtl-PlaneOps.h
    gmtl-QuatOps.h
+   gmtl-SphereOps.h
    gmtl-TriOps.h
    gmtl-VecOps.h
    gmtl-Xforms.h
-   gmtl-functions.h
    gmtl-getData-wrappers.h
    gmtl-intersect-wrappers.h
    gmtl-wrappers.h

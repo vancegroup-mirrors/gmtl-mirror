@@ -6,9 +6,9 @@
  *   Allen Bierbaum
  *
  * -----------------------------------------------------------------
- * File:          $RCSfile: _gmtl_TriOps_h.cpp,v $
+ * File:          $RCSfile: _gmtl_EulerAngleOps_h.cpp,v $
  * Date modified: $Date: 2003-08-30 17:22:10 $
- * Version:       $Revision: 1.2 $
+ * Version:       $Revision: 1.1 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,17 +35,27 @@
 
 // Includes ====================================================================
 #include <boost/python.hpp>
-#include <gmtl-TriOps.h>
+#include <gmtl-EulerAngleOps.h>
 
 // Using =======================================================================
 using namespace boost::python;
 
+// Declarations ================================================================
+namespace  {
+
+
+BOOST_PYTHON_FUNCTION_OVERLOADS(isEqual_overloads_2_3, gmtl::isEqual, 2, 3)
+
+
+}// namespace 
+
 // Module ======================================================================
-void _Export_gmtl_TriOps_h()
+void _Export_gmtl_EulerAngleOps_h()
 {
-    def("center", (gmtl::Point<double,3> (*)(const gmtl::Tri<double> &))&gmtl::center);
-    def("center", (gmtl::Point<int,3> (*)(const gmtl::Tri<int> &))&gmtl::center);
-    def("center", (gmtl::Point<float,3> (*)(const gmtl::Tri<float> &))&gmtl::center);
-    def("isEqual", (bool (*)(const gmtl::Tri<float> &, const gmtl::Tri<float> &, const float &))&gmtl::isEqual);
-    def("isEqual", (bool (*)(const gmtl::Tri<double> &, const gmtl::Tri<double> &, const double &))&gmtl::isEqual);
+    def("isEqual", (bool (*)(const gmtl::EulerAngle<float,gmtl::ZXY> &, const gmtl::EulerAngle<float,gmtl::ZXY> &, const float &))&gmtl::isEqual, isEqual_overloads_2_3());
+    def("isEqual", (bool (*)(const gmtl::EulerAngle<float,gmtl::ZYX> &, const gmtl::EulerAngle<float,gmtl::ZYX> &, const float &))&gmtl::isEqual, isEqual_overloads_2_3());
+    def("isEqual", (bool (*)(const gmtl::EulerAngle<double,gmtl::XYZ> &, const gmtl::EulerAngle<double,gmtl::XYZ> &, const double &))&gmtl::isEqual, isEqual_overloads_2_3());
+    def("isEqual", (bool (*)(const gmtl::EulerAngle<double,gmtl::ZYX> &, const gmtl::EulerAngle<double,gmtl::ZYX> &, const double &))&gmtl::isEqual, isEqual_overloads_2_3());
+    def("isEqual", (bool (*)(const gmtl::EulerAngle<double,gmtl::ZXY> &, const gmtl::EulerAngle<double,gmtl::ZXY> &, const double &))&gmtl::isEqual, isEqual_overloads_2_3());
+    def("isEqual", (bool (*)(const gmtl::EulerAngle<float,gmtl::XYZ> &, const gmtl::EulerAngle<float,gmtl::XYZ> &, const float &))&gmtl::isEqual, isEqual_overloads_2_3());
 }

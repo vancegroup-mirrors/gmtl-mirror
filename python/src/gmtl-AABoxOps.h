@@ -6,9 +6,9 @@
  *   Allen Bierbaum
  *
  * -----------------------------------------------------------------
- * File:          $RCSfile: gmtl-LineSegOps.h,v $
+ * File:          $RCSfile: gmtl-AABoxOps.h,v $
  * Date modified: $Date: 2003-08-30 17:22:10 $
- * Version:       $Revision: 1.2 $
+ * Version:       $Revision: 1.1 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -33,28 +33,23 @@
 *
  ************************************************************ ggt-cpr end */
 
-#ifndef _PYGMTL_LINE_SEG_OPS_H_
-#define _PYGMTL_LINE_SEG_OPS_H_
+#ifndef _PYGMTL_AABOX_OPS_H_
+#define _PYGMTL_AABOX_OPS_H_
 
 // This file makes declarations of the templated function instantiations
 // needed for Boost.Python to do its thing.
 
-#include <gmtl/LineSeg.h>
-#include <gmtl/LineSegOps.h>
+#include <gmtl/AABox.h>
+#include <gmtl/AABoxOps.h>
 
 
 namespace gmtl
 {
-   template float distanceSquared(const gmtl::LineSegf&, const gmtl::Point3f&);
-   template double distanceSquared(const gmtl::LineSegd&, const gmtl::Point3d&);
-
-   template gmtl::Point3f findNearestPt(const gmtl::LineSegf&,
-                                        const gmtl::Point3f&);
-   template gmtl::Point3d findNearestPt(const gmtl::LineSegd&,
-                                        const gmtl::Point3d&);
-
-   template float distance(const gmtl::LineSegf&, const gmtl::Point3f&);
-   template double distance(const gmtl::LineSegd&, const gmtl::Point3d&);
+   template bool isEqual(const gmtl::AABoxf&, const gmtl::AABoxf&,
+                         const float&);
+   template bool isEqual(const gmtl::AABoxd&, const gmtl::AABoxd&,
+                         const double&);
 }
 
-#endif /* _PYGMTL_LINE_SEG_OPS_H_ */
+
+#endif /* _PYGMTL_AABOX_OPS_H_ */

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-MatrixOps.h,v $
- * Date modified: $Date: 2003-08-17 06:32:59 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2003-08-30 17:22:10 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -98,6 +98,11 @@ namespace gmtl
 
    template gmtl::Matrix44f& invert(gmtl::Matrix44f&);
    template gmtl::Matrix33f& invert(gmtl::Matrix33f&);
+
+   template bool isEqual(const gmtl::Matrix44f&, const gmtl::Matrix44f&,
+                         const float&);
+   template bool isEqual(const gmtl::Matrix33f&, const gmtl::Matrix33f&,
+                         const float&);
 }
 
 #endif /* _PYGMTL_MATRIX_OPS_H_ */

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-QuatOps.h,v $
- * Date modified: $Date: 2003-08-17 06:32:59 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2003-08-30 17:22:10 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -116,6 +116,9 @@ namespace gmtl
 
    template bool isEquiv(const gmtl::Quatf&, const gmtl::Quatf&, float);
    template bool isEquiv(const gmtl::Quatd&, const gmtl::Quatd&, double);
+
+   template bool isEqual(const gmtl::Quatf&, const gmtl::Quatf&, float);
+   template bool isEqual(const gmtl::Quatd&, const gmtl::Quatd&, double);
 }
 
 #endif /* _PYGMTL_QUAT_OPS_H_ */

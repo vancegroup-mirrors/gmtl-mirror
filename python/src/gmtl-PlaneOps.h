@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-PlaneOps.h,v $
- * Date modified: $Date: 2003-08-17 06:32:59 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2003-08-30 17:22:10 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -55,6 +55,18 @@ namespace gmtl
    template gmtl::PlaneSide whichSide(const gmtl::Planed&,
                                       const gmtl::Point3d&, const double&);
 
+   template float distance(const gmtl::Planef&, const gmtl::Point3f&);
+   template double distance(const gmtl::Planed&, const gmtl::Point3d&);
+
+   template float findNearestPt(const gmtl::Planef&, const gmtl::Point3f&,
+                                gmtl::Point3f&);
+   template double findNearestPt(const gmtl::Planed&, const gmtl::Point3d&,
+                                 gmtl::Point3d&);
+
+   template bool isEqual(const gmtl::Planef&, const gmtl::Planef&,
+                         const float&);
+   template bool isEqual(const gmtl::Planed&, const gmtl::Planed&,
+                         const double&);
 }
 
 #endif /* _PYGMTL_PLANE_OPS_H_ */

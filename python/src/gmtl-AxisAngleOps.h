@@ -6,9 +6,9 @@
  *   Allen Bierbaum
  *
  * -----------------------------------------------------------------
- * File:          $RCSfile: gmtl-LineSegOps.h,v $
+ * File:          $RCSfile: gmtl-AxisAngleOps.h,v $
  * Date modified: $Date: 2003-08-30 17:22:10 $
- * Version:       $Revision: 1.2 $
+ * Version:       $Revision: 1.1 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -33,28 +33,21 @@
 *
  ************************************************************ ggt-cpr end */
 
-#ifndef _PYGMTL_LINE_SEG_OPS_H_
-#define _PYGMTL_LINE_SEG_OPS_H_
+#ifndef _PYGMTL_AXIS_ANGLE_OPS_H_
+#define _PYGMTL_AXIS_ANGLE_OPS_H_
 
 // This file makes declarations of the templated function instantiations
 // needed for Boost.Python to do its thing.
 
-#include <gmtl/LineSeg.h>
-#include <gmtl/LineSegOps.h>
+#include <gmtl/AxisAngle.h>
+#include <gmtl/AxisAngleOps.h>
 
 
 namespace gmtl
 {
-   template float distanceSquared(const gmtl::LineSegf&, const gmtl::Point3f&);
-   template double distanceSquared(const gmtl::LineSegd&, const gmtl::Point3d&);
-
-   template gmtl::Point3f findNearestPt(const gmtl::LineSegf&,
-                                        const gmtl::Point3f&);
-   template gmtl::Point3d findNearestPt(const gmtl::LineSegd&,
-                                        const gmtl::Point3d&);
-
-   template float distance(const gmtl::LineSegf&, const gmtl::Point3f&);
-   template double distance(const gmtl::LineSegd&, const gmtl::Point3d&);
+   template bool isEqual(const AxisAnglef&, const AxisAnglef&, const float&);
+   template bool isEqual(const AxisAngled&, const AxisAngled&, const double&);
 }
 
-#endif /* _PYGMTL_LINE_SEG_OPS_H_ */
+
+#endif /* _PYGMTL_AXIS_ANGLE_OPS_H_ */
