@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecBaseTest.cpp,v $
- * Date modified: $Date: 2003-02-06 01:39:50 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2004-08-30 14:53:40 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -122,6 +122,11 @@ namespace gmtlTest
 
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("VecBaseTest/CopyConstructOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      if(use_value < 0.0f)
+      {
+         std::cout << "Using this value failed." << std::endl;
+      }
    }
 
 
