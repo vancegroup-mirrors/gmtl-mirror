@@ -60,8 +60,8 @@ def BuildLinuxEnvironment():
    "Builds a base environment for other modules to build on set up for linux"
    global optimize, profile, builders
 
-   CXX = 'g++3'
-   LINK = 'g++3'
+   CXX = WhereIs('g++3') or 'g++'
+   LINK = CXX
    CXXFLAGS = ['-Wall']
    LINKFLAGS = []
 
