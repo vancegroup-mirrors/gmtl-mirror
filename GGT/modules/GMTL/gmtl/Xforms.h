@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Xforms.h,v $
- * Date modified: $Date: 2003-03-03 00:54:05 $
- * Version:       $Revision: 1.29 $
+ * Date modified: $Date: 2003-03-10 16:02:43 $
+ * Version:       $Revision: 1.30 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -318,6 +318,51 @@ namespace gmtl
       Point<DATA_TYPE, COLS_MINUS_ONE> temporary;
       return xform( temporary, matrix, point );
    }
+
+   /** point * a matrix
+    *  multiplication of [m x k] matrix by a [k x 1] matrix (also known as a Point [with w == 1 for points by definition] ).
+    *  @param matrix        the transform matrix
+    *  @param point         the original point
+    *  @return  the point transformed by the matrix
+    *  @post This results in a full matrix xform of the point.
+    */
+   template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
+   inline Point<DATA_TYPE, COLS> operator*( const Point<DATA_TYPE, COLS>& point, const Matrix<DATA_TYPE, ROWS, COLS>& matrix )
+   {
+      Point<DATA_TYPE, COLS> temporary;
+      return xform( temporary, matrix, point );
+   }
+
+
+   /** point *= a matrix
+    *  multiplication of [m x k] matrix by a [k x 1] matrix (also known as a Point [with w == 1 for points by definition] ).
+    *  @param matrix        the transform matrix
+    *  @param point         the original point
+    *  @return  the point transformed by the matrix
+    *  @post This results in a full matrix xform of the point.
+    */
+   template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
+   inline Point<DATA_TYPE, COLS> operator*=(Point<DATA_TYPE, COLS>& point, const Matrix<DATA_TYPE, ROWS, COLS>& matrix)
+   {
+      Point<DATA_TYPE, COLS> temporary = point;
+      return xform( point, matrix, temporary);
+   }
+
+   /** partial point *= a matrix
+    *  multiplication of [m x k] matrix by a [k-1 x 1] matrix (also known as a Point [with w == 1 for points by definition] ).
+    *  @param matrix        the transform matrix
+    *  @param point         the original point
+    *  @return  the point transformed by the matrix
+    *  @post the [k-1 x 1] vector you pass in is treated as a [point, 1.0]
+    *  @post This results in a full matrix xform of the point.
+    */
+   template <typename DATA_TYPE, unsigned ROWS, unsigned COLS, unsigned COLS_MINUS_ONE>
+   inline Point<DATA_TYPE, COLS_MINUS_ONE> operator*=(Point<DATA_TYPE, COLS_MINUS_ONE>& point, const Matrix<DATA_TYPE, ROWS, COLS>& matrix)
+   {
+      Point<DATA_TYPE, COLS_MINUS_ONE> temporary = point;
+      return xform( point, matrix, temporary);
+   }
+
 
    /** @} */
    
