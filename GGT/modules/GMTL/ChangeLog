@@ -1,5 +1,9 @@
 DATE       AUTHOR       CHANGE
 ---------- --------     --------------------------------------------------------
+2003-03-16 subatomic    added operator/=( Quat, Quat )
+                        added operator/( Quat, Quat )
+                        fixed div( Quat, Quat )
+                        fixed quaternion multiplication ordering bug (again?)
 2003-03-16 subatomic    added intersect( Sphere, Point )
                         added intersect( Sphere, LineSeg )
                         added intersect( Sphere, Ray )
