@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-wrappers.h,v $
- * Date modified: $Date: 2003-08-17 15:04:36 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2003-08-30 17:16:10 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -138,6 +138,7 @@ namespace gmtlWrappers
    template gmtl::Quatf     makeRotQuat(const gmtl::Vec3f&, const gmtl::Vec3f&);
    template gmtl::Quatd     makeRotQuat(const gmtl::Vec3d&, const gmtl::Vec3d&);
 
+#ifndef _MSC_VER
    template<typename DATA_TYPE>
    gmtl::Matrix<DATA_TYPE, 3, 3> makeDirCosMatrix33(const gmtl::Vec<DATA_TYPE, 3>& xDestAxis,
                                                     const gmtl::Vec<DATA_TYPE, 3>& yDestAxis,
@@ -194,6 +195,7 @@ namespace gmtlWrappers
                                                const gmtl::Vec3d&,
                                                const gmtl::Vec3d&,
                                                const gmtl::Vec3d&);
+#endif
 
 
    template<typename DATA_TYPE>
