@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-02-18 19:59:55 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-02-18 20:56:05 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -36,6 +36,7 @@
 #define _GMTL_GENERATE_H_
 
 #include <gmtl/Matrix.h>
+#include <gmtl/Meta.h>
 
 namespace gmtl
 {
@@ -84,12 +85,21 @@ namespace gmtl
     *  to a rotation matrix defined by the rotation part of M
     */
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
-   inline Matrix<DATA_TYPE, ROWS, COLS> makeRot( DATA_TYPE radians, DATA_TYPE x, DATA_TYPE y, DATA_TYPE z )
+   inline Matrix<DATA_TYPE, ROWS, COLS> makeRot( DATA_TYPE radians, DATA_TYPE x, DATA_TYPE y, DATA_TYPE z, Type2TypeUU<DATA_TYPE, ROWS, COLS> t = Type2TypeUU<DATA_TYPE, ROWS, COLS>() )
    {
       // (slow -> uses a temporary)
       Matrix<DATA_TYPE, ROWS, COLS> temporary;
       return makeRot( temporary, radians, x, y, z );
    }
+   
+   /** Create a matrix using euler angles
+    */
+   template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
+   inline Matrix<DATA_TYPE, ROWS, COLS> makeRot( DATA_TYPE rotx, DATA_TYPE roty, DATA_TYPE rotz, int order, Type2TypeUU<DATA_TYPE, ROWS, COLS> t = Type2TypeUU<DATA_TYPE, ROWS, COLS>() )
+   {
+      
+   }
+      
 } // end gmtl namespace.
 
 #endif
