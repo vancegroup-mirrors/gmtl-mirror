@@ -34,6 +34,8 @@ def GetPlatform():
       return 'irix'
    elif string.find(sys.platform, 'linux') != -1:
       return 'linux'
+   elif string.find(sys.platform, 'freebsd') != -1:
+      return 'linux'
    elif string.find(sys.platform, 'cygwin') != -1:
       return 'win32'
    elif string.find(os.name, 'win32') != -1:
@@ -153,7 +155,7 @@ def BuildWin32Environment():
 def ValidateBoostOption(key, value, environ):
    "Validate the boost option settings"
    global enable_python, optimize
-   req_boost_version = 103000
+   req_boost_version = 103100
    sys.stdout.write("checking for %s [%s]...\n" % (key, value))
 
    if "BoostPythonDir" == key:
@@ -175,19 +177,30 @@ def ValidateBoostOption(key, value, environ):
          Exit()
          return False
 
+      platform = GetPlatform()
+
+      if platform == 'win32':
+         tool = 'vc7'
+      elif platform == 'irix':
+         tool = 'mp'
+      elif platform == 'linux':
+         tool = 'gcc'
+
       # Check on the libraries that I need to use
       if enable_python:
-         if GetPlatform() == 'win32':
-            boost_python_lib_name = pj(value, 'lib', 'boost_python.dll')
+         if platform == 'win32':
+            boost_python_lib_name = pj(value, 'lib',
+                                       'boost_python-%s.dll' % tool)
          else:
-            boost_python_lib_name = pj(value, 'lib', 'libboost_python.a')
+            boost_python_lib_name = pj(value, 'lib',
+                                       'libboost_python-%s.a' % tool)
 
          if not os.path.isfile(boost_python_lib_name):
             print "[%s] not found."%boost_python_lib_name
             Exit()
             return False
 
-         if GetPlatform() == 'irix':
+         if platform == 'irix':
             environ.Append(BoostCPPPATH = [pj(value, 'include'), pj(value, 'include', 'boost', 'compatibility', 'cpp_c_headers')])
          else:
             environ.Append(BoostCPPPATH = [pj(value, 'include')])
@@ -195,9 +208,14 @@ def ValidateBoostOption(key, value, environ):
          environ.Append(BoostLIBPATH = [pj(value, 'lib')])
 
          if optimize == 'no':
-            environ.Append(BoostLIBS = ['boost_python_debug'])
+            if platform == 'win32':
+               dbg = 'gd'
+            else:
+               dbg = 'd'
+
+            environ.Append(BoostLIBS = ['boost_python-%s-mt-%s' % (tool, dbg)])
          else:
-            environ.Append(BoostLIBS = ['boost_python'])
+            environ.Append(BoostLIBS = ['boost_python-%s-mt' % tool])
 
    else:
       assert False, "Invalid Boost key"
