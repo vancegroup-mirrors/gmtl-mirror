@@ -1,5 +1,8 @@
 DATE       AUTHOR       CHANGE
 ---------- --------     --------------------------------------------------------
+2002-10-28 nonchocoboy  set(AxisAngle, Quat) now guarantees that the AxisAngle
+                        has a normalized axis.
+                        NEW VERSION: 0.1.11
 2002-10-17 nonchocoboy  Compiler fix for LineSeg::getLength().
                         NEW VERSION: 0.1.10
 2002-10-11 nonchocoboy  Added output function for AABox.
