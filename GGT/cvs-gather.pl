@@ -1,6 +1,30 @@
 #!/usr/bin/perl -w
 
-# Id: cvs-gather.pl,v 1.13 2002/02/11 18:06:46 patrick Exp
+# ************** <auto-copyright.pl BEGIN do not edit this line> **************
+#
+# Doozer++ is (C) Copyright 2000, 2001 by Iowa State University
+#
+# Original Author:
+#   Patrick Hartling
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Library General Public
+# License as published by the Free Software Foundation; either
+# version 2 of the License, or (at your option) any later version.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Library General Public License for more details.
+#
+# You should have received a copy of the GNU Library General Public
+# License along with this library; if not, write to the
+# Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+# Boston, MA 02111-1307, USA.
+#
+# *************** <auto-copyright.pl END do not edit this line> ***************
+
+# $Id: cvs-gather.pl,v 1.4 2002-02-12 23:12:27 patrickh Exp $
 
 require 5.004;
 
@@ -26,19 +50,21 @@ sub doOverride($$);
 sub overrideValue($$$);
 sub checkoutModules($);
 sub checkoutModule($$$$$$$);
+sub modifyCvsEntries($$);
 sub expandEnvVars($);
 sub printDebug($@);
 
 # *********************************************************************
 # Here is the version for this script!
 
-my $VERSION = '0.0.4';
+my $VERSION = '0.0.7';
 # *********************************************************************
 
 my $cfg_file      = '';
 my $help          = 0;
 my $print_version = 0;
 my $verbose       = 0;
+my $entry_mod     = 0;
 my $force_install = 0;
 
 my (@overrides)     = ();
@@ -56,7 +82,7 @@ $debug_level = $CRITICAL_LVL;
 GetOptions('cfg=s' => \$cfg_file, 'help' => \$help, 'override=s' => \@overrides,
            'debug=i' => \$debug_level, 'set=s' => \%cmd_overrides,
            'version' => \$print_version, 'verbose' => \$verbose,
-           'force-install' => \$force_install);
+           'entry-mod' => \$entry_mod, 'force-install' => \$force_install);
 
 # Print the help output and exit if --help was on the command line.
 printHelp() && exit(0) if $help;
@@ -193,7 +219,7 @@ sub printHelp ()
 Usage:
     $0
         [ --cfg=<filename> ] [ --override=<filename> ... ] [ --debug=<level> ]
-        [ --set <key>=<value> ... ] [ --verbose ]
+        [ --set <key>=<value> ... ] [ --entry-mod] [ --verbose ]
 
 For application makefiles:
 
@@ -224,6 +250,10 @@ For application makefiles:
         When re-downloading a module, force removal of the existing
         directory.  Without this option, a warning is printed, and the
         existing directory is not removed.
+
+    --entry-mod
+        Modify CVS/Entries to include a newly downloaded module.  This
+        is not the default behavior.
 
     --verbose
         Turn on verbose output.  This basically makes the log file useless.
@@ -666,28 +696,29 @@ sub checkoutModules ($)
 {
    my $mod_ref = shift;
 
-   foreach ( keys(%$mod_ref) )
+   my $mod_name;
+   foreach $mod_name ( keys(%$mod_ref) )
    {
       my $module = '';
-      foreach $module ( @{$$mod_ref{"$_"}{'Module'}} )
+      foreach $module ( @{$$mod_ref{"$mod_name"}{'Module'}} )
       {
          my($cvs_module_name, $install_name) = each(%$module);
 
-         if ( defined($$mod_ref{"$_"}{'CVSROOT'}) && $cvs_module_name )
+         if ( defined($$mod_ref{"$mod_name"}{'CVSROOT'}) && $cvs_module_name )
          {
-            printDebug $VERB_LVL, "$_ --> $$mod_ref{$_}{'CVSROOT'} ",
-                       "$$mod_ref{$_}{'Tag'} $$mod_ref{$_}{'Date'} ",
-                       "$cvs_module_name (to $$mod_ref{$_}{'Path'}";
+            printDebug $VERB_LVL, "$mod_name --> $$mod_ref{$mod_name}{'CVSROOT'} ",
+                       "$$mod_ref{$mod_name}{'Tag'} $$mod_ref{$mod_name}{'Date'} ",
+                       "$cvs_module_name (to $$mod_ref{$mod_name}{'Path'}";
             printDebug $VERB_LVL, "/$install_name" if $install_name;
             printDebug $VERB_LVL, ")\n";
-            checkoutModule($_, $$mod_ref{"$_"}{'CVSROOT'},
-                           $$mod_ref{"$_"}{'Tag'}, $$mod_ref{"$_"}{'Date'},
-                           "$cvs_module_name", $$mod_ref{"$_"}{'Path'},
-                           "$install_name");
+            checkoutModule($mod_name, $$mod_ref{"$mod_name"}{'CVSROOT'},
+                           $$mod_ref{"$mod_name"}{'Tag'},
+                           $$mod_ref{"$mod_name"}{'Date'}, "$cvs_module_name",
+                           $$mod_ref{"$mod_name"}{'Path'}, "$install_name");
          }
       }
 
-      checkoutModules($$mod_ref{"$_"}{'deps'});
+      checkoutModules($$mod_ref{"$mod_name"}{'deps'});
    }
 }
 
@@ -731,14 +762,54 @@ sub checkoutModule ($$$$$$$)
          $temp_checkout_dir = "$cwd";
       }
 
+      # Open a pipe to read from the output of $cmd_line.
+      open(CVS_CMD, "$cmd_line 2>&1 |") or die "Can't fork: $!\n";
+      $| = 1;
+
+      # Power users will appreciate seeing the output from CVS as it happens.
       if ( $verbose )
       {
-         print `$cmd_line 2>&1`;
+         print "$_" while <CVS_CMD>;
       }
+      # For simpler folk, we will just write out to a log file.  To keep them placated,
+      # however, there will be a little spinner that runs while CVS is doing its job.
       else
       {
-         print LOG_FILE `$cmd_line 2>&1`;
+         my $last_char = '|';
+
+         print "$last_char";
+
+         while ( <CVS_CMD> )
+         {
+            print LOG_FILE "$_";
+
+            # Move on to the next character of the animation sequence.
+            if ( $last_char eq "|" )
+            {
+               $last_char = '/';
+            }
+            elsif ( $last_char eq "/" )
+            {
+               $last_char = '-';
+            }
+            elsif ( $last_char eq "-" )
+            {
+               $last_char = '\\';
+            }
+            elsif ( $last_char eq "\\" )
+            {
+               $last_char = '|';
+            }
+
+            # Print one status character per line of CVS output.
+            print "\b$last_char";
+         }
       }
+
+      $| = 0;
+
+      # Close up our pipe now that we are done with it.
+      close(CVS_CMD);
 
       chdir("$cwd");
       mkdir("$path", 0755) unless -d "$path";
@@ -804,6 +875,10 @@ sub checkoutModule ($$$$$$$)
                                    "$co_dir/$install_name\n";
             rename("$orig_module_name", "$co_dir/$install_name")
                or warn "    WARNING: Module renaming failed: $!\n";
+
+            # If the user requested to do so, modify $dest_dir/CVS/Entries to include
+            # $dir.
+            modifyCvsEntries("$co_dir", "$install_name") if $entry_mod;
          }
       }
       # We are going to use the default module name, but we have to get it
@@ -826,11 +901,15 @@ sub checkoutModule ($$$$$$$)
             # ahead with the move.
             if ( ! -d "$dest_dir/$dir" )
             {
-               printDebug $STATE_LVL,
-                          "Renaming $temp_checkout_dir/$skipped_path/$dir " .
-                          "to $dest_dir/$dir\n";
-               rename("$temp_checkout_dir/$skipped_path/$dir",
-                      "$dest_dir/$dir");
+               my $src_dir = "$temp_checkout_dir/$skipped_path";
+               printDebug $STATE_LVL, "Renaming $src_dir/$dir to $dest_dir/$dir\n";
+               rename("$src_dir/$dir", "$dest_dir/$dir");
+
+               # If the user requested to do so, modify $dest_dir/CVS/Entries to
+               # include $dir.
+               modifyCvsEntries("$dest_dir", "$dir") if $entry_mod;
+
+               last;
             }
             # $dir already exists in $dest_dir, so append it to $dest_dir and
             # move on.
@@ -853,6 +932,62 @@ sub checkoutModule ($$$$$$$)
    else
    {
       warn " " x $indent, "Nothing to check out for $name!\n";
+   }
+}
+
+sub modifyCvsEntries ($$)
+{
+   my $base_dir = shift;
+   my $new_dir  = shift;
+
+   my $entries_file = "$base_dir/CVS/Entries";
+
+   printDebug $STATE_LVL, "Adding entry to $entries_file";
+
+   my @entries = ();
+
+   if ( -r "$entries_file" ) 
+   {
+      if ( open(ENTRIES, "$entries_file") )
+      {
+         @entries = <ENTRIES>;
+         close(ENTRIES);
+
+         my(@ent_list) = grep(/$new_dir/, @entries);
+
+         if ( $#ent_list == -1 )
+         {
+            push(@entries, "D/$new_dir////");
+         }
+         else
+         {
+            printDebug $WARNING_LVL, "$new_dir already exists in $entries_file\n";
+         }
+      }
+      else
+      {
+         warn "WARNING: Could not append $new_dir to $entries_file";
+         return;
+      }
+   }
+   else
+   {
+      push(@entries, "D/$new_dir////");
+   }
+
+   if ( open(ENTRIES, "> $entries_file") )
+   {
+      foreach ( @entries )
+      {
+         chomp;
+         print ENTRIES "$_\n";
+      }
+
+      close(ENTRIES);
+   }
+   else
+   {
+      warn "WARNING: Could not create $entries_file: $!\n";
    }
 }
 
