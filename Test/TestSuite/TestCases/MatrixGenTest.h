@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixGenTest.h,v $
- * Date modified: $Date: 2002-02-20 16:51:03 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2002-02-20 17:09:35 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -135,16 +135,65 @@ public:
    
    void testMatrixMakeAxes()
    {
+      float eps = 0.001f;
+      {
+         gmtl::Matrix33f mat33, expected_result33;
+         for (int x = 0; x < 9; ++x)
+            mat33[x] = 9382498138;
+         expected_result33.set( 0, 1, 0,
+                                1, 0, 0,
+                                0, 0, -1  );
+         makeAxes( mat33, gmtl::Vec3f( 0,1,0 ), gmtl::Vec3f( 1,0,0 ), gmtl::Vec3f( 0,0,-1 ) ); 
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat33, eps ) );
+      }
+      {
+         gmtl::Matrix44f mat44, expected_result44;
+         for (int x = 0; x < 16; ++x)
+            mat44[x] = 9382498138;
+         expected_result44.set( 0, 1, 0, 0,
+                                1, 0, 0, 0,
+                                0, 0, -1, 0,
+                                0, 0, 0, 1  );
+         makeAxes( mat44, gmtl::Vec3f( 0,1,0 ), gmtl::Vec3f( 1,0,0 ), gmtl::Vec3f( 0,0,-1 ) ); 
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result44, mat44, eps ) );
+      }
    }
+   
    void testMatrixMakeDirCos()
    {
+      float eps = 0.001f;
+      {
+         gmtl::Matrix33f mat33, expected_result33;
+         for (int x = 0; x < 9; ++x)
+            mat33[x] = 9382498138;
+         expected_result33.set( 0, 1, 0,
+                                1, 0, 0,
+                                0, 0, -1  );
+         gmtl::makeDirCos( mat33, gmtl::Vec3f( 0,1,0 ), gmtl::Vec3f( 1,0,0 ), gmtl::Vec3f( 0,0,-1 ) ); 
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat33, eps ) );
+      }
+      {
+         gmtl::Matrix44f mat44, expected_result44;
+         for (int x = 0; x < 16; ++x)
+            mat44[x] = 9382498138;
+         expected_result44.set( 0, 1, 0, 0,
+                                1, 0, 0, 0,
+                                0, 0, -1, 0,
+                                0, 0, 0, 1  );
+         makeDirCos( mat44, gmtl::Vec3f( 0,1,0 ), gmtl::Vec3f( 1,0,0 ), gmtl::Vec3f( 0,0,-1 ) ); 
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result44, mat44, eps ) );
+      }
    }
+   
+   
    void testMatrixMakeScale()
    {
       float eps = 0.001f;
       // 2D rot/trans
       { 
          gmtl::Matrix<float, 2, 3> mat23, expected_result23;
+         for (int x = 0; x < 6; ++x)
+            mat23[x] = 9382498138;
          expected_result23.set( 32, 0, 0,
                                 0, 33, 0 );
          gmtl::makeScale( mat23, gmtl::Vec2f( 32, 33 ) );
@@ -153,6 +202,8 @@ public:
       // 2D rot/trans/skew
       { 
          gmtl::Matrix33f mat33, expected_result33;
+         for (int x = 0; x < 9; ++x)
+            mat33[x] = 9382498138;
          expected_result33.set( 32, 0, 0,
                                 0, 33, 0,
                                 0, 0, 1 );
@@ -162,6 +213,8 @@ public:
       // 3D rot/trans
       { 
          gmtl::Matrix34f mat34, expected_result34;
+         for (int x = 0; x < 12; ++x)
+            mat34[x] = 9382498138;
          expected_result34.set( 32, 0, 0, 0,
                                 0, 33, 0, 0,
                                 0, 0, 34, 0 );
@@ -171,6 +224,8 @@ public:
       // 3D rot/trans/skew
       { 
          gmtl::Matrix44f mat44, expected_result44;
+         for (int x = 0; x < 16; ++x)
+            mat44[x] = 9382498138;
          expected_result44.set( 32, 0, 0, 0,
                                 0, 33, 0, 0,
                                 0, 0, 34, 0,
@@ -184,6 +239,8 @@ public:
       // 2D rot/trans
       { 
          gmtl::Matrix<float, 2, 3> mat23, expected_result23;
+         for (int x = 0; x < 6; ++x)
+            mat23[x] = 9382498138;
          expected_result23.set( 32, 0, 0,
                                 0, 32, 0 );
          gmtl::makeScale( mat23, 32.0f );
@@ -192,6 +249,8 @@ public:
       // 2D rot/trans/skew
       { 
          gmtl::Matrix33f mat33, expected_result33;
+         for (int x = 0; x < 9; ++x)
+            mat33[x] = 9382498138;
          expected_result33.set( 32, 0, 0,
                                 0, 32, 0,
                                 0, 0, 1 );
@@ -201,6 +260,8 @@ public:
       // 3D rot/trans
       { 
          gmtl::Matrix34f mat34, expected_result34;
+         for (int x = 0; x < 12; ++x)
+            mat34[x] = 9382498138;
          expected_result34.set( 32, 0, 0, 0,
                                 0, 32, 0, 0,
                                 0, 0, 32, 0 );
@@ -210,6 +271,8 @@ public:
       // 3D rot/trans/skew
       { 
          gmtl::Matrix44f mat44, expected_result44;
+         for (int x = 0; x < 16; ++x)
+            mat44[x] = 9382498138;
          expected_result44.set( 32, 0, 0, 0,
                                 0, 32, 0, 0,
                                 0, 0, 32, 0,
@@ -226,11 +289,14 @@ public:
          gmtl::makeScale( mat84, 32.0f );
       }
    }
+   
    void testMatrixMakeRot()
    {
       float eps = 0.01f;
       {
          gmtl::Matrix33f mat, expected_result33;
+         for (int x = 0; x < 9; ++x)
+            mat[x] = 9382498138;
          expected_result33.set( 1, 0, 0,
                                 0, 0, -1,
                                 0, 1, 0 );
@@ -241,6 +307,8 @@ public:
       }
       {
          gmtl::Matrix33f mat, expected_result33;
+         for (int x = 0; x < 9; ++x)
+            mat[x] = 9382498138;
          expected_result33.set( 1, 0, 0,
                                 0, 1, 0,
                                 0, 0, 1 );
@@ -252,6 +320,8 @@ public:
       
       {
          gmtl::Matrix34f mat, expected_result34;
+         for (int x = 0; x < 12; ++x)
+            mat[x] = 9382498138;
          expected_result34.set( 1, 0, 0, 0,
                                 0, 0, 1, 0,
                                 0, -1, 0, 0 );
@@ -262,6 +332,8 @@ public:
       }
       {
          gmtl::Matrix34f mat, expected_result34;
+         for (int x = 0; x < 12; ++x)
+            mat[x] = 9382498138;
          expected_result34.set( 0.804738, 0.310617, -0.505879, 0, 
                                 -0.505879, 0.804738, -0.310617, 0, 
                                 0.310617, 0.505879, 0.804738, 0  );
@@ -272,6 +344,8 @@ public:
       }
       {
          gmtl::Matrix44f mat, expected_result44;
+         for (int x = 0; x < 16; ++x)
+            mat[x] = 9382498138;
          expected_result44.set( 0.804738, -0.310617, 0.505879, 0,
                                 0.505879, 0.804738, -0.310617, 0,
                                 -0.310617, 0.505879, 0.804738, 0,
@@ -288,6 +362,8 @@ public:
       float eps = 0.001f;
       {
          gmtl::Matrix33f mat, expected_result33;
+         for (int x = 0; x < 9; ++x)
+            mat[x] = 9382498138;
          expected_result33.set( 0.683013, -0.183013, 0.707107, 
                                 0.683013, -0.183013, -0.707107, 
                                 0.258819, 0.965926, 0 );
@@ -298,6 +374,8 @@ public:
       }
       {
          gmtl::Matrix33f mat, expected_result33;
+         for (int x = 0; x < 9; ++x)
+            mat[x] = 9382498138;
          expected_result33.set( 1, 0,  0,
                                 0, 0, -1, 
                                 0, 1,  0  );
@@ -306,6 +384,8 @@ public:
       }
       {
          gmtl::Matrix33f mat, expected_result33;
+         for (int x = 0; x < 9; ++x)
+            mat[x] = 9382498138;
          expected_result33.set( 0, 0, 1,
                                 0, 1, 0, 
                                 -1, 0, 0  );
@@ -314,6 +394,8 @@ public:
       }
       {
          gmtl::Matrix33f mat, expected_result33;
+         for (int x = 0; x < 9; ++x)
+            mat[x] = 9382498138;
          expected_result33.set( 0, -1, 0,
                                 1, 0, 0, 
                                 0, 0, 1  );
@@ -323,6 +405,8 @@ public:
       
       {
          gmtl::Matrix34f mat, expected_result34;
+         for (int x = 0; x < 12; ++x)
+            mat[x] = 9382498138;
          expected_result34.set( 0.683013, 0.183013, -0.707107, 0, 
                                -0.0413633, -0.956855, -0.287606, 0, 
                                -0.729234, 0.225687, -0.645974, 0   );
@@ -331,6 +415,8 @@ public:
       }
       {
          gmtl::Matrix34f mat, expected_result34;
+         for (int x = 0; x < 12; ++x)
+            mat[x] = 9382498138;
          expected_result34.set( 0, 0, 1, 0,
                                 0, 1, 0, 0,
                                 -1, 0, 0, 0 );
@@ -342,6 +428,8 @@ public:
 
       {
          gmtl::Matrix44f mat, expected_result44;
+         for (int x = 0; x < 16; ++x)
+            mat[x] = 9382498138;
          expected_result44.set( 0.697193, 0.0121696, 0.71678, 0,
                                -0.275553, -0.918494, 0.283617, 0,
                                 0.66181, -0.395247, -0.637014, 0,
@@ -354,6 +442,8 @@ public:
       // ZYX
       {
          gmtl::Matrix33f mat, expected_result33;
+         for (int x = 0; x < 9; ++x)
+            mat[x] = 9382498138;
          expected_result33.set( 0, -0.965926, 0.258819, 
                                 0.707107, 0.183013, 0.683013,
                                 -0.707107, 0.183013, 0.683013 );
@@ -364,6 +454,8 @@ public:
       }
       {
          gmtl::Matrix33f mat, expected_result33;
+         for (int x = 0; x < 9; ++x)
+            mat[x] = 9382498138;
          expected_result33.set( 0, -1, 0,
                                 1, 0, 0, 
                                 0, 0, 1  );
@@ -372,6 +464,8 @@ public:
       }
       {
          gmtl::Matrix33f mat, expected_result33;
+         for (int x = 0; x < 9; ++x)
+            mat[x] = 9382498138;
          expected_result33.set( 0, 0, 1,
                                 0, 1, 0, 
                                 -1, 0, 0  );
@@ -380,6 +474,8 @@ public:
       }
       {
          gmtl::Matrix33f mat, expected_result33;
+         for (int x = 0; x < 9; ++x)
+            mat[x] = 9382498138;
          expected_result33.set( 1, 0, 0,
                                 0, 0, -1, 
                                 0, 1, 0  );
@@ -389,6 +485,8 @@ public:
       
       {
          gmtl::Matrix34f mat, expected_result34;
+         for (int x = 0; x < 12; ++x)
+            mat[x] = 9382498138;
          expected_result34.set( -0.645974, -0.560068, 0.518692, 0, 
                                  0.287606, -0.807979, -0.514249, 0, 
                                  0.707107, -0.183013, 0.683013, 0  );
@@ -397,6 +495,8 @@ public:
       }
       {
          gmtl::Matrix34f mat, expected_result34;
+         for (int x = 0; x < 12; ++x)
+            mat[x] = 9382498138;
          expected_result34.set( 0, 0, 1, 0,
                                 0, 1, 0, 0,
                                 -1, 0, 0, 0 );
@@ -406,6 +506,8 @@ public:
 
       {
          gmtl::Matrix44f mat, expected_result44;
+         for (int x = 0; x < 16; ++x)
+            mat[x] = 9382498138;
          expected_result44.set( -0.637014, 0.418103, -0.647613, 0,
                                 -0.283617, -0.908318, -0.30744, 0,
                                 -0.71678, -0.0121696, 0.697193, 0,
@@ -418,6 +520,8 @@ public:
       // ZXY
       {
          gmtl::Matrix33f mat, expected_result33;
+         for (int x = 0; x < 9; ++x)
+            mat[x] = 9382498138;
          expected_result33.set( -0.183013, -0.707107, 0.683013,
                                  0.965926, 0,         0.258819,
                                 -0.183013, 0.707107,  0.683013 );
@@ -428,6 +532,8 @@ public:
       }
       {
          gmtl::Matrix33f mat, expected_result33;
+         for (int x = 0; x < 9; ++x)
+            mat[x] = 9382498138;
          expected_result33.set( 0, -1, 0,
                                 1, 0, 0, 
                                 0, 0, 1  );
@@ -438,6 +544,8 @@ public:
       }
       {
          gmtl::Matrix33f mat, expected_result33;
+         for (int x = 0; x < 9; ++x)
+            mat[x] = 9382498138;
          expected_result33.set( 1, 0,  0,
                                 0, 0, -1, 
                                 0, 1,  0  );
@@ -448,6 +556,8 @@ public:
       }
       {
          gmtl::Matrix33f mat, expected_result33;
+         for (int x = 0; x < 9; ++x)
+            mat[x] = 9382498138;
          expected_result33.set(  0, 0, 1,
                                  0, 1, 0, 
                                 -1, 0, 0  );
@@ -459,6 +569,8 @@ public:
       
       {
          gmtl::Matrix34f mat, expected_result34;
+         for (int x = 0; x < 12; ++x)
+            mat[x] = 9382498138;
          expected_result34.set( -0.956855, -0.287606, -0.0413633, 0, 
                                  0.225687, -0.645974, -0.729234,  0, 
                                  0.183013, -0.707107,  0.683013,  0  );
@@ -469,6 +581,8 @@ public:
       }
       {
          gmtl::Matrix34f mat, expected_result34;
+         for (int x = 0; x < 12; ++x)
+            mat[x] = 9382498138;
          expected_result34.set( 1, 0,  0, 0,
                                 0, 0, -1, 0,
                                 0, 1,  0, 0 );
@@ -480,6 +594,8 @@ public:
 
       {
          gmtl::Matrix44f mat, expected_result44;
+         for (int x = 0; x < 16; ++x)
+            mat[x] = 9382498138;
          expected_result44.set( -0.918494, 0.283617, -0.275553, 0, 
                                 -0.395247, -0.637014, 0.66181, 0, 
                                  0.0121696, 0.71678, 0.697193, 0, 
