@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Intersection.h,v $
- * Date modified: $Date: 2002-08-06 21:08:49 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-11-01 12:01:18 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -37,6 +37,9 @@
 
 #include <gmtl/AABox.h>
 #include <gmtl/Point.h>
+#include <gmtl/Vec.h>
+#include <gmtl/VecOps.h>
+#include <gmtl/Math.h>
 
 namespace gmtl
 {
@@ -66,7 +69,7 @@ namespace gmtl
    }
    
    /**
-    * Tests if the given AABoxe and point intersect with each other. On an edge IS
+    * Tests if the given AABox and point intersect with each other. On an edge IS
     * considered intersection by this algorithm.
     *
     * @param box    the box to test
@@ -88,6 +91,79 @@ namespace gmtl
 
       // they must intersect
       return true;
+   }
+
+   /**
+    * Tests if the given AABoxes intersect if moved along the given paths. Using
+    * the AABox sweep test, the normalized time of the first and last points of
+    * contact.
+    *
+    * @param box1          the first box to test
+    * @param path1         the path the first box should travel along
+    * @param box2          the second box to test
+    * @param path2         the path the second box should travel along
+    * @param firstContact  set to the normalized time of the first point of contact
+    * @param secondContact set to the normalized time of the second point of contact
+    *
+    * @return  true if the items intersect; false otherwise
+    */
+   template<class DATA_TYPE>
+   bool intersect( const AABox<DATA_TYPE>& box1, const Vec<DATA_TYPE, 3>& path1,
+                   const AABox<DATA_TYPE>& box2, const Vec<DATA_TYPE, 3>& path2,
+                   DATA_TYPE& firstContact, DATA_TYPE& secondContact )
+   {
+      // Algorithm taken from Gamasutra's article, "Simple Intersection Test for
+      // Games" - http://www.gamasutra.com/features/19991018/Gomez_3.htm
+      //
+      // This algorithm is solved from the frame of reference of box1
+
+      // Get the relative path (in normalized time)
+      Vec<DATA_TYPE, 3> path = path2 - path1;
+
+      // The first time of overlap along each axis
+      Vec<DATA_TYPE, 3> overlap1(DATA_TYPE(0), DATA_TYPE(0), DATA_TYPE(0));
+
+      // The second time of overlap along each axis
+      Vec<DATA_TYPE, 3> overlap2(DATA_TYPE(1), DATA_TYPE(1), DATA_TYPE(1));
+
+      // Check if the boxes already overlap
+      if (intersect(box1, box2))
+      {
+         firstContact = secondContact = DATA_TYPE(0);
+         return true;
+      }
+
+      // Find the possible first and last times of overlap along each axis
+      for (int i=0; i<3; ++i)
+      {
+         if ((box1.getMax()[i] < box2.getMin()[i]) && (path[i] < DATA_TYPE(0)))
+         {
+            overlap1[i] = (box1.getMax()[i] - box2.getMin()[i]) / path[i];
+         }
+         else if ((box2.getMax()[i] < box1.getMin()[i]) && (path[i] > DATA_TYPE(0)))
+         {
+            overlap1[i] = (box1.getMin()[i] - box2.getMax()[i]) / path[i];
+         }
+
+         if ((box2.getMax()[i] > box1.getMin()[i]) && (path[i] < DATA_TYPE(0)))
+         {
+            overlap2[i] = (box1.getMin()[i] - box2.getMax()[i]) / path[i];
+         }
+         else if ((box1.getMax()[i] > box2.getMin()[i]) && (path[i] > DATA_TYPE(0)))
+         {
+            overlap2[i] = (box1.getMax()[i] - box2.getMin()[i]) / path[i];
+         }
+      }
+
+      // Calculate the first time of overlap
+      firstContact = Math::Max(overlap1[0], overlap1[1], overlap1[2]);
+
+      // Calculate the second time of overlap
+      secondContact = Math::Min(overlap2[0], overlap2[1], overlap2[2]);
+
+      // There could only have been a collision if the first overlap time
+      // occurred before the second overlap time
+      return firstContact <= secondContact;
    }
 }
 
