@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: GenerateTest.h,v $
- * Date modified: $Date: 2002-03-11 02:20:20 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2002-03-11 16:39:22 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -370,7 +370,7 @@ public:
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
-         q1 = makeInvert( q1 );
+         q1 = gmtl::makeInvert( q1 );
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE( "GenTest/makeInvert(quatd)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
@@ -387,7 +387,7 @@ public:
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
-         q2 = makeInvert( q2 );
+         q2 = gmtl::makeInvert( q2 );
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE( "GenTest/makeInvert(quatf)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
@@ -405,7 +405,7 @@ public:
       
       for (long iter = 0; iter < iters; ++iter)
       {
-         q1 = makeConj( q1 );
+         q1 = gmtl::makeConj( q1 );
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE( "GenTest/makeConj(quatd)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
@@ -414,7 +414,7 @@ public:
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
-         q2 = makeConj( q2 );
+         q2 = gmtl::makeConj( q2 );
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE( "GenTest/makeConj(quatf)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
@@ -434,7 +434,7 @@ public:
       
       for (long iter = 0; iter < iters; ++iter)
       {
-         q1 = makePure( v1 );
+         q1 = gmtl::makePure( v1 );
          q1[2] -= v1[0];
       }
       CPPUNIT_METRIC_STOP_TIMING();
@@ -445,7 +445,7 @@ public:
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
-         q2 = makePure( v2 );
+         q2 = gmtl::makePure( v2 );
          q2[2] += v2[0];
       }
       CPPUNIT_METRIC_STOP_TIMING();
@@ -466,7 +466,7 @@ public:
       
       for (long iter = 0; iter < iters; ++iter)
       {
-         v1 = makeVec( q1 );
+         v1 = gmtl::makeVec( q1 );
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE( "GenTest/makeVec(quatd)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
@@ -476,7 +476,7 @@ public:
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
-         v2 = makeVec( q2 );
+         v2 = gmtl::makeVec( q2 );
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE( "GenTest/makeVec(quatf)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
@@ -495,7 +495,7 @@ public:
       
       for (long iter = 0; iter < iters; ++iter)
       {
-         q1 = makeNormal( q1 );
+         q1 = gmtl::makeNormal( q1 );
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE( "GenTest/makeNormal(quatd)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
@@ -504,7 +504,7 @@ public:
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
-         q2 = makeNormal( q2 );
+         q2 = gmtl::makeNormal( q2 );
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE( "GenTest/makeNormal(quatf)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
