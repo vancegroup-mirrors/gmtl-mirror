@@ -111,14 +111,22 @@ def BuildDarwinEnvironment():
    "Builds a base environment for other modules to build on set up for Darwin."
    global optimize, profile, builders
 
+   import re
+
+   exp = re.compile('^(.*)\/Python\.framework.*$')
+   m = exp.search(distutils.sysconfig.get_config_var('prefix'))
+   framework_opt = '-F' + m.group(1)
+
    CXX = 'g++'
    LINK = CXX
    CXXFLAGS = ['-ftemplate-depth-256', '-DBOOST_PYTHON_DYNAMIC_LIB',
-               '-Wno-long-double', '-no-cpp-precomp', '-fno-inline',
-               '-Wall', '-fcoalesce-templates', '-F/System/Library/Frameworks',
-               '-pipe']
-   LINKFLAGS = ['-bundle', '-F/System/Library/Frameworks', '-framework',
-                'Python']
+               '-Wno-long-double', '-no-cpp-precomp', '-Wall',
+               '-fcoalesce-templates', framework_opt, '-pipe']
+   SHLIBSUFFIX = distutils.sysconfig.get_config_var('SO')
+   # NOTE: The -m  option deals with a problem of multiply defined symbols
+   # that might be the result of a compiler bug.
+   SHLINKFLAGS = ['-bundle', '-m', framework_opt, '-framework', 'Python']
+   LINKFLAGS = []
 
    # Enable profiling?
    if profile != 'no':
@@ -141,6 +149,8 @@ def BuildDarwinEnvironment():
       CPPPATH     = [],
       LIBPATH     = [],
       LIBS        = [],
+      SHLINKFLAGS = SHLINKFLAGS,
+      SHLIBSUFFIX = SHLIBSUFFIX,
    )
 
 def BuildIRIXEnvironment():
