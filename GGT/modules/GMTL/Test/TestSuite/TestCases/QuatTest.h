@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatTest.h,v $
- * Date modified: $Date: 2002-02-10 04:38:06 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-03-11 00:35:03 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -115,39 +115,7 @@ public:
 
    }
 
-   void testGetSetMat()
-   {
-      gmtl::Vec3 xAxis1,yAxis1,zAxis1;
-      gmtl::Matrix mat1, mat2;
-      gmtl::Quat quat0, quat1;
-
-      // Simple rotation around XAxis
-      mat1.makeIdent();
-      quat0.makeQuat(mat1);
-      quat0.getMat(mat2);
-      CPPUNIT_ASSERT(mat1.equal(mat2));
-
-      // Simple rotation around XAxis
-      mat1.makeXYZEuler(45, -89, 32.45);
-      quat0.makeQuat(mat1);
-      quat0.getMat(mat2);
-      CPPUNIT_ASSERT(mat1.equal(mat2));
-
-      // Make orthonormal matrix
-      xAxis1.set(7, 11, 21);
-      yAxis1.set(12, 21, 75);
-      zAxis1 = xAxis1.cross(yAxis1);
-      xAxis1.normalize();
-      yAxis1.normalize();
-      zAxis1.normalize();
-
-      mat1.makeAxes(xAxis1,yAxis1,zAxis1);
-      quat0.makeQuat(mat1);
-      quat0.getMat(mat2);
-      quat1.makeQuat(mat2);
-
-      CPPUNIT_ASSERT(quat0.equal(quat1) || quat0.equal(-quat1));
-   }
+   
 
 
    static Test* suite()
