@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecOps.h,v $
- * Date modified: $Date: 2002-03-21 16:29:48 $
- * Version:       $Revision: 1.12 $
+ * Date modified: $Date: 2002-03-21 20:35:46 $
+ * Version:       $Revision: 1.13 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -46,9 +46,18 @@ namespace gmtl
 
 // --- Basic VEC types operations -- //
 
-/** Add a vector to another vector */
+/**
+ * Adds v2 to v1 and stores the result in v1. This is equivalent to the
+ * expression v1 = v1 + v2.
+ *
+ * @param v1   the first vector
+ * @param v2   the second vector
+ *
+ * @return  v1 after v2 has been added to it
+ */
 template<class DATA_TYPE, unsigned SIZE>
-VecBase<DATA_TYPE, SIZE>& operator +=(VecBase<DATA_TYPE, SIZE>& v1, const VecBase<DATA_TYPE, SIZE>& v2)
+VecBase<DATA_TYPE, SIZE>& operator +=(VecBase<DATA_TYPE, SIZE>& v1,
+                                      const VecBase<DATA_TYPE, SIZE>& v2)
 {
    for(unsigned i=0;i<SIZE;++i)
    {
@@ -58,17 +67,35 @@ VecBase<DATA_TYPE, SIZE>& operator +=(VecBase<DATA_TYPE, SIZE>& v1, const VecBas
    return v1;
 }
 
+/**
+ * Adds v2 to v1 and returns the result. Thus result = v1 + v2.
+ *
+ * @param v1   the first vector
+ * @param v2   the second vector
+ *
+ * @return  the result of adding v2 to v1
+ */
 template<class DATA_TYPE, unsigned SIZE>
-VecBase<DATA_TYPE, SIZE> operator +(const VecBase<DATA_TYPE, SIZE>& v1, const VecBase<DATA_TYPE, SIZE>& v2)
+VecBase<DATA_TYPE, SIZE> operator +(const VecBase<DATA_TYPE, SIZE>& v1,
+                                    const VecBase<DATA_TYPE, SIZE>& v2)
 {
    VecBase<DATA_TYPE, SIZE> ret_val(v1);
    ret_val += v2;
    return ret_val;
 }
 
-
+/**
+ * Subtracts v2 from v1 and stores the result in v1. This is equivalent to the
+ * expression v1 = v1 - v2.
+ *
+ * @param v1   the first vector
+ * @param v2   the second vector
+ *
+ * @return  v1 after v2 has been subtracted from it
+ */
 template<class DATA_TYPE, unsigned SIZE>
-VecBase<DATA_TYPE, SIZE>& operator -=(VecBase<DATA_TYPE, SIZE>& v1, const VecBase<DATA_TYPE, SIZE>& v2)
+VecBase<DATA_TYPE, SIZE>& operator -=(VecBase<DATA_TYPE, SIZE>& v1,
+                                      const VecBase<DATA_TYPE, SIZE>& v2)
 {
    for(unsigned i=0;i<SIZE;++i)
    {
@@ -78,17 +105,35 @@ VecBase<DATA_TYPE, SIZE>& operator -=(VecBase<DATA_TYPE, SIZE>& v1, const VecBas
    return v1;
 }
 
-
+/**
+ * Subtracts v2 from v1 and returns the result. Thus result = v1 - v2.
+ *
+ * @param v1   the first vector
+ * @param v2   the second vector
+ *
+ * @return  the result of subtracting v2 from v1
+ */
 template < class DATA_TYPE, unsigned SIZE>
-Vec<DATA_TYPE, SIZE> operator -(const VecBase<DATA_TYPE, SIZE>& v1, const VecBase<DATA_TYPE, SIZE>& v2)
+Vec<DATA_TYPE, SIZE> operator -(const VecBase<DATA_TYPE, SIZE>& v1,
+                                const VecBase<DATA_TYPE, SIZE>& v2)
 {
    Vec<DATA_TYPE, SIZE> ret_val(v1);
    ret_val -= v2;
    return ret_val;
 }
 
+/**
+ * Multiplies v1 by a scalar value and stores the result in v1. This is
+ * equivalent to the expression v1 = v1 * scalar.
+ *
+ * @param v1      the vector to scale
+ * @param scalar  the amount by which to scale v1
+ *
+ * @return  v1 after it has been mutiplied by scalar
+ */
 template<class DATA_TYPE, unsigned SIZE, class SCALAR_TYPE>
-VecBase<DATA_TYPE, SIZE>& operator *=(VecBase<DATA_TYPE, SIZE>& v1, const SCALAR_TYPE& scalar)
+VecBase<DATA_TYPE, SIZE>& operator *=(VecBase<DATA_TYPE, SIZE>& v1,
+                                      const SCALAR_TYPE& scalar)
 {
    for(unsigned i=0;i<SIZE;++i)
    {
@@ -98,8 +143,18 @@ VecBase<DATA_TYPE, SIZE>& operator *=(VecBase<DATA_TYPE, SIZE>& v1, const SCALAR
    return v1;
 }
 
+/**
+ * Multiplies v1 by a scalar value and returns the result. Thus result = v1 *
+ * scalar.
+ *
+ * @param v1      the vector to scale
+ * @param scalar  the amount by which to scale v1
+ *
+ * @return  the result of multiplying v1 by scalar
+ */
 template<class DATA_TYPE, unsigned SIZE, class SCALAR_TYPE>
-VecBase<DATA_TYPE, SIZE> operator *(const VecBase<DATA_TYPE, SIZE>& v1, const SCALAR_TYPE& scalar)
+VecBase<DATA_TYPE, SIZE> operator *(const VecBase<DATA_TYPE, SIZE>& v1,
+                                    const SCALAR_TYPE& scalar)
 {
    VecBase<DATA_TYPE, SIZE> ret_val(v1);
    ret_val *= scalar;
@@ -108,8 +163,18 @@ VecBase<DATA_TYPE, SIZE> operator *(const VecBase<DATA_TYPE, SIZE>& v1, const SC
    //return VecBase<DATA_TYPE, SIZE>(v1) *= scalar;
 }
 
+/**
+ * Multiplies v1 by a scalar value and returns the result. Thus result = scalar
+ * * v1. This is equivalent to result = v1 * scalar.
+ *
+ * @param scalar  the amount by which to scale v1
+ * @param v1      the vector to scale
+ *
+ * @return  the result of multiplying v1 by scalar
+ */
 template<class DATA_TYPE, unsigned SIZE, class SCALAR_TYPE>
-VecBase<DATA_TYPE, SIZE> operator *(const SCALAR_TYPE& scalar, const VecBase<DATA_TYPE, SIZE>& v1)
+VecBase<DATA_TYPE, SIZE> operator *(const SCALAR_TYPE& scalar,
+                                    const VecBase<DATA_TYPE, SIZE>& v1)
 {
    VecBase<DATA_TYPE, SIZE> ret_val(v1);
    ret_val *= scalar;
@@ -118,9 +183,18 @@ VecBase<DATA_TYPE, SIZE> operator *(const SCALAR_TYPE& scalar, const VecBase<DAT
    //return VecBase<DATA_TYPE, SIZE>(v1) *= scalar;
 }
 
-
+/**
+ * Divides v1 by a scalar value and stores the result in v1. This is
+ * equivalent to the expression v1 = v1 / scalar.
+ *
+ * @param v1      the vector to scale
+ * @param scalar  the amount by which to scale v1
+ *
+ * @return  v1 after it has been divided by scalar
+ */
 template<class DATA_TYPE, unsigned SIZE, class SCALAR_TYPE>
-VecBase<DATA_TYPE, SIZE>& operator /=(VecBase<DATA_TYPE, SIZE>& v1, const SCALAR_TYPE& scalar)
+VecBase<DATA_TYPE, SIZE>& operator /=(VecBase<DATA_TYPE, SIZE>& v1,
+                                      const SCALAR_TYPE& scalar)
 {
    for(unsigned i=0;i<SIZE;++i)
    {
@@ -130,8 +204,18 @@ VecBase<DATA_TYPE, SIZE>& operator /=(VecBase<DATA_TYPE, SIZE>& v1, const SCALAR
    return v1;
 }
 
+/**
+ * Divides v1 by a scalar value and returns the result. Thus result = v1 /
+ * scalar.
+ *
+ * @param v1      the vector to scale
+ * @param scalar  the amount by which to scale v1
+ *
+ * @return  the result of dividing v1 by scalar
+ */
 template<class DATA_TYPE, unsigned SIZE, class SCALAR_TYPE>
-VecBase<DATA_TYPE, SIZE> operator /(const VecBase<DATA_TYPE, SIZE>& v1, const SCALAR_TYPE& scalar)
+VecBase<DATA_TYPE, SIZE> operator /(const VecBase<DATA_TYPE, SIZE>& v1,
+                                    const SCALAR_TYPE& scalar)
 {
    VecBase<DATA_TYPE, SIZE> ret_val(v1);
    ret_val /= scalar;
@@ -143,9 +227,14 @@ VecBase<DATA_TYPE, SIZE> operator /(const VecBase<DATA_TYPE, SIZE>& v1, const SC
 /** Vector math operations */
 //@{
 
-/** Compute dot prodcut of v1 and v2
-* @return dotproduct of v1 and v2
-*/
+/**
+ * Computes dot product of v1 and v2 and returns the result.
+ *
+ * @param v1   the first vector
+ * @param v2   the second vector
+ *
+ * @return the dotproduct of v1 and v2
+ */
 template<class DATA_TYPE, unsigned SIZE>
 DATA_TYPE dot(const Vec<DATA_TYPE, SIZE>& v1, const Vec<DATA_TYPE, SIZE>& v2)
 {
@@ -157,9 +246,13 @@ DATA_TYPE dot(const Vec<DATA_TYPE, SIZE>& v1, const Vec<DATA_TYPE, SIZE>& v2)
    return ret_val;
 }
 
-/** Get vector length
-* @return length of the vector
-*/
+/**
+ * Computes the length of the given vector.
+ *
+ * @param v1   the vector with which to compute the length
+ *
+ * @return  the length of v1
+ */
 template<class DATA_TYPE, unsigned SIZE>
 DATA_TYPE length(const Vec<DATA_TYPE, SIZE>& v1)
 {
@@ -170,10 +263,15 @@ DATA_TYPE length(const Vec<DATA_TYPE, SIZE>& v1)
       return Math::sqrt(ret_val);
 }
 
-/** Return the squared length of the vector
-* This can be used in many calculations instead of length
-* to increase speed
-*/
+/**
+ * Computes the square of the length of the given vector. This can be used in
+ * many calculations instead of length to increase speed by saving you an
+ * expensive sqrt call.
+ *
+ * @param v1   the vector with which to compute the squared length
+ *
+ * @return  the square of the length of v1
+ */
 template<class DATA_TYPE, unsigned SIZE>
 DATA_TYPE lengthSquared(const Vec<DATA_TYPE, SIZE>& v1)
 {
@@ -186,10 +284,17 @@ DATA_TYPE lengthSquared(const Vec<DATA_TYPE, SIZE>& v1)
    return ret_val;
 }
 
-/** Normalize a vector
-* @post length(v1) == 1.0
-* If the vector already has length of 1.0, then nothing is done
-*/
+/**
+ * Normalizes the given vector in place causing it to be of unit length. If the
+ * vector is already of length 1.0, nothing is done. For convenience, the
+ * original length of the vector is returned.
+ *
+ * @post length(v1) == 1.0
+ *
+ * @param v1   the vector to normalize
+ *
+ * @return  the length of v1 before it was normalized
+ */
 template<class DATA_TYPE, unsigned SIZE>
 DATA_TYPE normalize(Vec<DATA_TYPE, SIZE>& v1)
 {
@@ -216,13 +321,23 @@ DATA_TYPE normalize(Vec<DATA_TYPE, SIZE>& v1)
  * @return  true if the vector is normalized, false otherwise
  */
 template< class DATA_TYPE, unsigned SIZE >
-bool isNormalized( const Vec<DATA_TYPE, SIZE>& v1, const DATA_TYPE eps = (DATA_TYPE)0.0001 )
+bool isNormalized( const Vec<DATA_TYPE, SIZE>& v1,
+                   const DATA_TYPE eps = (DATA_TYPE)0.0001 )
 {
    return Math::isEqual( lengthSquared( v1 ), (DATA_TYPE)1.0, eps );
 }
 
-/** cross product (return a copy)
-*/
+/**
+ * Computes the cross product between v1 and v2 and returns the result. Note
+ * that this only applies to 3-dimensional vectors.
+ *
+ * @post result = v1 x v2
+ *
+ * @param v1   the first vector
+ * @param v2   the second vector
+ *
+ * @return  the result of the cross product between v1 and v2
+ */
 template<class DATA_TYPE>
 Vec<DATA_TYPE,3> cross(const Vec<DATA_TYPE, 3>& v1, const Vec<DATA_TYPE, 3>& v2)
 {
@@ -231,10 +346,23 @@ Vec<DATA_TYPE,3> cross(const Vec<DATA_TYPE, 3>& v1, const Vec<DATA_TYPE, 3>& v2)
                             ((v1[Xelt]*v2[Yelt]) - (v1[Yelt]*v2[Xelt])) );
 }
 
-/** cross product (returns by reference)
-*/
+/**
+ * Computes the cross product between v1 and v2 and stores the result in result.
+ * The result is also returned by reference. Use this when you want to reuse an
+ * existing Vec to store the result. Note that this only applies to
+ * 3-dimensional vectors.
+ *
+ * @post result = v1 x v2
+ *
+ * @param result  filled with the result of the cross product between v1 and v2
+ * @param v1   the first vector
+ * @param v2   the second vector
+ *
+ * @return  a reference to result for convenience
+ */
 template<class DATA_TYPE>
-Vec<DATA_TYPE,3>& cross( Vec<DATA_TYPE,3>& result, const Vec<DATA_TYPE, 3>& v1, const Vec<DATA_TYPE, 3>& v2)
+Vec<DATA_TYPE,3>& cross( Vec<DATA_TYPE,3>& result, const Vec<DATA_TYPE, 3>& v1,
+                         const Vec<DATA_TYPE, 3>& v2 )
 {
    result.set( ((v1[Yelt]*v2[Zelt]) - (v1[Zelt]*v2[Yelt])),
                ((v1[Zelt]*v2[Xelt]) - (v1[Xelt]*v2[Zelt])),
@@ -247,9 +375,18 @@ Vec<DATA_TYPE,3>& cross( Vec<DATA_TYPE,3>& result, const Vec<DATA_TYPE, 3>& v1, 
 /** Vector interpolation operations */
 //@{
 
-/** Linear Interpolation between two vec types.
+/**
+ * Linearly interpolates between to vectors.
+ * 
  * @pre  lerpVal is a value between 0 and 1 that interpolates between from and to.
  * @post undefined if lerpVal < 0 or lerpVal > 1
+ *
+ * @param result     the result of the linear interpolation
+ * @param lerpVal    the value to interpolate between from and to
+ * @param from       the vector at lerpVal 0
+ * @param to         the vector at lerpVal 1
+ *
+ * @return  a reference to result for convenience
  */
 template <typename DATA_TYPE, unsigned SIZE>
 VecBase<DATA_TYPE, SIZE>& lerp( VecBase<DATA_TYPE, SIZE>& result,
@@ -269,9 +406,17 @@ VecBase<DATA_TYPE, SIZE>& lerp( VecBase<DATA_TYPE, SIZE>& result,
 
 // --- VEC comparisons -- //
 
-/** Compare two vecs */
+/**
+ * Compares v1 and v2 to see if they are exactly the same with zero tolerance.
+ *
+ * @param v1   the first vector
+ * @param v2   the second vector
+ *
+ * @return  true if v1 equals v2; false if they differ
+ */
 template<class DATA_TYPE, unsigned SIZE>
-inline bool operator ==(const VecBase<DATA_TYPE, SIZE>& v1, const VecBase<DATA_TYPE, SIZE>& v2)
+inline bool operator==(const VecBase<DATA_TYPE, SIZE>& v1,
+                       const VecBase<DATA_TYPE, SIZE>& v2)
 {
    for(unsigned i=0;i<SIZE;++i)
    {
@@ -290,30 +435,50 @@ inline bool operator ==(const VecBase<DATA_TYPE, SIZE>& v1, const VecBase<DATA_T
           */
 }
 
+/**
+ * Compares v1 and v2 to see if they are NOT exactly the same with zero
+ * tolerance.
+ *
+ * @param v1   the first vector
+ * @param v2   the second vector
+ *
+ * @return  true if v1 does not equal v2; false if they are equal
+ */
 template<class DATA_TYPE, unsigned SIZE>
-inline bool operator !=(const VecBase<DATA_TYPE, SIZE>& v1, const VecBase<DATA_TYPE, SIZE>& v2)
+inline bool operator!=(const VecBase<DATA_TYPE, SIZE>& v1,
+                       const VecBase<DATA_TYPE, SIZE>& v2)
 {
    return(! (v1 == v2));
 }
 
-/** Compare two vectors with a tolerance
-* @pre eps must be >= 0
-*/
+/**
+ * Compares v1 and v2 to see if they are the same within the given epsilon
+ * tolerance.
+ *
+ * @pre eps must be >= 0
+ *
+ * @param v1   the first vector
+ * @param v2   the second vector
+ * @param eps  the epsilon tolerance value
+ *
+ * @return  true if v1 equals v2; false if they differ
+ */
 template<class DATA_TYPE, unsigned SIZE>
-inline bool isEqual(const VecBase<DATA_TYPE, SIZE>& v1, const VecBase<DATA_TYPE, SIZE>& v2, const DATA_TYPE& eps)
+inline bool isEqual(const VecBase<DATA_TYPE, SIZE>& v1,
+                    const VecBase<DATA_TYPE, SIZE>& v2, const DATA_TYPE& eps)
 {
    gmtlASSERT(eps >= 0);
 
-  for(unsigned i=0;i<SIZE;++i)
-  {
-     if (fabs(v1[i] - v2[i]) > eps)
-        return false;
-  }
-  return true;
+   for(unsigned i=0;i<SIZE;++i)
+   {
+      if (fabs(v1[i] - v2[i]) > eps)
+      {
+         return false;
+      }
+   }
+   return true;
 }
 
-
-};
+}
 
 #endif
-
