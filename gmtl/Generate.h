@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2003-05-02 23:26:43 $
- * Version:       $Revision: 1.78 $
+ * Date modified: $Date: 2003-05-17 21:57:53 $
+ * Version:       $Revision: 1.79 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -589,6 +589,36 @@ namespace gmtl
       return result;
    }
 
+   /** Set an orthographic projection matrix
+    *  creates a transformation that produces a parallel projection matrix.
+    *  @nr = -nr is the value of the near clipping plane (positive value for near is negative in the z direction)
+    *  @fr = -fr is the value of the far clipping plane (positive value for far is negative in the z direction)
+    *  @result: set a orthographic matrix (similar to glOrtho).
+    */
+   template <typename T, unsigned ROWS, unsigned COLS >
+   inline Matrix<T, ROWS, COLS>& setOrtho( Matrix<T, ROWS, COLS>& result, 
+                                          T left, T top, T right, 
+                                          T bottom, T nr, T fr )
+   {
+      result.mData[1] = result.mData[2] = result.mData[3] = 
+      result.mData[4] = result.mData[6] = result.mData[7] = 
+      result.mData[8] = result.mData[9] = result.mData[11] = T(0);
+
+      T rl_inv = T(1) / (right - left);
+      T tb_inv = T(1) / (top - bottom);
+      T nf_inv = T(1) / (fr - nr);
+
+      result.mData[0] =  T(2) * rl_inv;
+      result.mData[5] =  T(2) * tb_inv;
+      result.mData[10] = -T(2) * nf_inv;
+
+      result.mData[12] = -(right + left) * rl_inv;
+      result.mData[13] = -(top + bottom) * tb_inv;
+      result.mData[14] = -(fr + nr) * nf_inv;
+      result.mData[15] = T(1);
+
+      return result;
+   }
  
    /** Set a symmetric perspective projection matrix
     * @param fovy 
