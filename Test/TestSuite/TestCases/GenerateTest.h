@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: GenerateTest.h,v $
- * Date modified: $Date: 2002-03-18 21:56:24 $
- * Version:       $Revision: 1.12 $
+ * Date modified: $Date: 2002-03-19 23:06:49 $
+ * Version:       $Revision: 1.13 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -47,7 +47,7 @@ Quat [] -km Transforquations XformInterface? Xform.h   Collision detection Colli
 #include <gmtl/Generate.h>
 
 
-// @todo test/timing on makeRot( quat ) (euler version)
+/// @todo test/timing on makeRot( quat ) (euler version)
 
 namespace gmtlTest
 {
@@ -113,7 +113,7 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<GenerateTest>( "testQuatMakeRot", &GenerateTest::testQuatMakeRot ) );
       test_suite->addTest( new CppUnit::TestCaller<GenerateTest>( "testQuatGetRot", &GenerateTest::testQuatGetRot ) );
       test_suite->addTest( new CppUnit::TestCaller<GenerateTest>( "testQuatMakeGetMakeRot", &GenerateTest::testQuatMakeGetMakeRot ) );
-
+      
       test_suite->addTest( new CppUnit::TestCaller<GenerateTest>( "testGenTimingMakeNormalVec1", &GenerateTest::testGenTimingMakeNormalVec1 ) );
       test_suite->addTest( new CppUnit::TestCaller<GenerateTest>( "testGenTimingMakeNormalVec2", &GenerateTest::testGenTimingMakeNormalVec2 ) );
       test_suite->addTest( new CppUnit::TestCaller<GenerateTest>( "testGenTimingMakeNormalVec3", &GenerateTest::testGenTimingMakeNormalVec3 ) );

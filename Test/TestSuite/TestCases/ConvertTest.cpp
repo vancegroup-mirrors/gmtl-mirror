@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: ConvertTest.cpp,v $
- * Date modified: $Date: 2002-03-18 21:57:53 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-03-19 23:06:49 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -77,7 +77,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( gmtl::isEqual( quat0, quat1, eps ) );
 
       // Simple rotation around XAxis  
-      gmtl::makeRot( mat1, gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f );
+      mat1 = gmtl::makeRot<gmtl::Matrix44f>(  gmtl::Math::deg2Rad( 90.0f ), 1.0f, 0.0f, 0.0f );
       gmtl::convert( quat0, mat1 ); // quat0 = mat1
       gmtl::convert( mat2, quat0 ); // mat2 = quat0
       CPPUNIT_ASSERT( gmtl::isEqual( mat1, mat2, eps ) );
@@ -86,7 +86,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( gmtl::isEqual( quat0, quat1, eps ) );
 
       // more complex rotation  mat1 -> quat0 -> mat2 -> quat1
-      gmtl::makeRot( mat1, gmtl::Math::deg2Rad( 123.4f ), 1.0f, 1.0f, -1.0f );
+      mat1 = gmtl::makeRot<gmtl::Matrix44f>(  gmtl::Math::deg2Rad( 123.4f ), 1.0f, 1.0f, -1.0f );
       gmtl::convert( quat0, mat1 ); // quat0 = mat1
       gmtl::convert( mat2, quat0 ); // mat2 = quat0
       CPPUNIT_ASSERT( gmtl::isEqual( mat1, mat2, eps ) );
@@ -95,7 +95,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( gmtl::isEqual( quat0, quat1, eps ) );
       
       // more complex rotation  quat0 -> mat1 -> quat1 -> mat2
-      gmtl::makeRot( quat0, gmtl::Math::deg2Rad( 123.4f ), 1.0f, 1.0f, -1.0f );
+      quat0 = gmtl::makeRot<gmtl::Quatf>( gmtl::Math::deg2Rad( 123.4f ), 1.0f, 1.0f, -1.0f );
       CPPUNIT_ASSERT( gmtl::isEqual( quat0, quat1, eps ) );
       gmtl::convert( mat1, quat0 ); // mat1 = quat0
       gmtl::convert( quat1, mat1 ); // quat1 = mat1
@@ -105,7 +105,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( gmtl::isEqual( mat2, mat1, eps ) );
 
       // more complex rotation
-      gmtl::makeRot( mat1, 45.0f, -89.0f, 32.45f, gmtl::XYZ );
+      mat1 = gmtl::makeRot<gmtl::Matrix44f>(  45.0f, -89.0f, 32.45f, gmtl::XYZ );
       gmtl::convert( quat0, mat1 ); // quat0 = mat1
       gmtl::convert( mat2, quat0 ); // mat2 = quat0
       CPPUNIT_ASSERT( gmtl::isEqual( mat1, mat2, eps ) );
@@ -119,7 +119,7 @@ namespace gmtlTest
       for (float z = -360.0f; z < 360.0f; z += 17)
       {
          // more complex rotation
-         gmtl::makeRot( mat1, x, y, z, gmtl::XYZ );
+         mat1 = gmtl::makeRot<gmtl::Matrix44f>(  x, y, z, gmtl::XYZ );
          gmtl::convert( quat0, mat1 ); // quat0 = mat1
          gmtl::convert( mat2, quat0 ); // mat2 = quat0
          CPPUNIT_ASSERT( gmtl::isEqual( mat1, mat2, eps ) );
@@ -134,7 +134,7 @@ namespace gmtlTest
       for (float z = -360.0f; z < 360.0f; z += 20)
       {
          // more complex rotation
-         gmtl::makeRot( quat0, x, y, z, gmtl::XYZ );
+         quat0 = gmtl::makeRot<gmtl::Quatf>( x, y, z, gmtl::XYZ );
          gmtl::convert( mat1, quat0 ); // quat0 = mat1
          gmtl::convert( quat1, mat1 ); // mat2 = quat0
          CPPUNIT_ASSERT( gmtl::isEquiv( quat0, quat1, eps ) );
@@ -192,7 +192,7 @@ namespace gmtlTest
       gmtl::convert( quat1, mat33b ); // quat1 = mat2
       CPPUNIT_ASSERT( gmtl::isEqual( quat0, quat1, eps ) );
 
-      // @todo allen, you need to look at this (you wrote it), it doesn't pass the test, Im guessing it is because the 3 coordinate axes are not square...
+      /// @todo allen, you need to look at this (you wrote it), it doesn't pass the test, Im guessing it is because the 3 coordinate axes are not square...
       
       // Make orthonormal matrix
       /*
