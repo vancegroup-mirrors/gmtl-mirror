@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: LineSegTest.cpp,v $
- * Date modified: $Date: 2002-03-18 21:57:53 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-06-13 14:25:06 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -157,7 +157,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( y1_lineseg.getOrigin() == origin );
       CPPUNIT_ASSERT( z1_lineseg.getOrigin() == origin );
 
-      gmtl::Point<float, 3> pt( 25.0, 23.0 );
+      gmtl::Point<float, 3> pt( 25.0f, 23.0f, 0.0f );
       gmtl::LineSeg<float> test_lineseg( pt, x1_pt );
       CPPUNIT_ASSERT( test_lineseg.getOrigin() == pt );
 
