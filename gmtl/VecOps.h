@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecOps.h,v $
- * Date modified: $Date: 2002-02-11 23:53:04 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-02-16 00:37:09 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -78,10 +78,11 @@ VecBase<DATA_TYPE, SIZE>& operator -=(VecBase<DATA_TYPE, SIZE>& v1, const VecBas
    return v1;
 }
 
-template<class DATA_TYPE, unsigned SIZE>
-VecBase<DATA_TYPE, SIZE> operator -(const VecBase<DATA_TYPE, SIZE>& v1, const VecBase<DATA_TYPE, SIZE>& v2)
+
+template < class DATA_TYPE, unsigned SIZE>
+Vec<DATA_TYPE, SIZE> operator -(const VecBase<DATA_TYPE, SIZE>& v1, const VecBase<DATA_TYPE, SIZE>& v2)
 {
-   VecBase<DATA_TYPE, SIZE> ret_val(v1);
+   Vec<DATA_TYPE, SIZE> ret_val(v1);
    ret_val -= v2;
    return ret_val;
 }
