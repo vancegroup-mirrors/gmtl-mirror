@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-06-11 22:09:19 $
- * Version:       $Revision: 1.60 $
+ * Date modified: $Date: 2002-06-12 19:38:54 $
+ * Version:       $Revision: 1.61 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -50,16 +50,6 @@
 #include <gmtl/EulerAngle.h>
 #include <gmtl/AxisAngle.h>
 
-/// @todo write just one templatize "make" func, that uses "set".   template on two types only.  should replace a lot of stuff... :)
-// @todo Vec& setNormal( Vec&, scalar, scalar, scalar ) (and other dimensions)  (might not need, use this instead - setNormal( Vec( scal, scal, scal ) ))
-// @todo getRot euler for quat
-// @todo getTrans(mat, vec)  (or is it called vec = setTrans(mat), or is it called convert( vec, mat ), convert( mat, vec ) )
-// @todo getScale( mat, vec ) or getScale( mat, scalar )
-// @todo getRot( mat, scalar, vec ) getRot( mat, deg, x, y, z )
-// @todo getRot(mat, a,b,c ) euler
-// @todo getDirCos( mat, axes... )
-// @todo getAxes( mat, ... )
-
 namespace gmtl
 {
    /** @ingroup Generate 
@@ -83,22 +73,6 @@ namespace gmtl
       return set( target, src );
    }
 
-   /** Construct a coord from a rotation/position datatype.
-    *  This special make function takes a rotation order to return the Coord in.
-    *  @pre must have a set() function defined that converts between the
-    *       two types.
-    *  @see OpenSGGenerate.h for an example
-    */
-   template <typename COORD_TYPE, typename SOURCE_TYPE>
-   inline COORD_TYPE make( const SOURCE_TYPE& src, const RotationOrder& order, 
-                           Type2Type< COORD_TYPE > t = Type2Type< COORD_TYPE >() )
-   {
-      gmtl::ignore_unused_variable_warning(t);
-      COORD_TYPE target;
-      target.rot().setOrder( order );
-      return set( target, src );
-   }
-   
    /** Create a rotation datatype from another rotation datatype.  
     * @post converts the source rotation to a to another type (usually Matrix, Quat, Euler, AxisAngle), 
     * @post returns a temporary object.
@@ -112,9 +86,12 @@ namespace gmtl
       return set( temporary, coord );
    }
    
-   /** Create a rotation matrix or quaternion (or any other rotation data type) using euler angles (in radians)
+   /** Create a rotation matrix or quaternion (or any other rotation data type) using direction cosines.
+    * @param DestAxis required to specify
+    * @param SrcAxis optional to specify
+    * @pre specify 1 axis (3 vectors), or 2 axes (6 vectors).
+    * @post Creates a rotation from SrcAxis to DestAxis
     * @post this function only produces 3x3, 3x4, 4x3, and 4x4 matrices, and is undefined otherwise
-    * @todo Increase perf of setRot(val,val,val, rotMethod). Make it fast for mp
     */
    template< typename ROTATION_TYPE >
    inline ROTATION_TYPE makeDirCos( const Vec<typename ROTATION_TYPE::DataType, 3>& xDestAxis,
@@ -369,14 +346,14 @@ namespace gmtl
     * Sets a rotation quaternion using euler angles (each angle in radians).
     * @pre pass in your angles in the same order as the RotationOrder you specify
     */
-   template <typename DATA_TYPE>
-   inline Quat<DATA_TYPE>& set( Quat<DATA_TYPE>& result, const EulerAngle<DATA_TYPE>& euler )
+   template <typename DATA_TYPE, typename ROT_ORDER>
+   inline Quat<DATA_TYPE>& set( Quat<DATA_TYPE>& result, const EulerAngle<DATA_TYPE, ROT_ORDER>& euler )
    {
       // this might be faster if put into the switch statement... (testme)
-      const RotationOrder& order = euler.getOrder();
-      const DATA_TYPE xRot = (order == XYZ) ? euler[0] : ((order == ZXY) ? euler[1] : euler[2]);
-      const DATA_TYPE yRot = (order == XYZ) ? euler[1] : ((order == ZXY) ? euler[2] : euler[1]);
-      const DATA_TYPE zRot = (order == XYZ) ? euler[2] : ((order == ZXY) ? euler[0] : euler[0]);
+      const int& order = ROT_ORDER::ID;
+      const DATA_TYPE xRot = (order == XYZ::ID) ? euler[0] : ((order == ZXY::ID) ? euler[1] : euler[2]);
+      const DATA_TYPE yRot = (order == XYZ::ID) ? euler[1] : ((order == ZXY::ID) ? euler[2] : euler[1]);
+      const DATA_TYPE zRot = (order == XYZ::ID) ? euler[2] : ((order == ZXY::ID) ? euler[0] : euler[0]);
 
       // this could be written better for each rotation order, but this is really general...
       Quat<DATA_TYPE> qx, qy, qz;
@@ -407,9 +384,9 @@ namespace gmtl
       // compose the three in pyr order...
       switch (order)
       {
-      case XYZ: result = qx * qy * qz; break;
-      case ZYX: result = qz * qy * qx; break;
-      case ZXY: result = qz * qx * qy; break;
+      case XYZ::ID: result = qx * qy * qz; break;
+      case ZYX::ID: result = qz * qy * qx; break;
+      case ZXY::ID: result = qz * qx * qy; break;
       default:
          gmtlASSERT( false && "unknown rotation order passed to setRot" );
          break;
@@ -423,8 +400,8 @@ namespace gmtl
    /** redundant to set(quat,eulerangle), provided for template compatibility. 
     *  unless you're writing template functions, you should use set(quat,eulerangle).
     */
-   template <typename DATA_TYPE>
-   inline Quat<DATA_TYPE>& setRot( Quat<DATA_TYPE>& result, const EulerAngle<DATA_TYPE>& euler )
+   template <typename DATA_TYPE, typename ROT_ORDER>
+   inline Quat<DATA_TYPE>& setRot( Quat<DATA_TYPE>& result, const EulerAngle<DATA_TYPE, ROT_ORDER>& euler )
    {
       return set( result, euler );
    }
@@ -518,7 +495,7 @@ namespace gmtl
     * @post axisAngle = quat;
     */
    template <typename DATA_TYPE>
-   inline void set( AxisAngle<DATA_TYPE>& axisAngle, Quat<DATA_TYPE> quat )
+   inline AxisAngle<DATA_TYPE>& set( AxisAngle<DATA_TYPE>& axisAngle, Quat<DATA_TYPE> quat )
    {
       // set sure we don't get a NaN result from acos...
       if (Math::abs( quat[Welt] ) > (DATA_TYPE)1.0)
@@ -555,6 +532,7 @@ namespace gmtl
                             (DATA_TYPE)0.0,                
                             (DATA_TYPE)0.0 ) );              
       }
+      return axisAngle;
    }
    
    /** redundant to set(axisangle,quat), this is provided for template compatibility.
@@ -589,8 +567,8 @@ namespace gmtl
     * @post this function only reads 3x3, 3x4, 4x3, and 4x4 matrices, and is undefined otherwise
     *       NOTE: Angles are returned in radians (this is always true in GMTL).
     */
-   template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
-   inline void set( EulerAngle<DATA_TYPE>& euler,
+   template< typename DATA_TYPE, unsigned ROWS, unsigned COLS, typename ROT_ORDER >
+   inline EulerAngle<DATA_TYPE, ROT_ORDER>& set( EulerAngle<DATA_TYPE, ROT_ORDER>& euler,
                     const Matrix<DATA_TYPE, ROWS, COLS>& mat )
    {
       // @todo set this a compile time assert...
@@ -601,10 +579,10 @@ namespace gmtl
       DATA_TYPE cz;
       
       // @todo metaprogram this!
-      const RotationOrder& order = euler.getOrder();
+      const int& order = ROT_ORDER::ID;
       switch (order)
       {
-      case XYZ:
+      case XYZ::ID:
          {
             euler[2] = Math::aTan2( -mat(0,1), mat(0,0) );       // -(-cy*sz)/(cy*cz) - cy falls out
             euler[0] = Math::aTan2( -mat(1,2), mat(2,2) );       // -(sx*cy)/(cx*cy) - cy falls out
@@ -612,7 +590,7 @@ namespace gmtl
             euler[1] = Math::aTan2( mat(0,2), mat(0,0) / cz );   // (sy)/((cy*cz)/cz)
          }
          break;
-      case ZYX:
+      case ZYX::ID:
          {
             euler[0] = Math::aTan2( mat(1,0), mat(0,0) );        // (cy*sz)/(cy*cz) - cy falls out
             euler[2] = Math::aTan2( mat(2,1), mat(2,2) );        // (sx*cy)/(cx*cy) - cy falls out
@@ -620,7 +598,7 @@ namespace gmtl
             euler[1] = Math::aTan2( -mat(2,0), mat(2,1) / sx );  // -(-sy)/((sx*cy)/sx)
          }
          break;
-      case ZXY:
+      case ZXY::ID:
          {
             // Extract the rotation directly from the matrix
             DATA_TYPE x_angle;
@@ -667,13 +645,14 @@ namespace gmtl
          gmtlASSERT( false && "unknown rotation order passed to setRot" );
          break;
       }
+      return euler;
    }
    
    /** redundant to set(eulerangle,quat), this is provided for template compatibility.
     *  unless you're writing template functions, you should use set(eulerangle,quat) for clarity.
     */
-   template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
-   inline EulerAngle<DATA_TYPE>& setRot( EulerAngle<DATA_TYPE>& result, const Matrix<DATA_TYPE, ROWS, COLS>& mat )
+   template< typename DATA_TYPE, unsigned ROWS, unsigned COLS, typename ROT_ORDER >
+   inline EulerAngle<DATA_TYPE, ROT_ORDER>& setRot( EulerAngle<DATA_TYPE, ROT_ORDER>& result, const Matrix<DATA_TYPE, ROWS, COLS>& mat )
    {
       return set( result, mat );
    }
@@ -814,17 +793,17 @@ namespace gmtl
     * @post this function only produces 3x3, 3x4, 4x3, and 4x4 matrices, and is undefined otherwise
     * @see EulerAngle for angle ordering (usually ordered based on RotationOrder)
     */
-   template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
-   inline Matrix<DATA_TYPE, ROWS, COLS>& setRot( Matrix<DATA_TYPE, ROWS, COLS>& result, const EulerAngle<DATA_TYPE>& euler )
+   template< typename DATA_TYPE, unsigned ROWS, unsigned COLS, typename ROT_ORDER >
+   inline Matrix<DATA_TYPE, ROWS, COLS>& setRot( Matrix<DATA_TYPE, ROWS, COLS>& result, const EulerAngle<DATA_TYPE, ROT_ORDER>& euler )
    {
       // @todo set this a compile time assert...
       gmtlASSERT( ROWS >= 3 && COLS >= 3 && ROWS <= 4 && COLS <= 4 && "this is undefined for Matrix smaller than 3x3 or bigger than 4x4" );
 
       // this might be faster if put into the switch statement... (testme)
-      const RotationOrder& order = euler.getOrder();
-      const float xRot = (order == XYZ) ? euler[0] : ((order == ZXY) ? euler[1] : euler[2]);
-      const float yRot = (order == XYZ) ? euler[1] : ((order == ZXY) ? euler[2] : euler[1]);
-      const float zRot = (order == XYZ) ? euler[2] : ((order == ZXY) ? euler[0] : euler[0]);
+      const int& order = ROT_ORDER::ID;
+      const float xRot = (order == XYZ::ID) ? euler[0] : ((order == ZXY::ID) ? euler[1] : euler[2]);
+      const float yRot = (order == XYZ::ID) ? euler[1] : ((order == ZXY::ID) ? euler[2] : euler[1]);
+      const float zRot = (order == XYZ::ID) ? euler[2] : ((order == ZXY::ID) ? euler[0] : euler[0]);
 
       float sx = Math::sin( xRot );  float cx = Math::cos( xRot );
       float sy = Math::sin( yRot );  float cy = Math::cos( yRot );
@@ -833,19 +812,19 @@ namespace gmtl
       // @todo metaprogram this!
       switch (order)
       {
-      case XYZ:
+      case XYZ::ID:
          // Derived by simply multiplying out the matrices by hand X * Y * Z
          result( 0, 0 ) = cy*cz;             result( 0, 1 ) = -cy*sz;            result( 0, 2 ) = sy;
          result( 1, 0 ) = sx*sy*cz + cx*sz;  result( 1, 1 ) = -sx*sy*sz + cx*cz; result( 1, 2 ) = -sx*cy;
          result( 2, 0 ) = -cx*sy*cz + sx*sz; result( 2, 1 ) = cx*sy*sz + sx*cz;  result( 2, 2 ) = cx*cy;
          break;
-      case ZYX:
+      case ZYX::ID:
          // Derived by simply multiplying out the matrices by hand Z * Y * Z
          result( 0, 0 ) = cy*cz; result( 0, 1 ) = -cx*sz + sx*sy*cz; result( 0, 2 ) = sx*sz + cx*sy*cz;
          result( 1, 0 ) = cy*sz; result( 1, 1 ) = cx*cz + sx*sy*sz;  result( 1, 2 ) = -sx*cz + cx*sy*sz;
          result( 2, 0 ) = -sy;   result( 2, 1 ) = sx*cy;             result( 2, 2 ) = cx*cy;
          break;
-      case ZXY:
+      case ZXY::ID:
          // Derived by simply multiplying out the matrices by hand Z * X * Y
          result( 0, 0 ) = cy*cz - sx*sy*sz; result( 0, 1 ) = -cx*sz; result( 0, 2 ) = sy*cz + sx*cy*sz;
          result( 1, 0 ) = cy*sz + sx*sy*cz; result( 1, 1 ) = cx*cz;  result( 1, 2 ) = sy*sz - sx*cy*cz;
@@ -862,8 +841,8 @@ namespace gmtl
    /** Convert an EulerAngle to a rotation matrix.
     * @post this function only writes to 3x3, 3x4, 4x3, and 4x4 matrices, and is undefined otherwise
     */
-   template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
-   inline Matrix<DATA_TYPE, ROWS, COLS>& set( Matrix<DATA_TYPE, ROWS, COLS>& result, const EulerAngle<DATA_TYPE>& euler )
+   template< typename DATA_TYPE, unsigned ROWS, unsigned COLS, typename ROT_ORDER >
+   inline Matrix<DATA_TYPE, ROWS, COLS>& set( Matrix<DATA_TYPE, ROWS, COLS>& result, const EulerAngle<DATA_TYPE, ROT_ORDER>& euler )
    {
       gmtl::identity( result );
       return setRot( result, euler );

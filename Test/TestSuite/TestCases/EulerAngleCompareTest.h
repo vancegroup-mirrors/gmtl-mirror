@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: EulerAngleCompareTest.h,v $
- * Date modified: $Date: 2002-06-11 21:52:53 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-06-12 19:38:53 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -67,38 +67,37 @@ public:
    public:
       static void go()
       {
-         gmtl::EulerAngle<T> quat1, quat2;
-         quat1.set( (T)1.0, (T)2.0, (T)34.0, gmtl::ZYX );
-         quat1 = quat2;
-         CPPUNIT_ASSERT( quat1 == quat2 );
-         CPPUNIT_ASSERT( quat2 == quat1 );
+         gmtl::EulerAngle<T, gmtl::ZYX> euler1, euler2;
+         euler1.set( (T)1.0, (T)2.0, (T)34.0 );
+         euler1 = euler2;
+         CPPUNIT_ASSERT( euler1 == euler2 );
+         CPPUNIT_ASSERT( euler2 == euler1 );
 
          // Test that != works on all elements
          for (int j = 0; j < 3; ++j)
          {
-            quat2[j] = (T)1221.0f;
-            CPPUNIT_ASSERT(  (quat1 != quat2) );
-            CPPUNIT_ASSERT( !(quat1 == quat2) );
-            quat2[j] = quat1[j]; // put it back
+            euler2[j] = (T)1221.0f;
+            CPPUNIT_ASSERT(  (euler1 != euler2) );
+            CPPUNIT_ASSERT( !(euler1 == euler2) );
+            euler2[j] = euler1[j]; // put it back
          }
          
-         quat2.setOrder( gmtl::ZYX );
-         CPPUNIT_ASSERT(  (quat1 != quat2) );
-         CPPUNIT_ASSERT( !(quat1 == quat2) );
-         quat2.setOrder( quat1.getOrder() ); // put it back
+         // just for fun
+         CPPUNIT_ASSERT(  (euler1 == euler2) );
+         CPPUNIT_ASSERT( !(euler1 != euler2) );
 
          // Test for epsilon equals working
-         CPPUNIT_ASSERT( gmtl::isEqual( quat1, quat2 ) );
-         CPPUNIT_ASSERT( gmtl::isEqual( quat1, quat2, (T)0.0f ) );
-         CPPUNIT_ASSERT( gmtl::isEqual( quat2, quat1, (T)0.0f ) );
-         CPPUNIT_ASSERT( gmtl::isEqual( quat2, quat1, (T)100000.0f ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( euler1, euler2 ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( euler1, euler2, (T)0.0f ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( euler2, euler1, (T)0.0f ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( euler2, euler1, (T)100000.0f ) );
          T eps = (T)10.0;
          for (int j = 0; j < 3; ++j)
          {
-            quat2[j] = quat1[j] - (eps / (T)2.0);
-            CPPUNIT_ASSERT(  gmtl::isEqual( quat1, quat2, eps ) );
-            CPPUNIT_ASSERT( !gmtl::isEqual( quat1, quat2, (T)(eps / 3.0) ) );
-            quat2[j] = quat1[j]; // put it back
+            euler2[j] = euler1[j] - (eps / (T)2.0);
+            CPPUNIT_ASSERT(  gmtl::isEqual( euler1, euler2, eps ) );
+            CPPUNIT_ASSERT( !gmtl::isEqual( euler1, euler2, (T)(eps / 3.0) ) );
+            euler2[j] = euler1[j]; // put it back
          }
       }
    };

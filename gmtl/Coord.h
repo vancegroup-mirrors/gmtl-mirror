@@ -72,10 +72,21 @@ public:
    ROT_TYPE mRot;
 };
 
-typedef Coord<Vec3d, EulerAngled> CoordVec3EulerAngled;
-typedef Coord<Vec3f, EulerAnglef> CoordVec3EulerAnglef;
-typedef Coord<Vec4d, EulerAngled> CoordVec4EulerAngled;
-typedef Coord<Vec4f, EulerAnglef> CoordVec4EulerAnglef;
+typedef Coord<Vec3d, EulerAngleXYZd> CoordVec3EulerAngleXYZd;
+typedef Coord<Vec3f, EulerAngleXYZf> CoordVec3EulerAngleXYZf;
+typedef Coord<Vec4d, EulerAngleXYZd> CoordVec4EulerAngleXYZd;
+typedef Coord<Vec4f, EulerAngleXYZf> CoordVec4EulerAngleXYZf;
+
+typedef Coord<Vec3d, EulerAngleZYXd> CoordVec3EulerAngleZYXd;
+typedef Coord<Vec3f, EulerAngleZYXf> CoordVec3EulerAngleZYXf;
+typedef Coord<Vec4d, EulerAngleZYXd> CoordVec4EulerAngleZYXd;
+typedef Coord<Vec4f, EulerAngleZYXf> CoordVec4EulerAngleZYXf;
+
+typedef Coord<Vec3d, EulerAngleZXYd> CoordVec3EulerAngleZXYd;
+typedef Coord<Vec3f, EulerAngleZXYf> CoordVec3EulerAngleZXYf;
+typedef Coord<Vec4d, EulerAngleZXYd> CoordVec4EulerAngleZXYd;
+typedef Coord<Vec4f, EulerAngleZXYf> CoordVec4EulerAngleZXYf;
+
 typedef Coord<Vec3d, AxisAngled> CoordVec3AxisAngled;
 typedef Coord<Vec3f, AxisAnglef> CoordVec3AxisAnglef;
 typedef Coord<Vec4d, AxisAngled> CoordVec4AxisAngled;

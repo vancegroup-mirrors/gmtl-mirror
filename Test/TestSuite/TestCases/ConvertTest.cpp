@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: ConvertTest.cpp,v $
- * Date modified: $Date: 2002-06-11 21:23:33 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-06-12 19:38:53 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -108,7 +108,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( gmtl::isEqual( mat2, mat1, eps ) );
 
       // more complex rotation
-      mat1 = gmtl::make<gmtl::Matrix44f>( gmtl::EulerAnglef( 45.0f, -89.0f, 32.45f, gmtl::XYZ ) );
+      mat1 = gmtl::make<gmtl::Matrix44f>( gmtl::EulerAngleXYZf( 45.0f, -89.0f, 32.45f ) );
       gmtl::set( quat0, mat1 ); // quat0 = mat1
       gmtl::set( mat2, quat0 ); // mat2 = quat0
       CPPUNIT_ASSERT( gmtl::isEqual( mat1, mat2, eps ) );
@@ -122,7 +122,7 @@ namespace gmtlTest
       for (float z = -360.0f; z < 360.0f; z += 17)
       {
          // more complex rotation
-         mat1 = gmtl::make<gmtl::Matrix44f>( gmtl::EulerAnglef( x, y, z, gmtl::XYZ ) );
+         mat1 = gmtl::make<gmtl::Matrix44f>( gmtl::EulerAngleXYZf( x, y, z ) );
          gmtl::set( quat0, mat1 ); // quat0 = mat1
          gmtl::set( mat2, quat0 ); // mat2 = quat0
          CPPUNIT_ASSERT( gmtl::isEqual( mat1, mat2, eps ) );
@@ -137,7 +137,7 @@ namespace gmtlTest
       for (float z = -360.0f; z < 360.0f; z += 20)
       {
          // more complex rotation
-         quat0 = gmtl::make<gmtl::Quatf>( gmtl::EulerAnglef( x, y, z, gmtl::XYZ ) );
+         quat0 = gmtl::make<gmtl::Quatf>( gmtl::EulerAngleXYZf( x, y, z ) );
          gmtl::set( mat1, quat0 ); // quat0 = mat1
          gmtl::set( quat1, mat1 ); // mat2 = quat0
          CPPUNIT_ASSERT( gmtl::isEquiv( quat0, quat1, eps ) );

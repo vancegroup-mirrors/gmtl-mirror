@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: EulerAngle.h,v $
- * Date modified: $Date: 2002-06-11 21:21:08 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-06-12 19:38:54 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -63,65 +63,55 @@ namespace gmtl
  * @see EulerAnglef, EulerAngled
  * @see Matrix, Quat, AxisAngle
  * @ingroup Types
+ * @todo bug: might not want to derive from vec, otherwise EulerXYZ == EulerZYX
+ *         works, when it shouldn't even compile...
  */
-template <typename DATA_TYPE>
+template <typename DATA_TYPE, typename ROTATION_ORDER>
 class EulerAngle : public VecBase<DATA_TYPE, 3>
 {
 public:
-   enum { Size = 3 };
-   
+   enum { Size = 3, Order = ROTATION_ORDER::ID };
+
    /** default constructor. initializes to identity rotation (no rotation). */
    EulerAngle() : 
-      VecBase<DATA_TYPE, 3>( (DATA_TYPE)0.0, (DATA_TYPE)0.0, (DATA_TYPE)0.0 ),
-      mOrder( gmtl::XYZ )
+      VecBase<DATA_TYPE, 3>( (DATA_TYPE)0.0, (DATA_TYPE)0.0, (DATA_TYPE)0.0 )
    {
+      assert( ROTATION_ORDER::IS_ROTORDER == 1 && 
+            "you must specify a RotatoinOrder derived type for the rotationorder in euler angle." );
    }
-   
+
    /** copy constructor. */
-   EulerAngle( const EulerAngle& e ) : VecBase<DATA_TYPE, 3>( e ),
-         mOrder( e.getOrder() )
+   EulerAngle( const EulerAngle& e ) : VecBase<DATA_TYPE, 3>( e )
    {
    }
-   
+
    /** data constructor.   angles are in radians. */
-   EulerAngle( DATA_TYPE p0, DATA_TYPE p1, DATA_TYPE p2, 
-               RotationOrder order ) :
-            VecBase<DATA_TYPE, 3>( p0, p1, p2 ), 
-            mOrder( order )
+   EulerAngle( DATA_TYPE p0, DATA_TYPE p1, DATA_TYPE p2 ) :
+            VecBase<DATA_TYPE, 3>( p0, p1, p2 )
    {
    }
    
    /** set data.   angles are in radians. */
    void set( const DATA_TYPE& p0, const DATA_TYPE& p1, 
-             const DATA_TYPE& p2, const RotationOrder& order )
+             const DATA_TYPE& p2 )
    {
       VecBase<DATA_TYPE, 3>::set( p0, p1, p2 );
-      mOrder = order;
    }
-
-   /** get the rotation order.
-    *  this is the order that you would perform rotations to get to the 
-    *  final rotation
-    * @see RotationOrder
-    */
-   const RotationOrder& getOrder() const { return mOrder; }
-   
-   /** set the rotation order.
-    *  this is the order that you would perform rotations to get to the 
-    *  final rotation
-    * @see RotationOrder
-    */
-   void setOrder( const RotationOrder& o ) { mOrder = o; }
-   
-private:
-   RotationOrder mOrder;
 };
 
-const EulerAngle<float> EULERANGLE_IDENTITYF( 0.0f, 0.0f, 0.0f, gmtl::XYZ );
-const EulerAngle<double> EULERANGLE_IDENTITYD( 0.0, 0.0, 0.0, gmtl::XYZ );
+const EulerAngle<float, XYZ> EULERANGLE_IDENTITY_XYZF( 0.0f, 0.0f, 0.0f );
+const EulerAngle<double, XYZ> EULERANGLE_IDENTITY_XYZD( 0.0, 0.0, 0.0 );
+const EulerAngle<float, ZYX> EULERANGLE_IDENTITY_ZYXF( 0.0f, 0.0f, 0.0f );
+const EulerAngle<double, ZYX> EULERANGLE_IDENTITY_ZYXD( 0.0, 0.0, 0.0 );
+const EulerAngle<float, ZXY> EULERANGLE_IDENTITY_ZXYF( 0.0f, 0.0f, 0.0f );
+const EulerAngle<double, ZXY> EULERANGLE_IDENTITY_ZXYD( 0.0, 0.0, 0.0 );
 
-typedef EulerAngle<float> EulerAnglef;
-typedef EulerAngle<double> EulerAngled;
+typedef EulerAngle<float, XYZ> EulerAngleXYZf;
+typedef EulerAngle<double, XYZ> EulerAngleXYZd;
+typedef EulerAngle<float, ZYX> EulerAngleZYXf;
+typedef EulerAngle<double, ZYX> EulerAngleZYXd;
+typedef EulerAngle<float, ZXY> EulerAngleZXYf;
+typedef EulerAngle<double, ZXY> EulerAngleZXYd;
 
 } // end of namespace gmtl
 
