@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: testSuite.cpp,v $
- * Date modified: $Date: 2002-02-11 00:44:14 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2002-02-11 05:40:51 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -47,6 +47,10 @@
 // GMTL tests
 #include <gmtl/gmtlConfig.h>
 #include <TestCases/VecBaseTest.h>
+#include <TestCases/VecTest.h>
+#include <TestCases/PointTest.h>
+
+// old tests
 #include <TestCases/Vec3Test.h>
 #include <TestCases/MatrixTest.h>
 #include <TestCases/Point3Test.h>
@@ -95,6 +99,9 @@ int main (int ac, char **av)
    CppUnit::TestSuite* gmtl_suite = new CppUnit::TestSuite("gmtl_suite");
 	
    gmtl_suite->addTest(gmtlTest::VecBaseTest::suite());
+   gmtl_suite->addTest(gmtlTest::VecTest::suite());
+   gmtl_suite->addTest(gmtlTest::PointTest::suite());
+
    gmtl_suite->addTest(gmtlTest::Vec3Test::suite());
    gmtl_suite->addTest(gmtlTest::MatrixTest::suite());
    gmtl_suite->addTest(gmtlTest::Point3Test::suite());
