@@ -1,0 +1,102 @@
+/************************************************************** ggt-head beg
+ *
+ * GGT: Generic Graphics Toolkit
+ *
+ * Original Authors:
+ *   Allen Bierbaum
+ *
+ * -----------------------------------------------------------------
+ * File:          $RCSfile: OutputTest.cpp,v $
+ * Date modified: $Date: 2002-03-20 19:20:57 $
+ * Version:       $Revision: 1.1 $
+ * -----------------------------------------------------------------
+ *
+ *********************************************************** ggt-head end */
+/*************************************************************** ggt-cpr beg
+*
+* GGT: The Generic Graphics Toolkit
+* Copyright (C) 2001,2002 Allen Bierbaum
+*
+* This library is free software; you can redistribute it and/or
+* modify it under the terms of the GNU Lesser General Public
+* License as published by the Free Software Foundation; either
+* version 2.1 of the License, or (at your option) any later version.
+*
+* This library is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+* Lesser General Public License for more details.
+*
+* You should have received a copy of the GNU Lesser General Public
+* License along with this library; if not, write to the Free Software
+* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+*
+ ************************************************************ ggt-cpr end */
+#include <iostream>
+#include <sstream>
+#include "OutputTest.h"
+
+#include <gmtl/Output.h>
+
+namespace gmtlTest
+{
+   void OutputTest::testVec()
+   {
+      std::ostringstream out1;
+      gmtl::Vec<int, 1> v1( 1 );
+      out1 << v1;
+      CPPUNIT_ASSERT( out1.str() == "(1)" );
+
+      std::ostringstream out2;
+      gmtl::Vec<int, 2> v2( 1, 2 );
+      out2 << v2;
+      CPPUNIT_ASSERT( out2.str() == "(1, 2)" );
+
+      std::ostringstream out3;
+      gmtl::Vec<int, 3> v3( 1, 2, 3 );
+      out3 << v3;
+      CPPUNIT_ASSERT( out3.str() == "(1, 2, 3)" );
+   }
+
+   void OutputTest::testPoint()
+   {
+      std::ostringstream out1;
+      gmtl::Point<int, 1> p1( 1 );
+      out1 << p1;
+      CPPUNIT_ASSERT( out1.str() == "(1)" );
+
+      std::ostringstream out2;
+      gmtl::Point<int, 2> p2( 1, 2 );
+      out2 << p2;
+      CPPUNIT_ASSERT( out2.str() == "(1, 2)" );
+
+      std::ostringstream out3;
+      gmtl::Point<int, 3> p3( 1, 2, 3 );
+      out3 << p3;
+      CPPUNIT_ASSERT( out3.str() == "(1, 2, 3)" );
+   }
+
+   void OutputTest::testMatrix()
+   {
+      std::stringstream out1;
+      gmtl::Matrix<int, 1, 1> m11;
+      m11(0,0) = 1;
+      out1 << m11;
+      CPPUNIT_ASSERT( out1.str() == "| 1 |\n" );
+
+      std::stringstream out2;
+      gmtl::Matrix<int, 2, 2> m22;
+      m22.set( 1, 2,
+               3, 4 );
+      out2 << m22;
+      CPPUNIT_ASSERT( out2.str() == "| 1 2 |\n| 3 4 |\n" );
+
+      std::stringstream out3;
+      gmtl::Matrix<int, 3, 4> m34;
+      m34.set( 1,  2,  3,  4,
+               5,  6,  7,  8,
+               9, 10, 11, 12 );
+      out3 << m34;
+      CPPUNIT_ASSERT( out3.str() == "| 1 2 3 4 |\n| 5 6 7 8 |\n| 9 10 11 12 |\n" );
+   }
+}

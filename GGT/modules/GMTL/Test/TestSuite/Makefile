@@ -29,8 +29,8 @@
 #
 # -----------------------------------------------------------------
 # File:          $RCSfile: Makefile,v $
-# Date modified: $Date: 2002-03-20 18:51:50 $
-# Version:       $Revision: 1.27 $
+# Date modified: $Date: 2002-03-20 19:20:57 $
+# Version:       $Revision: 1.28 $
 # -----------------------------------------------------------------
 # *************** <auto-copyright.pl END do not edit this line> ***************
 
@@ -38,7 +38,7 @@
 # Advanced template makefile for VR Juggler applications.  This is intended
 # for "power users" who really know what they are doing and want to abuse
 # Doozer's flexibility.  :)
-# $Id: Makefile,v 1.27 2002-03-20 18:51:50 nonchocoboy Exp $
+# $Id: Makefile,v 1.28 2002-03-20 19:20:57 nonchocoboy Exp $
 #
 # *** IMPORTANT NOTES -- READ THESE FIRST ***
 #     1) This file _requires_ the use of GNU make (gmake).
@@ -86,7 +86,7 @@ srcdir  	= $(shell pwd)
 #                        optimized symbols and no debugging symbols
 #    DEBUG_FLAGS       - Debugging flags passed to the compiler.  Settings this
 #                        completely overrides what Doozer uses internally.
-#    OPTIM_FLAGS       - Optimization flags passed to the compiler.  Settings
+#    OPTIM_FLAGS       - Optimization f[click on a class for detailed information] lags passed to the compiler.  Settings
 #                        this completely overrides what Doozer uses internally.
 #    EXTRA_CFLAGS      - Extra application-specific C compiler flags
 #    EXTRA_CXXFLAGS    - Extra application-specific C++ compiler flags
@@ -96,7 +96,7 @@ srcdir  	= $(shell pwd)
 #    EXTRA_UI_LIBS     - Extra user interface libraries needed for linking.
 #    PF_PATH           - Path (including -L option) to the Performer libraries
 #
-ifeq($(HOSTTYPE), Linux)
+ifeq ($(HOSTTYPE), Linux)
 	# Require gcc3 on linux
 	CXX              = g++3
 endif
@@ -150,6 +150,7 @@ TEST_SRCS = ConvertTest.cpp \
             MatrixGenTest.cpp \
             MatrixOpsTest.cpp \
             OptTest.cpp \
+				OutputTest.cpp \
             PlaneTest.cpp \
             PointTest.cpp \
             QuatClassTest.cpp \
@@ -160,7 +161,7 @@ TEST_SRCS = ConvertTest.cpp \
             TriTest.cpp \
             VecBaseTest.cpp \
             VecGenTest.cpp \
-			VecTest.cpp \
+				VecTest.cpp \
             XformTest.cpp \
             testSuite.cpp
 CPPUNIT_UI_SRCS	= TextTestResult.cpp	\

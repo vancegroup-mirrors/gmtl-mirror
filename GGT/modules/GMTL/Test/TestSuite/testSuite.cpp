@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: testSuite.cpp,v $
- * Date modified: $Date: 2002-03-19 23:16:53 $
- * Version:       $Revision: 1.29 $
+ * Date modified: $Date: 2002-03-20 19:20:57 $
+ * Version:       $Revision: 1.30 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -70,6 +70,8 @@
 
 #include <TestCases/ConvertTest.h>
 #include <TestCases/XformTest.h>
+
+#include <TestCases/OutputTest.h>
 
 
 #include <TestCases/InfoTests/OptTest.h>
@@ -148,6 +150,8 @@ int main (int ac, char **av)
    
    gmtl_suite->addTest( gmtlTest::XformTest::suite() );   
    gmtl_suite->addTest( gmtlTest::ConvertTest::suite() );
+
+   gmtl_suite->addTest( gmtlTest::OutputTest::suite() );
    
    /*
    gmtl_suite->addTest( gmtlTest::Point3Test::suite() );
