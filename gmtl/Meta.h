@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Meta.h,v $
- * Date modified: $Date: 2002-02-18 20:56:13 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-02-20 17:48:25 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -44,14 +44,6 @@ namespace gmtl
     */
    template <typename T>
    struct Type2Type
-   {
-      typedef T OriginalType;
-   };
-   
-   /** Type2Type, 1 type, two ints...
-    */
-   template <typename T, unsigned U, unsigned V>
-   struct Type2TypeUU
    {
       typedef T OriginalType;
    };
