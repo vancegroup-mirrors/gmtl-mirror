@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Quat.h,v $
- * Date modified: $Date: 2002-02-10 04:45:24 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-02-15 23:08:08 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -73,14 +73,14 @@ public:
    void set(const float x, const float y, const float z, const float w)
    { vec[Xelt] = x; vec[Yelt] = y; vec[Zelt] = z; vec[Welt] = w;}
 
-   void makeQuat(const Matrix& mat);
-   void getMat(Matrix& mat) const;
+   //void makeQuat(const Matrix& mat);
+   //void getMat(Matrix& mat) const;
 
    void getAxisAngle(float& angle, Vec3& axis) const;
    void makeAxisAngle(const float angle, const Vec3& axis);
 
-   void makeAxes(const Vec3& xAxis, const Vec3& yAxis, const Vec3& zAxis);
-   void getAxes(Vec3& xAxis, Vec3& yAxis, Vec3& zAxis) const;
+   //void makeAxes(const Vec3& xAxis, const Vec3& yAxis, const Vec3& zAxis);
+   //void getAxes(Vec3& xAxis, Vec3& yAxis, Vec3& zAxis) const;
 
 
    inline Quat operator=(const Quat& rQuat);
@@ -215,6 +215,7 @@ inline bool Quat::equal(const Quat& _q, const float& eps) const
      return true;
    }
 
+/*
 void Quat::makeQuat(const Matrix& mat)
 {
    float trace, root;
@@ -281,7 +282,7 @@ void Quat::getMat(Matrix& mat) const
    mat[0][2] = Txz-Twy;        mat[1][2] = Tyz+Twx;        mat[2][2] = 1.0-(Txx+Tyy);
 
 }
-
+*/
 
 void Quat::getAxisAngle(float& angle, Vec3& axis) const
 {
@@ -324,7 +325,7 @@ void Quat::makeAxisAngle(const float angle, const Vec3& axis)
    vec[Zelt] = sin_val*axis[Zelt];
 }
 
-
+/*
 void Quat::makeAxes(const Vec3& xAxis, const Vec3& yAxis, const Vec3& zAxis)
 {
    ggtASSERT((xAxis.isNormalized()) && (yAxis.isNormalized()) && (zAxis.isNormalized()) && "Called with non-normal axis");
@@ -346,7 +347,7 @@ void Quat::getAxes(Vec3& xAxis, Vec3& yAxis, Vec3& zAxis) const
    this->getMat(rot_mat);
    rot_mat.getAxes(xAxis, yAxis, zAxis);
 }
-
+*/
 
 Quat Quat::inverse() const
 {

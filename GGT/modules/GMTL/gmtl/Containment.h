@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Containment.h,v $
- * Date modified: $Date: 2002-02-10 04:45:24 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-02-15 23:08:08 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -153,6 +153,7 @@ inline void computeContainment( OOBox& box, const std::vector<gmtl::Point3>& poi
 }
 
 
+/*
 inline void computeContainment (OOBox& out_box, const OOBox& box0, const OOBox& box1, bool fast=true)
 {
    gmtl::OOBox ret_box;    // The resulting box
@@ -226,7 +227,7 @@ inline void computeContainment (OOBox& out_box, const OOBox& box0, const OOBox& 
 
    out_box = ret_box;
 }
-
+*/
 
 
 };
