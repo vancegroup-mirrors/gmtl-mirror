@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: ContainmentTest.h,v $
- * Date modified: $Date: 2002-01-26 23:10:48 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-01-26 23:47:52 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,25 +35,25 @@
 #include <gfxConfig.h>
 #include <iostream>
 
-#include <TestCase.h>
-#include <TestSuite.h>
-#include <TestCaller.h>
+#include <cppunit/TestCase.h>
+#include <cppunit/TestSuite.h>
+#include <cppunit/TestCaller.h>
 
-#include <GMTL/Vec3.h>
-#include <GMTL/Point3.h>
-#include <GMTL/OOBox.h>
-#include <GMTL/Containment.h>
-#include <GMTL/gmtlOutput.h>
+#include <gmtl/Vec3.h>
+#include <gmtl/Point3.h>
+#include <gmtl/OOBox.h>
+#include <gmtl/Containment.h>
+#include <gmtl/gmtlOutput.h>
 
 namespace gmtlTest
 {
 
    using namespace gmtl;
 
-class ContainmentTest : public TestCase
+class ContainmentTest : public CppUnit::TestCase
 {
 public:
-   ContainmentTest( std::string name )
+   ContainmentTest( std::string name = "ContainmentTest")
    : TestCase (name)
    {;}
 
@@ -80,13 +80,13 @@ public:
       box.halfLen(0) = 1.5f; box.halfLen(1) = 1.5f; box.halfLen(2) = 1.5f;
       box.axis(0) = Vec3::UNIT_X; box.axis(1) = Vec3::UNIT_Y; box.axis(2) = Vec3::UNIT_Z;
 
-      //assertTest(ptsAreInOOB(box,points));
+      //CPPUNIT_ASSERT(ptsAreInOOB(box,points));
 
       points.push_back(Point3(5.0f,0.0f,0.0f));
-      //assertTest(!ptsAreInOOB(box,points));
+      //CPPUNIT_ASSERT(!ptsAreInOOB(box,points));
 
       box.halfLen(0) = 7.0f;
-      //assertTest(ptsAreInOOB(box,points));
+      //CPPUNIT_ASSERT(ptsAreInOOB(box,points));
 
    }
 
@@ -107,11 +107,11 @@ public:
       computeContainment(box,points);
       xAxis = box.axis(0); yAxis = box.axis(1); zAxis = box.axis(2);
       cross = xAxis.cross(yAxis);
-      assertTest(cross.equal(zAxis));
+      CPPUNIT_ASSERT(cross.equal(zAxis));
 
       //std::cout << "daBox\n" << box << std::endl;
 
-      assertTest(ptsAreInOOB(box,points));
+      CPPUNIT_ASSERT(ptsAreInOOB(box,points));
 
       // Get random cloud of points
       for(long r=0;r<100;r++)
@@ -123,7 +123,7 @@ public:
             points.push_back(Point3(Math::unitRandom()*scale, Math::unitRandom()*scale, Math::unitRandom()*scale));
          }
          computeContainment(box, points);
-         assertTest(ptsAreInOOB(box,points));
+         CPPUNIT_ASSERT(ptsAreInOOB(box,points));
       }
 
    }
@@ -150,9 +150,9 @@ public:
       for(unsigned i=0;i<8;i++) vert_points.push_back(verts[i]);
 
       computeContainment(combined_box, box1, box2, true);
-      assertTest(ptsAreInOOB(combined_box,vert_points));
+      CPPUNIT_ASSERT(ptsAreInOOB(combined_box,vert_points));
       computeContainment(combined_box, box1, box2, false);
-      assertTest(ptsAreInOOB(combined_box,vert_points));
+      CPPUNIT_ASSERT(ptsAreInOOB(combined_box,vert_points));
 
 
       // Known pts
@@ -179,11 +179,11 @@ public:
       box2.getVerts(verts);
       for(unsigned i=0;i<8;i++) vert_points.push_back(verts[i]);
 
-      assertTest(ptsAreInOOB(box1, points));
-      assertTest(ptsAreInOOB(box2, more_points));
-      assertTest(ptsAreInOOB(combined_box, vert_points));
-      assertTest(ptsAreInOOB(combined_box, points));
-      assertTest(ptsAreInOOB(combined_box, more_points));
+      CPPUNIT_ASSERT(ptsAreInOOB(box1, points));
+      CPPUNIT_ASSERT(ptsAreInOOB(box2, more_points));
+      CPPUNIT_ASSERT(ptsAreInOOB(combined_box, vert_points));
+      CPPUNIT_ASSERT(ptsAreInOOB(combined_box, points));
+      CPPUNIT_ASSERT(ptsAreInOOB(combined_box, more_points));
 
       // Get random cloud of points
       for(long r=0;r<50;r++)
@@ -198,16 +198,16 @@ public:
          }
          computeContainment(box1, points);
          computeContainment(box2, more_points);
-         assertTest(ptsAreInOOB(box1,points));
-         assertTest(ptsAreInOOB(box2,more_points));
+         CPPUNIT_ASSERT(ptsAreInOOB(box1,points));
+         CPPUNIT_ASSERT(ptsAreInOOB(box2,more_points));
 
          computeContainment(combined_box,box1, box2, true);
-         assertTest(ptsAreInOOB(combined_box,points));
-         assertTest(ptsAreInOOB(combined_box,more_points));
+         CPPUNIT_ASSERT(ptsAreInOOB(combined_box,points));
+         CPPUNIT_ASSERT(ptsAreInOOB(combined_box,more_points));
 
          computeContainment(combined_box,box1, box2, false);
-         assertTest(ptsAreInOOB(combined_box,points));
-         assertTest(ptsAreInOOB(combined_box,more_points));
+         CPPUNIT_ASSERT(ptsAreInOOB(combined_box,points));
+         CPPUNIT_ASSERT(ptsAreInOOB(combined_box,more_points));
       }
    }
 
@@ -253,17 +253,17 @@ public:
 
    static Test* suite()
    {
-      TestSuite* test_suite = new TestSuite ("ContainmentTest");
-      test_suite->addTest( new TestCaller<ContainmentTest>("testComputePtsAreInOBB", &ContainmentTest::testComputePtsAreInOBB));
-      test_suite->addTest( new TestCaller<ContainmentTest>("testComputeContainmentOOB_PointVec", &ContainmentTest::testComputeContainmentOOB_PointVec));
-      test_suite->addTest( new TestCaller<ContainmentTest>("testComputeContainmentOOB_MergeOOB", &ContainmentTest::testComputeContainmentOOB_MergeOOB));
+      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("ContainmentTest");
+      test_suite->addTest( new CppUnit::TestCaller<ContainmentTest>("testComputePtsAreInOBB", &ContainmentTest::testComputePtsAreInOBB));
+      test_suite->addTest( new CppUnit::TestCaller<ContainmentTest>("testComputeContainmentOOB_PointVec", &ContainmentTest::testComputeContainmentOOB_PointVec));
+      test_suite->addTest( new CppUnit::TestCaller<ContainmentTest>("testComputeContainmentOOB_MergeOOB", &ContainmentTest::testComputeContainmentOOB_MergeOOB));
       return test_suite;
    }
 
    static Test* interactiveSuite()
    {
-      TestSuite* test_suite = new TestSuite ("ContainmentTestInteractive");
-      //test_suite->addTest( new TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
+      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("ContainmentTestInteractive");
+      //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
       return test_suite;
    }
 

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatTest.h,v $
- * Date modified: $Date: 2002-01-26 23:10:48 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-01-26 23:47:52 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,20 +35,20 @@
 #include <gfxConfig.h>
 #include <iostream>
 
-#include <TestCase.h>
-#include <TestSuite.h>
-#include <TestCaller.h>
+#include <cppunit/TestCase.h>
+#include <cppunit/TestSuite.h>
+#include <cppunit/TestCaller.h>
 
-#include <GMTL/Quat.h>
-#include <GMTL/Matrix.h>
+#include <gmtl/Quat.h>
+#include <gmtl/Matrix.h>
 
 namespace gmtlTest
 {
 
-class QuatTest : public TestCase
+class QuatTest : public CppUnit::TestCase
 {
 public:
-   QuatTest( std::string name )
+   QuatTest( std::string name = "QuatTest" )
    : TestCase (name)
    {;}
 
@@ -80,9 +80,9 @@ public:
       mat.getAxes(xAxis1,yAxis1,zAxis1);
       quat0.makeAxes(xAxis1,yAxis1,zAxis1);
       quat0.getAxes(xAxis2,yAxis2,zAxis2);
-      assertTest(xAxis1.equal(xAxis2,0.01));
-      assertTest(yAxis1.equal(yAxis2,0.01));
-      assertTest(zAxis1.equal(zAxis2,0.01));
+      CPPUNIT_ASSERT(xAxis1.equal(xAxis2,0.01));
+      CPPUNIT_ASSERT(yAxis1.equal(yAxis2,0.01));
+      CPPUNIT_ASSERT(zAxis1.equal(zAxis2,0.01));
 
       // More complex - Just get some orthonormal axis
       ///*
@@ -100,17 +100,17 @@ public:
       mat.makeAxes(xAxis1,yAxis1,zAxis1);
       mat.getAxes(xAxis2,yAxis2,zAxis2);
 
-      assertTest(xAxis1.equal(xAxis2,0.01));
-      assertTest(yAxis1.equal(yAxis2,0.01));
-      assertTest(zAxis1.equal(zAxis2,0.01));
+      CPPUNIT_ASSERT(xAxis1.equal(xAxis2,0.01));
+      CPPUNIT_ASSERT(yAxis1.equal(yAxis2,0.01));
+      CPPUNIT_ASSERT(zAxis1.equal(zAxis2,0.01));
 
       // Test with quat
       quat0.makeAxes(xAxis1,yAxis1,zAxis1);
       quat0.getAxes(xAxis2,yAxis2,zAxis2);
 
-      assertTest(xAxis1.equal(xAxis2,0.01));
-      assertTest(yAxis1.equal(yAxis2,0.01));
-      assertTest(zAxis1.equal(zAxis2,0.01));
+      CPPUNIT_ASSERT(xAxis1.equal(xAxis2,0.01));
+      CPPUNIT_ASSERT(yAxis1.equal(yAxis2,0.01));
+      CPPUNIT_ASSERT(zAxis1.equal(zAxis2,0.01));
       */
 
    }
@@ -125,13 +125,13 @@ public:
       mat1.makeIdent();
       quat0.makeQuat(mat1);
       quat0.getMat(mat2);
-      assertTest(mat1.equal(mat2));
+      CPPUNIT_ASSERT(mat1.equal(mat2));
 
       // Simple rotation around XAxis
       mat1.makeXYZEuler(45, -89, 32.45);
       quat0.makeQuat(mat1);
       quat0.getMat(mat2);
-      assertTest(mat1.equal(mat2));
+      CPPUNIT_ASSERT(mat1.equal(mat2));
 
       // Make orthonormal matrix
       xAxis1.set(7, 11, 21);
@@ -146,24 +146,24 @@ public:
       quat0.getMat(mat2);
       quat1.makeQuat(mat2);
 
-      assertTest(quat0.equal(quat1) || quat0.equal(-quat1));
+      CPPUNIT_ASSERT(quat0.equal(quat1) || quat0.equal(-quat1));
    }
 
 
    static Test* suite()
    {
-      TestSuite* test_suite = new TestSuite ("QuatTest");
-      test_suite->addTest( new TestCaller<QuatTest>("testMatrixCreate", &QuatTest::testQuatTestCreation));
-      test_suite->addTest( new TestCaller<QuatTest>("testGetSetAxes", &QuatTest::testGetSetAxes));
-      test_suite->addTest( new TestCaller<QuatTest>("testGetSetMat", &QuatTest::testGetSetMat));
+      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("QuatTest");
+      test_suite->addTest( new CppUnit::TestCaller<QuatTest>("testMatrixCreate", &QuatTest::testQuatTestCreation));
+      test_suite->addTest( new CppUnit::TestCaller<QuatTest>("testGetSetAxes", &QuatTest::testGetSetAxes));
+      test_suite->addTest( new CppUnit::TestCaller<QuatTest>("testGetSetMat", &QuatTest::testGetSetMat));
 
       return test_suite;
    }
 
    static Test* interactiveSuite()
    {
-      TestSuite* test_suite = new TestSuite ("InteractiveQuatTest");
-      //test_suite->addTest( new TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
+      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveQuatTest");
+      //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
       return test_suite;
    }
 

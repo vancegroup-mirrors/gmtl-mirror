@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: matVecFuncs.h,v $
- * Date modified: $Date: 2002-01-18 20:43:12 $
- * Version:       $Revision: 1.1.1.1 $
+ * Date modified: $Date: 2002-01-26 23:47:53 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,10 +35,10 @@
 #ifndef _GMTL_MAT_VEC_FUNCS_H_
 #define _GMTL_MAT_VEC_FUNCS_H_
 
-#include <GMTL/gmtlDefines.h>
-#include <GMTL/Matrix.h>
-#include <GMTL/Vec3.h>
-#include <GMTL/Vec4.h>
+#include <gmtl/gmtlDefines.h>
+#include <gmtl/Matrix.h>
+#include <gmtl/Vec3.h>
+#include <gmtl/Vec4.h>
 
 namespace gmtl
 {

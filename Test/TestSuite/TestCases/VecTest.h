@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.h,v $
- * Date modified: $Date: 2002-01-26 23:10:48 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-01-26 23:47:52 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,19 +35,19 @@
 #include <gfxConfig.h>
 #include <iostream>
 
-#include <TestCase.h>
-#include <TestSuite.h>
-#include <TestCaller.h>
+#include <cppunit/TestCase.h>
+#include <cppunit/TestSuite.h>
+#include <cppunit/TestCaller.h>
 
-#include <GMTL/Vec.h>
+#include <gmtl/Vec.h>
 
 namespace gmtlTest
 {
 
-class VecTest : public TestCase
+class VecTest : public CppUnit::TestCase
 {
 public:
-   VecTest( std::string name )
+   VecTest( std::string name = "VecTest" )
    : TestCase (name)
    {;}
 
@@ -73,16 +73,16 @@ public:
 
    static Test* suite()
    {
-      TestSuite* test_suite = new TestSuite ("VecTest");
-      test_suite->addTest( new TestCaller<VecTest>("testVecCreate", &VecTest::testVecCreation));
+      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("VecTest");
+      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testVecCreate", &VecTest::testVecCreation));
       return test_suite;
    }
 
    static Test* interactiveSuite()
    {
       /*
-      TestSuite* test_suite = new TestSuite ("InteractiveThreadTest");
-      test_suite->addTest( new TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
+      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveThreadTest");
+      test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
       return test_suite;
       */
    }

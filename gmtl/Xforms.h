@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Xforms.h,v $
- * Date modified: $Date: 2002-01-18 20:43:11 $
- * Version:       $Revision: 1.1.1.1 $
+ * Date modified: $Date: 2002-01-26 23:47:53 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,13 +35,13 @@
 #ifndef _XFORMS_H_
 #define _XFORMS_H_
 
-#include <GMTL/gmtlDefines.h>
-#include <GMTL/Matrix.h>
-#include <GMTL/Vec3.h>
-#include <GMTL/Vec4.h>
-#include <GMTL/Point3.h>
-#include <GMTL/OOBox.h>
-#include <GMTL/matVecFuncs.h>
+#include <gmtl/gmtlDefines.h>
+#include <gmtl/Matrix.h>
+#include <gmtl/Vec3.h>
+#include <gmtl/Vec4.h>
+#include <gmtl/Point3.h>
+#include <gmtl/OOBox.h>
+#include <gmtl/matVecFuncs.h>
 
 
 namespace gmtl

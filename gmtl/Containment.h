@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Containment.h,v $
- * Date modified: $Date: 2002-01-18 20:43:11 $
- * Version:       $Revision: 1.1.1.1 $
+ * Date modified: $Date: 2002-01-26 23:47:53 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,11 +35,11 @@
 #ifndef _GMTL_CONTAINMENT_H_
 #define _GMTL_CONTAINMENT_H_
 
-#include <GMTL/OOBox.h>
-#include <GMTL/AABox.h>
-#include <GMTL/Fit/GaussPointsFit.h>
-#include <GMTL/matVecFuncs.h>
-#include <GMTL/Quat.h>
+#include <gmtl/OOBox.h>
+#include <gmtl/AABox.h>
+#include <gmtl/Fit/GaussPointsFit.h>
+#include <gmtl/matVecFuncs.h>
+#include <gmtl/Quat.h>
 
 namespace gmtl
 {

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixTest.h,v $
- * Date modified: $Date: 2002-01-26 23:10:48 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-01-26 23:47:52 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,19 +35,19 @@
 #include <gfxConfig.h>
 #include <iostream>
 
-#include <TestCase.h>
-#include <TestSuite.h>
-#include <TestCaller.h>
+#include <cppunit/TestCase.h>
+#include <cppunit/TestSuite.h>
+#include <cppunit/TestCaller.h>
 
-#include <GMTL/Matrix.h>
+#include <gmtl/Matrix.h>
 
 namespace gmtlTest
 {
 
-class MatrixTest : public TestCase
+class MatrixTest : public CppUnit::TestCase
 {
 public:
-   MatrixTest( std::string name )
+   MatrixTest( std::string name = "MatrixTest" )
    : TestCase (name)
    {;}
 
@@ -82,7 +82,7 @@ public:
                   1,   5,   9,  13,
                   2,   6,  10,  14,
                   3,   7,  11,  15);
-      assertTest(res_mat == test_mat.transpose());
+      CPPUNIT_ASSERT(res_mat == test_mat.transpose());
    }
 
    void testMatrixAddSub()
@@ -100,13 +100,13 @@ public:
                    24, 26, 28, 30);
       res_mat = test_mat1 + test_mat2;    // rm = m1 + m2
 
-      assertTest(res_mat == ans_mat);
+      CPPUNIT_ASSERT(res_mat == ans_mat);
 
       gmtl::Matrix diff_mat;
       diff_mat = res_mat - test_mat1;
 
-      assertTest(diff_mat != res_mat);
-      assertTest(diff_mat == test_mat2);
+      CPPUNIT_ASSERT(diff_mat != res_mat);
+      CPPUNIT_ASSERT(diff_mat == test_mat2);
 
    }
 
@@ -135,22 +135,22 @@ public:
       std::cout << "Diff mat:\n" << diff_mat << std::endl;
       */
 
-      assertTest(res_mat.equal(mat3));
+      CPPUNIT_ASSERT(res_mat.equal(mat3));
 
       mat3 = mat2*mat1;
-      assertTest(!res_mat.equal(mat3));
+      CPPUNIT_ASSERT(!res_mat.equal(mat3));
 
       res_mat.set( 55.610,   100.380,   141.910,   183.440,
                  1765.070,  1898.660,  2090.570,  2282.480,
                   185.960,    94.580,    83.390,    72.200,
                   545.440,   598.620,   668.810,   739.000 );
 
-      assertTest(res_mat.equal(mat3));
+      CPPUNIT_ASSERT(res_mat.equal(mat3));
 
       // test matrix::op*=(mat)
       mat3 = mat2;
       mat3 *= mat1;
-      assertTest(res_mat.equal(mat3));
+      CPPUNIT_ASSERT(res_mat.equal(mat3));
    }
 
    void testMatEqualTest()
@@ -161,7 +161,7 @@ public:
                89.2,  99.2, 10.9, 11.9,
                12.5,  13.9, 14.78, 15.6);
       mat1 = mat2;
-      assertTest(mat1 == mat2);
+      CPPUNIT_ASSERT(mat1 == mat2);
 
       // Test that != works on all elements
       for(int i=0;i<4;i++)
@@ -169,20 +169,20 @@ public:
          for(int j=0;j<4;j++)
          {
             mat2[i][j] = 1221.0f;
-            assertTest(mat1 != mat2);
+            CPPUNIT_ASSERT(mat1 != mat2);
             mat2[i][j] = mat1[i][j];
          }
       }
 
       // Test for epsilon equals working
-      assertTest(mat1.equal(mat2));
+      CPPUNIT_ASSERT(mat1.equal(mat2));
       for(int i=0;i<4;i++)
       {
          for(int j=0;j<4;j++)
          {
             mat2[i][j] = mat1[i][j]-(gmtl::GMTL_EPSILON/2.0f);
-            assertTest(mat1.equal(mat2));
-            assertTest(!mat1.equal(mat2,gmtl::GMTL_EPSILON/3.0f));
+            CPPUNIT_ASSERT(mat1.equal(mat2));
+            CPPUNIT_ASSERT(!mat1.equal(mat2,gmtl::GMTL_EPSILON/3.0f));
             mat2[i][j] = mat1[i][j];
          }
       }
@@ -204,26 +204,26 @@ public:
                        2.9041982,  -0.0290744,   0.0420053,  -0.4711792);
       // Make sure our pre-computed answer is right
       result = mat1* mat1inv_ans;
-      assertTest(result.equal(identity));
+      CPPUNIT_ASSERT(result.equal(identity));
 
       // Test inversion
       result.makeIdent();
       result.invert(mat1);
-      assertTest(result.equal(mat1inv_ans));
+      CPPUNIT_ASSERT(result.equal(mat1inv_ans));
 
       // Test rotation inversions
       gmtl::Matrix rot_mat1, rot_mat1_inv; // rot_mat2, rot_mat2_inv;
       rot_mat1.makeXYZEuler(30.0f, 45.0f, 60.0f);
       rot_mat1_inv.invert(rot_mat1);
       result = rot_mat1*rot_mat1_inv;
-      assertTest(result.equal(identity));
+      CPPUNIT_ASSERT(result.equal(identity));
 
       // Test translation matrix inversion
       gmtl::Matrix trans_mat1, trans_mat1_inv;
       trans_mat1.makeTrans(21.0f, -23.45f, 0.045f);
       trans_mat1_inv.invert(trans_mat1);
       result = trans_mat1*trans_mat1_inv;
-      assertTest(result.equal(identity));
+      CPPUNIT_ASSERT(result.equal(identity));
    }
 
    void testGetSetAxes()
@@ -238,9 +238,9 @@ public:
       mat2.makeAxes(xAxis1,yAxis1,zAxis1);
       mat2.getAxes(xAxis2,yAxis2,zAxis2);
 
-      assertTest(xAxis1.equal(xAxis2,0.01));
-      assertTest(yAxis1.equal(yAxis2,0.01));
-      assertTest(zAxis1.equal(zAxis2,0.01));
+      CPPUNIT_ASSERT(xAxis1.equal(xAxis2,0.01));
+      CPPUNIT_ASSERT(yAxis1.equal(yAxis2,0.01));
+      CPPUNIT_ASSERT(zAxis1.equal(zAxis2,0.01));
 
       // More complex Euler rotation
       mat1.makeXYZEuler(45.0f, -35.0f, 13.0f);
@@ -248,9 +248,9 @@ public:
       mat2.makeAxes(xAxis1,yAxis1,zAxis1);
       mat2.getAxes(xAxis2,yAxis2,zAxis2);
 
-      assertTest(xAxis1.equal(xAxis2,0.01));
-      assertTest(yAxis1.equal(yAxis2,0.01));
-      assertTest(zAxis1.equal(zAxis2,0.01));
+      CPPUNIT_ASSERT(xAxis1.equal(xAxis2,0.01));
+      CPPUNIT_ASSERT(yAxis1.equal(yAxis2,0.01));
+      CPPUNIT_ASSERT(zAxis1.equal(zAxis2,0.01));
 
       // Use orthonormal axis
       xAxis1.set(7, 11, 21);     xAxis1.normalize();
@@ -260,29 +260,29 @@ public:
       mat2.makeAxes(xAxis1,yAxis1,zAxis1);
       mat2.getAxes(xAxis2,yAxis2,zAxis2);
 
-      assertTest(xAxis1.equal(xAxis2,0.01));
-      assertTest(yAxis1.equal(yAxis2,0.01));
-      assertTest(zAxis1.equal(zAxis2,0.01));
+      CPPUNIT_ASSERT(xAxis1.equal(xAxis2,0.01));
+      CPPUNIT_ASSERT(yAxis1.equal(yAxis2,0.01));
+      CPPUNIT_ASSERT(zAxis1.equal(zAxis2,0.01));
    }
 
 
    static Test* suite()
    {
-      TestSuite* test_suite = new TestSuite ("MatrixTest");
-      test_suite->addTest( new TestCaller<MatrixTest>("testMatrixCreate", &MatrixTest::testMatrixCreation));
-      test_suite->addTest( new TestCaller<MatrixTest>("testMatEqualTest", &MatrixTest::testMatEqualTest));
-      test_suite->addTest( new TestCaller<MatrixTest>("testMatrixTranspose", &MatrixTest::testMatrixTranspose));
-      test_suite->addTest( new TestCaller<MatrixTest>("testMultOp", &MatrixTest::testMultOp));
-      test_suite->addTest( new TestCaller<MatrixTest>("testMatrixAddSub", &MatrixTest::testMatrixAddSub));
-      test_suite->addTest( new TestCaller<MatrixTest>("testMatInvert", &MatrixTest::testMatInvert));
-      test_suite->addTest( new TestCaller<MatrixTest>("testGetSetAxes", &MatrixTest::testGetSetAxes));
+      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("MatrixTest");
+      test_suite->addTest( new CppUnit::TestCaller<MatrixTest>("testMatrixCreate", &MatrixTest::testMatrixCreation));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixTest>("testMatEqualTest", &MatrixTest::testMatEqualTest));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixTest>("testMatrixTranspose", &MatrixTest::testMatrixTranspose));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixTest>("testMultOp", &MatrixTest::testMultOp));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixTest>("testMatrixAddSub", &MatrixTest::testMatrixAddSub));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixTest>("testMatInvert", &MatrixTest::testMatInvert));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixTest>("testGetSetAxes", &MatrixTest::testGetSetAxes));
       return test_suite;
    }
 
    static Test* interactiveSuite()
    {
-      TestSuite* test_suite = new TestSuite ("InteractiveThreadTest");
-      //test_suite->addTest( new TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
+      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveThreadTest");
+      //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
       return test_suite;
    }
 

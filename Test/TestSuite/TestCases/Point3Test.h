@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Point3Test.h,v $
- * Date modified: $Date: 2002-01-26 23:10:48 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-01-26 23:47:52 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,19 +35,19 @@
 #include <gfxConfig.h>
 #include <iostream>
 
-#include <TestCase.h>
-#include <TestSuite.h>
-#include <TestCaller.h>
+#include <cppunit/TestCase.h>
+#include <cppunit/TestSuite.h>
+#include <cppunit/TestCaller.h>
 
-#include <GMTL/Point3.h>
+#include <gmtl/Point3.h>
 
 namespace gmtlTest
 {
 
-class Point3Test : public TestCase
+class Point3Test : public CppUnit::TestCase
 {
 public:
-   Point3Test( std::string name )
+   Point3Test( std::string name = "Point3Test")
    : TestCase (name)
    {;}
 
@@ -75,7 +75,7 @@ public:
       gmtl::Point3 p2;
       p2 = vec_pt;
       p1 = p2;
-      assertTest(p1 == vec_pt);           // Should be able to construct one
+      CPPUNIT_ASSERT(p1 == vec_pt);           // Should be able to construct one
 
    }
 
@@ -83,15 +83,15 @@ public:
 
    static Test* suite()
    {
-      TestSuite* test_suite = new TestSuite ("Point3Test");
-      test_suite->addTest( new TestCaller<Point3Test>("testPoint3Creation", &Point3Test::testPoint3Creation));
+      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("Point3Test");
+      test_suite->addTest( new CppUnit::TestCaller<Point3Test>("testPoint3Creation", &Point3Test::testPoint3Creation));
       return test_suite;
    }
 
    static Test* interactiveSuite()
    {
-      TestSuite* test_suite = new TestSuite ("InteractiveThreadTest");
-      //test_suite->addTest( new TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
+      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveThreadTest");
+      //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
       return test_suite;
    }
 

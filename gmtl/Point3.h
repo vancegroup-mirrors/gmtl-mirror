@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Point3.h,v $
- * Date modified: $Date: 2002-01-18 20:43:12 $
- * Version:       $Revision: 1.1.1.1 $
+ * Date modified: $Date: 2002-01-26 23:47:53 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -36,8 +36,8 @@
 #define _GMTL_POINT3_H_
 
 #include <iostream>
-#include <GMTL/gmtlDefines.h>
-#include <GMTL/Vec3.h>
+#include <gmtl/gmtlDefines.h>
+#include <gmtl/Vec3.h>
 
 namespace gmtl
 {

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: OOBoxTest.h,v $
- * Date modified: $Date: 2002-01-26 23:10:48 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-01-26 23:47:52 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,19 +35,19 @@
 #include <gfxConfig.h>
 #include <iostream>
 
-#include <TestCase.h>
-#include <TestSuite.h>
-#include <TestCaller.h>
+#include <cppunit/TestCase.h>
+#include <cppunit/TestSuite.h>
+#include <cppunit/TestCaller.h>
 
-#include <GMTL/OOBox.h>
+#include <gmtl/OOBox.h>
 
 namespace gmtlTest
 {
 
-class OOBoxTest : public TestCase
+class OOBoxTest : public CppUnit::TestCase
 {
 public:
-   OOBoxTest( std::string name )
+   OOBoxTest( std::string name = "OOBoxTest")
    : TestCase (name)
    {;}
 
@@ -72,9 +72,9 @@ public:
 
       box2 = box1;
 
-      assertTest(box2.center() == gmtl::Point3(0.0, 1.0f, -2.0f));
-      assertTest(box2 == box1);
-      assertTest(box1 == box2);
+      CPPUNIT_ASSERT(box2.center() == gmtl::Point3(0.0, 1.0f, -2.0f));
+      CPPUNIT_ASSERT(box2 == box1);
+      CPPUNIT_ASSERT(box1 == box2);
    }
 
    void testGetBoxVerts()
@@ -95,31 +95,31 @@ public:
       gmtl::Point3 verts[8];
       box1.getVerts(verts);
 
-      assertTest(verts[0] == gmtl::Point3(-1.0f,-2.0f,-3.0f));   // 000
-      assertTest(verts[1] == gmtl::Point3(1.0f,-2.0f,-3.0f));   // 100
-      assertTest(verts[2] == gmtl::Point3(1.0f,2.0f,-3.0f));   // 110
-      assertTest(verts[3] == gmtl::Point3(-1.0f,2.0f,-3.0f));   // 010
+      CPPUNIT_ASSERT(verts[0] == gmtl::Point3(-1.0f,-2.0f,-3.0f));   // 000
+      CPPUNIT_ASSERT(verts[1] == gmtl::Point3(1.0f,-2.0f,-3.0f));   // 100
+      CPPUNIT_ASSERT(verts[2] == gmtl::Point3(1.0f,2.0f,-3.0f));   // 110
+      CPPUNIT_ASSERT(verts[3] == gmtl::Point3(-1.0f,2.0f,-3.0f));   // 010
 
-      assertTest(verts[4] == gmtl::Point3(-1.0f,-2.0f,3.0f));   // 001
-      assertTest(verts[5] == gmtl::Point3(1.0f,-2.0f,3.0f));   // 101
-      assertTest(verts[6] == gmtl::Point3(1.0f,2.0f,3.0f));   // 111
-      assertTest(verts[7] == gmtl::Point3(-1.0f,2.0f,3.0f));   // 011
+      CPPUNIT_ASSERT(verts[4] == gmtl::Point3(-1.0f,-2.0f,3.0f));   // 001
+      CPPUNIT_ASSERT(verts[5] == gmtl::Point3(1.0f,-2.0f,3.0f));   // 101
+      CPPUNIT_ASSERT(verts[6] == gmtl::Point3(1.0f,2.0f,3.0f));   // 111
+      CPPUNIT_ASSERT(verts[7] == gmtl::Point3(-1.0f,2.0f,3.0f));   // 011
    }
 
 
    static Test* suite()
    {
-      TestSuite* test_suite = new TestSuite ("OOBoxTest");
-      test_suite->addTest( new TestCaller<OOBoxTest>("testBoxCreation", &OOBoxTest::testBoxCreation));
-      test_suite->addTest( new TestCaller<OOBoxTest>("testGetBoxVerts", &OOBoxTest::testGetBoxVerts));
+      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("OOBoxTest");
+      test_suite->addTest( new CppUnit::TestCaller<OOBoxTest>("testBoxCreation", &OOBoxTest::testBoxCreation));
+      test_suite->addTest( new CppUnit::TestCaller<OOBoxTest>("testGetBoxVerts", &OOBoxTest::testGetBoxVerts));
 
       return test_suite;
    }
 
    static Test* interactiveSuite()
    {
-      TestSuite* test_suite = new TestSuite ("OOBoxTestInteractive");
-      //test_suite->addTest( new TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
+      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("OOBoxTestInteractive");
+      //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
       return test_suite;
    }
 

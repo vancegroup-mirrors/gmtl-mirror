@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: GaussPointsFit.cpp,v $
- * Date modified: $Date: 2002-01-18 20:43:12 $
- * Version:       $Revision: 1.1.1.1 $
+ * Date modified: $Date: 2002-01-26 23:47:53 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -37,12 +37,12 @@
 // http://www.magic-software.com
 //
 
-#include <GMTL/Vec3.h>
-#include <GMTL/Point3.h>
-#include <GMTL/matVecFuncs.h>
+#include <gmtl/Vec3.h>
+#include <gmtl/Point3.h>
+#include <gmtl/matVecFuncs.h>
 
-#include <GMTL/Numerics/Eigen.h>
-#include <GMTL/Fit/GaussPointsFit.h>
+#include <gmtl/Numerics/Eigen.h>
+#include <gmtl/Fit/GaussPointsFit.h>
 
 
 namespace gmtl
