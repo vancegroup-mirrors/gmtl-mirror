@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixGenTest.cpp,v $
- * Date modified: $Date: 2002-03-20 22:29:56 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-03-20 23:33:19 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -500,6 +500,9 @@ namespace gmtlTest
 
    }
 
+   /// @todo test out getRot (just like this set rot function, but reversed)...
+
+   
    void MatrixGenTest::testMatrixsetRotEuler()
    {
       const float eps = 0.001f;
