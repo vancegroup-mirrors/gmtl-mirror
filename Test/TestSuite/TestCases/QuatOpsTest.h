@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatOpsTest.h,v $
- * Date modified: $Date: 2002-02-22 21:48:34 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-03-09 23:32:55 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -210,20 +210,7 @@ public:
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatOpsTest/normalize(q)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
-   
-   void testQuatTimingNormalizeFast()
-   {
-      gmtl::Quat<float> q1, q2, q3, q4;
-      const long iters(400000);
-      CPPUNIT_METRIC_START_TIMING();
-      for (long iter = 0; iter < iters; ++iter)
-      {
-         q4 = gmtl::normalizeFast( q1 );
-      }
-      CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatOpsTest/normalizeFast(q)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
-   }
-   
+     
    void testQuatTimingConj()
    {
       gmtl::Quat<float> q1, q2, q3, q4;
@@ -371,18 +358,6 @@ public:
       CPPUNIT_ASSERT( gmtl::isNormalized( expected_result2 ) );
    }
    
-   void testQuatNormalizeFast()
-   {
-      const float eps = 0.0001f;
-      gmtl::Quat<float> q3( 0,0,2,0 ), q5( 2,-2,2,-2 );
-      gmtl::normalizeFast( q3 );
-      gmtl::normalizeFast( q5 );
-
-      gmtl::Quat<float> expected_result1( 0, 0, 0.5, 0 ), expected_result2( 0.125, -0.125, 0.125, -0.125 );
-      CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, q3, eps ) );
-      CPPUNIT_ASSERT( gmtl::isEqual( expected_result2, q5, eps ) );
-   }
-   
    void testQuatConj()
    {
       const float eps = 0.0001f;
@@ -424,7 +399,6 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatNorm", &QuatOpsTest::testQuatNorm));
       test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatMag", &QuatOpsTest::testQuatMag));
       test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatNormalize", &QuatOpsTest::testQuatNormalize));
-      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatNormalizeFast", &QuatOpsTest::testQuatNormalizeFast));
       test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatConj", &QuatOpsTest::testQuatConj));
       test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatInvert", &QuatOpsTest::testQuatInvert));
       
@@ -438,7 +412,6 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatTimingNorm", &QuatOpsTest::testQuatTimingNorm));
       test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatTimingMag", &QuatOpsTest::testQuatTimingMag));
       test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatTimingNormalize", &QuatOpsTest::testQuatTimingNormalize));
-      test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatTimingNormalizeFast", &QuatOpsTest::testQuatTimingNormalizeFast));
       test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatTimingConj", &QuatOpsTest::testQuatTimingConj));
       test_suite->addTest( new CppUnit::TestCaller<QuatOpsTest>("testQuatTimingInvert", &QuatOpsTest::testQuatTimingInvert));
 
