@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatClassTest.h,v $
- * Date modified: $Date: 2002-02-22 21:48:34 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-03-11 19:13:29 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -150,44 +150,59 @@ namespace gmtlTest
       void testQuatTimingDefaultConstructor()
       {
          const long iters( 400000 );
+         float use_value(1);
+
          CPPUNIT_METRIC_START_TIMING();
          for (long iter = 0; iter < iters; ++iter)
          {
             // performance of def constructor
             gmtl::Quat<float> q;
+            use_value += q.mData[0];
          }
          CPPUNIT_METRIC_STOP_TIMING();
          CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatTest/DefaultConstructor", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+         CPPUNIT_ASSERT( use_value != 0 );
       }
    
       void testQuatTimingElementConstructor()
       {
          const long iters( 400000 );
+         float use_value(1);
+
          CPPUNIT_METRIC_START_TIMING();
          for (long iter = 0; iter < iters; ++iter)
          {
             // performance of element constructor
             gmtl::Quat<float> q2( 10, 11, 12, 13 );
+            use_value += q2.mData[0];
          }
          CPPUNIT_METRIC_STOP_TIMING();
          CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatTest/ElementConstructor", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+         CPPUNIT_ASSERT( use_value != 0 );
       }
 
       void testQuatTimingCopyConstructor()
       {
          const long iters( 400000 );
-         CPPUNIT_METRIC_START_TIMING();
+         float use_value(1);
          gmtl::Quat<float> q( 67, 68, 69, 60 );
+
+         CPPUNIT_METRIC_START_TIMING();
          for (long iter = 0; iter < iters; ++iter)
          {
             // performance of copy constructor
             gmtl::Quat<float> q3( q );
+            use_value += q3.mData[0];
          }
          CPPUNIT_METRIC_STOP_TIMING();
          CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatTest/CopyConstructor", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+         CPPUNIT_ASSERT( use_value != 0 );
       }
-   
-         
+
+
       void testQuatTimingGet()
       {
          const long iters( 400000 );
