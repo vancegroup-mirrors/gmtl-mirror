@@ -1,0 +1,10 @@
+Juggler Base
+{
+   CVSROOT: allenb@cvs.vrjuggler.sourceforge.net:/cvsroot/vrjuggler;
+   Module: juggler/Doozer++         [Doozer++];
+   Module: juggler/external/boost   [external/boost];
+   Module: juggler/macros           [macros];
+   Module: juggler/release          [release];
+   Tag: HEAD;
+   Path: .;
+}
