@@ -28,7 +28,7 @@ def GetPlatform():
 Export('GetPlatform')
 
 def BuildLinuxEnvironment():
-   "Builds a base environment for other modules to build on setup for linux"
+   "Builds a base environment for other modules to build on set up for linux"
    global optimize, profile
 
    CXX = 'g++3'
@@ -56,6 +56,37 @@ def BuildLinuxEnvironment():
       CPPPATH     = [],
       LIBPATH     = [],
       LIBS        = [])
+
+def BuildIRIXEnvironment():
+   "Builds a base environment for other modules to build on set up for IRIX"
+   global optimize, profile
+
+   CXX = 'CC'
+   LINK = 'CC'
+   CXXFLAGS = ['-n32', '-mips3', '-LANG:std', '-w2']
+   LINKFLAGS = CXXFLAGS
+
+   # Enable profiling?
+   if profile:
+      CXXFLAGS.extend([])
+      LINKFLAGS.extend([])
+
+   # Debug or optimize build?
+   if optimize:
+      CXXFLAGS.extend(['-DNDEBUG', '-O2'])
+   else:
+      CXXFLAGS.extend(['-D_DEBUG', '-g', '-gslim'])
+
+   return Environment(
+      ENV         = os.environ,
+      CXX         = CXX,
+      CXXFLAGS    = CXXFLAGS,
+      LINK        = LINK,
+      LINKFLAGS   = LINKFLAGS,
+      CPPPATH     = [],
+      LIBPATH     = [],
+      LIBS        = [])
+
 
 #------------------------------------------------------------------------------
 # Grok the arguments to this build
