@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Matrix.h,v $
- * Date modified: $Date: 2002-02-21 21:37:08 $
- * Version:       $Revision: 1.10 $
+ * Date modified: $Date: 2002-03-08 14:08:07 $
+ * Version:       $Revision: 1.11 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -278,28 +278,28 @@ public:
    }
 
    /** access [row, col] in the matrix */
-   DATA_TYPE& operator()( unsigned row, unsigned column )
+   DATA_TYPE& operator()( const unsigned row, const unsigned column )
    { 
       ggtASSERT( (row < ROWS) && (column < COLS) ); 
       return mData[column*ROWS + row];
    }
    
    /** access [row, col] in the matrix (const version) */
-   const DATA_TYPE&  operator()( unsigned row, unsigned column ) const
+   const DATA_TYPE&  operator()( const unsigned row, const unsigned column ) const
    { 
       ggtASSERT( (row < ROWS) && (column < COLS) ); 
       return mData[column*ROWS + row];
    }
    
    /** bracket operator */
-   DATA_TYPE& operator[]( unsigned i )
+   DATA_TYPE& operator[]( const unsigned i )
    { 
       ggtASSERT( i < (ROWS*COLS) ); 
       return mData[i];
    }
    
    /** bracket operator */
-   const DATA_TYPE& operator[]( unsigned i ) const
+   const DATA_TYPE& operator[]( const unsigned i ) const
    { 
       ggtASSERT( i < (ROWS*COLS) ); 
       return mData[i];
@@ -308,7 +308,7 @@ public:
    /** Get a DATA_TYPE pointer to the matrix data
     * RETVAL: Returns a ptr to the head of the matrix data
     */
-   const DATA_TYPE*  getData() const { return (DATA_TYPE*)mData;}
+   const DATA_TYPE*  getData() const { return (DATA_TYPE*)mData; }
 
    bool isError()
    {
