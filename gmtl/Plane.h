@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Plane.h,v $
- * Date modified: $Date: 2002-05-20 22:39:22 $
- * Version:       $Revision: 1.12 $
+ * Date modified: $Date: 2003-03-03 00:54:05 $
+ * Version:       $Revision: 1.13 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -126,7 +126,7 @@ public:
    /**
     * Gets the normal for this plane.
     *
-    * @return  this plane's normal
+    * @return  this plane's normal vector
     */
    const Vec<DATA_TYPE, 3>& getNormal() const
    {
@@ -136,7 +136,7 @@ public:
    /**
     * Sets the normal for this plane to the given vector.
     *
-    * @param norm    the new normal
+    * @param norm    the new normalized vector
     *
     * @pre |norm| = 1
     */

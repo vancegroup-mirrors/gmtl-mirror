@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Xforms.h,v $
- * Date modified: $Date: 2003-02-23 07:05:41 $
- * Version:       $Revision: 1.28 $
+ * Date modified: $Date: 2003-03-03 00:54:05 $
+ * Version:       $Revision: 1.29 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -52,6 +52,9 @@ namespace gmtl
    
    /** transform a vector by a rotation quaternion.
     * @pre give a vector, and a rotation quaternion (by definition, a rotation quaternion is normalized).
+    * @param result     The vector to write the result into
+    * @param rot        The quaternion
+    * @param vector     The original vector to transform
     * @post v' = q P(v) q*  (where result is v', rot is q, and vector is v.  q* is conj(q), and P(v) is pure quaternion made from v)
     * @see game programming gems #1 p199
     * @see shoemake siggraph notes
@@ -89,6 +92,9 @@ namespace gmtl
 
    /** transform a vector by a rotation quaternion.
     * @pre give a vector, and a rotation quaternion (by definition, a rotation quaternion is normalized).
+    * @param rot        The quaternion
+    * @param vector     The original vector to transform
+    * @return  the resulting vector transformed by the quaternion
     * @post v' = q P(v) q*  (where result is v', rot is q, and vector is v.  q* is conj(q), and P(v) is pure quaternion made from v)
     */
    template <typename DATA_TYPE>
@@ -107,7 +113,10 @@ namespace gmtl
 
    /** xform a vector by a matrix.
     *  Transforms a vector with a matrix, uses multiplication of [m x k] matrix by a [k x 1] matrix (the later also known as a Vector...).
-    *  @post This results in a full matrix xform of the vector (assumes you know what you are doing -
+    *  @param result        the vector to write the result in
+    *  @param matrix        the transform matrix
+    *  @param vector        the original vector
+    *  @post This results in a rotational xform of the vector (assumes you know what you are doing -
     *  i.e. that you know that the last component of a vector by definition is 0.0, and changing
     *  this might make the xform different than what you may expect).
     *  @post returns a point same size as the matrix rows...  (v[r][1] = m[r][k] * v[k][1])
@@ -130,6 +139,9 @@ namespace gmtl
 
    /** matrix * vector xform.
     *  multiplication of [m x k] matrix by a [k x 1] matrix (also known as a Vector...).
+    *  @param matrix    the transform matrix
+    *  @param vector    the original vector
+    *  @return  the vector transformed by the matrix
     *  @post This results in a full matrix xform of the vector (assumes you know what you are doing -
     *  i.e. that you know that the last component of a vector by definition is 0.0, and changing
     *  this might make the xform different that what you may expect).
@@ -148,6 +160,9 @@ namespace gmtl
 
    /** partially transform a partially specified vector by a matrix, assumes last elt of vector is 0 (the 0 makes it only partially transformed).
     *  Transforms a vector with a matrix, uses multiplication of [m x k] matrix by a [k-1 x 1] matrix (also known as a Vector [with w == 0 for vectors by definition] ).
+    *  @param result        the vector to write the result in
+    *  @param matrix        the transform matrix
+    *  @param vector        the original vector
     *  @post the [k-1 x 1] vector you pass in is treated as a [vector, 0.0]
     *  @post This ends up being a partial xform using only the rotation from the matrix (vector xformed result is untranslated).
     */
@@ -185,6 +200,9 @@ namespace gmtl
    }
 
    /** matrix * partial vector, assumes last elt of vector is 0 (partial transform).
+    *  @param matrix        the transform matrix
+    *  @param vector        the original vector
+    *  @return  the vector transformed by the matrix
     *  multiplication of [m x k] matrix by a [k-1 x 1] matrix (also known as a Vector [with w == 0 for vectors by definition] ).
     *  @post the [k-1 x 1] vector you pass in is treated as a [vector, 0.0]
     *  @post This ends up being a partial xform using only the rotation from the matrix (vector xformed result is untranslated).
@@ -206,6 +224,9 @@ namespace gmtl
 
    /** transform point by a matrix.
     *  multiplication of [m x k] matrix by a [k x 1] matrix (also known as a Point...).
+    *  @param result        the point to write the result in
+    *  @param matrix        the transform matrix
+    *  @param point         the original point
     *  @post This results in a full matrix xform of the point.
     *  @post returns a point same size as the matrix rows...  (p[r][1] = m[r][k] * p[k][1])
     */
@@ -226,6 +247,9 @@ namespace gmtl
 
    /** matrix * point.
     *  multiplication of [m x k] matrix by a [k x 1] matrix (also known as a Point...).
+    *  @param matrix        the transform matrix
+    *  @param point         the original point
+    *  @return  the point transformed by the matrix
     *  @post This results in a full matrix xform of the point.
     *  @post returns a point same size as the matrix rows...  (p[r][1] = m[r][k] * p[k][1])
     */
@@ -241,6 +265,9 @@ namespace gmtl
 
    /** transform a partially specified point by a matrix, assumes last elt of point is 1.
     *  Transforms a point with a matrix, uses multiplication of [m x k] matrix by a [k-1 x 1] matrix (also known as a Point [with w == 1 for points by definition] ).
+    *  @param result        the point to write the result in
+    *  @param matrix        the transform matrix
+    *  @param point         the original point
     *  @post the [k-1 x 1] point you pass in is treated as [point, 1.0]
     *  @post This results in a full matrix xform of the point.
     * @todo we need a PointOps.h operator*=(scalar) function
@@ -279,6 +306,9 @@ namespace gmtl
 
    /** matrix * partially specified point.
     *  multiplication of [m x k] matrix by a [k-1 x 1] matrix (also known as a Point [with w == 1 for points by definition] ).
+    *  @param matrix        the transform matrix
+    *  @param point         the original point
+    *  @return  the point transformed by the matrix
     *  @post the [k-1 x 1] vector you pass in is treated as a [point, 1.0]
     *  @post This results in a full matrix xform of the point.
     */

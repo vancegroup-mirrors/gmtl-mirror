@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: CoordOps.h,v $
- * Date modified: $Date: 2002-06-11 21:20:21 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2003-03-03 00:54:04 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -44,37 +44,45 @@ namespace gmtl
  * @{
  */
 
-   /** Compare two quaternions for equality.
-    * @see isEqual( Coord, Coord )
+   /** Compare two coordinate frames for equality.
+    * @param c1   the first Coord
+    * @param c2   the second Coord
+    * @return     true if c1 is the same as c2, false otherwise
     */
    template <typename POS_TYPE, typename ROT_TYPE>
-   inline bool operator==( const Coord<POS_TYPE, ROT_TYPE>& q1, 
-                           const Coord<POS_TYPE, ROT_TYPE>& q2 )
+   inline bool operator==( const Coord<POS_TYPE, ROT_TYPE>& c1, 
+                           const Coord<POS_TYPE, ROT_TYPE>& c2 )
    {
-      return bool( q1.getPos() == q2.getPos() &&
-                   q1.getRot() == q2.getRot() );
+      return bool( c1.getPos() == c2.getPos() &&
+                   c1.getRot() == c2.getRot() );
    }
 
-   /** Compare two quaternions for not-equality.
-    * @see isEqual( Coord, Coord )
+   /** Compare two coordinate frames for not-equality.
+    * @param c1   the first Coord
+    * @param c2   the second Coord
+    * @return     true if c1 is different from c2, false otherwise
     */
    template <typename POS_TYPE, typename ROT_TYPE>
-   inline bool operator!=( const Coord<POS_TYPE, ROT_TYPE>& q1, 
-                           const Coord<POS_TYPE, ROT_TYPE>& q2 )
+   inline bool operator!=( const Coord<POS_TYPE, ROT_TYPE>& c1, 
+                           const Coord<POS_TYPE, ROT_TYPE>& c2 )
    {
-      return !operator==( q1, q2 );
+      return !operator==( c1, c2 );
    }
 
-   /** Compare two quaternions for equality with tolerance.
+   /** Compare two coordinate frames for equality with a given tolerance.
+    * @param c1   the first Coord
+    * @param c2   the second Coord
+    * @param tol  the tolerance coordinate frame of the same type as c1 and c2
+    * @return     true if c1 is equal within a tolerance of c2, false otherwise
     */
    template <typename POS_TYPE, typename ROT_TYPE>
-   bool isEqual( const Coord<POS_TYPE, ROT_TYPE>& q1, 
-                 const Coord<POS_TYPE, ROT_TYPE>& q2, 
+   bool isEqual( const Coord<POS_TYPE, ROT_TYPE>& c1, 
+                 const Coord<POS_TYPE, ROT_TYPE>& c2, 
                  typename Coord<POS_TYPE, ROT_TYPE>::DataType tol = 
                      (typename Coord<POS_TYPE, ROT_TYPE>::DataType)0.0 )
    {
-      return bool( isEqual( q1.getPos(), q2.getPos(), tol ) &&
-                   isEqual( q1.getRot(), q2.getRot(), tol )     );
+      return bool( isEqual( c1.getPos(), c2.getPos(), tol ) &&
+                   isEqual( c1.getRot(), c2.getRot(), tol )     );
    }
 /** @} */
 

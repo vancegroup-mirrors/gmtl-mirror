@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Point.h,v $
- * Date modified: $Date: 2003-01-29 23:33:10 $
- * Version:       $Revision: 1.14 $
+ * Date modified: $Date: 2003-03-03 00:54:05 $
+ * Version:       $Revision: 1.15 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -83,6 +83,10 @@ public:
    Point(const VecBase<DATA_TYPE, SIZE>& rVec)
       : BaseType(rVec)
    {;}
+
+   /** 
+    * Construct a 2-D point with 2 given values
+    */
    Point(const DATA_TYPE& val0,const DATA_TYPE& val1)
    : BaseType(val0, val1)
    {
@@ -90,6 +94,9 @@ public:
       gmtlASSERT( SIZE == 2 && "out of bounds element access in Point" );
    }
 
+   /** 
+    * Construct a 3-D point with 2 given values
+    */
    Point(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2)
    : BaseType(val0, val1, val2)
    {
@@ -97,6 +104,9 @@ public:
       gmtlASSERT( SIZE == 3 && "out of bounds element access in Point" );
    }
 
+   /** 
+    * Construct a 4-D point with 2 given values
+    */
    Point(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2,const DATA_TYPE& val3)
    : BaseType(val0, val1, val2, val3)
    {

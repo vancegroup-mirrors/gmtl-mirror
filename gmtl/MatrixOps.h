@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOps.h,v $
- * Date modified: $Date: 2003-02-25 05:17:00 $
- * Version:       $Revision: 1.28 $
+ * Date modified: $Date: 2003-03-03 00:54:05 $
+ * Version:       $Revision: 1.29 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -49,7 +49,7 @@ namespace gmtl
  */
 
    /** Make identity matrix out the matrix.
-    * make sure every elt is 0.
+    * @post Every element is 0 except the matrix's diagonal, whose elements are 1.
     */
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
    inline Matrix<DATA_TYPE, ROWS, COLS>& identity( Matrix<DATA_TYPE, ROWS, COLS>& result )
@@ -74,7 +74,7 @@ namespace gmtl
 
 
    /** zero out the matrix.
-    * make sure every elt is 0.
+    * @post every element is 0.
     */
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
    inline Matrix<DATA_TYPE, ROWS, COLS>& zero( Matrix<DATA_TYPE, ROWS, COLS>& result )
@@ -435,7 +435,12 @@ namespace gmtl
  * @{
  */
 
-   /** Compare two mats */
+   /** Tests 2 matrices for equality
+    *  @param lhs    The first matrix
+    *  @param rhs    The second matrix
+    *  @pre Both matrices must be of the same size.
+    *  @return true if the matrices have the same element values; false otherwise
+    */
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
    inline bool operator==( const Matrix<DATA_TYPE, ROWS, COLS>& lhs, const Matrix<DATA_TYPE, ROWS, COLS>& rhs )
    {
@@ -456,15 +461,25 @@ namespace gmtl
       */
    }
 
+   /** Tests 2 matrices for inequality
+    *  @param lhs    The first matrix
+    *  @param rhs    The second matrix
+    *  @pre Both matrices must be of the same size.
+    *  @return false if the matrices differ on any element value; true otherwise
+    */
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
    inline bool operator!=( const Matrix<DATA_TYPE, ROWS, COLS>& lhs, const Matrix<DATA_TYPE, ROWS, COLS>& rhs )
    {
       return bool( !(lhs == rhs) );
    }
 
-   /** Compare two vectors with a tolerance
-   * @pre eps must be >= 0
-   */
+   /** Tests 2 matrices for equality within a tolerance
+    *  @param lhs    The first matrix
+    *  @param rhs    The second matrix
+    *  @param eps    The tolerance value
+    *  @pre Both matrices must be of the same size.
+    *  @return true if the matrices' elements are within the tolerance value of each other; false otherwise
+    */
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
    inline bool isEqual( const Matrix<DATA_TYPE, ROWS, COLS>& lhs, const Matrix<DATA_TYPE, ROWS, COLS>& rhs, const DATA_TYPE& eps = (DATA_TYPE)0 )
    {

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Quat.h,v $
- * Date modified: $Date: 2002-09-11 07:04:42 $
- * Version:       $Revision: 1.20 $
+ * Date modified: $Date: 2003-03-03 00:54:05 $
+ * Version:       $Revision: 1.21 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -107,13 +107,17 @@ public:
    {
    }
 
+   /** directly set the quaternion's values
+    *  @pre x,y,z,w should be normalized
+    *  @post the quaternion is set with the given values
+    */
    void set( const DATA_TYPE x, const DATA_TYPE y, const DATA_TYPE z, const DATA_TYPE w )
    {
       mData.set( x, y, z, w );
    }
 
    /** get the raw data elements of the quaternion.
-    *  @post returns [sin( theta/2 ) * x, sin( theta/2 ) * x, sin( theta/2 ) * x, sin( theta/2 )] with theta in radians.
+    *  @post sets the given variables to the quaternion's x, y, z, and w values
     */
    void get( DATA_TYPE& x, DATA_TYPE& y, DATA_TYPE& z, DATA_TYPE& w )
    {

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Vec.h,v $
- * Date modified: $Date: 2003-01-29 23:33:11 $
- * Version:       $Revision: 1.15 $
+ * Date modified: $Date: 2003-03-03 00:54:05 $
+ * Version:       $Revision: 1.16 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -79,7 +79,7 @@ public:
    //@{
    /**
     * Make an exact copy of the given Vec object.
-    *
+    * @pre  Vector should be the same size and type as the one copied
     * @param rVec    the Vec object to copy
     */
    Vec( const Vec<DATA_TYPE, SIZE>& rVec )

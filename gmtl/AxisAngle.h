@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AxisAngle.h,v $
- * Date modified: $Date: 2002-06-11 21:21:25 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2003-03-03 00:54:04 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -105,6 +105,8 @@ public:
    }
    
    /** set the axis portion of the AxisAngle
+    *   @param axis     the desired 3D vector axis to rotate about
+    *   @post           the axis of the object is set
     */
    void setAxis( const Vec<DATA_TYPE, 3>& axis ) 
    { 
@@ -113,16 +115,17 @@ public:
       VecBase<DATA_TYPE, 4>::operator[]( 3 ) = axis[2];
    }
    
-   /** get the angle part of the axisangle.
-    *  @post returned in radians
+   /** set the angle (twist) part of the AxisAngle, as a radian value.
+    *  @param rad_angle    the desired twist angle, in radians
+    *  @post the angle of the object is set
     */
    void setAngle( const DATA_TYPE& rad_angle ) 
    {
       VecBase<DATA_TYPE, 4>::operator[]( 0 ) = rad_angle;
    }
    
-   /** get the axis portion of the axis angle
-    *  @post returned as a vector, may or may not be normalized.
+   /** get the axis portion of the AxisAngle
+    *  @return  a vector of the axis, which may or may not be normalized.
     */
    Vec<DATA_TYPE, 3> getAxis() const 
    { 
@@ -131,8 +134,8 @@ public:
                                 VecBase<DATA_TYPE, 4>::operator[]( 3 ) );
    }
    
-   /** get the angle part of the axisangle.
-    *  @post returned in radians
+   /** get the angle (twist) part of the AxisAngle.
+    *  @return the twist value in radians
     */
    const DATA_TYPE& getAngle() const 
    {

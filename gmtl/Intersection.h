@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Intersection.h,v $
- * Date modified: $Date: 2003-01-10 18:42:01 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2003-03-03 00:54:05 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -53,8 +53,8 @@ namespace gmtl
     * Tests if the given AABoxes intersect with each other. Sharing an edge IS
     * considered intersection by this algorithm.
     *
-    * @param box1    the first box to test
-    * @param box2    the second box to test
+    * @param box1    the first AA box to test
+    * @param box2    the second AA box to test
     *
     * @return  true if the boxes intersect; false otherwise
     */
@@ -81,7 +81,7 @@ namespace gmtl
     * @param box    the box to test
     * @param point  the point to test
     *
-    * @return  true if the items intersect; false otherwise
+    * @return  true if the point is within the box's bounds; false otherwise
     */
    template<class DATA_TYPE>
    bool intersect( const AABox<DATA_TYPE>& box, const Point<DATA_TYPE, 3>& point )
@@ -111,7 +111,7 @@ namespace gmtl
     * @param firstContact  set to the normalized time of the first point of contact
     * @param secondContact set to the normalized time of the second point of contact
     *
-    * @return  true if the items intersect; false otherwise
+    * @return  true if the boxes intersect at any time; false otherwise
     */
    template<class DATA_TYPE>
    bool intersect( const AABox<DATA_TYPE>& box1, const Vec<DATA_TYPE, 3>& path1,
@@ -184,7 +184,7 @@ namespace gmtl
     * @param firstContact  set to the normalized time of the first point of contact
     * @param secondContact set to the normalized time of the second point of contact
     *
-    * @return  true if the items intersect; false otherwise
+    * @return  true if the spheres intersect; false otherwise
     */
    template<class DATA_TYPE>
    bool intersect(const Sphere<DATA_TYPE>& sph1, const Vec<DATA_TYPE, 3>& path1,
@@ -287,10 +287,10 @@ namespace gmtl
     *
     *  @param ray - the Ray
     *  @param plane - the Plane
-    *  @param t - t gives you the intersection point:
-    *         isect_point = ray.origin + ray.dir * t 
+    *  @param t - an indicator of intersection position
+    *  @post t gives you the intersection point: isect_point = ray.origin + ray.dir * t 
     *
-    *  @return true if the ray intersects the plane.
+    *  @return true if the ray intersects the plane, false otherwise
     */
    template<class DATA_TYPE>
    bool intersect( const Plane<DATA_TYPE>& plane, const Ray<DATA_TYPE>& ray, DATA_TYPE& t )
@@ -301,14 +301,14 @@ namespace gmtl
    }
 
    /**
-    * Tests if the given plane and ray intersect with each other.
+    * Tests if the given triangle and ray intersect with each other.
     *
     *  @param tri - the triangle (ccw ordering)
     *  @param ray - the ray
     *  @param u,v - tangent space u/v coordinates of the intersection
-    *  @param t - t gives you the intersection point:
+    *  @param t - an indicator of the intersection location
+    *  @post t gives you the intersection point:
     *         isect = ray.dir * t + ray.origin
-    *
     *  @return true if the ray intersects the triangle.
     *  @see from http://www.acm.org/jgt/papers/MollerTrumbore97/code.html
     */
@@ -361,15 +361,16 @@ namespace gmtl
    }
 
    /**
-    * Tests if the given plane and ray intersect with each other.
+    * Tests if the given triangle and line segment intersect with each other.
     *
     *  @param tri - the triangle (ccw ordering)
-    *  @param ray - the ray
+    *  @param lineseg - the line segment
     *  @param u,v - tangent space u/v coordinates of the intersection
-    *  @param t - t gives you the intersection point:
-    *         isect = ray.dir * t + ray.origin
+    *  @param t - an indicator of the intersection point
+    *  @post t gives you the intersection point:
+    *         isect = lineseg.getDir() * t + lineseg.getOrigin()
     *
-    *  @return true if the ray intersects the triangle.
+    *  @return true if the line segment intersects the triangle.
     */
    template<class DATA_TYPE>
    bool intersect( const Tri<DATA_TYPE>& tri, const LineSeg<DATA_TYPE>& lineseg, 

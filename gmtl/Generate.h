@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2003-02-21 21:21:20 $
- * Version:       $Revision: 1.66 $
+ * Date modified: $Date: 2003-03-03 00:54:04 $
+ * Version:       $Revision: 1.67 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -62,6 +62,8 @@ namespace gmtl
     *  other type.
     *  @pre must have a set() function defined that converts between the
     *       two types.
+    *  @param src    the object to use for creation
+    *  @return a new object with values based on the src variable
     *  @see OpenSGGenerate.h for an example
     */
    template <typename TARGET_TYPE, typename SOURCE_TYPE>
@@ -136,7 +138,8 @@ namespace gmtl
    }
 
    /** Create a rotation datatype that will xform first vector to the second.
-    *  This function creates a temporary.
+    *  @pre  each vec needs to be normalized.
+    *  @post This function returns a temporary object.
     */
    template< typename ROTATION_TYPE >
    inline ROTATION_TYPE makeRot( const Vec<typename ROTATION_TYPE::DataType, 3>& from,
@@ -199,8 +202,7 @@ namespace gmtl
     */
 
    /** create a vector from the vector component of a quaternion
-    * @post quat = [v,0] = [v0,v1,v2,0]
-    * @todo should this be called convert?
+    * @returns a vector of the quaternion's axis. quat = [v,0] = [v0,v1,v2,0]
     */
    template <typename DATA_TYPE>
    inline Vec<DATA_TYPE, 3> makeVec( const Quat<DATA_TYPE>& quat )
@@ -264,7 +266,10 @@ namespace gmtl
     */
 
    /** Set pure quaternion
-   * @todo Write test case for setPure
+   * @pre vec should be normalized
+   * @param quat     any quaternion object
+   * @param vec      a normalized vector representing an axis
+   * @post quat will have vec as its axis, and no rotation
    */
    template <typename DATA_TYPE>
    inline Quat<DATA_TYPE>& setPure( Quat<DATA_TYPE>& quat, const Vec<DATA_TYPE, 3>& vec )
@@ -274,16 +279,20 @@ namespace gmtl
    }
 
    /** create a pure quaternion
-    * @post quat = [v,0] = [v0,v1,v2,0]
-    */
+   * @pre vec should be normalized
+   * @param vec      a normalized vector representing an axis
+   * @return a quaternion with vec as its axis, and no rotation
+   * @post quat = [v,0] = [v0,v1,v2,0]
+   */
    template <typename DATA_TYPE>
    inline Quat<DATA_TYPE> makePure( const Vec<DATA_TYPE, 3>& vec )
    {
       return Quat<DATA_TYPE>( vec[0], vec[1], vec[2], 0 );
    }
 
-   /** create a pure quaternion
-    * @post quat = [v,0] = [v0,v1,v2,0]
+   /** Normalize a quaternion
+    * @param quat       a quaternion
+    * @post quat is normalized
     */
    template <typename DATA_TYPE>
    inline Quat<DATA_TYPE> makeNormal( const Quat<DATA_TYPE>& quat )
@@ -293,6 +302,7 @@ namespace gmtl
    }
 
    /** quaternion complex conjugate.
+    *  @param quat      any quaternion object
     *  @post set result to the complex conjugate of result.
     *  @post result'[x,y,z,w] == result[-x,-y,-z,w]
     *  @see Quat
@@ -305,7 +315,8 @@ namespace gmtl
    }
 
    /** create quaternion from the inverse of another quaternion.
-    *  @post returns the multiplicative inverse of quat
+    *  @param quat      any quaternion object
+    *  @return    a quaternion that is the multiplicative inverse of quat
     *  @see Quat
     */
    template <typename DATA_TYPE>
@@ -549,7 +560,7 @@ namespace gmtl
       return gmtl::set( result, quat );
    }
 
-   /** make a normalized axisangle. */
+   /** make the axis of an AxisAngle normalized */
    template <typename DATA_TYPE>
    AxisAngle<DATA_TYPE> makeNormal( const AxisAngle<DATA_TYPE>& a )
    {
@@ -729,7 +740,7 @@ namespace gmtl
 
 
 
-   /** Create a scale matrix.
+   /** Sets the scale part of a matrix.
     */
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
    inline Matrix<DATA_TYPE, ROWS, COLS>& setScale( Matrix<DATA_TYPE, ROWS, COLS>& result, const DATA_TYPE scale )
@@ -854,7 +865,7 @@ namespace gmtl
    }
 
    /**
-    * Extracts the yaw information from the matrix.
+    * Extracts the Y axis rotation information from the matrix.
     * @post Returned value is from -180 to 180, where 0 is none.
     */
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
@@ -886,8 +897,8 @@ namespace gmtl
    }
 
    /**
-    * Extracts the pitch information from the matrix.
-    * @post Returned value is from -180 to 180, where 0 is none.
+    * Extracts the X-axis rotation information from the matrix.
+    * @post Returned value is from -180 to 180, where 0 is no rotation.
     */
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
    inline float makeXRot( const Matrix<DATA_TYPE, ROWS, COLS>& mat )
@@ -918,8 +929,8 @@ namespace gmtl
    }
 
    /**
-    * Extracts the roll information from the matrix.
-    * @post Returned value is from -180 to 180, where 0 is no roll.
+    * Extracts the Z-axis rotation information from the matrix.
+    * @post Returned value is from -180 to 180, where 0 is no rotation.
     */
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
    inline float makeZRot( const Matrix<DATA_TYPE, ROWS, COLS>& mat )
