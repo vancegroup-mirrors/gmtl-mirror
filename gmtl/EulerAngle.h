@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: EulerAngle.h,v $
- * Date modified: $Date: 2002-06-10 20:16:51 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-06-11 21:21:08 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -54,6 +54,10 @@ namespace gmtl
  *  plus a RotationOrder that specifies how to build a rotation transform
  *  from the 3 angle value.
  *
+ *  IMPORTANT:
+ *  The 3 angles are in the order set ::getOrder(), not XYZ.
+ *  The values do not swap when order is changed after setting the angles.
+ *
  * @pre all angles are in radians.
  *
  * @see EulerAnglef, EulerAngled
@@ -64,6 +68,8 @@ template <typename DATA_TYPE>
 class EulerAngle : public VecBase<DATA_TYPE, 3>
 {
 public:
+   enum { Size = 3 };
+   
    /** default constructor. initializes to identity rotation (no rotation). */
    EulerAngle() : 
       VecBase<DATA_TYPE, 3>( (DATA_TYPE)0.0, (DATA_TYPE)0.0, (DATA_TYPE)0.0 ),
