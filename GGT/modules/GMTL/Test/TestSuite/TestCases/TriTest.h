@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: TriTest.h,v $
- * Date modified: $Date: 2002-02-18 18:06:01 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-02-18 19:22:15 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -273,6 +273,25 @@ public:
             CPPUNIT_ASSERT( gmtl::isEqual(test_tri1, test_tri2, 22.0f) );
          }
       }
+
+      // test isEqual overhead
+      const long iters(400000);
+      long true_count(0);
+
+      CPPUNIT_METRIC_START_TIMING();
+      for ( long iter=0; iter<iters; ++iter )
+      {
+         test_tri1[0][1] += 0.1f;
+         test_tri2[0][1] += 0.2f;
+         if(gmtl::isEqual(test_tri1, test_tri2, 1.0f) )
+            true_count++;
+         if(gmtl::isEqual(test_tri1, test_tri2, 0.1f) )
+            true_count++;
+         if(gmtl::isEqual(test_tri1, test_tri2, 100000.0f) )
+            true_count++;
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("TriTest/IsEqualOverhead", iters, 0.075f, 0.1f); // warn at 7.5%, error at 10%
    }
 
    void testCenter()
