@@ -17,18 +17,18 @@
       <authorgroup>
          <author>
             <firstname>Allen</firstname>
-            <surname>Bierbaum</surname>
+            <surname>Bierbaum, </surname>
          </author>
          <author>
             <firstname>Kevin</firstname>
-            <surname>Meinert</surname>
+            <surname>Meinert, </surname>
          </author>
          <author>
             <firstname>Ben</firstname>
-            <surname>Scott</surname>
+            <surname>Scott, </surname>
          </author>
       </authorgroup>
-      <pubdate>$Date: 2002-05-28 15:39:46 $</pubdate>
+      <pubdate>$Date: 2002-05-30 03:13:54 $</pubdate>
       <address><email>ggt-info@lists.sf.net</email></address>
    </articleinfo>
    <section>
@@ -55,7 +55,9 @@
       <para>All data types and operations are defined in the <classname>gmtl</classname> namespace. Thus all types must be prefixed with the <classname>gmtl::</classname> scope or a <classname>using gmtl;</classname> command can be used to bring all of the GMTL functionality into the local scope.</para>
       <section>
          <title>Supplied GMTL Math Types</title>
-         <para> GMTL comes with many math data types: Vec, Point, Matrix, Quat, Coord, Sphere. The only operations allowed in the scope of each class are: </para>
+         <para> GMTL comes with many math data types: Vec, Point,
+         Matrix, Quat, Coord, Sphere. The only member functions allowed
+         within each class are: </para>
          <itemizedlist>
             <listitem>
                <para> Constructor, Copy Constructor, and Destructor </para>
@@ -64,7 +66,7 @@
                <para> assignment operator - the compiler defines this automatically </para>
             </listitem>
             <listitem>
-               <para> Set/Get functions</para>
+               <para> Set/Get member functions</para>
             </listitem>
             <listitem>
                <para> bracket (or paren) - operator for data element access. </para>
@@ -199,7 +201,7 @@
                      <entry
                        align  = "left"
                        valign = "top"
-                     > <para> Complex Creation (Factory Functions) </para> </entry>
+                     > <para> Creational (Factory Functions) </para> </entry>
                      <entry
                        align  = "left"
                        valign = "top"
@@ -221,7 +223,27 @@
                      <entry
                        align  = "left"
                        valign = "top"
-                     > <para> The "make" functions all create a new <emphasis>temporary</emphasis> object. Since the functions are inlined, a smart compiler should be able to optimize out the temporary making these perform fast. Beware, when using a dumb compiler (or debug mode), these functions will be slower (because of the temporary) than the get/set functions. The "make" functions are very convenient for the programmer to use in many cases. For example: Matrix44f mat( makeTrans&lt;Matrix44f&gt;( 1, 2, 3 ) ); See <xref linkend="Patterns"/> for discussion on Factory. </para> </entry>
+                     > <para> A "make" function should be thought of as
+                     a constructor.  
+                     Any time a temporary is needed, use a
+                     "make" function.  
+                     Make functions are <emphasis>creational</emphasis>
+                     in nature, and most takes data as input to
+                     "seed" that creation.
+                     </para>
+                     <para>
+                     The "make" functions all create a
+                     <emphasis>temporary</emphasis> object and return it
+                     "out the back".  
+                     The "make" functions are convenient in certain cases. 
+                     <para>
+                     For example to
+                     construct a translation matrix on one line of code: Matrix44f mat( makeTrans&lt;Matrix44f&gt;( 1, 2, 3 ) ); See <xref linkend="Patterns"/> for discussion on Factory. 
+                     </para>
+                     <para>
+                     NOTE: Since the functions are inlined, a smart compiler should be able to optimize out the temporary making these perform fast. Beware, when using a dumb compiler (or debug mode), these functions will be slower (because of the temporary) than the get/set functions. 
+                     </para> 
+                     </entry>
                   </row>
                   <row
                     valign = "top"
@@ -229,7 +251,7 @@
                      <entry
                        align  = "left"
                        valign = "top"
-                     > <para> Getters and Setters </para> </entry>
+                     > <para> Setters (and Getters) </para> </entry>
                      <entry
                        align  = "left"
                        valign = "top"
@@ -251,7 +273,27 @@
                      <entry
                        align  = "left"
                        valign = "top"
-                     > <para> Writes or extracts information from the data type. First parameter is always the object being set or read. </para> </entry>
+                     > <para> 
+                     Setter functions all take some input, and write to
+                     some output.  A "Getter" is simply a Setter except
+                     backward, and is why we refer to them all as "Setters".
+                     </para>
+                     <para>
+                     A Setter extracts information from const data,
+                     and writes information to the non-const data.
+                     Sometimes like in the case of x,y,z a group of
+                     inputs is considered one input.
+                     </para>
+                     <para>
+                     A Setter never returns a temporary "out the back",
+                     and because of this is usually more efficient than
+                     their "make" Creational counterpart.
+                     </para>
+                     
+                     <para>
+                     Following object oriented style, the first
+                     parameter is always the object being set (for
+                     set's) or read (for get's). </para> </entry>
                   </row>
                   <row
                     valign = "top"
@@ -267,11 +309,20 @@
                      <entry
                        align  = "left"
                        valign = "top"
-                     > convert( type, type ) </entry>
+                     > convert( src, dest ) </entry>
                      <entry
                        align  = "left"
                        valign = "top"
-                     > Convert one type to another. For example, convert Matrix to Quat, Quat to Matrix, and others... </entry>
+                     > Convert one type to another. For example, convert
+                     Matrix to Quat, Quat to Matrix, and others...
+                     </para>
+                     <para>
+                     Convert functions are purely functional in nature
+                     since they do not particularly "belong" to either
+                     class.  The first parameter is always the source
+                     (read-only), and the second is the destination of
+                     the converstion (writable).
+                     </entry>
                   </row>
                   <row
                     valign = "top"
@@ -301,7 +352,12 @@
                      <entry
                        align  = "left"
                        valign = "top"
-                     > <para> Compare similar types </para> </entry>
+                     > <para> Compare similar types.  Compare functions
+                     always take two objects, and return a boolean. 
+                     The special isEqual, takes a third parameter to
+                     specify a tolerance.  Each of these three functions
+                     are defined for every type in GMTL.
+                     </para> </entry>
                   </row>
                   <row
                     valign = "top"
