@@ -1,3 +1,5 @@
+#!python
+
 import os, string, sys
 import re
 import distutils.sysconfig
@@ -139,7 +141,7 @@ def BuildWin32Environment():
    if optimize != 'no':
       env['CXXFLAGS'] += ' /Ogity /O2 /Gs /Ob2 /MD /D_OPT'
       env['LINKFLAGS'] += ' /RELEASE'
-   else:   
+   else:
       env['CXXFLAGS'] += ' /Z7 /Od /Ob0 /MDd /D_DEBUG'
       env['LINKFLAGS'] += ' /DEBUG'
 
@@ -151,52 +153,65 @@ def BuildWin32Environment():
 def ValidateBoostOption(key, value, environ):
    "Validate the boost option settings"
    global enable_python, optimize
-   req_boost_version = 103000
+   req_boost_version = 103100
    sys.stdout.write("checking for %s [%s]...\n" % (key, value))
 
-   if "BoostPythonDir" == key:
+   if "BoostIncludeDir" == key:
       # Get the boost version
-      boost_ver_filename = pj(value, 'include', 'boost', 'version.hpp')
+      boost_ver_filename = pj(value, 'boost', 'version.hpp')
       if not os.path.isfile(boost_ver_filename):
-         sys.stdout.write("[%s] not found.\n" % boost_ver_filename)
-         enable_python = False
+         print "[%s] not found. Boost not available." % boost_ver_filename
          return False
       ver_file = file(boost_ver_filename)
 
-      # Matches 103000
-      ver_num = int(re.search("define\s+?BOOST_VERSION\s+?(\d*)",
-                              ver_file.read()).group(1))
+      # Matches 103100
+      ver_num = int(re.search("define\s+?BOOST_VERSION\s+?(\d*)", ver_file.read()).group(1))
       sys.stdout.write("found version: %s\n" % ver_num)
-
       if ver_num < req_boost_version:
-         print "   Boost version to old: required version:%s\n" % req_boost_version
-         Exit()
+         print "   Boost version too old: required version:%s\n" % req_boost_version
          return False
 
+      environ.Append(BoostCPPPATH = [value,]);
+      environ["BoostAvailable"] = True
+
+      if GetPlatform() == 'irix':
+         environ.Append(BoostCPPPATH = [pj(value, 'boost', 'compatibility', 'cpp_c_headers')])
+
+   elif "BoostLibDir" == key:
       # Check on the libraries that I need to use
       if enable_python:
          if GetPlatform() == 'win32':
-            boost_python_lib_name = pj(value, 'lib', 'boost_python.dll')
+            boost_tool = 'vc7'
+         elif GetPlatform() == 'irix':
+            boost_tool = 'mp'
          else:
-            boost_python_lib_name = pj(value, 'lib', 'libboost_python.a')
+            boost_tool = 'gcc'
+
+         # XXX: These library names should not be hard-coded.
+         if GetPlatform() == 'win32':
+            boost_python_lib_name = pj(value, 'boost_python-%s-mt.lib' % boost_tool)
+         else:
+            boost_python_lib_name = pj(value, 'libboost_python-%s.a' % boost_tool)
 
          if not os.path.isfile(boost_python_lib_name):
             print "[%s] not found."%boost_python_lib_name
             Exit()
             return False
 
-         if GetPlatform() == 'irix':
-            environ.Append(BoostCPPPATH = [pj(value, 'include'), pj(value, 'include', 'boost', 'compatibility', 'cpp_c_headers')])
-         else:
-            environ.Append(BoostCPPPATH = [pj(value, 'include')])
-
-         environ.Append(BoostLIBPATH = [pj(value, 'lib')])
+         environ.Append(BoostLIBPATH = [pj(value)])
 
          if optimize == 'no':
-            environ.Append(BoostLIBS = ['boost_python_debug'])
+            if GetPlatform() == 'win32':
+               lib_info = boost_tool + '-mt-gd-1_31'
+            else:
+               lib_info = boost_tool + '-mt-d'
          else:
-            environ.Append(BoostLIBS = ['boost_python'])
+            if GetPlatform() == 'win32':
+               lib_info = boost_tool + '-mt-gd-1_31'
+            else:
+               lib_info = boost_tool + '-mt-1_31'
 
+         environ.Append(BoostLIBS = ['boost_python-' + lib_info])
    else:
       assert False, "Invalid Boost key"
 
@@ -208,9 +223,13 @@ def ApplyBoostOptions(env):
       env.Append(LIBS = env["BoostLIBS"])
 
 def AddBoostOptions(opts):
-   opts.Add('BoostPythonDir',
-            help = 'Boost.Python installation directory (boost dir must exist under this directory": default: BoostPythonDir="/usr/local/include"',
+   opts.Add('BoostIncludeDir',
+            help = 'Boost header installation directory (boost dir must exist under this directory: default: BoostIncludeDir="/usr/local/include"',
             default = '/usr/local/include', validator = ValidateBoostOption)
+
+   opts.Add('BoostLibDir',
+            help = 'Boost library installation directory (default: BoostIncludeDir="/usr/local/lib"',
+            default = '/usr/local/lib', validator = ValidateBoostOption)
 
 def ValidatePythonOption(key, value, environ):
    "Validate the Python option settings"
