@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixClassTest.cpp,v $
- * Date modified: $Date: 2002-03-21 21:38:53 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-07-02 03:09:21 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -59,7 +59,7 @@ namespace gmtlTest {
          test_mat101[9] = 1.0;
 
          use_value = use_value + test_mat11[0] + test_mat22[0] + test_mat33[4] +
-                     test_mat34[5] + test_mat44[15] + test_mat101[9];
+                     test_mat34[5] + test_mat44[15] + (float)test_mat101[9];
       }
 
       CPPUNIT_METRIC_STOP_TIMING();

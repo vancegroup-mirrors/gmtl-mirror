@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AABoxTest.cpp,v $
- * Date modified: $Date: 2002-06-24 05:46:48 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-07-02 03:09:21 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -138,15 +138,15 @@ namespace gmtlTest
    // -- Test accessors --//
    void AABoxTest::testGetMin()
    {
-      gmtl::Point3f min( -1.0f, -2.0f, -3.0f );
-      gmtl::AABox<float> box( min, gmtl::Point3f() );
-      CPPUNIT_ASSERT( box.getMin() == min );
+      gmtl::Point3f amin( -1.0f, -2.0f, -3.0f );
+      gmtl::AABox<float> box( amin, gmtl::Point3f() );
+      CPPUNIT_ASSERT( box.getMin() == amin );
    }
 
    void AABoxTest::testTimingGetMin()
    {
-      gmtl::Point3f min( -1.0f, -2.0f, -3.0f );
-      gmtl::AABox<float> box( min, gmtl::Point3f() );
+      gmtl::Point3f amin( -1.0f, -2.0f, -3.0f );
+      gmtl::AABox<float> box( amin, gmtl::Point3f() );
 
       // Test getMin overhead
       const long iters(400000);
@@ -156,8 +156,8 @@ namespace gmtlTest
 
       for( long iter=0;iter<iters; ++iter)
       {
-         min = box.getMin();
-         use_value = use_value - min[0];
+         amin = box.getMin();
+         use_value = use_value - amin[0];
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
@@ -168,15 +168,15 @@ namespace gmtlTest
 
    void AABoxTest::testGetMax()
    {
-      gmtl::Point3f max( 1.0f, 2.0f, 3.0f );
-      gmtl::AABox<float> box( gmtl::Point3f(0,0,0), max );
-      CPPUNIT_ASSERT( box.getMax() == max );
+      gmtl::Point3f amax( 1.0f, 2.0f, 3.0f );
+      gmtl::AABox<float> box( gmtl::Point3f(0,0,0), amax );
+      CPPUNIT_ASSERT( box.getMax() == amax );
    }
 
    void AABoxTest::testTimingGetMax()
    {
-      gmtl::Point3f max( 1.0f, 2.0f, 3.0f );
-      gmtl::AABox<float> box( gmtl::Point3f(0,0,0), max );
+      gmtl::Point3f amax( 1.0f, 2.0f, 3.0f );
+      gmtl::AABox<float> box( gmtl::Point3f(0,0,0), amax );
 
       // Test getMax overhead
       const long iters(400000);
@@ -186,8 +186,8 @@ namespace gmtlTest
 
       for( long iter=0;iter<iters; ++iter)
       {
-         max = box.getMax();
-         use_value = use_value + max[0];
+         amax = box.getMax();
+         use_value = use_value + amax[0];
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
@@ -233,15 +233,15 @@ namespace gmtlTest
    void AABoxTest::testSetMin()
    {
       gmtl::AABox<float> box;
-      gmtl::Point3f min( -2.0f, -4.0f, -1.0f );
-      box.setMin( min );
-      CPPUNIT_ASSERT( box.getMin() == min );
+      gmtl::Point3f amin( -2.0f, -4.0f, -1.0f );
+      box.setMin( amin );
+      CPPUNIT_ASSERT( box.getMin() == amin );
    }
 
    void AABoxTest::testTimingSetMin()
    {
       gmtl::AABox<float> box;
-      gmtl::Point3f min;
+      gmtl::Point3f amin;
 
       // Test setMin overhead
       const long iters(400000);
@@ -250,8 +250,8 @@ namespace gmtlTest
 
       for( long iter=0;iter<iters; ++iter)
       {
-         min.set( iter, iter, iter );
-         box.setMin( min );
+         amin.set( (float)iter, (float)iter, (float)iter );
+         box.setMin( amin );
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
@@ -261,15 +261,15 @@ namespace gmtlTest
    void AABoxTest::testSetMax()
    {
       gmtl::AABox<float> box;
-      gmtl::Point3f max( 2.0f, 4.0f, 1.0f );
-      box.setMax( max );
-      CPPUNIT_ASSERT( box.getMax() == max );
+      gmtl::Point3f amax( 2.0f, 4.0f, 1.0f );
+      box.setMax( amax );
+      CPPUNIT_ASSERT( box.getMax() == amax );
    }
 
    void AABoxTest::testTimingSetMax()
    {
       gmtl::AABox<float> box;
-      gmtl::Point3f max;
+      gmtl::Point3f amax;
 
       // Test setMax overhead
       const long iters(400000);
@@ -278,8 +278,8 @@ namespace gmtlTest
 
       for( long iter=0;iter<iters; ++iter)
       {
-         max.set( iter, iter, iter );
-         box.setMax( max );
+         amax.set( (float)iter, (float)iter, (float)iter );
+         box.setMax( amax );
       }
 
       CPPUNIT_METRIC_STOP_TIMING();

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecOps.h,v $
- * Date modified: $Date: 2002-06-11 21:22:38 $
- * Version:       $Revision: 1.18 $
+ * Date modified: $Date: 2002-07-02 03:09:21 $
+ * Version:       $Revision: 1.19 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -158,7 +158,7 @@ VecBase<DATA_TYPE, SIZE>& operator *=(VecBase<DATA_TYPE, SIZE>& v1,
 {
    for(unsigned i=0;i<SIZE;++i)
    {
-      v1[i] *= scalar;
+      v1[i] *= (DATA_TYPE)scalar;
    }
 
    return v1;

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatStuffTest.cpp,v $
- * Date modified: $Date: 2002-06-11 21:23:33 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-07-02 03:09:21 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -123,9 +123,9 @@ namespace gmtlTest
          {
             float c = gmtl::Math::abs( (float) ((int)(gmtl::Math::round(b)) % 360) );
             float temp1 = gmtl::Math::rad2Deg(axisAngle.getAngle()); temp1 = (float)((int)(gmtl::Math::round(temp1))%360);
-            float temp2 = c + 0.5;
+            float temp2 = c + 0.5f;
             float temp3 = gmtl::Math::rad2Deg(axisAngle.getAngle()); temp3 = (float)((int)(gmtl::Math::round(temp3))%360);
-            float temp4 = c - 0.5;
+            float temp4 = c - 0.5f;
 
             CPPUNIT_ASSERT( temp1 <= temp2 && temp3 >= temp4 );
          }

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PointTest.cpp,v $
- * Date modified: $Date: 2002-06-13 14:03:34 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-07-02 03:09:21 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -94,7 +94,7 @@ namespace gmtlTest
       test_point2[0] = 3.0f;
       gmtl::Point<float, 4> test_point4;
       test_point2[0] = 4.0f;
-      float use_value;     // A temp just here to use the objs so the copiler (hopefully) does not opt them out
+      float use_value(0);     // A temp just here to use the objs so the copiler (hopefully) does not opt them out
 
       CPPUNIT_METRIC_START_TIMING();
 

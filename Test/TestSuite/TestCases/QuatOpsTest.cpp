@@ -427,7 +427,7 @@ namespace gmtlTest
    void QuatOpsTest::testQuatSlerp()
    {
       const float eps = 0.0001f;
-      gmtl::Quat<float> q1( 100, 2, 3, 4 ), q2( 9.01, 8.4, 7.1, 6 );
+      gmtl::Quat<float> q1( 100, 2, 3, 4 ), q2( 9.01f, 8.4f, 7.1f, 6 );
       gmtl::normalize( q1 ); // make sure they are valid rotation quaternions
       gmtl::normalize( q2 );
       gmtl::Quat<float> expected_result1( q1 ), res1;
