@@ -21,13 +21,13 @@
 #
 # -----------------------------------------------------------------
 # File:          $RCSfile: gmtl-test.py,v $
-# Date modified: $Date: 2003-05-20 18:57:15 $
-# Version:       $Revision: 1.1.1.1 $
+# Date modified: $Date: 2003-08-18 22:58:48 $
+# Version:       $Revision: 1.2 $
 # -----------------------------------------------------------------
 #
 # *************** <auto-copyright.pl END do not edit this line> ***************
 
-from PyJuggler import gmtl
+import gmtl
 
 mat1 = gmtl.Matrix44f()
 mat2 = gmtl.Matrix44f()
