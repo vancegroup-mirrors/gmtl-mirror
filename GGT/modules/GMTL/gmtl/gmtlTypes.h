@@ -7,15 +7,15 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtlTypes.h,v $
- * Date modified: $Date: 2002-01-18 20:43:12 $
- * Version:       $Revision: 1.1.1.1 $
+ * Date modified: $Date: 2002-01-31 00:56:21 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
 /*************************************************************** ggt-cpr beg
 *
 * GGT: The Generic Graphics Toolkit
-* Copyright (C) 2001,2002 Allen Bierbaum 
+* Copyright (C) 2001,2002 Allen Bierbaum
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU Lesser General Public
@@ -35,10 +35,11 @@
 #ifndef _GMTL_TYPES_H_
 #define _GMTL_TYPES_H_
 
-#include <prtypes.h>
+//#include <prtypes.h>
 
 namespace gmtl
 {
+   /*
    typedef PRUint8   Uint8;
    typedef PRUint16  Uint16;
    typedef PRUint32  Uint32;
@@ -47,6 +48,19 @@ namespace gmtl
    typedef PRInt32   Int32;
    typedef float     Float;
    typedef double    Double;
+   */
+
+   /** @todo Fix so that type are actually accurate */
+
+   typedef unsigned char   Uint8;
+   typedef unsigned short Uint16;
+   typedef unsigned int  Uint32;
+   typedef char    Int8;
+   typedef short   Int16;
+   typedef int   Int32;
+   typedef float     Float;
+   typedef double    Double;
+
 }
 
 

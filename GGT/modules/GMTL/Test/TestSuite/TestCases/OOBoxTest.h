@@ -7,15 +7,15 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: OOBoxTest.h,v $
- * Date modified: $Date: 2002-01-26 23:47:52 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-01-31 00:56:20 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
 /*************************************************************** ggt-cpr beg
 *
 * GGT: The Generic Graphics Toolkit
-* Copyright (C) 2001,2002 Allen Bierbaum 
+* Copyright (C) 2001,2002 Allen Bierbaum
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU Lesser General Public
@@ -66,9 +66,9 @@ public:
       gmtl::OOBox box2;
 
       box1.center().set(0.0, 1.0f, -2.0f);
-      box1.axis(0) = gmtl::Vec3::UNIT_X;
-      box1.axis(1) = gmtl::Vec3::UNIT_Y;
-      box1.axis(2) = gmtl::Vec3::UNIT_Z;
+      box1.axis(0) = gmtl::XUnitVec3;
+      box1.axis(1) = gmtl::YUnitVec3;
+      box1.axis(2) = gmtl::ZUnitVec3;
 
       box2 = box1;
 
@@ -85,9 +85,9 @@ public:
       // Aligned with major axes
       // with half lens 1,2,3
       box1.center().set(0.0, 0.0f, 0.0f);
-      box1.axis(0) = gmtl::Vec3::UNIT_X;
-      box1.axis(1) = gmtl::Vec3::UNIT_Y;
-      box1.axis(2) = gmtl::Vec3::UNIT_Z;
+      box1.axis(0) = gmtl::XUnitVec3;
+      box1.axis(1) = gmtl::YUnitVec3;
+      box1.axis(2) = gmtl::ZUnitVec3;
       box1.halfLen(0) = 1.0f;
       box1.halfLen(1) = 2.0f;
       box1.halfLen(2) = 3.0f;

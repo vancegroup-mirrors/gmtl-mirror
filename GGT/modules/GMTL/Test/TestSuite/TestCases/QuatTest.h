@@ -7,15 +7,15 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatTest.h,v $
- * Date modified: $Date: 2002-01-26 23:47:52 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-01-31 00:56:20 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
 /*************************************************************** ggt-cpr beg
 *
 * GGT: The Generic Graphics Toolkit
-* Copyright (C) 2001,2002 Allen Bierbaum 
+* Copyright (C) 2001,2002 Allen Bierbaum
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU Lesser General Public
@@ -76,7 +76,7 @@ public:
       gmtl::Quat quat0;
 
       // Simple rotation around X axis
-      mat.makeRot(90,gmtl::Vec3::UNIT_X);
+      mat.makeRot(90,gmtl::XUnitVec3);
       mat.getAxes(xAxis1,yAxis1,zAxis1);
       quat0.makeAxes(xAxis1,yAxis1,zAxis1);
       quat0.getAxes(xAxis2,yAxis2,zAxis2);

@@ -7,15 +7,15 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: ContainmentTest.h,v $
- * Date modified: $Date: 2002-01-26 23:47:52 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-01-31 00:56:20 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
 /*************************************************************** ggt-cpr beg
 *
 * GGT: The Generic Graphics Toolkit
-* Copyright (C) 2001,2002 Allen Bierbaum 
+* Copyright (C) 2001,2002 Allen Bierbaum
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU Lesser General Public
@@ -78,7 +78,7 @@ public:
       OOBox box;
       box.center() = Vec3(0,0,0);
       box.halfLen(0) = 1.5f; box.halfLen(1) = 1.5f; box.halfLen(2) = 1.5f;
-      box.axis(0) = Vec3::UNIT_X; box.axis(1) = Vec3::UNIT_Y; box.axis(2) = Vec3::UNIT_Z;
+      box.axis(0) = XUnitVec3; box.axis(1) = YUnitVec3; box.axis(2) = ZUnitVec3;
 
       //CPPUNIT_ASSERT(ptsAreInOOB(box,points));
 
@@ -138,10 +138,10 @@ public:
       OOBox combined_box;
 
       box1.center().set(-1,-1,-1);
-      box1.axis(0) = Vec3::UNIT_X; box1.axis(1) = Vec3::UNIT_Y; box1.axis(2) = Vec3::UNIT_Z;
+      box1.axis(0) = XUnitVec3; box1.axis(1) = YUnitVec3; box1.axis(2) = ZUnitVec3;
       box1.halfLen(0) = 0.5; box1.halfLen(1) = 0.5; box1.halfLen(2) = 0.5;
       box2.center().set(1,1,1);
-      box2.axis(0) = Vec3::UNIT_X; box2.axis(1) = Vec3::UNIT_Y; box2.axis(2) = Vec3::UNIT_Z;
+      box2.axis(0) = XUnitVec3; box2.axis(1) = YUnitVec3; box2.axis(2) = ZUnitVec3;
       box2.halfLen(0) = 0.5; box2.halfLen(1) = 0.5; box2.halfLen(2) = 0.5;
 
       box1.getVerts(verts);

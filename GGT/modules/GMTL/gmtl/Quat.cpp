@@ -7,15 +7,15 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Quat.cpp,v $
- * Date modified: $Date: 2002-01-26 23:47:53 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-01-31 00:56:21 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
 /*************************************************************** ggt-cpr beg
 *
 * GGT: The Generic Graphics Toolkit
-* Copyright (C) 2001,2002 Allen Bierbaum 
+* Copyright (C) 2001,2002 Allen Bierbaum
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU Lesser General Public
@@ -38,9 +38,11 @@
 namespace gmtl
 {
 
+   /*
    const Quat Quat::ZERO(0.0,0.0,0.0,0.0);
    const Quat Quat::IDENTITY(0.0,0.0,0.0,1.0);
    const float Quat::EPSILON(1e-03);
+   */
 
 void Quat::makeQuat(const Matrix& mat)
 {
