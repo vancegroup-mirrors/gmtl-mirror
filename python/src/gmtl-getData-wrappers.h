@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-getData-wrappers.h,v $
- * Date modified: $Date: 2003-08-16 05:25:49 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2004-07-12 13:53:36 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -35,26 +35,34 @@
 
 namespace gmtlWrappers
 {
-   template<typename T>
-   boost::python::tuple Matrix_3_3_getData(gmtl::Matrix<T, 3, 3>* m)
+   template<typename T, unsigned SIZE>
+   static boost::python::list makeDataList(T* data)
    {
-      return boost::python::make_tuple(m->mData[0], m->mData[1], m->mData[2],
-                                       m->mData[3], m->mData[4], m->mData[5],
-                                       m->mData[6], m->mData[7], m->mData[8]);
+      boost::python::list l;
+
+      for ( unsigned int i = 0; i < SIZE; ++i )
+      {
+         l.append(data[i]);
+      }
+
+      return l;
    }
 
-   template boost::python::tuple Matrix_3_3_getData(gmtl::Matrix<float, 3, 3>*);
+   template<typename T>
+   boost::python::list Matrix_3_3_getData(gmtl::Matrix<T, 3, 3>* m)
+   {
+      return makeDataList<float, 9>(m->mData);
+   }
 
-   // XXX: boost::python::tuple objectcs cannot be this big.  :(
-//   template<typename T>
-//   boost::python::tuple Matrix_float_4_4_getData(gmtl::Matrix<T, 4, 4>* m)
-//   {
-//      return make_tuple(m->mData[0],  m->mData[1],  m->mData[2],  m->mData[3],
-//                        m->mData[4],  m->mData[5],  m->mData[6],  m->mData[7],
-//                        m->mData[8],  m->mData[9],  m->mData[10], m->mData[11]);
-//   }
-//
-//   template boost::python::tuple Matrix_4_4_getData(gmtl::Matrix<float, 4, 4>*);
+   template boost::python::list Matrix_3_3_getData(gmtl::Matrix<float, 3, 3>*);
+
+   template<typename T>
+   boost::python::list Matrix_4_4_getData(gmtl::Matrix<T, 4, 4>* m)
+   {
+      return makeDataList<float, 16>(m->mData);
+   }
+
+   template boost::python::list Matrix_4_4_getData(gmtl::Matrix<float, 4, 4>*);
 
    template<typename T>
    boost::python::tuple VecBase_2_getData(gmtl::VecBase<T, 2>* v)
