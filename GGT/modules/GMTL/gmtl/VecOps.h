@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecOps.h,v $
- * Date modified: $Date: 2003-08-15 17:25:02 $
- * Version:       $Revision: 1.26 $
+ * Date modified: $Date: 2004-05-25 16:36:28 $
+ * Version:       $Revision: 1.27 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -346,7 +346,7 @@ DATA_TYPE normalize(Vec<DATA_TYPE, SIZE>& v1)
  */
 template< class DATA_TYPE, unsigned SIZE >
 bool isNormalized( const Vec<DATA_TYPE, SIZE>& v1,
-                   const DATA_TYPE eps = DATA_TYPE(0.0001f) )
+                   const DATA_TYPE eps = 0.0001f )
 {
    return Math::isEqual( lengthSquared( v1 ), DATA_TYPE(1.0), eps );
 }
@@ -495,7 +495,7 @@ inline bool operator!=(const VecBase<DATA_TYPE, SIZE>& v1,
  */
 template<class DATA_TYPE, unsigned SIZE>
 inline bool isEqual(const VecBase<DATA_TYPE, SIZE>& v1,
-                    const VecBase<DATA_TYPE, SIZE>& v2, const DATA_TYPE& eps)
+                    const VecBase<DATA_TYPE, SIZE>& v2, const DATA_TYPE eps)
 {
    gmtlASSERT(eps >= 0);
 

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatOps.h,v $
- * Date modified: $Date: 2003-08-15 17:25:02 $
- * Version:       $Revision: 1.25 $
+ * Date modified: $Date: 2004-05-25 16:36:28 $
+ * Version:       $Revision: 1.26 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -390,7 +390,7 @@ namespace gmtl
     * @return  true if the quaternion is normalized, false otherwise
     */
    template< typename DATA_TYPE >
-   bool isNormalized( const Quat<DATA_TYPE>& q1, const DATA_TYPE eps = DATA_TYPE(0.0001f) )
+   bool isNormalized( const Quat<DATA_TYPE>& q1, const DATA_TYPE eps = 0.0001f )
    {
       return Math::isEqual( lengthSquared( q1 ), DATA_TYPE(1), eps );
    }

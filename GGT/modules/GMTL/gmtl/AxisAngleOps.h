@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AxisAngleOps.h,v $
- * Date modified: $Date: 2003-03-03 00:54:04 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2004-05-25 16:36:28 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -32,8 +32,9 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 *
  ************************************************************ ggt-cpr end */
-#ifndef EULER_ANGLE_OPS
-#define EULER_ANGLE_OPS
+
+#ifndef _GMTL_AXIS_ANGLE_OPS_H_
+#define _GMTL_AXIS_ANGLE_OPS_H_
 
 #include <gmtl/AxisAngle.h>
 
@@ -95,7 +96,7 @@ inline bool operator!=(const AxisAngle<DATA_TYPE>& a1,
 template<class DATA_TYPE>
 inline bool isEqual( const AxisAngle<DATA_TYPE>& a1,
                      const AxisAngle<DATA_TYPE>& a2, 
-                     const DATA_TYPE& eps = (DATA_TYPE)0 )
+                     const DATA_TYPE eps = 0 )
 {
    gmtlASSERT( eps >= (DATA_TYPE)0 );
    

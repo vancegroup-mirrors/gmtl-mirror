@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: EulerAngleOps.h,v $
- * Date modified: $Date: 2003-03-03 00:54:04 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2004-05-25 16:36:28 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -94,7 +94,7 @@ inline bool operator!=(const EulerAngle<DATA_TYPE, ROT_ORDER>& e1,
 template<class DATA_TYPE, typename ROT_ORDER>
 inline bool isEqual( const EulerAngle<DATA_TYPE, ROT_ORDER>& e1,
                      const EulerAngle<DATA_TYPE, ROT_ORDER>& e2,
-                     const DATA_TYPE& eps = (DATA_TYPE)0 )
+                     const DATA_TYPE eps = 0 )
 {
    gmtlASSERT(eps >= (DATA_TYPE)0);
    
