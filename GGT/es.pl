@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# $Id: es.pl,v 1.2 2002-01-18 22:27:39 allenb Exp $
+# Id: es.pl,v 1.9 2002/01/19 00:44:39 patrick Exp
 
 require 5.004;
 
@@ -32,7 +32,7 @@ sub printDebug($@);
 # *********************************************************************
 # Here is the version for this script!
 
-my $VERSION = '0.0.2';
+my $VERSION = '0.0.3';
 # *********************************************************************
 
 my $cfg_file      = '';
@@ -255,17 +255,22 @@ sub parse ($$)
    $cfg_data =~ s/#.*$//gm;      # Strip out shell-style comments
    $cfg_data =~ s|//.*$||gm;     # Strip out C++-style comments 
 
+   my $mod_count = 0;
    while ( $cfg_data =~ /\s*(\w.*?\w?)\s*{\s*(.*?)\s*}\s*;\s*/s )
    {
       my $module_name = "$1";
       my $module_body = "$2";
       $cfg_data       = $';
 
-      local $indent = 0;
+      $indent = 0;
       print "Loading $module_name from $file ...\n";
       my $parse_stat = parseModule("$module_body", "$module_name", $module_ref);
       return 0 if $parse_stat == -1;
+      $mod_count++
    }
+
+   warn "WARNING: Nothing happened which probably means a parse error\n"
+      unless $mod_count > 0;
 
    return $status;
 }
@@ -368,7 +373,7 @@ sub parseModule ($$$;$)
          }
 
          # Matched the beginning of a sub-module.
-         if ( $module_body =~ /^(\w.*?\w?)\s*{\s*(.*)/s )
+         if ( $module_body =~ /^(\w+)\s*{\s*(.*)/s )
          {
             $indent += 4;
             ($module_body = parseModule("$2", "$1",
@@ -387,7 +392,7 @@ sub parseModule ($$$;$)
             return $';
          }
 
-         warn "Parse error\n";
+         warn "Parse error in the following:\n$module_body\n";
          $status = -1;
       }
 
@@ -660,14 +665,19 @@ sub checkoutModules ($)
       foreach $module ( @{$$mod_ref{"$_"}{'Module'}} )
       {
          my($cvs_module_name, $install_name) = each(%$module);
-         printDebug $VERB_LVL, "$_ --> $$mod_ref{$_}{'CVSROOT'} ",
-                    "$$mod_ref{$_}{'Tag'} $$mod_ref{$_}{'Date'} ",
-                    "$cvs_module_name ($$mod_ref{$_}{'Path'}";
-         printDebug $VERB_LVL, " --> $install_name" if $install_name;
-         printDebug $VERB_LVL, ")\n";
-         checkoutModule($_, $$mod_ref{"$_"}{'CVSROOT'}, $$mod_ref{"$_"}{'Tag'},
-                        $$mod_ref{"$_"}{'Date'}, "$cvs_module_name",
-                        $$mod_ref{"$_"}{'Path'}, "$install_name");
+
+         if ( defined($$mod_ref{"$_"}{'CVSROOT'}) && $cvs_module_name )
+         {
+            printDebug $VERB_LVL, "$_ --> $$mod_ref{$_}{'CVSROOT'} ",
+                       "$$mod_ref{$_}{'Tag'} $$mod_ref{$_}{'Date'} ",
+                       "$cvs_module_name ($$mod_ref{$_}{'Path'}";
+            printDebug $VERB_LVL, " --> $install_name" if $install_name;
+            printDebug $VERB_LVL, ")\n";
+            checkoutModule($_, $$mod_ref{"$_"}{'CVSROOT'},
+                           $$mod_ref{"$_"}{'Tag'}, $$mod_ref{"$_"}{'Date'},
+                           "$cvs_module_name", $$mod_ref{"$_"}{'Path'},
+                           "$install_name");
+         }
       }
 
       checkoutModules($$mod_ref{"$_"}{'deps'});
