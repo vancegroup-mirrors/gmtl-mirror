@@ -1,5 +1,6 @@
 DATE       AUTHOR   CHANGE
 ---------- -------- -----------------------------------------------------------
+2001-02-10 allenb   Added Vec and Point classes.
 2001-02-10 allenb   Added VecBase class.
 2001-02-09 allenb   Remove old GFX traces.
 2001-02-09 allenb   Created gmtlConfig.h file and removed gfxConfig.h
