@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-05-05 19:58:54 $
- * Version:       $Revision: 1.46 $
+ * Date modified: $Date: 2002-05-06 06:25:42 $
+ * Version:       $Revision: 1.47 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -905,7 +905,8 @@ namespace gmtl
    template < typename DATA_TYPE, unsigned ROWS, unsigned COLS >
    inline Matrix<DATA_TYPE, ROWS, COLS> makeTranspose( const Matrix<DATA_TYPE, ROWS, COLS>& m )
    {
-      return transpose( Matrix<DATA_TYPE, ROWS, COLS>( m ) );
+      Matrix<DATA_TYPE, ROWS, COLS> temporary( m );
+      return transpose( temporary );
    }
 
    /** set the matrix given the raw coordinate axes.
