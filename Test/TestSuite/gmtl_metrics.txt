@@ -1,1 +1,6 @@
 simba/Debug/Main/MetricTest                                        1221.75
+simba/Debug/VecBaseTest/ConstructorsOverhead                       0.101462
+simba/Debug/VecBaseTest/CopyConstructOverhead                      0.151335
+simba/Debug/VecBaseTest/SetOverhead                                0.102328
+simba/Debug/VecBaseTest/SetPtrOverhead                             0.175805
+simba/Debug/VecBaseTest/VecCreationOverhead                        0.123875
