@@ -548,6 +548,8 @@ gfxn3/Debug/LineSegTest/CopyConstructOverhead                      0.207858
 gfxn3/Debug/LineSegTest/DefaultCreationOverhead                    0.146553
 gfxn3/Debug/LineSegTest/PtPtCreationOverhead                       0.500003
 gfxn3/Debug/Main/MetricTest                                        1221.75
+gfxn3/Debug/MathTest/ZeroClamp[d]                                  0.205967
+gfxn3/Debug/MathTest/ZeroClamp[f]                                  0.07418
 gfxn3/Debug/MatrixCompareTest/IsEqualTest                          3.84798
 gfxn3/Debug/MatrixCompareTest/OpEqualityTest                       2.0438
 gfxn3/Debug/MatrixCompareTest/OpNotEqualityTest                    2.21473
@@ -577,7 +579,7 @@ gfxn3/Debug/MatrixTest/SetOverhead                                 0.257125
 gfxn3/Debug/MatrixTest/SetPtrOverhead                              0.717973
 gfxn3/Debug/MatrixTest/SetTransposePtrOverhead                     1.55177
 gfxn3/Debug/PlaneTest/CopyConstructOverhead                        0.085195
-gfxn3/Debug/PlaneTest/DefaultCreationOverhead                      0.0913875
+gfxn3/Debug/PlaneTest/DefaultCreationOverhead                      0.0730875
 gfxn3/Debug/PlaneTest/DistanceOverhead                             0.22041
 gfxn3/Debug/PlaneTest/EqualityCompareOverhead                      0.165093
 gfxn3/Debug/PlaneTest/FindNearestPtOverhead                        1.03216
@@ -636,7 +638,7 @@ gfxn3/Debug/SphereTest/GetRadiusOverhead                           0.01898
 gfxn3/Debug/SphereTest/InequalityCompareOverhead                   0.201905
 gfxn3/Debug/SphereTest/SetCenterOverhead                           0.075745
 gfxn3/Debug/SphereTest/SetRadiusOverhead                           0.0228575
-gfxn3/Debug/SphereTest/SphereCreationOverhead                      0.0780325
+gfxn3/Debug/SphereTest/SphereCreationOverhead                      0.0702475
 gfxn3/Debug/SphereTest/extendVolumePointOverhead                   2.02204
 gfxn3/Debug/SphereTest/extendVolumeSphereOverhead                  2.03251
 gfxn3/Debug/SphereTest/isEqualOverhead                             0.686125

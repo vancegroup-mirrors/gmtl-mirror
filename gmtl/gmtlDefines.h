@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtlDefines.h,v $
- * Date modified: $Date: 2002-02-22 22:28:35 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-02-24 00:29:27 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -49,6 +49,19 @@ namespace gmtl
     * \endcode
     */
    enum VectorIndex { Xelt = 0, Yelt = 1, Zelt = 2, Welt = 3 };
+
+   /**
+    * Used to describe where a point lies in relationship to a plane.
+    * ON_PLANE means the point lies on the plane.
+    * POS_SIDE means the point lies on the side that the normal points.
+    * NEG_SIDE means the point lies on the side away from the normal.
+    */
+   enum PlaneSide
+   {
+      ON_PLANE,
+      POS_SIDE,
+      NEG_SIDE
+   };
 
    const float GMTL_EPSILON = 1.0e-6f;
    const float GMTL_MAT_EQUAL_EPSILON = 0.001f;  // Epsilon for matrices to be equal

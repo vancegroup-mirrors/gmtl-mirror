@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PlaneOps.h,v $
- * Date modified: $Date: 2002-02-20 21:28:51 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-02-24 00:29:27 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -63,21 +63,21 @@ DATA_TYPE distance( const Plane<DATA_TYPE>& plane, const Point<DATA_TYPE, 3>& pt
  * @param plane      the plane to compare the point to
  * @param pt         the point to test
  *
- * @return  the Plane::Side enum describing on which side of the plane the point
+ * @return  the PlaneSide enum describing on which side of the plane the point
  *          lies
  */
 template< class DATA_TYPE >
-Plane<DATA_TYPE>::Side whichSide( const Plane<DATA_TYPE>& plane,
-                                  const Point<DATA_TYPE, 3>& pt )
+PlaneSide whichSide( const Plane<DATA_TYPE>& plane,
+                     const Point<DATA_TYPE, 3>& pt )
 {
    DATA_TYPE dist = distance( plane, pt );
 
    if ( dist < DATA_TYPE(0) )
-      return Plane<DATA_TYPE>::NEG_SIDE;
+      return NEG_SIDE;
    else if ( dist > DATA_TYPE(0) )
-      return Plane<DATA_TYPE>::POS_SIDE;
+      return POS_SIDE;
    else
-      return Plane<DATA_TYPE>::ON_PLANE;
+      return ON_PLANE;
 }
 
 /**
@@ -88,22 +88,22 @@ Plane<DATA_TYPE>::Side whichSide( const Plane<DATA_TYPE>& plane,
  * @param pt         the point to test
  * @param eps        the epsilon tolerance to use while testing
  *
- * @return  the Plane::Side enum describing on which side of the plane the point
+ * @return  the PlaneSide enum describing on which side of the plane the point
  *          lies
  */
 template< class DATA_TYPE >
-Plane<DATA_TYPE>::Side whichSide( const Plane<DATA_TYPE>& plane,
-                                  const Point<DATA_TYPE, 3>& pt,
-                                  const DATA_TYPE& eps )
+PlaneSide whichSide( const Plane<DATA_TYPE>& plane,
+                     const Point<DATA_TYPE, 3>& pt,
+                     const DATA_TYPE& eps )
 {
    DATA_TYPE dist = distance( plane, pt );
 
    if ( dist < eps )
-      return Plane<DATA_TYPE>::NEG_SIDE;
+      return NEG_SIDE;
    else if ( dist > eps )
-      return Plane<DATA_TYPE>::POS_SIDE;
+      return POS_SIDE;
    else
-      return Plane<DATA_TYPE>::ON_PLANE;
+      return ON_PLANE;
 }
 
 /**
