@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.cpp,v $
- * Date modified: $Date: 2004-09-22 20:39:21 $
- * Version:       $Revision: 1.15 $
+ * Date modified: $Date: 2004-11-25 15:45:09 $
+ * Version:       $Revision: 1.16 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -32,6 +32,8 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 *
  ************************************************************ ggt-cpr end */
+#define GMTL_COUNT_CONSTRUCT_CALLS 1      // Count the consturctor calls
+
 #include "VecTest.h"
 #include "../Suites.h"
 #include <cppunit/extensions/MetricRegistry.h>
@@ -40,6 +42,9 @@
 #include <gmtl/VecOps.h>
 #include <gmtl/Point.h>
 #include <gmtl/Generate.h>
+
+
+
 
 namespace gmtlTest
 {

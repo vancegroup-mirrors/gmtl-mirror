@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Config.h,v $
- * Date modified: $Date: 2004-09-16 19:40:35 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2004-11-25 15:45:16 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -40,7 +40,7 @@
 /** If defined, constructors increment counter
  * that tracks how many objects have been created.
  */
-#define GMTL_COUNT_CONSTRUCT_CALLS 1
+//#define GMTL_COUNT_CONSTRUCT_CALLS 1
 
 
 
