@@ -190,7 +190,7 @@ def ValidateBoostOption(key, value, environ):
 
          environ.Append(BoostLIBPATH = [pj(value, 'lib')])
 
-         if GetPlatform() == 'win32' and optimize == 'no':
+         if optimize == 'no':
             environ.Append(BoostLIBS = ['boost_python_debug'])
          else:
             environ.Append(BoostLIBS = ['boost_python'])
