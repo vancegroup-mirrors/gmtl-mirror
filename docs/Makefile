@@ -1,5 +1,5 @@
 default: guide ref
-all a: guide ref man
+all a: gh gp gt rh rm rp
 usage u help h:
 	@echo ""
 	@echo "Targets:"
@@ -14,17 +14,19 @@ usage u help h:
 	@echo "- gmake clean      (remove everything that was built)"
 	@echo ""
 
-reference ref r rh:
+ref reference rh:
 	doxygen gmtl.doxy
 
-ref-latex rl latex:
+ref-latex rl:
 	doxygen gmtl.latex.doxy
 
-ref-pdf rp pdf: latex
+ref-pdf rp: rl
+	-rm -r pdf
 	-mkdir  pdf
 	cd latex && make ps && ps2pdf *.ps ../pdf/ref-guide.pdf
+	-rm -r latex
 
-manpage man m:
+man ref-man rm manpage m:
 	doxygen gmtl.man.doxy
 
 guide g:
@@ -37,7 +39,19 @@ guide-pdf gp:
 guide-txt gt:
 	-cd programmer.guide && gmake txt
 
-
+# useful for creating a tree that can be tarred up and posted to a 
+# website for download.
+prefix ?=./installed
+version ?=0.0.1
+install:
+	-mkdir $(prefix)
+	-cp -r html $(prefix)/gmtlReferenceGuide-$(version)-html
+	-cp -r man $(prefix)/gmtlReferenceGuide-$(version)-man
+	-cp pdf/ref-guide.pdf $(prefix)/gmtlReferenceGuide-$(version).pdf
+	-cp programmer.guide/guide.pdf $(prefix)/gmtlProgrammersGuide-$(version).pdf
+	-mkdir $(prefix)/gmtlProgrammersGuide-$(version)-html
+	-cp programmer.guide/guide.html $(prefix)/gmtlProgrammersGuide-$(version)-html/index.html
+         
 clean c:
-	-rm -rf html man
+	-rm -rf html man pdf latex installed
 	-cd programmer.guide && gmake clean clobber
