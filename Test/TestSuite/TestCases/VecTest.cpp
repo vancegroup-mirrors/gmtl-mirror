@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.cpp,v $
- * Date modified: $Date: 2002-07-02 03:09:21 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2002-11-27 05:37:43 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -836,7 +836,28 @@ namespace gmtlTest
 
 
    // ---- Vec specific functions --- //
+   
+   void VecTest::testReflect()
+   {
+      gmtl::Vec<float,3> v1(1,1,1);  // point or vec...
+      gmtl::Vec<float,3> v2(3,1,2);
+      gmtl::Vec<float,3> v3(4,5,1);
+      gmtl::Vec<float,3> n1( 1,0,0 ); // normal of the surface/plane
+      gmtl::Vec<float,3> n2( 0,1,0 );
+      gmtl::Vec<float,3> n3( 0,0,1 );
+      gmtl::Vec<float,3> ex1( -1,1,1 ); // flipped about the surface
+      gmtl::Vec<float,3> ex2( 3,-1,2 );
+      gmtl::Vec<float,3> ex3( 4,5,-1 );
 
+      const float eps = 0.001f;
+      gmtl::reflect( res, v1, n1 );
+      CPPUNIT_ASSERT( gmtl::isEqual( res, ex1, eps ) == true );
+      gmtl::reflect( res, v2, n2 );
+      CPPUNIT_ASSERT( gmtl::isEqual( res, ex2, eps ) == true );
+      gmtl::reflect( res, v3, n3 );
+      CPPUNIT_ASSERT( gmtl::isEqual( res, ex3, eps ) == true );
+   }
+   
    void VecTest::testDot()
    {
       gmtl::Vec<float,3> v1(1,0,0);
