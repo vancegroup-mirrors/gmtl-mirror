@@ -1,5 +1,9 @@
 DATE       AUTHOR       CHANGE
----------- ------------ -------------------------------------------------------
+---------- --------     --------------------------------------------------------
+2003-03-16 subatomic    added intersect( Sphere, Point )
+                        added intersect( Sphere, LineSeg )
+                        added intersect( Sphere, Ray )
+                        added distanceSquared( LineSeg, Point )
 2003-03-15 nonchocoboy  NEW VERSION: 0.2.1
 2003-03-15 nonchocoboy  Replaced gmtl::version variable with a
                         gmtl::getVersion() inlined method to avoid mulitply
