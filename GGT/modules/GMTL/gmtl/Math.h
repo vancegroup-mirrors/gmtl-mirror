@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Math.h,v $
- * Date modified: $Date: 2002-04-23 19:09:38 $
- * Version:       $Revision: 1.24 $
+ * Date modified: $Date: 2002-05-17 23:07:11 $
+ * Version:       $Revision: 1.25 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -45,13 +45,11 @@
 
 namespace gmtl
 {
-
-   /** @addtogroup Math */
-   //@{
    
 /** Rotation order enums
-* @todo Use tag dispatching here to optimize functions better.
-*/
+ * @todo Use tag dispatching here to optimize functions better.
+ * @ingroup Defines
+ */
 enum RotationOrder
 {
    XYZ, ZYX, ZXY
@@ -60,13 +58,19 @@ enum RotationOrder
 
 namespace Math
 {
-   /** @name Mathematical constants */
-   //@{
+   /** @ingroup Math
+    *  @name Mathematical constants 
+    *  @{
+    */
    const float PI = 3.14159265358979323846f; //3.14159265358979323846264338327950288419716939937510;
    const float PI_OVER_2 = 1.57079632679489661923f;
    const float PI_OVER_4 = 0.78539816339744830962f;
-   //@}
+   /** @} */
 
+   /** @ingroup Math
+    *  @name C Math Abstraction
+    *  @{
+    */
 //----------------------------------------------------------------------------
 template <typename T>
 inline T abs( T iValue )
@@ -354,17 +358,6 @@ inline T round( T p )
    return T( gmtl::Math::floor( p + (T)0.5 ) );
 }
 //----------------------------------------------------------------------------
-/** Linear Interpolation between number [a] and [b]
- * use double or float only...
- */
-template <class T, typename U>
-inline void lerp( T& result, const U& lerp, const T& a, const T& b )
-{
-    T size = b - a;
-    result = ((U)a) + (((U)size) * lerp);
-}
-
-//----------------------------------------------------------------------------
 /** min returns the minimum of 2 values */
 template <class T>
 inline T Min( const T& x, const T& y )
@@ -420,9 +413,23 @@ inline T factorial(T rhs)
 
    return lhs;
 }
-//----------------------------------------------------------------------------
+/** @} */
 
-//@}
+/** @ingroup Interp
+ * @name Scalar type interpolation (for doubles, floats, etc...)
+ * @{
+ */
+
+/** Linear Interpolation between number [a] and [b].
+ *  @pre use double or float only...
+ */
+template <class T, typename U>
+inline void lerp( T& result, const U& lerp, const T& a, const T& b )
+{
+    T size = b - a;
+    result = ((U)a) + (((U)size) * lerp);
+}
+/** @} */
 
 } // end namespace Math
 } // end namespace gmtl

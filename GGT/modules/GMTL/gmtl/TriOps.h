@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: TriOps.h,v $
- * Date modified: $Date: 2002-03-15 03:26:57 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-05-17 23:07:11 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -40,6 +40,11 @@
 
 namespace gmtl
 {
+/** @ingroup Ops Tri 
+ *  @name Triangle Operations
+ * @{
+ */
+
 /**
  * Computes the point at the center of the given triangle.
  *
@@ -68,8 +73,13 @@ Vec<DATA_TYPE, 3> normal( const Tri<DATA_TYPE>& tri )
    normalize( normal );
    return normal;
 }
+/** @} */
 
-// --- Triangle comparisons -- //
+/** @ingroup Compare Tri 
+ *  @name Triangle Comparitors
+ *  @{
+ */
+
 /**
  * Compare two triangles to see if they are EXACTLY the same. In other words,
  * this comparison is done with zero tolerance.
@@ -122,6 +132,7 @@ bool isEqual( const Tri<DATA_TYPE>& tri1, const Tri<DATA_TYPE>& tri2,
             isEqual(tri1[1], tri2[1], eps) &&
             isEqual(tri1[2], tri2[2], eps) );
 }
+/** @} */
 
 } // namespace gmtl
 

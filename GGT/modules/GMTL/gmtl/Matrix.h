@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Matrix.h,v $
- * Date modified: $Date: 2002-05-17 20:01:30 $
- * Version:       $Revision: 1.18 $
+ * Date modified: $Date: 2002-05-17 23:07:11 $
+ * Version:       $Revision: 1.19 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -36,7 +36,7 @@
 #define _GMTL_MATRIX_H_
 
 #include <gmtl/gmtlConfig.h>
-
+ 
 namespace gmtl
 {
 
@@ -63,7 +63,7 @@ namespace gmtl
  *   ====================== Arrays     <br>
  *
  * So basically OpenGL ordering is the Transpose of the way C++ accesses the array
- * @addtogroup Types
+ * @ingroup Types
  */
 template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
 class Matrix

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PlaneOps.h,v $
- * Date modified: $Date: 2002-03-15 03:26:57 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-05-17 23:07:11 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -42,6 +42,11 @@
 namespace gmtl
 {
 
+/** @ingroup Ops Plane 
+ * @name Plane Operations
+ * @{
+ */
+       
 /**
  * Computes the distance from the plane to the point.
  *
@@ -129,9 +134,13 @@ DATA_TYPE findNearestPt( const Plane<DATA_TYPE>& plane,
    result = pt - (plane.mNorm * dist_to_plane);
    return dist_to_plane;
 }
+/** @} */
 
+/** @ingroup Compare Plane
+ * @name Plance Comparitors
+ * @{
+ */
 
-//--- Plane Comparisons --//
 /**
  * Compare two planes to see if they are EXACTLY the same. In other words, this
  * comparison is done with zero tolerance.
@@ -181,6 +190,8 @@ inline bool isEqual( const Plane<DATA_TYPE>& p1, const Plane<DATA_TYPE>& p2,
    return ( (isEqual(p1.mNorm, p2.mNorm, eps)) &&
             (Math::isEqual(p1.mOffset, p2.mOffset, eps)) );
 }
+/** @} */
+
 
 } // namespace gmtl
 

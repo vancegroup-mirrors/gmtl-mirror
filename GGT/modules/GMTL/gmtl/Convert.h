@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Convert.h,v $
- * Date modified: $Date: 2002-03-15 22:49:03 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2002-05-17 23:07:11 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -41,6 +41,37 @@
 
 namespace gmtl
 {
+   /** @ingroup Convert
+    *  @name Matrix Coord
+    *  @{
+    */
+          
+   /** Convert Matrix to Coord (Euler Type). 
+    * @see Coord
+    * @see Matrix
+    */
+   template <typename DATATYPE, unsigned POSSIZE, unsigned MATCOLS, unsigned MATROWS >
+   inline Coord<DATATYPE, POSSIZE, 3>& convert( Coord<DATATYPE, POSSIZE, 3>& eulercoord, const Matrix<DATATYPE, MATROWS, MATCOLS>& mat, RotationOrder order = gmtl::XYZ )
+   {
+      return setCoord( eulercoord, mat, order );
+   }
+   
+   /** Convert Coord (Euler Type) to Matrix. 
+    * @see Coord
+    * @see Matrix
+    */
+   template <typename DATATYPE, unsigned POSSIZE, unsigned MATCOLS, unsigned MATROWS >
+   inline Matrix<DATATYPE, MATROWS, MATCOLS>& convert( Matrix<DATATYPE, MATROWS, MATCOLS>& mat, const Coord<DATATYPE, POSSIZE, 3>& eulercoord, RotationOrder order = gmtl::XYZ )
+   {
+      return setMatrix( mat, eulercoord, order );
+   }
+   /** @} */
+   
+   /** @ingroup Convert
+    *  @name Vec/Quat
+    *  @{
+    */
+
    /** convert vector to a "pure" quaternion.
     *  @post quat = [v,0] = [v0,v1,v2,0]
     */
@@ -50,10 +81,17 @@ namespace gmtl
       gmtl::setPure(pure_quat, vector);
       return pure_quat;
    }
-
+   /** @} */
+   
+   
+   /** @ingroup Convert
+    *  @name Matrix/Quat
+    * @{
+    */
+          
    /** convert a quaternion to the rotation part of a 3x3, 3x4, 4x3, or 4x4 matrix. 
-   * @todo Implement using setRot
-   */
+    * @todo Implement using setRot
+    */
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
    Matrix<DATA_TYPE, ROWS, COLS>& convert( Matrix<DATA_TYPE, ROWS, COLS>& mat, const Quat<DATA_TYPE>& q )
    {
@@ -163,7 +201,8 @@ namespace gmtl
 
       return quat;
    }
-
+   /** @} */
+   
 } // end namespace gmtl.
 
 #endif

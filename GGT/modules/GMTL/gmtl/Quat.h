@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Quat.h,v $
- * Date modified: $Date: 2002-05-17 20:01:30 $
- * Version:       $Revision: 1.14 $
+ * Date modified: $Date: 2002-05-17 23:07:11 $
+ * Version:       $Revision: 1.15 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -38,7 +38,7 @@
 #include <gmtl/gmtlConfig.h>
 #include <gmtl/gmtlDefines.h>
 #include <gmtl/Vec.h>
-
+ 
 namespace gmtl
 {
 
@@ -69,7 +69,7 @@ namespace gmtl
  *    </ul>
  * <li>   Or search on google....
  * </ul>
- * @addtogroup Types
+ * @ingroup Types
  */
 template <typename DATA_TYPE>
 class Quat

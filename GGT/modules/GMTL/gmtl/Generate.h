@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-05-10 23:16:10 $
- * Version:       $Revision: 1.50 $
+ * Date modified: $Date: 2002-05-17 23:07:11 $
+ * Version:       $Revision: 1.51 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -62,28 +62,10 @@
 
 namespace gmtl
 {
-   /** @addtogroup Generate */
-   //@{
-   
-   /** @name Matrix makers */
-   //@{
-   /** Make a matrix from another matrix type using convert
-   * This allows us to automatically convert from gmtl::matrix to any
-   * other matrix type that has a convert function defined
-   * @see OpenSGGenerate.h for an example
-   */
-   template <typename TARGET_MATRIX_TYPE, typename SOURCE_MATRIX_TYPE>
-   inline TARGET_MATRIX_TYPE makeMatrix( const SOURCE_MATRIX_TYPE& src_mat, Type2Type< TARGET_MATRIX_TYPE > t = Type2Type< TARGET_MATRIX_TYPE >() )
-   {
-      gmtl::ignore_unused_variable_warning(t);
-      TARGET_MATRIX_TYPE target_mat;
-      return convert( target_mat, src_mat );
-   }
-   //@}
-
-   
-   /** @name Vec Generators */
-   //@{
+   /** @ingroup Generate 
+    *  @name Vec Generators
+    *  @{
+    */
    
    /** create a vector from the vector component of a quaternion
     * @post quat = [v,0] = [v0,v1,v2,0]
@@ -103,12 +85,13 @@ namespace gmtl
       normalize( vec );
       return vec;
    }
-
-   //@}
-      
-   /** @name Quat Generators */
-   //@{
-
+   /** @} */
+     
+   /** @ingroup Generate 
+    *  @name Quat Generators
+    *  @{
+    */
+   
    /** Set pure quaternion
    * @todo Write test case for setPure
    */
@@ -333,12 +316,41 @@ namespace gmtl
       return result;
    }
 
-   //@}
+   /** @} */
+     
+   /** @ingroup Generate 
+    *  @name Matrix Generators
+    *  @{
+    */
 
-
-   /** @name Matrix Generators */
-   //@{
-
+   /** Make a matrix from another matrix type using convert.
+   * This allows us to automatically convert from gmtl::Matrix to any
+   * other matrix type that has a convert function defined
+   * @see OpenSGGenerate.h for an example
+   */
+   template <typename TARGET_MATRIX_TYPE, typename SOURCE_MATRIX_TYPE>
+   inline TARGET_MATRIX_TYPE makeMatrix( const SOURCE_MATRIX_TYPE& src_mat, Type2Type< TARGET_MATRIX_TYPE > t = Type2Type< TARGET_MATRIX_TYPE >() )
+   {
+      gmtl::ignore_unused_variable_warning(t);
+      TARGET_MATRIX_TYPE target_mat;
+      return convert( target_mat, src_mat );
+   }
+   
+   /** Create a Matrix from a Coord (Euler type) 
+    * @see Coord
+    * @see Matrix
+    * @todo generalize this function to any type (not just Coord)
+    */
+   template <typename MATRIX_TYPE, unsigned POSSIZE, unsigned ROTSIZE >
+   inline MATRIX_TYPE makeMatrix( const Coord<typename MATRIX_TYPE::DataType, POSSIZE, ROTSIZE>& coord,
+                                RotationOrder order,
+                                Type2Type< MATRIX_TYPE > t = Type2Type< MATRIX_TYPE >() )
+   {
+      gmtl::ignore_unused_variable_warning(t);
+      MATRIX_TYPE temporary;
+      return convert( temporary, coord, order );
+   }
+   
    /** Set matrix translation from vec.
     * @pre if making an n x n matrix, then for
     *    - <b>vector is homogeneous:</b> SIZE of vector needs to equal number of Matrix ROWS - 1
@@ -377,7 +389,7 @@ namespace gmtl
 
    /** Create a translation matrix from a vec
     * @todo in .net vc7 you have to explicitly give SIZE.  This is not what we want.
-   */
+    */
    template< typename MATRIX_TYPE, unsigned SIZE >
    inline MATRIX_TYPE makeTrans( const Vec<typename MATRIX_TYPE::DataType, SIZE>& trans, Type2Type< MATRIX_TYPE > t = Type2Type< MATRIX_TYPE >() )
    {
@@ -626,7 +638,6 @@ namespace gmtl
     * @post this function only produces 3x3, 3x4, 4x3, and 4x4 matrices, and is undefined otherwise
     * @todo Increase perf of setRot(val,val,val, rotMethod). Make it fast for mp
     */
-   ///*
    template< typename ROTATION_TYPE >
    inline ROTATION_TYPE makeRot( typename ROTATION_TYPE::DataType rotx, typename ROTATION_TYPE::DataType roty, typename ROTATION_TYPE::DataType rotz,
                                RotationOrder order, Type2Type< ROTATION_TYPE > t = Type2Type< ROTATION_TYPE >() )
@@ -721,14 +732,30 @@ namespace gmtl
          break;
       }
    }
-   //*/
-
+   
+   /** set the rotation and translation part of the matrix from a Coord.
+    * @pre speficy the rotation order the coord is in.
+    * @see Coord
+    * @see Matrix
+    * @todo move the rotation order into the Coord class...
+    */
+   template <typename DATATYPE, unsigned POSSIZE, unsigned MATCOLS, unsigned MATROWS >
+   inline Matrix<DATATYPE, MATROWS, MATCOLS>& setMatrix( Matrix<DATATYPE, MATROWS, MATCOLS>& mat, const Coord<DATATYPE, POSSIZE, 3>& eulercoord, RotationOrder order = gmtl::XYZ )
+   {
+      if (MATCOLS == 4)
+      {
+         setTrans( mat, eulercoord.pos() );
+      }
+      setRot( mat, eulercoord.rot()[0], eulercoord.rot()[1], eulercoord.rot()[2], order );
+      return mat;
+   }
+   
    /**
     * Extracts the yaw information from the matrix.
     * @post Returned value is from -180 to 180, where 0 is none.
     */
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
-   inline float getYRot ( const Matrix<DATA_TYPE, ROWS, COLS>& mat )
+   inline float getYRot( const Matrix<DATA_TYPE, ROWS, COLS>& mat )
    {
       const gmtl::Vec3f forward_point(0.0f, 0.0f, -1.0f);   // -Z
       const gmtl::Vec3f origin_point(0.0f, 0.0f, 0.0f);
@@ -768,7 +795,7 @@ namespace gmtl
     * @post Returned value is from -180 to 180, where 0 is none.
     */
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
-   inline float getXRot ( const Matrix<DATA_TYPE, ROWS, COLS>& mat )
+   inline float getXRot( const Matrix<DATA_TYPE, ROWS, COLS>& mat )
    {
       const gmtl::Vec3f forward_point(0.0f, 0.0f, -1.0f);   // -Z
       const gmtl::Vec3f origin_point(0.0f, 0.0f, 0.0f);
@@ -808,7 +835,7 @@ namespace gmtl
     * @post Returned value is from -180 to 180, where 0 is no roll.
     */
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
-   inline float getZRot ( const Matrix<DATA_TYPE, ROWS, COLS>& mat )
+   inline float getZRot( const Matrix<DATA_TYPE, ROWS, COLS>& mat )
    {
       const gmtl::Vec3f forward_point(0.0f, 0.0f, -1.0f);   // -Z
       const gmtl::Vec3f origin_point(0.0f, 0.0f, 0.0f);
@@ -963,17 +990,18 @@ namespace gmtl
                               = Type2Type< Matrix< DATA_TYPE, ROWS, COLS > >() )
    {
       Matrix<DATA_TYPE, ROWS, COLS> result;
-      return invert(result, src);
+      return invert( result, src );
    }
-
-   //@}
-
-
-   /** @name Coord Generators */
-   //@{
+   /** @} */
+     
+   /** @ingroup Generate 
+    *  @name Coord Generators
+    *  @{
+    */
 
    /// @todo redundant set and convert funcs...
    
+   /** set Coord from the given Matrix */
    template <typename DATATYPE, unsigned POSSIZE, unsigned MATCOLS, unsigned MATROWS >
    inline Coord<DATATYPE, POSSIZE, 3>& setCoord( Coord<DATATYPE, POSSIZE, 3>& eulercoord, const Matrix<DATATYPE, MATROWS, MATCOLS>& mat, RotationOrder order = gmtl::XYZ )
    {
@@ -982,29 +1010,7 @@ namespace gmtl
       return eulercoord;
    }
    
-   template <typename DATATYPE, unsigned POSSIZE, unsigned MATCOLS, unsigned MATROWS >
-   inline Matrix<DATATYPE, MATROWS, MATCOLS>& setMatrix( Matrix<DATATYPE, MATROWS, MATCOLS>& mat, const Coord<DATATYPE, POSSIZE, 3>& eulercoord, RotationOrder order = gmtl::XYZ )
-   {
-      if (MATCOLS == 4)
-      {
-         setTrans( mat, eulercoord.pos() );
-      }
-      setRot( mat, eulercoord.rot()[0], eulercoord.rot()[1], eulercoord.rot()[2], order );
-      return mat;
-   }
-
-   template <typename DATATYPE, unsigned POSSIZE, unsigned MATCOLS, unsigned MATROWS >
-   inline Coord<DATATYPE, POSSIZE, 3>& convert( Coord<DATATYPE, POSSIZE, 3>& eulercoord, const Matrix<DATATYPE, MATROWS, MATCOLS>& mat, RotationOrder order = gmtl::XYZ )
-   {
-      return setCoord( eulercoord, mat, order );
-   }
-   
-   template <typename DATATYPE, unsigned POSSIZE, unsigned MATCOLS, unsigned MATROWS >
-   inline Matrix<DATATYPE, MATROWS, MATCOLS>& convert( Matrix<DATATYPE, MATROWS, MATCOLS>& mat, const Coord<DATATYPE, POSSIZE, 3>& eulercoord, RotationOrder order = gmtl::XYZ )
-   {
-      return setMatrix( mat, eulercoord, order );
-   }
-   
+   /** Create a temporary Coord from the given Matrix */
    template <typename COORD_TYPE, unsigned MATCOLS, unsigned MATROWS >
    inline COORD_TYPE makeCoord( const Matrix<typename COORD_TYPE::DataType, MATROWS, MATCOLS>& mat,
                                 RotationOrder order,
@@ -1015,19 +1021,7 @@ namespace gmtl
       return convert( temporary, mat, order );
    }
    
-   template <typename MATRIX_TYPE, unsigned POSSIZE, unsigned ROTSIZE >
-   inline MATRIX_TYPE makeMatrix( const Coord<typename MATRIX_TYPE::DataType, POSSIZE, ROTSIZE>& coord,
-                                RotationOrder order,
-                                Type2Type< MATRIX_TYPE > t = Type2Type< MATRIX_TYPE >() )
-   {
-      gmtl::ignore_unused_variable_warning(t);
-      MATRIX_TYPE temporary;
-      return convert( temporary, coord, order );
-   }
-
-   //@}
-   
-   //@}
+   /** @} */
    
 } // end gmtl namespace.
 

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Meta.h,v $
- * Date modified: $Date: 2002-05-17 19:49:10 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-05-17 23:07:11 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -40,7 +40,7 @@
 
 namespace gmtl
 {  
-   /** @addtogroup Meta */
+   /** @ingroup Meta */
    //@{
    
    /** A lightweight identifier you can pass to overloaded functions 
@@ -56,7 +56,7 @@ namespace gmtl
    
    //@}
 
-   /** @addtogroup HelperMeta */
+   /** @ingroup HelperMeta */
    //@{
    template <class T> inline void ignore_unused_variable_warning(const T&) { }
 

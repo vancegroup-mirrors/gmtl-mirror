@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Point.h,v $
- * Date modified: $Date: 2002-05-17 20:01:30 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-05-17 23:07:11 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -48,7 +48,7 @@ namespace gmtl
  *  xform and operator*.  A Vec xform by matrix is simply a rotation,
  *  while a Point xformed by a matrix is a full matrix transform 
  *  (rotation, skew, translation, scale).
- * @addtogroup Types
+ * @ingroup Types
  */
 template<class DATA_TYPE, unsigned SIZE>
 class Point : public VecBase<DATA_TYPE, SIZE>
