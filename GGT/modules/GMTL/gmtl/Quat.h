@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Quat.h,v $
- * Date modified: $Date: 2002-02-22 10:03:08 $
- * Version:       $Revision: 1.10 $
+ * Date modified: $Date: 2002-02-22 21:44:39 $
+ * Version:       $Revision: 1.11 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -81,8 +81,8 @@ public:
     *  [x,y,z,w] == [0,0,0,1].
     *  NOTE: the addition identity is [0,0,0,0]
     */
-   Quat<DATA_TYPE>( const float x = (DATA_TYPE)0.0, const float y = (DATA_TYPE)0.0, 
-                    const float z = (DATA_TYPE)0.0, const float w = (DATA_TYPE)1.0 ) 
+   Quat<DATA_TYPE>( const DATA_TYPE x = (DATA_TYPE)0.0, const DATA_TYPE y = (DATA_TYPE)0.0, 
+                    const DATA_TYPE z = (DATA_TYPE)0.0, const DATA_TYPE w = (DATA_TYPE)1.0 ) 
          : mData( x, y, z, w )
    {
    }
