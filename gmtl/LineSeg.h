@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: LineSeg.h,v $
- * Date modified: $Date: 2002-05-20 22:39:22 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-10-17 09:20:30 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -139,9 +139,9 @@ public:
    /**
     * Gets the length of this line segment.
     */
-   const DATA_TYPE& getLength() const
+   DATA_TYPE getLength() const
    {
-      return length( dir );
+      return length( mDir );
    }
 
 public:

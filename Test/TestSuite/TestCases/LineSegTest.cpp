@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: LineSegTest.cpp,v $
- * Date modified: $Date: 2002-06-13 14:27:32 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-10-17 09:20:30 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -253,6 +253,31 @@ namespace gmtlTest
 
       // make sure the compiler doesn't optimize this test out
       CPPUNIT_ASSERT( use_value > 0 );
+   }
+
+   void LineSegTest::testGetLength()
+   {
+      gmtl::LineSeg<float> test_lineseg1(x1_pt, x1_v);
+      CPPUNIT_ASSERT(test_lineseg1.getLength() == gmtl::length(x1_v));
+   }
+
+   void LineSegTest::testTimingGetLength()
+   {
+      gmtl::LineSeg<float> lineseg;
+      const long iters(400000);
+      float use_value(0);
+      CPPUNIT_METRIC_START_TIMING();
+
+      for (long iter=0; iter<iters; ++iter)
+      {
+         use_value += lineseg.getLength();
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("LineSegTest/TimingGetLength", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      // make sure the compiler doesn't optimize this test out
+      CPPUNIT_ASSERT(use_value > 0);
    }
 
    // --------------------------
