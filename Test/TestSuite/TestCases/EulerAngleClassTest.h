@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: EulerAngleClassTest.h,v $
- * Date modified: $Date: 2002-07-02 02:07:01 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2003-02-05 22:50:38 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -32,33 +32,46 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 *
  ************************************************************ ggt-cpr end */
-#include <iostream>
-#include <cppunit/TestCase.h>
-#include <cppunit/TestSuite.h>
-#include <cppunit/TestCaller.h>
+#ifndef _GMTL_EULER_ANGLE_CLASS_TEST_H_
+#define _GMTL_EULER_ANGLE_CLASS_TEST_H_
+
+#include <cppunit/extensions/HelperMacros.h>
 
 namespace gmtlTest
 {
-   class EulerAngleClassTest : public CppUnit::TestCase
+   /**
+    * Functionality tests
+    */
+   class EulerAngleClassTest : public CppUnit::TestFixture
    {
+      CPPUNIT_TEST_SUITE(EulerAngleClassTest);
+
+      CPPUNIT_TEST(testEulerAngleClassTestCreation);
+
+      CPPUNIT_TEST_SUITE_END();
+
    public:
-      EulerAngleClassTest( std::string name = "EulerAngleClassTest" )
-         : CppUnit::TestCase( name )
-      {
-      }
-
-      virtual ~EulerAngleClassTest()
-      {}
-
-      virtual void setUp()
-      {
-      }
-
-      virtual void tearDown()
-      {
-      }
-
       void testEulerAngleClassTestCreation();
+   };
+
+   /**
+    * Metric tests.
+    */
+   class EulerAngleClassMetricTest : public CppUnit::TestFixture
+   {
+      CPPUNIT_TEST_SUITE(EulerAngleClassMetricTest);
+
+      CPPUNIT_TEST(testEulerAngleTimingDefaultConstructor);
+      CPPUNIT_TEST(testEulerAngleTimingElementConstructor);
+      CPPUNIT_TEST(testEulerAngleTimingCopyConstructor);
+      CPPUNIT_TEST(testEulerAngleTimingSet);
+      CPPUNIT_TEST(testEulerAngleTimingOpBracket);
+      CPPUNIT_TEST(testEulerAngleTimingGetData);
+      CPPUNIT_TEST(testEulerAngleTimingOpEqual);
+
+      CPPUNIT_TEST_SUITE_END();
+
+   public:
       void testEulerAngleTimingDefaultConstructor();
       void testEulerAngleTimingElementConstructor();
       void testEulerAngleTimingCopyConstructor();
@@ -66,37 +79,7 @@ namespace gmtlTest
       void testEulerAngleTimingOpBracket();
       void testEulerAngleTimingGetData();
       void testEulerAngleTimingOpEqual();
-
-      static CppUnit::Test* suite()
-      {
-         CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("EulerAngleClassTest");
-         test_suite->addTest( new CppUnit::TestCaller<EulerAngleClassTest>("testEulerAngleClassTestCreation", &EulerAngleClassTest::testEulerAngleClassTestCreation));
-         return test_suite;
-      }
-
-      static CppUnit::Test* perfSuite()
-      {
-         CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("EulerTiming");
-         test_suite->addTest( new CppUnit::TestCaller<EulerAngleClassTest>("testEulerAngleTimingDefaultConstructor", &EulerAngleClassTest::testEulerAngleTimingDefaultConstructor));
-         test_suite->addTest( new CppUnit::TestCaller<EulerAngleClassTest>("testEulerAngleTimingElementConstructor", &EulerAngleClassTest::testEulerAngleTimingElementConstructor));
-         test_suite->addTest( new CppUnit::TestCaller<EulerAngleClassTest>("testEulerAngleTimingCopyConstructor", &EulerAngleClassTest::testEulerAngleTimingCopyConstructor));
-         test_suite->addTest( new CppUnit::TestCaller<EulerAngleClassTest>("testEulerAngleTimingSet", &EulerAngleClassTest::testEulerAngleTimingSet));
-         test_suite->addTest( new CppUnit::TestCaller<EulerAngleClassTest>("testEulerAngleTimingOpBracket", &EulerAngleClassTest::testEulerAngleTimingOpBracket));
-         test_suite->addTest( new CppUnit::TestCaller<EulerAngleClassTest>("testEulerAngleTimingGetData", &EulerAngleClassTest::testEulerAngleTimingGetData));
-         test_suite->addTest( new CppUnit::TestCaller<EulerAngleClassTest>("testEulerAngleTimingOpEqual", &EulerAngleClassTest::testEulerAngleTimingOpEqual));
-         
-         return test_suite;
-      }
-
-      static CppUnit::Test* interactiveSuite()
-      {
-         CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveEulerAngleClassTest");
-         //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
-         return test_suite;
-      }
-
-   protected:
-
    };
+}
 
-} // end namespace
+#endif

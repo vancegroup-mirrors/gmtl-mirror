@@ -10,16 +10,17 @@ sources = Split("""
    ConvertTest
    CoordClassTest
    CoordCompareTest
+   CoordGenTest
+   EulerAngleClassTest
+   EulerAngleCompareTest
+   IntersectionTest
+   LineSegTest
+
    TriTest
    SphereTest
 """)
 
 #sources = Split("""
-#   CoordGenTest
-#   EulerAngleClassTest
-#   EulerAngleCompareTest
-#   IntersectionTest
-#   LineSegTest
 #   MatrixClassTest
 #   MatrixCompareTest
 #   MatrixGenTest
