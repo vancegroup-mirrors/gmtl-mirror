@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOps.h,v $
- * Date modified: $Date: 2002-04-04 21:35:20 $
- * Version:       $Revision: 1.21 $
+ * Date modified: $Date: 2002-05-17 23:07:11 $
+ * Version:       $Revision: 1.22 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -43,6 +43,11 @@
 
 namespace gmtl
 {
+/** @ingroup Ops
+ * @name Matrix Operations
+ * @{
+ */
+
    /** Make identity matrix out the matrix.
     * make sure every elt is 0.
     */
@@ -423,9 +428,12 @@ namespace gmtl
       return invert( result, result );
    }
 
-// --------- MATRIX COMPARISONS ------ //
-   /** @name Matrix comparisons */
-   //@{
+/** @} */
+
+/** @ingroup Compare 
+ * @name Matrix Comparitors
+ * @{
+ */
 
    /** Compare two mats */
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
@@ -469,7 +477,7 @@ namespace gmtl
       }
       return true;
    }
-   //@}
+/** @} */
 
 } // end of namespace gmtl
 

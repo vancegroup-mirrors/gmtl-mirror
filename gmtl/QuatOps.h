@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatOps.h,v $
- * Date modified: $Date: 2002-05-05 19:41:36 $
- * Version:       $Revision: 1.15 $
+ * Date modified: $Date: 2002-05-17 23:07:11 $
+ * Version:       $Revision: 1.16 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -40,6 +40,11 @@
 
 namespace gmtl
 {
+/** @ingroup Ops Quat 
+ * @name Quat Operations
+ * @{
+ */
+       
    /** product of two quaternions (quaternion product)
     *  multiplication of quats is much like multiplication of typical complex numbers.
     *  @post q1q2 = (s1 + v1)(s2 + v2)
@@ -116,7 +121,7 @@ namespace gmtl
       return mult( result, result, q2 );
    }
 
-   /** negate each element in the quaternion vector.
+   /** Vector negation - negate each element in the quaternion vector.
     * the negative of a rotation quaternion is geometrically equivelent
     * to the original. there exist 2 quats for every possible rotation.
     * @post returns the negation of the given quat.
@@ -131,7 +136,7 @@ namespace gmtl
       return result;
    }
 
-   /** operator-, make a temporary that is the negative of the given quat.
+   /** Vector negation - (operator-) return a temporary that is the negative of the given quat.
     * the negative of a rotation quaternion is geometrically equivelent
     * to the original. there exist 2 quats for every possible rotation.
     * @post returns the negation of the given quat
@@ -471,6 +476,30 @@ namespace gmtl
       result[Zelt] = result[Zelt] * length;
       return result;
    }
+   
+   /** WARNING: not implemented (do not use) */
+   template <typename DATA_TYPE>
+   void squad( Quat<DATA_TYPE>& result, DATA_TYPE t, const Quat<DATA_TYPE>& q1, const Quat<DATA_TYPE>& q2, const Quat<DATA_TYPE>& a, const Quat<DATA_TYPE>& b )
+   {
+      gmtlASSERT( false );
+   }
+
+   /** WARNING: not implemented (do not use) */
+   template <typename DATA_TYPE>
+   void meanTangent( Quat<DATA_TYPE>& result, const Quat<DATA_TYPE>& q1, const Quat<DATA_TYPE>& q2, const Quat<DATA_TYPE>& q3 )
+   {
+       gmtlASSERT( false );
+   }
+
+
+   
+/** @} */
+   
+/** @ingroup Interp Quat 
+ * @name Quaternion Interpolation
+ * @{
+ */
+
 
    /** spherical linear interpolation between two rotation quaternions.
     *  t is a value between 0 and 1 that interpolates between from and to.
@@ -573,23 +602,12 @@ namespace gmtl
       return result;
    }
 
-   /** WARNING: not implemented (do not use) */
-   template <typename DATA_TYPE>
-   void squad( Quat<DATA_TYPE>& result, DATA_TYPE t, const Quat<DATA_TYPE>& q1, const Quat<DATA_TYPE>& q2, const Quat<DATA_TYPE>& a, const Quat<DATA_TYPE>& b )
-   {
-      gmtlASSERT( false );
-   }
+/** @} */
 
-   /** WARNING: not implemented (do not use) */
-   template <typename DATA_TYPE>
-   void meanTangent( Quat<DATA_TYPE>& result, const Quat<DATA_TYPE>& q1, const Quat<DATA_TYPE>& q2, const Quat<DATA_TYPE>& q3 )
-   {
-       gmtlASSERT( false );
-   }
-
-
-
-   //-- COMPARISONS --//
+/** @ingroup Compare Quat 
+ *  @name Quat Comparisons
+ * @{
+ */
 
    /** Compare two quaternions for equality.
     * @see isEqual( Quat, Quat )
@@ -633,6 +651,8 @@ namespace gmtl
    {
       return bool( isEqual( q1, q2, tol ) || isEqual( q1, -q2, tol ) );
    }
+   
+   /** @} */
 }
 
 #endif

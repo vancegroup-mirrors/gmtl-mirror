@@ -2,7 +2,7 @@
 #define COORD_GMTL
 
 #include <gmtl/Vec.h>
-
+ 
 namespace gmtl
 {
    
@@ -19,6 +19,7 @@ namespace gmtl
  *    CoordVec3dEuler myEulerCoord;
  *    CoordVec4fEuler myOtherEulerCoord;
  * \endcode
+ * @ingroup Types
  */
 template <typename DATA_TYPE, unsigned POSSIZE, unsigned ROTSIZE>
 class Coord

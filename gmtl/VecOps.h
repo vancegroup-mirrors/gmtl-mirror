@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecOps.h,v $
- * Date modified: $Date: 2002-04-11 00:02:09 $
- * Version:       $Revision: 1.14 $
+ * Date modified: $Date: 2002-05-17 23:07:11 $
+ * Version:       $Revision: 1.15 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -43,9 +43,13 @@
 namespace gmtl
 {
 
-
+/** @ingroup Ops
+ * @name Vector/Point Operations
+ * @{
+ */
+   
 // --- Basic VEC types operations -- //
-
+  
 /**
  * Negates v1.  The result = -v1.
  *
@@ -241,9 +245,12 @@ VecBase<DATA_TYPE, SIZE> operator /(const VecBase<DATA_TYPE, SIZE>& v1,
    // return VecBase<DATA_TYPE, SIZE>(v1)( /= scalar;
 }
 
+/** @} */
 
-/** Vector math operations */
-//@{
+/** @ingroup Ops
+ *  @name Vector Operations
+ * @{ 
+ */
 
 /**
  * Computes dot product of v1 and v2 and returns the result.
@@ -388,10 +395,12 @@ Vec<DATA_TYPE,3>& cross( Vec<DATA_TYPE,3>& result, const Vec<DATA_TYPE, 3>& v1,
    return result;
 }
 
-//@}
+/** @} */
 
-/** Vector interpolation operations */
-//@{
+/** @ingroup Interp
+ * @name Vector Interpolation
+ * @{
+ */
 
 /**
  * Linearly interpolates between to vectors.
@@ -419,9 +428,14 @@ VecBase<DATA_TYPE, SIZE>& lerp( VecBase<DATA_TYPE, SIZE>& result,
    }
    return result;
 }
-//@}
+/** @} */
 
+/** @ingroup Compare
+ * @name Vector Comparitors
+ * @{
+ */
 
+       
 // --- VEC comparisons -- //
 
 /**
@@ -496,6 +510,8 @@ inline bool isEqual(const VecBase<DATA_TYPE, SIZE>& v1,
    }
    return true;
 }
+
+/** @} */
 
 }
 

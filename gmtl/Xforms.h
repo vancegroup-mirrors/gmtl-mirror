@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Xforms.h,v $
- * Date modified: $Date: 2002-05-05 20:54:53 $
- * Version:       $Revision: 1.22 $
+ * Date modified: $Date: 2002-05-17 23:07:11 $
+ * Version:       $Revision: 1.23 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -46,13 +46,17 @@
 #include <gmtl/Generate.h>
 
 /** @defgroup Transforms Spacial Transformers: xform( ... ), operator*( ... ).
- *  Transform points by Matrices and Quaternions.
+ *  Transform points and vectors by Matrices and Quaternions.  Note that xform
+ *  is defined differently for Point and Vec.  By Point is a full xform, by Vec 
+ *  is only a rotation.
  */
 
 namespace gmtl
 {
-   /** @addtogroup Transforms */
-   //@{
+   /** @ingroup Transforms
+    *  @name Vector Transform (Quaternion)
+    *  @{
+    */
    
    /** transform a vector by a rotation quaternion.
     * @pre give a vector, and a rotation quaternion (by definition, a rotation quaternion is normalized).
@@ -102,7 +106,12 @@ namespace gmtl
       return xform( temporary, rot, vector );
    }
 
+   /** @} */
 
+   /** @ingroup Transforms
+    *  @name Vector Transform (Matrix)
+    *  @{
+    */
 
    /** xform a vector by a matrix.
     *  Transforms a vector with a matrix, uses multiplication of [m x k] matrix by a [k x 1] matrix (the later also known as a Vector...).
@@ -195,7 +204,12 @@ namespace gmtl
       return xform( temporary, matrix, vector );
    }
 
+   /** @} */
 
+   /** @ingroup Transforms
+    *  @name Point Transform (Matrix)
+    *  @{
+    */
 
 
    /** transform point by a matrix.
@@ -283,12 +297,8 @@ namespace gmtl
       return xform( temporary, matrix, point );
    }
 
-
-
-   //@}
-
-
-
+   /** @} */
+   
 
    // old xform stuff...
 /*

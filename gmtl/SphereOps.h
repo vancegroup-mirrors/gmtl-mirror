@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: SphereOps.h,v $
- * Date modified: $Date: 2002-03-15 03:26:57 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-05-17 23:07:11 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -42,7 +42,11 @@
 namespace gmtl
 {
 
-// --- Sphere comparisons -- //
+/** @ingroup Compare Sphere 
+ * @name Sphere Comparitors
+ * @{
+ */
+
 /**
  * Compare two spheres to see if they are EXACTLY the same. In other words, this
  * comparison is done with zero tolerance.
@@ -91,6 +95,7 @@ inline bool isEqual( const Sphere<DATA_TYPE>& s1, const Sphere<DATA_TYPE>& s2, c
    return ( (isEqual(s1.mCenter, s2.mCenter, eps)) &&
             (Math::isEqual(s1.mRadius, s2.mRadius, eps)) );
 }
+/** @} */
 
 } // namespace gmtl
 

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: CoordOps.h,v $
- * Date modified: $Date: 2002-03-20 21:36:40 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-05-17 23:07:11 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -41,7 +41,10 @@
 
 namespace gmtl
 {
-   //-- COMPARISONS --//
+/** @ingroup Compare Coord 
+ * @name Coord Comparitors
+ * @{
+ */
 
    /** Compare two quaternions for equality.
     * @see isEqual( Coord, Coord )
@@ -70,6 +73,8 @@ namespace gmtl
       return bool( isEqual( q1.getPos(), q2.getPos(), tol ) &&
                    isEqual( q1.getRot(), q2.getRot(), tol )     );
    }
+/** @} */
+
 }
 
 #endif

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtlDefines.h,v $
- * Date modified: $Date: 2002-05-17 20:01:30 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2002-05-17 23:07:11 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,7 +35,29 @@
 #ifndef _GMTL_DEFINES_H
 #define _GMTL_DEFINES_H
 
-/** @defgroup Types Graphics Math Abstract Data Types: Matrix, Vec, Quat, Coord, Sphere */
+/** @defgroup Types Abstract Data Types: Matrix, Vec, Quat, Coord, Sphere, Plane
+ *  GMTL comes with many math data types: Vec, Point, Matrix, Quat, Coord, Sphere.
+ */
+
+/** @defgroup Ops Mathematical Operations: +, -, \*, /, invert, dot, cross
+ *  Implements fundamental mathematical operations such as +, -, *, invert, dot product.
+ */
+
+/** @defgroup Compare Comparison: isEqual(...), isEquiv(...), ==, !=
+ *  Tests for equality between GMTL data types.
+ */
+
+/** @defgroup Convert Conversion: convert(...)
+ *  Conversion between gmtl data types...
+ */
+
+/** @defgroup Interp Interpolation: lerp(...), slerp(...)
+ *  Functions to interpolate between two values.
+ */
+
+/** @defgroup Defines Global Flags: Xelt, XYZ, etc...
+ *  Constant Static Global Flags
+ */
 
 namespace gmtl
 {
@@ -49,6 +71,7 @@ namespace gmtl
     *    vec[Yelt] = 3.0f;
     *    vec[Zelt] = 2.0f;
     * \endcode
+    * @ingroup Defines
     */
    enum VectorIndex { Xelt = 0, Yelt = 1, Zelt = 2, Welt = 3 };
 
@@ -57,6 +80,7 @@ namespace gmtl
     * ON_PLANE means the point lies on the plane.
     * POS_SIDE means the point lies on the side that the normal points.
     * NEG_SIDE means the point lies on the side away from the normal.
+    * @ingroup Defines
     */
    enum PlaneSide
    {
@@ -65,10 +89,14 @@ namespace gmtl
       NEG_SIDE
    };
 
+   /** @ingroup Defines
+    * @{
+    */    
    const float GMTL_EPSILON = 1.0e-6f;
    const float GMTL_MAT_EQUAL_EPSILON = 0.001f;  // Epsilon for matrices to be equal
    const float GMTL_VEC_EQUAL_EPSILON = 0.0001f; // Epsilon for vectors to be equal
-
+   /** @} */
+   
 #define GMTL_NEAR(x,y,eps) (gmtl::Math::abs((x)-(y))<(eps))
 
 };
