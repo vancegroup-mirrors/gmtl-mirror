@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl.cpp,v $
- * Date modified: $Date: 2003-05-20 18:57:15 $
- * Version:       $Revision: 1.1.1.1 $
+ * Date modified: $Date: 2003-08-17 06:32:59 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -89,10 +89,19 @@ void _Export_Vec_double_4();
 void _Export_Vec_float_3();
 void _Export_Vec_float_4();
 void _Export_Vec_int_3();
+void _Export_Vec_int_4();
 void _Export_gmtl_Math_h();
 void _Export_gmtl_Defines_h();
+void _Export_gmtl_MatrixOps_h();
+void _Export_gmtl_TriOps_h();
+void _Export_gmtl_QuatOps_h();
+void _Export_gmtl_VecOps_h();
 void _Export_gmtl_functions_h();
-void _Export_gmtl_intersect_wrappers_h();
+void _Export_gmtl_LineSegOps_h();
+void _Export_gmtl_Containment_h();
+void _Export_gmtl_Generate_h();
+void _Export_gmtl_PlaneOps_h();
+void _Export_gmtl_Xforms_h();
 void _Export_gmtl_wrappers_h();
 
 // Module ======================================================================
@@ -158,9 +167,18 @@ BOOST_PYTHON_MODULE(gmtl)
     _Export_Vec_float_3();
     _Export_Vec_float_4();
     _Export_Vec_int_3();
+    _Export_Vec_int_4();
     _Export_gmtl_Math_h();
     _Export_gmtl_Defines_h();
+    _Export_gmtl_MatrixOps_h();
+    _Export_gmtl_TriOps_h();
+    _Export_gmtl_QuatOps_h();
+    _Export_gmtl_VecOps_h();
     _Export_gmtl_functions_h();
-    _Export_gmtl_intersect_wrappers_h();
+    _Export_gmtl_LineSegOps_h();
+    _Export_gmtl_Containment_h();
+    _Export_gmtl_Generate_h();
+    _Export_gmtl_PlaneOps_h();
+    _Export_gmtl_Xforms_h();
     _Export_gmtl_wrappers_h();
 }

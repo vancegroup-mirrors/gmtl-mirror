@@ -19,8 +19,8 @@
 #
 # -----------------------------------------------------------------
 # File:          $RCSfile: gmtl.pyste,v $
-# Date modified: $Date: 2003-08-16 05:11:45 $
-# Version:       $Revision: 1.2 $
+# Date modified: $Date: 2003-08-17 06:32:58 $
+# Version:       $Revision: 1.3 $
 # -----------------------------------------------------------------
 #
 # *************** <auto-copyright.pl END do not edit this line> ***************
@@ -47,34 +47,34 @@ exclude(Matrix33f.mData)
 #set_policy(Matrix33f.operator['()'], return_internal_reference())
 exclude(Matrix33f.operator['()'])
 
-Matrix_identity = Function('gmtl::identity', 'gmtl-functions.h')
+Matrix_identity = Function('gmtl::identity', 'gmtl-MatrixOps.h')
 set_policy(Matrix_identity, return_internal_reference())
 
-Matrix_zero = Function('gmtl::zero', 'gmtl-functions.h')
+Matrix_zero = Function('gmtl::zero', 'gmtl-MatrixOps.h')
 set_policy(Matrix_zero, return_internal_reference())
 
-set_policy(Function('gmtl::mult', 'gmtl-functions.h'),
+set_policy(Function('gmtl::mult', 'gmtl-MatrixOps.h'),
            return_internal_reference())
 
-Matrix_sub = Function('gmtl::sub', 'gmtl-functions.h')
+Matrix_sub = Function('gmtl::sub', 'gmtl-MatrixOps.h')
 set_policy(Matrix_sub, return_internal_reference())
 
-Matrix_add = Function('gmtl::add', 'gmtl-functions.h')
+Matrix_add = Function('gmtl::add', 'gmtl-MatrixOps.h')
 set_policy(Matrix_add, return_internal_reference())
 
-Matrix_postMult = Function('gmtl::postMult', 'gmtl-functions.h')
+Matrix_postMult = Function('gmtl::postMult', 'gmtl-MatrixOps.h')
 set_policy(Matrix_postMult, return_internal_reference())
 
-Matrix_preMult = Function('gmtl::preMult', 'gmtl-functions.h')
+Matrix_preMult = Function('gmtl::preMult', 'gmtl-MatrixOps.h')
 set_policy(Matrix_preMult, return_internal_reference())
 
-Matrix_transpose = Function('gmtl::transpose', 'gmtl-functions.h')
+Matrix_transpose = Function('gmtl::transpose', 'gmtl-MatrixOps.h')
 set_policy(Matrix_transpose, return_internal_reference())
 
-Matrix_invertFull = Function('gmtl::invertFull', 'gmtl-functions.h')
+Matrix_invertFull = Function('gmtl::invertFull', 'gmtl-MatrixOps.h')
 set_policy(Matrix_invertFull, return_internal_reference())
 
-Matrix_invert = Function('gmtl::invert', 'gmtl-functions.h')
+Matrix_invert = Function('gmtl::invert', 'gmtl-MatrixOps.h')
 set_policy(Matrix_invert, return_internal_reference())
 # ============================================================== gmtl::Matrix<>
 
@@ -152,26 +152,28 @@ rename(Vec4d, 'Vec4d')
 Vec4f = Vec('float 4')
 rename(Vec4f, 'Vec4f')
 
-Function('gmtl::dot', 'gmtl-functions.h')
-Function('gmtl::length', 'gmtl-functions.h')
-Function('gmtl::lengthSquared', 'gmtl-functions.h')
+Vec4i = Vec('int 4')
+rename(Vec4i, 'Vec4i')
+
+Function('gmtl::dot', 'gmtl-VecOps.h')
+Function('gmtl::length', 'gmtl-VecOps.h')
+Function('gmtl::lengthSquared', 'gmtl-VecOps.h')
 
 # XXX: This isn't quite right.  gmtl::normalize() does not return a reference
 # in the vector case, but it does in the quaternion case.  What I need is a
 # way to tell Pyste which version is which...
-set_policy(Function('gmtl::normalize', 'gmtl-functions.h'),
+set_policy(Function('gmtl::normalize', 'gmtl-VecOps.h'),
            return_internal_reference())
 
-Function('gmtl::isNormalized', 'gmtl-functions.h')
+Function('gmtl::isNormalized', 'gmtl-VecOps.h')
 
-set_policy(Function('gmtl::cross', 'gmtl-functions.h'),
-           return_internal_reference())
-Function('gmtl::makeCross', 'gmtl-functions.h')
-
-set_policy(Function('gmtl::reflect', 'gmtl-functions.h'),
+set_policy(Function('gmtl::cross', 'gmtl-VecOps.h'),
            return_internal_reference())
 
-set_policy(Function('gmtl::lerp', 'gmtl-functions.h'),
+set_policy(Function('gmtl::reflect', 'gmtl-VecOps.h'),
+           return_internal_reference())
+
+set_policy(Function('gmtl::lerp', 'gmtl-VecOps.h'),
            return_internal_reference())
 # ================================================================= gmtl::Vec<>
 
@@ -191,24 +193,24 @@ Quatd = Quat('double')
 rename(Quatd, 'Quatd')
 set_wrapper(Quatd.getData, 'gmtlWrappers::Quat_getData')
 
-set_policy(Function('gmtl::negate', 'gmtl-functions.h'),
+set_policy(Function('gmtl::negate', 'gmtl-QuatOps.h'),
            return_internal_reference())
-set_policy(Function('gmtl::div', 'gmtl-functions.h'),
+set_policy(Function('gmtl::div', 'gmtl-QuatOps.h'),
            return_internal_reference())
-set_policy(Function('gmtl::conj', 'gmtl-functions.h'),
+set_policy(Function('gmtl::conj', 'gmtl-QuatOps.h'),
            return_internal_reference())
-set_policy(Function('gmtl::invert', 'gmtl-functions.h'),
+set_policy(Function('gmtl::invert', 'gmtl-QuatOps.h'),
            return_internal_reference())
-set_policy(Function('gmtl::exp', 'gmtl-functions.h'),
+set_policy(Function('gmtl::exp', 'gmtl-QuatOps.h'),
            return_internal_reference())
-set_policy(Function('gmtl::log', 'gmtl-functions.h'),
+set_policy(Function('gmtl::log', 'gmtl-QuatOps.h'),
            return_internal_reference())
-set_policy(Function('gmtl::squad', 'gmtl-functions.h'),
+set_policy(Function('gmtl::squad', 'gmtl-QuatOps.h'),
            return_internal_reference())
-set_policy(Function('gmtl::slerp', 'gmtl-functions.h'),
+set_policy(Function('gmtl::slerp', 'gmtl-QuatOps.h'),
            return_internal_reference())
 
-Function('gmtl::isEquiv', 'gmtl-functions.h')
+Function('gmtl::isEquiv', 'gmtl-QuatOps.h')
 # ================================================================ gmtl::Quat<>
 
 # gmtl::Point<> ===============================================================
@@ -294,6 +296,8 @@ rename(LineSegf, 'LineSegf')
 
 LineSegd = LineSeg('double')
 rename(LineSegd, 'LineSegd')
+
+Function('gmtl::distanceSquared', 'gmtl-LineSegOps.h')
 # ============================================================= gmtl::LineSeg<>
 
 # gmtl::Plane<> ===============================================================
@@ -306,7 +310,7 @@ Planed = Plane('double')
 rename(Planed, 'Planed')
 
 Function('gmtl::distance', 'gmtl-functions.h')
-Function('gmtl::whichSide', 'gmtl-functions.h')
+Function('gmtl::whichSide', 'gmtl-PlaneOps.h')
 Function('gmtl::findNearestPt', 'gmtl-functions.h')
 # =============================================================== gmtl::Plane<>
 
@@ -322,7 +326,7 @@ rename(Trid, 'Trid')
 Trii = Tri('int')
 rename(Trii, 'Trii')
 
-Function('gmtl::center', 'gmtl-functions.h')
+Function('gmtl::center', 'gmtl-TriOps.h')
 # ================================================================= gmtl::Tri<>
 
 # gmtl::Coord<> ===============================================================
@@ -492,43 +496,44 @@ Function('gmtlWrappers::makeScaleMatrix44', 'gmtl-wrappers.h')
 
 Function('gmtlWrappers::makeAxesMatrix44', 'gmtl-wrappers.h')
 
-set_policy(Function('gmtl::setRot', 'gmtl-functions.h'),
+set_policy(Function('gmtl::setRot', 'gmtl-Generate.h'),
            return_internal_reference())
-Function('gmtl::makeVec', 'gmtl-functions.h')
-Function('gmtl::makeNormal', 'gmtl-functions.h')
-set_policy(Function('gmtl::setTrans', 'gmtl-functions.h'),
+Function('gmtl::makeVec', 'gmtl-Generate.h')
+Function('gmtl::makeNormal', 'gmtl-Generate.h')
+Function('gmtl::makeCross', 'gmtl-Generate.h')
+set_policy(Function('gmtl::setTrans', 'gmtl-Generate.h'),
            return_internal_reference())
-set_policy(Function('gmtl::setPure', 'gmtl-functions.h'),
+set_policy(Function('gmtl::setPure', 'gmtl-Generate.h'),
            return_internal_reference())
-Function('gmtl::makePure', 'gmtl-functions.h')
-Function('gmtl::makeConj', 'gmtl-functions.h')
-Function('gmtl::makeInvert', 'gmtl-functions.h')
-set_policy(Function('gmtl::set', 'gmtl-functions.h'),
+Function('gmtl::makePure', 'gmtl-Generate.h')
+Function('gmtl::makeConj', 'gmtl-Generate.h')
+Function('gmtl::makeInvert', 'gmtl-Generate.h')
+set_policy(Function('gmtl::set', 'gmtl-Generate.h'),
            return_internal_reference())
-set_policy(Function('gmtl::setScale', 'gmtl-functions.h'),
+set_policy(Function('gmtl::setScale', 'gmtl-Generate.h'),
            return_internal_reference())
 
-Function('gmtl::makeYRot', 'gmtl-functions.h')
-Function('gmtl::makeXRot', 'gmtl-functions.h')
-Function('gmtl::makeZRot', 'gmtl-functions.h')
-set_policy(Function('gmtl::setDirCos', 'gmtl-functions.h'),
+Function('gmtl::makeYRot', 'gmtl-Generate.h')
+Function('gmtl::makeXRot', 'gmtl-Generate.h')
+Function('gmtl::makeZRot', 'gmtl-Generate.h')
+set_policy(Function('gmtl::setDirCos', 'gmtl-Generate.h'),
            return_internal_reference())
-set_policy(Function('gmtl::setAxes', 'gmtl-functions.h'),
+set_policy(Function('gmtl::setAxes', 'gmtl-Generate.h'),
            return_internal_reference())
-Function('gmtl::makeTranspose', 'gmtl-functions.h')
+Function('gmtl::makeTranspose', 'gmtl-Generate.h')
 
-set_policy(Function('gmtl::setFrustum', 'gmtl-functions.h'),
+set_policy(Function('gmtl::setFrustum', 'gmtl-Generate.h'),
            return_internal_reference())
-set_policy(Function('gmtl::setPerspective', 'gmtl-functions.h'),
+set_policy(Function('gmtl::setPerspective', 'gmtl-Generate.h'),
            return_internal_reference())
 # ======================================================== Generator operations
 
 # Containment operations ======================================================
-Function('gmtl::isInVolume', 'gmtl-functions.h')
-set_policy(Function('gmtl::extendVolume', 'gmtl-functions.h'),
+Function('gmtl::isInVolume', 'gmtl-Containment.h')
+set_policy(Function('gmtl::extendVolume', 'gmtl-Containment.h'),
            return_internal_reference())
-Function('gmtl::isOnVolume', 'gmtl-functions.h')
-set_policy(Function('gmtl::makeVolume', 'gmtl-functions.h'),
+Function('gmtl::isOnVolume', 'gmtl-Containment.h')
+set_policy(Function('gmtl::makeVolume', 'gmtl-Containment.h'),
            return_internal_reference())
 # ====================================================== Containment operations
 
@@ -537,7 +542,7 @@ Function('gmtlWrappers::intersect', 'gmtl-intersect-wrappers.h')
 # ===================================================== Intersection operations
 
 # Transform operations ========================================================
-set_policy(Function('gmtl::xform', 'gmtl-functions.h'),
+set_policy(Function('gmtl::xform', 'gmtl-Xforms.h'),
            return_internal_reference())
 # ======================================================== Transform operations
 

@@ -31,12 +31,6 @@ cpp_files = Split("""
    _EulerAngle_float_gmtl_XYZ.cpp
    _EulerAngle_float_gmtl_ZXY.cpp
    _EulerAngle_float_gmtl_ZYX.cpp
-   gmtl.cpp
-   _gmtl_Defines_h.cpp
-   _gmtl_functions_h.cpp
-   _gmtl_intersect_wrappers_h.cpp
-   _gmtl_Math_h.cpp
-   _gmtl_wrappers_h.cpp
    _LineSeg_double.cpp
    _LineSeg_float.cpp
    _Matrix_float_3_3.cpp
@@ -70,6 +64,22 @@ cpp_files = Split("""
    _Vec_float_3.cpp
    _Vec_float_4.cpp
    _Vec_int_3.cpp
+   _Vec_int_4.cpp
+   _gmtl_Containment_h.cpp
+   _gmtl_Defines_h.cpp
+   _gmtl_Generate_h.cpp
+   _gmtl_LineSegOps_h.cpp
+   _gmtl_Math_h.cpp
+   _gmtl_MatrixOps_h.cpp
+   _gmtl_PlaneOps_h.cpp
+   _gmtl_QuatOps_h.cpp
+   _gmtl_TriOps_h.cpp
+   _gmtl_VecOps_h.cpp
+   _gmtl_Xforms_h.cpp
+   _gmtl_functions_h.cpp
+   _gmtl_intersect_wrappers_h.cpp
+   _gmtl_wrappers_h.cpp
+   gmtl.cpp
 """)
 
 for f in cpp_files:
