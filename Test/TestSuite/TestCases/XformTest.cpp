@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: XformTest.cpp,v $
- * Date modified: $Date: 2003-04-24 19:11:45 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2003-05-10 21:18:54 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -39,6 +39,8 @@
 
 #include <gmtl/Generate.h>
 #include <gmtl/Xforms.h>
+#include <gmtl/LineSegOps.h>
+#include <gmtl/RayOps.h>
 
 namespace gmtlTest
 {
@@ -328,6 +330,59 @@ namespace gmtlTest
          // should be equal because the rotation is normalized
 		 CPPUNIT_ASSERT( gmtl::isEqual( gmtl::makeConj( rot ), gmtl::makeInvert( rot ), eps ) );
       }
+   }
+
+   void XformTest::testMatLineSegXform()
+   {
+      gmtl::LineSegf seg;
+      seg.setOrigin( gmtl::Point3f( 1.0f, 2.0f, 3.0f ) );
+      seg.setDir( gmtl::Vec3f( 3.0f, 95.0f, 1.0f ) );
+
+      gmtl::Matrix44f matrix;
+      gmtl::setTrans( matrix, gmtl::Vec3f( 9.0f, 8.0f, 7.0f ) );
+      gmtl::setRot( matrix, gmtl::AxisAnglef( gmtl::Math::deg2Rad( 90.0f ),
+      gmtl::Vec3f( 0.0f, 1.0f, 0.0f ) ) );
+      
+      gmtl::LineSegf expected( gmtl::Point3f( 12, 10, 6 ), gmtl::Vec3f( 1, 95, -3 ) );
+      // test xform
+      gmtl::LineSegf result;
+      gmtl::xform( result, matrix, seg );
+      assert( gmtl::isEqual( expected, result, 0.0001f ) );
+      
+      // test operator*
+      result = matrix * seg;
+      assert( gmtl::isEqual( expected, result, 0.0001f ) );
+      
+      // test operator*=
+      result = seg;
+      result *= matrix;
+      assert( gmtl::isEqual( expected, result, 0.0001f ) );
+   }
+   
+   void XformTest::testMatRayXform()
+   {
+      gmtl::Rayf seg;
+      seg.setOrigin( gmtl::Point3f( 1.0f, 2.0f, 3.0f ) );
+      seg.setDir( gmtl::Vec3f( 3.0f, 95.0f, 1.0f ) );
+
+      gmtl::Matrix44f matrix;
+      gmtl::setTrans( matrix, gmtl::Vec3f( 9.0f, 8.0f, 7.0f ) );
+      gmtl::setRot( matrix, gmtl::AxisAnglef( gmtl::Math::deg2Rad( 90.0f ), gmtl::Vec3f( 0.0f, 1.0f, 0.0f ) ) );
+      
+      gmtl::Rayf expected( gmtl::Point3f( 12, 10, 6 ), gmtl::Vec3f( 1, 95, -3 ) );
+      // test xform
+      gmtl::Rayf result;
+      gmtl::xform( result, matrix, seg );
+      assert( gmtl::isEqual( expected, result, 0.0001f ) );
+      
+      // test operator*
+      result = matrix * seg;
+      assert( gmtl::isEqual( expected, result, 0.0001f ) );
+      
+      // test operator*=
+      result = seg;
+      result *= matrix;
+      assert( gmtl::isEqual( expected, result, 0.0001f ) );
    }
 
    void XformTest::testMatVecXform()
