@@ -1,7 +1,6 @@
 import os, string, sys
 pj = os.path.join
 
-
 #------------------------------------------------------------------------------
 # Define some generally useful functions
 #------------------------------------------------------------------------------
@@ -131,9 +130,9 @@ GMTL_VERSION = GetGMTLVersion()
 print 'Building GMTL Version: %i.%i.%i' % GMTL_VERSION
 
 # Get command-line arguments
-optimize = ARGUMENTS.get('--optimize', 'no')
-profile = ARGUMENTS.get('--profile', 'no')
-PREFIX = ARGUMENTS.get('--prefix', '/usr/local')
+optimize = ARGUMENTS.get('optimize', 'no')
+profile = ARGUMENTS.get('profile', 'no')
+PREFIX = ARGUMENTS.get('prefix', '/usr/local')
 Export('PREFIX')
 
 # Create the extra builders
