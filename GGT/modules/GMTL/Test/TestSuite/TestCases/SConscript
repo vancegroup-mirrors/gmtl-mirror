@@ -15,16 +15,16 @@ sources = Split("""
    EulerAngleCompareTest
    IntersectionTest
    LineSegTest
+   MatrixClassTest
+   MatrixCompareTest
+   MatrixGenTest
+   MatrixOpsTest
 
    TriTest
    SphereTest
 """)
 
 #sources = Split("""
-#   MatrixClassTest
-#   MatrixCompareTest
-#   MatrixGenTest
-#   MatrixOpsTest
 #   OutputTest
 #   PlaneTest
 #   PointTest
