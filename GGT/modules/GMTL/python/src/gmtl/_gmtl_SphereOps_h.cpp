@@ -6,9 +6,9 @@
  *   Allen Bierbaum
  *
  * -----------------------------------------------------------------
- * File:          $RCSfile: gmtl-LineSegOps.h,v $
+ * File:          $RCSfile: _gmtl_SphereOps_h.cpp,v $
  * Date modified: $Date: 2003-08-30 17:22:10 $
- * Version:       $Revision: 1.2 $
+ * Version:       $Revision: 1.1 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -33,28 +33,16 @@
 *
  ************************************************************ ggt-cpr end */
 
-#ifndef _PYGMTL_LINE_SEG_OPS_H_
-#define _PYGMTL_LINE_SEG_OPS_H_
+// Includes ====================================================================
+#include <boost/python.hpp>
+#include <gmtl-SphereOps.h>
 
-// This file makes declarations of the templated function instantiations
-// needed for Boost.Python to do its thing.
+// Using =======================================================================
+using namespace boost::python;
 
-#include <gmtl/LineSeg.h>
-#include <gmtl/LineSegOps.h>
-
-
-namespace gmtl
+// Module ======================================================================
+void _Export_gmtl_SphereOps_h()
 {
-   template float distanceSquared(const gmtl::LineSegf&, const gmtl::Point3f&);
-   template double distanceSquared(const gmtl::LineSegd&, const gmtl::Point3d&);
-
-   template gmtl::Point3f findNearestPt(const gmtl::LineSegf&,
-                                        const gmtl::Point3f&);
-   template gmtl::Point3d findNearestPt(const gmtl::LineSegd&,
-                                        const gmtl::Point3d&);
-
-   template float distance(const gmtl::LineSegf&, const gmtl::Point3f&);
-   template double distance(const gmtl::LineSegd&, const gmtl::Point3d&);
+    def("isEqual", (bool (*)(const gmtl::Sphere<float> &, const gmtl::Sphere<float> &, const float &))&gmtl::isEqual);
+    def("isEqual", (bool (*)(const gmtl::Sphere<double> &, const gmtl::Sphere<double> &, const double &))&gmtl::isEqual);
 }
-
-#endif /* _PYGMTL_LINE_SEG_OPS_H_ */

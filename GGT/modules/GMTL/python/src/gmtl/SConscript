@@ -65,18 +65,22 @@ cpp_files = Split("""
    _Vec_float_4.cpp
    _Vec_int_3.cpp
    _Vec_int_4.cpp
+   _gmtl_AABoxOps_h.cpp
+   _gmtl_AxisAngleOps_h.cpp
    _gmtl_Containment_h.cpp
+   _gmtl_CoordOps_h.cpp
    _gmtl_Defines_h.cpp
+   _gmtl_EulerAngleOps_h.cpp
    _gmtl_Generate_h.cpp
    _gmtl_LineSegOps_h.cpp
    _gmtl_Math_h.cpp
    _gmtl_MatrixOps_h.cpp
    _gmtl_PlaneOps_h.cpp
    _gmtl_QuatOps_h.cpp
+   _gmtl_SphereOps_h.cpp
    _gmtl_TriOps_h.cpp
    _gmtl_VecOps_h.cpp
    _gmtl_Xforms_h.cpp
-   _gmtl_functions_h.cpp
    _gmtl_intersect_wrappers_h.cpp
    _gmtl_wrappers_h.cpp
    gmtl.cpp

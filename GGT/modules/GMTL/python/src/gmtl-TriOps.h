@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-TriOps.h,v $
- * Date modified: $Date: 2003-08-17 06:32:59 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2003-08-30 17:22:10 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -53,6 +53,8 @@ namespace gmtl
    template gmtl::Vec3d normal(const gmtl::Trid&);
 //   template gmtl::Vec3i normal(const gmtl::Trii&);
 
+   template bool isEqual(const gmtl::Trif&, const gmtl::Trif&, const float&);
+   template bool isEqual(const gmtl::Trid&, const gmtl::Trid&, const double&);
 }
 
 #endif /* _PYGMTL_TRI_OPS_H_ */

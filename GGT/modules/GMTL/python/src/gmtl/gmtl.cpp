@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl.cpp,v $
- * Date modified: $Date: 2003-08-18 22:51:35 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2003-08-30 17:22:10 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -93,10 +93,14 @@ void _Export_Vec_int_4();
 void _Export_gmtl_Math_h();
 void _Export_gmtl_Defines_h();
 void _Export_gmtl_MatrixOps_h();
+void _Export_gmtl_CoordOps_h();
+void _Export_gmtl_SphereOps_h();
+void _Export_gmtl_AxisAngleOps_h();
+void _Export_gmtl_EulerAngleOps_h();
+void _Export_gmtl_AABoxOps_h();
 void _Export_gmtl_TriOps_h();
 void _Export_gmtl_QuatOps_h();
 void _Export_gmtl_VecOps_h();
-void _Export_gmtl_functions_h();
 void _Export_gmtl_intersect_wrappers_h();
 void _Export_gmtl_LineSegOps_h();
 void _Export_gmtl_Containment_h();
@@ -172,10 +176,14 @@ BOOST_PYTHON_MODULE(gmtl)
     _Export_gmtl_Math_h();
     _Export_gmtl_Defines_h();
     _Export_gmtl_MatrixOps_h();
+    _Export_gmtl_CoordOps_h();
+    _Export_gmtl_SphereOps_h();
+    _Export_gmtl_AxisAngleOps_h();
+    _Export_gmtl_AABoxOps_h();
+    _Export_gmtl_EulerAngleOps_h();
     _Export_gmtl_TriOps_h();
     _Export_gmtl_QuatOps_h();
     _Export_gmtl_VecOps_h();
-    _Export_gmtl_functions_h();
     _Export_gmtl_intersect_wrappers_h();
     _Export_gmtl_LineSegOps_h();
     _Export_gmtl_Containment_h();
