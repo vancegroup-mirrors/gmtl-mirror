@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixCompareTest.cpp,v $
- * Date modified: $Date: 2002-03-18 21:57:53 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-03-21 21:51:28 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -18,8 +18,7 @@
 * Copyright (C) 2001,2002 Allen Bierbaum
 *
 * This library is free software; you can redistribute it and/or
-* modify it under th MathPrimitives  [PrimName]Ops.h  Vec & Point [100%] -ab
-Matrix [] -km Transformations XformInterface? Xform.h   Collision detection CollisionInterface? Intersection.h   Bounding volumes BoundingInterface? Containment.h   Math factories MathFactories Builder.h  e terms of the GNU Lesser General Public
+* modify it under the terms of the GNU Lesser General Public
 * License as published by the Free Software Foundation; either
 * version 2.1 of the License, or (at your option) any later version.
 *
@@ -37,6 +36,57 @@ Matrix [] -km Transformations XformInterface? Xform.h   Collision detection Coll
 #include <cppunit/extensions/MetricRegistry.h>
 
 namespace gmtlTest {
+   template<typename T, int ROWS, int COLS>
+   class testEqual
+   {
+   public:
+      static void go()
+      {
+         assert( ROWS <= 5 &&  COLS <= 5 );
+         gmtl::Matrix<T, ROWS, COLS> mat1, mat2;
+         T array[] = { (T)0.78, (T) 1.4,   (T) 2.9,  (T)3.45,
+                       (T)4.21, (T)57.9,  (T) 65.9,  (T)74.6,
+                       (T)89.2, (T)99.2,  (T) 10.9,  (T)11.9,
+                       (T)12.5, (T)13.9,  (T)14.78,  (T)15.6,
+                       (T)4.21, (T)57.9,  (T) 65.9,  (T)74.6,
+                       (T)89.2, (T)99.2,  (T) 10.9,  (T)11.9, 
+                       (T)89.2, (T)99.2,  (T) 10.9,  (T)11.9 };
+         mat1.set( array );
+         mat1 = mat2;
+         CPPUNIT_ASSERT( mat1 == mat2 );
+         CPPUNIT_ASSERT( mat2 == mat1 );
+
+         // Test that != works on all elements
+         for (int i = 0; i < ROWS; ++i)
+         {
+            for (int j = 0; j < COLS; ++j)
+            {
+               mat2( i, j ) = (T)1221.0f;
+               CPPUNIT_ASSERT(  (mat1 != mat2) );
+               CPPUNIT_ASSERT( !(mat1 == mat2) );
+               mat2( i, j ) = mat1( i, j ); // put it back
+            }
+         }
+
+         // Test for epsilon equals working
+         CPPUNIT_ASSERT( gmtl::isEqual( mat1, mat2 ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( mat1, mat2, (T)0.0f ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( mat2, mat1, (T)0.0f ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( mat2, mat1, (T)100000.0f ) );
+         T eps = (T)10.0;
+         for (int i = 0; i < ROWS; ++i)
+         {
+            for (int j = 0; j < COLS; ++j)
+            {
+               mat2( i, j ) = mat1( i, j ) - (eps / (T)2.0);
+               CPPUNIT_ASSERT(  gmtl::isEqual( mat1, mat2, eps ) );
+               CPPUNIT_ASSERT( !gmtl::isEqual( mat1, mat2, (T)(eps / 3.0) ) );
+               mat2( i, j ) = mat1( i, j ); // put it back
+            }
+         }
+      }
+   };
+
    void MatrixCompareTest::testMatEqualityFloatTest()
    {
       testEqual<float, 5, 5>::go();
