@@ -1,5 +1,7 @@
 DATE       AUTHOR       CHANGE
 ---------- --------     -----------------------------------------------------------
+2002-06-06 subatomic    changed all get*****() functions to set****()
+                        NEW VERSION: 0.0.4
 2002-06-06 subatomic    changed all convert() functions to set()
                         NEW VERSION: 0.0.3
 2002-06-04 nonchocoboy  Added AABox class.
