@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixClassTest.h,v $
- * Date modified: $Date: 2002-02-22 21:48:34 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2002-03-11 00:42:01 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -64,7 +64,7 @@ public:
    void testTimingDefaultConstructor()
    {
       // Test overhead of creation
-      const long iters(400000);
+      const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
 
       for (long iter = 0; iter < iters; ++iter)
@@ -103,7 +103,7 @@ public:
       src_mat101[9] = 1.0f;
 
       // Test overhead of creation
-      const long iters(400000);
+      const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
 
       for (long iter = 0; iter < iters; ++iter)
@@ -143,7 +143,7 @@ public:
       src_mat101[9] = 1.0f;
 
       // Test overhead of creation
-      const long iters(400000);
+      const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
 
       gmtl::Matrix<float, 1, 1> test_mat11;
@@ -170,7 +170,7 @@ public:
    void testTimingOpParen()
    {
       // Test overhead of creation
-      const long iters(400000);
+      const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
 
       gmtl::Matrix<float, 1, 1> test_mat11;
@@ -197,7 +197,7 @@ public:
    void testTimingOpBracket()
    {
       // Test overhead of creation
-      const long iters(400000);
+      const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
 
       gmtl::Matrix<float, 1, 1> test_mat11;
@@ -224,7 +224,7 @@ public:
    void testTimingSetPtr()
    {
       // Test overhead of creation
-      const long iters(400000);
+      const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
 
       gmtl::Matrix<float, 2, 2> test_mat22;
@@ -252,7 +252,7 @@ public:
       gmtl::Matrix<double, 4, 4> test_mat44;
       
       // Test overhead of creation
-      const long iters(400000);
+      const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
 
       for (long iter = 0; iter < iters; ++iter)
@@ -270,7 +270,7 @@ public:
    void testTimingGetData()
    {
       // Test overhead of creation
-      const long iters(400000);
+      const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
 
       gmtl::Matrix<float, 2, 2> test_mat22;
@@ -298,7 +298,7 @@ public:
    void testTimingSet()
    {
       // Test overhead of creation
-      const long iters(400000);
+      const long iters(25000);
       CPPUNIT_METRIC_START_TIMING();
 
       gmtl::Matrix<float, 2, 2> test_mat22;
