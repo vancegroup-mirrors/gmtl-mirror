@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecBase.h,v $
- * Date modified: $Date: 2003-03-29 22:02:19 $
- * Version:       $Revision: 1.14 $
+ * Date modified: $Date: 2004-08-30 14:54:39 $
+ * Version:       $Revision: 1.15 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -36,9 +36,11 @@
 #define _GMTL_VECBASE_H_
 
 #include <gmtl/Util/Assert.h>
+#include <gmtl/Util/Meta.h>
 
 namespace gmtl
 {
+
 
 /**
  * Base type for vector-like objects including Points and Vectors. It is
@@ -67,12 +69,21 @@ public:
     */
    VecBase() {}
 
+
    /**
     * Makes an exact copy of the given VecBase object.
     *
     * @param rVec    the VecBase object to copy
     */
-   VecBase(const VecBase<DATA_TYPE, SIZE>& rVec);
+   VecBase(const VecBase<DATA_TYPE, SIZE>& rVec)
+   {
+      /*
+      for(unsigned i=0;i<SIZE;++i)
+         mData[i] = rVec.mData[i];
+      */
+      gmtl::meta::AssignVecUnrolled<SIZE-1, VecBase<DATA_TYPE,SIZE> >::func(*this, rVec);
+   }
+
 
    //@{
    /**
@@ -141,13 +152,6 @@ public:
 
 // --- Inline members --- //
 template<class DATA_TYPE, unsigned SIZE>
-VecBase<DATA_TYPE,SIZE>::VecBase(const VecBase<DATA_TYPE, SIZE>& rVec)
-{
-   for(unsigned i=0;i<SIZE;++i)
-      mData[i] = rVec.mData[i];
-}
-
-template<class DATA_TYPE, unsigned SIZE>
 VecBase<DATA_TYPE,SIZE>::VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1)
 {
    // @todo need compile time assert
@@ -182,8 +186,12 @@ VecBase<DATA_TYPE,SIZE>::VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1,con
 template<class DATA_TYPE, unsigned SIZE>
 inline void VecBase<DATA_TYPE,SIZE>::set(const DATA_TYPE* dataPtr)
 {
+   /*
    for(unsigned i=0;i<SIZE;++i)
       mData[i] = dataPtr[i];
+   */
+   gmtl::meta::AssignArrayUnrolled<SIZE-1, DATA_TYPE>::func(&(mData[0]), dataPtr);
+
 }
 template<class DATA_TYPE, unsigned SIZE>
 inline void VecBase<DATA_TYPE,SIZE>::set(const DATA_TYPE& val0)
