@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecOps.h,v $
- * Date modified: $Date: 2002-02-21 21:37:08 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2002-02-25 20:28:40 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -211,7 +211,7 @@ bool isNormalized( const Vec<DATA_TYPE, SIZE>& v1, const DATA_TYPE eps = (DATA_T
    return Math::isEqual( lengthSquared( v1 ), (DATA_TYPE)1.0, eps );
 }
 
-/** cross product
+/** cross product (return a copy)
 */
 template<class DATA_TYPE>
 Vec<DATA_TYPE,3> cross(const Vec<DATA_TYPE, 3>& v1, const Vec<DATA_TYPE, 3>& v2)
@@ -219,6 +219,17 @@ Vec<DATA_TYPE,3> cross(const Vec<DATA_TYPE, 3>& v1, const Vec<DATA_TYPE, 3>& v2)
    return Vec<DATA_TYPE,3>( ((v1[Yelt]*v2[Zelt]) - (v1[Zelt]*v2[Yelt])),
                             ((v1[Zelt]*v2[Xelt]) - (v1[Xelt]*v2[Zelt])),
                             ((v1[Xelt]*v2[Yelt]) - (v1[Yelt]*v2[Xelt])) );
+}
+
+/** cross product (returns by reference)
+*/
+template<class DATA_TYPE>
+Vec<DATA_TYPE,3>& cross( Vec<DATA_TYPE,3>& result, const Vec<DATA_TYPE, 3>& v1, const Vec<DATA_TYPE, 3>& v2)
+{
+   result.set( ((v1[Yelt]*v2[Zelt]) - (v1[Zelt]*v2[Yelt])),
+               ((v1[Zelt]*v2[Xelt]) - (v1[Xelt]*v2[Zelt])),
+               ((v1[Xelt]*v2[Yelt]) - (v1[Yelt]*v2[Xelt])) );
+   return result;
 }
 
 //@}
