@@ -16,6 +16,7 @@ headers = Split("""
    EulerAngle
    EulerAngleOps
    Generate
+   gmtl
    Intersection
    LineSeg
    LineSegOps
