@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Matrix.h,v $
- * Date modified: $Date: 2002-01-31 01:25:09 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-02-10 04:38:07 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,7 +35,7 @@
 #ifndef _GMTL_MATRIX_H_
 #define _GMTL_MATRIX_H_
 
-#include <gmtl/gmtlDefines.h>
+#include <gmtl/gmtlConfig.h>
 #include <gmtl/Vec3.h>
 
 namespace gmtl

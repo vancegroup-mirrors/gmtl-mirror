@@ -7,15 +7,15 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: IntersectionTest.h,v $
- * Date modified: $Date: 2002-01-26 23:47:52 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-02-10 04:38:06 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
 /*************************************************************** ggt-cpr beg
 *
 * GGT: The Generic Graphics Toolkit
-* Copyright (C) 2001,2002 Allen Bierbaum 
+* Copyright (C) 2001,2002 Allen Bierbaum
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU Lesser General Public
@@ -35,7 +35,7 @@
 #ifndef _INTERSECTION_TEST_H_
 #define _INTERSECTION_TEST_H_
 
-#include <gfxConfig.h>
+#include <gmtl/gmtlConfig.h>
 #include <iostream>
 
 #include <cppunit/TestCase.h>
