@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-02-22 21:50:22 $
- * Version:       $Revision: 1.13 $
+ * Date modified: $Date: 2002-02-28 14:37:09 $
+ * Version:       $Revision: 1.14 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -151,23 +151,23 @@ namespace gmtl
    template <typename DATA_TYPE>
    inline Quat<DATA_TYPE>& makeRot( Quat<DATA_TYPE>& result, const Vec<DATA_TYPE, 3>& from, const Vec<DATA_TYPE, 3>& to )
    {
-      const DATA_TYPE epsilon = 0.00001;
-      DATA_TYPE cosangle = dot( from * to );
+      const DATA_TYPE epsilon = (DATA_TYPE)0.00001;
+      DATA_TYPE cosangle = dot( from, to );
 
       // if cosangle is close to 1, so the vectors are close to being coincident
       // Need to generate an angle of zero with any vector we like
       // We'll choose identity (no rotation)
-      if ( isEqual( cosangle, 1.0, epsilon ) )
+      if ( Math::isEqual( cosangle, (DATA_TYPE)1.0, epsilon ) )
       {
          return result = Quat<DATA_TYPE>();
       }
 
       // vectors are close to being opposite, so rotate one a little...
-      else if ( isEqual( cosangle, -1.0, epsilon ) )
+      else if ( Math::isEqual( cosangle, (DATA_TYPE)-1.0, epsilon ) )
       {
-         Vec<DATA_TYPE, 3> to_rot( to[0] + 0.3, to[1] - 0.15, to[2] - 0.15 ), axis;
+         Vec<DATA_TYPE, 3> to_rot( to[0] + (DATA_TYPE)0.3, to[1] - (DATA_TYPE)0.15, to[2] - (DATA_TYPE)0.15 ), axis;
          cross( axis, from, to_rot );
-         DATA_TYPE angle = Math::acos( cosangle );
+         DATA_TYPE angle = Math::aCos( cosangle );
          return makeRot( result, angle, axis );
       }
 
@@ -177,7 +177,7 @@ namespace gmtl
       {
          Vec<DATA_TYPE, 3> axis;
          cross( axis, from, to );
-         DATA_TYPE angle = Math::acos( cosangle );
+         DATA_TYPE angle = Math::aCos( cosangle );
          return makeRot( result, angle, axis );
       }
    }
