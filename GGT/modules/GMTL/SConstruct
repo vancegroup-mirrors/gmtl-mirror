@@ -141,7 +141,7 @@ def BuildWin32Environment():
    env['CXXFLAGS'] += '/Zm800 /GX /GR /Op /DBOOST_PYTHON_DYNAMIC_LIB /Zc:wchar_t,forScope'
 
    if optimize != 'no':
-      env['CXXFLAGS'] += ' /Ogity /O2 /Gs /Ob2 /MD /D_OPT'
+      env['CXXFLAGS'] += ' /Ogity /O2 /Gs /Ob2 /MD /D_OPT /DNDEBUG'
       env['LINKFLAGS'] += ' /RELEASE'
    else:   
       env['CXXFLAGS'] += ' /Z7 /Od /Ob0 /MDd /D_DEBUG'
@@ -180,7 +180,7 @@ def ValidateBoostOption(key, value, environ):
       platform = GetPlatform()
 
       if platform == 'win32':
-         tool = 'vc7'
+         tool = 'vc71'
       elif platform == 'irix':
          tool = 'mp'
       elif platform == 'linux':
@@ -190,7 +190,7 @@ def ValidateBoostOption(key, value, environ):
       if enable_python:
          if platform == 'win32':
             boost_python_lib_name = pj(value, 'lib',
-                                       'boost_python-%s.dll' % tool)
+                                       'boost_python-%s-mt-1_31.dll' % tool)
          else:
             boost_python_lib_name = pj(value, 'lib',
                                        'libboost_python-%s.a' % tool)
@@ -210,10 +210,12 @@ def ValidateBoostOption(key, value, environ):
          if optimize == 'no':
             if platform == 'win32':
                dbg = 'gd'
+               version = '-1_31'
             else:
                dbg = 'd'
+               version = ''
 
-            environ.Append(BoostLIBS = ['boost_python-%s-mt-%s' % (tool, dbg)])
+            environ.Append(BoostLIBS = ['boost_python-%s-mt-%s%s' % (tool, dbg, version)])
          else:
             environ.Append(BoostLIBS = ['boost_python-%s-mt' % tool])
 
