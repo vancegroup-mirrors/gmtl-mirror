@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-03-20 07:29:49 $
- * Version:       $Revision: 1.34 $
+ * Date modified: $Date: 2002-03-20 21:05:36 $
+ * Version:       $Revision: 1.35 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -41,6 +41,7 @@
 #include <gmtl/VecOps.h> // for lengthSquared
 #include <gmtl/Quat.h>
 #include <gmtl/QuatOps.h>
+#include <gmtl/Coord.h>
 #include <gmtl/Matrix.h>
 #include <gmtl/Meta.h>
 #include <gmtl/Math.h>
@@ -77,6 +78,8 @@ namespace gmtl
       return vec;
    }
 
+   
+      
    /** @name QUATERNION GENERATORS */
    //@{
 
@@ -683,6 +686,34 @@ namespace gmtl
    //@}
 
 
+   /** @name COORD get/set/make/convert */
+   //@{
+
+   template <typename DATATYPE, unsigned POSSIZE, unsigned MATCOLS, unsigned MATROWS >
+   inline void setCoord( Coord<DATATYPE, POSSIZE, 3>& eulercoord, const Matrix<DATATYPE, MATROWS, MATCOLS>& mat, RotationOrder order = gmtl::XYZ )
+   {
+      getRot( mat, eulercoord.rot()[0], eulercoord.rot()[1], eulercoord.rot()[2], order );
+      getTrans( mat, eulercoord.pos()[0], eulercoord.pos()[1], eulercoord.pos()[2] );
+   }
+
+   template <typename COORD_TYPE, unsigned MATCOLS, unsigned MATROWS >
+   inline COORD_TYPE makeCoord( const Matrix<typename COORD_TYPE::DataType, MATROWS, MATCOLS>& mat,
+                                RotationOrder order,
+                                Type2Type< COORD_TYPE > t = Type2Type< COORD_TYPE >() )
+   {
+      COORD_TYPE temporary;
+      return setCoord( temporary, mat, order );
+   }
+
+   template <typename DATATYPE, unsigned POSSIZE, unsigned MATCOLS, unsigned MATROWS >
+   inline void convert( Coord<DATATYPE, POSSIZE, 3>& eulercoord, const Matrix<DATATYPE, MATROWS, MATCOLS>& mat, RotationOrder order = gmtl::XYZ )
+   {
+      getRot( mat, eulercoord.rot()[0], eulercoord.rot()[1], eulercoord.rot()[2], order );
+      getTrans( mat, eulercoord.pos()[0], eulercoord.pos()[1], eulercoord.pos()[2] );
+   }
+
+   //@}
+   
 } // end gmtl namespace.
 
 #endif
