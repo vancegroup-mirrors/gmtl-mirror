@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatOps.h,v $
- * Date modified: $Date: 2002-03-09 21:17:46 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-03-10 23:46:09 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -104,6 +104,32 @@ namespace gmtl
                               q1[Welt]*q2[Yelt] + q1[Yelt]*q2[Welt] + q1[Zelt]*q2[Xelt] - q1[Xelt]*q2[Zelt],
                               q1[Welt]*q2[Zelt] + q1[Zelt]*q2[Welt] + q1[Xelt]*q2[Yelt] - q1[Yelt]*q2[Xelt],
                               q1[Welt]*q2[Welt] - q1[Xelt]*q2[Xelt] - q1[Yelt]*q2[Yelt] - q1[Zelt]*q2[Zelt] );
+   }
+   
+   /** negate each element in the quaternion vector.
+    * the negative of a rotation quaternion is geometrically equivelent
+    * to the original. there exist 2 quats for every possible rotation.
+    * @post returns the negation of the given quat.
+    */
+   template <typename DATA_TYPE>
+   Quat<DATA_TYPE>& negate( Quat<DATA_TYPE>& result )
+   {
+      result[0] = -result[0];
+      result[1] = -result[1];
+      result[2] = -result[2];
+      result[3] = -result[3];
+      return result;
+   }
+   
+   /** operator-, make a temporary that is the negative of the given quat.
+    * the negative of a rotation quaternion is geometrically equivelent
+    * to the original. there exist 2 quats for every possible rotation.
+    * @post returns the negation of the given quat
+    */
+   template <typename DATA_TYPE>
+   Quat<DATA_TYPE> operator-( const Quat<DATA_TYPE>& quat )
+   {
+      return Quat<DATA_TYPE>( -quat[0], -quat[1], -quat[2], -quat[3] );
    }
    
    /** vector scalar multiplication
