@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Containment.h,v $
- * Date modified: $Date: 2002-11-26 07:41:17 $
- * Version:       $Revision: 1.13 $
+ * Date modified: $Date: 2003-01-14 20:51:25 $
+ * Version:       $Revision: 1.14 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -181,7 +181,7 @@ void makeVolume( Sphere<DATA_TYPE>& container,
 
    // Implementation based on the Sphere Centered at Average of Points algorithm
    // found in "3D Game Engine Design" by Devud G, Eberly (pg. 27)
-   std::vector< Point<DATA_TYPE, 3> >::const_iterator itr = pts.begin();
+   typename std::vector< Point<DATA_TYPE, 3> >::const_iterator itr = pts.begin();
 
    // compute the average of the points as the center
    Point<DATA_TYPE, 3> sum = *itr;
