@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOpsTest.h,v $
- * Date modified: $Date: 2002-02-22 21:48:34 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2002-03-09 21:05:10 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -64,61 +64,101 @@ public:
    {
    }
 
-    void testMatrixTimeTranspose()
+   void testMatrixTimeTranspose44f()
    {
       gmtl::Matrix<float, 4, 4> test_mat1;
       test_mat1.set( 0,  1,  2,  3, 
                      4,  5,  6,  7,
                      8,  9, 10, 11,
                     12, 13, 14, 15 );
+         
+      const long iters(50000);
+      CPPUNIT_METRIC_START_TIMING();
+      for( long iter=0;iter<iters; ++iter)
+      {
+         gmtl::transpose( test_mat1 );
+         test_mat1[2] += test_mat1[3];
+         test_mat1[3] -= test_mat1[1];
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixOpsTest/transpose(mat44f)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      
+      // force intelligent compilers to do all the iterations (ie. to not optimize them out), 
+      // by using the variables computed...
+      CPPUNIT_ASSERT( test_mat1[2] != test_mat1[0] );
+   }
+   
+      
+   void testMatrixTimeTranspose33d()
+   {
       gmtl::Matrix<double, 3, 3> test_mat2;
       test_mat2.set( 0,  1,  2, 
                     4,  5,  6, 
                     8,  9,  10 );
-         
-      const long iters(400000);
-      CPPUNIT_METRIC_START_TIMING();
 
+      const long iters(50000);
+      CPPUNIT_METRIC_START_TIMING();
       for( long iter=0;iter<iters; ++iter)
       {
-         gmtl::transpose( test_mat1 );
          gmtl::transpose( test_mat2 );
+         test_mat2[2] += test_mat2[3];
+         test_mat2[3] -= test_mat2[1];
       }
-
       CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixOpsTest/TransposeTest", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
-   }   
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixOpsTest/transpose(mat33d)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      
+      // force intelligent compilers to do all the iterations (ie. to not optimize them out), 
+      // by using the variables computed...
+      CPPUNIT_ASSERT( test_mat2[2] != test_mat2[0] );
+   }
 
-   void testMatrixTimeMult44()
+   void testMatrixTimeMult44_mult()
    {
       gmtl::Matrix<float, 4, 4> test_mat1, test_mat2, res_mat;
       test_mat1.set( 0,  1,  2,  3, 
                      4,  5,  6,  7,
                      8,  9, 10, 11,
                     12, 13, 14, 15 );
-      test_mat2 = test_mat1;
+      res_mat = test_mat2 = test_mat1;
       
-      const long iters(400000);
+      const long iters(50000);
       CPPUNIT_METRIC_START_TIMING();
-
       for( long iter=0;iter<iters; ++iter)
       {
-         gmtl::mult( res_mat, test_mat1, test_mat2 );
+         gmtl::mult( res_mat, res_mat, test_mat1 );
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixOpsTest/mult(res,mat44f,mat44f)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      // force intelligent compilers to do all the iterations (ie. to not optimize them out), 
+      // by using the variables computed...
+      CPPUNIT_ASSERT( test_mat1[2] != test_mat2[0] );
+      CPPUNIT_ASSERT( res_mat[2] != 1000.0f );
+   }
+      
+   void testMatrixTimeMult44_operatorStar()
+   {
+      gmtl::Matrix<float, 4, 4> test_mat1, test_mat2, res_mat;
+      test_mat1.set( 0,  1,  2,  3, 
+                     4,  5,  6,  7,
+                     8,  9, 10, 11,
+                    12, 13, 14, 15 );
+      res_mat = test_mat2 = test_mat1;
+      
+      const long iters(50000);
+      CPPUNIT_METRIC_START_TIMING();
+      for( long iter=0;iter<iters; ++iter)
+      {
+         res_mat = test_mat1 * res_mat;
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixOpsTest/Mult44", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixOpsTest/operator*(mat44f,mat44f)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
       
-      
-      CPPUNIT_METRIC_START_TIMING();
-
-      for( long iter=0;iter<iters; ++iter)
-      {
-         res_mat = test_mat1 * test_mat2;
-      }
-
-      CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixOpsTest/Mult44operatorStar", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      // force intelligent compilers to do all the iterations (ie. to not optimize them out), 
+      // by using the variables computed...
+      CPPUNIT_ASSERT( test_mat1[2] != test_mat2[0] );
+      CPPUNIT_ASSERT( res_mat[2] != 1000.0f );
    }   
    
 
@@ -129,18 +169,22 @@ public:
                      4,  5,  6,  7,
                      8,  9, 10, 11,
                     12, 13, 14, 15 );
-      test_mat2 = test_mat1;
+      res_mat = test_mat2 = test_mat1;
       
-      const long iters(400000);
+      const long iters(50000);
       CPPUNIT_METRIC_START_TIMING();
 
       for( long iter=0;iter<iters; ++iter)
       {
-         gmtl::add( res_mat, test_mat1, test_mat2 );
+         gmtl::add( res_mat, res_mat, test_mat2 );
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixOpsTest/Add44", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixOpsTest/add(res,mat44f,mat44f)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      
+      // force intelligent compilers to do all the iterations (ie. to not optimize them out), 
+      // by using the variables computed...
+      CPPUNIT_ASSERT( res_mat[2] != 1000.0f );
    }
    
 
@@ -151,18 +195,22 @@ public:
                      4,  5,  6,  7,
                      8,  9, 10, 11,
                     12, 13, 14, 15 );
-      test_mat2 = test_mat1;
+      res_mat = test_mat2 = test_mat1;
       
-      const long iters(400000);
+      const long iters(50000);
       CPPUNIT_METRIC_START_TIMING();
 
       for( long iter=0;iter<iters; ++iter)
       {
-         gmtl::sub( res_mat, test_mat1, test_mat2 );
+         gmtl::sub( res_mat, test_mat1, res_mat );
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixOpsTest/Sub44", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixOpsTest/sub(res,mat44f,mat44f)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      
+      // force intelligent compilers to do all the iterations (ie. to not optimize them out), 
+      // by using the variables computed...
+      CPPUNIT_ASSERT( res_mat[2] != 1000.0f );
    }   
    
    
@@ -816,16 +864,18 @@ public:
 
    static CppUnit::Test* suite()
    {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("MatrixOpsTest");
+      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite( "MatrixOpsTest" );
       test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixTranspose", &MatrixOpsTest::testMatrixTranspose ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixMult", &MatrixOpsTest::testMatrixMult ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixScalarMult", &MatrixOpsTest::testMatrixScalarMult ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixAddSub", &MatrixOpsTest::testMatrixAddSub ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatInvert", &MatrixOpsTest::testMatInvert ) );
-      //test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>("testGetSetAxes", &MatrixOpsTest::testGetSetAxes));
+      //test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testGetSetAxes", &MatrixOpsTest::testGetSetAxes ) );
       
-      test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixTimeTranspose", &MatrixOpsTest::testMatrixTimeTranspose ) );
-      test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixTimeMult44", &MatrixOpsTest::testMatrixTimeMult44 ) );
+      test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixTimeTranspose44f", &MatrixOpsTest::testMatrixTimeTranspose44f ) );
+      test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixTimeTranspose33d", &MatrixOpsTest::testMatrixTimeTranspose33d ) );
+      test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixTimeMult44_mult", &MatrixOpsTest::testMatrixTimeMult44_mult ) );
+      test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixTimeMult44_operatorStar", &MatrixOpsTest::testMatrixTimeMult44_operatorStar ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixTimeAdd44", &MatrixOpsTest::testMatrixTimeAdd44 ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixTimeSub44", &MatrixOpsTest::testMatrixTimeSub44 ) );
       return test_suite;
