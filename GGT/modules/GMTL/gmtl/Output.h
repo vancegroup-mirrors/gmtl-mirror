@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Output.h,v $
- * Date modified: $Date: 2002-03-20 19:49:12 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-03-20 20:06:36 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -124,10 +124,13 @@ namespace gmtl
 
    /**
     * Outputs a string representation of the given Tri to the given output
-    * stream. The output is formatted along the lines of:
-    * <pre>
-    *    (1, 2, 3), (4, 5, 6), (7, 8, 9)
-    * </pre>
+    * stream. The output is formatted such that
+    *    Tri<int>(
+    *       Point<int, 3>(1,2,3),
+    *       Point<int, 3>(4,5,6),
+    *       Point<int, 3>(7,8,9)
+    *    )
+    * will appear as "(1, 2, 3), (4, 5, 6), (7, 8, 9)". 
     *
     * @param out     the stream to write to
     * @param t       the Tri to output
@@ -143,10 +146,12 @@ namespace gmtl
 
    /**
     * Outputs a string representation of the given Plane to the given output
-    * stream. The output is formatted along the lines of:
-    * <pre>
-    *   (1, 2, 3), 4
-    * </pre>
+    * stream. The output is formatted such that
+    *    Plane<int>(
+    *       Vec<int, 3>(1,2,3),
+    *       4
+    *    )
+    * will appear as "(1, 2, 3), 4)".
     *
     * @param out     the stream to write to
     * @param p       the Plane to output
@@ -157,6 +162,27 @@ namespace gmtl
    std::ostream& operator<<( std::ostream& out, const Plane<DATA_TYPE> &p )
    {
       out << p.mNorm << ", " << p.mOffset;
+      return out;
+   }
+
+   /**
+    * Outputs a string representation of the given Sphere to the given output
+    * stream. The output is formatted such that
+    *    Sphere<int>(
+    *       Point<int, 3>(1,2,3),
+    *       4
+    *    )
+    * will appear as "(1, 2, 3), 4)".
+    *
+    * @param out     the stream to write to
+    * @param s       the Sphere to output
+    *
+    * @return  out after it has been written to
+    */
+   template< typename DATA_TYPE >
+   std::ostream& operator<<( std::ostream& out, const Sphere<DATA_TYPE> &s )
+   {
+      out << s.mCenter << ", " << s.mRadius;
       return out;
    }
 } // end namespace gmtl
