@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: OptTest.cpp,v $
- * Date modified: $Date: 2002-02-22 22:27:06 $
- * Version:       $Revision: 1.10 $
+ * Date modified: $Date: 2002-03-11 20:41:08 $
+ * Version:       $Revision: 1.11 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -368,7 +368,7 @@ namespace gmtlTest
    void OptTest::testSetEqual()
    {
       SeparateVec3 destvec;
-      SeparateVec3 srcvec1, srcvec2;
+      SeparateVec3 srcvec1;
       std::cout << std::endl << "test perf of copy ops" << std::endl;
 
       // use our setEqual func to copy
@@ -385,7 +385,7 @@ namespace gmtlTest
       }
       {
          ArrayVec3 destvec;
-         ArrayVec3 srcvec1, srcvec2;
+         ArrayVec3 srcvec1;
          CppUnit::MetricRegistry::TimeStamp start_t = CppUnit::MetricRegistry::instance()->getCurTime();
          for (int x = 0; x < TIMES_TO_RUN; ++x)
          {
@@ -455,7 +455,7 @@ namespace gmtlTest
       }
       {
          ArrayVec3 destvec;
-         ArrayVec3 srcvec1, srcvec2;
+         ArrayVec3 srcvec1;
          CppUnit::MetricRegistry::TimeStamp start_t = CppUnit::MetricRegistry::instance()->getCurTime();
          for (int x = 0; x < TIMES_TO_RUN; ++x)
          {
@@ -650,7 +650,7 @@ namespace gmtlTest
       }
       {
          ArrayVec3 destvec;
-         ArrayVec3 srcvec1, srcvec2;
+         ArrayVec3 srcvec2;
          CppUnit::MetricRegistry::TimeStamp start_t = CppUnit::MetricRegistry::instance()->getCurTime();
          for (int x = 0; x < TIMES_TO_RUN; ++x)
          {
