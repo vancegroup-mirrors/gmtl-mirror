@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecBase.h,v $
- * Date modified: $Date: 2004-09-02 14:27:23 $
- * Version:       $Revision: 1.15.2.2 $
+ * Date modified: $Date: 2004-09-02 20:33:32 $
+ * Version:       $Revision: 1.15.2.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -134,7 +134,6 @@ public:
       gmtl::helpers::VecCtrCounterInstance()->inc();
 #endif
    }
-
 
    /**
     * Makes an exact copy of the given VecBase object.
