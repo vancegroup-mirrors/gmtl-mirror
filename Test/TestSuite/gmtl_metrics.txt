@@ -66,6 +66,7 @@ gfxn0/Debug/MatrixTest/SetOverhead                                 0.24604
 gfxn0/Debug/MatrixTest/SetPtrOverhead                              0.704867
 gfxn0/Debug/PlaneTest/CopyConstructOverhead                        0.0864825
 gfxn0/Debug/PlaneTest/DefaultCreationOverhead                      0.0672975
+gfxn0/Debug/PlaneTest/DistanceOverhead                             0.21783
 gfxn0/Debug/PlaneTest/EqualityCompareOverhead                      0.166155
 gfxn0/Debug/PlaneTest/InequalityCompareOverhead                    0.164525
 gfxn0/Debug/PlaneTest/NormOffsetCreationOverhead                   0.0888325

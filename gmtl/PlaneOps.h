@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PlaneOps.h,v $
- * Date modified: $Date: 2002-02-18 23:22:16 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-02-18 23:53:20 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -41,6 +41,20 @@
 
 namespace gmtl
 {
+
+/**
+ * Computes the distance from the plane to the point.
+ *
+ * @param plane      the plane to compare the point to it
+ * @param pt         a point in space
+ *
+ * @return  the distance from the point to the plane
+ */
+template< class DATA_TYPE >
+DATA_TYPE distance( const Plane<DATA_TYPE>& plane, const Point<DATA_TYPE, 3>& pt )
+{
+   return ( dot(plane.mNorm, static_cast< Vec<DATA_TYPE, 3> >(pt)) - plane.mOffset );
+}
 
 //--- Plane Comparisons --//
 /**
