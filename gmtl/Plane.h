@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Plane.h,v $
- * Date modified: $Date: 2002-03-20 19:48:28 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2002-05-10 19:04:06 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -43,21 +43,24 @@
 namespace gmtl
 {
 
-//
-// Plane: Defines a geometrical plane.
-//
-// All points on the plane satify the equation dot(Pt,Normal) = offset
-// normal is assumed to be normalized
-//
-// NOTE: Some plane implementation store D instead of offset.  Thus
-//      those implementation have opposite sign from what we have
-//
-// pg. 309 Computer Graphics 2nd Edition Hearn Baker
-// N dot P = -D
-//  |
-//  |-d-|
-//__|___|-->N
-//  |   |
+/**
+ *  Plane: Defines a geometrical plane.
+ *
+ *  All points on the plane satify the equation dot(Pt,Normal) = offset
+ *  normal is assumed to be normalized
+ *
+ *  NOTE: Some plane implementation store D instead of offset.  Thus
+ *       those implementation have opposite sign from what we have
+ *
+ * pg. 309 Computer Graphics 2nd Edition Hearn Baker
+ *<pre>
+ *  N dot P = -D
+ *   |
+ *   |-d-|
+ * __|___|-->N
+ *   |   |
+ *</pre>
+ */
 template< class DATA_TYPE>
 class Plane
 {
@@ -178,6 +181,9 @@ public:
     */
    DATA_TYPE mOffset;
 };
+
+typedef Plane<float> Planef;
+typedef Plane<double> Planed;
 
 /*
 #include <geomdist.h>
