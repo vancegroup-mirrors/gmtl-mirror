@@ -100,7 +100,7 @@ gfxn0/Debug/SphereTest/SetRadiusOverhead                           0.02201
 gfxn0/Debug/SphereTest/SphereCreationOverhead                      0.073315
 gfxn0/Debug/SphereTest/extendVolumePointOverhead                   1.92763
 gfxn0/Debug/SphereTest/extendVolumeSphereOverhead                  1.92382
-gfxn0/Debug/SphereTest/isEqualOverhead                             0.550122
+gfxn0/Debug/SphereTest/isEqualOverhead                             0.69389
 gfxn0/Debug/SphereTest/isInVolumePointOverhead                     0.59009
 gfxn0/Debug/SphereTest/isInVolumeSphereOverhead                    0.598245
 gfxn0/Debug/SphereTest/isOnVolumeOverhead                          1.18044
@@ -233,7 +233,6 @@ gfxn1/Debug/SphereTest/InequalityCompareOverhead                   0.1995
 gfxn1/Debug/SphereTest/SetCenterOverhead                           0.0764075
 gfxn1/Debug/SphereTest/SetRadiusOverhead                           0.0221225
 gfxn1/Debug/SphereTest/SphereCreationOverhead                      0.071625
-gfxn1/Debug/SphereTest/isEqualOverhead                             0.55861
 gfxn1/Debug/VecBaseTest/ConstructorsOverhead                       0.151587
 gfxn1/Debug/VecBaseTest/CopyConstructOverhead                      0.212822
 gfxn1/Debug/VecBaseTest/SetOverhead                                0.166653
@@ -357,7 +356,6 @@ gfxn2/Debug/SphereTest/SetRadiusOverhead                           0.0222825
 gfxn2/Debug/SphereTest/SphereCreationOverhead                      0.0707375
 gfxn2/Debug/SphereTest/extendVolumePointOverhead                   2.02554
 gfxn2/Debug/SphereTest/extendVolumeSphereOverhead                  1.95392
-gfxn2/Debug/SphereTest/isEqualOverhead                             0.55505
 gfxn2/Debug/SphereTest/isInVolumePointOverhead                     0.60847
 gfxn2/Debug/SphereTest/isInVolumeSphereOverhead                    0.611555
 gfxn2/Debug/SphereTest/isOnVolumeOverhead                          1.19678
@@ -456,7 +454,6 @@ gfxn3/Debug/SphereTest/SetRadiusOverhead                           0.02203
 gfxn3/Debug/SphereTest/SphereCreationOverhead                      0.07019
 gfxn3/Debug/SphereTest/extendVolumePointOverhead                   2.05659
 gfxn3/Debug/SphereTest/extendVolumeSphereOverhead                  2.04914
-gfxn3/Debug/SphereTest/isEqualOverhead                             0.547048
 gfxn3/Debug/SphereTest/isInVolumePointOverhead                     0.578762
 gfxn3/Debug/SphereTest/isInVolumeSphereOverhead                    0.605043
 gfxn3/Debug/SphereTest/isOnVolumeOverhead                          1.28516
@@ -517,7 +514,6 @@ gfxn3/Opt/SphereTest/CopyConstructOverhead                         0.02519
 gfxn3/Opt/SphereTest/EqualityCompareOverhead                       0.0938625
 gfxn3/Opt/SphereTest/InequalityCompareOverhead                     0.0947225
 gfxn3/Opt/SphereTest/SphereCreationOverhead                        0.0151075
-gfxn3/Opt/SphereTest/isEqualOverhead                               0.205655
 gfxn3/Opt/VecBaseTest/CopyConstructOverhead                        0.0777
 gfxn3/Opt/VecBaseTest/SetOverhead                                  0.016115
 gfxn3/Opt/VecBaseTest/SetPtrOverhead                               0.0504

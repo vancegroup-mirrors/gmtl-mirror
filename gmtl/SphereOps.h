@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: SphereOps.h,v $
- * Date modified: $Date: 2002-02-18 23:22:16 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-02-18 23:59:49 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -37,6 +37,7 @@
 
 #include <gmtl/gmtlConfig.h>
 #include <gmtl/Sphere.h>
+#include <gmtl/Math.h>
 
 namespace gmtl
 {
@@ -87,7 +88,8 @@ template< class DATA_TYPE >
 inline bool isEqual( const Sphere<DATA_TYPE>& s1, const Sphere<DATA_TYPE>& s2, const DATA_TYPE& eps )
 {
    ggtASSERT( eps >= 0 );
-   return ( (isEqual(s1.mCenter, s2.mCenter, eps)) && (fabs(s1.mRadius - s2.mRadius) <= eps) );
+   return ( (isEqual(s1.mCenter, s2.mCenter, eps)) &&
+            (Math::isEqual(s1.mRadius, s2.mRadius, eps)) );
 }
 
 } // namespace gmtl
