@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Plane.h,v $
- * Date modified: $Date: 2002-02-18 23:22:15 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-02-20 21:28:51 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -205,54 +205,6 @@ public:
    DATA_TYPE mOffset;
 };
 
-/*
-inline
-float Plane::distanceToPt(const Point3& pt) const
-{
-   return mNorm.dot(pt) - mOffset;
-}
-
-inline
-Plane::Side Plane::whichSide(const Point3& pt) const
-{
-   float dist = distanceToPt(pt);
-
-   if(dist < 0.0f)
-      return Plane::NEG_SIDE;
-   else if(dist > 0.0f)
-      return Plane::POS_SIDE;
-
-   return Plane::ON_PLANE;
-}
-
-inline
-Plane::Side Plane::whichSide(const Point3& pt, const float& eps) const
-{
-   float dist = distanceToPt(pt);
-
-   if(dist < eps)
-      return Plane::NEG_SIDE;
-   else if(dist > eps)
-      return Plane::POS_SIDE;
-
-   return Plane::ON_PLANE;
-}
-
-
-// Finds the point on the plane nearest to pt.
-// Returns the nearest point in nearPt
-inline
-float Plane::findNearestPt(const Point3& pt, Point3& nearPt) const
-{
-   // GGI: P 297
-	// GGII: Pg 223
-	ggtASSERT(mNorm.isNormalized());		   // Assert: Normalized
-	float dist_to_plane(0.0);
-	dist_to_plane = mOffset + mNorm.dot(pt);		// Distance to plane
-	nearPt = pt - (mNorm*dist_to_plane);
-	return dist_to_plane;
-}
-*/
 /*
 #include <geomdist.h>
 
