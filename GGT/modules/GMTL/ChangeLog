@@ -1,5 +1,8 @@
 DATE       AUTHOR       CHANGE
 ---------- ------------ -------------------------------------------------------
+2004-09-22 allenb       Added new Gauss-Jordan implace matrix invert.
+                        Fixed bug in matrix invert that was hard coded to 4x4
+                        NEW VERSION: 0.4.1
 2004-09-16 allenb       Merged vector expression templates onto head.
                         NEW VERSION: 0.4.0
 2004-09-03 allenb       Added output overload for vector expressions.
