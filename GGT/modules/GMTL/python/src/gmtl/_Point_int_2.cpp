@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Point_int_2.cpp,v $
- * Date modified: $Date: 2004-10-27 19:01:33 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2004-10-28 00:03:58 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -42,8 +42,6 @@ void _Export_Point_int_2()
         .def(init< const gmtl::Point<int,2> & >())
         .def(init< const gmtl::VecBase<int,2> & >())
         .def(init< const int &, const int & >())
-        .def(init< const int &, const int &, const int & >())
-        .def(init< const int &, const int &, const int &, const int & >())
         .def_pickle(gmtlPickle::Point2_pickle<int>())
     );
 

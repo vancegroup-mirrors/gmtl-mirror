@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Vec_int_4.cpp,v $
- * Date modified: $Date: 2004-10-27 19:01:33 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2004-10-28 00:03:58 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -41,8 +41,6 @@ void _Export_Vec_int_4()
     class_< gmtl::Vec<int,4>, bases< gmtl::VecBase<int,4> > >("Vec4i", init<  >())
         .def(init< const gmtl::Vec<int,4> & >())
         .def(init< const gmtl::VecBase<int,4> & >())
-        .def(init< const int &, const int & >())
-        .def(init< const int &, const int &, const int & >())
         .def(init< const int &, const int &, const int &, const int & >())
         .def_pickle(gmtlPickle::Vec4_pickle<int>())
     );
