@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-wrappers.h,v $
- * Date modified: $Date: 2003-08-16 05:11:46 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2003-08-17 14:26:40 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -142,9 +142,9 @@ namespace gmtlWrappers
    gmtl::Matrix<DATA_TYPE, 3, 3> makeDirCosMatrix33(const gmtl::Vec<DATA_TYPE, 3>& xDestAxis,
                                                     const gmtl::Vec<DATA_TYPE, 3>& yDestAxis,
                                                     const gmtl::Vec<DATA_TYPE, 3>& zDestAxis,
-                                                    const gmtl::Vec<DATA_TYPE, 3>& xSrcAxis = gmtl::Vec<DATA_TYPE, 3>(1, 0, 0),
-                                                    const gmtl::Vec<DATA_TYPE, 3>& ySrcAxis = gmtl::Vec<DATA_TYPE, 3>(1, 0, 0),
-                                                    const gmtl::Vec<DATA_TYPE, 3>& zSrcAxis = gmtl::Vec<DATA_TYPE, 3>(1, 0, 0))
+                                                    const gmtl::Vec<typename DATA_TYPE, 3>& xSrcAxis = gmtl::Vec<DATA_TYPE, 3>(1, 0, 0),
+                                                    const gmtl::Vec<typename DATA_TYPE, 3>& ySrcAxis = gmtl::Vec<DATA_TYPE, 3>(0, 1, 0),
+                                                    const gmtl::Vec<typename DATA_TYPE, 3>& zSrcAxis = gmtl::Vec<DATA_TYPE, 3>(0, 0, 1))
    {
       return gmtl::makeDirCos< gmtl::Matrix<DATA_TYPE, 3, 3> >(xDestAxis,
                                                                yDestAxis,
@@ -158,9 +158,9 @@ namespace gmtlWrappers
    gmtl::Matrix<DATA_TYPE, 4, 4> makeDirCosMatrix44(const gmtl::Vec<DATA_TYPE, 3>& xDestAxis,
                                                     const gmtl::Vec<DATA_TYPE, 3>& yDestAxis,
                                                     const gmtl::Vec<DATA_TYPE, 3>& zDestAxis,
-                                                    const gmtl::Vec<DATA_TYPE, 3>& xSrcAxis = gmtl::Vec<DATA_TYPE, 3>(1, 0, 0),
-                                                    const gmtl::Vec<DATA_TYPE, 3>& ySrcAxis = gmtl::Vec<DATA_TYPE, 3>(1, 0, 0),
-                                                    const gmtl::Vec<DATA_TYPE, 3>& zSrcAxis = gmtl::Vec<DATA_TYPE, 3>(1, 0, 0))
+                                                    const gmtl::Vec<typename DATA_TYPE, 3>& xSrcAxis = gmtl::Vec<DATA_TYPE, 3>(1, 0, 0),
+                                                    const gmtl::Vec<typename DATA_TYPE, 3>& ySrcAxis = gmtl::Vec<DATA_TYPE, 3>(0, 1, 0),
+                                                    const gmtl::Vec<typename DATA_TYPE, 3>& zSrcAxis = gmtl::Vec<DATA_TYPE, 3>(0, 0, 1))
    {
       return gmtl::makeDirCos< gmtl::Matrix<DATA_TYPE, 4, 4> >(xDestAxis,
                                                                yDestAxis,
