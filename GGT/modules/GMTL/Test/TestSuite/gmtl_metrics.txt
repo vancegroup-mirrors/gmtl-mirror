@@ -408,11 +408,11 @@ gfxn3/Debug/Main/MetricTest                                        1221.75
 gfxn3/Debug/MatrixCompareTest/IsEqualTest                          3.84849
 gfxn3/Debug/MatrixCompareTest/OpEqualityTest                       2.08672
 gfxn3/Debug/MatrixCompareTest/OpNotEqualityTest                    2.21088
-gfxn3/Debug/MatrixGenTest/MakeRot33ByRef                           0.70844
+gfxn3/Debug/MatrixGenTest/MakeRot33ByRef                           0.52765
 gfxn3/Debug/MatrixGenTest/MakeRot33ByVal                           1.47421
-gfxn3/Debug/MatrixGenTest/MakeRot34ByRef                           0.81406
+gfxn3/Debug/MatrixGenTest/MakeRot34ByRef                           0.58974
 gfxn3/Debug/MatrixGenTest/MakeRot34ByVal                           1.68024
-gfxn3/Debug/MatrixGenTest/MakeRot44ByRef                           0.93153
+gfxn3/Debug/MatrixGenTest/MakeRot44ByRef                           0.65965
 gfxn3/Debug/MatrixGenTest/MakeRot44ByVal                           2.1233
 gfxn3/Debug/MatrixOpsTest/Add44                                    1.24508
 gfxn3/Debug/MatrixOpsTest/Mult44                                   6.25859

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixGenTest.h,v $
- * Date modified: $Date: 2002-02-18 20:39:59 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-02-19 17:47:08 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -67,16 +67,10 @@ public:
    void testMatrixMakeRot33ByRef()
    {
       gmtl::Matrix33f mat;
-      
-      // Test overhead of creation
       const long iters(100000);
       CPPUNIT_METRIC_START_TIMING();
-
       for (long iter = 0; iter < iters; ++iter)
-      {
          gmtl::makeRot( mat, 90.0f, 1.0f, 0.0f, 0.0f );
-      }
-
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeRot33ByRef", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
@@ -84,16 +78,10 @@ public:
    void testMatrixMakeRot34ByRef()
    {
       gmtl::Matrix34f mat;
-      
-      // Test overhead of creation
       const long iters(100000);
       CPPUNIT_METRIC_START_TIMING();
-
       for (long iter = 0; iter < iters; ++iter)
-      {
          gmtl::makeRot( mat, 90.0f, 1.0f, 0.0f, 0.0f );
-      }
-
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeRot34ByRef", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
@@ -101,33 +89,23 @@ public:
    void testMatrixMakeRot44ByRef()
    {
       gmtl::Matrix44f mat;
-      
-      // Test overhead of creation
       const long iters(100000);
       CPPUNIT_METRIC_START_TIMING();
-
       for (long iter = 0; iter < iters; ++iter)
-      {
          gmtl::makeRot( mat, 90.0f, 1.0f, 0.0f, 0.0f );
-      }
-
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeRot44ByRef", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
    
+   /*
    void testMatrixMakeRot33ByVal()
    {
+      gmtl::bok<gmtl::Matrix33f>( (float)1.0f );
       gmtl::Matrix<float, 3, 3> mat;
-      
-      // Test overhead of creation
       const long iters(100000);
       CPPUNIT_METRIC_START_TIMING();
-
       for (long iter = 0; iter < iters; ++iter)
-      {
-         mat = gmtl::makeRot<float, 3, 3>( 90.0f, 1.0f, 0.0f, 0.0f );
-      }
-
+         mat = gmtl::makeRot<gmtl::Matrix33f>( 90.0f, 1.0f, 0.0f, 0.0f );
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeRot33ByVal", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
@@ -135,16 +113,10 @@ public:
    void testMatrixMakeRot34ByVal()
    {
       gmtl::Matrix<float, 3, 4> mat;
-      
-      // Test overhead of creation
       const long iters(100000);
       CPPUNIT_METRIC_START_TIMING();
-
       for (long iter = 0; iter < iters; ++iter)
-      {
-         mat = gmtl::makeRot<float, 3, 4>( 90.0f, 1.0f, 0.0f, 0.0f );
-      }
-
+         mat = gmtl::makeRot<gmtl::Matrix34f>( 90.0f, 1.0f, 0.0f, 0.0f );
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeRot34ByVal", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
@@ -152,29 +124,159 @@ public:
    void testMatrixMakeRot44ByVal()
    {
       gmtl::Matrix<float, 4, 4> mat;
-      
-      // Test overhead of creation
       const long iters(100000);
       CPPUNIT_METRIC_START_TIMING();
-
       for (long iter = 0; iter < iters; ++iter)
-      {
-         mat = gmtl::makeRot<float, 4, 4>( 90.0f, 1.0f, 0.0f, 0.0f );
-      }
-
+         mat = gmtl::makeRot<gmtl::Matrix44f>( 90.0f, 1.0f, 0.0f, 0.0f );
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeRot44ByVal", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
+   */
    
+   // makeRot Euler tests...
+   
+   void testMatrixMakeRotEuler33ByRef()
+   {
+      gmtl::Matrix33f mat;
+      const long iters(100000);
+      CPPUNIT_METRIC_START_TIMING();
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         gmtl::makeRot( mat, 90.0f, 45.0f, 35.0f, gmtl::XYZ );
+         gmtl::makeRot( mat, 90.0f, 45.0f, 35.0f, gmtl::ZYX );
+         gmtl::makeRot( mat, 90.0f, 45.0f, 35.0f, gmtl::ZXY );
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeRotEuler33ByRef", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+   
+   void testMatrixMakeRotEuler34ByRef()
+   {
+      gmtl::Matrix34f mat;
+      const long iters(100000);
+      CPPUNIT_METRIC_START_TIMING();
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         gmtl::makeRot( mat, 90.0f, 45.0f, 35.0f, gmtl::XYZ );
+         gmtl::makeRot( mat, 90.0f, 45.0f, 35.0f, gmtl::ZYX );
+         gmtl::makeRot( mat, 90.0f, 45.0f, 35.0f, gmtl::ZXY );
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeRotEuler34ByRef", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+   
+   void testMatrixMakeRotEuler44ByRef()
+   {
+      gmtl::Matrix44f mat;
+      const long iters(100000);
+      CPPUNIT_METRIC_START_TIMING();
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         gmtl::makeRot( mat, 90.0f, 45.0f, 35.0f, gmtl::XYZ );
+         gmtl::makeRot( mat, 90.0f, 45.0f, 35.0f, gmtl::ZYX );
+         gmtl::makeRot( mat, 90.0f, 45.0f, 35.0f, gmtl::ZXY );
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeRotEuler44ByRef", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+   /*
+   void testMatrixMakeRotEuler33ByVal()
+   {
+      gmtl::Matrix<float, 3, 3> mat;
+      const long iters(100000);
+      CPPUNIT_METRIC_START_TIMING();
+      for (long iter = 0; iter < iters; ++iter)
+         mat = gmtl::makeRot<gmtl::Matrix33f>( 90.0f, 45.0f, 35.0f );
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeRotEuler33ByVal", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+   
+   void testMatrixMakeRotEuler34ByVal()
+   {
+      gmtl::Matrix<float, 3, 4> mat;
+      const long iters(100000);
+      CPPUNIT_METRIC_START_TIMING();
+      for (long iter = 0; iter < iters; ++iter)
+         mat = gmtl::makeRot<gmtl::Matrix34f>( 90.0f, 45.0f, 35.0f );
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeRotEuler34ByVal", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+   
+   void testMatrixMakeRotEuler44ByVal()
+   {
+      gmtl::Matrix44f mat;
+      const long iters(100000);
+      CPPUNIT_METRIC_START_TIMING();
+      for (long iter = 0; iter < iters; ++iter)
+         mat = gmtl::makeRot<gmtl::Matrix44f>( 90.0f, 45.0f, 35.0f );
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeRotEuler44ByVal", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+   */
+   // is this a convert test?
+   void testMatrixMakeAxes()
+   {
+      gmtl::Matrix44f mat1, mat2;
+      gmtl::Vec3f xAxis1,yAxis1,zAxis1;
+      gmtl::Vec3f xAxis2,yAxis2,zAxis2;
+
+      
+      
+      /*
+      // Simple rotation around X axis
+      mat1.makeRot(90,gmtl::XUnitVec3);
+      mat1.getAxes(xAxis1,yAxis1,zAxis1);
+      mat2.makeAxes(xAxis1,yAxis1,zAxis1);
+      mat2.getAxes(xAxis2,yAxis2,zAxis2);
+
+      CPPUNIT_ASSERT(xAxis1.equal(xAxis2,0.01));
+      CPPUNIT_ASSERT(yAxis1.equal(yAxis2,0.01));
+      CPPUNIT_ASSERT(zAxis1.equal(zAxis2,0.01));
+
+      // More complex Euler rotation
+      mat1.makeXYZEuler(45.0f, -35.0f, 13.0f);
+      mat1.getAxes(xAxis1,yAxis1,zAxis1);
+      mat2.makeAxes(xAxis1,yAxis1,zAxis1);
+      mat2.getAxes(xAxis2,yAxis2,zAxis2);
+
+      CPPUNIT_ASSERT(xAxis1.equal(xAxis2,0.01));
+      CPPUNIT_ASSERT(yAxis1.equal(yAxis2,0.01));
+      CPPUNIT_ASSERT(zAxis1.equal(zAxis2,0.01));
+
+      // Use orthonormal axis
+      xAxis1.set(7, 11, 21);     xAxis1.normalize();
+      yAxis1.set(12, 21, 75);    yAxis1.normalize();
+      zAxis1 = xAxis1.cross(yAxis1);   zAxis1.normalize();
+
+      mat2.makeAxes(xAxis1,yAxis1,zAxis1);
+      mat2.getAxes(xAxis2,yAxis2,zAxis2);
+
+      CPPUNIT_ASSERT(xAxis1.equal(xAxis2,0.01));
+      CPPUNIT_ASSERT(yAxis1.equal(yAxis2,0.01));
+      CPPUNIT_ASSERT(zAxis1.equal(zAxis2,0.01));
+      */
+   }
+   
+         
    static Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("MatrixGenTest");
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeRot33ByRef", &MatrixGenTest::testMatrixMakeRot33ByRef));
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeRot34ByRef", &MatrixGenTest::testMatrixMakeRot34ByRef));
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeRot44ByRef", &MatrixGenTest::testMatrixMakeRot44ByRef));
+      /*
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeRot33ByVal", &MatrixGenTest::testMatrixMakeRot33ByVal));
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeRot34ByVal", &MatrixGenTest::testMatrixMakeRot34ByVal));
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeRot44ByVal", &MatrixGenTest::testMatrixMakeRot44ByVal));
+      */
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeRotEuler33ByRef", &MatrixGenTest::testMatrixMakeRot33ByRef));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeRotEuler34ByRef", &MatrixGenTest::testMatrixMakeRot34ByRef));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeRotEuler44ByRef", &MatrixGenTest::testMatrixMakeRot44ByRef));
+      /*
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeRotEuler33ByVal", &MatrixGenTest::testMatrixMakeRot33ByVal));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeRotEuler34ByVal", &MatrixGenTest::testMatrixMakeRot34ByVal));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testMatrixMakeRotEuler44ByVal", &MatrixGenTest::testMatrixMakeRot44ByVal));
+      */
       return test_suite;
    }
 
