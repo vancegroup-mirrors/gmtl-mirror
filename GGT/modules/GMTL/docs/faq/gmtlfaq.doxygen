@@ -11,20 +11,67 @@
  *  @section General General Questions about GMTL
  *
  *  <b>Why do you use templated code?</b>
- *
+ *  TODO
+ *  Support for multiple versions of very similar data types.
+ *  Provide a unified interface to GMTL object.
+ *  Easy to extend.
  *
  *
  *
  *  <b>What's with these namespaces?</b>
+ *  All of GMTL's functions and data types are defined within the 'gmtl'
+ *  namespace. 
+ * 
+ *  In C++, you can reference something in a namespace by prepending it to 
+ *  the thing you want to reference. For instance, when creating any GMTL
+ *  object, you need to prepend "gmtl::" to its name. The following code
+ *  shows the instantiation of several different objects.
+ *
+ *  gmtl::Matrix44f myMatrix;
+ *  gmtl::Vec3f myVector;
+ *  gmtl::Quatf myQuaternion;
  *  
+ *  Similarly, GMTL's function calls also need to have this namespace:
+ *
+ *  gmtl::identity( myMatrix );
+ *  gmtl::normalize( myVector );
+ *
+ *  Developers can also specify that they are using a particular namespace 
+ *  in their code, aleviating the need to specify the namespace for each
+ *  object.
+ *
+ *  using namespace gmtl
+ *  {
+ *      Matrix44f myMatrix;
+ *      Vec3f myVector;
+ *      normalize( myVector );
+ *  };
+ *
+ *  Additionally, GMTL's C math functions are further encapsulated by a 
+ *  namespace called "Math". To reference these functions, you must prepend
+ *  "gmtl::Math::" to the function names.
+ *
+ *  float cosine = gmtl::Math::cos( 3.14 );
+ *  float minimum = gmtl::Math::Min( 3.0, 1.4, -43.2 );
  *
  *
- *
- *  <b>Why would I want to use GMTL's C math abstraction rather than the regular 
- *  C math headers?</b>
+ *  <b>Why would I want to use GMTL's C math abstraction rather than the regular C math library?</b>
+ *  GMTL has abstracted the C math libraries to ensure cross-platform 
+ *  compatibility. If you write an application using GMTL's math functions, you
+ *  do not have to make any changes when building on different platforms.
  *  
- *
- *
+ *  The math abstraction is also designed to be type safe. It will work for 
+ *  different mathematical data types such as float and double without 
+ *  having different function syntax for each data type. For instance, on
+ *  some platforms, the math library is designed solely for double-precision
+ *  floating point numbers and separate functions are provided for regular
+ *  float numbers, with an 'f' appended to each function name. On such 
+ *  platforms, you have math functions like 'floor' & 'floorf' as well as
+ *  'cos' and 'cosf'. 
+ *  
+ *  In GMTL, there is only one function name to remember for each type of
+ *  operation, regardless of the data type. So you could pass either a double
+ *  or a float to GMTL's 'cos' function to get the cosine value. 
  *
  *  <b>What is an AABox?</b>
  *  This is an axially-aligned bounding box. Think of it as a box in 3D space
@@ -117,10 +164,26 @@
  *  interpolation.  
  *  
  *  <b>How is data represented in a matrix?</b>
- *  GMTL matrices are represented in the same way that OpenGL represents data
- *  in a matrix, in column major order. 
+ *  GMTL matrices have their data stored in a 2-dimension natrix array in 
+ *  column major order. This means that you can access the data using the
+ *  following syntax:
+ *
+ *  gmtl::Matrix44f myMat;
+ *  int row, column = 2;
+ *  float data = myMat[column][row];
+ *
+ *  This representation is the same for many graphics API's, including OpenGL,
+ *  DirectX, Performer, and OpenSG - each of which uses matrix data in a column
+ *  major ordering.
+ *
  *
  *  <b>What are the general concepts behind GMTL?</b>
+ *  TODO
+ *  Data types
+ *  Operators
+ *  Generators
+ *  Xforms
+ *  
  *  <b>What's with all the 'make' and 'set' functions?</b>
  *  You use the 'make' function to generate new objects based on existing
  *  objects that may not even be the same type. For instance, we
@@ -137,9 +200,10 @@
  *  Although you can usually make one object from any other type of object, 
  *  there are some fundamental limitations. For instance, you can't make a 
  *  quaternion (purely rotational information) from a vector (purely 
- *  translational information). Similarly, if you have a matrix containing
- *  both translational and rotational information, you can only make a vector 
- *  based on the translational data.
+ *  translational information), with the exception of using the makePure 
+ *  function (see below for details). Similarly, if you have a matrix 
+ *  containing both translational and rotational information, you can only 
+ *  make a vector based on the translational data.
  *
  *  In the following example, we make a new axis angle object that has the
  *  same rotational data as our existing matrix. Regardless of whatever 
@@ -161,11 +225,79 @@
  *
  *  gmtl::set( myQuat, myEuler );
  *
- *  Additionally, you can use altered versions of the 'make' and 'set' functions
- *  that specifically target certain types of data, such as rotational, 
+ *
+ *  <b>What are the makeTrans, makeRot, setTrans, setScale, etc. functions?</b>
+ *  These are altered versions of the 'make' and 'set' functions that 
+ *  specifically target certain types of data, such as rotational,
  *  translational, or scaling information.
  *
- *  EXAMPLES
+ *  Data types such as coordinate frame objects and matrices can have a
+ *  combination of different types of transformations. For instance, 
+ *  a particular matrix could describe a translation and a rotation. But perhaps
+ *  you only want to know the translation of it. In this case, the makeTrans
+ *  function can be useful.
+ *
+ *  gmtl::Matrix44f myFullMat;
+ *  gmtl::Matrix44f myTransMat;
+ *
+ *  myTransMat = gmtl::makeTrans<gmtl::Matrix44f>( myFullMat );
+ *
+ *  Now 'myTransMat' represents the translational aspect of 'myFullMat'. If
+ *  we had simply used the 'make' function instead of 'makeTrans', then 
+ *  myTransMat would be a complete copy of myFullMat.
+ *
+ *  As with the 'set' function, other functions like 'setTrans' or 'setRot'
+ *  copy a feature from one object to another, with the objects not 
+ *  necessarily being the same type. The following example shows how to set
+ *  the translation of a matrix from a coordinate frame object:
+ *  
+ *  gmtl::Matrix44f myMat;
+ *  gmtl::CoordVec3EulerAngleXYZf myCoord;
+ *
+ *  gmtl::setTrans( myMat, myCoord );
+ *
+ *  Note that whatever rotational data the matrix had is maintained even
+ *  after using the setTrans function, which will only modify its translational
+ *  aspect.
+ *
+ *  There are many altered 'make' and 'set' extensions beyond what we have 
+ *  discussed, but they all work in the same manner. Some commonly-used ones are
+ *  makeTrans, setTrans, makeRot, setRot, makeScale, and setScale. Here are
+ *  a few others that you might use:
+ *
+ *  The makeDirCos function creates a matrix or quaternion rotation using
+ *  direction cosines. 
+ *
+ *  gmtl::Vec3f xDestAxis, yDestAxis, zDestAxis;
+ *  gmtl::Vec3f xSrcAxis, ySrcAxis, zSrcAxis;
+ *
+ *  gmtl::Matrix44f myMat = gmtl::makeDirCos<gmtl::Matrix44f>( xDestAxis, yDestAxis, zDestAxis, xSrcAxis, ySrcAxis, zSrcAxis );
+ *  
+ *  The makePure function allows you to start with a vector and create a
+ *  quaternion with that vector as its rotation axis, but without any twist
+ *  value. 
+ *  
+ *  gmtl::Vec3f myVec;
+ *  gmtl::Quatf myQuat = gmtl::makePure<gmtl::Quatf>( myVec );
+ *
+ *  You can use the makeVec function to extract the axis of rotation from a 
+ *  quaternion object.
+ *
+ *  gmtl::Quatf myQuat;
+ *  gmtl::Vec3f myVec = gmtl::makeVec<gmtl::Vec3f>( myQuat );
+ *
+ *  The makeNormal function allows you to create a normalized object from a
+ *  source object. Usually this will deal with vectors.
+ *
+ *  gmtl::Vec3f srcVec;
+ *  gmtl::Vec3f normVec = gmtl::makeNormal<gmtl::Vec3f>( srcVec );
+ *
+ *  The makeXRot, makeYRot, makeZRot functions can be used to extract rotational
+ *  data about particular axes.
+ *
+ *  gmtl::Matrix44f myMat;
+ *  float xrot = gmtl::makeXRot( myMat );
+ *
  *
  *  @section Spatial Spatial Objects
  *  <b>What is a spatial object?</b>
@@ -505,7 +637,6 @@
  *  gmtl::xform( myVec, myMat, myVec ); 
  *
  *
- *
  *  <b>How do I use my matrix data with OpenGL?</b>
  *  You can access the raw matrix data for use with OpenGL using the getData()
  *  function.  For instance, you may want to multiply the OpenGL matrix stack
@@ -514,11 +645,8 @@
  *  gmtl::Matrix44f myMat;
  *  glMultMatrixf( myMat.getData() );
  *
- *
- *  <b>How do I use my matrix data with DirectX?</b>
- *
- *
- *
+ *  Note that GMTL matrix data is also safe to use for other graphics APIs
+ *  such as DirectX, Performer, and OpenSG. 
  *
  *
  *
@@ -849,6 +977,7 @@
  *
  *  @subsection General General Math
  *  <b>How do I use GMTL's C math abstraction?</b>
+ *  In your application, you simply include the 
  *
  *  <b>What operations does GMTL's C math abstraction have?</b>
  *  GMTL provides function calls for everything that the standard C math
