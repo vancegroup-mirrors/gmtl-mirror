@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AxisAngle.h,v $
- * Date modified: $Date: 2003-03-03 00:54:04 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2003-03-30 00:56:58 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -64,7 +64,7 @@ template <typename DATA_TYPE>
 class AxisAngle : public VecBase<DATA_TYPE, 4>
 {
 public:
-   enum { Size = 4 };
+   enum Params { Size = 4 };
    
    /** default constructor. initializes to identity rotation (no rotation). */
    AxisAngle() : 
