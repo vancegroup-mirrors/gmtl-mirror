@@ -1,6 +1,8 @@
 import os, string, sys
 import re
 import distutils.sysconfig
+import SCons
+import SCons.Util
 
 pj = os.path.join
 
@@ -345,6 +347,9 @@ opts = Options('config.cache')
 AddCppUnitOptions(opts)
 AddPythonOptions(opts)
 AddBoostOptions(opts)
+
+if SCons.Util.WhereIs('distcc'):
+   baseEnv.Prepend(CXX = "distcc ", CC = "distcc ")
 
 if not SCons.Script.options.help_msg:
    opts.Update(baseEnv);
