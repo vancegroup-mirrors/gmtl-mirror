@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixClassTest.h,v $
- * Date modified: $Date: 2002-02-18 20:39:59 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-02-19 23:18:04 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -371,6 +371,23 @@ public:
          CPPUNIT_ASSERT( gmtl::MAT_IDENTITY33F( 1, 2 ) == 0.0f );
       }
       
+      {
+         CPPUNIT_ASSERT( gmtl::MAT_IDENTITY23F( 0, 0 ) == 1.0f );
+         CPPUNIT_ASSERT( gmtl::MAT_IDENTITY23F( 1, 1 ) == 1.0f );
+ 
+         CPPUNIT_ASSERT( gmtl::MAT_IDENTITY23F( 1, 0 ) == 0.0f );
+         CPPUNIT_ASSERT( gmtl::MAT_IDENTITY23F( 0, 1 ) == 0.0f );
+         CPPUNIT_ASSERT( gmtl::MAT_IDENTITY23F( 0, 2 ) == 0.0f );
+         CPPUNIT_ASSERT( gmtl::MAT_IDENTITY23F( 1, 2 ) == 0.0f );
+      }
+      
+      {
+         CPPUNIT_ASSERT( gmtl::MAT_IDENTITY22F( 0, 0 ) == 1.0f );
+         CPPUNIT_ASSERT( gmtl::MAT_IDENTITY22F( 1, 1 ) == 1.0f );
+         CPPUNIT_ASSERT( gmtl::MAT_IDENTITY22F( 1, 0 ) == 0.0f );
+         CPPUNIT_ASSERT( gmtl::MAT_IDENTITY22F( 0, 1 ) == 0.0f );
+      }
+      
       // make sure default constructor inits to ident
       {
          gmtl::Matrix44f test_mat;
@@ -422,6 +439,24 @@ public:
          CPPUNIT_ASSERT( test_mat( 2, 1 ) == 0.0f );
          CPPUNIT_ASSERT( test_mat( 0, 2 ) == 0.0f );
          CPPUNIT_ASSERT( test_mat( 1, 2 ) == 0.0f );
+      }
+      
+      {
+         gmtl::Matrix23f test_mat;
+         CPPUNIT_ASSERT( test_mat( 0, 0 ) == 1.0f );
+         CPPUNIT_ASSERT( test_mat( 1, 1 ) == 1.0f );
+ 
+         CPPUNIT_ASSERT( test_mat( 1, 0 ) == 0.0f );
+         CPPUNIT_ASSERT( test_mat( 0, 1 ) == 0.0f );
+         CPPUNIT_ASSERT( test_mat( 0, 2 ) == 0.0f );
+         CPPUNIT_ASSERT( test_mat( 1, 2 ) == 0.0f );
+      }
+      {
+         gmtl::Matrix22f test_mat;
+         CPPUNIT_ASSERT( test_mat( 0, 0 ) == 1.0f );
+         CPPUNIT_ASSERT( test_mat( 1, 1 ) == 1.0f );
+         CPPUNIT_ASSERT( test_mat( 1, 0 ) == 0.0f );
+         CPPUNIT_ASSERT( test_mat( 0, 1 ) == 0.0f );
       }
       
       // make sure copy constructor works.
@@ -532,6 +567,27 @@ public:
          CPPUNIT_ASSERT( test_mat( 0, 2 ) == 0.0f );
          CPPUNIT_ASSERT( test_mat( 1, 2 ) == 0.0f );
       }
+      
+      {
+         gmtl::Matrix23f test_mat( gmtl::MAT_IDENTITY23F );
+         test_mat = gmtl::MAT_IDENTITY23F;
+         CPPUNIT_ASSERT( test_mat( 0, 0 ) == 1.0f );
+         CPPUNIT_ASSERT( test_mat( 1, 1 ) == 1.0f );
+         
+         CPPUNIT_ASSERT( test_mat( 1, 0 ) == 0.0f );
+         CPPUNIT_ASSERT( test_mat( 0, 1 ) == 0.0f );
+         CPPUNIT_ASSERT( test_mat( 0, 2 ) == 0.0f );
+         CPPUNIT_ASSERT( test_mat( 1, 2 ) == 0.0f );
+      }
+      {
+         gmtl::Matrix22f test_mat( gmtl::MAT_IDENTITY22F );
+         test_mat = gmtl::MAT_IDENTITY22F;
+         CPPUNIT_ASSERT( test_mat( 0, 0 ) == 1.0f );
+         CPPUNIT_ASSERT( test_mat( 1, 1 ) == 1.0f );
+         
+         CPPUNIT_ASSERT( test_mat( 1, 0 ) == 0.0f );
+         CPPUNIT_ASSERT( test_mat( 0, 1 ) == 0.0f );
+      }
    }
    
    // make sure set( float* ) works
@@ -599,6 +655,18 @@ public:
             CPPUNIT_ASSERT( test_mat( 2, 2 ) == 8 );
          }
 
+         {
+            DATA_TYPE mat23[] = { 0,1,2,3,4,5 };
+            gmtl::Matrix<DATA_TYPE, 2, 3> test_mat;
+            test_mat.set( mat23 );
+
+            CPPUNIT_ASSERT( test_mat( 0, 0 ) == 0 );
+            CPPUNIT_ASSERT( test_mat( 1, 0 ) == 1 );
+            CPPUNIT_ASSERT( test_mat( 0, 1 ) == 2 );
+            CPPUNIT_ASSERT( test_mat( 1, 1 ) == 3 );
+            CPPUNIT_ASSERT( test_mat( 0, 2 ) == 4 );
+            CPPUNIT_ASSERT( test_mat( 1, 2 ) == 5 );
+         }
          {
             DATA_TYPE mat22[] = { 0,1,2,3 };
             gmtl::Matrix<DATA_TYPE, 2, 2> test_mat;
@@ -701,6 +769,19 @@ public:
             CPPUNIT_ASSERT( test_mat( 2, 2 ) == 8 );
          }
 
+         {
+            DATA_TYPE mat23[] = { 0,1,2,
+                                  3,4,5 };
+            gmtl::Matrix<DATA_TYPE, 2, 3> test_mat;
+            test_mat.setTranspose( mat23 );
+
+            CPPUNIT_ASSERT( test_mat( 0, 0 ) == 0 );
+            CPPUNIT_ASSERT( test_mat( 0, 1 ) == 1 );
+            CPPUNIT_ASSERT( test_mat( 0, 2 ) == 2 );
+            CPPUNIT_ASSERT( test_mat( 1, 0 ) == 3 );
+            CPPUNIT_ASSERT( test_mat( 1, 1 ) == 4 );
+            CPPUNIT_ASSERT( test_mat( 1, 2 ) == 5 );
+         }
          {
             DATA_TYPE mat22[] = { 0,1,
                                   2,3 };
@@ -1046,6 +1127,73 @@ public:
       }
    }
    
+   void testMatrix23Creation()
+   {
+      // make sure setter and getters work (float* setter tested in a different test)
+      gmtl::Matrix23f src_mat;
+      src_mat.set( 0, 1, 2,   
+                   3, 4, 5 );
+
+      // test that operator[] is sane
+      {
+         CPPUNIT_ASSERT( src_mat[0] == 0 );
+         CPPUNIT_ASSERT( src_mat[1] == 3 );
+         CPPUNIT_ASSERT( src_mat[2] == 1 );
+         CPPUNIT_ASSERT( src_mat[3] == 4 );
+         CPPUNIT_ASSERT( src_mat[4] == 2 );
+         CPPUNIT_ASSERT( src_mat[5] == 5 );
+      }
+
+      // test that operator() is sane (points to what we expect)
+      {
+         CPPUNIT_ASSERT( src_mat( 0, 0 ) == 0 );
+         CPPUNIT_ASSERT( src_mat( 1, 0 ) == 3 );
+         CPPUNIT_ASSERT( src_mat( 0, 1 ) == 1 );
+         CPPUNIT_ASSERT( src_mat( 1, 1 ) == 4 );
+         CPPUNIT_ASSERT( src_mat( 0, 2 ) == 2 );
+         CPPUNIT_ASSERT( src_mat( 1, 2 ) == 5 );
+      }
+
+      // test that operator() and operator[] are equivelent
+      {
+         CPPUNIT_ASSERT( src_mat( 0, 0 ) == src_mat[0] );
+         CPPUNIT_ASSERT( src_mat( 1, 0 ) == src_mat[1] );
+         CPPUNIT_ASSERT( src_mat( 0, 1 ) == src_mat[2] );
+         CPPUNIT_ASSERT( src_mat( 1, 1 ) == src_mat[3] );
+         CPPUNIT_ASSERT( src_mat( 0, 2 ) == src_mat[4] );
+         CPPUNIT_ASSERT( src_mat( 1, 2 ) == src_mat[5] );
+      }
+      // make sure copy constructor works.
+      {
+         gmtl::Matrix23f test_mat( src_mat );
+         CPPUNIT_ASSERT( test_mat( 0, 0 ) == 0 );
+         CPPUNIT_ASSERT( test_mat( 1, 0 ) == 3 );
+         CPPUNIT_ASSERT( test_mat( 0, 1 ) == 1 );
+         CPPUNIT_ASSERT( test_mat( 1, 1 ) == 4 );
+         CPPUNIT_ASSERT( test_mat( 0, 2 ) == 2 );
+         CPPUNIT_ASSERT( test_mat( 1, 2 ) == 5 );
+      }
+      // make sure operator= works
+      {
+         gmtl::Matrix23f test_mat;
+         // it is identity matrix now...
+         CPPUNIT_ASSERT( test_mat( 0, 0 ) == 1.0f );
+         CPPUNIT_ASSERT( test_mat( 1, 0 ) == 0.0f );
+         CPPUNIT_ASSERT( test_mat( 0, 1 ) == 0.0f );
+         CPPUNIT_ASSERT( test_mat( 1, 1 ) == 1.0f );
+         CPPUNIT_ASSERT( test_mat( 0, 2 ) == 0.0f );
+         CPPUNIT_ASSERT( test_mat( 1, 2 ) == 0.0f );
+         test_mat = src_mat;
+         // it should have changed...
+         CPPUNIT_ASSERT( test_mat( 0, 0 ) == 0 );
+         CPPUNIT_ASSERT( test_mat( 1, 0 ) == 3 );
+         CPPUNIT_ASSERT( test_mat( 0, 1 ) == 1 );
+         CPPUNIT_ASSERT( test_mat( 1, 1 ) == 4 );
+         CPPUNIT_ASSERT( test_mat( 0, 2 ) == 2 );
+         CPPUNIT_ASSERT( test_mat( 1, 2 ) == 5 );
+      }
+   }
+   
    void testMatrix22Creation()
    {
       // make sure setter and getters work (float* setter tested in a different test)
@@ -1110,7 +1258,7 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testTimingOpParen", &MatrixClassTest::testTimingOpParen));
       test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testTimingOpBracket", &MatrixClassTest::testTimingOpBracket));
       test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testTimingSetPtr", &MatrixClassTest::testTimingSetPtr));
-      test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testTimingSetTransposePtr", &MatrixClassTest::testMatrixSetTransposePtr));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testTimingSetTransposePtr", &MatrixClassTest::testTimingSetTransposePtr));
       test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testTimingGetData", &MatrixClassTest::testTimingGetData));
       test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testTimingSet", &MatrixClassTest::testTimingSet));
       test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testMatrixIdentity", &MatrixClassTest::testMatrixIdentity));
@@ -1119,6 +1267,9 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testMatrix44Creation", &MatrixClassTest::testMatrix44Creation));
       test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testMatrix34Creation", &MatrixClassTest::testMatrix34Creation));
       test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testMatrix33Creation", &MatrixClassTest::testMatrix33Creation));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testMatrix23Creation", &MatrixClassTest::testMatrix23Creation));
+      test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testMatrix22Creation", &MatrixClassTest::testMatrix22Creation));
+      
       return test_suite;
    }
 
