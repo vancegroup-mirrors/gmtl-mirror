@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PlaneOps.h,v $
- * Date modified: $Date: 2003-03-03 00:54:05 $
- * Version:       $Revision: 1.11 $
+ * Date modified: $Date: 2003-05-14 21:26:44 $
+ * Version:       $Revision: 1.12 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -133,6 +133,20 @@ DATA_TYPE findNearestPt( const Plane<DATA_TYPE>& plane,
    dist_to_plane = plane.mOffset + dot( plane.mNorm, static_cast< Vec<DATA_TYPE, 3> >(pt) );
    result = pt - (plane.mNorm * dist_to_plane);
    return dist_to_plane;
+}
+
+/**
+ * Mirror the point by the plane
+ */
+template< class DATA_TYPE, unsigned SIZE>
+void reflect( Point<DATA_TYPE, SIZE>& result,
+              const Plane<DATA_TYPE>& plane,
+              const Point<DATA_TYPE, SIZE>& point )
+{
+   gmtl::Point3f point_on_plane;
+   findNearestPt( plane, point, point_on_plane );
+   gmtl::Vec3f dir = point_on_plane - point;
+   result = point + (dir * 2.0f);
 }
 /** @} */
 
