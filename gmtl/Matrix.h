@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Matrix.h,v $
- * Date modified: $Date: 2003-08-19 22:49:47 $
- * Version:       $Revision: 1.35 $
+ * Date modified: $Date: 2004-09-22 20:38:50 $
+ * Version:       $Revision: 1.36 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -45,46 +45,29 @@ namespace gmtl
 /**
  * State tracked NxM dimensional Matrix (ordered in memory by Column)
  *
- * <b>State Tracking:</b>                                                      
+ * <b>Memory mapping:</b>
  *
- * The idea of a state-tracked matrix is that if we track the information 
- * as it is stored into the matrix, then other operations could make more optimal 
- * descisions based on the known state.  A good example is in matrix invertion, 
- * a reletively costly operation for matrices.  However, if we know the matrix state 
- * is (i.e.) ORTHOGONAL, then inversion becomes a simple transpose operation.  
- * There are also optimizations with multiplication, as well as other.
- *
- * One side effect of this state tracking is that EVERY MATRIC FUNCTION NEEDS TO 
- * TRACK STATE.  This means that anyone writing custom methods, or extentions to 
- * gmtl, will need to pay close attention to matrix state.
- *
- * To facilitate state tracking in extensions, we've provided the function 
- * gmtl::combineMatrixStates() to help in determining state based on two 
- * combined matrices.  
- * 
- * <b>Memory mapping:</b>                                                      
- *
- * gmtl::Matrix stores its elements in column major order.  
+ * gmtl::Matrix stores its elements in column major order.
  * That is, it stores each column end-to-end in memory.
  *
- * Typically, for 3D transform matrices, the 3x3 rotation is 
+ * Typically, for 3D transform matrices, the 3x3 rotation is
  * in the first three columns, while the translation is in the last column.
- * 
+ *
  * This memory alignment is chosen for compatibility with the OpenGL graphics
- * API and others, which take matrices in this specific column major ordering 
+ * API and others, which take matrices in this specific column major ordering
  * described above.
- * 
- * See the interfaces for operator[r][c] and operator(r,c) for how to iterate 
+ *
+ * See the interfaces for operator[r][c] and operator(r,c) for how to iterate
  * over columns and rows for a GMTL Matrix.
  *
  * <b>NOTES on Matrix memory layout and [][] accessors:</b>
  * <ul>
- * <li> gmtl Matrix memory is "column major" ordered, where columns are end 
- *      to end in memory, while a C/C++ Matrix accessed the same way 
+ * <li> gmtl Matrix memory is "column major" ordered, where columns are end
+ *      to end in memory, while a C/C++ Matrix accessed the same way
  *      (using operator[][]) as a gmtl Matrix is "row major" ordered.
  *
- * <li> As a result, a gmtl matrix stores elements in memory transposed from 
- *      the equivelent matrix defined using a double array in the C/C++ 
+ * <li> As a result, a gmtl matrix stores elements in memory transposed from
+ *      the equivelent matrix defined using an array in the C/C++
  *      language, assuming they are accessed the same way (see example).
  * <ul>
  *    <li> Illustrative Example:                                           <br>
@@ -98,9 +81,9 @@ namespace gmtl
  * </ul>
  * <li> In practice, the differences between GMTL and C/C++ defined matrices
  *      all depends how you iterate over your matrix.                                              <br>
- *      If gmtl is accessed mat[row][col] and C/C++ is accessed mat[col][row], then 
+ *      If gmtl is accessed mat[row][col] and C/C++ is accessed mat[col][row], then
  *      memory-wise, these two will yield the same memory mapping (column major as described above),
- *      thus, are equivelent and can both be used interchangably in many popular graphics APIs 
+ *      thus, are equivelent and can both be used interchangably in many popular graphics APIs
  *      such as OpenGL, DirectX, and others.
  *
  * <li> In C/C++ access of a matrix via mat[row][col] yields this memory mapping after using ((float*)mat) to return it:<br>
@@ -111,23 +94,39 @@ namespace gmtl
  *    (3,0) (3,1) (3,2) (3,3)   <=== Contiguous
  *
  *  or linearly if you prefer:
- *    (0,0) (0,1) (0,2) (0,3) (1,0) (1,1) (1,2) (1,3) (2,0) (2,1) (2,2) (2,3) (3,0) (3,1) (3,2) (3,3) 
+ *    (0,0) (0,1) (0,2) (0,3) (1,0) (1,1) (1,2) (1,3) (2,0) (2,1) (2,2) (2,3) (3,0) (3,1) (3,2) (3,3)
  *  </pre>
  *
  * <li> In gmtl, access of a matrix via mat[row][col] yields this memory mapping after using getData() to return it:<br>
  *  <pre>
- *    (0,0) (0,1) (0,2) (0,3)   
- *    (1,0) (1,1) (1,2) (1,3)   
- *    (2,0) (2,1) (2,2) (2,3)   
+ *    (0,0) (0,1) (0,2) (0,3)
+ *    (1,0) (1,1) (1,2) (1,3)
+ *    (2,0) (2,1) (2,2) (2,3)
  *    (3,0) (3,1) (3,2) (3,3)
- *      ^     ^     ^     ^    
+ *      ^     ^     ^     ^
  *    --1-----2-----3-----4---- Contiguous memory arranged by column
- *  
+ *
  *  or linearly if you prefer:
  *    (0,0) (1,0) (2,0) (3,0) (0,1) (1,1) (2,1) (3,1) (0,2) (1,2) (2,2) (3,2) (0,3) (1,3) (2,3) (3,3)
  *  </pre>
  * </ul>
  *
+ * <b>State Tracking:</b>
+ *
+ * The idea of a state-tracked matrix is that if we track the information
+ * as it is stored into the matrix, then other operations could make more optimal
+ * descisions based on the known state.  A good example is in matrix invertion,
+ * a reletively costly operation for matrices.  However, if we know the matrix state
+ * is (i.e.) ORTHOGONAL, then inversion becomes a simple transpose operation.
+ * There are also optimizations with multiplication, as well as other.
+ *
+ * One side effect of this state tracking is that EVERY MATRIC FUNCTION NEEDS TO
+ * TRACK STATE.  This means that anyone writing custom methods, or extentions to
+ * gmtl, will need to pay close attention to matrix state.
+ *
+ * To facilitate state tracking in extensions, we've provided the function
+ * gmtl::combineMatrixStates() to help in determining state based on two
+ * combined matrices.
  * @see Matrix44f
  * @see Matrix44d
  * @ingroup Types
@@ -179,7 +178,7 @@ public:
    public:
       typedef DATA_TYPE DataType;
 
-      ConstRowAccessor( const Matrix<DATA_TYPE,ROWS,COLS>* mat, 
+      ConstRowAccessor( const Matrix<DATA_TYPE,ROWS,COLS>* mat,
                         const unsigned row )
          : mMat( mat ), mRow( row )
       {
@@ -207,7 +206,7 @@ public:
       TRANS = 2,
 
       // able to tranpose to get the inverse.  only rotation component is set
-      ORTHOGONAL = 4, 
+      ORTHOGONAL = 4,
 
       // orthogonal, and normalized axes.
       //ORTHONORMAL = 8,
@@ -217,16 +216,16 @@ public:
       // This can optionally be combined with the NON_UNISCALE state to indicate there is also non-uniform scale
       AFFINE = 16,
 
-      // AFFINE matrix with non-uniform scale, a matrix cannot 
+      // AFFINE matrix with non-uniform scale, a matrix cannot
       // have this state without also having AFFINE (must be or'd together).
-      NON_UNISCALE = 32, 
+      NON_UNISCALE = 32,
 
-      // fully set matrix containing more information than the above, or state is unknown, 
+      // fully set matrix containing more information than the above, or state is unknown,
       // or unclassifiable in terms of the above.
       FULL = 64,
 
       // error bit
-      XFORM_ERROR = 128 
+      XFORM_ERROR = 128
    };
 
    /** Default Constructor (Identity constructor) */
@@ -234,12 +233,14 @@ public:
    {
       /** @todo mp */
       for (unsigned int r = 0; r < ROWS; ++r)
-      for (unsigned int c = 0; c < COLS; ++c)
-         this->operator()( r, c ) = (DATA_TYPE)0.0;
+      {
+         for (unsigned int c = 0; c < COLS; ++c)
+         {   this->operator()( r, c ) = (DATA_TYPE)0.0; }
+      }
 
       /** @todo mp */
       for (unsigned int x = 0; x < Math::Min( COLS, ROWS ); ++x)
-         this->operator()( x, x ) = (DATA_TYPE)1.0;
+      {  this->operator()( x, x ) = (DATA_TYPE)1.0; }
 
       /** @todo Set initial state to IDENTITY and test other stuff */
       mState = IDENTITY;
@@ -424,12 +425,12 @@ public:
       mState = FULL;
    }
 
-   /** access [row, col] in the matrix 
-    *  WARNING: If you set data in the matrix (using this interface), 
-    *  you are required to set mState 
-    *  appropriately, failure to do so will result in incorrect 
-    *  calculations by other functions in GMTL.  If you are unsure 
-    *  about how to set mState, set it to FULL and you will be sure 
+   /** access [row, col] in the matrix
+    *  WARNING: If you set data in the matrix (using this interface),
+    *  you are required to set mState
+    *  appropriately, failure to do so will result in incorrect
+    *  calculations by other functions in GMTL.  If you are unsure
+    *  about how to set mState, set it to FULL and you will be sure
     *  to get the correct result at the cost of some performance.
     */
    DATA_TYPE& operator()( const unsigned row, const unsigned column )
@@ -445,12 +446,12 @@ public:
       return mData[column*ROWS + row];
    }
 
-   /** bracket operator 
-    *  WARNING: If you set data in the matrix (using this interface), 
-    *  you are required to set mState 
-    *  appropriately, failure to do so will result in incorrect 
-    *  calculations by other functions in GMTL.  If you are unsure 
-    *  about how to set mState, set it to FULL and you will be sure 
+   /** bracket operator
+    *  WARNING: If you set data in the matrix (using this interface),
+    *  you are required to set mState
+    *  appropriately, failure to do so will result in incorrect
+    *  calculations by other functions in GMTL.  If you are unsure
+    *  about how to set mState, set it to FULL and you will be sure
     *  to get the correct result at the cost of some performance.
     */
    RowAccessor operator[]( const unsigned row )
@@ -487,14 +488,17 @@ public:
       mState |= XFORM_ERROR;
    }
 
+   void setState(int state)
+   { mState = state; }
+
 public:
    /** Column major.  In other words {Column1, Column2, Column3, Column4} in memory
     * access element mData[column][row]
-    *  WARNING: If you set data in the matrix (using this interface), 
-    *  you are required to set mState appropriately, 
-    *  failure to do so will result in incorrect 
-    *  calculations by other functions in GMTL.  If you are unsure 
-    *  about how to set mState, set it to FULL and you will be sure 
+    *  WARNING: If you set data in the matrix (using this interface),
+    *  you are required to set mState appropriately,
+    *  failure to do so will result in incorrect
+    *  calculations by other functions in GMTL.  If you are unsure
+    *  about how to set mState, set it to FULL and you will be sure
     *  to get the correct result at the cost of some performance.
     */
    DATA_TYPE mData[COLS*ROWS];
@@ -544,22 +548,22 @@ const Matrix44f MAT_IDENTITY44F = Matrix44f();
 /** 64bit floating point 4x4 identity matrix */
 const Matrix44d MAT_IDENTITY44D = Matrix44d();
 
-/** utility function for use by matrix operations.  
- *  given two matrices, when combined with set(..) or xform(..) types of operations, 
+/** utility function for use by matrix operations.
+ *  given two matrices, when combined with set(..) or xform(..) types of operations,
  *  compute what matrixstate will the resulting matrix have?
  */
 inline int combineMatrixStates( int state1, int state2 )
 {
    switch (state1)
    {
-   case Matrix44f::IDENTITY: 
+   case Matrix44f::IDENTITY:
       switch (state2)
       {
       case Matrix44f::XFORM_ERROR: return state2;
       case Matrix44f::NON_UNISCALE: return Matrix44f::XFORM_ERROR;
       default: return state2;
       }
-   case Matrix44f::TRANS: 
+   case Matrix44f::TRANS:
       switch (state2)
       {
       case Matrix44f::IDENTITY: return state1;
@@ -567,7 +571,7 @@ inline int combineMatrixStates( int state1, int state2 )
       case Matrix44f::NON_UNISCALE: return Matrix44f::XFORM_ERROR;
       default: return state2;
       }
-   case Matrix44f::ORTHOGONAL:  
+   case Matrix44f::ORTHOGONAL:
       switch (state2)
       {
       case Matrix44f::IDENTITY: return state1;
@@ -578,8 +582,8 @@ inline int combineMatrixStates( int state1, int state2 )
    case Matrix44f::AFFINE:
       switch (state2)
       {
-      case Matrix44f::IDENTITY: 
-      case Matrix44f::TRANS: 
+      case Matrix44f::IDENTITY:
+      case Matrix44f::TRANS:
       case Matrix44f::ORTHOGONAL:  return state1;
       case Matrix44f::NON_UNISCALE: return Matrix44f::XFORM_ERROR;
       case Matrix44f::AFFINE | Matrix44f::NON_UNISCALE:
@@ -588,8 +592,8 @@ inline int combineMatrixStates( int state1, int state2 )
    case Matrix44f::AFFINE | Matrix44f::NON_UNISCALE:
       switch (state2)
       {
-      case Matrix44f::IDENTITY: 
-      case Matrix44f::TRANS: 
+      case Matrix44f::IDENTITY:
+      case Matrix44f::TRANS:
       case Matrix44f::ORTHOGONAL:
       case Matrix44f::AFFINE:  return state1;
       case Matrix44f::NON_UNISCALE: return Matrix44f::XFORM_ERROR;
