@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AABoxContainTest.h,v $
- * Date modified: $Date: 2002-06-24 03:35:07 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-06-24 05:48:24 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -55,13 +55,16 @@ public:
    //---------------------------------------------------------------------------
    void testIsInVolumePt();
    void testIsInVolumeAABox();
+   void testExtendVolumePt();
+   void testExtendVolumeAABox();
 
    //---------------------------------------------------------------------------
    // Performance tests
    //---------------------------------------------------------------------------
    void testTimingIsInVolumePt();
    void testTimingIsInVolumeAABox();
-
+   void testTimingExtendVolumePt();
+   void testTimingExtendVolumeAABox();
 
    static CppUnit::Test* suite()
    {
@@ -69,6 +72,8 @@ public:
 #define ADD_TEST(x) test_suite->addTest(new CppUnit::TestCaller<AABoxContainTest>( "test" #x, &AABoxContainTest::test ## x))
       ADD_TEST(IsInVolumePt);
       ADD_TEST(IsInVolumeAABox);
+      ADD_TEST(ExtendVolumePt);
+      ADD_TEST(ExtendVolumeAABox);
 #undef ADD_TEST
       return test_suite;
    }
@@ -79,6 +84,8 @@ public:
 #define ADD_TEST(x) test_suite->addTest(new CppUnit::TestCaller<AABoxContainTest>( "testTiming" #x, &AABoxContainTest::testTiming ## x))
       ADD_TEST(IsInVolumePt);
       ADD_TEST(IsInVolumeAABox);
+      ADD_TEST(ExtendVolumePt);
+      ADD_TEST(ExtendVolumeAABox);
 #undef ADD_TEST
       return test_suite;
    }
