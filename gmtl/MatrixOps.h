@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOps.h,v $
- * Date modified: $Date: 2002-06-06 00:21:36 $
- * Version:       $Revision: 1.25 $
+ * Date modified: $Date: 2002-06-06 00:28:00 $
+ * Version:       $Revision: 1.26 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -335,7 +335,7 @@ namespace gmtl
             {
                if ( col[ j] )
                   continue;
-               tmp_m = fabs( m[ i][ j]);
+               tmp_m = gmtl::Math::abs( m[ i][ j]);
                if ( tmp_m > max_m)
                {
                   max_m = tmp_m;
@@ -348,7 +348,7 @@ namespace gmtl
          pivot = m[ r[ k] ][ c[ k] ];
 
 
-         if ( fabs( pivot) <= 1e-20)
+         if ( gmtl::Math::abs( pivot) <= 1e-20)
          {
             std::cerr << "*** pivot = %f in mat_inv. ***\n";
             result.setError();
