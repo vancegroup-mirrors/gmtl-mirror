@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Plane.h,v $
- * Date modified: $Date: 2002-05-10 19:04:06 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2002-05-17 20:01:30 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -60,6 +60,7 @@ namespace gmtl
  * __|___|-->N
  *   |   |
  *</pre>
+ * @addtogroup Types
  */
 template< class DATA_TYPE>
 class Plane

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Tri.h,v $
- * Date modified: $Date: 2002-03-18 23:03:53 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-05-17 20:01:30 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -47,6 +47,7 @@ namespace gmtl
  *
  * Triangle points are tri(s,t) = b+s*e0+t*e1 where 0 <= s <= 1,
  * 0 <= t <= 1, and 0 <= s+t <= 1.
+ * @addtogroup Types
  */
 template< class DATA_TYPE >
 class  Tri

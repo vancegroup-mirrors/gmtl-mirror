@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Quat.h,v $
- * Date modified: $Date: 2002-03-15 03:26:57 $
- * Version:       $Revision: 1.13 $
+ * Date modified: $Date: 2002-05-17 20:01:30 $
+ * Version:       $Revision: 1.14 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -69,6 +69,7 @@ namespace gmtl
  *    </ul>
  * <li>   Or search on google....
  * </ul>
+ * @addtogroup Types
  */
 template <typename DATA_TYPE>
 class Quat

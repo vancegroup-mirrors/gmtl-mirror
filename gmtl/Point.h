@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Point.h,v $
- * Date modified: $Date: 2002-02-22 21:47:46 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-05-17 20:01:30 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -41,6 +41,15 @@
 namespace gmtl
 {
 
+/** Point
+ *  Use points when you need to represent a position.  Don't use points to 
+ *  represent a Vector.  One difference you should note is that
+ *  ceratain matrix operations are different between Point and Vec such as
+ *  xform and operator*.  A Vec xform by matrix is simply a rotation,
+ *  while a Point xformed by a matrix is a full matrix transform 
+ *  (rotation, skew, translation, scale).
+ * @addtogroup Types
+ */
 template<class DATA_TYPE, unsigned SIZE>
 class Point : public VecBase<DATA_TYPE, SIZE>
 {

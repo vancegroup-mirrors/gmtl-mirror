@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AABox.h,v $
- * Date modified: $Date: 2002-02-10 04:38:07 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-05-17 20:01:30 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -43,7 +43,10 @@
 namespace gmtl
 {
 
-// AABox : Defines an axially aligned box
+/** AABox : Defines an axially aligned box
+ * @todo this code needs to be updated...
+ * @addtogroup Types
+ */
 class  AABox
 {
 

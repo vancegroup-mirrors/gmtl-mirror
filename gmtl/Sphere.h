@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Sphere.h,v $
- * Date modified: $Date: 2002-02-15 18:28:46 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-05-17 20:01:30 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -45,6 +45,7 @@ namespace gmtl
  * Describes a sphere in 3D space by its center point and its radius.
  *
  * @param DATA_TYPE     the internal type used for the point and radius
+ * @addtogroup Types
  */
 template<class DATA_TYPE>
 class Sphere
