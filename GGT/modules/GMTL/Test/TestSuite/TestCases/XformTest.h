@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: XformTest.h,v $
- * Date modified: $Date: 2002-03-10 03:59:23 $
- * Version:       $Revision: 1.15 $
+ * Date modified: $Date: 2002-03-10 18:29:46 $
+ * Version:       $Revision: 1.16 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -97,7 +97,7 @@ public:
       }
    };
 
-   void xformQuatVec3()
+   void testTimingXformQuatVec3()
    {
       XformQuatVec3<float>::go( "f" );
       XformQuatVec3<double>::go( "d" );
@@ -131,7 +131,7 @@ public:
          n += typeid( T ).name();
          gmtl::Matrix<T, ROWS, COLS> q1;
          VEC_TYPE<T, VEC_SIZE> v2; 
-         const long iters(50000);
+         const long iters(25000);
          CPPUNIT_METRIC_START_TIMING();
          bool result = false;
          for (long iter = 0; iter < iters; ++iter)
@@ -163,7 +163,7 @@ public:
          CPPUNIT_ASSERT( v2[0] != 1.0 );
       }   
    };
-   void xformMatVecComplete()
+   void testTimingXformMatVecComplete()
    {
       XformMatByVecType<gmtl::Vec, float, 2, 2, 2>::go( "vec" );
       XformMatByVecType<gmtl::Vec, float, 3, 2, 3>::go( "vec" );
@@ -182,7 +182,7 @@ public:
       XformMatByVecType<gmtl::Vec, long, 4, 4, 4>::go( "vec" );
    }
 
-   void xformMatVecPartial() 
+   void testTimingXformMatVecPartial() 
    {
       XformMatByVecType<gmtl::Vec, float, 2, 2, 3>::go( "vec" );
       XformMatByVecType<gmtl::Vec, float, 2, 3, 3>::go( "vec" );
@@ -198,7 +198,7 @@ public:
       XformMatByVecType<gmtl::Vec, int, 3, 4, 4>::go( "vec" );
       XformMatByVecType<gmtl::Vec, long, 3, 4, 4>::go( "vec" );
    }
-   void xformMatPointComplete()
+   void testTimingXformMatPointComplete()
    {
       XformMatByVecType<gmtl::Point, float, 2, 2, 2>::go( "pnt" );
       XformMatByVecType<gmtl::Point, float, 3, 2, 3>::go( "pnt" );
@@ -216,7 +216,7 @@ public:
       XformMatByVecType<gmtl::Point, int, 4, 4, 4>::go( "pnt" );
       XformMatByVecType<gmtl::Point, long, 4, 4, 4>::go( "pnt" );
    }
-   void xformMatPointPartial()
+   void testTimingXformMatPointPartial()
    {
       XformMatByVecType<gmtl::Point, float, 2, 2, 3>::go( "pnt" );
       XformMatByVecType<gmtl::Point, float, 2, 3, 3>::go( "pnt" );
@@ -359,9 +359,9 @@ public:
       // make sure non unit length vectors work...
       {   
          float eps = 0.001f;
-         const gmtl::Vec3f vec( 10,100,200 ), expected( 10, -200, 100 );
+         const gmtl::Vec3f vec( 10.0f,100.0f,200.0f ), expected( 10.0f, -200.0f, 100.0f );
          gmtl::Quatf rot;
-         gmtl::makeRot( rot, gmtl::Math::deg2Rad( 90.0f ), gmtl::makeNormal( gmtl::Vec3f( 1,0,0 ) ) );
+         gmtl::makeRot( rot, gmtl::Math::deg2Rad( 90.0f ), gmtl::makeNormal( gmtl::Vec3f( 1.0f,0.0f,0.0f ) ) );
          
          gmtl::Vec3f result;
          gmtl::xform( result, rot, vec );
@@ -375,9 +375,9 @@ public:
       // for the implementation of quat*vec (but conj is actually faster so we usually choose that.)
       {   
          float eps = 0.001f;
-         const gmtl::Vec3f vec( 10,-100,-2000 ), expected( 10, 2000, -100 );
+         const gmtl::Vec3f vec( 10.0f,-100.0f,-2000.0f ), expected( 10.0f, 2000.0f, -100.0f );
          gmtl::Quatf rot;
-         gmtl::makeRot( rot, gmtl::Math::deg2Rad( 90.0f ), gmtl::makeNormal( gmtl::Vec3f( 1,0,0 ) ) );
+         gmtl::makeRot( rot, gmtl::Math::deg2Rad( 90.0f ), gmtl::makeNormal( gmtl::Vec3f( 1.0f,0.0f,0.0f ) ) );
          
          gmtl::Vec3f result1, result2;
          result1 = gmtl::makeVec( rot * gmtl::makePure( vec ) * gmtl::makeConj( rot ) );
@@ -385,7 +385,9 @@ public:
          result2 = gmtl::makeVec( rot * gmtl::makePure( vec ) * gmtl::makeInvert( rot ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected, result2, eps ) );
          CPPUNIT_ASSERT( gmtl::isEqual( result1, result2, eps ) );
-         //CPPUNIT_ASSERT( !gmtl::isEqual( makeConj( rot ), makeInvert( rot ), eps ) );
+         
+         // should be equal because the rotation is normalized
+         CPPUNIT_ASSERT( gmtl::isEqual( makeConj( rot ), makeInvert( rot ), eps ) );
       }
       
       // same, but without the expected value (just check that the two are equal)
@@ -393,13 +395,15 @@ public:
          float eps = 0.001f;
          const gmtl::Vec3f vec( 123.0f, -4.56f, 78.910f );
          gmtl::Quatf rot;
-         gmtl::makeRot( rot, gmtl::Math::deg2Rad( 123.4556f ), gmtl::makeNormal( gmtl::Vec3f( -79,1000,234 ) ) );
+         gmtl::makeRot( rot, gmtl::Math::deg2Rad( 123.4556f ), gmtl::makeNormal( gmtl::Vec3f( -79.0f,1000.0f,234.0f ) ) );
          
          gmtl::Vec3f result1, result2;
          result1 = gmtl::makeVec( rot * gmtl::makePure( vec ) * gmtl::makeConj( rot ) );
          result2 = gmtl::makeVec( rot * gmtl::makePure( vec ) * gmtl::makeInvert( rot ) );
          CPPUNIT_ASSERT( gmtl::isEqual( result1, result2, eps ) );
-         //CPPUNIT_ASSERT( !gmtl::isEqual( makeConj( rot ), makeInvert( rot ), eps ) );
+
+         // should be equal because the rotation is normalized
+         CPPUNIT_ASSERT( gmtl::isEqual( makeConj( rot ), makeInvert( rot ), eps ) ); 
       }
    }   
    
@@ -501,6 +505,201 @@ public:
          CPPUNIT_ASSERT( gmtl::isEqual( ex4, res4, eps ) );
       }
       
+      // more "interesting" rotations...
+      {
+         const float eps = 0.0001f;
+         const gmtl::Vec<float, 3> vec( 2.0f, 5.0f, 10.0f ), expected( 6.32707f, 0.67293f, 9.40826f );
+         gmtl::Matrix<float, 4, 4> mat;
+         gmtl::makeRot( mat, gmtl::Math::deg2Rad( 35.0f ), 1.0f, 1.0f, 0.0f );
+         
+         // xform a vector by a mat.  verify the rotation worked...
+         gmtl::Vec<float, 3> result1;
+         gmtl::xform( result1, mat, vec );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected, result1, eps ) );
+
+         // operator* should be same
+         gmtl::Vec<float, 3> result2;
+         result2 = mat * vec;
+         CPPUNIT_ASSERT( gmtl::isEqual( expected, result2, eps ) );
+         
+         // make sure that xform by quat yields same result as xform by mat.
+         gmtl::Quat<float> quat;
+         gmtl::makeRot( quat, gmtl::Math::deg2Rad( 35.0f ), 1.0f, 1.0f, 0.0f );
+         
+         gmtl::Vec<float, 3> result3;
+         gmtl::xform( result3, quat, vec );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected, result3, eps ) );
+         
+         gmtl::Vec<float, 3> result4;
+         result4 = quat * vec;
+         CPPUNIT_ASSERT( gmtl::isEqual( expected, result4, eps ) );
+      }
+      
+      
+      
+      // 4x4 matrix: test out complete transforms with a weird vector
+      {
+         const float eps = 0.0001f;
+         const gmtl::Vec<float, 4> vec( -100.0f, 334.0f, 455.0f, -568.0f ), expected( -339.0f, 145.0f, 629.0f, 1113.0f );
+         gmtl::Matrix<float, 4, 4> mat;
+         mat.set( 1.0f, 2.0f, 3.0f, 4.0f, 
+                  5.0f, 6.0f, 7.0f, 8.0f,
+                  9.0f, 10.0f, 11.0f, 12.0f,
+                  13.0f, 14.0f, 15.0f, 16.0f );
+         
+         // xform a vector by a mat.  verify the xform worked...
+         gmtl::Vec<float, 4> result1;
+         gmtl::xform( result1, mat, vec );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected, result1, eps ) );
+
+         // operator* should be same
+         gmtl::Vec<float, 4> result2;
+         result2 = mat * vec;
+         CPPUNIT_ASSERT( gmtl::isEqual( expected, result2, eps ) );
+      }
+      
+      // 3x4 matrix: test out complete transforms with a weird vector
+      // @todo: maybe change this to return size 3: todo, xform doesn't support uneven matrices, but should it??? need to resolve.. 
+      {
+         const float eps = 0.0001f;
+         const gmtl::Vec<float, 4> vec( -100.0f, 334.0f, 455.0f, -568.0f );
+         const gmtl::Vec<float, 4> expected( -339.0f, 145.0f, 629.0f, 0.0f );
+         gmtl::Matrix<float, 3, 4> mat;
+         mat.set( 1.0f, 2.0f, 3.0f, 4.0f, 
+                  5.0f, 6.0f, 7.0f, 8.0f,
+                  9.0f, 10.0f, 11.0f, 12.0f );
+         
+         // xform a vector by a mat.  verify the xform worked...
+         gmtl::Vec<float, 4> result1;
+         gmtl::xform( result1, mat, vec );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected, result1, eps ) );
+
+         // operator* should be same
+         gmtl::Vec<float, 4> result2;
+         result2 = mat * vec;
+         CPPUNIT_ASSERT( gmtl::isEqual( expected, result2, eps ) );
+      }
+      
+      
+      // 3x3 matrix: test out complete transforms with a weird vector
+      {
+         const float eps = 0.0001f;
+         const gmtl::Vec<float, 3> vec( -100.0f, 334.0f, 455.0f ), expected( 1933.0f, 4689.0f, 7445.0f );
+         gmtl::Matrix<float, 3, 3> mat;
+         mat.set( 1.0f, 2.0f, 3.0f, 
+                  5.0f, 6.0f, 7.0f,
+                  9.0f, 10.0f, 11.0f );
+         
+         // xform a vector by a mat.  verify the xform worked...
+         gmtl::Vec<float, 3> result1;
+         gmtl::xform( result1, mat, vec );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected, result1, eps ) );
+
+         // operator* should be same
+         gmtl::Vec<float, 3> result2;
+         result2 = mat * vec;
+         CPPUNIT_ASSERT( gmtl::isEqual( expected, result2, eps ) );
+      }
+      
+      // 4x4 matrix: test out complete transforms with standard vector
+      {
+         const float eps = 0.0001f;
+         const gmtl::Vec<float, 4> vec( -100.0f, 334.0f, 455.0f, 0.0f ), expected( 1933.0f, 4689.0f, 7445.0f, 10201.0f );
+         const gmtl::Vec<float, 3> partial_vec( -100.0f, 334.0f, 455.0f ), expected2( 1933.0f/10201.0f, 4689.0f/10201.0f, 7445.0f/10201.0f );
+         gmtl::Matrix<float, 4, 4> mat;
+         mat.set( 1.0f, 2.0f, 3.0f, 4.0f, 
+                  5.0f, 6.0f, 7.0f, 8.0f,
+                  9.0f, 10.0f, 11.0f, 12.0f,
+                  13.0f, 14.0f, 15.0f, 16.0f );
+         
+         // xform a vector by a mat.  verify the xform worked...
+         gmtl::Vec<float, 4> result1;
+         gmtl::xform( result1, mat, vec );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected, result1, eps ) );
+
+         // operator* should be same
+         gmtl::Vec<float, 4> result2;
+         result2 = mat * vec;
+         CPPUNIT_ASSERT( gmtl::isEqual( expected, result2, eps ) );
+         
+         // xform a partially specified vector by a mat.  verify the xform worked...
+         gmtl::Vec<float, 3> result3;
+         gmtl::xform( result3, mat, partial_vec );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected2, result3, eps ) );
+
+         // operator* should be same
+         gmtl::Vec<float, 3> result4;
+         result4 = mat * partial_vec;
+         CPPUNIT_ASSERT( gmtl::isEqual( expected2, result4, eps ) );
+      }
+      
+      // 3x4 matrix: test out complete transforms with standard vector
+      // @todo: maybe change this to return size 3: todo, xform doesn't support uneven matrices, but should it??? need to resolve.. 
+      {
+         const float eps = 0.0001f;
+         const gmtl::Vec<float, 4> vec( -100.0f, 334.0f, 455.0f, 0.0f ), expected( 1933.0f, 4689.0f, 7445.0f, 0.0f );
+         const gmtl::Vec<float, 3> partial_vec( -100.0f, 334.0f, 455.0f ), expected2( 1933.0f, 4689.0f, 7445.0f );
+         gmtl::Matrix<float, 3, 4> mat;
+         mat.set( 1.0f, 2.0f, 3.0f, 4.0f, 
+                  5.0f, 6.0f, 7.0f, 8.0f,
+                  9.0f, 10.0f, 11.0f, 12.0f );
+         
+         // xform a vector by a mat.  verify the xform worked...
+         gmtl::Vec<float, 4> result1;
+         gmtl::xform( result1, mat, vec );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected, result1, eps ) );
+
+         // operator* should be same
+         gmtl::Vec<float, 4> result2;
+         result2 = mat * vec;
+         CPPUNIT_ASSERT( gmtl::isEqual( expected, result2, eps ) );
+         
+         // xform a partially specified vector by a mat.  verify the xform worked...
+         gmtl::Vec<float, 3> result3;
+         gmtl::xform( result3, mat, partial_vec );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected2, result3, eps ) );
+
+         // operator* should be same
+         gmtl::Vec<float, 3> result4;
+         result4 = mat * partial_vec;
+         CPPUNIT_ASSERT( gmtl::isEqual( expected2, result4, eps ) );
+      }
+
+      // 3x3 matrix: test out complete transforms with standard vector
+      {
+         const float eps = 0.0001f;
+         const gmtl::Vec<float, 3> vec( -100.0f, 334.0f, 0.0f ), expected( 568.0f, 1504.0f, 2440.0f );
+         const gmtl::Vec<float, 2> partial_vec( -100.0f, 334.0f ), expected2( 568.0f/2440.0f, 1504.0f/2440.0f );
+         gmtl::Matrix<float, 3, 3> mat;
+         mat.set( 1.0f, 2.0f, 3.0f, 
+                  5.0f, 6.0f, 7.0f,
+                  9.0f, 10.0f, 11.0f );
+         
+         // xform a vector by a mat.  verify the xform worked...
+         gmtl::Vec<float, 3> result1;
+         gmtl::xform( result1, mat, vec );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected, result1, eps ) );
+
+         // operator* should be same
+         gmtl::Vec<float, 3> result2;
+         result2 = mat * vec;
+         CPPUNIT_ASSERT( gmtl::isEqual( expected, result2, eps ) );
+         
+         // xform a partially specified vector by a mat.  verify the xform worked...
+         gmtl::Vec<float, 2> result3;
+         gmtl::xform( result3, mat, partial_vec );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected2, result3, eps ) );
+
+         // operator* should be same
+         gmtl::Vec<float, 2> result4;
+         result4 = mat * partial_vec;
+         CPPUNIT_ASSERT( gmtl::isEqual( expected2, result4, eps ) );
+      }
+   }   
+   
+   
+   void testMatPointXform()
+   {
       // really simple mat44*pnt4 rotations (hard coded matrix rot)
       {
          // xform a vector by a mat.  verify the rotation worked...
@@ -597,98 +796,84 @@ public:
          CPPUNIT_ASSERT( gmtl::isEqual( ex4, res4, eps ) );
       }
       
-      // more "interesting" rotations...
+      // more "interesting" rotations...  pnt3 = mat44 * pnt3
       {
          const float eps = 0.0001f;
-         const gmtl::Vec<float, 3> vec( 2.0f, 5.0f, 10.0f ), expected( 6.32707f, 0.67293f, 9.40826f );
+         const gmtl::Point<float, 3> vec( 2.0f, 5.0f, 10.0f ), expected( 6.32707f, 0.67293f, 9.40826f );
          gmtl::Matrix<float, 4, 4> mat;
          gmtl::makeRot( mat, gmtl::Math::deg2Rad( 35.0f ), 1.0f, 1.0f, 0.0f );
          
          // xform a vector by a mat.  verify the rotation worked...
-         gmtl::Vec<float, 3> result1;
+         gmtl::Point<float, 3> result1;
          gmtl::xform( result1, mat, vec );
          CPPUNIT_ASSERT( gmtl::isEqual( expected, result1, eps ) );
 
          // operator* should be same
-         gmtl::Vec<float, 3> result2;
+         gmtl::Point<float, 3> result2;
          result2 = mat * vec;
          CPPUNIT_ASSERT( gmtl::isEqual( expected, result2, eps ) );
-         
-         // make sure that xform by quat yields same result as xform by mat.
-         gmtl::Quat<float> quat;
-         gmtl::makeRot( quat, gmtl::Math::deg2Rad( 35.0f ), 1.0f, 1.0f, 0.0f );
-         
-         gmtl::Vec<float, 3> result3;
-         gmtl::xform( result3, quat, vec );
-         CPPUNIT_ASSERT( gmtl::isEqual( expected, result3, eps ) );
-         
-         gmtl::Vec<float, 3> result4;
-         result4 = quat * vec;
-         CPPUNIT_ASSERT( gmtl::isEqual( expected, result4, eps ) );
       }
       
-      
-      
-      // 4x4 matrix: test out complete transforms with a weird vector
+      // 4x4 matrix: test out complete transforms with a weird vector (last elt non 1)
       {
          const float eps = 0.0001f;
-         const gmtl::Vec<float, 4> vec( -100, 334, 455, -568 ), expected( -339, 145, 629, 1113 );
+         const gmtl::Point<float, 4> vec( -100.0f, 334.0f, 455.0f, -568.0f ), expected( -339.0f, 145.0f, 629.0f, 1113.0f );
          gmtl::Matrix<float, 4, 4> mat;
-         mat.set( 1, 2, 3, 4, 
-                  5, 6, 7, 8,
-                  9, 10, 11, 12,
-                  13, 14, 15, 16 );
+         mat.set( 1.0f, 2.0f, 3.0f, 4.0f, 
+                  5.0f, 6.0f, 7.0f, 8.0f,
+                  9.0f, 10.0f, 11.0f, 12.0f,
+                  13.0f, 14.0f, 15.0f, 16.0f );
          
          // xform a vector by a mat.  verify the xform worked...
-         gmtl::Vec<float, 4> result1;
+         gmtl::Point<float, 4> result1;
          gmtl::xform( result1, mat, vec );
          CPPUNIT_ASSERT( gmtl::isEqual( expected, result1, eps ) );
 
          // operator* should be same
-         gmtl::Vec<float, 4> result2;
+         gmtl::Point<float, 4> result2;
          result2 = mat * vec;
          CPPUNIT_ASSERT( gmtl::isEqual( expected, result2, eps ) );
       }
       
-      // 3x4 matrix: test out complete transforms with a weird vector
+      // 3x4 matrix: test out complete transforms with a weird vector  (last elt non 1)
       // @todo: maybe change this to return size 3: todo, xform doesn't support uneven matrices, but should it??? need to resolve.. 
       {
          const float eps = 0.0001f;
-         const gmtl::Vec<float, 4> vec( -100, 334, 455, -568 );
-         const gmtl::Vec<float, 4> expected( -339, 145, 629, 0.0f );
+         const gmtl::Point<float, 4> vec( -100.0f, 334.0f, 455.0f, -568.0f );
+         const gmtl::Point<float, 4> expected( -339.0f, 145.0f, 629.0f, 0.0f );
          gmtl::Matrix<float, 3, 4> mat;
-         mat.set( 1, 2, 3, 4, 
-                  5, 6, 7, 8,
-                  9, 10, 11, 12 );
+         mat.set( 1.0f, 2.0f, 3.0f, 4.0f, 
+                  5.0f, 6.0f, 7.0f, 8.0f,
+                  9.0f, 10.0f, 11.0f, 12.0f );
          
          // xform a vector by a mat.  verify the xform worked...
-         gmtl::Vec<float, 4> result1;
+         gmtl::Point<float, 4> result1;
          gmtl::xform( result1, mat, vec );
          CPPUNIT_ASSERT( gmtl::isEqual( expected, result1, eps ) );
 
          // operator* should be same
-         gmtl::Vec<float, 4> result2;
+         gmtl::Point<float, 4> result2;
          result2 = mat * vec;
          CPPUNIT_ASSERT( gmtl::isEqual( expected, result2, eps ) );
       }
       
       
-      // 3x3 matrix: test out complete transforms with a weird vector
+      // 3x3 matrix: test out complete transforms with a weird vector  (last elt non 1)
       {
          const float eps = 0.0001f;
-         const gmtl::Vec<float, 3> vec( -100.0f, 334.0f, 455.0f ), expected( 1933, 4689, 7445 );
+         const gmtl::Point<float, 3> vec( -100.0f, 334.0f, 455.0f ), expected( 1933.0f, 4689.0f, 7445.0f );
          gmtl::Matrix<float, 3, 3> mat;
-         mat.set( 1, 2, 3, 
-                  5, 6, 7,
-                  9, 10, 11 );
+         mat.set( 1.0f, 2.0f, 3.0f, 
+                  5.0f, 6.0f, 7.0f,
+                  9.0f, 10.0f, 11.0f );
          
          // xform a vector by a mat.  verify the xform worked...
-         gmtl::Vec<float, 3> result1;
+         gmtl::Point<float, 3> result1;
          gmtl::xform( result1, mat, vec );
          CPPUNIT_ASSERT( gmtl::isEqual( expected, result1, eps ) );
 
          // operator* should be same
-         gmtl::Vec<float, 3> result2;
+         gmtl::Point<float, 3> result2;
          result2 = mat * vec;
          CPPUNIT_ASSERT( gmtl::isEqual( expected, result2, eps ) );
       }
@@ -696,31 +881,31 @@ public:
       // 4x4 matrix: test out complete transforms with standard vector
       {
          const float eps = 0.0001f;
-         const gmtl::Vec<float, 4> vec( -100.0f, 334.0f, 455.0f, 0.0f ), expected( 1933.0f, 4689.0f, 7445.0f, 10201.0f );
-         const gmtl::Vec<float, 3> partial_vec( -100.0f, 334.0f, 455.0f ), expected2( 1933.0f/10201.0f, 4689.0f/10201.0f, 7445.0f/10201.0f );
+         const gmtl::Point<float, 4> vec( -100.0f, 334.0f, 455.0f, 1.0f ), expected( 1937.0f, 4697.0f, 7457.0f, 10217.0f );
+         const gmtl::Point<float, 3> partial_vec( -100.0f, 334.0f, 455.0f ), expected2( 1937.0f/10217.0f, 4697.0f/10217.0f, 7457.0f/10217.0f );
          gmtl::Matrix<float, 4, 4> mat;
-         mat.set( 1, 2, 3, 4, 
-                  5, 6, 7, 8,
-                  9, 10, 11, 12,
-                  13, 14, 15, 16 );
+         mat.set( 1.0f, 2.0f, 3.0f, 4.0f, 
+                  5.0f, 6.0f, 7.0f, 8.0f,
+                  9.0f, 10.0f, 11.0f, 12.0f,
+                  13.0f, 14.0f, 15.0f, 16.0f );
          
          // xform a vector by a mat.  verify the xform worked...
-         gmtl::Vec<float, 4> result1;
+         gmtl::Point<float, 4> result1;
          gmtl::xform( result1, mat, vec );
          CPPUNIT_ASSERT( gmtl::isEqual( expected, result1, eps ) );
 
          // operator* should be same
-         gmtl::Vec<float, 4> result2;
+         gmtl::Point<float, 4> result2;
          result2 = mat * vec;
          CPPUNIT_ASSERT( gmtl::isEqual( expected, result2, eps ) );
          
          // xform a partially specified vector by a mat.  verify the xform worked...
-         gmtl::Vec<float, 3> result3;
+         gmtl::Point<float, 3> result3;
          gmtl::xform( result3, mat, partial_vec );
          CPPUNIT_ASSERT( gmtl::isEqual( expected2, result3, eps ) );
 
          // operator* should be same
-         gmtl::Vec<float, 3> result4;
+         gmtl::Point<float, 3> result4;
          result4 = mat * partial_vec;
          CPPUNIT_ASSERT( gmtl::isEqual( expected2, result4, eps ) );
       }
@@ -729,30 +914,30 @@ public:
       // @todo: maybe change this to return size 3: todo, xform doesn't support uneven matrices, but should it??? need to resolve.. 
       {
          const float eps = 0.0001f;
-         const gmtl::Vec<float, 4> vec( -100, 334, 455, 0.0f ), expected( 1933, 4689, 7445, 0.0f );
-         const gmtl::Vec<float, 3> partial_vec( -100, 334, 455 ), expected2( 1933, 4689, 7445 );
+         const gmtl::Point<float, 4> vec( -100.0f, 334.0f, 455.0f, 1.0f ), expected( 1937.0f, 4697.0f, 7457.0f, 0.0f );
+         const gmtl::Point<float, 3> partial_vec( -100.0f, 334.0f, 455.0f ), expected2( 1937.0f, 4697.0f, 7457.0f );
          gmtl::Matrix<float, 3, 4> mat;
-         mat.set( 1, 2, 3, 4, 
-                  5, 6, 7, 8,
-                  9, 10, 11, 12 );
+         mat.set( 1.0f, 2.0f, 3.0f, 4.0f, 
+                  5.0f, 6.0f, 7.0f, 8.0f,
+                  9.0f, 10.0f, 11.0f, 12.0f );
          
          // xform a vector by a mat.  verify the xform worked...
-         gmtl::Vec<float, 4> result1;
+         gmtl::Point<float, 4> result1;
          gmtl::xform( result1, mat, vec );
          CPPUNIT_ASSERT( gmtl::isEqual( expected, result1, eps ) );
 
          // operator* should be same
-         gmtl::Vec<float, 4> result2;
+         gmtl::Point<float, 4> result2;
          result2 = mat * vec;
          CPPUNIT_ASSERT( gmtl::isEqual( expected, result2, eps ) );
          
          // xform a partially specified vector by a mat.  verify the xform worked...
-         gmtl::Vec<float, 3> result3;
+         gmtl::Point<float, 3> result3;
          gmtl::xform( result3, mat, partial_vec );
          CPPUNIT_ASSERT( gmtl::isEqual( expected2, result3, eps ) );
 
          // operator* should be same
-         gmtl::Vec<float, 3> result4;
+         gmtl::Point<float, 3> result4;
          result4 = mat * partial_vec;
          CPPUNIT_ASSERT( gmtl::isEqual( expected2, result4, eps ) );
       }
@@ -760,30 +945,30 @@ public:
       // 3x3 matrix: test out complete transforms with standard vector
       {
          const float eps = 0.0001f;
-         const gmtl::Vec<float, 3> vec( -100, 334, 0.0f ), expected( 568, 1504, 2440 );
-         const gmtl::Vec<float, 2> partial_vec( -100, 334 ), expected2( 568.0f/2440.0f, 1504.0f/2440.0f );
+         const gmtl::Point<float, 3> vec( -100.0f, 334.0f, 1.0f ), expected( 571.0f, 1511.0f, 2451.0f );
+         const gmtl::Point<float, 2> partial_vec( -100.0f, 334.0f ), expected2( 571.0f/2451.0f, 1511.0f/2451.0f );
          gmtl::Matrix<float, 3, 3> mat;
-         mat.set( 1, 2, 3, 
-                  5, 6, 7,
-                  9, 10, 11 );
+         mat.set( 1.0f, 2.0f, 3.0f, 
+                  5.0f, 6.0f, 7.0f,
+                  9.0f, 10.0f, 11.0f );
          
          // xform a vector by a mat.  verify the xform worked...
-         gmtl::Vec<float, 3> result1;
+         gmtl::Point<float, 3> result1;
          gmtl::xform( result1, mat, vec );
          CPPUNIT_ASSERT( gmtl::isEqual( expected, result1, eps ) );
 
          // operator* should be same
-         gmtl::Vec<float, 3> result2;
+         gmtl::Point<float, 3> result2;
          result2 = mat * vec;
          CPPUNIT_ASSERT( gmtl::isEqual( expected, result2, eps ) );
          
          // xform a partially specified vector by a mat.  verify the xform worked...
-         gmtl::Vec<float, 2> result3;
+         gmtl::Point<float, 2> result3;
          gmtl::xform( result3, mat, partial_vec );
          CPPUNIT_ASSERT( gmtl::isEqual( expected2, result3, eps ) );
 
          // operator* should be same
-         gmtl::Vec<float, 2> result4;
+         gmtl::Point<float, 2> result4;
          result4 = mat * partial_vec;
          CPPUNIT_ASSERT( gmtl::isEqual( expected2, result4, eps ) );
       }
@@ -796,15 +981,18 @@ public:
       //test_suite->addTest( new CppUnit::TestCaller<XformTest>("testVec3_Mat_Xform", &XformTest::testVec3_Mat_Xform));
       //test_suite->addTest( new CppUnit::TestCaller<XformTest>("testPoint3_Mat_Xform", &XformTest::testPoint3_Mat_Xform));
       
-      test_suite->addTest( new CppUnit::TestCaller<XformTest>("xformMatPointComplete", &XformTest::xformMatPointComplete));
-      test_suite->addTest( new CppUnit::TestCaller<XformTest>("xformMatPointPartial", &XformTest::xformMatPointPartial));
-      test_suite->addTest( new CppUnit::TestCaller<XformTest>("xformMatVecComplete", &XformTest::xformMatVecComplete));
-      test_suite->addTest( new CppUnit::TestCaller<XformTest>("xformMatVecPartial", &XformTest::xformMatVecPartial));
+      test_suite->addTest( new CppUnit::TestCaller<XformTest>("testTimingXformQuatVec3", &XformTest::testTimingXformQuatVec3));
+      test_suite->addTest( new CppUnit::TestCaller<XformTest>("testTimingXformMatPointComplete", &XformTest::testTimingXformMatPointComplete));
+      test_suite->addTest( new CppUnit::TestCaller<XformTest>("testTimingXformMatPointPartial", &XformTest::testTimingXformMatPointPartial));
+      test_suite->addTest( new CppUnit::TestCaller<XformTest>("testTimingXformMatVecComplete", &XformTest::testTimingXformMatVecComplete));
+      test_suite->addTest( new CppUnit::TestCaller<XformTest>("testTimingXformMatVecPartial", &XformTest::testTimingXformMatVecPartial));
+      
+      
       test_suite->addTest( new CppUnit::TestCaller<XformTest>("testQuatVecXform", &XformTest::testQuatVecXform));
       test_suite->addTest( new CppUnit::TestCaller<XformTest>("weird_XformQuatVec_InvConj_SanityCheck", &XformTest::weird_XformQuatVec_InvConj_SanityCheck));
       test_suite->addTest( new CppUnit::TestCaller<XformTest>("testMatVecXform", &XformTest::testMatVecXform));
-      test_suite->addTest( new CppUnit::TestCaller<XformTest>("xformQuatVec3", &XformTest::xformQuatVec3));
-
+      test_suite->addTest( new CppUnit::TestCaller<XformTest>("testMatPointXform", &XformTest::testMatPointXform));
+      
       return test_suite;
    }
 
