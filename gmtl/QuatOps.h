@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatOps.h,v $
- * Date modified: $Date: 2003-03-17 04:04:44 $
- * Version:       $Revision: 1.22 $
+ * Date modified: $Date: 2003-03-17 18:29:50 $
+ * Version:       $Revision: 1.23 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -48,7 +48,7 @@ namespace gmtl
    /** product of two quaternions (quaternion product)
     *  multiplication of quats is much like multiplication of typical complex numbers.
     *  @post q1q2 = (s1 + v1)(s2 + v2)
-    *  @post this' = q1 * q2   (grassman product)
+    *  @post result = q1 * q2 (where q2 would be applied first to any xformed geometry)
     *  @see Quat
     */
    template <typename DATA_TYPE>
@@ -95,7 +95,8 @@ namespace gmtl
    }
 
    /** product of two quaternions (quaternion product)
-    *  @post this' = q1 * q2 (grassman product)
+    *  Does quaternion multiplication.
+    *  @post temp' = q1 * q2 (where q2 would be applied first to any xformed geometry)
     *  @see Quat
     *  @todo metaprogramming on quat operator*()
     */
@@ -112,7 +113,7 @@ namespace gmtl
    }
 
    /** quaternion postmult
-    * @post result' = result * q2
+    * @post result' = result * q2 (where q2 is applied first to any xformed geometry)
     * @see Quat
     */
    template <typename DATA_TYPE>
@@ -183,7 +184,7 @@ namespace gmtl
    }
 
    /** quotient of two quaternions
-    * @post result = q1 * (1/q2)
+    * @post result = q1 * (1/q2)  (where 1/q2 is applied first to any xform'd geometry)
     * @see Quat
     */
    template <typename DATA_TYPE>
@@ -194,7 +195,7 @@ namespace gmtl
    }
 
    /** quotient of two quaternions
-    * @post result = q1 * (1/q2)
+    * @post result = q1 * (1/q2) (where 1/q2 is applied first to any xform'd geometry)
     *  @see Quat
     */
    template <typename DATA_TYPE>
@@ -204,7 +205,7 @@ namespace gmtl
    }
 
    /** quotient of two quaternions
-    * @post result = result * (1/q2)
+    * @post result = result * (1/q2)  (where 1/q2 is applied first to any xform'd geometry)
     * @see Quat
     */
    template <typename DATA_TYPE>
