@@ -8,8 +8,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: CoordClassTest.cpp,v $
- * Date modified: $Date: 2002-06-12 19:38:53 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-07-11 21:20:40 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -87,6 +87,43 @@ namespace gmtlTest
       CPPUNIT_ASSERT( q4.rot()[0] == 4.0f );
       CPPUNIT_ASSERT( q4.rot()[1] == 5.0f );
       CPPUNIT_ASSERT( q4.rot()[2] == 6.0f );
+   }
+
+   void testMultiArgConstructors()
+   {
+      {
+         gmtl::Coord3fXYZ coord(1, 2, 3, 4, 5, 6);
+         CPPUNIT_ASSERT( coord.pos()[0] == 1 );
+         CPPUNIT_ASSERT( coord.pos()[1] == 2 );
+         CPPUNIT_ASSERT( coord.pos()[2] == 3 );
+         CPPUNIT_ASSERT( coord.rot()[0] == 4 );
+         CPPUNIT_ASSERT( coord.rot()[1] == 5 );
+         CPPUNIT_ASSERT( coord.rot()[2] == 6 );
+      }
+
+      {
+         gmtl::Coord4fXYZ coord(1, 2, 3, 4, 5, 6, 7);
+         CPPUNIT_ASSERT( coord.pos()[0] == 1 );
+         CPPUNIT_ASSERT( coord.pos()[1] == 2 );
+         CPPUNIT_ASSERT( coord.pos()[2] == 3 );
+         CPPUNIT_ASSERT( coord.pos()[3] == 4 );
+         CPPUNIT_ASSERT( coord.rot()[0] == 5 );
+         CPPUNIT_ASSERT( coord.rot()[1] == 6 );
+         CPPUNIT_ASSERT( coord.rot()[2] == 7 );
+      }
+      
+      {
+         gmtl::CoordVec4AxisAnglef coord(1, 2, 3, 4, 5, 6, 7, 8);
+         CPPUNIT_ASSERT( coord.pos()[0] == 1 );
+         CPPUNIT_ASSERT( coord.pos()[1] == 2 );
+         CPPUNIT_ASSERT( coord.pos()[2] == 3 );
+         CPPUNIT_ASSERT( coord.pos()[3] == 4 );
+         CPPUNIT_ASSERT( coord.rot()[0] == 5 );
+         CPPUNIT_ASSERT( coord.rot()[1] == 6 );
+         CPPUNIT_ASSERT( coord.rot()[2] == 7 );
+         CPPUNIT_ASSERT( coord.rot()[3] == 8 );
+      }
+
    }
 
    void CoordClassTest::testCoordTimingDefaultConstructor()

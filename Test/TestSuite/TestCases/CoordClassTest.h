@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: CoordClassTest.h,v $
- * Date modified: $Date: 2002-05-20 22:39:23 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-07-11 21:20:41 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -61,6 +61,7 @@ namespace gmtlTest
 
       // Correctness tests
       void testCoordClassTestCreation();
+      void testMultiArgConstructors();
 
       // Performance tests
       void testCoordTimingDefaultConstructor();
