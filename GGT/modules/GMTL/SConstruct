@@ -382,7 +382,7 @@ help_text += opts.GenerateHelpText(baseEnv);
 help_text += """\nOther Options:
    optimize=no          Should we build optimize
    profile=no           Should we build profiled code
-   PREFIX=/usr/local    Installation prefix
+   prefix=/usr/local    Installation prefix
 """
 help_text += """
 You can store configuration options in the file: options.custom
