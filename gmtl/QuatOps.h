@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatOps.h,v $
- * Date modified: $Date: 2002-03-09 21:16:44 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-03-09 21:17:46 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -218,31 +218,6 @@ namespace gmtl
    Quat<DATA_TYPE>& normalize( Quat<DATA_TYPE>& result )
    {
       DATA_TYPE l = length( result );
-   
-      // return if no magnitude (already as normalized as possible)
-      if (l < (DATA_TYPE)0.0001) 
-         return result;
-
-      DATA_TYPE l_inv = ((DATA_TYPE)1.0) / l;
-      result[Xelt] *= l_inv;
-      result[Yelt] *= l_inv;
-      result[Zelt] *= l_inv;
-      result[Welt] *= l_inv;
-      
-      return result;
-   }
-   
-   /** Divide by quaternion norm.  Faster than normalize, but not accurate.
-    *  This function basically divides result by its lengthSquared (or norm).
-    * mainly useful for some internal quaternion operations - you might not want to use this.
-    *  @pre magnitude should be > 0, otherwise no calculation is done.
-    *  @post result' = normalize( result ), where normalize makes length( result ) == 1
-    *  @see Quat
-    */
-   template <typename DATA_TYPE>
-   Quat<DATA_TYPE>& normalizeFast( Quat<DATA_TYPE>& result )
-   {
-      DATA_TYPE l = lengthSquared( result );
    
       // return if no magnitude (already as normalized as possible)
       if (l < (DATA_TYPE)0.0001) 
