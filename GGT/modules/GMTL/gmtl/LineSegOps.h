@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: LineSegOps.h,v $
- * Date modified: $Date: 2003-03-17 00:11:12 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2003-05-10 21:18:01 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -36,6 +36,7 @@
 #define _GMTL_LINESEGOPS_H_
 
 #include <gmtl/LineSeg.h>
+#include <gmtl/RayOps.h>
 
 namespace gmtl {
 
@@ -86,57 +87,6 @@ inline DATA_TYPE distanceSquared( const LineSeg<DATA_TYPE>& lineseg,
    return gmtl::lengthSquared( pt - findNearestPt( lineseg, pt ) );
 }
 
-//--- LineSeg Comparitor ---//
-/**
- * Compare two line segments to see if they are EXACTLY the same.
- *
- * @param ls1     the first lineseg to compare
- * @param ls2     the second lineseg to compare
- *
- * @return  true if they are equal, false otherwise
- */
-template< class DATA_TYPE >
-inline bool operator==( const LineSeg<DATA_TYPE>& ls1, const LineSeg<DATA_TYPE>& ls2 )
-{
-   return ( (ls1.mOrigin == ls2.mOrigin) && (ls1.mDir == ls2.mDir) );
-}
-
-/**
- * Compare two line segments to see if they are not EXACTLY the same.
- *
- * @param ls1     the first lineseg to compare
- * @param ls2     the second lineseg to compare
- *
- * @return  true if they are not equal, false otherwise
- */
-template< class DATA_TYPE >
-inline bool operator!=( const LineSeg<DATA_TYPE>& ls1,
-                        const LineSeg<DATA_TYPE>& ls2 )
-{
-   return ( ! (ls1 == ls2) );
-}
-
-/**
- * Compare two line segments to see if the are the same within the given
- * tolerance.
- *
- * @param ls1     the first lineseg to compare
- * @param ls2     the second lineseg to compare
- * @param eps     the tolerance value to use
- *
- * @pre eps must be >= 0
- *
- * @return  true if they are equal within the tolerance, false otherwise
- */
-template< class DATA_TYPE >
-inline bool isEqual( const LineSeg<DATA_TYPE>& ls1,
-                     const LineSeg<DATA_TYPE>& ls2,
-                     const DATA_TYPE& eps )
-{
-   gmtlASSERT( eps >= 0 );
-   return ( (isEqual(ls1.mOrigin, ls2.mOrigin, eps)) &&
-            (isEqual(ls1.mDir, ls2.mDir, eps)) );
-}
 
 } // namespace gmtl
 #endif
