@@ -29,8 +29,8 @@
 #
 # -----------------------------------------------------------------
 # File:          $RCSfile: Makefile,v $
-# Date modified: $Date: 2002-02-12 04:56:33 $
-# Version:       $Revision: 1.7 $
+# Date modified: $Date: 2002-02-20 07:05:41 $
+# Version:       $Revision: 1.8 $
 # -----------------------------------------------------------------
 # *************** <auto-copyright.pl END do not edit this line> ***************
 
@@ -38,7 +38,7 @@
 # Advanced template makefile for VR Juggler applications.  This is intended
 # for "power users" who really know what they are doing and want to abuse
 # Doozer's flexibility.  :)
-# $Id: Makefile,v 1.7 2002-02-12 04:56:33 allenb Exp $
+# $Id: Makefile,v 1.8 2002-02-20 07:05:41 allenb Exp $
 #
 # *** IMPORTANT NOTES -- READ THESE FIRST ***
 #     1) This file _requires_ the use of GNU make (gmake).
@@ -108,7 +108,7 @@ EXTRA_OPTIM_FLAGS	= -D_OPT
 
 GMTL_INCLUDES  = -I$(GGT_ROOT)/modules/GMTL/ -I$(GGT_ROOT)/
 SUITE_INCLUDES = -I$(CPPUNIT_DIR)/include
-EXTRA_INCLUDES = $(GMTL_INCLUDES) $(SUITE_INCLUDES) -ITestCases/InfoTests
+EXTRA_INCLUDES = $(GMTL_INCLUDES) $(SUITE_INCLUDES)
 
 EXTRA_UI_FLAGS =
 
@@ -122,7 +122,8 @@ EXTRA_UI_FLAGS =
 #
 # This can be done for as many lists of object files as necessary.
 # This is helpful for compiling multiple applications.
-TEST_SRCS = testSuite.cpp
+TEST_SRCS = testSuite.cpp \
+            OptTest.cpp
 CPPUNIT_UI_SRCS	= TextTestResult.cpp	\
                   TextTestRunner.cpp
 CPPUNIT_EXTS	= MetricRegistry.cpp
@@ -134,8 +135,7 @@ CPPUNIT_SRCS	= Exception.cpp		\
                   TestFailure.cpp	\
                   TestSuite.cpp \
                   $(CPPUNIT_UI_SRCS) \
-                  $(CPPUNIT_EXTS) \
-                  OptTest.cpp
+                  $(CPPUNIT_EXTS)             
 
 EXTRA_CPPUNIT_SRCS_PATH	= $(CPPUNIT_DIR)/src/cppunit $(CPPUNIT_DIR)/src/cppunit/extensions
 
