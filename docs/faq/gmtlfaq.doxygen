@@ -143,21 +143,94 @@
  *  double x = gmtl::dot( vecA, vecB );
  *
  *
- *
  *  <b>How do I check if a vector is normalized?</b> 
+ *  Use the isNormalized function, which returns a boolean value.
+ *
+ *  gmtl::Vec3f myVec;
+ *  if ( gmtl::isNormalized( myVec ) )
+ *  {
+ *     cout << "Vector is normalized" << endl;
+ *  }
+ *  
+ *
  *  <b>How do I normalize a vector?</b>
+ *  Use the normalize function. After this, the length of the vector will be
+ *  1, unless the original length was 0, in which case normalization is not
+ *  possible.
+ *
+ *  gmtl::Vec3f myVec;
+ *  gmtl::normalize( myVec );
+ *
+ *
  *  <b>How do I check if 2 vectors are equal?</b>
+ *  Use the == operator, just as you would when testing the equality of simple
+ *  data types like `int'.
+ *  
+ *  gmtl::Vec3f vecA, vecB;
+ *  if ( vecA == vecB )
+ *  {
+ *     cout << "Vectors are equal" << endl;
+ *  }
+ *
+ *
  *  <b>How do I find the length of a vector?</b>
+ *  Use the length function. The numeric type returned depends on the data type
+ *  of the vector.
+ *
+ *  gmtl::Vec3f myVec;
+ *  float length = gmtl::length( myVec );
+ *
+ *  Another potential function to use is lengthSquared. This function is
+ *  provided as a convenience because GMTL users frequently need this value
+ *  rather than merely the length.
+ *
+ *  float lengthSq = gmtl::lengthSquared( myVec );
+ *
+ *
  *  <b>How do I invert a vector?</b>
+ *  Use A scalar multiplication by -1. This will cause the vector to be 
+ *  pointing in the exact opposite direction and keep the same length.
+ *
+ *  gmtl::Vec3f myVec;
+ *  myVec *= -1;
+ *
+ *
  *  <b>How do I interpolate between 2 vectors?</b>
+ *  Use the lerp function. This will perform a linearly-interpolated vector
+ *  based on 2 original vectors and an interpolation weight between 0 and 1.
+ *
+ *  gmtl::Vec3f resultVec, vecA. vecB;
+ *  float weight = 0.333;
+ *
+ *  gmtl::lerp( resultVec, weight, vecA, vecB );
+ *
+ *  After this function, resultVec now contains a vector that is one third of
+ *  the way from vecA to vecB. This resulting vector is closer to vecA.
+ *
+ *
+ *  <b>How do I multiply a vector by a scalar value?</b>
+ *  Simply use the * or *= operator.
+ *
+ *  gmtl::Vec3f myVec, anotherVec;
+ *  float myScalar = 3.5;
+ *
+ *  myVec *= myScalar;
+ *  anotherVec = myVec * myScalar;
+ *
+ *
  *  <b>How do I add, subtract, divide and multiply vectors?</b>
+ *  Generally, you can use any of the standard mathematical operators
+ *  ('+', '-', '*', '/') to perform math functions on vectors.
  *
+ *  gmtl::Vec3f vecA, vecB, vecC;
  *
- *
- *
- *
- *
- *
+ *  vecA = vecB * vecC;
+ *  vecA = vecB / vecC;
+ *  vecA += vecB;
+ *  vecA = vecB + vecC;
+ *  vecA -= vecC;
+ *  vecA = vecB - vecC;
+ *  etc.
  *
  *
  *
