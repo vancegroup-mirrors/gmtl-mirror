@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2003-04-24 21:24:41 $
- * Version:       $Revision: 1.76 $
+ * Date modified: $Date: 2003-04-25 12:47:01 $
+ * Version:       $Revision: 1.77 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -1032,7 +1032,7 @@ namespace gmtl
     * @return  the inverse of source
     */
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
-   inline Matrix<DATA_TYPE, ROWS, COLS> makeInverse(const Matrix<DATA_TYPE, ROWS, COLS>& src)
+   inline Matrix<DATA_TYPE, ROWS, COLS> makeInvert(const Matrix<DATA_TYPE, ROWS, COLS>& src)
    {
       Matrix<DATA_TYPE, ROWS, COLS> result;
       return invert( result, src );
