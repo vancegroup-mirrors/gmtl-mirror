@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatCompareTest.h,v $
- * Date modified: $Date: 2002-02-22 21:48:34 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-03-11 00:41:21 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -99,6 +99,43 @@ public:
          }
       }
    };
+   
+   template<typename T>
+   class testEquiv
+   {
+   public:
+      static void go()
+      {
+         gmtl::Quat<T> quat1((T)1.0, (T)2.0, (T)34.0, (T)4.0), 
+                       quat2(-(T)1.0, -(T)2.0, -(T)34.0, -(T)4.0),  
+                       quat3((T)1.0, (T)2.0, (T)34.0, (T)4.0),
+                       quat4;
+
+         // Test for geometric equivelency
+         CPPUNIT_ASSERT( gmtl::isEquiv( quat1, quat2 ) );
+         CPPUNIT_ASSERT( gmtl::isEquiv( quat1, quat2, (T)0.0f ) );
+         CPPUNIT_ASSERT( gmtl::isEquiv( quat2, quat1, (T)0.0f ) );
+         CPPUNIT_ASSERT( gmtl::isEquiv( quat2, quat1, (T)100000.0f ) );
+         
+         // Test for geometric equivelency
+         CPPUNIT_ASSERT( gmtl::isEquiv( quat1, quat3 ) );
+         CPPUNIT_ASSERT( gmtl::isEquiv( quat1, quat3, (T)0.0f ) );
+         CPPUNIT_ASSERT( gmtl::isEquiv( quat3, quat1, (T)0.0f ) );
+         CPPUNIT_ASSERT( gmtl::isEquiv( quat3, quat1, (T)100000.0f ) );
+         
+         // Test for geometric un-equivelency
+         CPPUNIT_ASSERT( !gmtl::isEquiv( quat1, quat4 ) );
+         CPPUNIT_ASSERT( !gmtl::isEquiv( quat1, quat4, (T)0.0f ) );
+         CPPUNIT_ASSERT( !gmtl::isEquiv( quat4, quat1, (T)0.0f ) );
+         CPPUNIT_ASSERT( !gmtl::isEquiv( quat4, quat1, (T)30.0f ) );
+      }
+   };
+   
+   void testQuatEquiv()
+   {
+      testEquiv<float>::go();
+      testEquiv<double>::go();
+   }   
    
    void testQuatEqualityFloatTest()
    {
@@ -301,14 +338,36 @@ public:
       CPPUNIT_ASSERT( true_count > 0 );
    }   
    
+   void testQuatTimingEquiv()
+   {
+      gmtl::Quatf quat1(1.0, 2.0, 34.0, 4.0), 
+                       quat2(-1.0, -2.0, -34.0, -4.0);
+
+      unsigned true_count(0);
+      const long iters(200000);
+      CPPUNIT_METRIC_START_TIMING();
+      for( long iter=0;iter<iters; ++iter)
+      {
+         if (gmtl::isEquiv( quat1, quat2, 0.0001f ) )
+            ++true_count;
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatCompareTest/isEquiv(quat,quat,tol)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      // Make sure the compiler doesn't optimize out true_count
+      CPPUNIT_ASSERT( true_count > 0 );
+   }   
+   
    static CppUnit::Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("QuatCompareTest");
       test_suite->addTest( new CppUnit::TestCaller<QuatCompareTest>("testQuatTimingOpEqualityTest", &QuatCompareTest::testQuatTimingOpEqualityTest));
       test_suite->addTest( new CppUnit::TestCaller<QuatCompareTest>("testQuatTimingIsEqualTest", &QuatCompareTest::testQuatTimingIsEqualTest));
       test_suite->addTest( new CppUnit::TestCaller<QuatCompareTest>("testQuatTimingOpNotEqualityTest", &QuatCompareTest::testQuatTimingOpNotEqualityTest));
+      test_suite->addTest( new CppUnit::TestCaller<QuatCompareTest>("testQuatTimingEquiv", &QuatCompareTest::testQuatTimingEquiv));
       test_suite->addTest( new CppUnit::TestCaller<QuatCompareTest>("testQuatEqualityFloatTest", &QuatCompareTest::testQuatEqualityFloatTest));
       test_suite->addTest( new CppUnit::TestCaller<QuatCompareTest>("testQuatEqualityDoubleTest", &QuatCompareTest::testQuatEqualityDoubleTest));
+      test_suite->addTest( new CppUnit::TestCaller<QuatCompareTest>("testQuatEquiv", &QuatCompareTest::testQuatEquiv));
       return test_suite;
    }
 
