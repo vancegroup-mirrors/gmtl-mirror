@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-03-15 20:51:09 $
- * Version:       $Revision: 1.28 $
+ * Date modified: $Date: 2002-03-15 22:36:15 $
+ * Version:       $Revision: 1.29 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -315,7 +315,8 @@ namespace gmtl
       result = Matrix<DATA_TYPE, ROWS, COLS>(); // set to ident - this could be faster...
 
       // homogeneous case...
-      if ((ROWS == COLS && SIZE == ROWS) || (COLS == (ROWS+1) && SIZE == (ROWS+1)))
+      if ((ROWS == COLS && SIZE == ROWS) /* Square matrix and vec so assume homogeneous vector. ex. 4x4 with vec 4 */
+          || (COLS == (ROWS+1) && SIZE == (ROWS+1)))  /* ex: 3x4 with vec4 */
       {
          for (unsigned x = 0; x < COLS - 1; ++x)
             result( x, COLS - 1 ) = trans[x] / trans[SIZE-1];
