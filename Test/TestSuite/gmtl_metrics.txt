@@ -2001,6 +2001,7 @@ mantis/Debug/VecTest/SetOverhead                                   0.09
 mantis/Debug/VecTest/SetPtrOverhead                                0.125
 mantis/Debug/VecTest/VecCreationOverhead                           0.105
 mantis/Debug/VecTest/isEqualOverhead                               0.3325
+mantis/Main/MetricTest                                             1221.75
 simba/Debug/LineSegTest/CopyConstructOverhead                      0.132937
 simba/Debug/LineSegTest/DefaultCreationOverhead                    0.095075
 simba/Debug/LineSegTest/EqualityCompareOverhead                    0.0621575
