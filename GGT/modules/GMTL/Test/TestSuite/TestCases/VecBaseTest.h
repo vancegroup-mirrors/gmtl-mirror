@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecBaseTest.h,v $
- * Date modified: $Date: 2002-02-22 19:45:18 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-03-11 18:03:41 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -64,6 +64,7 @@ public:
    void testVecBaseCreation()
    {
       gmtl::VecBase<double, 3> vec;
+      vec[0] = 0.0f; // use the var
 
       /*
       CPPUNIT_ASSERT( vec[0] == 0.0f);
