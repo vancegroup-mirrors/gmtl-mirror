@@ -20,6 +20,14 @@ inline MATRIX_TYPE makeMatrix( osg::Matrix osg_mat, Type2Type< MATRIX_TYPE > t =
    return convert( temporary, osg_mat );
 }
 
+template <>
+inline osg::Matrix makeMatrix<osg::Matrix>( gmtl::Matrix44f mat, Type2Type< osg::Matrix > t = Type2Type< osg::Matrix >() )
+{
+   osg::Matrix temp_osg_mat;
+   return convert( temp_osg_mat, mat );
+}
+
+
 /** Convert an opensg matrix to a gmtl::Matrix
 */
 Matrix44f& convert( Matrix44f& mat, const osg::Matrix& osg_mat )
