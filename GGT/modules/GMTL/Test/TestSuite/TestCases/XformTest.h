@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: XformTest.h,v $
- * Date modified: $Date: 2002-03-09 20:28:21 $
- * Version:       $Revision: 1.13 $
+ * Date modified: $Date: 2002-03-09 23:34:59 $
+ * Version:       $Revision: 1.14 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -385,6 +385,7 @@ public:
          result2 = makeVec( rot * makePure( vec ) * makeInvert( rot ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected, result2, eps ) );
          CPPUNIT_ASSERT( gmtl::isEqual( result1, result2, eps ) );
+         //CPPUNIT_ASSERT( !gmtl::isEqual( makeConj( rot ), makeInvert( rot ), eps ) );
       }
       
       // same, but without the expected value (just check that the two are equal)
@@ -398,6 +399,7 @@ public:
          result1 = makeVec( rot * makePure( vec ) * makeConj( rot ) );
          result2 = makeVec( rot * makePure( vec ) * makeInvert( rot ) );
          CPPUNIT_ASSERT( gmtl::isEqual( result1, result2, eps ) );
+         //CPPUNIT_ASSERT( !gmtl::isEqual( makeConj( rot ), makeInvert( rot ), eps ) );
       }
    }   
    
@@ -626,6 +628,165 @@ public:
       }
       
       
+      
+      // 4x4 matrix: test out complete transforms with a weird vector
+      {
+         const float eps = 0.0001f;
+         const gmtl::Vec<float, 4> vec( -100, 334, 455, -568 ), expected( -339, 145, 629, 1113 );
+         gmtl::Matrix<float, 4, 4> mat;
+         mat.set( 1, 2, 3, 4, 
+                  5, 6, 7, 8,
+                  9, 10, 11, 12,
+                  13, 14, 15, 16 );
+         
+         // xform a vector by a mat.  verify the xform worked...
+         gmtl::Vec<float, 4> result1;
+         gmtl::xform( result1, mat, vec );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected, result1, eps ) );
+
+         // operator* should be same
+         gmtl::Vec<float, 4> result2;
+         result2 = mat * vec;
+         CPPUNIT_ASSERT( gmtl::isEqual( expected, result2, eps ) );
+      }
+      
+      // 3x4 matrix: test out complete transforms with a weird vector
+      // @todo: maybe change this to return size 3: todo, xform doesn't support uneven matrices, but should it??? need to resolve.. 
+      {
+         const float eps = 0.0001f;
+         const gmtl::Vec<float, 4> vec( -100, 334, 455, -568 );
+         const gmtl::Vec<float, 4> expected( -339, 145, 629, 0.0f );
+         gmtl::Matrix<float, 3, 4> mat;
+         mat.set( 1, 2, 3, 4, 
+                  5, 6, 7, 8,
+                  9, 10, 11, 12 );
+         
+         // xform a vector by a mat.  verify the xform worked...
+         gmtl::Vec<float, 4> result1;
+         gmtl::xform( result1, mat, vec );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected, result1, eps ) );
+
+         // operator* should be same
+         gmtl::Vec<float, 4> result2;
+         result2 = mat * vec;
+         CPPUNIT_ASSERT( gmtl::isEqual( expected, result2, eps ) );
+      }
+      
+      
+      // 3x3 matrix: test out complete transforms with a weird vector
+      {
+         const float eps = 0.0001f;
+         const gmtl::Vec<float, 3> vec( -100.0f, 334.0f, 455.0f ), expected( 1933, 4689, 7445 );
+         gmtl::Matrix<float, 3, 3> mat;
+         mat.set( 1, 2, 3, 
+                  5, 6, 7,
+                  9, 10, 11 );
+         
+         // xform a vector by a mat.  verify the xform worked...
+         gmtl::Vec<float, 3> result1;
+         gmtl::xform( result1, mat, vec );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected, result1, eps ) );
+
+         // operator* should be same
+         gmtl::Vec<float, 3> result2;
+         result2 = mat * vec;
+         CPPUNIT_ASSERT( gmtl::isEqual( expected, result2, eps ) );
+      }
+      
+      // 4x4 matrix: test out complete transforms with standard vector
+      {
+         const float eps = 0.0001f;
+         const gmtl::Vec<float, 4> vec( -100.0f, 334.0f, 455.0f, 0.0f ), expected( 1933.0f, 4689.0f, 7445.0f, 10201.0f );
+         const gmtl::Vec<float, 3> partial_vec( -100.0f, 334.0f, 455.0f ), expected2( 1933.0f/10201.0f, 4689.0f/10201.0f, 7445.0f/10201.0f );
+         gmtl::Matrix<float, 4, 4> mat;
+         mat.set( 1, 2, 3, 4, 
+                  5, 6, 7, 8,
+                  9, 10, 11, 12,
+                  13, 14, 15, 16 );
+         
+         // xform a vector by a mat.  verify the xform worked...
+         gmtl::Vec<float, 4> result1;
+         gmtl::xform( result1, mat, vec );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected, result1, eps ) );
+
+         // operator* should be same
+         gmtl::Vec<float, 4> result2;
+         result2 = mat * vec;
+         CPPUNIT_ASSERT( gmtl::isEqual( expected, result2, eps ) );
+         
+         // xform a partially specified vector by a mat.  verify the xform worked...
+         gmtl::Vec<float, 3> result3;
+         gmtl::xform( result3, mat, partial_vec );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected2, result3, eps ) );
+
+         // operator* should be same
+         gmtl::Vec<float, 3> result4;
+         result4 = mat * partial_vec;
+         CPPUNIT_ASSERT( gmtl::isEqual( expected2, result4, eps ) );
+      }
+      
+      // 3x4 matrix: test out complete transforms with standard vector
+      // @todo: maybe change this to return size 3: todo, xform doesn't support uneven matrices, but should it??? need to resolve.. 
+      {
+         const float eps = 0.0001f;
+         const gmtl::Vec<float, 4> vec( -100, 334, 455, 0.0f ), expected( 1933, 4689, 7445, 0.0f );
+         const gmtl::Vec<float, 3> partial_vec( -100, 334, 455 ), expected2( 1933, 4689, 7445 );
+         gmtl::Matrix<float, 3, 4> mat;
+         mat.set( 1, 2, 3, 4, 
+                  5, 6, 7, 8,
+                  9, 10, 11, 12 );
+         
+         // xform a vector by a mat.  verify the xform worked...
+         gmtl::Vec<float, 4> result1;
+         gmtl::xform( result1, mat, vec );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected, result1, eps ) );
+
+         // operator* should be same
+         gmtl::Vec<float, 4> result2;
+         result2 = mat * vec;
+         CPPUNIT_ASSERT( gmtl::isEqual( expected, result2, eps ) );
+         
+         // xform a partially specified vector by a mat.  verify the xform worked...
+         gmtl::Vec<float, 3> result3;
+         gmtl::xform( result3, mat, partial_vec );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected2, result3, eps ) );
+
+         // operator* should be same
+         gmtl::Vec<float, 3> result4;
+         result4 = mat * partial_vec;
+         CPPUNIT_ASSERT( gmtl::isEqual( expected2, result4, eps ) );
+      }
+
+      // 3x3 matrix: test out complete transforms with standard vector
+      {
+         const float eps = 0.0001f;
+         const gmtl::Vec<float, 3> vec( -100, 334, 0.0f ), expected( 568, 1504, 2440 );
+         const gmtl::Vec<float, 2> partial_vec( -100, 334 ), expected2( 568.0f/2440.0f, 1504.0f/2440.0f );
+         gmtl::Matrix<float, 3, 3> mat;
+         mat.set( 1, 2, 3, 
+                  5, 6, 7,
+                  9, 10, 11 );
+         
+         // xform a vector by a mat.  verify the xform worked...
+         gmtl::Vec<float, 3> result1;
+         gmtl::xform( result1, mat, vec );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected, result1, eps ) );
+
+         // operator* should be same
+         gmtl::Vec<float, 3> result2;
+         result2 = mat * vec;
+         CPPUNIT_ASSERT( gmtl::isEqual( expected, result2, eps ) );
+         
+         // xform a partially specified vector by a mat.  verify the xform worked...
+         gmtl::Vec<float, 2> result3;
+         gmtl::xform( result3, mat, partial_vec );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected2, result3, eps ) );
+
+         // operator* should be same
+         gmtl::Vec<float, 2> result4;
+         result4 = mat * partial_vec;
+         CPPUNIT_ASSERT( gmtl::isEqual( expected2, result4, eps ) );
+      }
    }   
 
    static CppUnit::Test* suite()
