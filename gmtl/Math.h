@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Math.h,v $
- * Date modified: $Date: 2002-04-17 02:08:48 $
- * Version:       $Revision: 1.23 $
+ * Date modified: $Date: 2002-04-23 19:09:38 $
+ * Version:       $Revision: 1.24 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -290,10 +290,7 @@ inline double sqrt( double fValue )
  */
 inline float unitRandom()
 {
-    //return float(random())/float(RAND_MAX);
-   float ret_val;
-   ret_val = ::drand48(); // @todo use something portable!
-   return ret_val;
+   return float(::rand())/float(RAND_MAX);
 }
 
 /** return a random number between x1 and x2
