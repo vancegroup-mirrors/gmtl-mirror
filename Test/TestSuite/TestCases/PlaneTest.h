@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PlaneTest.h,v $
- * Date modified: $Date: 2003-05-14 21:31:26 $
- * Version:       $Revision: 1.22 $
+ * Date modified: $Date: 2003-05-15 16:56:35 $
+ * Version:       $Revision: 1.23 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -83,6 +83,8 @@ namespace gmtlTest
       void testDistance();
       void testWhichSide();
       void testFindNearestPt();
+
+	  void testFindReflect();
 
    protected:
       gmtl::Point<float, 3> origin;
