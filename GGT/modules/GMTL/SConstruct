@@ -118,6 +118,9 @@ def BuildIRIXEnvironment():
       LIBS        = [],
    )
 
+def BuildWin32Environment():
+   return Environment(ENV = os.environ)
+
 def HasCppUnit(env):
    "Tests if the user has CppUnit available"
    sys.stdout.write('checking for cppunit... ')
