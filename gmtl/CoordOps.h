@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: CoordOps.h,v $
- * Date modified: $Date: 2003-03-03 00:54:04 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2004-05-25 16:36:28 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -76,10 +76,9 @@ namespace gmtl
     * @return     true if c1 is equal within a tolerance of c2, false otherwise
     */
    template <typename POS_TYPE, typename ROT_TYPE>
-   bool isEqual( const Coord<POS_TYPE, ROT_TYPE>& c1, 
-                 const Coord<POS_TYPE, ROT_TYPE>& c2, 
-                 typename Coord<POS_TYPE, ROT_TYPE>::DataType tol = 
-                     (typename Coord<POS_TYPE, ROT_TYPE>::DataType)0.0 )
+   inline bool isEqual( const Coord<POS_TYPE, ROT_TYPE>& c1, 
+                        const Coord<POS_TYPE, ROT_TYPE>& c2, 
+                        typename Coord<POS_TYPE, ROT_TYPE>::DataType tol = 0 )
    {
       return bool( isEqual( c1.getPos(), c2.getPos(), tol ) &&
                    isEqual( c1.getRot(), c2.getRot(), tol )     );

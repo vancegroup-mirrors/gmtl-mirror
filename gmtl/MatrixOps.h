@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOps.h,v $
- * Date modified: $Date: 2004-01-30 04:31:28 $
- * Version:       $Revision: 1.35 $
+ * Date modified: $Date: 2004-05-25 16:36:28 $
+ * Version:       $Revision: 1.36 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -638,7 +638,7 @@ namespace gmtl
     *  @return true if the matrices' elements are within the tolerance value of each other; false otherwise
     */
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
-   inline bool isEqual( const Matrix<DATA_TYPE, ROWS, COLS>& lhs, const Matrix<DATA_TYPE, ROWS, COLS>& rhs, const DATA_TYPE& eps = (DATA_TYPE)0 )
+   inline bool isEqual( const Matrix<DATA_TYPE, ROWS, COLS>& lhs, const Matrix<DATA_TYPE, ROWS, COLS>& rhs, const DATA_TYPE eps = 0 )
    {
       gmtlASSERT( eps >= (DATA_TYPE)0 );
 
