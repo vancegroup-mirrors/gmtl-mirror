@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecBase.h,v $
- * Date modified: $Date: 2002-02-11 18:56:01 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-03-08 15:13:54 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -101,12 +101,14 @@ VecBase<DATA_TYPE,SIZE>::VecBase(const VecBase<DATA_TYPE, SIZE>& rVec)
 template<class DATA_TYPE, unsigned SIZE>
 VecBase<DATA_TYPE,SIZE>::VecBase(const DATA_TYPE& val0)
 {
+   ggtASSERT( SIZE >= 1 && "out of bounds" );
    mData[0] = val0;
 }
 
 template<class DATA_TYPE, unsigned SIZE>
 VecBase<DATA_TYPE,SIZE>::VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1)
 {
+   ggtASSERT( SIZE >= 2 && "out of bounds" );
    mData[0] = val0;
    mData[1] = val1;
 }
@@ -114,6 +116,7 @@ VecBase<DATA_TYPE,SIZE>::VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1)
 template<class DATA_TYPE, unsigned SIZE>
 VecBase<DATA_TYPE,SIZE>::VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2)
 {
+   ggtASSERT( SIZE >= 3 && "out of bounds" );
    mData[0] = val0;
    mData[1] = val1;
    mData[2] = val2;
@@ -122,6 +125,7 @@ VecBase<DATA_TYPE,SIZE>::VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1,con
 template<class DATA_TYPE, unsigned SIZE>
 VecBase<DATA_TYPE,SIZE>::VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2,const DATA_TYPE& val3)
 {
+   ggtASSERT( SIZE >= 4 && "out of bounds" );
    mData[0] = val0;
    mData[1] = val1;
    mData[2] = val2;
@@ -139,17 +143,20 @@ inline void VecBase<DATA_TYPE,SIZE>::set(const DATA_TYPE* dataPtr)
 template<class DATA_TYPE, unsigned SIZE>
 inline void VecBase<DATA_TYPE,SIZE>::set(const DATA_TYPE& val0)
 {
+   ggtASSERT( SIZE >= 1 && "out of bounds" );
    mData[0] = val0;
 }
 template<class DATA_TYPE, unsigned SIZE>
 inline void VecBase<DATA_TYPE,SIZE>::set(const DATA_TYPE& val0,const DATA_TYPE& val1)
 {
+   ggtASSERT( SIZE >= 2 && "out of bounds" );
    mData[0] = val0;
    mData[1] = val1;
 }
 template<class DATA_TYPE, unsigned SIZE>
 inline void VecBase<DATA_TYPE,SIZE>::set(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2)
 {
+   ggtASSERT( SIZE >= 3 && "out of bounds" );
    mData[0] = val0;
    mData[1] = val1;
    mData[2] = val2;
@@ -157,6 +164,7 @@ inline void VecBase<DATA_TYPE,SIZE>::set(const DATA_TYPE& val0,const DATA_TYPE& 
 template<class DATA_TYPE, unsigned SIZE>
 inline void VecBase<DATA_TYPE,SIZE>::set(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2,const DATA_TYPE& val3)
 {
+   ggtASSERT( SIZE >= 4 && "out of bounds" );
    mData[0] = val0;
    mData[1] = val1;
    mData[2] = val2;
