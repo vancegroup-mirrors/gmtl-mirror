@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# Id: cvs-gather.pl,v 1.12 2002/02/07 18:53:21 patrick Exp
+# Id: cvs-gather.pl,v 1.13 2002/02/11 18:06:46 patrick Exp
 
 require 5.004;
 
@@ -718,7 +718,8 @@ sub checkoutModule ($$$$$$$)
       my $temp_checkout_dir = "$cwd/temp.$$";
 
       # Create the temporary directory for the initial module checkout.
-      if ( mkdir("$temp_checkout_dir", 0700) )
+      # If it already exists, just use it.
+      if ( -d "$temp_checkout_dir" || mkdir("$temp_checkout_dir", 0700) )
       {
          chdir("$temp_checkout_dir")
             or warn "WARNING: Could not chdir to $temp_checkout_dir: $!\n";
