@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-04-10 14:39:24 $
- * Version:       $Revision: 1.42 $
+ * Date modified: $Date: 2002-04-11 00:39:57 $
+ * Version:       $Revision: 1.43 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -689,7 +689,125 @@ namespace gmtl
    }
    //*/
 
+   /**
+    * Extracts the yaw information from the matrix.
+    * @post Returned value is from -180 to 180, where 0 is none.
+    */
+   template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
+   inline float getYRot ( const Matrix<DATA_TYPE, ROWS, COLS>& mat )
+   {
+      const gmtl::Vec3f forward_point(0.0f, 0.0f, -1.0f);   // -Z
+      const gmtl::Vec3f origin_point(0.0f, 0.0f, 0.0f);
+      gmtl::Vec3f end_point, start_point;
 
+      gmtl::xform(end_point, mat, forward_point);
+      gmtl::xform(start_point, mat, origin_point);
+      gmtl::Vec3f direction_vector = end_point - start_point;
+
+      // Constrain the direction to XZ-plane only.
+      direction_vector[1] = 0.0f;                  // Eliminate Y value
+      gmtl::normalize(direction_vector);
+      float y_rot = gmtl::Math::aCos(gmtl::dot(direction_vector,
+                                               forward_point));
+
+      gmtl::Vec3f which_side = gmtl::cross(forward_point, direction_vector);
+
+      // If direction vector to "right" (negative) side of forward
+      if ( which_side[1] < 0.0f )
+      {
+         y_rot = -y_rot;
+      }
+
+      return y_rot;
+   }
+
+/*
+   template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
+   inline void getYaw ( const Matrix<DATA_TYPE, ROWS, COLS>& mat )
+   {
+      return getYRot(mat);
+   }
+*/
+
+   /**
+    * Extracts the pitch information from the matrix.
+    * @post Returned value is from -180 to 180, where 0 is none.
+    */
+   template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
+   inline float getXRot ( const Matrix<DATA_TYPE, ROWS, COLS>& mat )
+   {
+      const gmtl::Vec3f forward_point(0.0f, 0.0f, -1.0f);   // -Z
+      const gmtl::Vec3f origin_point(0.0f, 0.0f, 0.0f);
+      gmtl::Vec3f end_point, start_point;
+
+      gmtl::xform(end_point, mat, forward_point);
+      gmtl::xform(start_point, mat, origin_point);
+      gmtl::Vec3f direction_vector = end_point - start_point;
+
+      // Constrain the direction to YZ-plane only.
+      direction_vector[0] = 0.0f;                  // Eliminate X value
+      gmtl::normalize(direction_vector);
+      float x_rot = gmtl::Math::aCos(gmtl::dot(direction_vector,
+                                               forward_point));
+
+      gmtl::Vec3f which_side = gmtl::cross(forward_point, direction_vector);
+
+      // If direction vector to "bottom" (negative) side of forward
+      if ( which_side[0] < 0.0f )
+      {
+         x_rot = -x_rot;
+      }
+
+      return x_rot;
+   }
+
+/*
+   template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
+   inline void getPitch ( const Matrix<DATA_TYPE, ROWS, COLS>& mat )
+   {
+      return getXRot(mat);
+   }
+*/
+
+   /**
+    * Extracts the roll information from the matrix.
+    * @post Returned value is from -180 to 180, where 0 is no roll.
+    */
+   template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
+   inline float getZRot ( const Matrix<DATA_TYPE, ROWS, COLS>& mat )
+   {
+      const gmtl::Vec3f forward_point(0.0f, 0.0f, -1.0f);   // -Z
+      const gmtl::Vec3f origin_point(0.0f, 0.0f, 0.0f);
+      gmtl::Vec3f end_point, start_point;
+
+      gmtl::xform(end_point, mat, forward_point);
+      gmtl::xform(start_point, mat, origin_point);
+      gmtl::Vec3f direction_vector = end_point - start_point;
+
+      // Constrain the direction to XY-plane only.
+      direction_vector[2] = 0.0f;                  // Eliminate Z value
+      gmtl::normalize(direction_vector);
+      float z_rot = gmtl::Math::aCos(gmtl::dot(direction_vector,
+                                               forward_point));
+
+      gmtl::Vec3f which_side = gmtl::cross(forward_point, direction_vector);
+
+      // If direction vector to "right" (negative) side of forward
+      if ( which_side[2] < 0.0f )
+      {
+         z_rot = -z_rot;
+      }
+
+      return z_rot;
+   }
+
+/*
+   template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
+   inline void getRoll ( const Matrix<DATA_TYPE, ROWS, COLS>& mat )
+   {
+      return getZRot(mat);
+   }
+*/
 
    /** create a rotation matrix that will rotate from SrcAxis to DestAxis.
     *  xSrcAxis, ySrcAxis, zSrcAxis is the base rotation to go from and defaults to xSrcAxis(1,0,0), ySrcAxis(0,1,0), zSrcAxis(0,0,1) if you only pass in 3 axes.
