@@ -11,12 +11,33 @@
  *  @section General General Questions about GMTL
  *
  *  <b>Why do you use templated code?</b>
- *  TODO
- *  Support for multiple versions of very similar data types.
- *  Provide a unified interface to GMTL object.
- *  Easy to extend.
+ *  There are several benefits to using the templated code approach. First, it
+ *  allows us to easily support multiple versions of very similar data types.
+ *  For instance, there are many different types of matrices, varying in both
+ *  size and data type. We could have 4x4 floating point, 3x3 double precision, 
+ *  2x2 floating point, etcetera. These are very different matrices, but in
+ *  general they all support the same kinds of operations. With templated code,
+ *  we can write a single function in many cases that will handle all possible
+ *  variations of a GMTL object.
  *
+ *  Templated code also makes GMTL very easy to extend. Although GMTL provides
+ *  many data types to begin with, it allows a lot of flexibility for developers
+ *  to customize their own code. For instance, GMTL provides several 
+ *  commonly-used vector types such as 2, 3, and 4-dimensional floating point
+ *  vectors. But maybe you're a physicist doing research in the 6th 
+ *  dimension, and you need a 6-D vector. GMTL's templated code allows you to 
+ *  create a vector of arbitrary dimensionality. And the vector's math 
+ *  operations are written in such a way that they will work for vectors of 
+ *  any size, eliminating the need for the physicist to rewrite all of the
+ *  vector math.
  *
+ *  It also allows us to provide a unified interface to GMTL objects. This is
+ *  why many of the functions in GMTL have the same name, but can work on a wide
+ *  variety of data types. Developers using GMTL have much less to remember than
+ *  if we had a separate function name for each possible combination of data
+ *  types. Instead, functions that conceptually do a similar function have many
+ *  versions overloaded with different data type combinations.
+ *  
  *
  *  <b>What's with these namespaces?</b>
  *  All of GMTL's functions and data types are defined within the 'gmtl'
@@ -178,11 +199,10 @@
  *
  *
  *  <b>What are the general concepts behind GMTL?</b>
- *  TODO
- *  Data types
- *  Operators
- *  Generators
- *  Xforms
+ *  This question is best answered by our "Light Overview of GMTL" in the
+ *  online documentation of GMTL. It is located at the following webpage:
+ *  http://ggt.sourceforge.net/html/main.html
+ *
  *  
  *  <b>What's with all the 'make' and 'set' functions?</b>
  *  You use the 'make' function to generate new objects based on existing
@@ -298,6 +318,42 @@
  *  gmtl::Matrix44f myMat;
  *  float xrot = gmtl::makeXRot( myMat );
  *
+ *  <b>Why do we need all the extensions on the end of data types?<b>
+ *  This refers to the fact that you can use our provided type definitions to
+ *  create specific versions of an object. For instance, there are many types
+ *  of matrices, with varying numbers of rows and columns, as well as the kind
+ *  of data contained therein. You can't simply make a Matrix, you must specify
+ *  what kind:
+ *
+ *  gmtl::Matrix myMatrix;      //This will not work
+ *  gmtl::Matrix44f myMatrix;   //This is correct
+ *
+ *  The reason we have these extensions (shown here by "44f" appended to the
+ *  Matrix data type) is purely for simplicity. You can always create objects
+ *  using templated arguments, but the extended versions of the data types are
+ *  provided for convenience. As an example, we can create the 4x4 floating
+ *  point matrix shown previously:
+ *
+ *  gmtl::Matrix44f myMatrix;
+ *  gmtl::Matrix<float, 4, 4> myMatrix;
+ *
+ *  These two instantiations of myMatrix are equivalent, but you can see how the
+ *  first version can be much easier to read and write. If you want to get
+ *  more serious about simplifying your code, you can create your own type
+ *  definitions.
+ *
+ *  typedef gmtl::Matrix<float, 4, 4> Mat;
+ *  typedef gmtl::Vec<float, 3> Vector;
+ *
+ *  These type definitions make the following pairs of object instantiations 
+ *  equivalent:
+ *
+ *  gmtl::Matrix<float, 4, 4> myMatrix;
+ *  Mat myMatrix;
+ *
+ *  gmtl::Vec<float, 3> myVec;
+ *  Vector myVec;
+ *  
  *
  *  @section Spatial Spatial Objects
  *  <b>What is a spatial object?</b>
