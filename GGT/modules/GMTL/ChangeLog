@@ -1,5 +1,7 @@
 DATE       AUTHOR       CHANGE
 ---------- ------------ -------------------------------------------------------
+2004-07-21 allenb       Refactored code for seg/line intersect with plane
+                        to better handle border cases.
 [0.3.5 released - 7.12.2004]===================================================
 2004-07-12 patrickh     Filled in critical missing functions in PyGMTL.
 
