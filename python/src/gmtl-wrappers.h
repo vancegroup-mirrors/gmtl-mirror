@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-wrappers.h,v $
- * Date modified: $Date: 2003-06-13 15:25:07 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2003-08-16 02:21:38 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -249,8 +249,15 @@ namespace gmtlWrapper
                                              const gmtl::Vec3d&,
                                              const gmtl::Vec3d&);
 
+   // XXX: This is pretty annoying.  Visual C++ is not very good at deducing
+   // types, I guess.
+#ifdef _MSC_VER
+   template<typename T, typename DATA_TYPE>
+   void setArrayElement(T* obj, const unsigned i, typename DATA_TYPE value)
+#else
    template<typename T>
    void setArrayElement(T* obj, const unsigned i, typename T::DataType value)
+#endif
    {
       (*obj)[i] = value;
    }
