@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOpsTest.h,v $
- * Date modified: $Date: 2002-03-15 15:29:48 $
- * Version:       $Revision: 1.13 $
+ * Date modified: $Date: 2002-03-15 16:48:35 $
+ * Version:       $Revision: 1.14 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -141,7 +141,7 @@ public:
          expected_result44(1,3) = 22;
          expected_result44(2,3) = 23;
 
-         gmtl::makeRot(expected_result44, 0.5f, 1.0f, -1.0f, gmtl::XYZ);
+         gmtl::makeRot( mat44, 0.5f, 1.0f, -1.0f, gmtl::XYZ);
          gmtl::setTrans( mat44, gmtl::Vec3f( 21.0f, 22.0f, 23.0f ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result44, mat44, eps ) );
       }
@@ -154,7 +154,7 @@ public:
          expected_result44(1,3) = 44;
          expected_result44(2,3) = 46;
 
-         gmtl::makeRot(expected_result44, 0.5f, 1.0f, -1.0f, gmtl::XYZ);
+         gmtl::makeRot( mat44, 0.5f, 1.0f, -1.0f, gmtl::XYZ);
          gmtl::setTrans( mat44, gmtl::Vec4f( 21, 22, 23, 0.5f ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result44, mat44, eps ) );
       }

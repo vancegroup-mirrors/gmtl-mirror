@@ -530,7 +530,13 @@ gfxn1/Debug/MatrixGenTest/makeTrans(mat33f,vec3f)                  0.77233
 gfxn1/Debug/MatrixGenTest/makeTrans(mat34f,vec3f)                  0.82205
 gfxn1/Debug/MatrixGenTest/makeTrans(mat44f,vec3f)                  1.01214
 gfxn1/Debug/MatrixGenTest/makeTrans(mat44f,vec4f)                  1.08784
+gfxn1/Debug/MatrixGenTest/setTrans(mat33f,vec2f)                   0.15925
+gfxn1/Debug/MatrixGenTest/setTrans(mat33f,vec3f)                   0.20589
+gfxn1/Debug/MatrixGenTest/setTrans(mat34f,vec3f)                   0.20656
+gfxn1/Debug/MatrixGenTest/setTrans(mat44f,vec3f)                   0.21027
+gfxn1/Debug/MatrixGenTest/setTrans(mat44f,vec4f)                   0.27357
 gfxn1/Debug/MatrixOpsTest/add(res,mat44f,mat44f)                   1.2414
+gfxn1/Debug/MatrixOpsTest/identity(mat44f)                         0.8573
 gfxn1/Debug/MatrixOpsTest/mat33d*mat33d*mat33d                     20.6671
 gfxn1/Debug/MatrixOpsTest/mat33f*mat33f*mat33f                     20.0421
 gfxn1/Debug/MatrixOpsTest/mat44d*mat44d*mat44d                     45.3316
