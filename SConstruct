@@ -129,7 +129,13 @@ def BuildWin32Environment():
       Tool(t)(env)
 
    # We need exception handling support turned on for Boost.Python.
-   env['CXXFLAGS'] += '/GR /GX /EHsc /QIfdiv /QI0f'
+   env['CXXFLAGS'] += '/Zm800 /Z7 /Od /Ob0 /GX /GR /MDd /Op /DBOOST_PYTHON_DYNAMIC_LIB /Zc:wchar_t,forScope'
+   env['LINKFLAGS'] += ' /subsystem:console /incremental:no'
+
+   if optimize != 'no':
+      env['LINKFLAGS'] += ' /RELEASE'
+   else:   
+      env['LINKFLAGS'] += ' /DEBUG'
 
    return env
 
