@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PointTest.h,v $
- * Date modified: $Date: 2002-02-12 00:05:30 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-02-16 00:37:09 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -40,6 +40,7 @@
 #include <cppunit/TestCaller.h>
 
 #include <gmtl/Point.h>
+#include <gmtl/Vec.h>
 #include <gmtl/VecOps.h>
 
 namespace gmtlTest
@@ -493,11 +494,14 @@ public:
       gmtl::Point<float,3> test_point1(1.0, 2.0, 3.0);
       gmtl::Point<float,3> test_point2(2.0, 2.0, 2.0);
       gmtl::Point<float,3> test_point3(1.0, 2.0, 3.0);
+      gmtl::Vec<float,3> vec_ans(0,0,0);
 
-      test_point1 = test_point3 - test_point2;
-      CPPUNIT_ASSERT( test_point1[0] == -1.0f &&
-                      test_point1[1] == 0.0f &&
-                      test_point1[2] == 1.0f );
+      vec_ans = test_point3 - test_point2;
+      CPPUNIT_ASSERT( vec_ans[0] == -1.0f &&
+                      vec_ans[1] == 0.0f &&
+                      vec_ans[2] == 1.0f );
+
+      float len = length( test_point2 - test_point1);
 
       // -- test op- performance
       const float iters(400000);

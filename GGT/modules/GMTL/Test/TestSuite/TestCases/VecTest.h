@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.h,v $
- * Date modified: $Date: 2002-02-12 03:11:36 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2002-02-16 00:37:09 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -964,6 +964,10 @@ public:
       CPPUNIT_ASSERT( gmtl::isEqual(cross, v3, 0.01f));
       cross = gmtl::cross(v2, v1);
       CPPUNIT_ASSERT(gmtl::isEqual(cross, (v3 * -1.0f), 0.01f));
+
+
+      // Test for compilability
+      //cross = gmtl::cross((v1+v2),(v2+v3));
 
       // -- test performance
       const float iters(100000);
