@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Xforms.h,v $
- * Date modified: $Date: 2002-02-10 04:38:07 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-02-15 21:48:16 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -47,7 +47,8 @@
 namespace gmtl
 {
 
-Vec4 operator*(const Matrix& _m, const Vec4& _v)
+/*
+   Vec4 operator*(const Matrix& _m, const Vec4& _v)
 {
    // Take _v by value in case it is me
    // Treating Vector like a column vector
@@ -116,7 +117,7 @@ OOBox operator*(const Matrix& mat, const OOBox& box)
 
    return ret_box;
 }
-
+*/
 
 };
 
