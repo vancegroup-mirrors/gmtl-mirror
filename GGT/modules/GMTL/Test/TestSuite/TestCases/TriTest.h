@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: TriTest.h,v $
- * Date modified: $Date: 2002-02-22 19:45:18 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2002-03-11 18:18:38 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -77,7 +77,7 @@ public:
       for ( long iter=0; iter<iters; ++iter )
       {
          gmtl::Tri<float> test_tri2;
-         test_tri[0][0] = 1.0f;
+         test_tri2[0][0] = 1.0f;
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
