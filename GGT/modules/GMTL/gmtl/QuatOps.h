@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatOps.h,v $
- * Date modified: $Date: 2002-02-22 10:03:09 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-02-28 14:21:05 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -41,6 +41,8 @@
 namespace gmtl 
 {
    /** product of two quaternions (quaternion product)
+    *  multiplication of quats is much like multiplication of typical complex numbers.
+    *  @post q1q2 = (s1 + v1)(s2 + v2)
     *  @post this' = q1 * q2
     *  @see Quat
     */
@@ -162,8 +164,9 @@ namespace gmtl
       return result;
    }
 
-   /** vector dot product
+   /** vector dot product between two quaternions.
     *  get the lengthSquared between two quat vectors...
+    *  @post N(q) = x1*x2 + y1*y2 + z1*z2 + w1*w2
     *  @post result = x1*x2 + y1*y2 + z1*z2 + w1*w2
     *  @see Quat
     */
@@ -179,6 +182,7 @@ namespace gmtl
    /** quaternion "norm" (also known as vector length squared)
     *  using this can be faster than using length for some operations...
     *  @post returns the vector length squared
+    *  @post N(q) = x^2 + y^2 + z^2 + w^2
     *  @post result = x*x + y*y + z*z + w*w
     *  @see Quat
     */
@@ -223,7 +227,9 @@ namespace gmtl
       return result;
    }
    
-   /** normalize without the square root - faster but not precise (you might not want to use this)...
+   /** Divide by quaternion norm.  Faster than normalize, but not accurate.
+    *  This function basically divides result by its lengthSquared (or norm).
+    * mainly useful for some internal quaternion operations - you might not want to use this.
     *  @pre magnitude should be > 0, otherwise no calculation is done.
     *  @post result' = normalize( result ), where normalize makes length( result ) == 1
     *  @see Quat
@@ -263,6 +269,7 @@ namespace gmtl
    
    /** quaternion complex conjugate.
     *  @post set result to the complex conjugate of result.
+    *  @post q* = [s,-v]
     *  @post result'[x,y,z,w] == result[-x,-y,-z,w]
     *  @see Quat
     */
@@ -277,12 +284,28 @@ namespace gmtl
    
    /** quaternion multiplicative inverse.
     *  @post self becomes the multiplicative inverse of self
+    *  @post 1/q = q* / N(q)
     *  @see Quat
     */
    template <typename DATA_TYPE>
    Quat<DATA_TYPE>& invert( Quat<DATA_TYPE>& result )
    {
-      return normalizeFast( conj( result ) );
+      // do result = conj( q ) / norm( q )
+
+      DATA_TYPE l = lengthSquared( result );
+
+      // return if near 0 (divide by 0 would result in NaN)
+      if (l < (DATA_TYPE)0.0001)
+         return result;
+
+      DATA_TYPE l_inv = ((DATA_TYPE)1.0) / l;
+      DATA_TYPE l_inv_neg = -l_inv;
+      result[Xelt] *= l_inv_neg;
+      result[Yelt] *= l_inv_neg;
+      result[Zelt] *= l_inv_neg;
+      result[Welt] *= l_inv;
+
+      return result;
    }
    
    /** complex exponentiation.
