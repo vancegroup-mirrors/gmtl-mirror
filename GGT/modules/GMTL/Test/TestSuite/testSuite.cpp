@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: testSuite.cpp,v $
- * Date modified: $Date: 2002-05-24 22:30:29 $
- * Version:       $Revision: 1.41 $
+ * Date modified: $Date: 2002-05-25 20:21:42 $
+ * Version:       $Revision: 1.42 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -45,7 +45,6 @@
 #include <cppunit/extensions/MetricRegistry.h>
 
 // GMTL tests
-#include <gmtl/gmtl.h>
 #include <TestCases/MathTest.h>
 
 #include <TestCases/VecBaseTest.h>
