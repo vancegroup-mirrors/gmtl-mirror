@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOps.h,v $
- * Date modified: $Date: 2002-02-16 00:02:54 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-02-18 19:28:57 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -84,6 +84,19 @@ namespace gmtl
          ret_mat( i, j ) += lhs( i, k ) * rhs( k, j );
       
       return result = ret_mat;
+   }
+   
+   /** matrix * matrix
+    *  @PRE: if lhs is m x p, and rhs is p x n, then result is m x n (mult func undefined otherwise)
+    *  @POST: returns a m x n matrix
+    *  returns a temporary, is slower.
+    */
+   template <typename DATA_TYPE, unsigned ROWS, unsigned INTERNAL, unsigned COLS>
+   inline Matrix<DATA_TYPE, ROWS, COLS> operator*( const Matrix<DATA_TYPE, ROWS, INTERNAL>& lhs, 
+                                                   const Matrix<DATA_TYPE, INTERNAL, COLS>& rhs )
+   {
+      Matrix<DATA_TYPE, ROWS, COLS> temporary;
+      return mult( temporary, lhs, rhs );
    }
    
    /** matrix subtraction (algebraic operation for matrix)
