@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: LineSegOps.h,v $
- * Date modified: $Date: 2002-02-24 23:37:03 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-03-11 18:43:19 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,8 +35,43 @@
 #ifndef _GMTL_LINESEGOPS_H_
 #define _GMTL_LINESEGOPS_H_
 
+#include <gmtl/LineSeg.h>
+
 namespace gmtl {
 
+/**
+ * Finds the closest point on the line segment to a given point.
+ *
+ * @param lineseg    the line segment to test
+ * @param pt         the point which to test against lineseg
+ *
+ * @return  the point on the line segment closest to pt
+ */
+template< class DATA_TYPE >
+Point<DATA_TYPE, 3> findNearestPt( const LineSeg<DATA_TYPE>& lineseg,
+                                   const Point<DATA_TYPE, 3>& pt )
+{
+   // result = origin + dir * dot((pt-origin), dir)
+   return ( lineseg.mOrigin + lineseg.mDir *
+            dot(pt - lineseg.mOrigin, lineseg.mDir) );
+}
+
+/**
+ * Computes the shortest distance from the line segment to the given point.
+ *
+ * @param lineseg    the line segment to test
+ * @param pt         the point which to test against lineseg
+ *
+ * @return  the shortest distance from pt to lineseg
+ */
+template< class DATA_TYPE >
+inline DATA_TYPE distance( const LineSeg<DATA_TYPE>& lineseg,
+                           const Point<DATA_TYPE, 3>& pt )
+{
+   return ( pt - findNearestPt( lineseg, pt ) );
+}
+
+//--- LineSeg Comparitor ---//
 /**
  * Compare two line segments to see if they are EXACTLY the same. In other
  * words, this comparison is done with zero tolerance.
@@ -49,7 +84,7 @@ namespace gmtl {
 template< class DATA_TYPE >
 inline bool operator==( const LineSeg<DATA_TYPE>& ls1, const LineSeg<DATA_TYPE>& ls2 )
 {
-   return ( (ls1.mOrigin == ls2.mOrigin) && (ls1.mDir == ls1.mDir) );
+   return ( (ls1.mOrigin == ls2.mOrigin) && (ls1.mDir == ls2.mDir) );
 }
 
 /**
