@@ -17,6 +17,7 @@ usage u help h:
 	@echo ""
 
 ref reference rh:
+	ex_builder.py ../examples/gmtlexamples.doxy.in ../examples/gmtlexamples.doxy
 	doxygen gmtl.doxy
 
 ref-latex rl:
@@ -64,6 +65,7 @@ tarball:
 
 clean c:
 	-rm -rf html man pdf latex installed $(tempdirname)
+	rm ../examples/gmtlexamples.doxy
 	-cd programmer.guide && gmake clean clobber
 
 clobber: clean
