@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: SphereTest.cpp,v $
- * Date modified: $Date: 2003-09-07 18:07:14 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2004-07-21 16:07:41 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -22,7 +22,7 @@
 * License as published by the Free Software Foundation; either
 * version 2.1 of the License, or (at your option) any later version.
 *
-* This library is distributed in the hope that it will be useful, 
+* This library is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 * Lesser General Public License for more details.
@@ -730,7 +730,7 @@ namespace gmtlTest
          float t0, t1;
          int hits;
          bool result = gmtl::intersect( sphere, ray,  hits, t0, t1 );
-         
+
          CPPUNIT_ASSERT( result == true );
          CPPUNIT_ASSERT( hits == 1 );
          CPPUNIT_ASSERT( t0 == 0.5 );
@@ -788,9 +788,9 @@ namespace gmtlTest
          CPPUNIT_ASSERT( result == false );
       }
 
-      
 
-      
+
+
 
       // LineSeg
       // origin to interior point
@@ -993,7 +993,7 @@ namespace gmtlTest
          float t0, t1;
          int hits;
          bool result = gmtl::intersectVolume( sphere, ray,  hits, t0, t1 );
-         
+
          CPPUNIT_ASSERT( result == true );
          CPPUNIT_ASSERT( hits == 2 );
          CPPUNIT_ASSERT( t0 == 0.0 );
@@ -1068,9 +1068,9 @@ namespace gmtlTest
          bool result = gmtl::intersectVolume( sphere, ray, hits, t0, t1 );
          CPPUNIT_ASSERT( result == true );
       }
-      
 
-      
+
+
 
       // LineSeg
       // origin to interior point
@@ -1269,16 +1269,16 @@ namespace gmtlTest
 
    void SphereTest::testSphereIntersections()
    {
-      for (float x = -20; x < 20; x+= 0.5f)
-      for (float y = -20; y < 20; y+= 1.25f)
-      for (float z = -20; z < 20; z+= 0.75f)
+      for (float x = -5; x < 5; x+= 0.5f)
+      for (float y = -5; y < 5; y+= 1.25f)
+      for (float z = -5; z < 5; z+= 0.75f)
          SphereTest::testSphereIntersect( x*10.0f, y*10.0f, z*10.0f );
 
       int hits;
       float x = 0, y = 0, z = 0, t0, t1;
-      
+
       // other misc tests...
-      for (float g = -2; g < 2; g+=0.001f)
+      for (float g = -2; g < 2; g+=0.01f)
       {
          // zero length ray inside sphere
          gmtl::Spheref sphere( gmtl::Point3f( x, y, z ), 1 );
@@ -1294,20 +1294,20 @@ namespace gmtlTest
          gmtl::Vec3f( 0, -.000000119209f, 0 ) );
          bool result = gmtl::intersectVolume( sphere, ray, hits, t0, t1 );
          CPPUNIT_ASSERT( result == true );
-      }  
-      
+      }
+
       {
          gmtl::Spheref sphere( gmtl::Point3f( 0,0,0 ), 2 );
          gmtl::LineSegf ray( gmtl::Point3f( -0.143958f,-0.229931f,-0.013235f ),
          gmtl::Vec3f( 0, .000000119209f, 0 ) );
          bool result = gmtl::intersectVolume( sphere, ray, hits, t0, t1 );
          CPPUNIT_ASSERT( result == true );
-      }  
+      }
       {
          gmtl::Spheref sphere( gmtl::Point3f( 0,0,0 ), 2 );
          gmtl::LineSegf ray( gmtl::Point3f( 0, 0, 0 ), gmtl::Vec3f( 0, 0, 0.105271 ) );
          bool result = gmtl::intersectVolume( sphere, ray, hits, t0, t1 );
          CPPUNIT_ASSERT( result == true );
-      }  
+      }
    }
 }
