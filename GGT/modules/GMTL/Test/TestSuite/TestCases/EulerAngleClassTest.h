@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: EulerAngleClassTest.h,v $
- * Date modified: $Date: 2002-06-06 19:30:25 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-06-11 21:52:53 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -70,8 +70,13 @@ namespace gmtlTest
       static CppUnit::Test* suite()
       {
          CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("EulerAngleClassTest");
-         
-         // perf_suite
+         test_suite->addTest( new CppUnit::TestCaller<EulerAngleClassTest>("testEulerAngleClassTestCreation", &EulerAngleClassTest::testEulerAngleClassTestCreation));
+         return test_suite;
+      }
+
+      static Test* perfSuite()
+      {
+         CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("EulerTiming");
          test_suite->addTest( new CppUnit::TestCaller<EulerAngleClassTest>("testEulerAngleTimingDefaultConstructor", &EulerAngleClassTest::testEulerAngleTimingDefaultConstructor));
          test_suite->addTest( new CppUnit::TestCaller<EulerAngleClassTest>("testEulerAngleTimingElementConstructor", &EulerAngleClassTest::testEulerAngleTimingElementConstructor));
          test_suite->addTest( new CppUnit::TestCaller<EulerAngleClassTest>("testEulerAngleTimingCopyConstructor", &EulerAngleClassTest::testEulerAngleTimingCopyConstructor));
@@ -80,8 +85,6 @@ namespace gmtlTest
          test_suite->addTest( new CppUnit::TestCaller<EulerAngleClassTest>("testEulerAngleTimingGetData", &EulerAngleClassTest::testEulerAngleTimingGetData));
          test_suite->addTest( new CppUnit::TestCaller<EulerAngleClassTest>("testEulerAngleTimingOpEqual", &EulerAngleClassTest::testEulerAngleTimingOpEqual));
          
-         // gmtl_suite
-         test_suite->addTest( new CppUnit::TestCaller<EulerAngleClassTest>("testEulerAngleClassTestCreation", &EulerAngleClassTest::testEulerAngleClassTestCreation));
          return test_suite;
       }
 

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatGenTest.h,v $
- * Date modified: $Date: 2002-05-20 22:39:23 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-06-11 21:52:54 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -101,6 +101,12 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<QuatGenTest>( "testQuatGetRot", &QuatGenTest::testQuatGetRot ) );
       test_suite->addTest( new CppUnit::TestCaller<QuatGenTest>( "testQuatMakeGetMakeRot", &QuatGenTest::testQuatMakeGetMakeRot ) );
       
+      return test_suite;
+   }
+
+   static Test* perfSuite()
+   {
+      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("QuatGenTiming");
       test_suite->addTest( new CppUnit::TestCaller<QuatGenTest>( "testGenTimingMakeInvert1", &QuatGenTest::testGenTimingMakeInvert1 ) );
       test_suite->addTest( new CppUnit::TestCaller<QuatGenTest>( "testGenTimingMakeInvert2", &QuatGenTest::testGenTimingMakeInvert2 ) );
       test_suite->addTest( new CppUnit::TestCaller<QuatGenTest>( "testGenTimingMakeConj", &QuatGenTest::testGenTimingMakeConj ) );
@@ -108,10 +114,9 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<QuatGenTest>( "testGenTimingMakeNormalQuat", &QuatGenTest::testGenTimingMakeNormalQuat ) );
       test_suite->addTest( new CppUnit::TestCaller<QuatGenTest>( "testGenTimingMakeRot", &QuatGenTest::testGenTimingMakeRot ) );
       test_suite->addTest( new CppUnit::TestCaller<QuatGenTest>( "testGenTimingSetRot", &QuatGenTest::testGenTimingSetRot ) );
-
       return test_suite;
    }
-
+   
    static CppUnit::Test* interactiveSuite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite( "InteractiveThreadTest" );

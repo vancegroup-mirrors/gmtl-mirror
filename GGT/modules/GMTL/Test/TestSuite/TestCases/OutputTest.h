@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: OutputTest.h,v $
- * Date modified: $Date: 2002-05-20 22:39:23 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-06-11 21:52:54 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -76,6 +76,12 @@ namespace gmtlTest
          test_suite->addTest( new CppUnit::TestCaller<OutputTest>("testPlane", &OutputTest::testPlane) );
          test_suite->addTest( new CppUnit::TestCaller<OutputTest>("testSphere", &OutputTest::testSphere) );
 
+         return test_suite;
+      }
+      
+      static Test* perfSuite()
+      {
+         CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("OutputTiming");
          return test_suite;
       }
    };

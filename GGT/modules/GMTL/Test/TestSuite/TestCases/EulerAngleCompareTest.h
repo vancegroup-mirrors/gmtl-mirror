@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: EulerAngleCompareTest.h,v $
- * Date modified: $Date: 2002-06-10 18:27:47 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-06-11 21:52:53 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -114,14 +114,20 @@ public:
    static CppUnit::Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("EulerAngleCompareTest");
-      test_suite->addTest( new CppUnit::TestCaller<EulerAngleCompareTest>("testEulerAngleTimingOpEqualityTest", &EulerAngleCompareTest::testEulerAngleTimingOpEqualityTest));
-      test_suite->addTest( new CppUnit::TestCaller<EulerAngleCompareTest>("testEulerAngleTimingIsEqualTest", &EulerAngleCompareTest::testEulerAngleTimingIsEqualTest));
-      test_suite->addTest( new CppUnit::TestCaller<EulerAngleCompareTest>("testEulerAngleTimingOpNotEqualityTest", &EulerAngleCompareTest::testEulerAngleTimingOpNotEqualityTest));
       test_suite->addTest( new CppUnit::TestCaller<EulerAngleCompareTest>("testEulerAngleEqualityFloatTest", &EulerAngleCompareTest::testEulerAngleEqualityFloatTest));
       test_suite->addTest( new CppUnit::TestCaller<EulerAngleCompareTest>("testEulerAngleEqualityDoubleTest", &EulerAngleCompareTest::testEulerAngleEqualityDoubleTest));
       return test_suite;
    }
 
+   static Test* perfSuite()
+   {
+      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("EulerAngleTiming");
+      test_suite->addTest( new CppUnit::TestCaller<EulerAngleCompareTest>("testEulerAngleTimingOpEqualityTest", &EulerAngleCompareTest::testEulerAngleTimingOpEqualityTest));
+      test_suite->addTest( new CppUnit::TestCaller<EulerAngleCompareTest>("testEulerAngleTimingIsEqualTest", &EulerAngleCompareTest::testEulerAngleTimingIsEqualTest));
+      test_suite->addTest( new CppUnit::TestCaller<EulerAngleCompareTest>("testEulerAngleTimingOpNotEqualityTest", &EulerAngleCompareTest::testEulerAngleTimingOpNotEqualityTest));
+      return test_suite;
+   }
+   
    static CppUnit::Test* interactiveSuite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveThreadTest");

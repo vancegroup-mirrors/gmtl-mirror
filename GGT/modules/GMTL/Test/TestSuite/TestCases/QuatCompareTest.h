@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatCompareTest.h,v $
- * Date modified: $Date: 2002-05-20 22:39:23 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-06-11 21:52:54 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -141,16 +141,22 @@ public:
    static CppUnit::Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("QuatCompareTest");
-      test_suite->addTest( new CppUnit::TestCaller<QuatCompareTest>("testQuatTimingOpEqualityTest", &QuatCompareTest::testQuatTimingOpEqualityTest));
-      test_suite->addTest( new CppUnit::TestCaller<QuatCompareTest>("testQuatTimingIsEqualTest", &QuatCompareTest::testQuatTimingIsEqualTest));
-      test_suite->addTest( new CppUnit::TestCaller<QuatCompareTest>("testQuatTimingOpNotEqualityTest", &QuatCompareTest::testQuatTimingOpNotEqualityTest));
-      test_suite->addTest( new CppUnit::TestCaller<QuatCompareTest>("testQuatTimingEquiv", &QuatCompareTest::testQuatTimingEquiv));
       test_suite->addTest( new CppUnit::TestCaller<QuatCompareTest>("testQuatEqualityFloatTest", &QuatCompareTest::testQuatEqualityFloatTest));
       test_suite->addTest( new CppUnit::TestCaller<QuatCompareTest>("testQuatEqualityDoubleTest", &QuatCompareTest::testQuatEqualityDoubleTest));
       test_suite->addTest( new CppUnit::TestCaller<QuatCompareTest>("testQuatEquiv", &QuatCompareTest::testQuatEquiv));
       return test_suite;
    }
 
+   static Test* perfSuite()
+   {
+      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("QuatCompareTiming");
+      test_suite->addTest( new CppUnit::TestCaller<QuatCompareTest>("testQuatTimingOpEqualityTest", &QuatCompareTest::testQuatTimingOpEqualityTest));
+      test_suite->addTest( new CppUnit::TestCaller<QuatCompareTest>("testQuatTimingIsEqualTest", &QuatCompareTest::testQuatTimingIsEqualTest));
+      test_suite->addTest( new CppUnit::TestCaller<QuatCompareTest>("testQuatTimingOpNotEqualityTest", &QuatCompareTest::testQuatTimingOpNotEqualityTest));
+      test_suite->addTest( new CppUnit::TestCaller<QuatCompareTest>("testQuatTimingEquiv", &QuatCompareTest::testQuatTimingEquiv));
+      return test_suite;
+   }
+   
    static CppUnit::Test* interactiveSuite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveThreadTest");

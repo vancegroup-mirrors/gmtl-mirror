@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatClassTest.h,v $
- * Date modified: $Date: 2002-05-20 22:39:23 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2002-06-11 21:52:54 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -71,7 +71,14 @@ namespace gmtlTest
       static CppUnit::Test* suite()
       {
          CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("QuatClassTest");
-         test_suite->addTest( new CppUnit::TestCaller<QuatClassTest>("testQuatTimingDefaultConstructor", &QuatClassTest::testQuatTimingDefaultConstructor));
+         test_suite->addTest( new CppUnit::TestCaller<QuatClassTest>("testQuatClassTestCreation", &QuatClassTest::testQuatClassTestCreation));
+         return test_suite;
+      }
+
+      static Test* perfSuite()
+   {
+      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("QuatClassTiming");
+      test_suite->addTest( new CppUnit::TestCaller<QuatClassTest>("testQuatTimingDefaultConstructor", &QuatClassTest::testQuatTimingDefaultConstructor));
          test_suite->addTest( new CppUnit::TestCaller<QuatClassTest>("testQuatTimingElementConstructor", &QuatClassTest::testQuatTimingElementConstructor));
          test_suite->addTest( new CppUnit::TestCaller<QuatClassTest>("testQuatTimingCopyConstructor", &QuatClassTest::testQuatTimingCopyConstructor));
          test_suite->addTest( new CppUnit::TestCaller<QuatClassTest>("testQuatTimingGet", &QuatClassTest::testQuatTimingGet));
@@ -79,10 +86,9 @@ namespace gmtlTest
          test_suite->addTest( new CppUnit::TestCaller<QuatClassTest>("testQuatTimingOpBracket", &QuatClassTest::testQuatTimingOpBracket));
          test_suite->addTest( new CppUnit::TestCaller<QuatClassTest>("testQuatTimingGetData", &QuatClassTest::testQuatTimingGetData));
          test_suite->addTest( new CppUnit::TestCaller<QuatClassTest>("testQuatTimingOpEqual", &QuatClassTest::testQuatTimingOpEqual));
-         test_suite->addTest( new CppUnit::TestCaller<QuatClassTest>("testQuatClassTestCreation", &QuatClassTest::testQuatClassTestCreation));
          return test_suite;
-      }
-
+   }
+   
       static CppUnit::Test* interactiveSuite()
       {
          CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveQuatClassTest");

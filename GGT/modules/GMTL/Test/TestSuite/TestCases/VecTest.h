@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.h,v $
- * Date modified: $Date: 2002-05-20 22:39:23 $
- * Version:       $Revision: 1.24 $
+ * Date modified: $Date: 2002-06-11 21:52:54 $
+ * Version:       $Revision: 1.25 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -99,7 +99,6 @@ public:
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("VecTest");
       test_suite->addTest( new CppUnit::TestCaller<VecTest>("testLerp", &VecTest::testLerp));
-      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testVecTimingLerp", &VecTest::testVecTimingLerp));
       
       test_suite->addTest( new CppUnit::TestCaller<VecTest>("testCreation", &VecTest::testCreation));
       test_suite->addTest( new CppUnit::TestCaller<VecTest>("testCopyConstruct", &VecTest::testCopyConstruct));
@@ -133,6 +132,13 @@ public:
       return test_suite;
    }
 
+   static Test* perfSuite()
+   {
+      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("VecTiming");
+      test_suite->addTest( new CppUnit::TestCaller<VecTest>("testVecTimingLerp", &VecTest::testVecTimingLerp));
+      return test_suite;
+   }
+   
    static CppUnit::Test* interactiveSuite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveVecTest");

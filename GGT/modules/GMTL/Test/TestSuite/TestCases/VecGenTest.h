@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecGenTest.h,v $
- * Date modified: $Date: 2002-05-20 22:39:23 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-06-11 21:52:54 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -87,15 +87,20 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<VecGenTest>( "testMakeVecFromQuat", &VecGenTest::testMakeVecFromQuat ) );
       test_suite->addTest( new CppUnit::TestCaller<VecGenTest>( "testMakeNormalVecFromVec", &VecGenTest::testMakeNormalVecFromVec ) );
 
+      return test_suite;
+   }
+
+   static Test* perfSuite()
+   {
+      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("VecGenTiming");
       test_suite->addTest( new CppUnit::TestCaller<VecGenTest>( "testGenTimingMakeNormalVec1", &VecGenTest::testGenTimingMakeNormalVec1 ) );
       test_suite->addTest( new CppUnit::TestCaller<VecGenTest>( "testGenTimingMakeNormalVec2", &VecGenTest::testGenTimingMakeNormalVec2 ) );
       test_suite->addTest( new CppUnit::TestCaller<VecGenTest>( "testGenTimingMakeNormalVec3", &VecGenTest::testGenTimingMakeNormalVec3 ) );
       test_suite->addTest( new CppUnit::TestCaller<VecGenTest>( "testGenTimingMakeNormalVec4", &VecGenTest::testGenTimingMakeNormalVec4 ) );
       test_suite->addTest( new CppUnit::TestCaller<VecGenTest>( "testGenTimingMakeVec", &VecGenTest::testGenTimingMakeVec ) );
-
       return test_suite;
    }
-
+   
    static CppUnit::Test* interactiveSuite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite( "InteractiveThreadTest" );

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatStuffTest.h,v $
- * Date modified: $Date: 2002-06-06 15:16:34 $
- * Version:       $Revision: 1.10 $
+ * Date modified: $Date: 2002-06-11 21:52:54 $
+ * Version:       $Revision: 1.11 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -109,6 +109,12 @@ namespace gmtlTest
          return test_suite;
       }
 
+      static Test* perfSuite()
+   {
+      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("QuatStuffTiming");
+      return test_suite;
+   }
+   
       static CppUnit::Test* interactiveSuite()
       {
          CppUnit::TestSuite* test_suite = new CppUnit::TestSuite( "InteractiveQuatStuffTest" );

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: testSuite.cpp,v $
- * Date modified: $Date: 2002-06-11 21:23:33 $
- * Version:       $Revision: 1.49 $
+ * Date modified: $Date: 2002-06-11 21:52:53 $
+ * Version:       $Revision: 1.50 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -180,30 +180,55 @@ int main (int ac, char **av)
    gmtl_suite->addTest( gmtlTest::AxisAngleCompareTest::suite() );
 
    /*
-   gmtl_suite->addTest( gmtlTest::Point3Test::suite() );
-   gmtl_suite->addTest( gmtlTest::Vec3Test::suite() );
    gmtl_suite->addTest( gmtlTest::OOBoxTest::suite() );
-   gmtl_suite->addTest( gmtlTest::PlaneTest::suite() );
    gmtl_suite->addTest( gmtlTest::ContainmentTest::suite() );
    gmtl_suite->addTest( gmtlTest::IntersectionTest::suite() );
-   gmtl_suite->addTest( gmtlTest::TriTest::suite() );
    */
 
    // setup the perf suite
    CppUnit::TestSuite* perf_suite = new CppUnit::TestSuite( "perf_suite" );
+   perf_suite->addTest( gmtlTest::MathTest::perfSuite() );
+	
    perf_suite->addTest( gmtlTest::VecBaseTest::perfSuite() );
+   perf_suite->addTest( gmtlTest::VecTest::perfSuite() );
+   perf_suite->addTest( gmtlTest::PointTest::perfSuite() );
+
+   perf_suite->addTest( gmtlTest::SphereTest::perfSuite() );
+   perf_suite->addTest( gmtlTest::TriTest::perfSuite() );
+   perf_suite->addTest( gmtlTest::PlaneTest::perfSuite() );
+   perf_suite->addTest( gmtlTest::LineSegTest::perfSuite() );
 
    perf_suite->addTest( gmtlTest::MatrixClassTest::perfSuite() );
    perf_suite->addTest( gmtlTest::MatrixCompareTest::perfSuite() );
    perf_suite->addTest( gmtlTest::MatrixOpsTest::perfSuite() );
    perf_suite->addTest( gmtlTest::MatrixGenTest::perfSuite() );
-
+   perf_suite->addTest( gmtlTest::QuatGenTest::perfSuite() );
+   perf_suite->addTest( gmtlTest::VecGenTest::perfSuite() );
 
    perf_suite->addTest( gmtlTest::CoordClassTest::perfSuite() );
    perf_suite->addTest( gmtlTest::CoordCompareTest::perfSuite() );
    perf_suite->addTest( gmtlTest::CoordGenTest::perfSuite() );
 
+   perf_suite->addTest( gmtlTest::QuatClassTest::perfSuite() );
+   perf_suite->addTest( gmtlTest::QuatCompareTest::perfSuite() );
+   perf_suite->addTest( gmtlTest::QuatOpsTest::perfSuite() );
+   perf_suite->addTest( gmtlTest::QuatStuffTest::perfSuite() );
+
+   perf_suite->addTest( gmtlTest::XformTest::perfSuite() );
+   perf_suite->addTest( gmtlTest::ConvertTest::perfSuite() );
+
+   perf_suite->addTest( gmtlTest::OutputTest::perfSuite() );
    perf_suite->addTest( gmtlTest::AABoxTest::perfSuite() );
+   perf_suite->addTest( gmtlTest::EulerAngleClassTest::perfSuite() );
+   perf_suite->addTest( gmtlTest::EulerAngleCompareTest::perfSuite() );
+   perf_suite->addTest( gmtlTest::AxisAngleClassTest::perfSuite() );
+   perf_suite->addTest( gmtlTest::AxisAngleCompareTest::perfSuite() );
+
+   /*
+   perf_suite->addTest( gmtlTest::OOBoxTest::perfSuite() );
+   perf_suite->addTest( gmtlTest::ContainmentTest::perfSuite() );
+   perf_suite->addTest( gmtlTest::IntersectionTest::perfSuite() );
+   */
 
    CppUnit::TestSuite* info_suite = new CppUnit::TestSuite( "info_suite" );
    info_suite->addTest( gmtlTest::OptTest::suite() );
