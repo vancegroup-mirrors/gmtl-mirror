@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixCompareTest.h,v $
- * Date modified: $Date: 2002-05-20 22:39:23 $
- * Version:       $Revision: 1.13 $
+ * Date modified: $Date: 2003-02-05 23:47:39 $
+ * Version:       $Revision: 1.14 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -32,74 +32,50 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 *
  ************************************************************ ggt-cpr end */
-#include <iostream>
+#ifndef _GMTL_MATRIX_COMPARE_TEST_H_
+#define _GMTL_MATRIX_COMPARE_TEST_H_
 
-#include <cppunit/TestCase.h>
-#include <cppunit/TestSuite.h>
-#include <cppunit/TestCaller.h>
-
-#include <gmtl/Matrix.h>
-#include <gmtl/MatrixOps.h>
+#include <cppunit/extensions/HelperMacros.h>
 
 namespace gmtlTest
 {
-
-class MatrixCompareTest : public CppUnit::TestCase
-{
-public:
-   MatrixCompareTest( std::string name = "MatrixCompareTest" )
-   : CppUnit::TestCase (name)
-   {;}
-
-   virtual ~MatrixCompareTest()
-   {}
-
-   virtual void setUp()
-   {;}
-
-   virtual void tearDown()
+   /**
+    * Functionality tests
+    */
+   class MatrixCompareTest : public CppUnit::TestCase
    {
-   }
+      CPPUNIT_TEST_SUITE(MatrixCompareTest);
 
-   // Correctness tests
-   void testMatEqualityFloatTest();
-   void testMatEqualityDoubleTest();
-   void testMatEqualityIntTest();
+      CPPUNIT_TEST(testMatEqualityFloatTest);
+      CPPUNIT_TEST(testMatEqualityDoubleTest);
+      CPPUNIT_TEST(testMatEqualityIntTest);
 
-   // Performance tests
-   void testMatTimingOpEqualityTest();
-   void testMatTimingOpNotEqualityTest();
-   void testMatTimingIsEqualTest();
+      CPPUNIT_TEST_SUITE_END();
 
-   static CppUnit::Test* suite()
+   public:
+      void testMatEqualityFloatTest();
+      void testMatEqualityDoubleTest();
+      void testMatEqualityIntTest();
+   };
+
+   /**
+    * Metric tests.
+    */
+   class MatrixCompareMetricTest : public CppUnit::TestCase
    {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("MatrixCompareTest");
-      test_suite->addTest( new CppUnit::TestCaller<MatrixCompareTest>("testMatEqualityFloatTest", &MatrixCompareTest::testMatEqualityFloatTest));
-      test_suite->addTest( new CppUnit::TestCaller<MatrixCompareTest>("testMatEqualityDoubleTest", &MatrixCompareTest::testMatEqualityDoubleTest));
-      test_suite->addTest( new CppUnit::TestCaller<MatrixCompareTest>("testMatEqualityIntTest", &MatrixCompareTest::testMatEqualityIntTest));
-      return test_suite;
-   }
+      CPPUNIT_TEST_SUITE(MatrixCompareMetricTest);
 
-   static CppUnit::Test* perfSuite()
-   {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("MatrixComparePerfTest");
+      CPPUNIT_TEST(testMatTimingOpEqualityTest);
+      CPPUNIT_TEST(testMatTimingOpNotEqualityTest);
+      CPPUNIT_TEST(testMatTimingIsEqualTest);
 
-      test_suite->addTest( new CppUnit::TestCaller<MatrixCompareTest>("testMatTimingOpEqualityTest", &MatrixCompareTest::testMatTimingOpEqualityTest));
-      test_suite->addTest( new CppUnit::TestCaller<MatrixCompareTest>("testMatTimingIsEqualTest", &MatrixCompareTest::testMatTimingIsEqualTest));
-      test_suite->addTest( new CppUnit::TestCaller<MatrixCompareTest>("testMatTimingOpNotEqualityTest", &MatrixCompareTest::testMatTimingOpNotEqualityTest));
+      CPPUNIT_TEST_SUITE_END();
 
-      return test_suite;
-   }
+   public:
+      void testMatTimingOpEqualityTest();
+      void testMatTimingOpNotEqualityTest();
+      void testMatTimingIsEqualTest();
+   };
+}
 
-   static CppUnit::Test* interactiveSuite()
-   {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveThreadTest");
-      //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
-      return test_suite;
-   }
-
-protected:
-
-};
-
-};
+#endif

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixCompareTest.cpp,v $
- * Date modified: $Date: 2002-03-21 21:51:28 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2003-02-05 23:47:39 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -33,9 +33,15 @@
 *
  ************************************************************ ggt-cpr end */
 #include "MatrixCompareTest.h"
+#include "../Suites.h"
+#include <cppunit/extensions/HelperMacros.h>
 #include <cppunit/extensions/MetricRegistry.h>
 
-namespace gmtlTest {
+#include <gmtl/Matrix.h>
+#include <gmtl/MatrixOps.h>
+
+namespace gmtlTest
+{
    template<typename T, int ROWS, int COLS>
    class testEqual
    {
@@ -141,7 +147,7 @@ namespace gmtlTest {
       testEqual<int, 1, 1>::go();
    }
 
-   void MatrixCompareTest::testMatTimingOpEqualityTest()
+   void MatrixCompareMetricTest::testMatTimingOpEqualityTest()
    {
       // Test overhead of creation
       const long iters(25000);
@@ -195,7 +201,7 @@ namespace gmtlTest {
       CPPUNIT_ASSERT( true_count > 0 );
    }
 
-   void MatrixCompareTest::testMatTimingOpNotEqualityTest()
+   void MatrixCompareMetricTest::testMatTimingOpNotEqualityTest()
    {
       // Test overhead of creation
       const long iters(25000);
@@ -249,7 +255,7 @@ namespace gmtlTest {
       CPPUNIT_ASSERT( true_count > 0 );
    }
 
-   void MatrixCompareTest::testMatTimingIsEqualTest()
+   void MatrixCompareMetricTest::testMatTimingIsEqualTest()
    {
       // Test overhead of creation
       const long iters(25000);

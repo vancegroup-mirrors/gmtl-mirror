@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOpsTest.cpp,v $
- * Date modified: $Date: 2002-07-02 03:09:21 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2003-02-05 23:47:40 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -18,8 +18,7 @@
 * Copyright (C) 2001,2002 Allen Bierbaum
 *
 * This library is free software; you can redistribute it and/or
-* modify it under th MathPrimitives  [PrimName]Ops.h  Vec & Point [100%] -ab
-Matrix [] -km Transformations XformInterface? Xform.h   Collision detection CollisionInterface? Intersection.h   Bounding volumes BoundingInterface? Containment.h   Math factories MathFactories Builder.h  e terms of the GNU Lesser General Public
+* modify it under the terms of the GNU Lesser General Public
 * License as published by the Free Software Foundation; either
 * version 2.1 of the License, or (at your option) any later version.
 *
@@ -34,10 +33,20 @@ Matrix [] -km Transformations XformInterface? Xform.h   Collision detection Coll
 *
  ************************************************************ ggt-cpr end */
 #include "MatrixOpsTest.h"
+#include "../Suites.h"
+#include <cppunit/extensions/HelperMacros.h>
 #include <cppunit/extensions/MetricRegistry.h>
+
+#include <gmtl/Math.h>
+#include <gmtl/Matrix.h>
+#include <gmtl/MatrixOps.h>
+#include <gmtl/Generate.h>
 
 namespace gmtlTest
 {
+   CPPUNIT_TEST_SUITE_REGISTRATION(MatrixOpsTest);
+   CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(MatrixOpsMetricTest, Suites::metric());
+
    void MatrixOpsTest::testMatrixIdentity()
    {
       {
@@ -52,7 +61,7 @@ namespace gmtlTest
       }
    }
 
-   void MatrixOpsTest::testMatrixTimeIdentity44f()
+   void MatrixOpsMetricTest::testMatrixTimeIdentity44f()
    {
       gmtl::Matrix44f test_mat;
       float bogus_value(0.0f);
@@ -132,7 +141,7 @@ namespace gmtlTest
       }
    }
 
-   void MatrixOpsTest::testTimingMakeTrans()
+   void MatrixOpsMetricTest::testTimingMakeTrans()
    {
       gmtl::Matrix33f mat33;
       gmtl::Matrix34f mat34;
@@ -199,7 +208,7 @@ namespace gmtlTest
    }
 
 
-   void MatrixOpsTest::testMatrixTimeTranspose44f()
+   void MatrixOpsMetricTest::testMatrixTimeTranspose44f()
    {
       gmtl::Matrix<float, 4, 4> test_mat1;
       test_mat1.set( 0,  1,  2,  3,
@@ -224,7 +233,7 @@ namespace gmtlTest
    }
 
 
-   void MatrixOpsTest::testMatrixTimeTranspose33d()
+   void MatrixOpsMetricTest::testMatrixTimeTranspose33d()
    {
       gmtl::Matrix<double, 3, 3> test_mat2;
       test_mat2.set( 0,  1,  2,
@@ -247,7 +256,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( test_mat2[2] != test_mat2[0] );
    }
 
-   void MatrixOpsTest::testMatrixTimeMult44_mult()
+   void MatrixOpsMetricTest::testMatrixTimeMult44_mult()
    {
       gmtl::Matrix<float, 4, 4> test_mat1, test_mat2, res_mat;
       test_mat1.set( 0,  1,  2,  3,
@@ -271,7 +280,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( res_mat[2] != 1000.0f );
    }
 
-   void MatrixOpsTest::testMatrixTimeMult44_operatorStar()
+   void MatrixOpsMetricTest::testMatrixTimeMult44_operatorStar()
    {
       gmtl::Matrix<float, 4, 4> test_mat1, test_mat2, res_mat;
       test_mat1.set( 0,  1,  2,  3,
@@ -296,7 +305,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( res_mat[2] != 1000.0f );
    }
 
-   void MatrixOpsTest::testMatrixTimeMult44f_operatorStarStar()
+   void MatrixOpsMetricTest::testMatrixTimeMult44f_operatorStarStar()
    {
       gmtl::Matrix<float, 4, 4> test_mat1, test_mat2, res_mat;
       test_mat1.set( 0,  1,  2,  3,
@@ -321,7 +330,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( res_mat[2] != 1000.0f );
    }
 
-   void MatrixOpsTest::testMatrixTimeMult44d_operatorStarStar()
+   void MatrixOpsMetricTest::testMatrixTimeMult44d_operatorStarStar()
    {
       gmtl::Matrix<double, 4, 4> test_mat1, test_mat2, res_mat;
       test_mat1.set( 0,  1,  2,  3,
@@ -346,7 +355,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( res_mat[2] != 1000.0f );
    }
 
-   void MatrixOpsTest::testMatrixTimeMult33f_operatorStarStar()
+   void MatrixOpsMetricTest::testMatrixTimeMult33f_operatorStarStar()
    {
       gmtl::Matrix<float, 3, 3> test_mat1, test_mat2, res_mat;
       test_mat1.set( 0,  1,  2,
@@ -370,7 +379,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( res_mat[2] != 1000.0f );
    }
 
-   void MatrixOpsTest::testMatrixTimeMult33d_operatorStarStar()
+   void MatrixOpsMetricTest::testMatrixTimeMult33d_operatorStarStar()
    {
       gmtl::Matrix<double, 3, 3> test_mat1, test_mat2, res_mat;
       test_mat1.set( 0,  1,  2,
@@ -395,7 +404,7 @@ namespace gmtlTest
    }
 
 
-   void MatrixOpsTest::testMatrixTimeAdd44()
+   void MatrixOpsMetricTest::testMatrixTimeAdd44()
    {
       gmtl::Matrix<float, 4, 4> test_mat1, test_mat2, res_mat;
       test_mat1.set( 0,  1,  2,  3,
@@ -421,7 +430,7 @@ namespace gmtlTest
    }
 
 
-   void MatrixOpsTest::testMatrixTimeSub44()
+   void MatrixOpsMetricTest::testMatrixTimeSub44()
    {
       gmtl::Matrix<float, 4, 4> test_mat1, test_mat2, res_mat;
       test_mat1.set( 0,  1,  2,  3,

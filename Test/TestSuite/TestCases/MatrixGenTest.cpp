@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixGenTest.cpp,v $
- * Date modified: $Date: 2002-06-12 19:38:53 $
- * Version:       $Revision: 1.12 $
+ * Date modified: $Date: 2003-02-05 23:47:39 $
+ * Version:       $Revision: 1.13 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -33,13 +33,19 @@
 *
  ************************************************************ ggt-cpr end */
 #include "MatrixGenTest.h"
+#include "../Suites.h"
+#include <cppunit/extensions/HelperMacros.h>
 #include <cppunit/extensions/MetricRegistry.h>
+
+#include <gmtl/Matrix.h>
 #include <gmtl/MatrixOps.h>
 #include <gmtl/Generate.h>
 #include <gmtl/Output.h>
 
 namespace gmtlTest
 {
+   CPPUNIT_TEST_SUITE_REGISTRATION(MatrixGenTest);
+   CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(MatrixGenMetricTest, Suites::metric());
 
    void MatrixGenTest::testMatrixsetTrans()
    {
@@ -984,7 +990,7 @@ namespace gmtlTest
       matMakeInverse<double>::go();
    }
 
-   void MatrixGenTest::testTimingsetTrans()
+   void MatrixGenMetricTest::testTimingsetTrans()
    {
       gmtl::Matrix33f mat33;
       gmtl::Matrix34f mat34;
@@ -1050,7 +1056,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( mat44[3] != 1234.0456f && a != 987654.321f  );
    }
    /*
-   void MatrixGenTest::testTimingMakeTransStatic()
+   void MatrixGenMetricTest::testTimingMakeTransStatic()
    {
       gmtl::Matrix22f mat22;
       gmtl::Matrix33f mat33;
@@ -1072,7 +1078,7 @@ namespace gmtlTest
    }
    */
 
-   void MatrixGenTest::testTimingsetScale()
+   void MatrixGenMetricTest::testTimingsetScale()
    {
       float a = 2.1f;
       gmtl::Matrix33f mat33;
@@ -1162,7 +1168,7 @@ namespace gmtlTest
    }
 
    /*
-   void MatrixGenTest::testTimingMakeScaleStatic()
+   void MatrixGenMetricTest::testTimingMakeScaleStatic()
    {
       gmtl::Matrix22f mat22;
       gmtl::Matrix33f mat33;
@@ -1188,7 +1194,7 @@ namespace gmtlTest
    }
    */
 
-   void MatrixGenTest::testTimingsetRot33()
+   void MatrixGenMetricTest::testTimingsetRot33()
    {
       gmtl::Matrix33f mat;
       float a = 0.0f;
@@ -1205,7 +1211,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( mat[3] != 1234.0456f && a != 987654.321f  );
    }
 
-   void MatrixGenTest::testTimingsetRot34()
+   void MatrixGenMetricTest::testTimingsetRot34()
    {
       gmtl::Matrix34f mat;
       float a = 0.0f;
@@ -1221,7 +1227,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( mat[3] != 1234.0456f && a != 987654.321f  );
    }
 
-   void MatrixGenTest::testTimingsetRot44()
+   void MatrixGenMetricTest::testTimingsetRot44()
    {
       gmtl::Matrix44f mat;
       float a = 0.0f;
@@ -1238,7 +1244,7 @@ namespace gmtlTest
    }
 
    /*
-   void MatrixGenTest::testTimingMakeRot33Static()
+   void MatrixGenMetricTest::testTimingMakeRot33Static()
    {
       gmtl::bok<gmtl::Matrix33f>( (float)1.0f );
       gmtl::Matrix<float, 3, 3> mat;
@@ -1250,7 +1256,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeRot33Static", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
 
-   void MatrixGenTest::testTimingMakeRot34Static()
+   void MatrixGenMetricTest::testTimingMakeRot34Static()
    {
       gmtl::Matrix<float, 3, 4> mat;
       const long iters(100000);
@@ -1261,7 +1267,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeRot34Static", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
 
-   void MatrixGenTest::testTimingMakeRot44Static()
+   void MatrixGenMetricTest::testTimingMakeRot44Static()
    {
       gmtl::Matrix<float, 4, 4> mat;
       const long iters(100000);
@@ -1274,15 +1280,16 @@ namespace gmtlTest
    */
 
 
-   void MatrixGenTest::testTimingGetRot()
+   void MatrixGenMetricTest::testTimingGetRot()
    {
       /// @todo ... write a setRot( rad, axis, mat ) test here....
+      CPPUNIT_ASSERT(false);
    }
 
 
    // makeRot Euler tests...
 
-   void MatrixGenTest::testTimingsetRotEuler33()
+   void MatrixGenMetricTest::testTimingsetRotEuler33()
    {
       gmtl::Matrix33f mat;
       float a = 0;
@@ -1318,7 +1325,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( mat[3] != 1234.0456f && a != 987654.321f  );
    }
 
-   void MatrixGenTest::testTimingsetRotEuler34()
+   void MatrixGenMetricTest::testTimingsetRotEuler34()
    {
       gmtl::Matrix34f mat;
       float a = 0;
@@ -1354,7 +1361,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( mat[3] != 1234.0456f && a != 987654.321f  );
    }
 
-   void MatrixGenTest::testTimingsetRotEuler44()
+   void MatrixGenMetricTest::testTimingsetRotEuler44()
    {
       gmtl::Matrix44f mat;
       float a = 0;
@@ -1390,7 +1397,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( mat[3] != 1234.0456f && a != 987654.321f  );
    }
    /*
-   void MatrixGenTest::testTimingMakeRotEuler33Static()
+   void MatrixGenMetricTest::testTimingMakeRotEuler33Static()
    {
       gmtl::Matrix<float, 3, 3> mat;
       const long iters(100000);
@@ -1401,7 +1408,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeRotEuler33Static", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
 
-   void MatrixGenTest::testTimingMakeRotEuler34Static()
+   void MatrixGenMetricTest::testTimingMakeRotEuler34Static()
    {
       gmtl::Matrix<float, 3, 4> mat;
       const long iters(100000);
@@ -1412,7 +1419,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeRotEuler34Static", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
 
-   void MatrixGenTest::testTimingMakeRotEuler44Static()
+   void MatrixGenMetricTest::testTimingMakeRotEuler44Static()
    {
       gmtl::Matrix44f mat;
       const long iters(100000);
@@ -1424,7 +1431,7 @@ namespace gmtlTest
    }
    */
 
-   void MatrixGenTest::testTimingsetDirCos33()
+   void MatrixGenMetricTest::testTimingsetDirCos33()
    {
       gmtl::Matrix33f mat;
       float a = 0.0f;
@@ -1440,7 +1447,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( mat[3] != 1234.0456f && a != 987654.321f  );
    }
 
-   void MatrixGenTest::testTimingsetDirCos34()
+   void MatrixGenMetricTest::testTimingsetDirCos34()
    {
       gmtl::Matrix34f mat;
       float a = 0.0f;
@@ -1456,7 +1463,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( mat[3] != 1234.0456f && a != 987654.321f  );
    }
 
-   void MatrixGenTest::testTimingsetDirCos44()
+   void MatrixGenMetricTest::testTimingsetDirCos44()
    {
       gmtl::Matrix44f mat;
       float a = 0.0f;
@@ -1472,7 +1479,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( mat[3] != 1234.0456f && a != 987654.321f );
    }
    /*
-   void MatrixGenTest::testTimingMakeDirCos33Static()
+   void MatrixGenMetricTest::testTimingMakeDirCos33Static()
    {
       gmtl::Matrix<float, 3, 3> mat;
       const long iters(100000);
@@ -1483,7 +1490,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeDirCos33Static", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
 
-   void MatrixGenTest::testTimingMakeDirCos34Static()
+   void MatrixGenMetricTest::testTimingMakeDirCos34Static()
    {
       gmtl::Matrix<float, 3, 4> mat;
       const long iters(100000);
@@ -1494,7 +1501,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeDirCos34Static", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
 
-   void MatrixGenTest::testTimingMakeDirCos44Static()
+   void MatrixGenMetricTest::testTimingMakeDirCos44Static()
    {
       gmtl::Matrix44f mat;
       const long iters(100000);
@@ -1506,7 +1513,7 @@ namespace gmtlTest
    }
    */
 
-   void MatrixGenTest::testTimingsetAxes33()
+   void MatrixGenMetricTest::testTimingsetAxes33()
    {
       gmtl::Matrix33f mat;
       float a = 0.0f;
@@ -1522,7 +1529,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( mat[3] != 1234.0456f && a != 987654.321f );
    }
 
-   void MatrixGenTest::testTimingsetAxes34()
+   void MatrixGenMetricTest::testTimingsetAxes34()
    {
       gmtl::Matrix34f mat;
       float a = 0.0f;
@@ -1538,7 +1545,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( mat[3] != 1234.0456f && a != 987654.321f );
    }
 
-   void MatrixGenTest::testTimingsetAxes44()
+   void MatrixGenMetricTest::testTimingsetAxes44()
    {
       gmtl::Matrix44f mat;
       float a = 0.0f;
@@ -1554,7 +1561,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( mat[3] != 1234.0456f && a != 987654.321f );
    }
    /*
-   void MatrixGenTest::testTimingMakeAxes33Static()
+   void MatrixGenMetricTest::testTimingMakeAxes33Static()
    {
       gmtl::Matrix<float, 3, 3> mat;
       const long iters(100000);
@@ -1565,7 +1572,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeAxes33Static", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
 
-   void MatrixGenTest::testTimingMakeAxes34Static()
+   void MatrixGenMetricTest::testTimingMakeAxes34Static()
    {
       gmtl::Matrix<float, 3, 4> mat;
       const long iters(100000);
@@ -1576,7 +1583,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeAxes34Static", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
 
-   void MatrixGenTest::testTimingMakeAxes44Static()
+   void MatrixGenMetricTest::testTimingMakeAxes44Static()
    {
       gmtl::Matrix44f mat;
       const long iters(100000);
@@ -1589,8 +1596,9 @@ namespace gmtlTest
    */
 
    // is this a convert test?
-   void MatrixGenTest::testTimingsetAxes()
+   void MatrixGenMetricTest::testTimingsetAxes()
    {
+      CPPUNIT_ASSERT(false);
 //      gmtl::Matrix44f mat1, mat2;
 //      gmtl::Vec3f xAxis1,yAxis1,zAxis1;
 //      gmtl::Vec3f xAxis2,yAxis2,zAxis2;

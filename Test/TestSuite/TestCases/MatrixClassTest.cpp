@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixClassTest.cpp,v $
- * Date modified: $Date: 2002-07-02 03:09:21 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2003-02-05 23:47:38 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -33,10 +33,17 @@
 *
  ************************************************************ ggt-cpr end */
 #include "MatrixClassTest.h"
+#include "../Suites.h"
+#include <cppunit/extensions/HelperMacros.h>
 #include <cppunit/extensions/MetricRegistry.h>
 
-namespace gmtlTest {
-   void MatrixClassTest::testTimingDefaultConstructor()
+#include <gmtl/Matrix.h>
+namespace gmtlTest
+{
+   CPPUNIT_TEST_SUITE_REGISTRATION(MatrixClassTest);
+   CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(MatrixClassMetricTest, Suites::metric());
+
+   void MatrixClassMetricTest::testTimingDefaultConstructor()
    {
       // Test overhead of creation
       const long iters(25000);
@@ -68,7 +75,7 @@ namespace gmtlTest {
       CPPUNIT_ASSERT( use_value > 0.0f );
    }
 
-   void MatrixClassTest::testTimingCopyConstructor()
+   void MatrixClassMetricTest::testTimingCopyConstructor()
    {
       gmtl::Matrix<float, 1, 1> src_mat11;
       src_mat11[0] = 1.0f;
@@ -108,7 +115,7 @@ namespace gmtlTest {
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixTest/CopyConstructorOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
 
-   void MatrixClassTest::testTimingOpEqual()
+   void MatrixClassMetricTest::testTimingOpEqual()
    {
       gmtl::Matrix<float, 1, 1> src_mat11;
       src_mat11[0] = 1.0f;
@@ -148,7 +155,7 @@ namespace gmtlTest {
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixTest/OpEqualOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
 
-   void MatrixClassTest::testTimingOpParen()
+   void MatrixClassMetricTest::testTimingOpParen()
    {
       // Test overhead of creation
       const long iters(25000);
@@ -175,7 +182,7 @@ namespace gmtlTest {
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixTest/OpParenOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
 
-   void MatrixClassTest::testTimingOpBracket()
+   void MatrixClassMetricTest::testTimingOpBracket()
    {
       // Test overhead of creation
       const long iters(25000);
@@ -202,7 +209,7 @@ namespace gmtlTest {
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixTest/OpBracketOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
 
-   void MatrixClassTest::testTimingSetPtr()
+   void MatrixClassMetricTest::testTimingSetPtr()
    {
       // Test overhead of creation
       const long iters(25000);
@@ -225,7 +232,7 @@ namespace gmtlTest {
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixTest/SetPtrOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
 
-   void MatrixClassTest::testTimingSetTransposePtr()
+   void MatrixClassMetricTest::testTimingSetTransposePtr()
    {
       gmtl::Matrix<float, 2, 2> test_mat22;
       gmtl::Matrix<float, 3, 3> test_mat33;
@@ -248,7 +255,7 @@ namespace gmtlTest {
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixTest/SetTransposePtrOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
 
-   void MatrixClassTest::testTimingGetData()
+   void MatrixClassMetricTest::testTimingGetData()
    {
       // Test overhead of creation
       const long iters(25000);
@@ -276,7 +283,7 @@ namespace gmtlTest {
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixTest/GetDataOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
 
-   void MatrixClassTest::testTimingSet()
+   void MatrixClassMetricTest::testTimingSet()
    {
       // Test overhead of creation
       const long iters(25000);
