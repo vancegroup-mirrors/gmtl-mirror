@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-03-20 23:14:48 $
- * Version:       $Revision: 1.38 $
+ * Date modified: $Date: 2002-03-20 23:27:53 $
+ * Version:       $Revision: 1.39 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -818,13 +818,13 @@ namespace gmtl
    template <typename DATATYPE, unsigned POSSIZE, unsigned MATCOLS, unsigned MATROWS >
    inline Coord<DATATYPE, POSSIZE, 3>& convert( Coord<DATATYPE, POSSIZE, 3>& eulercoord, const Matrix<DATATYPE, MATROWS, MATCOLS>& mat, RotationOrder order = gmtl::XYZ )
    {
-      return setCoord( eulercoord, mat );
+      return setCoord( eulercoord, mat, order );
    }
    
    template <typename DATATYPE, unsigned POSSIZE, unsigned MATCOLS, unsigned MATROWS >
    inline Matrix<DATATYPE, MATROWS, MATCOLS>& convert( Matrix<DATATYPE, MATROWS, MATCOLS>& mat, const Coord<DATATYPE, POSSIZE, 3>& eulercoord, RotationOrder order = gmtl::XYZ )
    {
-      return setMatrix( mat, eulercoord );
+      return setMatrix( mat, eulercoord, order );
    }
    
    template <typename COORD_TYPE, unsigned MATCOLS, unsigned MATROWS >
