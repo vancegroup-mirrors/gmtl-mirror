@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtlDefines.h,v $
- * Date modified: $Date: 2002-02-10 04:38:07 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-02-21 21:36:17 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -37,13 +37,22 @@
 
 namespace gmtl
 {
-   enum vecIdx { Xelt=0, Yelt=1, Zelt=2, Welt=3 };
-
-
+   /** use the values in this enum to index vector data 
+    *  types (such as Vec, Point, Quat).
+    *
+    * <h3> "Example (access elements in a Vec3f):" </h3>
+    * \code
+    *    Vec3f vec;
+    *    vec[Xelt] = 1.0f;
+    *    vec[Yelt] = 3.0f;
+    *    vec[Zelt] = 2.0f;
+    * \endcode
+    */
+   enum VectorIndex { Xelt = 0, Yelt = 1, Zelt = 2, Welt = 3 };
 
    const float GMTL_EPSILON = 1.0e-6f;
-   const float GMTL_MAT_EQUAL_EPSILON = 0.001f;      // Epsilon for matrices to be equal
-   const float GMTL_VEC_EQUAL_EPSILON = 0.0001f;      // Epsilon for vectors to be equal
+   const float GMTL_MAT_EQUAL_EPSILON = 0.001f;  // Epsilon for matrices to be equal
+   const float GMTL_VEC_EQUAL_EPSILON = 0.0001f; // Epsilon for vectors to be equal
 
 #define GMTL_ZERO_CLAMP(x) ((fabs(x) < GMTL_EPSILON)? 0.0f : x)
 #define GMTL_NEAR(x,y,eps) (gmtl::Math::abs((x)-(y))<(eps))
