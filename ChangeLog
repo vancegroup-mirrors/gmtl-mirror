@@ -1,5 +1,7 @@
 DATE       AUTHOR       CHANGE
 ---------- ------------ -------------------------------------------------------
+[0.3.5 released - 7.12.2004]===================================================
+2004-07-12 patrickh     Filled in critical missing functions in PyGMTL.
 
 [0.3.3 released - 4.24.2004]===================================================
 2004-02-13 allenb       Updated license with an addendum to explicitly allow
