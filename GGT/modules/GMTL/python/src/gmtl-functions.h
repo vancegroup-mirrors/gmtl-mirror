@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-functions.h,v $
- * Date modified: $Date: 2003-08-17 06:32:59 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2003-08-19 23:34:33 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -31,27 +31,16 @@
 // This file makes declarations of the templated function instantiations
 // needed for Boost.Python to do its thing.
 
-#include <gmtl/Matrix.h>
 #include <gmtl/MatrixOps.h>
-#include <gmtl/Vec.h>
 #include <gmtl/VecOps.h>
-#include <gmtl/Quat.h>
 #include <gmtl/QuatOps.h>
-#include <gmtl/EulerAngle.h>
 #include <gmtl/EulerAngleOps.h>
-#include <gmtl/AxisAngle.h>
 #include <gmtl/AxisAngleOps.h>
-#include <gmtl/Sphere.h>
 #include <gmtl/SphereOps.h>
-#include <gmtl/AABox.h>
 #include <gmtl/AABoxOps.h>
-#include <gmtl/LineSeg.h>
 #include <gmtl/LineSegOps.h>
-#include <gmtl/Plane.h>
 #include <gmtl/PlaneOps.h>
-#include <gmtl/Tri.h>
 #include <gmtl/TriOps.h>
-#include <gmtl/Coord.h>
 #include <gmtl/CoordOps.h>
 
 
