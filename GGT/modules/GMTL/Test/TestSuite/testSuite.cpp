@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: testSuite.cpp,v $
- * Date modified: $Date: 2002-02-21 23:21:29 $
- * Version:       $Revision: 1.21 $
+ * Date modified: $Date: 2002-02-22 10:23:28 $
+ * Version:       $Revision: 1.22 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -61,15 +61,18 @@
 #include <TestCases/MatrixOpsTest.h>
 #include <TestCases/MatrixGenTest.h>
 #include <TestCases/Point3Test.h>
-//#include <TestCases/XformTest.h>
+#include <TestCases/XformTest.h>
 //#include <TestCases/OOBoxTest.h>
 //#include <TestCases/PlaneTest.h>
 //#include <TestCases/ContainmentTest.h>
 //#include <TestCases/IntersectionTest.h>
 #include <TestCases/QuatClassTest.h>
 #include <TestCases/QuatCompareTest.h>
-//#include <TestCases/QuatOpsTest.h>
+#include <TestCases/QuatStuffTest.h>
+#include <TestCases/QuatOpsTest.h>
+#include <TestCases/ConvertTest.h>
 //#include <TestCases/TriTest.h>
+#include <TestCases/GenerateTest.h>
 #include <TestCases/InfoTests/OptTest.h>
 
 std::string getHostname(void);
@@ -114,21 +117,30 @@ int main (int ac, char **av)
    gmtl_suite->addTest( gmtlTest::VecBaseTest::suite() );
    gmtl_suite->addTest( gmtlTest::VecTest::suite() );
    gmtl_suite->addTest( gmtlTest::PointTest::suite() );
+   
+   gmtl_suite->addTest( gmtlTest::Point3Test::suite() );
+   gmtl_suite->addTest( gmtlTest::Vec3Test::suite() );
+   
    gmtl_suite->addTest( gmtlTest::SphereTest::suite() );
    gmtl_suite->addTest( gmtlTest::TriTest::suite() );
    gmtl_suite->addTest( gmtlTest::PlaneTest::suite() );
 
-   gmtl_suite->addTest( gmtlTest::Vec3Test::suite() );
    gmtl_suite->addTest( gmtlTest::MatrixClassTest::suite() );
    gmtl_suite->addTest( gmtlTest::MatrixCompareTest::suite() );
    gmtl_suite->addTest( gmtlTest::MatrixOpsTest::suite() );
    gmtl_suite->addTest( gmtlTest::MatrixGenTest::suite() );
-   gmtl_suite->addTest( gmtlTest::Point3Test::suite() );
+   
    gmtl_suite->addTest( gmtlTest::QuatClassTest::suite() );
    gmtl_suite->addTest( gmtlTest::QuatCompareTest::suite() );
-   //gmtl_suite->addTest( gmtlTest::QuatOpsTest::suite() );
-   /*
+   gmtl_suite->addTest( gmtlTest::QuatOpsTest::suite() );
+   gmtl_suite->addTest( gmtlTest::QuatStuffTest::suite() );
+   
+   gmtl_suite->addTest( gmtlTest::GenerateTest::suite() );
+   
+   gmtl_suite->addTest( gmtlTest::ConvertTest::suite() );
    gmtl_suite->addTest( gmtlTest::XformTest::suite() );
+   
+   /*
    gmtl_suite->addTest( gmtlTest::OOBoxTest::suite() );
    gmtl_suite->addTest( gmtlTest::PlaneTest::suite() );
    gmtl_suite->addTest( gmtlTest::ContainmentTest::suite() );
