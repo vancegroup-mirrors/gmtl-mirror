@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: testSuite.cpp,v $
- * Date modified: $Date: 2002-03-20 19:20:57 $
- * Version:       $Revision: 1.30 $
+ * Date modified: $Date: 2002-03-20 21:43:36 $
+ * Version:       $Revision: 1.31 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -62,6 +62,10 @@
 #include <TestCases/MatrixGenTest.h>
 #include <TestCases/QuatGenTest.h>
 #include <TestCases/VecGenTest.h>
+
+#include <TestCases/CoordClassTest.h>
+#include <TestCases/CoordCompareTest.h>
+
 
 #include <TestCases/QuatClassTest.h>
 #include <TestCases/QuatCompareTest.h>
@@ -143,6 +147,9 @@ int main (int ac, char **av)
    gmtl_suite->addTest( gmtlTest::QuatGenTest::suite() );
    gmtl_suite->addTest( gmtlTest::VecGenTest::suite() );
    
+   gmtl_suite->addTest( gmtlTest::CoordClassTest::suite() );
+   gmtl_suite->addTest( gmtlTest::CoordCompareTest::suite() );
+
    gmtl_suite->addTest( gmtlTest::QuatClassTest::suite() );
    gmtl_suite->addTest( gmtlTest::QuatCompareTest::suite() );
    gmtl_suite->addTest( gmtlTest::QuatOpsTest::suite() );
