@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Vec.h,v $
- * Date modified: $Date: 2002-02-22 21:45:57 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-04-25 23:43:23 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -41,18 +41,29 @@
 namespace gmtl
 {
 
+/**
+ * A representation of a vector with SIZE components using DATA_TYPE as the data
+ * type for each component.
+ *
+ * @param DATA_TYPE     the datatype to use for the components
+ * @param SIZE          the number of components this VecBase has
+ */
 template<class DATA_TYPE, unsigned SIZE>
 class Vec : public VecBase<DATA_TYPE, SIZE>
 {
 public:
+   /// The datatype used for the components of this Vec.
    typedef DATA_TYPE DataType;
+
+   /// The number of components this Vec has.
    enum { Size = SIZE };
 
-   /** Placeholder to the base type */
+   /// The superclass type.
    typedef VecBase<DATA_TYPE, SIZE> BaseType;
 
 public:
-   /** Default constructor
+   /**
+    * Default constructor. All components are initialized to zero.
     */
    Vec()
    {
@@ -60,19 +71,27 @@ public:
          mData[i] = (DATA_TYPE)0;
    }
 
-   /** @name Value constructors
-    * Construct with copy of rVec
-    */
+   /// @name Value constructors
    //@{
+   /**
+    * Make an exact copy of the given Vec object.
+    *
+    * @param rVec    the Vec object to copy
+    */
    Vec(const Vec<DATA_TYPE, SIZE>& rVec)
       : BaseType(static_cast<BaseType>(rVec))
    {;}
    Vec(const VecBase<DATA_TYPE, SIZE>& rVec)
       : BaseType(rVec)
    {;}
+
+   /**
+    * Creates a new Vec initialized to the given values.
+    */
    Vec(const DATA_TYPE& val0)
       : BaseType(val0)
    {;}
+
    Vec(const DATA_TYPE& val0,const DATA_TYPE& val1)
    : BaseType(val0, val1)
    {;}
