@@ -370,6 +370,7 @@ def ValidatePythonOption(key, value, environ):
             enable_python = False
          else:
             # Build up the env information
+            environ.Append(PythonCXXFLAGS = ['-DBOOST_PYTHON_MAX_ARITY=16'])
             if GetPlatform() == 'win32':
                environ.Append(PythonCPPPATH = [pj(prefix, 'include')])
                environ.Append(PythonLIBPATH = [pj(prefix, 'libs')])
@@ -382,6 +383,7 @@ def ValidatePythonOption(key, value, environ):
    return enable_python
 
 def ApplyPythonOptions(env):
+   env.Append(CXXFLAGS = env["PythonCXXFLAGS"])
    env.Append(CPPPATH = env["PythonCPPPATH"])
    env.Append(LIBPATH = env["PythonLIBPATH"])
    env['SHLIBSUFFIX'] = env["PythonSHLIBSUFFIX"]
@@ -462,7 +464,6 @@ elif GetPlatform() == 'win32':
 else:
    print 'Unsupported build environment: ' + GetPlatform()
    sys.exit(-1)
-baseEnv['CXXFLAGS'].extend(['-DBOOST_PYTHON_MAX_ARITY=16'])
 baseEnv['enable_python'] = False
 Export('baseEnv')
 
