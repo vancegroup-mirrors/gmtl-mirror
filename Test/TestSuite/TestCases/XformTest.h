@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: XformTest.h,v $
- * Date modified: $Date: 2002-03-10 18:44:49 $
- * Version:       $Revision: 1.17 $
+ * Date modified: $Date: 2002-03-10 18:46:56 $
+ * Version:       $Revision: 1.18 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -76,7 +76,6 @@ public:
          v2[0] = (T)1;
          const long iters(50000);
          CPPUNIT_METRIC_START_TIMING();
-         bool result = false;
          for (long iter = 0; iter < iters; ++iter)
          {
             v2 = q1 * v2;
@@ -133,7 +132,6 @@ public:
          VEC_TYPE<T, VEC_SIZE> v2; 
          const long iters(25000);
          CPPUNIT_METRIC_START_TIMING();
-         bool result = false;
          for (long iter = 0; iter < iters; ++iter)
          {
             v2 = q1 * v2;
