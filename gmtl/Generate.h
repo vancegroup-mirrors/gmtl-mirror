@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-06-06 15:16:34 $
- * Version:       $Revision: 1.57 $
+ * Date modified: $Date: 2002-06-06 17:07:50 $
+ * Version:       $Revision: 1.58 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -217,6 +217,8 @@ namespace gmtl
 
    /** get the angle/axis from the rotation quaternion.
     *
+    * @param input    quat
+    * @param output   rad, x, y, z
     * @post returns an angle in radians, and a normalized axis equivelent to the quaternion's rotation.
     * @post returns rad and xyz such that
     * <ul>
@@ -225,12 +227,12 @@ namespace gmtl
     * </ul>
     */
    template <typename DATA_TYPE>
-   inline void getRot( Quat<DATA_TYPE> quat, DATA_TYPE& rad, DATA_TYPE& x, DATA_TYPE& y, DATA_TYPE& z )
+   inline void setRot( DATA_TYPE& rad, DATA_TYPE& x, DATA_TYPE& y, DATA_TYPE& z, Quat<DATA_TYPE> quat )
    {
       // set sure we don't get a NaN result from acos...
       if (Math::abs( quat[Welt] ) > (DATA_TYPE)1.0)
       {
-         normalize( quat );
+         gmtl::normalize( quat );
       }
       gmtlASSERT( Math::abs( quat[Welt] ) <= (DATA_TYPE)1.0 && "acos returns NaN when quat[Welt] > 1, try normalizing your quat." );
 
@@ -527,9 +529,11 @@ namespace gmtl
    }
 
    /**
-    * Gets the translational aspect of the given matrix. This function has the
-    * same preconditions as makeTrans.
+    * Set a vector using the translation component of a Matrix. 
+    * This function has the same preconditions as makeTrans.
     *
+    * @param output x,y,z
+    * @param input  arg
     * @param arg     the matrix from which to extract the translation
     * @param x       filled with the translation along the x-axis
     * @param y       filled with the translation along the y-axis
@@ -538,8 +542,8 @@ namespace gmtl
     * @see gmtl::makeTrans
     */
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
-   inline void getTrans( const Matrix<DATA_TYPE, ROWS, COLS>& arg,
-                             DATA_TYPE& x, DATA_TYPE& y, DATA_TYPE& z)
+   inline void setTrans( DATA_TYPE& x, DATA_TYPE& y, DATA_TYPE& z, 
+                         const Matrix<DATA_TYPE, ROWS, COLS>& arg )
    {
       gmtl::Vec<DATA_TYPE,3> trans_vec( makeTrans<gmtl::Vec<DATA_TYPE,3> >(arg) );
       x = trans_vec[0];
@@ -726,16 +730,21 @@ namespace gmtl
    }
    
    
-   /** get euler angles (in radians) from a rotation matrix
+   /** set euler angles (in radians) using the rotation component of a matrix
+    *
+    * @param input  order, mat
+    * @param output param0, param1, param2
+    *
     * @pre pass in your args in the same order as the RotationOrder you specify
     * @post this function only reads 3x3, 3x4, 4x3, and 4x4 matrices, and is undefined otherwise
+    *       NOTE: Angles are returned in radians (this is always true in GMTL).
     */
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
-   inline void getRot(  const Matrix<DATA_TYPE, ROWS, COLS>& mat, 
-                        DATA_TYPE& param0,
+   inline void setRot(  DATA_TYPE& param0,
                         DATA_TYPE& param1, 
                         DATA_TYPE& param2, 
-                        const RotationOrder order )
+                        const RotationOrder order,
+                        const Matrix<DATA_TYPE, ROWS, COLS>& mat )
    {
       // @todo set this a compile time assert...
       gmtlASSERT( ROWS >= 3 && COLS >= 3 && ROWS <= 4 && COLS <= 4 && "this is undefined for Matrix smaller than 3x3 or bigger than 4x4" );
@@ -833,7 +842,7 @@ namespace gmtl
     * @post Returned value is from -180 to 180, where 0 is none.
     */
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
-   inline float getYRot( const Matrix<DATA_TYPE, ROWS, COLS>& mat )
+   inline float makeYRot( const Matrix<DATA_TYPE, ROWS, COLS>& mat )
    {
       const gmtl::Vec3f forward_point(0.0f, 0.0f, -1.0f);   // -Z
       const gmtl::Vec3f origin_point(0.0f, 0.0f, 0.0f);
@@ -859,21 +868,13 @@ namespace gmtl
 
       return y_rot;
    }
-
-/*
-   template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
-   inline void getYaw ( const Matrix<DATA_TYPE, ROWS, COLS>& mat )
-   {
-      return getYRot(mat);
-   }
-*/
-
+   
    /**
     * Extracts the pitch information from the matrix.
     * @post Returned value is from -180 to 180, where 0 is none.
     */
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
-   inline float getXRot( const Matrix<DATA_TYPE, ROWS, COLS>& mat )
+   inline float makeXRot( const Matrix<DATA_TYPE, ROWS, COLS>& mat )
    {
       const gmtl::Vec3f forward_point(0.0f, 0.0f, -1.0f);   // -Z
       const gmtl::Vec3f origin_point(0.0f, 0.0f, 0.0f);
@@ -900,20 +901,12 @@ namespace gmtl
       return x_rot;
    }
 
-/*
-   template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
-   inline void getPitch ( const Matrix<DATA_TYPE, ROWS, COLS>& mat )
-   {
-      return getXRot(mat);
-   }
-*/
-
    /**
     * Extracts the roll information from the matrix.
     * @post Returned value is from -180 to 180, where 0 is no roll.
     */
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
-   inline float getZRot( const Matrix<DATA_TYPE, ROWS, COLS>& mat )
+   inline float makeZRot( const Matrix<DATA_TYPE, ROWS, COLS>& mat )
    {
       const gmtl::Vec3f forward_point(0.0f, 0.0f, -1.0f);   // -Z
       const gmtl::Vec3f origin_point(0.0f, 0.0f, 0.0f);
@@ -939,14 +932,6 @@ namespace gmtl
 
       return z_rot;
    }
-
-/*
-   template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
-   inline void getRoll ( const Matrix<DATA_TYPE, ROWS, COLS>& mat )
-   {
-      return getZRot(mat);
-   }
-*/
 
    /** create a rotation matrix that will rotate from SrcAxis to DestAxis.
     *  xSrcAxis, ySrcAxis, zSrcAxis is the base rotation to go from and defaults to xSrcAxis(1,0,0), ySrcAxis(0,1,0), zSrcAxis(0,0,1) if you only pass in 3 axes.
@@ -1146,8 +1131,8 @@ namespace gmtl
    template <typename DATATYPE, unsigned POSSIZE, unsigned MATCOLS, unsigned MATROWS >
    inline Coord<DATATYPE, POSSIZE, 3>& setCoord( Coord<DATATYPE, POSSIZE, 3>& eulercoord, const Matrix<DATATYPE, MATROWS, MATCOLS>& mat, RotationOrder order = gmtl::XYZ )
    {
-      setTrans( eulercoord.pos(), mat );
-      getRot( mat, eulercoord.rot()[0], eulercoord.rot()[1], eulercoord.rot()[2], order );
+      gmtl::setTrans( eulercoord.pos(), mat );
+      gmtl::setRot( eulercoord.rot()[0], eulercoord.rot()[1], eulercoord.rot()[2], order, mat );
       return eulercoord;
    }
    
