@@ -7,8 +7,8 @@ dnl   Allen Bierbaum
 dnl
 dnl -----------------------------------------------------------------
 dnl File:          $RCSfile: gmtl.m4,v $
-dnl Date modified: $Date: 2002-06-04 20:44:04 $
-dnl Version:       $Revision: 1.7 $
+dnl Date modified: $Date: 2002-06-04 21:23:55 $
+dnl Version:       $Revision: 1.8 $
 dnl -----------------------------------------------------------------
 dnl
 dnl ************************************************************** ggt-head end
@@ -62,7 +62,7 @@ AC_DEFUN(GMTL_PATH,
    AC_ARG_WITH(gmtl-prefix,
                [  --with-gmtl-prefix=<PATH>
                           Prefix where GMTL is installed  [default=$2]],
-               [GTML_ROOT="$withval"], [GTML_ROOT=""])
+               [GMTL_ROOT="$withval"], [GMTL_ROOT=""])
    AC_ARG_WITH(gmtl-includes,
                [  --with-gmtl-includes=<DIR>
                           GMTL header file directory      [default=$2/include]],
@@ -85,11 +85,11 @@ dnl                         test GMTL program], , enable_gmtltest=yes)
       fi
    fi
 
-   if test "x$GTML_ROOT" != "x" ; then
-      gmtl_config_args="$gmtl_config_args --prefix=$GTML_ROOT"
+   if test "x$GMTL_ROOT" != "x" ; then
+      gmtl_config_args="$gmtl_config_args --prefix=$GMTL_ROOT"
 
       if test x${GMTL_CONFIG+set} != xset ; then
-         GMTL_CONFIG="$GTML_ROOT/bin/gmtl-config"
+         GMTL_CONFIG="$GMTL_ROOT/bin/gmtl-config"
       fi
    fi
 
