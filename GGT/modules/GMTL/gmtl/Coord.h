@@ -2,7 +2,9 @@
 #define COORD_GMTL
 
 #include <gmtl/Vec.h>
- 
+#include <gmtl/AxisAngle.h>
+#include <gmtl/EulerAngle.h>
+
 namespace gmtl
 {
    
@@ -19,9 +21,10 @@ namespace gmtl
  *    CoordVec3dEuler myEulerCoord;
  *    CoordVec4fEuler myOtherEulerCoord;
  * \endcode
+ * @see Vec, AxisAngle, EulerAngle 
  * @ingroup Types
  */
-template <typename DATA_TYPE, unsigned POSSIZE, unsigned ROTSIZE>
+template <typename POS_TYPE, typename ROT_TYPE>
 class Coord
 {
 public:
@@ -29,53 +32,54 @@ public:
    {
    }
    
-   typedef DATA_TYPE DataType;
+   typedef typename POS_TYPE::DataType DataType;
+   typedef POS_TYPE PosDataType;
+   typedef ROT_TYPE RotDataType;
    enum
    {
-       PosSize = POSSIZE,
-       RotSize = ROTSIZE
+       PosSize = POS_TYPE::Size,
+       RotSize = ROT_TYPE::Size
    };
     
-   Coord( const Coord<DATA_TYPE, POSSIZE, ROTSIZE>& coord ) : mPos( coord.mPos ), mRot( coord.mRot )
+   Coord( const Coord<POS_TYPE, ROT_TYPE>& coord ) : mPos( coord.mPos ), mRot( coord.mRot )
    {
    }
    
-   Coord( const Vec<DATA_TYPE, POSSIZE>& pos, const Vec<DATA_TYPE, ROTSIZE>& rot ) : mPos( pos ), mRot( rot )
+   Coord( const POS_TYPE& pos, const ROT_TYPE& rot ) : mPos( pos ), mRot( rot )
    {
    }
    
-   const Vec<DATA_TYPE, POSSIZE>& getPos() const { return mPos; }
-   const Vec<DATA_TYPE, ROTSIZE>& getRot() const { return mRot; }
-   
+   const POS_TYPE& getPos() const { return mPos; }
+   const ROT_TYPE& getRot() const { return mRot; }
    
    /// @todo what about having a pos, and a const_pos naming convention?
    /// @todo what about having a rot, and a const_rot naming convention?
    
    /** accessor to the position element */
-   Vec<DATA_TYPE, POSSIZE>& pos() { return mPos; }
+   POS_TYPE& pos() { return mPos; }
 
    /** accessor to the rotation element */
-   Vec<DATA_TYPE, ROTSIZE>& rot() { return mRot; }
+   ROT_TYPE& rot() { return mRot; }
    
    /** const accessor to the position element */
-   const Vec<DATA_TYPE, POSSIZE>& pos() const { return mPos; }
+   //const POS_TYPE& pos() const { return mPos; }
 
    /** const accessor to the rotation element */
-   const Vec<DATA_TYPE, ROTSIZE>& rot() const  { return mRot; }
+   //const ROT_TYPE& rot() const  { return mRot; }
 
 public:
-   Vec<DATA_TYPE, POSSIZE> mPos;
-   Vec<DATA_TYPE, ROTSIZE> mRot;
+   POS_TYPE mPos;
+   ROT_TYPE mRot;
 };
 
-typedef Coord<double, 3, 3> CoordVec3dEuler;
-typedef Coord<float, 3, 3> CoordVec3fEuler;
-typedef Coord<double, 4, 3> CoordVec4dEuler;
-typedef Coord<float, 4, 3> CoordVec4fEuler;
-typedef Coord<double, 3, 4> CoordVec3dAxisAngle;
-typedef Coord<float, 3, 4> CoordVec3fAxisAngle;
-typedef Coord<double, 4, 4> CoordVec4dAxisAngle;
-typedef Coord<float, 4, 4> CoordVec4fAxisAngle;
+typedef Coord<Vec3d, EulerAngled> CoordVec3EulerAngled;
+typedef Coord<Vec3f, EulerAnglef> CoordVec3EulerAnglef;
+typedef Coord<Vec4d, EulerAngled> CoordVec4EulerAngled;
+typedef Coord<Vec4f, EulerAnglef> CoordVec4EulerAnglef;
+typedef Coord<Vec3d, AxisAngled> CoordVec3AxisAngled;
+typedef Coord<Vec3f, AxisAnglef> CoordVec3AxisAnglef;
+typedef Coord<Vec4d, AxisAngled> CoordVec4AxisAngled;
+typedef Coord<Vec4f, AxisAnglef> CoordVec4AxisAnglef;
 
 }
 
