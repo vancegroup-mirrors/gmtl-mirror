@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecOps.h,v $
- * Date modified: $Date: 2004-07-21 22:31:44 $
- * Version:       $Revision: 1.28 $
+ * Date modified: $Date: 2004-08-30 16:07:33 $
+ * Version:       $Revision: 1.29 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -38,6 +38,7 @@
 #include <gmtl/Defines.h>
 #include <gmtl/Math.h>
 #include <gmtl/Vec.h>
+#include <gmtl/VecOpsMeta.h>
 
 namespace gmtl
 {
@@ -246,6 +247,7 @@ VecBase<DATA_TYPE, SIZE> operator /(const VecBase<DATA_TYPE, SIZE>& v1,
 
 /** @} */
 
+
 /** @ingroup Ops
  *  @name Vector Operations
  * @{
@@ -262,12 +264,15 @@ VecBase<DATA_TYPE, SIZE> operator /(const VecBase<DATA_TYPE, SIZE>& v1,
 template<class DATA_TYPE, unsigned SIZE>
 DATA_TYPE dot(const Vec<DATA_TYPE, SIZE>& v1, const Vec<DATA_TYPE, SIZE>& v2)
 {
+   /*
    DATA_TYPE ret_val(0);
    for(unsigned i=0;i<SIZE;++i)
    {
       ret_val += (v1[i] * v2[i]);
    }
    return ret_val;
+   */
+   return gmtl::meta::DotVecUnrolled<SIZE-1,Vec<DATA_TYPE,SIZE> >::func(v1,v2);
 }
 
 /**
@@ -299,6 +304,7 @@ DATA_TYPE length(const Vec<DATA_TYPE, SIZE>& v1)
 template<class DATA_TYPE, unsigned SIZE>
 DATA_TYPE lengthSquared(const Vec<DATA_TYPE, SIZE>& v1)
 {
+   /*
    DATA_TYPE ret_val(0);
    for(unsigned i=0;i<SIZE;++i)
    {
@@ -306,6 +312,8 @@ DATA_TYPE lengthSquared(const Vec<DATA_TYPE, SIZE>& v1)
    }
 
    return ret_val;
+   */
+   return gmtl::meta::LenSqrVecUnrolled<SIZE-1,Vec<DATA_TYPE,SIZE> >::func(v1);
 }
 
 /**
@@ -461,6 +469,7 @@ template<class DATA_TYPE, unsigned SIZE>
 inline bool operator==(const VecBase<DATA_TYPE, SIZE>& v1,
                        const VecBase<DATA_TYPE, SIZE>& v2)
 {
+   /*
    for(unsigned i=0;i<SIZE;++i)
    {
       if(v1[i] != v2[i])
@@ -470,7 +479,9 @@ inline bool operator==(const VecBase<DATA_TYPE, SIZE>& v1,
    }
 
    return true;
+   */
 
+   return gmtl::meta::EqualVecUnrolled<SIZE-1,Vec<DATA_TYPE,SIZE> >::func(v1,v2);
    /*  Would like this
    return(vec[0] == _v[0] &&
           vec[1] == _v[1] &&

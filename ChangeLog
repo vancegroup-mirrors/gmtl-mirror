@@ -2,6 +2,7 @@ DATE       AUTHOR       CHANGE
 ---------- ------------ -------------------------------------------------------
 2004-08-30 allenb       Added meta programming for loop unrolling of VecBase
                         assignment.
+                        Added meta programs for VecOps: lenSqr, equal, dot
 2004-08-19 allenb       Added fast inverse square root.
 2004-08-03 allenb       Refactored seg/tri intersection test to remove two
                         un-needed divisions.
