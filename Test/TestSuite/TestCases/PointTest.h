@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PointTest.h,v $
- * Date modified: $Date: 2002-02-16 00:37:09 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-02-22 19:45:18 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -50,7 +50,7 @@ class PointTest : public CppUnit::TestCase
 {
 public:
    PointTest( std::string name = "PointTest" )
-   : TestCase (name)
+   : CppUnit::TestCase (name)
    {;}
 
    virtual ~PointTest()
@@ -501,7 +501,7 @@ public:
                       vec_ans[1] == 0.0f &&
                       vec_ans[2] == 1.0f );
 
-      float len = length( test_point2 - test_point1);
+      float len = gmtl::length( test_point2 - test_point1);
 
       // -- test op- performance
       const float iters(400000);
@@ -618,7 +618,7 @@ public:
 
 
 
-   static Test* suite()
+   static CppUnit::Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("PointTest");
       test_suite->addTest( new CppUnit::TestCaller<PointTest>("testCreation", &PointTest::testCreation));
@@ -643,7 +643,7 @@ public:
       return test_suite;
    }
 
-   static Test* interactiveSuite()
+   static CppUnit::Test* interactiveSuite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractivePointTest");
       //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOpsTest.h,v $
- * Date modified: $Date: 2002-02-18 20:40:00 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2002-02-22 19:45:18 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -50,7 +50,7 @@ class MatrixOpsTest : public CppUnit::TestCase
 {
 public:
    MatrixOpsTest( std::string name = "MatrixOpsTest" )
-   : TestCase (name)
+   : CppUnit::TestCase (name)
    {;}
 
    virtual ~MatrixOpsTest()
@@ -82,8 +82,8 @@ public:
       bool result = false;
       for( long iter=0;iter<iters; ++iter)
       {
-         transpose( test_mat1 );
-         transpose( test_mat2 );
+         gmtl::transpose( test_mat1 );
+         gmtl::transpose( test_mat2 );
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
@@ -105,7 +105,7 @@ public:
       bool result = false;
       for( long iter=0;iter<iters; ++iter)
       {
-         mult( res_mat, test_mat1, test_mat2 );
+         gmtl::mult( res_mat, test_mat1, test_mat2 );
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
@@ -139,7 +139,7 @@ public:
       bool result = false;
       for( long iter=0;iter<iters; ++iter)
       {
-         add( res_mat, test_mat1, test_mat2 );
+         gmtl::add( res_mat, test_mat1, test_mat2 );
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
@@ -162,7 +162,7 @@ public:
       bool result = false;
       for( long iter=0;iter<iters; ++iter)
       {
-         sub( res_mat, test_mat1, test_mat2 );
+         gmtl::sub( res_mat, test_mat1, test_mat2 );
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
@@ -187,13 +187,13 @@ public:
          res_mat( 0, SIZE - 1 ) = 9;
          test_mat( 1, 0 ) = 2;
          res_mat( 0, 1 ) = 2;
-         transpose( res_mat );
+         gmtl::transpose( res_mat );
          if (TEST == true)
          { CPPUNIT_ASSERT( res_mat == test_mat ); }
-         transpose( res_mat );
+         gmtl::transpose( res_mat );
          
          // test the other transpose op
-         transpose( res_mat, res_mat );
+         gmtl::transpose( res_mat, res_mat );
          if (TEST == true)
          { CPPUNIT_ASSERT( res_mat == test_mat ); }
       }      
@@ -209,12 +209,12 @@ public:
                        4,  5 );
          res_mat.set( 0,   4,
                       1,   5 );
-         transpose( res_mat );
+         gmtl::transpose( res_mat );
          CPPUNIT_ASSERT( res_mat == test_mat );
-         transpose( res_mat );
+         gmtl::transpose( res_mat );
          
          // test the other transpose op
-         transpose( res_mat, res_mat );
+         gmtl::transpose( res_mat, res_mat );
          CPPUNIT_ASSERT( res_mat == test_mat );
       }
       
@@ -226,12 +226,12 @@ public:
          res_mat.set( 0,   4,   8,
                       1,   5,   9,
                       2,   6,  10 );
-         transpose( res_mat );
+         gmtl::transpose( res_mat );
          CPPUNIT_ASSERT( res_mat == test_mat );
-         transpose( res_mat );
+         gmtl::transpose( res_mat );
          
          // test the other transpose op
-         transpose( res_mat, res_mat );
+         gmtl::transpose( res_mat, res_mat );
          CPPUNIT_ASSERT( res_mat == test_mat );
       }
       {
@@ -244,12 +244,12 @@ public:
                       1,   5,   9,  13,
                       2,   6,  10,  14,
                       3,   7,  11,  15 );
-         transpose( res_mat );
+         gmtl::transpose( res_mat );
          CPPUNIT_ASSERT( res_mat == test_mat );
-         transpose( res_mat );
+         gmtl::transpose( res_mat );
          
          // test the other transpose op
-         transpose( res_mat, res_mat );
+         gmtl::transpose( res_mat, res_mat );
          CPPUNIT_ASSERT( res_mat == test_mat );
       }
       
@@ -285,7 +285,7 @@ public:
                         4,  5,  6, 7,
                         8,  9,  10, 11 };
          expected_answer.setTranspose( v2 );
-         transpose( result_mat, source_mat );
+         gmtl::transpose( result_mat, source_mat );
          CPPUNIT_ASSERT( result_mat == expected_answer );
       }
       {
@@ -300,7 +300,7 @@ public:
                         2,  6,  10,
                         3,  7,  11 };
          expected_answer.setTranspose( v2 );
-         transpose( result_mat, source_mat );
+         gmtl::transpose( result_mat, source_mat );
          CPPUNIT_ASSERT( result_mat == expected_answer );
       }
    }
@@ -319,12 +319,12 @@ public:
             test_mat2 = test_mat1;
             ans_mat.set( 0,  2, 
                          8, 10  );
-            add( res_mat, test_mat1, test_mat2 );    // rm = m1 + m2
+            gmtl::add( res_mat, test_mat1, test_mat2 );    // rm = m1 + m2
             CPPUNIT_ASSERT(res_mat == ans_mat);
 
 
             gmtl::Matrix<DATA_TYPE, 2, 2> diff_mat;
-            sub( diff_mat, res_mat, test_mat1 );    // rm = m1 - m2
+            gmtl::sub( diff_mat, res_mat, test_mat1 );    // rm = m1 - m2
             CPPUNIT_ASSERT(diff_mat != res_mat);
             CPPUNIT_ASSERT(diff_mat == test_mat2);
          }
@@ -337,12 +337,12 @@ public:
             ans_mat.set( 0,  2,  4, 
                          8, 10, 12, 
                         16, 18, 20 );
-            add( res_mat, test_mat1, test_mat2 );    // rm = m1 + m2
+            gmtl::add( res_mat, test_mat1, test_mat2 );    // rm = m1 + m2
             CPPUNIT_ASSERT(res_mat == ans_mat);
 
 
             gmtl::Matrix<DATA_TYPE, 3, 3> diff_mat;
-            sub( diff_mat, res_mat, test_mat1 );    // rm = m1 - m2
+            gmtl::sub( diff_mat, res_mat, test_mat1 );    // rm = m1 - m2
             CPPUNIT_ASSERT(diff_mat != res_mat);
             CPPUNIT_ASSERT(diff_mat == test_mat2);
          }
@@ -355,12 +355,12 @@ public:
             ans_mat.set( 0,  2,  4,  6,
                          8, 10, 12, 14,
                         16, 18, 20, 22 );
-            add( res_mat, test_mat1, test_mat2 );    // rm = m1 + m2
+            gmtl::add( res_mat, test_mat1, test_mat2 );    // rm = m1 + m2
             CPPUNIT_ASSERT(res_mat == ans_mat);
 
 
             gmtl::Matrix<DATA_TYPE, 3, 4> diff_mat;
-            sub( diff_mat, res_mat, test_mat1 );    // rm = m1 - m2
+            gmtl::sub( diff_mat, res_mat, test_mat1 );    // rm = m1 - m2
             CPPUNIT_ASSERT(diff_mat != res_mat);
             CPPUNIT_ASSERT(diff_mat == test_mat2);
          }
@@ -377,12 +377,12 @@ public:
                               16, 18, 20,
                               24, 26, 28 };
             ans_mat.setTranspose( v2 );
-            add( res_mat, test_mat1, test_mat2 );    // rm = m1 + m2
+            gmtl::add( res_mat, test_mat1, test_mat2 );    // rm = m1 + m2
             CPPUNIT_ASSERT(res_mat == ans_mat);
 
 
             gmtl::Matrix<DATA_TYPE, 4, 3> diff_mat;
-            sub( diff_mat, res_mat, test_mat1 );    // rm = m1 - m2
+            gmtl::sub( diff_mat, res_mat, test_mat1 );    // rm = m1 - m2
             CPPUNIT_ASSERT(diff_mat != res_mat);
             CPPUNIT_ASSERT(diff_mat == test_mat2);
          }
@@ -397,12 +397,12 @@ public:
                          8, 10, 12, 14,
                         16, 18, 20, 22,
                         24, 26, 28, 30 );
-            add( res_mat, test_mat1, test_mat2 );    // rm = m1 + m2
+            gmtl::add( res_mat, test_mat1, test_mat2 );    // rm = m1 + m2
             CPPUNIT_ASSERT(res_mat == ans_mat);
 
 
             gmtl::Matrix<DATA_TYPE, 4, 4> diff_mat;
-            sub( diff_mat, res_mat, test_mat1 );    // rm = m1 - m2
+            gmtl::sub( diff_mat, res_mat, test_mat1 );    // rm = m1 - m2
             CPPUNIT_ASSERT(diff_mat != res_mat);
             CPPUNIT_ASSERT(diff_mat == test_mat2);
          }
@@ -437,70 +437,70 @@ public:
                   (T)-34,  (T)-23,  (T) 99 );
 
          // make sure mat3 = mat1 * mat2 yields the correct result
-         mult( mat3, mat1, mat2 );
+         gmtl::mult( mat3, mat1, mat2 );
          res_mat.set( (T)-14.300,   (T) -36.300,   (T) 480.700,
                       (T)126.500,   (T) -75.900,   (T)1215.500,
                       (T)280.260,   (T)-112.530,   (T)1787.490 );
-         CPPUNIT_ASSERT( isEqual( res_mat, mat3, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( res_mat, mat3, eps ) );
 
          // test post and pre mult operators...
          {
             gmtl::Matrix<T, 3, 3> m1( mat1 );
             const gmtl::Matrix<T, 3, 3> m2( mat2 );
-            postMult( m1, m2 );
-            CPPUNIT_ASSERT( isEqual( res_mat, m1, eps ) );
+            gmtl::postMult( m1, m2 );
+            CPPUNIT_ASSERT( gmtl::isEqual( res_mat, m1, eps ) );
          }
          {
             gmtl::Matrix<T, 3, 3> m1( mat1 );
             const gmtl::Matrix<T, 3, 3> m2( mat2 );
             m1 *= m2;
-            CPPUNIT_ASSERT( isEqual( res_mat, m1, eps ) );
+            CPPUNIT_ASSERT( gmtl::isEqual( res_mat, m1, eps ) );
          }
          {
             const gmtl::Matrix<T, 3, 3> m1( mat1 );
             gmtl::Matrix<T, 3, 3> m2( mat2 );
-            preMult( m2, m1 );
-            CPPUNIT_ASSERT( isEqual( res_mat, m2, eps ) );
+            gmtl::preMult( m2, m1 );
+            CPPUNIT_ASSERT( gmtl::isEqual( res_mat, m2, eps ) );
          }
          {
             gmtl::Matrix<T, 3, 3> result;
             result = mat1 * mat2;
-            CPPUNIT_ASSERT( isEqual( res_mat, result, eps ) );
+            CPPUNIT_ASSERT( gmtl::isEqual( res_mat, result, eps ) );
          }
          
          // make sure mult is not commutitive
-         mult( mat3, mat2, mat1 );
-         CPPUNIT_ASSERT( !isEqual( res_mat, mat3, eps ) );
+         gmtl::mult( mat3, mat2, mat1 );
+         CPPUNIT_ASSERT( !gmtl::isEqual( res_mat, mat3, eps ) );
 
          // make sure mat3 = mat2 * mat1 yields the correct result
          res_mat.set((T)-36.3000,    (T)  1.4000,   (T)  35.8600,
                      (T)859.1000,    (T)923.0000,   (T)1045.2200,
                      (T)816.2000,    (T)773.3000,   (T) 810.5900 );
-         CPPUNIT_ASSERT( isEqual( res_mat, mat3, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( res_mat, mat3, eps ) );
          
          // test post and pre mult operators...
          {
             const gmtl::Matrix<T, 3, 3> m1( mat1 );
             gmtl::Matrix<T, 3, 3> m2( mat2 );
-            postMult( m2, m1 );
-            CPPUNIT_ASSERT( isEqual( res_mat, m2, eps ) );
+            gmtl::postMult( m2, m1 );
+            CPPUNIT_ASSERT( gmtl::isEqual( res_mat, m2, eps ) );
          }
          {
             const gmtl::Matrix<T, 3, 3> m1( mat1 );
             gmtl::Matrix<T, 3, 3> m2( mat2 );
             m2 *=m1;
-            CPPUNIT_ASSERT( isEqual( res_mat, m2, eps ) );
+            CPPUNIT_ASSERT( gmtl::isEqual( res_mat, m2, eps ) );
          }
          {
             gmtl::Matrix<T, 3, 3> m1( mat1 );
             const gmtl::Matrix<T, 3, 3> m2( mat2 );
-            preMult( m1, m2 );
-            CPPUNIT_ASSERT( isEqual( res_mat, m1, eps ) );
+            gmtl::preMult( m1, m2 );
+            CPPUNIT_ASSERT( gmtl::isEqual( res_mat, m1, eps ) );
          }
          {
             gmtl::Matrix<T, 3, 3> result;
             result = mat2 * mat1;
-            CPPUNIT_ASSERT( isEqual( res_mat, result, eps ) );
+            CPPUNIT_ASSERT( gmtl::isEqual( res_mat, result, eps ) );
          }
       }
    };
@@ -535,12 +535,12 @@ public:
                      352.88, 401.81, 468.48, 535.15,   
                      390.20, 444.76, 518.85, 592.94  };
          expected_answer44.setTranspose( v3 );
-         mult( res44, rhs43, lhs34 );
-         CPPUNIT_ASSERT( isEqual( expected_answer44, res44, eps ) );
+         gmtl::mult( res44, rhs43, lhs34 );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_answer44, res44, eps ) );
          {
             gmtl::Matrix<T, 4, 4> result;
             result = rhs43 * lhs34;
-            CPPUNIT_ASSERT( isEqual( expected_answer44, result, eps ) );
+            CPPUNIT_ASSERT( gmtl::isEqual( expected_answer44, result, eps ) );
          }
          
          // make sure mat3 = mat1 * mat2 yields the correct result
@@ -548,12 +548,12 @@ public:
                      526.46,  557.13,  587.80,  
                      782.05,  828.51,  874.97   };
          expected_answer33.setTranspose( v4 );
-         mult( res33, lhs34, rhs43 );
-         CPPUNIT_ASSERT( isEqual( res33, expected_answer33, eps ) );
+         gmtl::mult( res33, lhs34, rhs43 );
+         CPPUNIT_ASSERT( gmtl::isEqual( res33, expected_answer33, eps ) );
          {
             gmtl::Matrix<T, 3, 3> result;
             result = lhs34 * rhs43;
-            CPPUNIT_ASSERT( isEqual( expected_answer33, result, eps ) );
+            CPPUNIT_ASSERT( gmtl::isEqual( expected_answer33, result, eps ) );
          }
          
          
@@ -565,17 +565,17 @@ public:
                     22.100, 23.110, 24.120,  
                     25.000, 26.000, 27.000  };
          lhs53.setTranspose( v5 );
-         mult( res54, lhs53, lhs34 );
+         gmtl::mult( res54, lhs53, lhs34 );
          T v6[] = { 243.98, 277.07, 322.55, 368.04, 298.43,  
                     339.44, 395.52, 451.59, 352.88, 401.81,  
                     468.48, 535.15, 390.20, 444.76, 518.85,  
                     592.94, 437.80, 499.30, 582.67, 666.04  };
          expected_answer54.setTranspose( v6 );
-         CPPUNIT_ASSERT( isEqual( expected_answer54, res54, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_answer54, res54, eps ) );
          {
             gmtl::Matrix<T, 5, 4> result;
             result = lhs53 * lhs34;
-            CPPUNIT_ASSERT( isEqual( expected_answer54, result, eps ) );
+            CPPUNIT_ASSERT( gmtl::isEqual( expected_answer54, result, eps ) );
          }
       }
    };
@@ -600,72 +600,72 @@ public:
                   (T) 12,  (T) 16,  (T) 21, (T)  18);
 
          // make sure mat3 = mat1 * mat2 yields the correct result
-         mult( mat3, mat1, mat2 );
+         gmtl::mult( mat3, mat1, mat2 );
          res_mat.set((T) 38.500,   (T) 34.100,  (T) 573.100,   (T) 80.300,
                      (T)232.100,   (T) 64.900,  (T)1400.300,   (T)282.700,
                      (T)425.700,   (T) 81.390,  (T)2042.010,   (T)451.080,
                      (T)568.630,   (T)116.150,  (T)2804.770,   (T)631.250 );
-         CPPUNIT_ASSERT( isEqual( res_mat, mat3, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( res_mat, mat3, eps ) );
 
          // test post and pre mult operators...
          {
             gmtl::Matrix<T, 4, 4> m1( mat1 );
             const gmtl::Matrix<T, 4, 4> m2( mat2 );
-            postMult( m1, m2 );
-            CPPUNIT_ASSERT( isEqual( res_mat, m1, eps ) );
+            gmtl::postMult( m1, m2 );
+            CPPUNIT_ASSERT( gmtl::isEqual( res_mat, m1, eps ) );
          }
          {
             gmtl::Matrix<T, 4, 4> m1( mat1 );
             const gmtl::Matrix<T, 4, 4> m2( mat2 );
             m1 *= m2;
-            CPPUNIT_ASSERT( isEqual( res_mat, m1, eps ) );
+            CPPUNIT_ASSERT( gmtl::isEqual( res_mat, m1, eps ) );
          }
          {
             const gmtl::Matrix<T, 4, 4> m1( mat1 );
             gmtl::Matrix<T, 4, 4> m2( mat2 );
-            preMult( m2, m1 );
-            CPPUNIT_ASSERT( isEqual( res_mat, m2, eps ) );
+            gmtl::preMult( m2, m1 );
+            CPPUNIT_ASSERT( gmtl::isEqual( res_mat, m2, eps ) );
          }
          {
             gmtl::Matrix<T, 4, 4> result;
             result = mat1 * mat2;
-            CPPUNIT_ASSERT( isEqual( res_mat, result, eps ) );
+            CPPUNIT_ASSERT( gmtl::isEqual( res_mat, result, eps ) );
          }
          
          // make sure mult is not commutitive
-         mult( mat3, mat2, mat1 );
-         CPPUNIT_ASSERT( !isEqual( res_mat, mat3, eps ) );
+         gmtl::mult( mat3, mat2, mat1 );
+         CPPUNIT_ASSERT( !gmtl::isEqual( res_mat, mat3, eps ) );
 
          // make sure mat3 = mat2 * mat1 yields the correct result
          res_mat.set(  55.610,   100.380,   141.910,   183.440,
                      1765.070,  1898.660,  2090.570,  2282.480,
                       185.960,    94.580,    83.390,    72.200,
                       545.440,   598.620,   668.810,   739.000 );
-         CPPUNIT_ASSERT( isEqual( res_mat, mat3, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( res_mat, mat3, eps ) );
          
          // test post and pre mult operators...
          {
             const gmtl::Matrix<T, 4, 4> m1( mat1 );
             gmtl::Matrix<T, 4, 4> m2( mat2 );
-            postMult( m2, m1 );
-            CPPUNIT_ASSERT( isEqual( res_mat, m2, eps ) );
+            gmtl::postMult( m2, m1 );
+            CPPUNIT_ASSERT( gmtl::isEqual( res_mat, m2, eps ) );
          }
          {
             const gmtl::Matrix<T, 4, 4> m1( mat1 );
             gmtl::Matrix<T, 4, 4> m2( mat2 );
             m2 *= m1;
-            CPPUNIT_ASSERT( isEqual( res_mat, m2, eps ) );
+            CPPUNIT_ASSERT( gmtl::isEqual( res_mat, m2, eps ) );
          }
          {
             gmtl::Matrix<T, 4, 4> m1( mat1 );
             const gmtl::Matrix<T, 4, 4> m2( mat2 );
-            preMult( m1, m2 );
-            CPPUNIT_ASSERT( isEqual( res_mat, m1, eps ) );
+            gmtl::preMult( m1, m2 );
+            CPPUNIT_ASSERT( gmtl::isEqual( res_mat, m1, eps ) );
          }
          {
             gmtl::Matrix<T, 4, 4> result;
             result = mat2 * mat1;
-            CPPUNIT_ASSERT( isEqual( res_mat, result, eps ) );
+            CPPUNIT_ASSERT( gmtl::isEqual( res_mat, result, eps ) );
          }
       }
    };
@@ -700,18 +700,18 @@ public:
                               39.3900,  42.4200,  45.4500,  48.4800  );
 
          // result = mat * scalar
-         mult( res_mat, mat1, (T)3 );
-         CPPUNIT_ASSERT( isEqual( expected_result, res_mat, eps ) );
+         gmtl::mult( res_mat, mat1, (T)3 );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result, res_mat, eps ) );
 
          // result *= scalar
          res_mat = mat1;
-         mult( res_mat, (T)3 );
-         CPPUNIT_ASSERT( isEqual( expected_result, res_mat, eps ) );
+         gmtl::mult( res_mat, (T)3 );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result, res_mat, eps ) );
 
          // result *= scalar
          res_mat = mat1;
          res_mat *= (T)3;
-         CPPUNIT_ASSERT( isEqual( expected_result, res_mat, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result, res_mat, eps ) );
       }
    };
       
@@ -739,18 +739,18 @@ public:
                              2.9041982,  -0.0290744,   0.0420053,  -0.4711792 );
 
          // Make sure our pre-computed answer is right
-         mult( result, mat1, expected_value );
-         CPPUNIT_ASSERT( isEqual( result, identity, eps ) );
+         gmtl::mult( result, mat1, expected_value );
+         CPPUNIT_ASSERT( gmtl::isEqual( result, identity, eps ) );
 
          // Test inversion
          result = gmtl::Matrix<DATA_TYPE, 4, 4>();
-         invert( result, mat1 );
-         CPPUNIT_ASSERT( isEqual( result, expected_value, eps ) );
+         gmtl::invert( result, mat1 );
+         CPPUNIT_ASSERT( gmtl::isEqual( result, expected_value, eps ) );
          
          // Test inversion in place
          result = gmtl::Matrix<DATA_TYPE, 4, 4>();
-         invert( mat1 );
-         CPPUNIT_ASSERT( isEqual( mat1, expected_value, eps ) );
+         gmtl::invert( mat1 );
+         CPPUNIT_ASSERT( gmtl::isEqual( mat1, expected_value, eps ) );
       }
    };
    
@@ -818,7 +818,7 @@ public:
    */
 
 
-   static Test* suite()
+   static CppUnit::Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("MatrixOpsTest");
       test_suite->addTest( new CppUnit::TestCaller<MatrixOpsTest>( "testMatrixTranspose", &MatrixOpsTest::testMatrixTranspose ) );
@@ -835,7 +835,7 @@ public:
       return test_suite;
    }
 
-   static Test* interactiveSuite()
+   static CppUnit::Test* interactiveSuite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveThreadTest");
       //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));

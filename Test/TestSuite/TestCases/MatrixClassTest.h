@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixClassTest.h,v $
- * Date modified: $Date: 2002-02-19 23:18:04 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-02-22 19:45:18 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -48,7 +48,7 @@ class MatrixClassTest : public CppUnit::TestCase
 {
 public:
    MatrixClassTest( std::string name = "MatrixClassTest" )
-   : TestCase (name)
+   : CppUnit::TestCase (name)
    {;}
 
    virtual ~MatrixClassTest()
@@ -1249,7 +1249,7 @@ public:
       }
    }
    
-   static Test* suite()
+   static CppUnit::Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("MatrixClassTest");
       test_suite->addTest( new CppUnit::TestCaller<MatrixClassTest>("testTimingDefaultConstructor", &MatrixClassTest::testTimingDefaultConstructor));
@@ -1273,7 +1273,7 @@ public:
       return test_suite;
    }
 
-   static Test* interactiveSuite()
+   static CppUnit::Test* interactiveSuite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveThreadTest");
       //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));

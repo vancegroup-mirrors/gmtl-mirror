@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Math.h,v $
- * Date modified: $Date: 2002-02-22 17:06:34 $
- * Version:       $Revision: 1.10 $
+ * Date modified: $Date: 2002-02-22 19:45:19 $
+ * Version:       $Revision: 1.11 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -103,7 +103,7 @@ inline float aCos( float fValue )
     }
     else
     {
-        return (float)PI;
+        return (float)gmtl::Math::PI;
     }
 }
 inline double aCos( double fValue )
@@ -117,7 +117,7 @@ inline double aCos( double fValue )
     }
     else
     {
-        return (double)PI;
+        return (double)gmtl::Math::PI;
     }
 }
 //----------------------------------------------------------------------------
@@ -130,11 +130,11 @@ inline float aSin( float fValue )
         if ( fValue < 1.0f )
             return float( ::asinf( fValue ) );
         else
-            return (float)-PI_OVER_2;
+            return (float)-gmtl::Math::PI_OVER_2;
     }
     else
     {
-        return (float)PI_OVER_2;
+        return (float)gmtl::Math::PI_OVER_2;
     }
 }
 inline double aSin( double fValue )
@@ -144,11 +144,11 @@ inline double aSin( double fValue )
         if ( fValue < 1.0 )
             return double( ::asin( fValue ) );
         else
-            return (double)-PI_OVER_2;
+            return (double)-gmtl::Math::PI_OVER_2;
     }
     else
     {
-        return (double)PI_OVER_2;
+        return (double)gmtl::Math::PI_OVER_2;
     }
 }
 //----------------------------------------------------------------------------
@@ -248,9 +248,9 @@ inline float unitRandom()
 {
     //return float(random())/float(RAND_MAX);
    float ret_val;
-   ret_val = drand48();
+   ret_val = ::drand48();
    ggtASSERT((ret_val >= 0.0f) && (ret_val <= 1.0f));
-   return drand48();
+   return ret_val;
 }
 
 /** return a random number between x1 and x2
@@ -258,7 +258,7 @@ inline float unitRandom()
  */
 inline float rangeRandom( float x1, float x2 )
 {
-   float r = unitRandom();
+   float r = gmtl::Math::unitRandom();
    float size = x2 - x1;
    return float( r * size + x1 );
 }
@@ -273,20 +273,20 @@ float SymmetricRandom ()
 
 inline float deg2Rad( float fVal )
 {
-   return float( fVal * (float)(PI/180.0) );
+   return float( fVal * (float)(gmtl::Math::PI/180.0) );
 }
 inline double deg2Rad( double fVal )
 {
-   return double( fVal * (double)(PI/180.0) );
+   return double( fVal * (double)(gmtl::Math::PI/180.0) );
 }
 
 inline float rad2Deg( float fVal )
 {
-   return float( fVal * (float)(180.0/PI) );
+   return float( fVal * (float)(180.0/gmtl::Math::PI) );
 }
 inline double rad2Deg( double fVal )
 {
-   return double( fVal * (double)(180.0/PI) );
+   return double( fVal * (double)(180.0/gmtl::Math::PI) );
 }
 //----------------------------------------------------------------------------
 
@@ -298,20 +298,20 @@ template <class T>
 inline bool isEqual( const T& a, const T& b, const T& tolerance )
 {
    ggtASSERT( tolerance >= (T)0 );
-   return bool( abs( a - b ) <= tolerance );
+   return bool( gmtl::Math::abs( a - b ) <= tolerance );
 }
 //----------------------------------------------------------------------------
 /** cut off the digits after the decimal place */
 template <class T>
 inline T trunc( T val )
 {
-   return T( (val < ((T)0)) ? ceil( val ) : floor( val ) );
+   return T( (val < ((T)0)) ? gmtl::Math::ceil( val ) : gmtl::Math::floor( val ) );
 }
 /** round to nearest integer */
 template <class T>
 inline T round( T p )
 {
-   return T( floor( p + (T)0.5 ) );
+   return T( gmtl::Math::floor( p + (T)0.5 ) );
 }
 //----------------------------------------------------------------------------
 /** Linear Interpolation between number [a] and [b]
@@ -335,13 +335,13 @@ inline T Min( const T& x, const T& y )
 template <class T>
 inline T Min( const T& x, const T& y, const T& z )
 {
-   return Min( Min( x, y ), z );
+   return Min( gmtl::Math::Min( x, y ), z );
 }
 /** min returns the minimum of 4 values */
 template <class T>
 inline T Min( const T& w, const T& x, const T& y, const T& z )
 {
-   return Min( Min( w, x ), Min( y, z ) );
+   return gmtl::Math::Min( gmtl::Math::Min( w, x ), gmtl::Math::Min( y, z ) );
 }
 
 /** max returns the maximum of 2 values */
@@ -354,13 +354,13 @@ inline T Max( const T& x, const T& y )
 template <class T>
 inline T Max( const T& x, const T& y, const T& z )
 {
-   return Max( Max( x, y ), z );
+   return Max( gmtl::Math::Max( x, y ), z );
 }
 /** max returns the maximum of 4 values */
 template <class T>
 inline T Max( const T& w, const T& x, const T& y, const T& z )
 {
-   return Max( Max( w, x ), Max( y, z ) );
+   return gmtl::Math::Max( gmtl::Math::Max( w, x ), gmtl::Math::Max( y, z ) );
 }
 //----------------------------------------------------------------------------
 template <class T>

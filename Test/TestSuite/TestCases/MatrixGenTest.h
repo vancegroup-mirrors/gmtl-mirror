@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixGenTest.h,v $
- * Date modified: $Date: 2002-02-20 17:09:35 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2002-02-22 19:45:18 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -48,7 +48,8 @@ namespace gmtlTest
 class MatrixGenTest : public CppUnit::TestCase
 {
 public:
-   MatrixGenTest( std::string name = "MatrixGenTest" ) : TestCase (name)
+   MatrixGenTest( std::string name = "MatrixGenTest" )
+      : CppUnit::TestCase (name)
    {
    }
 
@@ -143,7 +144,7 @@ public:
          expected_result33.set( 0, 1, 0,
                                 1, 0, 0,
                                 0, 0, -1  );
-         makeAxes( mat33, gmtl::Vec3f( 0,1,0 ), gmtl::Vec3f( 1,0,0 ), gmtl::Vec3f( 0,0,-1 ) ); 
+         gmtl::makeAxes( mat33, gmtl::Vec3f( 0,1,0 ), gmtl::Vec3f( 1,0,0 ), gmtl::Vec3f( 0,0,-1 ) ); 
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat33, eps ) );
       }
       {
@@ -154,7 +155,7 @@ public:
                                 1, 0, 0, 0,
                                 0, 0, -1, 0,
                                 0, 0, 0, 1  );
-         makeAxes( mat44, gmtl::Vec3f( 0,1,0 ), gmtl::Vec3f( 1,0,0 ), gmtl::Vec3f( 0,0,-1 ) ); 
+         gmtl::makeAxes( mat44, gmtl::Vec3f( 0,1,0 ), gmtl::Vec3f( 1,0,0 ), gmtl::Vec3f( 0,0,-1 ) ); 
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result44, mat44, eps ) );
       }
    }
@@ -180,7 +181,7 @@ public:
                                 1, 0, 0, 0,
                                 0, 0, -1, 0,
                                 0, 0, 0, 1  );
-         makeDirCos( mat44, gmtl::Vec3f( 0,1,0 ), gmtl::Vec3f( 1,0,0 ), gmtl::Vec3f( 0,0,-1 ) ); 
+         gmtl::makeDirCos( mat44, gmtl::Vec3f( 0,1,0 ), gmtl::Vec3f( 1,0,0 ), gmtl::Vec3f( 0,0,-1 ) ); 
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result44, mat44, eps ) );
       }
    }
@@ -301,7 +302,7 @@ public:
                                 0, 0, -1,
                                 0, 1, 0 );
          gmtl::Vec3f vec( 1.0f, 0.0f, 0.0f );
-         normalize( vec );
+         gmtl::normalize( vec );
          gmtl::makeRot( mat, gmtl::Math::deg2Rad( 90.0f ), vec );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
       }
@@ -313,7 +314,7 @@ public:
                                 0, 1, 0,
                                 0, 0, 1 );
          gmtl::Vec3f vec( -1.0f, 1.0f, -1.0f );
-         normalize( vec );
+         gmtl::normalize( vec );
          gmtl::makeRot( mat, gmtl::Math::deg2Rad( -360.0f ), vec );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
       }
@@ -326,7 +327,7 @@ public:
                                 0, 0, 1, 0,
                                 0, -1, 0, 0 );
          gmtl::Vec3f vec( 1.0f, 0.0f, 0.0f );
-         normalize( vec );
+         gmtl::normalize( vec );
          gmtl::makeRot( mat, gmtl::Math::deg2Rad( -90.0f ), vec );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result34, mat, eps ) );
       }
@@ -338,7 +339,7 @@ public:
                                 -0.505879, 0.804738, -0.310617, 0, 
                                 0.310617, 0.505879, 0.804738, 0  );
          gmtl::Vec3f vec( 0.7f, -0.7f, -0.7f );
-         normalize( vec );
+         gmtl::normalize( vec );
          gmtl::makeRot( mat, gmtl::Math::deg2Rad( 45.0f ), vec );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result34, mat, eps ) );
       }
@@ -351,7 +352,7 @@ public:
                                 -0.310617, 0.505879, 0.804738, 0,
                                 0, 0, 0, 1 );
          gmtl::Vec3f vec( 0.7f, 0.7f, 0.7f );
-         normalize( vec );
+         gmtl::normalize( vec );
          gmtl::makeRot( mat, gmtl::Math::deg2Rad( 45.0f ), vec );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result44, mat, eps ) );
       }
@@ -1029,7 +1030,7 @@ public:
    }
    
          
-   static Test* suite()
+   static CppUnit::Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("MatrixGenTest");
       
@@ -1090,7 +1091,7 @@ public:
       return test_suite;
    }
 
-   static Test* interactiveSuite()
+   static CppUnit::Test* interactiveSuite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("bokbokbokbokbokbokbokbok");
       //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));

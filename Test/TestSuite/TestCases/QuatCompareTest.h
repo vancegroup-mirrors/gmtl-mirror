@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatCompareTest.h,v $
- * Date modified: $Date: 2002-02-21 23:19:14 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-02-22 19:45:18 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -50,7 +50,7 @@ class QuatCompareTest : public CppUnit::TestCase
 {
 public:
    QuatCompareTest( std::string name = "QuatCompareTest" )
-   : TestCase (name)
+      : CppUnit::TestCase (name)
    {;}
 
    virtual ~QuatCompareTest()
@@ -274,7 +274,7 @@ public:
       CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatCompareTest/isEqual(...)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }   
    
-   static Test* suite()
+   static CppUnit::Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("QuatCompareTest");
       test_suite->addTest( new CppUnit::TestCaller<QuatCompareTest>("testMatTimingOpEqualityTest", &QuatCompareTest::testMatTimingOpEqualityTest));
@@ -285,7 +285,7 @@ public:
       return test_suite;
    }
 
-   static Test* interactiveSuite()
+   static CppUnit::Test* interactiveSuite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveThreadTest");
       //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));

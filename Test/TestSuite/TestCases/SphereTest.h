@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: SphereTest.h,v $
- * Date modified: $Date: 2002-02-18 23:22:15 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-02-22 19:45:18 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -50,7 +50,7 @@ class SphereTest : public CppUnit::TestCase
 {
 public:
    SphereTest( std::string name = "SphereTest" )
-   : TestCase (name)
+   : CppUnit::TestCase (name)
    {}
 
    virtual ~SphereTest()
@@ -469,7 +469,7 @@ public:
          pt1[elt] = 3.0f;
          pt2.set( 0.0f, 0.0f, 0.0f );
          pt2[elt] = 1.0f;
-         extendVolume( test_sph2, pt1 );
+         gmtl::extendVolume( test_sph2, pt1 );
          CPPUNIT_ASSERT( test_sph2.mCenter == pt2 );
          CPPUNIT_ASSERT( test_sph2.mRadius == 2.0f );
       }
@@ -509,7 +509,7 @@ public:
          sph.mRadius = 2.0f;
          pt1.set( 0.0f, 0.0f, 0.0f );
          pt1[elt] = 3.0f;
-         extendVolume( test_sph2, sph );
+         gmtl::extendVolume( test_sph2, sph );
          CPPUNIT_ASSERT( test_sph2.mCenter == pt1 );
          CPPUNIT_ASSERT( test_sph2.mRadius == 4.0f );
       }
@@ -544,7 +544,7 @@ public:
       pts.push_back( gmtl::Point<float, 3>(0.0f, 5.0f, 10.0f) );
       pts.push_back( gmtl::Point<float, 3>(0.0f, 5.0f, -10.0f) );
 
-      makeVolume( test_sph, pts );
+      gmtl::makeVolume( test_sph, pts );
 
       gmtl::Point<float, 3> pt(0.25f, 3.75f, 0.0f);
       CPPUNIT_ASSERT( gmtl::Math::isEqual( test_sph.mRadius, 10.08f, 0.01f ) );
@@ -581,7 +581,7 @@ public:
       spheres.push_back( gmtl::Sphere<float>( gmtl::Point<float, 3>(5.0f, 2.0f, 0.0f), 1.0f ) );
       spheres.push_back( gmtl::Sphere<float>( gmtl::Point<float, 3>(5.0f, -2.0f, 0.0f), 1.0f ) );
 
-      makeVolume( test_sph, spheres );
+      gmtl::makeVolume( test_sph, spheres );
 
       gmtl::Point<float, 3> pt( 5.0f, 0.0f, 0.0f );
       CPPUNIT_ASSERT( test_sph.mRadius == 3.0f );
@@ -611,7 +611,7 @@ public:
    }
 */
 
-   static Test* suite()
+   static CppUnit::Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("SphereTest");
       test_suite->addTest( new CppUnit::TestCaller<SphereTest>("testCreation", &SphereTest::testCreation));
@@ -634,7 +634,7 @@ public:
       return test_suite;
    }
 
-   static Test* interactiveSuite()
+   static CppUnit::Test* interactiveSuite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveSphereTest");
       //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));

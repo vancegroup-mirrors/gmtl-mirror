@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixCompareTest.h,v $
- * Date modified: $Date: 2002-02-18 23:22:15 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-02-22 19:45:18 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -50,7 +50,7 @@ class MatrixCompareTest : public CppUnit::TestCase
 {
 public:
    MatrixCompareTest( std::string name = "MatrixCompareTest" )
-   : TestCase (name)
+   : CppUnit::TestCase (name)
    {;}
 
    virtual ~MatrixCompareTest()
@@ -307,7 +307,7 @@ public:
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixCompareTest/IsEqualTest", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }   
    
-   static Test* suite()
+   static CppUnit::Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("MatrixCompareTest");
       test_suite->addTest( new CppUnit::TestCaller<MatrixCompareTest>("testMatTimingOpEqualityTest", &MatrixCompareTest::testMatTimingOpEqualityTest));
@@ -319,7 +319,7 @@ public:
       return test_suite;
    }
 
-   static Test* interactiveSuite()
+   static CppUnit::Test* interactiveSuite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveThreadTest");
       //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
