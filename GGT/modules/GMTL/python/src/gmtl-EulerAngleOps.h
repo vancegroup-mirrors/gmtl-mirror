@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-EulerAngleOps.h,v $
- * Date modified: $Date: 2003-08-30 17:22:10 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2004-05-25 16:59:56 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -46,11 +46,11 @@
 namespace gmtl
 {
    template bool isEqual(const EulerAngleXYZf&, const EulerAngleXYZf&,
-                         const float&);
+                         const float);
    template bool isEqual(const EulerAngleZXYf&, const EulerAngleZXYf&,
-                         const float&);
+                         const float);
    template bool isEqual(const EulerAngleZYXf&, const EulerAngleZYXf&,
-                         const float&);
+                         const float);
 }
 
 

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-AxisAngleOps.h,v $
- * Date modified: $Date: 2003-08-30 17:22:10 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2004-05-25 16:59:41 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -45,8 +45,8 @@
 
 namespace gmtl
 {
-   template bool isEqual(const AxisAnglef&, const AxisAnglef&, const float&);
-   template bool isEqual(const AxisAngled&, const AxisAngled&, const double&);
+   template bool isEqual(const AxisAnglef&, const AxisAnglef&, const float);
+   template bool isEqual(const AxisAngled&, const AxisAngled&, const double);
 }
 
 
