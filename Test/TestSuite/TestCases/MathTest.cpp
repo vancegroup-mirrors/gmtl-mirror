@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MathTest.cpp,v $
- * Date modified: $Date: 2003-02-06 02:09:15 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2003-02-23 06:53:52 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -34,12 +34,15 @@
  ************************************************************ ggt-cpr end */
 #include "MathTest.h"
 #include "../Suites.h"
+#include <cppunit/extensions/HelperMacros.h>
 #include <cppunit/extensions/MetricRegistry.h>
 
 #include <gmtl/Math.h>
 
 namespace gmtlTest
 {
+   CPPUNIT_TEST_SUITE_REGISTRATION(MathTest);
+
    void MathTest::testQuadraticFormula()
    {
       float r1, r2;
@@ -55,6 +58,21 @@ namespace gmtlTest
 
       // Imaginary roots
       CPPUNIT_ASSERT(! gmtl::Math::quadraticFormula(r1, r2, 1.0f, 2.0f, 3.0f));
+   }
+
+   template< class T >
+   void testSign()
+   {
+      T val;
+
+      val = T(2.5);
+      CPPUNIT_ASSERT(gmtl::Math::sign(val) == 1);
+
+      val = T(-2.5);
+      CPPUNIT_ASSERT(gmtl::Math::sign(val) == -1);
+
+      val = T(0);
+      CPPUNIT_ASSERT(gmtl::Math::sign(val) == 0);
    }
 
    template< class T >
@@ -93,6 +111,16 @@ namespace gmtlTest
 
       // make sure the compiler doesn't optimize out use_val
       CPPUNIT_ASSERT( use_val > 0 );
+   }
+
+   void MathTest::testSigni()
+   {
+      testSign<int>();
+   }
+
+   void MathTest::testSignf()
+   {
+      testSign<float>();
    }
 
    void MathTest::testZeroClampf()

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Math.h,v $
- * Date modified: $Date: 2002-12-23 01:23:21 $
- * Version:       $Revision: 1.34 $
+ * Date modified: $Date: 2003-02-23 06:53:52 $
+ * Version:       $Revision: 1.35 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -114,9 +114,23 @@ inline double floor( double fValue )
 }
 //----------------------------------------------------------------------------
 template <typename T>
-inline T sign( int iValue )
+inline int sign( T iValue )
 {
-    return ( iValue > ((T)0) ? ((T)+1) : ( iValue < ((T)0) ? ((T)-1) : ((T)0) ) );
+   if (iValue > T(0))
+   {
+      return 1;
+   }
+   else
+   {
+      if (iValue < T(0))
+      {
+         return -1;
+      }
+      else
+      {
+         return 0;
+      }
+   }
 }
 //----------------------------------------------------------------------------
 /**
