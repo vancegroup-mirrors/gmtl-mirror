@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: testSuite.cpp,v $
- * Date modified: $Date: 2002-02-12 05:46:22 $
- * Version:       $Revision: 1.11 $
+ * Date modified: $Date: 2002-02-15 21:49:16 $
+ * Version:       $Revision: 1.12 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -53,15 +53,18 @@
 
 // old tests
 #include <TestCases/Vec3Test.h>
-#include <TestCases/MatrixTest.h>
+//#include <TestCases/MatrixTest.h>
+#include <TestCases/MatrixClassTest.h>
+#include <TestCases/MatrixCompareTest.h>
+#include <TestCases/MatrixOpsTest.h>
 #include <TestCases/Point3Test.h>
-#include <TestCases/XformTest.h>
-#include <TestCases/OOBoxTest.h>
-#include <TestCases/PlaneTest.h>
-#include <TestCases/ContainmentTest.h>
-#include <TestCases/IntersectionTest.h>
-#include <TestCases/QuatTest.h>
-#include <TestCases/TriTest.h>
+//#include <TestCases/XformTest.h>
+//#include <TestCases/OOBoxTest.h>
+//#include <TestCases/PlaneTest.h>
+//#include <TestCases/ContainmentTest.h>
+//#include <TestCases/IntersectionTest.h>
+//#include <TestCases/QuatTest.h>
+//#include <TestCases/TriTest.h>
 #include <TestCases/InfoTests/OptTest.h>
 
 std::string getHostname(void);
@@ -109,8 +112,11 @@ int main (int ac, char **av)
    gmtl_suite->addTest(gmtlTest::SphereTest::suite());
 
    gmtl_suite->addTest(gmtlTest::Vec3Test::suite());
-   gmtl_suite->addTest(gmtlTest::MatrixTest::suite());
+   gmtl_suite->addTest(gmtlTest::MatrixClassTest::suite());
+   gmtl_suite->addTest(gmtlTest::MatrixCompareTest::suite());
+   gmtl_suite->addTest(gmtlTest::MatrixOpsTest::suite());
    gmtl_suite->addTest(gmtlTest::Point3Test::suite());
+   /*
    gmtl_suite->addTest(gmtlTest::XformTest::suite());
    gmtl_suite->addTest(gmtlTest::OOBoxTest::suite());
    gmtl_suite->addTest(gmtlTest::PlaneTest::suite());
@@ -118,7 +124,7 @@ int main (int ac, char **av)
    gmtl_suite->addTest(gmtlTest::IntersectionTest::suite());
    gmtl_suite->addTest(gmtlTest::QuatTest::suite());
    gmtl_suite->addTest(gmtlTest::TriTest::suite());
-   
+   */
    CppUnit::TestSuite* info_suite = new CppUnit::TestSuite("info_suite");
    info_suite->addTest(gmtlTest::OptTest::suite());
 
