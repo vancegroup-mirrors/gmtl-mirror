@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Vec.h,v $
- * Date modified: $Date: 2003-03-29 22:02:19 $
- * Version:       $Revision: 1.17 $
+ * Date modified: $Date: 2003-09-05 20:02:41 $
+ * Version:       $Revision: 1.18 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -129,6 +129,6 @@ typedef Vec<int, 4> Vec4i;
 typedef Vec<float,4> Vec4f;
 typedef Vec<double,4> Vec4d;
 
-};
+}
 
 #endif
