@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOps.h,v $
- * Date modified: $Date: 2004-05-25 16:36:28 $
- * Version:       $Revision: 1.36 $
+ * Date modified: $Date: 2004-09-22 20:32:25 $
+ * Version:       $Revision: 1.37 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -292,12 +292,12 @@ namespace gmtl
    /** translational matrix inversion.
     *  Matrix inversion that acts on a translational matrix (matrix with only translation)
     *  Check for error with Matrix::isError().
-    * @pre: 4x3, 4x4 matrices only 
+    * @pre: 4x3, 4x4 matrices only
     * @post: result' = inv( result )
     * @post: If inversion failed, then error bit is set within the Matrix.
     */
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
-   inline Matrix<DATA_TYPE, ROWS, COLS>& invertTrans( Matrix<DATA_TYPE, ROWS, COLS>& result, 
+   inline Matrix<DATA_TYPE, ROWS, COLS>& invertTrans( Matrix<DATA_TYPE, ROWS, COLS>& result,
                                                        const Matrix<DATA_TYPE, ROWS, COLS>& src )
    {
       gmtlASSERT( ROWS == COLS || COLS == ROWS+1 && "invertTrans supports NxN or Nx(N-1) matrices only" );
@@ -319,7 +319,7 @@ namespace gmtl
     * @post: If inversion failed, then error bit is set within the Matrix.
     */
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
-   inline Matrix<DATA_TYPE, ROWS, COLS>& invertOrthogonal( Matrix<DATA_TYPE, ROWS, COLS>& result, 
+   inline Matrix<DATA_TYPE, ROWS, COLS>& invertOrthogonal( Matrix<DATA_TYPE, ROWS, COLS>& result,
                                                        const Matrix<DATA_TYPE, ROWS, COLS>& src )
    {
       // in case result is == source... :(
@@ -343,12 +343,12 @@ namespace gmtl
    /** affine matrix inversion.
     *  Matrix inversion that acts on a 4x3 affine matrix (matrix with only trans, rot, uniform scale)
     *  Check for error with Matrix::isError().
-    * @pre: 3x3, 4x3, 4x4 matrices only 
+    * @pre: 3x3, 4x3, 4x4 matrices only
     * @POST: result' = inv( result )
     * @POST: If inversion failed, then error bit is set within the Matrix.
     */
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
-   inline Matrix<DATA_TYPE, ROWS, COLS>& invertAffine( Matrix<DATA_TYPE, ROWS, COLS>& result, 
+   inline Matrix<DATA_TYPE, ROWS, COLS>& invertAffine( Matrix<DATA_TYPE, ROWS, COLS>& result,
                                                        const Matrix<DATA_TYPE, ROWS, COLS>& source )
    {
       static const float eps = 0.00000001f;
@@ -367,7 +367,7 @@ namespace gmtl
       // do non-uniform scale inversion
       if (src.mState & Matrix<DATA_TYPE, ROWS, COLS>::NON_UNISCALE)
       {
-         float l0 = gmtl::lengthSquared( gmtl::Vec3f( result[0][0], result[0][1], result[0][2] ) ); 
+         float l0 = gmtl::lengthSquared( gmtl::Vec3f( result[0][0], result[0][1], result[0][2] ) );
          float l1 = gmtl::lengthSquared( gmtl::Vec3f( result[1][0], result[1][1], result[1][2] ) );
          float l2 = gmtl::lengthSquared( gmtl::Vec3f( result[2][0], result[2][1], result[2][2] ) );
          if (gmtl::Math::abs( l0 ) > eps) l0 = 1.0f / l0;
@@ -385,20 +385,20 @@ namespace gmtl
          result[2][1] *= l2;
          result[2][2] *= l2;
       }
-      
+
       // handle matrices with translation
       if (COLS == 4)
       {
          // The right column vector of the matrix should always be [ 0 0 0 s ]
          // this represents some shear values
          result[3][0] = result[3][1] = result[3][2] = 0;
-         
+
          // The translation components of the original matrix.
          const float& tx = src[0][3];
          const float& ty = src[1][3];
          const float& tz = src[2][3];
-         
-   
+
+
          // Rresult = -(Tm * Rm) to get the translation part of the inverse
          if (ROWS == 4)
          {
@@ -419,23 +419,127 @@ namespace gmtl
          }
       }
 
-      
+
 
       result.mState = src.mState;
 
       return result;
    }
-   
+
+   /** Full matrix inversion using Gauss-Jordan elimination.
+    *  Check for error with Matrix::isError().
+    * @POST: result' = inv( result )
+    * @POST: If inversion failed, then error bit is set within the Matrix.
+    */
+   template <typename DATA_TYPE, unsigned SIZE>
+   inline Matrix<DATA_TYPE, SIZE, SIZE>& invertFull_GJ( Matrix<DATA_TYPE, SIZE, SIZE>& result, const Matrix<DATA_TYPE, SIZE, SIZE>& src )
+   {
+      //gmtlASSERT( ROWS == COLS && "invertFull only works with nxn matrices" );
+
+      const DATA_TYPE pivot_eps(1e-20);         // Epsilon for the pivot value test (delta with test against zero)
+
+      // Computer inverse of matrix using a Gaussian-Jordan elimination.
+      // Uses max pivot at each point
+      // See: "Essential Mathmatics for Games" for description
+
+      // Do this invert in place
+      result = src;
+      unsigned swapped[SIZE];       // Track swaps. swapped[3] = 2 means that row 3 was swapped with row 2
+
+      unsigned pivot;
+
+      // --- Gaussian elimination step --- //
+      // For each column and row
+      for(pivot=0; pivot<SIZE;++pivot)
+      {
+         unsigned    pivot_row(pivot);
+         DATA_TYPE   pivot_value(gmtl::Math::abs(result(pivot_row, pivot)));    // Initialize to beginning of current row
+
+         // find pivot row - (max pivot element)
+         for(unsigned pr=pivot+1;pr<SIZE;++pr)
+         {
+            const DATA_TYPE cur_val(gmtl::Math::abs(result(pr,pivot)));   // get value at current point
+            if (cur_val > pivot_value)
+            {
+               pivot_row = pr;
+               pivot_value = cur_val;
+            }
+         }
+
+         if(gmtl::Math::isEqual(DATA_TYPE(0),pivot_value,pivot_eps))
+         {
+            std::cerr << "*** pivot = " << pivot_value << " in mat_inv. ***\n";
+            result.setError();
+            return result;
+         }
+
+         // Check for swap of pivot rows
+         swapped[pivot] = pivot_row;
+         if(pivot_row != pivot)
+         {
+            for(unsigned c=0;c<SIZE;++c)
+            {  std::swap(result(pivot,c), result(pivot_row,c)); }
+         }
+         // ASSERT: row to use in now in "row" (check that row starts with max pivot value found)
+         gmtlASSERT(gmtl::Math::isEqual(pivot_value,gmtl::Math::abs(result(pivot,pivot)),DATA_TYPE(0.00001)));
+
+         // Compute pivot factor
+         const DATA_TYPE mult_factor(1.0f/pivot_value);
+
+         // Set pivot row values
+         for(unsigned c=0;c<SIZE;++c)
+         {  result(pivot,c) *= mult_factor; }
+         result(pivot,pivot) = mult_factor;    // Copy the 1/pivot since we are inverting in place
+
+         // Clear pivot column in other rows (since we are in place)
+         // - Subtract current row times result(r,col) so that column element becomes 0
+         for(unsigned row=0;row<SIZE;++row)
+         {
+            if(row==pivot)     // Don't subtract from our row
+            { continue; }
+
+            const DATA_TYPE sub_mult_factor(result(row,pivot));
+
+            // Clear the pivot column's element (for invers in place)
+            // ends up being set to -sub_mult_factor*pivotInverse
+            result(row,pivot) = 0;
+
+            // subtract the pivot row from this row
+            for(unsigned col=0;col<SIZE;++col)
+            {   result(row,col) -= (sub_mult_factor*result(pivot,col)); }
+         }
+      } // end: gaussian substitution
+
+
+      // Now undo the swaps in column direction in reverse order
+      unsigned p(SIZE);
+      do
+      {
+         --p;
+         gmtlASSERT((p>=0) && (p<SIZE));
+
+         // If row was swapped
+         if(swapped[p] != p)
+         {
+            // Swap the column with same index
+            for(unsigned r=0; r<SIZE; ++r)
+            { std::swap(result(r, p), result(r, swapped[p])); }
+         }
+      }
+      while(p>0);
+
+      return result;
+   }
+
+
    /** full matrix inversion.
     *  Check for error with Matrix::isError().
     * @POST: result' = inv( result )
     * @POST: If inversion failed, then error bit is set within the Matrix.
     */
-   template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
-   inline Matrix<DATA_TYPE, ROWS, COLS>& invertFull( Matrix<DATA_TYPE, ROWS, COLS>& result, const Matrix<DATA_TYPE, ROWS, COLS>& src )
+   template <typename DATA_TYPE, unsigned SIZE>
+   inline Matrix<DATA_TYPE, SIZE, SIZE>& invertFull_orig( Matrix<DATA_TYPE, SIZE, SIZE>& result, const Matrix<DATA_TYPE, SIZE, SIZE>& src )
    {
-      gmtlASSERT( ROWS == COLS && "invertFull only works with nxn matrices" );
-
       /*---------------------------------------------------------------------------*
        | mat_inv: Compute the inverse of a n x n matrix, using the maximum pivot   |
        |          strategy.  n <= MAX1.                                            |
@@ -450,10 +554,10 @@ namespace gmtl
       const DATA_TYPE* a = src.getData();
       DATA_TYPE* b = result.mData;
 
-      int   n = 4;
+      int   n(SIZE);
       int    i, j, k;
-      int    r[ 4], c[ 4], row[ 4], col[ 4];
-      DATA_TYPE  m[ 4][ 4*2], pivot, max_m, tmp_m, fac;
+      int    r[SIZE], c[SIZE], row[SIZE], col[SIZE];
+      DATA_TYPE  m[SIZE][SIZE*2], pivot, max_m, tmp_m, fac;
 
       /* Initialization */
       for ( i = 0; i < n; i ++ )
@@ -543,6 +647,16 @@ namespace gmtl
       return result;
    }
 
+
+   /** Invert method.
+    * Calls invertFull_orig to do the work.
+    */
+   template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
+   inline Matrix<DATA_TYPE, ROWS, COLS>& invertFull( Matrix<DATA_TYPE, ROWS, COLS>& result, const Matrix<DATA_TYPE, ROWS, COLS>& src )
+   {
+      return invertFull_orig(result,src);
+   }
+
    /** smart matrix inversion.
     *  Does matrix inversion by intelligently selecting what type of inversion to use depending
     *  on the types of operations your Matrix has been through.
@@ -566,7 +680,7 @@ namespace gmtl
                src.mState == (Matrix<DATA_TYPE, ROWS, COLS>::AFFINE | Matrix<DATA_TYPE, ROWS, COLS>::NON_UNISCALE))
          return invertAffine( result, src );
       else
-         return invertFull( result, src );
+         return invertFull_orig( result, src );
    }
 
    /** smart matrix inversion (in place)
