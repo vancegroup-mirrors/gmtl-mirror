@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: testSuite.cpp,v $
- * Date modified: $Date: 2002-06-04 00:05:14 $
- * Version:       $Revision: 1.43 $
+ * Date modified: $Date: 2002-06-05 02:43:13 $
+ * Version:       $Revision: 1.44 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -78,6 +78,8 @@
 #include <TestCases/XformTest.h>
 
 #include <TestCases/OutputTest.h>
+
+#include <TestCases/AABoxTest.h>
 
 
 #include <TestCases/InfoTests/OptTest.h>
@@ -166,6 +168,7 @@ int main (int ac, char **av)
    gmtl_suite->addTest( gmtlTest::ConvertTest::suite() );
 
    gmtl_suite->addTest( gmtlTest::OutputTest::suite() );
+   gmtl_suite->addTest( gmtlTest::AABoxTest::suite() );
 
    /*
    gmtl_suite->addTest( gmtlTest::Point3Test::suite() );
@@ -190,6 +193,8 @@ int main (int ac, char **av)
    perf_suite->addTest( gmtlTest::CoordClassTest::perfSuite() );
    perf_suite->addTest( gmtlTest::CoordCompareTest::perfSuite() );
    perf_suite->addTest( gmtlTest::CoordGenTest::perfSuite() );
+
+   perf_suite->addTest( gmtlTest::AABoxTest::perfSuite() );
 
    CppUnit::TestSuite* info_suite = new CppUnit::TestSuite( "info_suite" );
    info_suite->addTest( gmtlTest::OptTest::suite() );
