@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: SphereTest.cpp,v $
- * Date modified: $Date: 2003-09-06 20:22:30 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2003-09-06 21:26:51 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -791,7 +791,15 @@ namespace gmtlTest
          bool result = gmtl::intersect( sphere, ray,  hits, t0, t1 );
          assert( result == true );
       }
-      
+      // zero length seg inside sphere
+      // test other branch of the if (inside intersect)
+      {
+         gmtl::Spheref sphere( gmtl::Point3f( 0,0,0 ), 2 );
+         gmtl::Rayf ray( gmtl::Point3f( -0.143958f,-0.229931f,-0.013235f ),
+                   gmtl::Vec3f( 0, .000000119209f, 0 ) );
+         bool result = gmtl::intersect( sphere, ray, hits, t0, t1 );
+         assert( result == true );
+      }
       
 
       
@@ -977,7 +985,15 @@ namespace gmtlTest
          bool result = gmtl::intersect( sphere, seg,  hits, t0, t1 );
          assert( result == true );
       }
- 
+      // zero length seg inside sphere
+      // test other branch of the if (inside intersect)
+      {
+         gmtl::Spheref sphere( gmtl::Point3f( 0,0,0 ), 2 );
+         gmtl::LineSegf ray( gmtl::Point3f( -0.143958f,-0.229931f,-0.013235f ),
+                   gmtl::Vec3f( 0, .000000119209f, 0 ) );
+         bool result = gmtl::intersect( sphere, ray, hits, t0, t1 );
+         assert( result == true );
+      }
    }
 
    void SphereTest::testSphereIntersections()
