@@ -66,7 +66,7 @@ def BuildLinuxEnvironment():
 
    CXX = WhereIs('g++3') or 'g++'
    LINK = CXX
-   CXXFLAGS = ['-Wall']
+   CXXFLAGS = ['-Wall', '-pipe']
    LINKFLAGS = []
 
    # Enable profiling?
@@ -275,15 +275,14 @@ def ApplyCppUnitOptions(env):
 def AddCppUnitOptions(opts):
    opts.Add('CppUnitDir',
             help = 'CppUnit installation directory (cppunit dir must exist under this directory": default: CppUnitDir="/usr/local/include"',
-            default = '/usr/local/include',
-            validator = ValidateCppUnitOption)
+            default = '/usr/local/include', validator = ValidateCppUnitOption)
 
 Export('ApplyBoostOptions ApplyPythonOptions ApplyCppUnitOptions')
 
 #------------------------------------------------------------------------------
 # Grok the arguments to this build
 #------------------------------------------------------------------------------
-EnsureSConsVersion(0,10)
+EnsureSConsVersion(0,91)
 
 # Figure out what version of GMTL we're building
 GMTL_VERSION = GetGMTLVersion()
@@ -307,7 +306,7 @@ builders = {
 # Create and export the base environment
 if GetPlatform() == 'irix':
    baseEnv = BuildIRIXEnvironment()
-elif GetPlatform() == 'linux':
+elif GetPlatform() == 'linux' or GetPlatform()[:7] == 'freebsd':
    baseEnv = BuildLinuxEnvironment()
 elif GetPlatform() == 'win32':
    baseEnv = BuildWin32Environment()
