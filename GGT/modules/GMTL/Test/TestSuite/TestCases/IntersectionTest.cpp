@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: IntersectionTest.cpp,v $
- * Date modified: $Date: 2002-08-06 21:08:48 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-11-01 12:01:18 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -199,6 +199,47 @@ namespace gmtlTest
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("IntersectionTest/IntersectAABoxPoint", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
 
-      CPPUNIT_ASSERT(true_count > 0.0f);
+      CPPUNIT_ASSERT(true_count == 0);
+   }
+
+   void IntersectionTest::testIntersectAABoxSweep()
+   {
+      gmtl::AABoxf box1(gmtl::Point3f(-3,1,-3), gmtl::Point3f(-2,2,-2));
+      gmtl::AABoxf box2(gmtl::Point3f( 2,1,-3), gmtl::Point3f( 3,3,-2));
+      gmtl::Vec3f path1(5,0,0);
+      gmtl::Vec3f path2(-5,0,0);
+
+      float first, second;
+      bool result = gmtl::intersect(box1, path1, box2, path2, first, second);
+      CPPUNIT_ASSERT(result);
+      CPPUNIT_ASSERT(first == 0.4f);
+      CPPUNIT_ASSERT(second == 0.6f);
+   }
+
+   void IntersectionTest::testTimingIntersectAABoxSweep()
+   {
+      gmtl::AABoxf box1(gmtl::Point3f(-3,1,-3), gmtl::Point3f(-2,2,-2));
+      gmtl::AABoxf box2(gmtl::Point3f( 2,1,-3), gmtl::Point3f( 3,3,-2));
+      gmtl::Vec3f path1(1,0,0);
+      gmtl::Vec3f path2(-5,0,0);
+      float first, second;
+
+      const long iters(400000);
+      unsigned true_count(0);
+      CPPUNIT_METRIC_START_TIMING();
+
+      for(long iter=0;iter<iters; ++iter)
+      {
+         if (gmtl::intersect(box1, path1, box2, path2, first, second))
+         {
+            ++true_count;
+         }
+         path1[0] += 0.1f;
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("IntersectionTest/IntersectAABoxSweep", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      CPPUNIT_ASSERT(true_count > 0);
    }
 }
