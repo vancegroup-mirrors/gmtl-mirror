@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: SphereOps.h,v $
- * Date modified: $Date: 2003-03-03 00:54:05 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2003-08-30 17:13:13 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -36,6 +36,7 @@
 #define _GMTL_SPHEREOPS_H_
 
 #include <gmtl/Sphere.h>
+#include <gmtl/VecOps.h>
 #include <gmtl/Math.h>
 
 namespace gmtl
