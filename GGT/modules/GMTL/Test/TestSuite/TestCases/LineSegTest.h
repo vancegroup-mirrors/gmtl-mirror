@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: LineSegTest.h,v $
- * Date modified: $Date: 2003-02-05 22:50:40 $
- * Version:       $Revision: 1.14 $
+ * Date modified: $Date: 2003-02-25 22:28:09 $
+ * Version:       $Revision: 1.15 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -124,12 +124,47 @@ namespace gmtlTest
    {
       CPPUNIT_TEST_SUITE(LineSegMetricTest);
 
+      CPPUNIT_TEST(testTimingCreation);
+      CPPUNIT_TEST(testTimingPtVecCreation);
+      CPPUNIT_TEST(testTimingPtPtCreation);
+      CPPUNIT_TEST(testTimingCopyConstruct);
+      CPPUNIT_TEST(testTimingGetOrigin);
+      CPPUNIT_TEST(testTimingSetOrigin);
+      CPPUNIT_TEST(testTimingGetDir);
+      CPPUNIT_TEST(testTimingSetDir);
       CPPUNIT_TEST(testTimingGetLength);
+      CPPUNIT_TEST(testTimingEqualityCompare);
+      CPPUNIT_TEST(testTimingIsEqual);
 
       CPPUNIT_TEST_SUITE_END();
 
    public:
+      void setUp();
+
+      void testTimingCreation();
+      void testTimingPtVecCreation();
+      void testTimingPtPtCreation();
+      void testTimingCopyConstruct();
+      void testTimingGetOrigin();
+      void testTimingSetOrigin();
+      void testTimingGetDir();
+      void testTimingSetDir();
       void testTimingGetLength();
+      void testTimingEqualityCompare();
+      void testTimingIsEqual();
+
+   protected:
+      gmtl::Point<float, 3> origin;
+      gmtl::Point<float, 3> x1_pt;
+      gmtl::Point<float, 3> y1_pt;
+      gmtl::Point<float, 3> z1_pt;
+      gmtl::Vec<float, 3> x1_v;
+      gmtl::Vec<float, 3> y1_v;
+      gmtl::Vec<float, 3> z1_v;
+
+      gmtl::LineSeg<float> x1_lineseg;
+      gmtl::LineSeg<float> y1_lineseg;
+      gmtl::LineSeg<float> z1_lineseg;
    };
 }
 

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: LineSegTest.cpp,v $
- * Date modified: $Date: 2003-02-05 22:50:40 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2003-02-25 22:28:08 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -59,6 +59,22 @@ namespace gmtlTest
       y1_lineseg = gmtl::LineSeg<float>(origin, y1_v);
       z1_lineseg = gmtl::LineSeg<float>(origin, z1_v);
    }
+
+   void LineSegMetricTest::setUp()
+   {
+      origin.set( 0,0,0 );
+      x1_v.set( 1,0,0 );
+      y1_v.set( 0,1,0 );
+      z1_v.set( 0,0,1 );
+      x1_pt.set( 1,0,0 );
+      y1_pt.set( 0,1,0 );
+      z1_pt.set( 0,0,1 );
+
+      x1_lineseg = gmtl::LineSeg<float>(origin, x1_v);
+      y1_lineseg = gmtl::LineSeg<float>(origin, y1_v);
+      z1_lineseg = gmtl::LineSeg<float>(origin, z1_v);
+   }
+
    // ------------------------
    // CREATION TESTS
    // ------------------------
@@ -68,7 +84,10 @@ namespace gmtlTest
       gmtl::Vec<float, 3> zeroVec(0,0,0);
       CPPUNIT_ASSERT( test_lineseg.mOrigin == origin );
       CPPUNIT_ASSERT( test_lineseg.mDir == zeroVec );
+   }
 
+   void LineSegMetricTest::testTimingCreation()
+   {
       // Test overhead of creation
       const long iters(400000);
       float use_value(0);
@@ -102,6 +121,10 @@ namespace gmtlTest
       CPPUNIT_ASSERT(test_lineseg.mOrigin == x1_pt);
       CPPUNIT_ASSERT(test_lineseg.mDir == vec);
 
+   }
+
+   void LineSegMetricTest::testTimingPtVecCreation()
+   {
       // Test overhead of creation
       const long iters(400000);
       float use_value(0);
@@ -130,7 +153,10 @@ namespace gmtlTest
       test_lineseg = gmtl::LineSeg<float>(x1_pt, y1_pt);
       CPPUNIT_ASSERT(test_lineseg.mOrigin == x1_pt);
       CPPUNIT_ASSERT(test_lineseg.mDir == (y1_pt - x1_pt));
+   }
 
+   void LineSegMetricTest::testTimingPtPtCreation()
+   {
       // Test overhead of creation
       const long iters(400000);
       float use_value(0);
@@ -154,7 +180,10 @@ namespace gmtlTest
       gmtl::LineSeg<float> test_lineseg( x1_lineseg );
       CPPUNIT_ASSERT( test_lineseg.mOrigin == x1_lineseg.mOrigin );
       CPPUNIT_ASSERT( test_lineseg.mDir == x1_lineseg.mDir );
+   }
 
+   void LineSegMetricTest::testTimingCopyConstruct()
+   {
       // Test overhead of creation
       const long iters(400000);
       float use_value(0);
@@ -162,7 +191,7 @@ namespace gmtlTest
 
       for( long iter=0; iter<iters; ++iter)
       {
-         gmtl::LineSeg<float> test_lineseg2( test_lineseg );
+         gmtl::LineSeg<float> test_lineseg2( x1_lineseg );
          use_value += test_lineseg2.mDir[0];
       }
 
@@ -182,7 +211,10 @@ namespace gmtlTest
       gmtl::Point<float, 3> pt( 25.0f, 23.0f, 0.0f );
       gmtl::LineSeg<float> test_lineseg( pt, x1_pt );
       CPPUNIT_ASSERT( test_lineseg.getOrigin() == pt );
+   }
 
+   void LineSegMetricTest::testTimingGetOrigin()
+   {
       // Test overhead
       const long iters(400000);
       float use_value(0);
@@ -190,7 +222,7 @@ namespace gmtlTest
 
       for( long iter=0;iter<iters; ++iter)
       {
-         gmtl::Point<float, 3> pt = test_lineseg.getOrigin();
+         gmtl::Point<float, 3> pt = x1_lineseg.getOrigin();
          use_value += pt[0] + 1.0f;
       }
 
@@ -206,6 +238,11 @@ namespace gmtlTest
       gmtl::LineSeg<float> test_lineseg;
       test_lineseg.setOrigin( x1_pt );
       CPPUNIT_ASSERT( test_lineseg.getOrigin() == x1_pt );
+   }
+
+   void LineSegMetricTest::testTimingSetOrigin()
+   {
+      gmtl::LineSeg<float> test_lineseg;
 
       // Test overhead
       const long iters(400000);
@@ -234,7 +271,10 @@ namespace gmtlTest
       gmtl::Vec<float, 3> dir( 25.0f, 23.0f, 0.0f );
       gmtl::LineSeg<float> test_lineseg( x1_pt, dir );
       CPPUNIT_ASSERT( test_lineseg.getDir() == dir );
+   }
 
+   void LineSegMetricTest::testTimingGetDir()
+   {
       // Test overhead
       const long iters(400000);
       float use_value(0);
@@ -242,7 +282,7 @@ namespace gmtlTest
 
       for( long iter=0;iter<iters; ++iter)
       {
-         gmtl::Vec<float, 3> vec = test_lineseg.getDir();
+         gmtl::Vec<float, 3> vec = x1_lineseg.getDir();
          use_value += vec[0] + 1.0f;
       }
 
@@ -258,6 +298,11 @@ namespace gmtlTest
       gmtl::LineSeg<float> test_lineseg;
       test_lineseg.setDir( x1_v );
       CPPUNIT_ASSERT( test_lineseg.getDir() == x1_v );
+   }
+
+   void LineSegMetricTest::testTimingSetDir()
+   {
+      gmtl::LineSeg<float> test_lineseg;
 
       // Test overhead
       const long iters(400000);
@@ -324,6 +369,12 @@ namespace gmtlTest
       test_lineseg2.mDir[0] += 2.0f;
       CPPUNIT_ASSERT( test_lineseg1 != test_lineseg2 );
       CPPUNIT_ASSERT( !(test_lineseg1 == test_lineseg2) );
+   }
+
+   void LineSegMetricTest::testTimingEqualityCompare()
+   {
+      gmtl::LineSeg<float> test_lineseg1( x1_pt, x1_v );
+      gmtl::LineSeg<float> test_lineseg2( test_lineseg1 );
 
       // test comparison performance
       const long iters(400000);
@@ -389,6 +440,12 @@ namespace gmtlTest
          CPPUNIT_ASSERT( gmtl::isEqual(test_lineseg1, test_lineseg2, 20.1f) );
          CPPUNIT_ASSERT( gmtl::isEqual(test_lineseg1, test_lineseg2, 22.0f) );
       }
+   }
+
+   void LineSegMetricTest::testTimingIsEqual()
+   {
+      gmtl::LineSeg<float> test_lineseg1( x1_pt, x1_v );
+      gmtl::LineSeg<float> test_lineseg2( test_lineseg1 );
 
       // Test comparison performance
       const long iters(400000);
