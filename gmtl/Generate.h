@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2003-04-18 22:55:21 $
- * Version:       $Revision: 1.74 $
+ * Date modified: $Date: 2003-04-18 23:15:28 $
+ * Version:       $Revision: 1.75 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -987,8 +987,8 @@ namespace gmtl
       DATA_TYPE y_rot = gmtl::Math::aCos(gmtl::dot(direction_vector,
                                                    forward_point));
 
-      gmtl::Vec<DATA_TYPE, 3> which_side = gmtl::cross(forward_point,
-                                                       direction_vector);
+      gmtl::Vec<DATA_TYPE, 3> which_side = gmtl::makeCross(forward_point,
+                                                           direction_vector);
 
       // If direction vector to "right" (negative) side of forward
       if ( which_side[1] < 0.0f )
@@ -1020,8 +1020,8 @@ namespace gmtl
       DATA_TYPE x_rot = gmtl::Math::aCos(gmtl::dot(direction_vector,
                                                    forward_point));
 
-      gmtl::Vec<DATA_TYPE, 3> which_side = gmtl::cross(forward_point,
-                                                       direction_vector);
+      gmtl::Vec<DATA_TYPE, 3> which_side = gmtl::makeCross(forward_point,
+                                                           direction_vector);
 
       // If direction vector to "bottom" (negative) side of forward
       if ( which_side[0] < 0.0f )
@@ -1053,8 +1053,8 @@ namespace gmtl
       DATA_TYPE z_rot = gmtl::Math::aCos(gmtl::dot(direction_vector,
                                                    forward_point));
 
-      gmtl::Vec<DATA_TYPE, 3> which_side = gmtl::cross(forward_point,
-                                                       direction_vector);
+      gmtl::Vec<DATA_TYPE, 3> which_side = gmtl::makeCross(forward_point,
+                                                           direction_vector);
 
       // If direction vector to "right" (negative) side of forward
       if ( which_side[2] < 0.0f )
