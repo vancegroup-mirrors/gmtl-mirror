@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MetaTest.h,v $
- * Date modified: $Date: 2002-07-11 21:20:41 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-08-05 17:35:17 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -44,6 +44,35 @@
 
 namespace gmtlTest
 {
+   class Type1
+   {
+   public:
+      enum { VALUE = 1 };
+   };
+   class Type2
+   {
+   public:
+      enum { VALUE = 1 };      
+   };
+
+   template <typename TYPE1, typename TYPE2>
+   class AssertTestClass
+   {
+   public:      
+      enum
+      {
+          Value1 = TYPE1::VALUE,
+          Value2 = TYPE2::VALUE
+      };
+            
+      void TestFunc( )
+      {
+         GMTL_STATIC_ASSERT(Value1 == 1);       // Incorrect size
+         GMTL_STATIC_ASSERT(Value2 == 1);      
+      }
+   };
+
+   
    /** Class to use for testing of Meta functions and all that jazz
    *
    * Note: Some tests in here do NOT compile (and are not supposed to)
@@ -71,11 +100,17 @@ namespace gmtlTest
 
       void testStaticAssert()
       {
+         GMTL_STATIC_ASSERT(1==1);
+         GMTL_STATIC_ASSERT(2>1);
          GMTL_STATIC_ASSERT(ValueOne == ValueThree);
          GMTL_STATIC_ASSERT((1+1)==2);
          GMTL_STATIC_ASSERT(true);
 
          //GMTL_STATIC_ASSERT(ValueOne == ValueTwo);    /** Should fail */
+
+         AssertTestClass<Type1, Type2> test_class;
+         test_class.TestFunc();
+
       }
 
       static CppUnit::Test* suite()
