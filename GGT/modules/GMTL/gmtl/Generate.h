@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-03-20 22:53:51 $
- * Version:       $Revision: 1.37 $
+ * Date modified: $Date: 2002-03-20 23:14:48 $
+ * Version:       $Revision: 1.38 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -799,33 +799,32 @@ namespace gmtl
    template <typename DATATYPE, unsigned POSSIZE, unsigned MATCOLS, unsigned MATROWS >
    inline Coord<DATATYPE, POSSIZE, 3>& setCoord( Coord<DATATYPE, POSSIZE, 3>& eulercoord, const Matrix<DATATYPE, MATROWS, MATCOLS>& mat, RotationOrder order = gmtl::XYZ )
    {
-      getRot( mat, eulercoord.rot()[0], eulercoord.rot()[1], eulercoord.rot()[2], order );
       setTrans( eulercoord.pos(), mat );
+      getRot( mat, eulercoord.rot()[0], eulercoord.rot()[1], eulercoord.rot()[2], order );
       return eulercoord;
    }
    
    template <typename DATATYPE, unsigned POSSIZE, unsigned MATCOLS, unsigned MATROWS >
    inline Matrix<DATATYPE, MATROWS, MATCOLS>& setMatrix( Matrix<DATATYPE, MATROWS, MATCOLS>& mat, const Coord<DATATYPE, POSSIZE, 3>& eulercoord, RotationOrder order = gmtl::XYZ )
    {
+      if (MATCOLS == 4)
+      {
+         setTrans( mat, eulercoord.pos() );
+      }
       setRot( mat, eulercoord.rot()[0], eulercoord.rot()[1], eulercoord.rot()[2], order );
-      setTrans( mat, eulercoord.pos() );
       return mat;
    }
 
    template <typename DATATYPE, unsigned POSSIZE, unsigned MATCOLS, unsigned MATROWS >
    inline Coord<DATATYPE, POSSIZE, 3>& convert( Coord<DATATYPE, POSSIZE, 3>& eulercoord, const Matrix<DATATYPE, MATROWS, MATCOLS>& mat, RotationOrder order = gmtl::XYZ )
    {
-      getRot( mat, eulercoord.rot()[0], eulercoord.rot()[1], eulercoord.rot()[2], order );
-      setTrans( eulercoord.pos(), mat );
-      return eulercoord;
+      return setCoord( eulercoord, mat );
    }
    
    template <typename DATATYPE, unsigned POSSIZE, unsigned MATCOLS, unsigned MATROWS >
    inline Matrix<DATATYPE, MATROWS, MATCOLS>& convert( Matrix<DATATYPE, MATROWS, MATCOLS>& mat, const Coord<DATATYPE, POSSIZE, 3>& eulercoord, RotationOrder order = gmtl::XYZ )
    {
-      setRot( mat, eulercoord.rot()[0], eulercoord.rot()[1], eulercoord.rot()[2], order );
-      setTrans( mat, eulercoord.pos() );
-      return mat;
+      return setMatrix( mat, eulercoord );
    }
    
    template <typename COORD_TYPE, unsigned MATCOLS, unsigned MATROWS >
