@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Output.h,v $
- * Date modified: $Date: 2002-05-20 22:39:22 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2002-05-28 14:46:15 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -43,10 +43,6 @@
 #include <gmtl/Tri.h>
 #include <gmtl/Plane.h>
 #include <gmtl/Sphere.h>
-
-/** @defgroup Output Output Stream Methods: operator<<( ... ). 
- *  Output GMTL data types to an ostream.  std::ostream& operator<< methods...
- */
 
 namespace gmtl
 {

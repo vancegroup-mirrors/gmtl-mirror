@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-05-24 22:31:14 $
- * Version:       $Revision: 1.52 $
+ * Date modified: $Date: 2002-05-28 14:46:15 $
+ * Version:       $Revision: 1.53 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -47,10 +47,6 @@
 #include <gmtl/Math.h>
 #include <gmtl/Convert.h>
 
-
-/** @defgroup Generate Generators: make( ... ), get( ... ), set( ... ), and convert( ... ).
- *  Make get and set functions for all math types in gmtl.
- */
 
 // @todo Vec& setNormal( Vec&, scalar, scalar, scalar ) (and other dimensions)  (might not need, use this instead - setNormal( Vec( scal, scal, scal ) ))
 // @todo getRot euler for quat
