@@ -193,7 +193,7 @@ def ValidateBoostOption(key, value, environ):
                                        'boost_python-%s-mt-1_31.dll' % tool)
          else:
             boost_python_lib_name = pj(value, 'lib',
-                                       'libboost_python-%s.a' % tool)
+                                       'libboost_python-%s-1_31.so' % tool)
 
          if not os.path.isfile(boost_python_lib_name):
             print "[%s] not found."%boost_python_lib_name
@@ -207,17 +207,16 @@ def ValidateBoostOption(key, value, environ):
 
          environ.Append(BoostLIBPATH = [pj(value, 'lib')])
 
+         version = '-1_31'
          if optimize == 'no':
             if platform == 'win32':
                dbg = 'gd'
-               version = '-1_31'
             else:
                dbg = 'd'
-               version = ''
 
             environ.Append(BoostLIBS = ['boost_python-%s-mt-%s%s' % (tool, dbg, version)])
          else:
-            environ.Append(BoostLIBS = ['boost_python-%s-mt' % tool])
+            environ.Append(BoostLIBS = ['boost_python-%s-mt%s' % (tool, version)])
 
    else:
       assert False, "Invalid Boost key"
