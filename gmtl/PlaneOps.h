@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PlaneOps.h,v $
- * Date modified: $Date: 2002-02-18 23:53:20 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-02-20 20:30:48 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -54,6 +54,56 @@ template< class DATA_TYPE >
 DATA_TYPE distance( const Plane<DATA_TYPE>& plane, const Point<DATA_TYPE, 3>& pt )
 {
    return ( dot(plane.mNorm, static_cast< Vec<DATA_TYPE, 3> >(pt)) - plane.mOffset );
+}
+
+/**
+ * Determines which side of the plane the given point lies. This operation is
+ * done with ZERO tolerance.
+ *
+ * @param plane      the plane to compare the point to
+ * @param pt         the point to test
+ *
+ * @return  the Plane::Side enum describing on which side of the plane the point
+ *          lies
+ */
+template< class DATA_TYPE >
+Plane<DATA_TYPE>::Side whichSide( const Plane<DATA_TYPE>& plane,
+                                  const Point<DATA_TYPE, 3>& pt )
+{
+   DATA_TYPE dist = distance( plane, pt );
+
+   if ( dist < DATA_TYPE(0) )
+      return Plane<DATA_TYPE>::NEG_SIDE;
+   else if ( dist > DATA_TYPE(0) )
+      return Plane<DATA_TYPE>::POS_SIDE;
+   else
+      return Plane<DATA_TYPE>::ON_PLANE;
+}
+
+/**
+ * Determines which side of the plane the given point lies with the given
+ * epsilon tolerance.
+ *
+ * @param plane      the plane to compare the point to
+ * @param pt         the point to test
+ * @param eps        the epsilon tolerance to use while testing
+ *
+ * @return  the Plane::Side enum describing on which side of the plane the point
+ *          lies
+ */
+template< class DATA_TYPE >
+Plane<DATA_TYPE>::Side whichSide( const Plane<DATA_TYPE>& plane,
+                                  const Point<DATA_TYPE, 3>& pt,
+                                  const DATA_TYPE& eps )
+{
+   DATA_TYPE dist = distance( plane, pt );
+
+   if ( dist < eps )
+      return Plane<DATA_TYPE>::NEG_SIDE;
+   else if ( dist > eps )
+      return Plane<DATA_TYPE>::POS_SIDE;
+   else
+      return Plane<DATA_TYPE>::ON_PLANE;
 }
 
 //--- Plane Comparisons --//
