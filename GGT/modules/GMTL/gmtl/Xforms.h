@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Xforms.h,v $
- * Date modified: $Date: 2002-06-06 15:16:34 $
- * Version:       $Revision: 1.27 $
+ * Date modified: $Date: 2003-02-23 07:05:41 $
+ * Version:       $Revision: 1.28 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -32,8 +32,8 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 *
  ************************************************************ ggt-cpr end */
-#ifndef _GMTL___XFORMS_H_
-#define _GMTL___XFORMS_H_
+#ifndef _GMTL_XFORMS_H_
+#define _GMTL_XFORMS_H_
 
 #include <gmtl/Point.h>
 #include <gmtl/Vec.h>
