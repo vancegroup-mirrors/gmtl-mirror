@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOps.h,v $
- * Date modified: $Date: 2002-03-09 21:19:22 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2002-03-11 20:20:43 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -217,8 +217,8 @@ namespace gmtl
    Matrix<DATA_TYPE, SIZE, SIZE>& transpose( Matrix<DATA_TYPE, SIZE, SIZE>& result )
    {
       // p. 27 game programming gems #1
-      for (int c = 0; c < SIZE; ++c)
-         for (int r = c + 1; r < SIZE; ++r)
+      for (unsigned c = 0; c < SIZE; ++c)
+         for (unsigned r = c + 1; r < SIZE; ++r)
             std::swap( result( r, c ), result( c, r ) );
 
       return result;
@@ -235,9 +235,9 @@ namespace gmtl
       Matrix<DATA_TYPE, COLS, ROWS> temp = source;
       
       // p. 149 Numerical Analysis (second ed.)
-      for (int i = 0; i < ROWS; ++i)
+      for (unsigned i = 0; i < ROWS; ++i)
       {
-         for (int j = 0; j < COLS; ++j)
+         for (unsigned j = 0; j < COLS; ++j)
          {
             result( i, j ) = temp( j, i );
          }
