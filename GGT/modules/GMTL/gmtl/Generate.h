@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-03-20 23:27:53 $
- * Version:       $Revision: 1.39 $
+ * Date modified: $Date: 2002-04-10 14:07:00 $
+ * Version:       $Revision: 1.40 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -608,8 +608,11 @@ namespace gmtl
     * @post this function only reads 3x3, 3x4, 4x3, and 4x4 matrices, and is undefined otherwise
     */
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
-   inline void getRot( const Matrix<DATA_TYPE, ROWS, COLS>& mat, DATA_TYPE param0,
-                                                 DATA_TYPE param1, DATA_TYPE param2, const RotationOrder order )
+   inline void getRot(  const Matrix<DATA_TYPE, ROWS, COLS>& mat, 
+                        DATA_TYPE param0,
+                        DATA_TYPE param1, 
+                        DATA_TYPE param2, 
+                        const RotationOrder order )
    {
       // @todo set this a compile time assert...
       gmtlASSERT( ROWS >= 3 && COLS >= 3 && ROWS <= 4 && COLS <= 4 && "this is undefined for Matrix smaller than 3x3 or bigger than 4x4" );
@@ -623,23 +626,23 @@ namespace gmtl
       {
       case XYZ:
          {
-            zRot = Math::aTan2(-mat(0,1), mat(0,0));     // -(-cy*sz)/(cy*cz) - cy falls out
-            xRot = Math::aTan2(-mat(1,2), mat(2,2));     // -(sx*cy)/(cx*cy) - cy falls out
-            cz = Math::cos(zRot);
-            yRot = Math::aTan2(mat(0,2), mat(0,0)/cz);   // (sy)/((cy*cz)/cz)
+            zRot = Math::aTan2( -mat(0,1), mat(0,0) );       // -(-cy*sz)/(cy*cz) - cy falls out
+            xRot = Math::aTan2( -mat(1,2), mat(2,2) );       // -(sx*cy)/(cx*cy) - cy falls out
+            cz = Math::cos( zRot );
+            yRot = Math::aTan2( mat(0,2), mat(0,0) / cz );   // (sy)/((cy*cz)/cz)
          }
          break;
       case ZYX:
          {
-            zRot = Math::aTan2(mat(1,0), mat(0,0));      // (cy*sz)/(cy*cz) - cy falls out
-            xRot = Math::aTan2(mat(2,1), mat(2,2));      // (sx*cy)/(cx*cy) - cy falls out
-            sx = Math::sin(xRot);
-            yRot = Math::aTan2(-mat(2,0),(mat(2,1)/sx) );   // -(-sy)/((sx*cy)/sx)
+            zRot = Math::aTan2( mat(1,0), mat(0,0) );        // (cy*sz)/(cy*cz) - cy falls out
+            xRot = Math::aTan2( mat(2,1), mat(2,2) );        // (sx*cy)/(cx*cy) - cy falls out
+            sx = Math::sin( xRot );
+            yRot = Math::aTan2( -mat(2,0), mat(2,1) / sx );  // -(-sy)/((sx*cy)/sx)
          }
          break;
       case ZXY:
          {
-            // Extract the rotation directly fromt he matrix
+            // Extract the rotation directly from the matrix
             DATA_TYPE x_angle;
             DATA_TYPE y_angle;
             DATA_TYPE z_angle;
@@ -648,21 +651,21 @@ namespace gmtl
             DATA_TYPE cos_z, sin_z;
 
             sin_x = mat(2,1);
-            x_angle = Math::aSin(sin_x);     // Get x angle
-            cos_x = Math::cos(x_angle);
+            x_angle = Math::aSin( sin_x );     // Get x angle
+            cos_x = Math::cos( x_angle );
             
             // Check if cos_x = Zero
-            if(cos_x != 0.0f)     // ASSERT: cos_x != 0
+            if (cos_x != 0.0f)     // ASSERT: cos_x != 0
             {
                   // Get y Angle
-               cos_y = mat(2,2)/cos_x;
-               sin_y = -mat(2,0)/cos_x;
-               y_angle = Math::aTan2(cos_y, sin_y);
+               cos_y = mat(2,2) / cos_x;
+               sin_y = -mat(2,0) / cos_x;
+               y_angle = Math::aTan2( cos_y, sin_y );
 
                   // Get z Angle
-               cos_z = mat(1,1)/cos_x;
-               sin_z = -mat(0,1)/cos_x;
-               z_angle = Math::aTan2(cos_z, sin_z);
+               cos_z = mat(1,1) / cos_x;
+               sin_z = -mat(0,1) / cos_x;
+               z_angle = Math::aTan2( cos_z, sin_z );
             }
             else
             {
@@ -672,7 +675,7 @@ namespace gmtl
                   // Get y Angle
                cos_y = mat(0,0);
                sin_y = mat(1,0);
-               y_angle = Math::aTan2(cos_y, sin_y);
+               y_angle = Math::aTan2( cos_y, sin_y );
             }
 
             xRot = x_angle;
