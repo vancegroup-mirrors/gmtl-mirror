@@ -1,5 +1,6 @@
 DATE       AUTHOR       CHANGE
 ---------- ------------ -------------------------------------------------------
+2004-09-02 allenb       Added expression templates for vectors.
 2004-08-30 allenb       Added meta programming for loop unrolling of VecBase
                         assignment.
                         Added meta programs for VecOps: lenSqr, equal, dot
