@@ -87,6 +87,6 @@ cpp_files = Split("""
 """)
 
 for f in cpp_files:
-   baseEnv.Install(pj(PREFIX, 'python', 'src', 'gmtl'), f)
+#   baseEnv.Install(pj(PREFIX, 'python', 'src', 'gmtl'), f)
    pkg.addExtraDist([File(f)])
 
