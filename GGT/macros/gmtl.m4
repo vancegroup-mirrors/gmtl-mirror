@@ -7,8 +7,8 @@ dnl   Allen Bierbaum
 dnl
 dnl -----------------------------------------------------------------
 dnl File:          $RCSfile: gmtl.m4,v $
-dnl Date modified: $Date: 2002-09-23 19:02:30 $
-dnl Version:       $Revision: 1.10 $
+dnl Date modified: $Date: 2004-03-15 17:24:44 $
+dnl Version:       $Revision: 1.11 $
 dnl -----------------------------------------------------------------
 dnl
 dnl ************************************************************** ggt-head end
@@ -137,7 +137,10 @@ dnl                         test GMTL program], , enable_gmtltest=yes)
       CPPFLAGS="$CPPFLAGS -I$ggt_gmtl_incdir"
    fi
 
+   AC_LANG_SAVE
+   AC_LANG_CPLUSPLUS
    AC_CHECK_HEADER([gmtl/Version.h], [ggt_have_gmtl='yes'], [$5])
+   AC_LANG_RESTORE
 
    dnl Restore all the variables now that we are done testing.
    CPPFLAGS="$ggt_save_CPPFLAGS"
