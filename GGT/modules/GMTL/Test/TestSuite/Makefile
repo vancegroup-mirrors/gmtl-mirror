@@ -29,8 +29,8 @@
 #
 # -----------------------------------------------------------------
 # File:          $RCSfile: Makefile,v $
-# Date modified: $Date: 2002-03-20 22:32:22 $
-# Version:       $Revision: 1.30 $
+# Date modified: $Date: 2002-03-21 16:07:55 $
+# Version:       $Revision: 1.31 $
 # -----------------------------------------------------------------
 # *************** <auto-copyright.pl END do not edit this line> ***************
 
@@ -38,7 +38,7 @@
 # Advanced template makefile for VR Juggler applications.  This is intended
 # for "power users" who really know what they are doing and want to abuse
 # Doozer's flexibility.  :)
-# $Id: Makefile,v 1.30 2002-03-20 22:32:22 subatomic Exp $
+# $Id: Makefile,v 1.31 2002-03-21 16:07:55 subatomic Exp $
 #
 # *** IMPORTANT NOTES -- READ THESE FIRST ***
 #     1) This file _requires_ the use of GNU make (gmake).
@@ -158,6 +158,7 @@ TEST_SRCS = ConvertTest.cpp \
             CoordGenTest.cpp \
             QuatClassTest.cpp \
             QuatCompareTest.cpp \
+            QuatOpsTest.cpp \
             QuatGenTest.cpp \
             QuatStuffTest.cpp \
             SphereTest.cpp \
