@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixGenTest.h,v $
- * Date modified: $Date: 2002-02-20 00:29:00 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2002-02-20 16:51:03 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -139,9 +139,6 @@ public:
    void testMatrixMakeDirCos()
    {
    }
-   void testMatrixMakeRotEuler()
-   {
-   }
    void testMatrixMakeScale()
    {
       float eps = 0.001f;
@@ -231,6 +228,267 @@ public:
    }
    void testMatrixMakeRot()
    {
+      float eps = 0.01f;
+      {
+         gmtl::Matrix33f mat, expected_result33;
+         expected_result33.set( 1, 0, 0,
+                                0, 0, -1,
+                                0, 1, 0 );
+         gmtl::Vec3f vec( 1.0f, 0.0f, 0.0f );
+         normalize( vec );
+         gmtl::makeRot( mat, gmtl::Math::deg2Rad( 90.0f ), vec );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
+      }
+      {
+         gmtl::Matrix33f mat, expected_result33;
+         expected_result33.set( 1, 0, 0,
+                                0, 1, 0,
+                                0, 0, 1 );
+         gmtl::Vec3f vec( -1.0f, 1.0f, -1.0f );
+         normalize( vec );
+         gmtl::makeRot( mat, gmtl::Math::deg2Rad( -360.0f ), vec );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
+      }
+      
+      {
+         gmtl::Matrix34f mat, expected_result34;
+         expected_result34.set( 1, 0, 0, 0,
+                                0, 0, 1, 0,
+                                0, -1, 0, 0 );
+         gmtl::Vec3f vec( 1.0f, 0.0f, 0.0f );
+         normalize( vec );
+         gmtl::makeRot( mat, gmtl::Math::deg2Rad( -90.0f ), vec );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result34, mat, eps ) );
+      }
+      {
+         gmtl::Matrix34f mat, expected_result34;
+         expected_result34.set( 0.804738, 0.310617, -0.505879, 0, 
+                                -0.505879, 0.804738, -0.310617, 0, 
+                                0.310617, 0.505879, 0.804738, 0  );
+         gmtl::Vec3f vec( 0.7f, -0.7f, -0.7f );
+         normalize( vec );
+         gmtl::makeRot( mat, gmtl::Math::deg2Rad( 45.0f ), vec );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result34, mat, eps ) );
+      }
+      {
+         gmtl::Matrix44f mat, expected_result44;
+         expected_result44.set( 0.804738, -0.310617, 0.505879, 0,
+                                0.505879, 0.804738, -0.310617, 0,
+                                -0.310617, 0.505879, 0.804738, 0,
+                                0, 0, 0, 1 );
+         gmtl::Vec3f vec( 0.7f, 0.7f, 0.7f );
+         normalize( vec );
+         gmtl::makeRot( mat, gmtl::Math::deg2Rad( 45.0f ), vec );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result44, mat, eps ) );
+      }
+   }
+   
+   void testMatrixMakeRotEuler()
+   {
+      float eps = 0.001f;
+      {
+         gmtl::Matrix33f mat, expected_result33;
+         expected_result33.set( 0.683013, -0.183013, 0.707107, 
+                                0.683013, -0.183013, -0.707107, 
+                                0.258819, 0.965926, 0 );
+         gmtl::makeRot( mat, gmtl::Math::deg2Rad( 90.0f ), 
+                             gmtl::Math::deg2Rad( 45.0f ), 
+                             gmtl::Math::deg2Rad( 15.0f ), gmtl::XYZ );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
+      }
+      {
+         gmtl::Matrix33f mat, expected_result33;
+         expected_result33.set( 1, 0,  0,
+                                0, 0, -1, 
+                                0, 1,  0  );
+         gmtl::makeRot( mat, gmtl::Math::deg2Rad( 90.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::XYZ );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
+      }
+      {
+         gmtl::Matrix33f mat, expected_result33;
+         expected_result33.set( 0, 0, 1,
+                                0, 1, 0, 
+                                -1, 0, 0  );
+         gmtl::makeRot( mat, gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 90.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::XYZ );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
+      }
+      {
+         gmtl::Matrix33f mat, expected_result33;
+         expected_result33.set( 0, -1, 0,
+                                1, 0, 0, 
+                                0, 0, 1  );
+         gmtl::makeRot( mat, gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 90.0f ), gmtl::XYZ );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
+      }
+      
+      {
+         gmtl::Matrix34f mat, expected_result34;
+         expected_result34.set( 0.683013, 0.183013, -0.707107, 0, 
+                               -0.0413633, -0.956855, -0.287606, 0, 
+                               -0.729234, 0.225687, -0.645974, 0   );
+         gmtl::makeRot( mat, gmtl::Math::deg2Rad( 156.0f ), gmtl::Math::deg2Rad( -45.0f ), gmtl::Math::deg2Rad( -15.0f ), gmtl::XYZ );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result34, mat, eps ) );
+      }
+      {
+         gmtl::Matrix34f mat, expected_result34;
+         expected_result34.set( 0, 0, 1, 0,
+                                0, 1, 0, 0,
+                                -1, 0, 0, 0 );
+         gmtl::makeRot( mat, gmtl::Math::deg2Rad( 0.0f ), 
+                             gmtl::Math::deg2Rad( 90.0f ), 
+                             gmtl::Math::deg2Rad( 0.0f ), gmtl::XYZ );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result34, mat, eps ) );
+      }
+
+      {
+         gmtl::Matrix44f mat, expected_result44;
+         expected_result44.set( 0.697193, 0.0121696, 0.71678, 0,
+                               -0.275553, -0.918494, 0.283617, 0,
+                                0.66181, -0.395247, -0.637014, 0,
+                                0, 0, 0, 1 );
+         gmtl::makeRot( mat, gmtl::Math::deg2Rad( -156.0f ), gmtl::Math::deg2Rad( 45.7892892f ), gmtl::Math::deg2Rad( -361.0f ), gmtl::XYZ );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result44, mat, eps ) );
+      }
+      
+      
+      // ZYX
+      {
+         gmtl::Matrix33f mat, expected_result33;
+         expected_result33.set( 0, -0.965926, 0.258819, 
+                                0.707107, 0.183013, 0.683013,
+                                -0.707107, 0.183013, 0.683013 );
+         gmtl::makeRot( mat, gmtl::Math::deg2Rad( 90.0f ), 
+                             gmtl::Math::deg2Rad( 45.0f ), 
+                             gmtl::Math::deg2Rad( 15.0f ), gmtl::ZYX );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
+      }
+      {
+         gmtl::Matrix33f mat, expected_result33;
+         expected_result33.set( 0, -1, 0,
+                                1, 0, 0, 
+                                0, 0, 1  );
+         gmtl::makeRot( mat, gmtl::Math::deg2Rad( 90.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::ZYX );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
+      }
+      {
+         gmtl::Matrix33f mat, expected_result33;
+         expected_result33.set( 0, 0, 1,
+                                0, 1, 0, 
+                                -1, 0, 0  );
+         gmtl::makeRot( mat, gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 90.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::ZYX );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
+      }
+      {
+         gmtl::Matrix33f mat, expected_result33;
+         expected_result33.set( 1, 0, 0,
+                                0, 0, -1, 
+                                0, 1, 0  );
+         gmtl::makeRot( mat, gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 90.0f ), gmtl::ZYX );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
+      }
+      
+      {
+         gmtl::Matrix34f mat, expected_result34;
+         expected_result34.set( -0.645974, -0.560068, 0.518692, 0, 
+                                 0.287606, -0.807979, -0.514249, 0, 
+                                 0.707107, -0.183013, 0.683013, 0  );
+         gmtl::makeRot( mat, gmtl::Math::deg2Rad( 156.0f ), gmtl::Math::deg2Rad( -45.0f ), gmtl::Math::deg2Rad( -15.0f ), gmtl::ZYX );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result34, mat, eps ) );
+      }
+      {
+         gmtl::Matrix34f mat, expected_result34;
+         expected_result34.set( 0, 0, 1, 0,
+                                0, 1, 0, 0,
+                                -1, 0, 0, 0 );
+         gmtl::makeRot( mat, gmtl::Math::deg2Rad( 0.0f ), gmtl::Math::deg2Rad( 90.0f ), gmtl::Math::deg2Rad( 0.0f ), gmtl::ZYX );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result34, mat, eps ) );
+      }
+
+      {
+         gmtl::Matrix44f mat, expected_result44;
+         expected_result44.set( -0.637014, 0.418103, -0.647613, 0,
+                                -0.283617, -0.908318, -0.30744, 0,
+                                -0.71678, -0.0121696, 0.697193, 0,
+                                 0, 0, 0, 1 );
+         gmtl::makeRot( mat, gmtl::Math::deg2Rad( -156.0f ), gmtl::Math::deg2Rad( 45.7892892f ), gmtl::Math::deg2Rad( -361.0f ), gmtl::ZYX );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result44, mat, eps ) );
+      }
+      
+      
+      // ZXY
+      {
+         gmtl::Matrix33f mat, expected_result33;
+         expected_result33.set( -0.183013, -0.707107, 0.683013,
+                                 0.965926, 0,         0.258819,
+                                -0.183013, 0.707107,  0.683013 );
+         gmtl::makeRot( mat, gmtl::Math::deg2Rad( 90.0f ), 
+                             gmtl::Math::deg2Rad( 45.0f ), 
+                             gmtl::Math::deg2Rad( 15.0f ), gmtl::ZXY );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
+      }
+      {
+         gmtl::Matrix33f mat, expected_result33;
+         expected_result33.set( 0, -1, 0,
+                                1, 0, 0, 
+                                0, 0, 1  );
+         gmtl::makeRot( mat, gmtl::Math::deg2Rad( 90.0f ), 
+                             gmtl::Math::deg2Rad( 0.0f ), 
+                             gmtl::Math::deg2Rad( 0.0f ), gmtl::ZXY );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
+      }
+      {
+         gmtl::Matrix33f mat, expected_result33;
+         expected_result33.set( 1, 0,  0,
+                                0, 0, -1, 
+                                0, 1,  0  );
+         gmtl::makeRot( mat, gmtl::Math::deg2Rad( 0.0f ), 
+                             gmtl::Math::deg2Rad( 90.0f ), 
+                             gmtl::Math::deg2Rad( 0.0f ), gmtl::ZXY );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
+      }
+      {
+         gmtl::Matrix33f mat, expected_result33;
+         expected_result33.set(  0, 0, 1,
+                                 0, 1, 0, 
+                                -1, 0, 0  );
+         gmtl::makeRot( mat, gmtl::Math::deg2Rad( 0.0f ), 
+                             gmtl::Math::deg2Rad( 0.0f ), 
+                             gmtl::Math::deg2Rad( 90.0f ), gmtl::ZXY );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result33, mat, eps ) );
+      }
+      
+      {
+         gmtl::Matrix34f mat, expected_result34;
+         expected_result34.set( -0.956855, -0.287606, -0.0413633, 0, 
+                                 0.225687, -0.645974, -0.729234,  0, 
+                                 0.183013, -0.707107,  0.683013,  0  );
+         gmtl::makeRot( mat, gmtl::Math::deg2Rad( 156.0f ), 
+                             gmtl::Math::deg2Rad( -45.0f ), 
+                             gmtl::Math::deg2Rad( -15.0f ), gmtl::ZXY );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result34, mat, eps ) );
+      }
+      {
+         gmtl::Matrix34f mat, expected_result34;
+         expected_result34.set( 1, 0,  0, 0,
+                                0, 0, -1, 0,
+                                0, 1,  0, 0 );
+         gmtl::makeRot( mat, gmtl::Math::deg2Rad( 0.0f ), 
+                             gmtl::Math::deg2Rad( 90.0f ), 
+                             gmtl::Math::deg2Rad( 0.0f ), gmtl::ZXY );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result34, mat, eps ) );
+      }
+
+      {
+         gmtl::Matrix44f mat, expected_result44;
+         expected_result44.set( -0.918494, 0.283617, -0.275553, 0, 
+                                -0.395247, -0.637014, 0.66181, 0, 
+                                 0.0121696, 0.71678, 0.697193, 0, 
+                                 0, 0, 0, 1 );
+         gmtl::makeRot( mat, gmtl::Math::deg2Rad( -156.0f ), 
+                             gmtl::Math::deg2Rad( 45.7892892f ), 
+                             gmtl::Math::deg2Rad( -361.0f ), gmtl::ZXY );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result44, mat, eps ) );
+      }
    }
          
    void testTimingMakeTrans()
@@ -332,7 +590,7 @@ public:
       const long iters(100000);
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
-         gmtl::makeRot( mat, 90.0f, 1.0f, 0.0f, 0.0f );
+         gmtl::makeRot( mat, gmtl::Math::deg2Rad( 90.0f ), gmtl::Vec3f( 1.0f, 0.0f, 0.0f ) );
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeRot33", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
@@ -343,7 +601,7 @@ public:
       const long iters(100000);
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
-         gmtl::makeRot( mat, 90.0f, 1.0f, 0.0f, 0.0f );
+         gmtl::makeRot( mat, gmtl::Math::deg2Rad( 90.0f ), gmtl::Vec3f( 1.0f, 0.0f, 0.0f ) );
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeRot34", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
@@ -354,7 +612,7 @@ public:
       const long iters(100000);
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
-         gmtl::makeRot( mat, 90.0f, 1.0f, 0.0f, 0.0f );
+         gmtl::makeRot( mat, gmtl::Math::deg2Rad( 90.0f ), gmtl::Vec3f( 1.0f, 0.0f, 0.0f )  );
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixGenTest/MakeRot44", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
