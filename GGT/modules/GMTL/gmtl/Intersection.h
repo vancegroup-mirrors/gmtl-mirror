@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Intersection.h,v $
- * Date modified: $Date: 2004-07-21 18:43:17 $
- * Version:       $Revision: 1.20 $
+ * Date modified: $Date: 2004-07-21 18:53:20 $
+ * Version:       $Revision: 1.21 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -542,24 +542,6 @@ namespace gmtl
    {
       bool res(intersect(plane, static_cast<Ray<DATA_TYPE> >(seg), t));
       return res && t <= (DATA_TYPE)1.0;
-
-      /*
-      const float eps(0.00001f);
-
-      // t = -(n·P + d)
-      Vec<DATA_TYPE, 3> N( plane.getNormal() );
-      float denom( dot(N,ray.getDir()) );
-      if(gmtl::Math::abs(denom) < eps)    // Ray parallel to plane
-      {
-         t = 0;
-         if(distance(plane, ray.mOrigin) < eps)     // Test for ray on plane
-         { return true; }
-         else
-         { return false; }
-      }
-      t = dot( N, N * plane.getOffset() - ray.getOrigin() ) / denom;
-      return (DATA_TYPE)0 <= t && t <= (DATA_TYPE)1.0;
-      */
    }
 
    /**
