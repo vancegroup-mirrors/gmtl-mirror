@@ -1571,7 +1571,7 @@ simba/Debug/LineSegTest/DefaultCreationOverhead                    0.105838
 simba/Debug/LineSegTest/EqualityCompareOverhead                    0.0717075
 simba/Debug/LineSegTest/GetDirOverhead                             0.069525
 simba/Debug/LineSegTest/GetOriginOverhead                          0.0702575
-simba/Debug/LineSegTest/InequalityCompareOverhead                  0.07777
+simba/Debug/LineSegTest/InequalityCompareOverhead                  0.0717
 simba/Debug/LineSegTest/PtPtCreationOverhead                       0.345417
 simba/Debug/LineSegTest/PtVecCreationOverhead                      0.120817
 simba/Debug/LineSegTest/SetDirOverhead                             0.0452
@@ -1606,6 +1606,7 @@ simba/Debug/MatrixGenTest/makeTrans(mat34f,vec3f)                  0.56402
 simba/Debug/MatrixGenTest/makeTrans(mat44f,vec3f)                  0.71172
 simba/Debug/MatrixGenTest/makeTrans(mat44f,vec4f)                  0.75205
 simba/Debug/MatrixOpsTest/add(res,mat44f,mat44f)                   0.86286
+simba/Debug/MatrixOpsTest/identity(mat44f)                         0.59816
 simba/Debug/MatrixOpsTest/mat33d*mat33d*mat33d                     4.73836
 simba/Debug/MatrixOpsTest/mat33f*mat33f*mat33f                     4.71582
 simba/Debug/MatrixOpsTest/mat44d*mat44d*mat44d                     10.0996
@@ -1659,7 +1660,7 @@ simba/Debug/QuatOpsTest/add(r,q1,q2)                               0.2576
 simba/Debug/QuatOpsTest/conj(q)                                    0.13288
 simba/Debug/QuatOpsTest/dot(q1,q2)                                 0.20392
 simba/Debug/QuatOpsTest/invert()                                   2.45676
-simba/Debug/QuatOpsTest/invert(q)                                  0.44844
+simba/Debug/QuatOpsTest/invert(q)                                  0.41144
 simba/Debug/QuatOpsTest/length(q)                                  0.31664
 simba/Debug/QuatOpsTest/lengthSquared(q)                           0.21392
 simba/Debug/QuatOpsTest/mult(q,scalar)                             0.19528
@@ -1673,7 +1674,7 @@ simba/Debug/QuatTest/CopyConstructor                               0.07952
 simba/Debug/QuatTest/DefaultConstructor                            0.060975
 simba/Debug/QuatTest/ElementConstructor                            0.0588775
 simba/Debug/QuatTest/get()                                         0.0659625
-simba/Debug/QuatTest/getData()                                     0.0236625
+simba/Debug/QuatTest/getData()                                     0.0190125
 simba/Debug/QuatTest/operator=()                                   0.0236475
 simba/Debug/QuatTest/operator[]()                                  0.08529
 simba/Debug/QuatTest/set()                                         0.0323125
@@ -1719,7 +1720,7 @@ simba/Debug/VecTest/DotOverhead                                    0.17206
 simba/Debug/VecTest/EqualityCompareOverhead                        0.157433
 simba/Debug/VecTest/InequalityCompareOverhead                      0.167412
 simba/Debug/VecTest/IsNormalizedEpsOverhead                        0.19797
-simba/Debug/VecTest/IsNormalizedOverhead                           0.22952
+simba/Debug/VecTest/IsNormalizedOverhead                           0.20311
 simba/Debug/VecTest/LengthOverhead                                 0.27831
 simba/Debug/VecTest/LengthSquaredOverhead                          0.17005
 simba/Debug/VecTest/NormalizeOverhead                              0.37505
@@ -1744,11 +1745,11 @@ simba/Debug/XformTest/operator*(mat22,pnt2)f                       0.31684
 simba/Debug/XformTest/operator*(mat22,vec2)d                       0.35256
 simba/Debug/XformTest/operator*(mat22,vec2)f                       0.31076
 simba/Debug/XformTest/operator*(mat23,pnt2)d                       0.74068
-simba/Debug/XformTest/operator*(mat23,pnt2)f                       0.76448
+simba/Debug/XformTest/operator*(mat23,pnt2)f                       0.69552
 simba/Debug/XformTest/operator*(mat23,pnt3)d                       0.55304
 simba/Debug/XformTest/operator*(mat23,pnt3)f                       0.5632
 simba/Debug/XformTest/operator*(mat23,vec2)d                       0.75032
-simba/Debug/XformTest/operator*(mat23,vec2)f                       0.80436
+simba/Debug/XformTest/operator*(mat23,vec2)f                       0.69252
 simba/Debug/XformTest/operator*(mat23,vec3)d                       0.48372
 simba/Debug/XformTest/operator*(mat23,vec3)f                       0.47784
 simba/Debug/XformTest/operator*(mat33,pnt2)d                       0.84208
@@ -1765,9 +1766,9 @@ simba/Debug/XformTest/operator*(mat34,pnt4)d                       0.8412
 simba/Debug/XformTest/operator*(mat34,pnt4)f                       0.7432
 simba/Debug/XformTest/operator*(mat34,vec3)d                       1.11756
 simba/Debug/XformTest/operator*(mat34,vec3)f                       1.13416
-simba/Debug/XformTest/operator*(mat34,vec4)d                       0.82388
+simba/Debug/XformTest/operator*(mat34,vec4)d                       0.75448
 simba/Debug/XformTest/operator*(mat34,vec4)f                       0.7858
-simba/Debug/XformTest/operator*(mat44,pnt3)d                       1.41992
+simba/Debug/XformTest/operator*(mat44,pnt3)d                       1.30992
 simba/Debug/XformTest/operator*(mat44,pnt3)f                       1.24192
 simba/Debug/XformTest/operator*(mat44,pnt3)i                       1.28612
 simba/Debug/XformTest/operator*(mat44,pnt3)l                       1.361
@@ -1820,7 +1821,7 @@ simba/Debug/XformTest/xform(vec2,mat22,vec2)f                      0.2214
 simba/Debug/XformTest/xform(vec2,mat23,vec2)d                      0.63716
 simba/Debug/XformTest/xform(vec2,mat23,vec2)f                      0.61672
 simba/Debug/XformTest/xform(vec2,mat33,vec2)d                      0.73056
-simba/Debug/XformTest/xform(vec2,mat33,vec2)f                      0.80604
+simba/Debug/XformTest/xform(vec2,mat33,vec2)f                      0.71744
 simba/Debug/XformTest/xform(vec3,mat23,vec3)d                      0.35792
 simba/Debug/XformTest/xform(vec3,mat23,vec3)f                      0.3596
 simba/Debug/XformTest/xform(vec3,mat33,vec3)d                      0.47144
