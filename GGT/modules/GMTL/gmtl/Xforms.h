@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Xforms.h,v $
- * Date modified: $Date: 2002-02-21 21:37:08 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2002-02-22 10:42:53 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -36,15 +36,13 @@
 #define _XFORMS_H_
 
 #include <gmtl/gmtlConfig.h>
+#include <gmtl/Vec.h>
 #include <gmtl/Matrix.h>
-#include <gmtl/Vec3.h>
-#include <gmtl/Vec4.h>
-#include <gmtl/Point3.h>
-#include <gmtl/OOBox.h>
-#include <gmtl/matVecFuncs.h>
+#include <gmtl/MatrixOps.h>
 #include <gmtl/Quat.h>
 #include <gmtl/QuatOps.h>
 #include <gmtl/Convert.h>
+#include <gmtl/Generate.h>
 
 namespace gmtl
 {
@@ -52,14 +50,28 @@ namespace gmtl
     * @pre give a vector
     * @post result = quat * vector
     */
-   template<class DATA_TYPE>
-   inline Vec<DATA_TYPE, 3>& xform( Vec<DATA_TYPE, 3>& result_vec, const Quat<dataType>& rot, const Vec<DATA_TYPE, 3>& vector ) const
+   template <typename DATA_TYPE>
+   inline Vec<DATA_TYPE, 3>& xform( Vec<DATA_TYPE, 3>& result_vec, const Quat<DATA_TYPE>& rot, const Vec<DATA_TYPE, 3>& vector )
    {
       // shoemake original (left hand rule):
-      // return convert( result_vec, makeInvert( rot ) * makePure( vector ) * rot );
+      // return makeVec( result_vec, makeInvert( rot ) * makePure( vector ) * rot );
 
       // shoemake recent version (right hand rule):
-      return convert( result_vec, rot * makePure( vector ) * makeInvert( rot ) );
+      return result_vec = makeVec( rot * makePure( vector ) * makeInvert( rot ) );
+   }
+
+   /** transform a vector by a rotation quaternion.
+    * @pre give a vector
+    * @post result = quat * vector
+    */
+   template<class DATA_TYPE>
+   inline Vec<DATA_TYPE, 3> operator*( const Quat<DATA_TYPE>& rot, const Vec<DATA_TYPE, 3>& vector )
+   {
+      // shoemake original (left hand rule):
+      // return makeVec( result_vec, makeInvert( rot ) * makePure( vector ) * rot );
+
+      // shoemake recent version (right hand rule):
+      return makeVec( rot * makePure( vector ) * makeInvert( rot ) );
    }
 
 /*
