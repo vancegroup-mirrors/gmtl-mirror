@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Vec.h,v $
- * Date modified: $Date: 2004-09-01 15:57:33 $
- * Version:       $Revision: 1.18.2.1 $
+ * Date modified: $Date: 2004-09-02 14:27:23 $
+ * Version:       $Revision: 1.18.2.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -54,7 +54,7 @@ namespace gmtl
  * @ingroup Types
  */
 template<class DATA_TYPE, unsigned SIZE>
-class Vec : public VecBase<DATA_TYPE, SIZE>
+class Vec : public VecBase<DATA_TYPE, SIZE, meta::DefaultVecTag>
 {
 public:
    /// The datatype used for the components of this Vec.
@@ -65,6 +65,7 @@ public:
 
    /// The superclass type.
    typedef VecBase<DATA_TYPE, SIZE> BaseType;
+   typedef Vec<DATA_TYPE, SIZE> VecType;
 
 public:
    /**
@@ -83,12 +84,14 @@ public:
     * @pre  Vector should be the same size and type as the one copied
     * @param rVec    the Vec object to copy
     */
+   /*
    Vec( const Vec<DATA_TYPE, SIZE>& rVec )
       : BaseType( static_cast<BaseType>( rVec ) )
-   {
-   }
+   {;}
+   */
 
-   Vec( const VecBase<DATA_TYPE, SIZE>& rVec )
+   template<typename REP2>
+   Vec( const VecBase<DATA_TYPE, SIZE, REP2>& rVec )
       : BaseType( rVec )
    {
    }
@@ -117,6 +120,15 @@ public:
       gmtlASSERT( SIZE == 4 && "out of bounds element access in Point" );
    }
    //@}
+
+   /** Assign from different rep. */
+   template<typename REP2>
+   inline VecType& operator=(const VecBase<DATA_TYPE,SIZE,REP2>& rhs)
+   {
+      BaseType::operator=(rhs);
+      return *this;
+   }
+
 };
 
 // --- helper types --- //
