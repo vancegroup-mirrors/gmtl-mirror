@@ -14,34 +14,34 @@ namespace gmtl
 /**
  * Compares v1 and v2 to see if they are exactly the same with zero tolerance.
  *
- * @param v1   the first vector
- * @param v2   the second vector
+ * @param v1   the first rotation
+ * @param v2   the second rotation
  *
  * @return  true if v1 equals v2; false if they differ
  */
-template<class DATA_TYPE>
-inline bool operator==(const EulerAngle<DATA_TYPE>& v1,
-                       const EulerAngle<DATA_TYPE>& v2)
+template<class DATA_TYPE, typename ROT_ORDER>
+inline bool operator==(const EulerAngle<DATA_TYPE, ROT_ORDER>& v1,
+                       const EulerAngle<DATA_TYPE, ROT_ORDER>& v2)
 {
    // @todo metaprogramming.
    if (v1[0] != v2[0]) return false;
    if (v1[1] != v2[1]) return false;
    if (v1[2] != v2[2]) return false;
-   return v1.getOrder() == v2.getOrder();
+   return true;
 }
 
 /**
  * Compares v1 and v2 to see if they are NOT exactly the same with zero
  * tolerance.
  *
- * @param v1   the first vector
- * @param v2   the second vector
+ * @param v1   the first rotation
+ * @param v2   the second rotation
  *
  * @return  true if v1 does not equal v2; false if they are equal
  */
-template<class DATA_TYPE>
-inline bool operator!=(const EulerAngle<DATA_TYPE>& v1,
-                       const EulerAngle<DATA_TYPE>& v2)
+template<class DATA_TYPE, typename ROT_ORDER>
+inline bool operator!=(const EulerAngle<DATA_TYPE, ROT_ORDER>& v1,
+                       const EulerAngle<DATA_TYPE, ROT_ORDER>& v2)
 {
    return(! (v1 == v2));
 }
@@ -52,15 +52,15 @@ inline bool operator!=(const EulerAngle<DATA_TYPE>& v1,
  *
  * @pre eps must be >= 0
  *
- * @param v1   the first vector
- * @param v2   the second vector
+ * @param v1   the first rotation
+ * @param v2   the second rotation
  * @param eps  the epsilon tolerance value
  *
  * @return  true if v1 equals v2; false if they differ
  */
-template<class DATA_TYPE>
-inline bool isEqual( const EulerAngle<DATA_TYPE>& v1,
-                     const EulerAngle<DATA_TYPE>& v2, 
+template<class DATA_TYPE, typename ROT_ORDER>
+inline bool isEqual( const EulerAngle<DATA_TYPE, ROT_ORDER>& v1,
+                     const EulerAngle<DATA_TYPE, ROT_ORDER>& v2,
                      const DATA_TYPE& eps = (DATA_TYPE)0 )
 {
    gmtlASSERT(eps >= (DATA_TYPE)0);
@@ -69,7 +69,7 @@ inline bool isEqual( const EulerAngle<DATA_TYPE>& v1,
    if (!Math::isEqual( v1[0], v2[0], eps )) return false;
    if (!Math::isEqual( v1[1], v2[1], eps )) return false;
    if (!Math::isEqual( v1[2], v2[2], eps )) return false;
-   return v1.getOrder() == v2.getOrder();
+   return true;
 }
 
 // @todo write isEquiv function for EulerAngle

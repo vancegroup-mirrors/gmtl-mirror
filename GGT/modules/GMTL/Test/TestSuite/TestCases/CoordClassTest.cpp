@@ -8,8 +8,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: CoordClassTest.cpp,v $
- * Date modified: $Date: 2002-06-11 21:23:33 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-06-12 19:38:53 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -44,7 +44,7 @@ namespace gmtlTest
    void CoordClassTest::testCoordClassTestCreation()
    {
       // test that it initializes to the multiplication identity
-      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > q;
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float, gmtl::XYZ> > q;
       CPPUNIT_ASSERT( q.pos()[0] == 0.0f );
       CPPUNIT_ASSERT( q.pos()[1] == 0.0f );
       CPPUNIT_ASSERT( q.pos()[2] == 0.0f );
@@ -54,8 +54,8 @@ namespace gmtlTest
 
       // try out element constructor
       gmtl::Vec3f p( 1, 2, 3 );
-      gmtl::EulerAngle<float> r( 4, 5, 6, gmtl::XYZ );
-      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > q2( p, r );
+      gmtl::EulerAngle<float, gmtl::XYZ> r( 4, 5, 6 );
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float, gmtl::XYZ> > q2( p, r );
       CPPUNIT_ASSERT( q2.pos()[0] == 1.0f );
       CPPUNIT_ASSERT( q2.pos()[1] == 2.0f );
       CPPUNIT_ASSERT( q2.pos()[2] == 3.0f );
@@ -64,7 +64,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( q2.rot()[2] == 6.0f );
 
       // try out copy constructor
-      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > q3( q2 );
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float, gmtl::XYZ> > q3( q2 );
       CPPUNIT_ASSERT( q3.pos()[0] == 1.0f );
       CPPUNIT_ASSERT( q3.pos()[1] == 2.0f );
       CPPUNIT_ASSERT( q3.pos()[2] == 3.0f );
@@ -73,7 +73,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( q3.rot()[2] == 6.0f );
 
       // try out operator=() function
-      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > q4;
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float, gmtl::XYZ> > q4;
       CPPUNIT_ASSERT( q4.pos()[0] == 0.0f );
       CPPUNIT_ASSERT( q4.pos()[1] == 0.0f );
       CPPUNIT_ASSERT( q4.pos()[2] == 0.0f );
@@ -98,7 +98,7 @@ namespace gmtlTest
       for (long iter = 0; iter < iters; ++iter)
       {
          // performance of def constructor
-         gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > q;
+         gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float, gmtl::XYZ> > q;
          use_value += q.mPos[0];
       }
       CPPUNIT_METRIC_STOP_TIMING();
@@ -113,12 +113,12 @@ namespace gmtlTest
       float use_value(1);
 
       gmtl::Vec3f p( 1, 2, 3 );
-      gmtl::EulerAngle<float> r( 4, 5, 6, gmtl::XYZ );
+      gmtl::EulerAngle<float, gmtl::XYZ> r( 4, 5, 6 );
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
          // performance of element constructor
-         gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > q2( p, r );
+         gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float, gmtl::XYZ> > q2( p, r );
          use_value += q2.mPos[0];
       }
       CPPUNIT_METRIC_STOP_TIMING();
@@ -131,13 +131,13 @@ namespace gmtlTest
    {
       const long iters( 400000 );
       float use_value(1);
-      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > q;
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float, gmtl::XYZ> > q;
 
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
          // performance of copy constructor
-         gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > q3( q );
+         gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float, gmtl::XYZ> > q3( q );
          use_value += q3.mPos[0];
       }
       CPPUNIT_METRIC_STOP_TIMING();
@@ -152,7 +152,7 @@ namespace gmtlTest
       const long iters( 400000 );
       float use_value(0);
       CPPUNIT_METRIC_START_TIMING();
-      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > q;
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float, gmtl::XYZ> > q;
       for (long iter = 0; iter < iters; ++iter)
       {
          // performance of get...
@@ -170,7 +170,7 @@ namespace gmtlTest
    void CoordClassTest::testCoordTimingOpEqual()
    {
       const long iters( 400000 );
-      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float> > q4, q2;
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float, gmtl::XYZ> > q4, q2;
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Math.h,v $
- * Date modified: $Date: 2002-05-28 14:46:15 $
- * Version:       $Revision: 1.27 $
+ * Date modified: $Date: 2002-06-12 19:38:54 $
+ * Version:       $Revision: 1.28 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -41,16 +41,24 @@
 
 namespace gmtl
 {
-   
-/** Rotation order enums
- * @todo Use tag dispatching here to optimize functions better.
- * @ingroup Defines
- */
-enum RotationOrder
-{
-   XYZ, ZYX, ZXY
-};
 
+/** Base class for Rotation orders
+ *  @ingroup Defines 
+ * @see XYZ, ZYX, ZXY
+ */
+struct RotationOrderBase { enum { IS_ROTORDER = 1 }; };
+
+/** XYZ Rotation order
+ *  @ingroup Defines */
+struct XYZ : public RotationOrderBase { enum { ID = 0 }; };
+
+/** ZYX Rotation order
+ *  @ingroup Defines */
+struct ZYX : public RotationOrderBase { enum { ID = 1 }; };
+
+/** ZXY Rotation order
+ *  @ingroup Defines */
+struct ZXY : public RotationOrderBase { enum { ID = 2 }; };
 
 namespace Math
 {

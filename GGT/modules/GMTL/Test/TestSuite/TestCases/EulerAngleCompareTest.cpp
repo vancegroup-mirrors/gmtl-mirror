@@ -8,8 +8,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: EulerAngleCompareTest.cpp,v $
- * Date modified: $Date: 2002-06-10 18:27:47 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-06-12 19:38:53 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -80,24 +80,24 @@ namespace gmtlTest
       // Test overhead of creation
       const long iters(400000);
 
-      gmtl::EulerAnglef src_quat11;
-      gmtl::EulerAnglef src_quat22;
-      gmtl::EulerAnglef src_quat33;
-      gmtl::EulerAnglef src_quat34;
-      gmtl::EulerAnglef src_quat44;
-      gmtl::EulerAngled src_quat101;
+      gmtl::EulerAngleXYZf src_quat11;
+      gmtl::EulerAngleXYZf src_quat22;
+      gmtl::EulerAngleXYZf src_quat33;
+      gmtl::EulerAngleXYZf src_quat34;
+      gmtl::EulerAngleXYZf src_quat44;
+      gmtl::EulerAngleXYZd src_quat101;
 
       // half of them will be equal
       src_quat11[0] = 1.0f;
       src_quat22[2] = 1.0f;
       src_quat33[1] = 2.0f;
 
-      gmtl::EulerAnglef test_quat11( src_quat11 );
-      gmtl::EulerAnglef test_quat22( src_quat22 );
-      gmtl::EulerAnglef test_quat33( src_quat33 );
-      gmtl::EulerAnglef test_quat34( src_quat34 );
-      gmtl::EulerAnglef test_quat44( src_quat44 );
-      gmtl::EulerAngled test_quat101( src_quat101 );
+      gmtl::EulerAngleXYZf test_quat11( src_quat11 );
+      gmtl::EulerAngleXYZf test_quat22( src_quat22 );
+      gmtl::EulerAngleXYZf test_quat33( src_quat33 );
+      gmtl::EulerAngleXYZf test_quat34( src_quat34 );
+      gmtl::EulerAngleXYZf test_quat44( src_quat44 );
+      gmtl::EulerAngleXYZd test_quat101( src_quat101 );
 
       // half will be not equal
       src_quat34[0] = 2.0f;
@@ -135,24 +135,24 @@ namespace gmtlTest
       // Test overhead of creation
       const long iters(400000);
 
-      gmtl::EulerAnglef src_quat11;
-      gmtl::EulerAnglef src_quat22;
-      gmtl::EulerAnglef src_quat33;
-      gmtl::EulerAnglef src_quat34;
-      gmtl::EulerAnglef src_quat44;
-      gmtl::EulerAngled src_quat101;
+      gmtl::EulerAngleXYZf src_quat11;
+      gmtl::EulerAngleXYZf src_quat22;
+      gmtl::EulerAngleXYZf src_quat33;
+      gmtl::EulerAngleXYZf src_quat34;
+      gmtl::EulerAngleXYZf src_quat44;
+      gmtl::EulerAngleXYZd src_quat101;
 
       // half will be equal
       src_quat11[0] = 1.0f;
       src_quat22[2] = 1.0f;
       src_quat33[1] = 2.0f;
 
-      gmtl::EulerAnglef test_quat11( src_quat11 );
-      gmtl::EulerAnglef test_quat22( src_quat22 );
-      gmtl::EulerAnglef test_quat33( src_quat33 );
-      gmtl::EulerAnglef test_quat34( src_quat34 );
-      gmtl::EulerAnglef test_quat44( src_quat44 );
-      gmtl::EulerAngled test_quat101( src_quat101 );
+      gmtl::EulerAngleXYZf test_quat11( src_quat11 );
+      gmtl::EulerAngleXYZf test_quat22( src_quat22 );
+      gmtl::EulerAngleXYZf test_quat33( src_quat33 );
+      gmtl::EulerAngleXYZf test_quat34( src_quat34 );
+      gmtl::EulerAngleXYZf test_quat44( src_quat44 );
+      gmtl::EulerAngleXYZd test_quat101( src_quat101 );
 
       // half will be not equal
       src_quat34[0] = 2.0f;
@@ -190,24 +190,24 @@ namespace gmtlTest
       // Test overhead of creation
       const long iters(400000);
 
-      gmtl::EulerAnglef src_quat11;
-      gmtl::EulerAnglef src_quat22;
-      gmtl::EulerAnglef src_quat33;
-      gmtl::EulerAnglef src_quat34;
-      gmtl::EulerAnglef src_quat44;
-      gmtl::EulerAngled src_quat101;
+      gmtl::EulerAngleXYZf src_quat11;
+      gmtl::EulerAngleXYZf src_quat22;
+      gmtl::EulerAngleXYZf src_quat33;
+      gmtl::EulerAngleXYZf src_quat34;
+      gmtl::EulerAngleXYZf src_quat44;
+      gmtl::EulerAngleXYZd src_quat101;
 
       // half will be equal
       src_quat11[0] = 1.0f;
       src_quat22[1] = 1.0f;
       src_quat33[2] = 2.0f;
 
-      gmtl::EulerAnglef test_quat11( src_quat11 );
-      gmtl::EulerAnglef test_quat22( src_quat22 );
-      gmtl::EulerAnglef test_quat33( src_quat33 );
-      gmtl::EulerAnglef test_quat34( src_quat34 );
-      gmtl::EulerAnglef test_quat44( src_quat44 );
-      gmtl::EulerAngled test_quat101( src_quat101 );
+      gmtl::EulerAngleXYZf test_quat11( src_quat11 );
+      gmtl::EulerAngleXYZf test_quat22( src_quat22 );
+      gmtl::EulerAngleXYZf test_quat33( src_quat33 );
+      gmtl::EulerAngleXYZf test_quat34( src_quat34 );
+      gmtl::EulerAngleXYZf test_quat44( src_quat44 );
+      gmtl::EulerAngleXYZd test_quat101( src_quat101 );
 
       // half will be not equal
       src_quat34[0] = 23.0f;

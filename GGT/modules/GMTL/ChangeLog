@@ -1,5 +1,9 @@
 DATE       AUTHOR       CHANGE
 ---------- --------     -----------------------------------------------------------
+2002-06-12 subatomic    EulerAngle is templatized on RotationOrder now.
+                        This means that EulerXYZ and EulerZYX are discrete types
+                        which will allow the benefit of type safety and compile 
+                        time optimization.
 2002-06-10 subatomic    Generators all use Euler and Axis now.
                         Changed to set() and make() naming on functions
                         that were actually set (like setRot(quat,axisangle)
@@ -7,6 +11,7 @@ DATE       AUTHOR       CHANGE
                         set(anytype, anyothertype) and make<anytype>(anyother).
                         Coord is now templatized on POS_TYPE, ROT_TYPE.
                         Default Coord typedefs are with Vec/Euler, Vec/Axis now.
+                        NEW VERSION 0.0.5
 2002-06-10 subatomic    Authored EulerAngle, AxisAngle, and Ops, tests
 2002-06-06 subatomic    changed all get*****() functions to set****()
                         NEW VERSION: 0.0.4

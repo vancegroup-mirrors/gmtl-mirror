@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: EulerAngleClassTest.cpp,v $
- * Date modified: $Date: 2002-06-10 18:27:47 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-06-12 19:38:53 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -41,61 +41,53 @@ namespace gmtlTest
    void EulerAngleClassTest::testEulerAngleClassTestCreation()
    {
       // test that it initializes to the identity
-      gmtl::EulerAnglef q;
+      gmtl::EulerAngleXYZf q;
       CPPUNIT_ASSERT( q[0] == 0.0f );
       CPPUNIT_ASSERT( q[1] == 0.0f );
       CPPUNIT_ASSERT( q[2] == 0.0f );
-      CPPUNIT_ASSERT( q.getOrder() == gmtl::XYZ );
 
       // try out set...
-      q.set( 1.0f, 2.0f, 3.0f, gmtl::ZYX );
+      q.set( 1.0f, 2.0f, 3.0f );
       CPPUNIT_ASSERT( q[0] == 1.0f );
       CPPUNIT_ASSERT( q[1] == 2.0f );
       CPPUNIT_ASSERT( q[2] == 3.0f );
-      CPPUNIT_ASSERT( q.getOrder() == gmtl::ZYX );
 
       // try out setting with brackets
       q[0] = 5.0f;
       q[1] = 6.0f;
       q[2] = 7.0f;
-      q.setOrder( gmtl::XYZ );
       CPPUNIT_ASSERT( q[0] == 5.0f );
       CPPUNIT_ASSERT( q[1] == 6.0f );
       CPPUNIT_ASSERT( q[2] == 7.0f );
-      CPPUNIT_ASSERT( q.getOrder() == gmtl::XYZ );
      
       // try out element constructor
-      gmtl::EulerAnglef q2( 10.0f, 11.0f, 12.0f, gmtl::ZYX );
+      gmtl::EulerAngleZYXf q2( 10.0f, 11.0f, 12.0f );
       CPPUNIT_ASSERT( q2[0] == 10.0f );
       CPPUNIT_ASSERT( q2[1] == 11.0f );
       CPPUNIT_ASSERT( q2[2] == 12.0f );
-      CPPUNIT_ASSERT( q2.getOrder() == gmtl::ZYX );
 
       // try out copy constructor
-      gmtl::EulerAnglef q3( q );
+      gmtl::EulerAngleXYZf q3( q );
       CPPUNIT_ASSERT( q3[0] == 5.0f );
       CPPUNIT_ASSERT( q3[1] == 6.0f );
       CPPUNIT_ASSERT( q3[2] == 7.0f );
-      CPPUNIT_ASSERT( q3.getOrder() == gmtl::XYZ );
 
       // try out operator=() function
-      gmtl::EulerAnglef q4;
+      gmtl::EulerAngleXYZf q4;
       CPPUNIT_ASSERT( q4[0] == 0.0f );
       CPPUNIT_ASSERT( q4[1] == 0.0f );
       CPPUNIT_ASSERT( q4[2] == 0.0f );
-      CPPUNIT_ASSERT( q4.getOrder() == gmtl::XYZ );
-      q4 = q2;
-      CPPUNIT_ASSERT( q4[0] == 10.0f );
-      CPPUNIT_ASSERT( q4[1] == 11.0f );
-      CPPUNIT_ASSERT( q4[2] == 12.0f );
-      CPPUNIT_ASSERT( q4.getOrder() == gmtl::ZYX );
+      gmtl::EulerAngleZYXf q13;
+      q13 = q2;
+      CPPUNIT_ASSERT( q13[0] == 10.0f );
+      CPPUNIT_ASSERT( q13[1] == 11.0f );
+      CPPUNIT_ASSERT( q13[2] == 12.0f );
 
       // check out the const identities...
-      gmtl::EulerAnglef q9( gmtl::EULERANGLE_IDENTITYF );
+      gmtl::EulerAngleXYZf q9( gmtl::EULERANGLE_IDENTITY_XYZF );
       CPPUNIT_ASSERT( q9[0] == 0.0f );
       CPPUNIT_ASSERT( q9[1] == 0.0f );
       CPPUNIT_ASSERT( q9[2] == 0.0f );
-      CPPUNIT_ASSERT( q9.getOrder() == gmtl::XYZ );
    }
 
    void EulerAngleClassTest::testEulerAngleTimingDefaultConstructor()
@@ -107,7 +99,7 @@ namespace gmtlTest
       for (long iter = 0; iter < iters; ++iter)
       {
          // performance of def constructor
-         gmtl::EulerAnglef q;
+         gmtl::EulerAngleXYZf q;
          use_value += q.mData[0];
       }
       CPPUNIT_METRIC_STOP_TIMING();
@@ -125,7 +117,7 @@ namespace gmtlTest
       for (long iter = 0; iter < iters; ++iter)
       {
          // performance of element constructor
-         gmtl::EulerAnglef q2( 10.0f, 11.0f, 12.0f, gmtl::XYZ );
+         gmtl::EulerAngleXYZf q2( 10.0f, 11.0f, 12.0f );
          use_value += q2.mData[0];
       }
       CPPUNIT_METRIC_STOP_TIMING();
@@ -138,13 +130,13 @@ namespace gmtlTest
    {
       const long iters( 400000 );
       float use_value(1);
-      gmtl::EulerAnglef q( 67.0f, 68.0f, 69.0f, gmtl::XYZ );
+      gmtl::EulerAngleXYZf q( 67.0f, 68.0f, 69.0f );
 
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
          // performance of copy constructor
-         gmtl::EulerAnglef q3( q );
+         gmtl::EulerAngleXYZf q3( q );
          use_value += q3.mData[0];
       }
       CPPUNIT_METRIC_STOP_TIMING();
@@ -158,11 +150,11 @@ namespace gmtlTest
       const long iters( 400000 );
       float use_value(0);
       CPPUNIT_METRIC_START_TIMING();
-      gmtl::EulerAnglef q;
+      gmtl::EulerAngleXYZf q;
       for (long iter = 0; iter < iters; ++iter)
       {
          // performance of set...
-         q.set( 1, 2, 3, gmtl::XYZ );
+         q.set( 1, 2, 3 );
          use_value += q[0];
       }
       CPPUNIT_METRIC_STOP_TIMING();
@@ -176,17 +168,15 @@ namespace gmtlTest
       const long iters( 400000 );
       float use_value(0);
       CPPUNIT_METRIC_START_TIMING();
-      gmtl::EulerAnglef q;
+      gmtl::EulerAngleXYZf q;
       float x = 102.0f, y = 103.0f, z = 101.0f;
-      gmtl::RotationOrder w = gmtl::XYZ;
       for (long iter = 0; iter < iters; ++iter)
       {
          // performance of brackets
          q[0] = x;
          q[1] = y;
          q[2] = z;
-         q.setOrder( w );
-         use_value = use_value + x + y + z + w;
+         use_value = use_value + x + y + z;
       }
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("EulerAngleTest/operator[]()", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
@@ -199,7 +189,7 @@ namespace gmtlTest
       const long iters( 400000 );
       float use_value(0);
       CPPUNIT_METRIC_START_TIMING();
-      gmtl::EulerAnglef q( 1, 2, 3, gmtl::XYZ );
+      gmtl::EulerAngleXYZf q( 1, 2, 3 );
       for (long iter = 0; iter < iters; ++iter)
       {
          // performance of getData...
@@ -215,7 +205,7 @@ namespace gmtlTest
    void EulerAngleClassTest::testEulerAngleTimingOpEqual()
    {
       const long iters( 400000 );
-      gmtl::EulerAnglef q4, q2( 0.0f, 2.0f, 1.0f, gmtl::XYZ );
+      gmtl::EulerAngleXYZf q4, q2( 0.0f, 2.0f, 1.0f );
       CPPUNIT_METRIC_START_TIMING();
       for (long iter = 0; iter < iters; ++iter)
       {
