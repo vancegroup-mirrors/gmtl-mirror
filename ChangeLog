@@ -1,5 +1,7 @@
 DATE       AUTHOR       CHANGE
 ---------- --------     --------------------------------------------------------
+2002-10-17 nonchocoboy  Compiler fix for LineSeg::getLength().
+                        NEW VERSION: 0.1.10
 2002-10-11 nonchocoboy  Added output function for AABox.
 2002-09-20 nonchocoboy  NEW VERSION: 0.1.9
 2002-09-15 subatomic    added Math::clamp
