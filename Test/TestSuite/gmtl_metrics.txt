@@ -513,7 +513,7 @@ gfxn3/Debug/VecTest/CrossOverhead                                  1.66068
 gfxn3/Debug/VecTest/DotOverhead                                    0.99323
 gfxn3/Debug/VecTest/EqualityCompareOverhead                        0.21442
 gfxn3/Debug/VecTest/InequalityCompareOverhead                      0.243822
-gfxn3/Debug/VecTest/IsNormalizedEpsOverhead                        1.31331
+gfxn3/Debug/VecTest/IsNormalizedEpsOverhead                        1.11798
 gfxn3/Debug/VecTest/IsNormalizedOverhead                           1.17075
 gfxn3/Debug/VecTest/LengthOverhead                                 1.24248
 gfxn3/Debug/VecTest/LengthSquaredOverhead                          1.06225

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.h,v $
- * Date modified: $Date: 2002-02-20 21:23:06 $
- * Version:       $Revision: 1.11 $
+ * Date modified: $Date: 2002-02-21 21:34:26 $
+ * Version:       $Revision: 1.12 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -984,17 +984,17 @@ public:
       }
 
       v2.set(21,0,0);
-      CPPUNIT_ASSERT( ! isNormalized(v2, 15.0f) );
-      CPPUNIT_ASSERT( ! isNormalized(v2, 19.9f) );
-      CPPUNIT_ASSERT( isNormalized(v2, 20.1f) );
-      CPPUNIT_ASSERT( isNormalized(v2, 25.0f) );
+      CPPUNIT_ASSERT( ! isNormalized(v2, 15.0f * 15.0f) );
+      CPPUNIT_ASSERT( ! isNormalized(v2, 19.9f * 19.9f) );
+      CPPUNIT_ASSERT( isNormalized(v2, 21.0f * 21.0f - 0.9f) );
+      CPPUNIT_ASSERT( isNormalized(v2, 21.0f * 21.0f + 0.9f) );
 
       // test performance
       const long iters(100000);
       long true_count(0);
       v2.set( 0.5f, 0.5f, 0.5f );
       float tol = 0.25f;
-      
+
       CPPUNIT_METRIC_START_TIMING();
       for ( unsigned long iter=0; iter<iters; ++iter )
       {
