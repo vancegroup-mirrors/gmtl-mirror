@@ -4,7 +4,7 @@
 #include <gfxConfig.h>
 
 
-// -- ASSERT -- //
+// -- VERY simple assertion stuff -- //
 #ifdef GFX_DEBUG
 #   include <assert.h>
 #   define gfxASSERT(val) assert((val))
