@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixGenTest.cpp,v $
- * Date modified: $Date: 2003-04-01 15:34:29 $
- * Version:       $Revision: 1.15 $
+ * Date modified: $Date: 2003-04-25 12:52:15 $
+ * Version:       $Revision: 1.16 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -235,7 +235,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( gmtl::isEqual(result_pt, pt_I, eps));
 
       // Test point going from I to T
-      result_pt = gmtl::makeInverse<float,4,4>(i_M_t) * pt_I;
+      result_pt = gmtl::makeInvert<float,4,4>(i_M_t) * pt_I;
       CPPUNIT_ASSERT( gmtl::isEqual(result_pt, pt_T, eps));
    }
 
@@ -1010,7 +1010,7 @@ namespace gmtlTest
          CPPUNIT_ASSERT( gmtl::isEqual( result, identity, eps ) );
 
          // Test inversion
-         result = gmtl::makeInverse( mat1 );
+         result = gmtl::makeInvert( mat1 );
          CPPUNIT_ASSERT( gmtl::isEqual( result, expected_value, eps ) );
       }
    };
