@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Point.h,v $
- * Date modified: $Date: 2002-06-13 14:19:04 $
- * Version:       $Revision: 1.11 $
+ * Date modified: $Date: 2002-11-03 05:37:38 $
+ * Version:       $Revision: 1.12 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -108,6 +108,9 @@ public:
 };
 
 // --- helper types --- //
+typedef Point<int,2> Point2i;
+typedef Point<float,2> Point2f;
+typedef Point<double,2> Point2d;
 typedef Point<float,3> Point3f;
 typedef Point<double,3> Point3d;
 typedef Point<float,4> Point4f;
