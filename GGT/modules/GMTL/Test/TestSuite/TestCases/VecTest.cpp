@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.cpp,v $
- * Date modified: $Date: 2002-03-21 16:30:17 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-03-21 18:30:50 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -1088,7 +1088,15 @@ namespace gmtlTest
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, res1, eps ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result2, res2, eps ) );
 
-         /// @todo, test interpolated values...
+         // test interpolated values...
+         gmtl::Vec<float, 2> q3( 0, 0 ), q4( 1, 1 );
+         gmtl::Vec<float, 2> expected_result3( 0.35, 0.35 ), res3;
+         gmtl::Vec<float, 2> expected_result4( 0.69, 0.69 ), res4;
+
+         gmtl::lerp( res3, 0.35f, q3, q4 );
+         gmtl::lerp( res4, 0.69f, q3, q4 );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result3, res3, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result4, res4, eps ) );
       }
       {
          gmtl::Vec<float, 3> q1( 2, 3, 4 ), q2( 9.01, 8.4, 7.1 );
@@ -1100,7 +1108,15 @@ namespace gmtlTest
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, res1, eps ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result2, res2, eps ) );
 
-         /// @todo, test interpolated values...
+         // test interpolated values...
+         gmtl::Vec<float, 3> q3( 0, 0, 0 ), q4( 1, 1, 1 );
+         gmtl::Vec<float, 3> expected_result3( 0.35, 0.35, 0.35 ), res3;
+         gmtl::Vec<float, 3> expected_result4( 0.69, 0.69, 0.69 ), res4;
+
+         gmtl::lerp( res3, 0.35f, q3, q4 );
+         gmtl::lerp( res4, 0.69f, q3, q4 );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result3, res3, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result4, res4, eps ) );
       }
       {
          gmtl::Vec<float, 4> q1( 2, 3, 4, 5 ), q2( 9.01, 8.4, 7.1, 10009 );
@@ -1112,7 +1128,15 @@ namespace gmtlTest
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, res1, eps ) );
          CPPUNIT_ASSERT( gmtl::isEqual( expected_result2, res2, eps ) );
 
-         /// @todo, test interpolated values...
+         // test interpolated values...
+         gmtl::Vec<float, 4> q3( 0, 0, 0, 0 ), q4( 1, 1, 1, 1 );
+         gmtl::Vec<float, 4> expected_result3( 0.35, 0.35, 0.35, 0.35 ), res3;
+         gmtl::Vec<float, 4> expected_result4( 0.69, 0.69, 0.69, 0.69 ), res4;
+
+         gmtl::lerp( res3, 0.35f, q3, q4 );
+         gmtl::lerp( res4, 0.69f, q3, q4 );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result3, res3, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result4, res4, eps ) );
       }
    }   
 }
