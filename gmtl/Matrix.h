@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Matrix.h,v $
- * Date modified: $Date: 2003-04-11 05:20:37 $
- * Version:       $Revision: 1.29 $
+ * Date modified: $Date: 2003-04-11 05:41:40 $
+ * Version:       $Revision: 1.30 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -43,8 +43,27 @@ namespace gmtl
 {
 
 /**
- * Matrix: 4x4 Matrix class (ordered in memory by Column)
+ * State tracked NxM dimensional Matrix (ordered in memory by Column)
+ *
+ * <b>State Tracking:</b>                                                      
+ *
+ * The idea of a state-tracked matrix is that if we track the information 
+ * as it is stored into the matrix, then other operations could make more optimal 
+ * descisions based on the known state.  A good example is in matrix invertion, 
+ * a reletively costly operation for matrices.  However, if we know the matrix state 
+ * is (i.e.) ORTHOGONAL, then inversion becomes a simple transpose operation.  
+ * There are also optimizations with multiplication, as well as other.
+ *
+ * One side effect of this state tracking is that EVERY MATRIC FUNCTION NEEDS TO 
+ * TRACK STATE.  This means that anyone writing custom methods, or extentions to 
+ * gmtl, will need to pay close attention to matrix state.
+ *
+ * To facilitate state tracking in extensions, we've provided the function 
+ * gmtl::combineMatrixStates() to help in determining state based on two 
+ * combined matrices.  
  * 
+ * <b>Memory mapping:</b>                                                      
+ *
  * gmtl::Matrix stores its elements in column major order.  
  * That is, it stores each column end-to-end in memory.
  *
