@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _EulerAngle_float_gmtl_ZXY.cpp,v $
- * Date modified: $Date: 2003-05-20 18:57:15 $
- * Version:       $Revision: 1.1.1.1 $
+ * Date modified: $Date: 2003-08-16 05:11:46 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -47,7 +47,7 @@ void _Export_EulerAngle_float_gmtl_ZXY()
         .def("getData", (tuple (gmtlWrappers::*)(gmtl::EulerAngle<float,gmtl::ZXY>*)) &gmtlWrappers::EulerAngle_getData)
         .add_property("data", (tuple (gmtlWrappers::*)(gmtl::EulerAngle<float,gmtl::ZXY>*)) &gmtlWrappers::EulerAngle_getData)
         .def("__getitem__", (float& (gmtl::EulerAngle<float,gmtl::ZXY>::*)(const unsigned) ) &gmtl::EulerAngle<float,gmtl::ZXY>::operator[], return_value_policy<copy_non_const_reference>())
-        .def("__setitem__", (void (*)(gmtl::EulerAngle<float,gmtl::ZXY>*, const unsigned, float)) &gmtlWrapper::setArrayElement)
+        .def("__setitem__", (void (*)(gmtl::EulerAngle<float,gmtl::ZXY>*, const unsigned, float)) &gmtlWrappers::setArrayElement)
         .def(self == self)
         .def(self != self)
         .def(self_ns::str(self))

@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Quat_float.cpp,v $
- * Date modified: $Date: 2003-05-20 18:57:15 $
- * Version:       $Revision: 1.1.1.1 $
+ * Date modified: $Date: 2003-08-16 05:11:46 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -48,7 +48,7 @@ void _Export_Quat_float()
         .def("getData", (tuple (gmtlWrappers::*)(gmtl::Quat<float>*)) &gmtlWrappers::Quat_getData)
         .add_property("data", (tuple (gmtlWrappers::*)(gmtl::Quat<float>*)) &gmtlWrappers::Quat_getData)
         .def("__getitem__", (float& (gmtl::Quat<float>::*)(const int)) &gmtl::Quat<float>::operator[], return_value_policy<copy_non_const_reference>())
-        .def("__setitem__", (void (*)(gmtl::Quatf*, const unsigned, float)) &gmtlWrapper::setArrayElement)
+        .def("__setitem__", (void (*)(gmtl::Quatf*, const unsigned, float)) &gmtlWrappers::setArrayElement)
         .def(self * self)
         .def(self *= self)
         .def(-self)

@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-wrappers.h,v $
- * Date modified: $Date: 2003-08-16 02:21:38 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2003-08-16 05:11:46 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -34,7 +34,7 @@
 #include <gmtl/Generate.h>
 
 
-namespace gmtlWrapper
+namespace gmtlWrappers
 {
    template<typename DATA_TYPE>
    gmtl::Matrix<DATA_TYPE, 3, 3> makeRotMatrix33(const gmtl::Quat<DATA_TYPE>& q)

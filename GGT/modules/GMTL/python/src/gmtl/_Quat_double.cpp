@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Quat_double.cpp,v $
- * Date modified: $Date: 2003-05-20 18:57:15 $
- * Version:       $Revision: 1.1.1.1 $
+ * Date modified: $Date: 2003-08-16 05:11:46 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -48,7 +48,7 @@ void _Export_Quat_double()
         .def("getData", (tuple (gmtlWrappers::*)(gmtl::Quat<double>*)) &gmtlWrappers::Quat_getData)
         .add_property("data", (tuple (gmtlWrappers::*)(gmtl::Quat<double>*)) &gmtlWrappers::Quat_getData)
         .def("__getitem__", (double& (gmtl::Quat<double>::*)(const int)) &gmtl::Quat<double>::operator[], return_value_policy<copy_non_const_reference>())
-        .def("__setitem__", (void (*)(gmtl::Quatd*, const unsigned, double)) &gmtlWrapper::setArrayElement)
+        .def("__setitem__", (void (*)(gmtl::Quatd*, const unsigned, double)) &gmtlWrappers::setArrayElement)
         .def(self * self)
         .def(self *= self)
         .def(-self)
