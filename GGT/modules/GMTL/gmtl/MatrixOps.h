@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOps.h,v $
- * Date modified: $Date: 2003-04-12 03:11:25 $
- * Version:       $Revision: 1.32 $
+ * Date modified: $Date: 2003-04-12 17:15:54 $
+ * Version:       $Revision: 1.33 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -40,6 +40,7 @@
 #include <gmtl/Matrix.h>
 #include <gmtl/Math.h>
 #include <gmtl/Vec.h>
+#include <gmtl/VecOps.h>
 
 namespace gmtl
 {
