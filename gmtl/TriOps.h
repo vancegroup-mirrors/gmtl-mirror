@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: TriOps.h,v $
- * Date modified: $Date: 2004-09-16 19:40:35 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2004-09-16 21:21:10 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -37,6 +37,7 @@
 
 #include <gmtl/Tri.h>
 #include <gmtl/Generate.h>
+#include <gmtl/VecOps.h>
 
 namespace gmtl
 {
@@ -56,7 +57,7 @@ template< class DATA_TYPE >
 Point<DATA_TYPE, 3> center( const Tri<DATA_TYPE>& tri )
 {
    const float one_third = (1.0f/3.0f);
-   return (tri[0] + tri[1] + tri[2]) * one_third;
+   return (tri[0] + tri[1] + tri[2]) * DATA_TYPE(one_third);
 }
 
 /**
