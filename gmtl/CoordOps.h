@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: CoordOps.h,v $
- * Date modified: $Date: 2002-05-20 22:39:22 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-06-11 21:20:21 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -36,7 +36,6 @@
 #define _GMTL_COORD_OPS_H_
 
 #include <gmtl/Coord.h>
-#include <gmtl/VecOps.h>
 
 namespace gmtl
 {
@@ -48,8 +47,9 @@ namespace gmtl
    /** Compare two quaternions for equality.
     * @see isEqual( Coord, Coord )
     */
-   template <typename DATA_TYPE, unsigned POSSIZE, unsigned ROTSIZE>
-   inline bool operator==( const Coord<DATA_TYPE, POSSIZE, ROTSIZE>& q1, const Coord<DATA_TYPE, POSSIZE, ROTSIZE>& q2 )
+   template <typename POS_TYPE, typename ROT_TYPE>
+   inline bool operator==( const Coord<POS_TYPE, ROT_TYPE>& q1, 
+                           const Coord<POS_TYPE, ROT_TYPE>& q2 )
    {
       return bool( q1.getPos() == q2.getPos() &&
                    q1.getRot() == q2.getRot() );
@@ -58,16 +58,20 @@ namespace gmtl
    /** Compare two quaternions for not-equality.
     * @see isEqual( Coord, Coord )
     */
-   template <typename DATA_TYPE, unsigned POSSIZE, unsigned ROTSIZE>
-   inline bool operator!=( const Coord<DATA_TYPE, POSSIZE, ROTSIZE>& q1, const Coord<DATA_TYPE, POSSIZE, ROTSIZE>& q2 )
+   template <typename POS_TYPE, typename ROT_TYPE>
+   inline bool operator!=( const Coord<POS_TYPE, ROT_TYPE>& q1, 
+                           const Coord<POS_TYPE, ROT_TYPE>& q2 )
    {
       return !operator==( q1, q2 );
    }
 
    /** Compare two quaternions for equality with tolerance.
     */
-   template <typename DATA_TYPE, unsigned POSSIZE, unsigned ROTSIZE>
-   bool isEqual( const Coord<DATA_TYPE, POSSIZE, ROTSIZE>& q1, const Coord<DATA_TYPE, POSSIZE, ROTSIZE>& q2, DATA_TYPE tol = 0.0 )
+   template <typename POS_TYPE, typename ROT_TYPE>
+   bool isEqual( const Coord<POS_TYPE, ROT_TYPE>& q1, 
+                 const Coord<POS_TYPE, ROT_TYPE>& q2, 
+                 typename Coord<POS_TYPE, ROT_TYPE>::DataType tol = 
+                     (typename Coord<POS_TYPE, ROT_TYPE>::DataType)0.0 )
    {
       return bool( isEqual( q1.getPos(), q2.getPos(), tol ) &&
                    isEqual( q1.getRot(), q2.getRot(), tol )     );
