@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Tri.h,v $
- * Date modified: $Date: 2002-03-15 03:26:57 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-03-18 23:03:53 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -37,6 +37,8 @@
 
 #include <gmtl/gmtlConfig.h>
 #include <gmtl/Point.h>
+#include <gmtl/Vec.h>
+#include <gmtl/VecOps.h>
 
 namespace gmtl
 {
