@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: testSuite.cpp,v $
- * Date modified: $Date: 2002-02-18 18:06:01 $
- * Version:       $Revision: 1.13 $
+ * Date modified: $Date: 2002-02-18 20:02:04 $
+ * Version:       $Revision: 1.14 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -58,6 +58,7 @@
 #include <TestCases/MatrixClassTest.h>
 #include <TestCases/MatrixCompareTest.h>
 #include <TestCases/MatrixOpsTest.h>
+#include <TestCases/MatrixGenTest.h>
 #include <TestCases/Point3Test.h>
 //#include <TestCases/XformTest.h>
 //#include <TestCases/OOBoxTest.h>
@@ -117,6 +118,7 @@ int main (int ac, char **av)
    gmtl_suite->addTest(gmtlTest::MatrixClassTest::suite());
    gmtl_suite->addTest(gmtlTest::MatrixCompareTest::suite());
    gmtl_suite->addTest(gmtlTest::MatrixOpsTest::suite());
+   gmtl_suite->addTest(gmtlTest::MatrixGenTest::suite());
    gmtl_suite->addTest(gmtlTest::Point3Test::suite());
    /*
    gmtl_suite->addTest(gmtlTest::XformTest::suite());

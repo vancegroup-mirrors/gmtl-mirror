@@ -276,11 +276,15 @@ gfxn3/Debug/MatrixCompareTest/matOpEqualityTest                    2.08672
 gfxn3/Debug/MatrixCompareTest/matOpNotEqualityTest                 2.21088
 gfxn3/Debug/MatrixOpsTest/matAdd44                                 1.24508
 gfxn3/Debug/MatrixOpsTest/matMult44                                6.25859
+gfxn3/Debug/MatrixOpsTest/matMult44operatorStar                    7.3095
 gfxn3/Debug/MatrixOpsTest/matSub44                                 1.25822
 gfxn3/Debug/MatrixOpsTest/matTransposeTest                         0.88732
 gfxn3/Debug/MatrixTest/matConstructorOverhead                      2.76557
 gfxn3/Debug/MatrixTest/matCopyConstructorOverhead                  1.06981
 gfxn3/Debug/MatrixTest/matGetDataOverhead                          0.0530875
+gfxn3/Debug/MatrixTest/matMakeRot33ByRef                           0.70296
+gfxn3/Debug/MatrixTest/matMakeRot34ByRef                           0.80452
+gfxn3/Debug/MatrixTest/matMakeRot44ByRef                           0.9263
 gfxn3/Debug/MatrixTest/matOpBracketOverhead                        0.095815
 gfxn3/Debug/MatrixTest/matOpEqualOverhead                          0.31954
 gfxn3/Debug/MatrixTest/matOpParenOverhead                          0.135978
