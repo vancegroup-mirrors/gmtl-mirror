@@ -1,7 +1,7 @@
 import os
 pj = os.path.join
 
-Import('baseEnv PREFIX')
+Import('pkg baseEnv PREFIX')
 
 headers = Split("""
    AABox
@@ -51,3 +51,4 @@ for s in subdirs:
 
 for h in headers:
    baseEnv.Install(pj(PREFIX, 'include', 'gmtl'), h)
+   pkg.addExtraDist([h])

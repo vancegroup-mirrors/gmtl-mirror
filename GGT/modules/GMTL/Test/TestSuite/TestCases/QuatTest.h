@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatTest.h,v $
- * Date modified: $Date: 2002-07-02 02:07:02 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2003-02-07 01:23:56 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -44,7 +44,7 @@
 namespace gmtlTest
 {
 
-class QuatTest : public CppUnit::TestCase
+class QuatTest : public CppUnit::TestFixture
 {
 public:
    QuatTest( std::string name = "QuatTest" )

@@ -1,16 +1,13 @@
 import os, string, sys
 pj = os.path.join
 
+# Bring in the AutoDist build helper
+sys.path.append('tools/build')
+from AutoDist import *
+
 #------------------------------------------------------------------------------
 # Define some generally useful functions
 #------------------------------------------------------------------------------
-def RequireSConsVersion(minimum):
-   "Check the version of SCons being run is at least the given minimum."
-   import SCons
-   if float(SCons.__version__) < float(minimum):
-      print "SCons too old: " + SCons.__version__ + " < " + str(minimum)
-      sys.exit(-1)
-
 def GetGMTLVersion():
    "Gets the GMTL version from the gmtl/Version.h header"
    import re
@@ -35,12 +32,14 @@ def GetPlatform():
       return sys.platform
 Export('GetPlatform')
 
-def CreateConfig(target, source, env, submap):
-   "Creates the prefix-config file users use to compile against this library"
+def CreateConfig(target, source, env):
+   "Creates the xxx-config file users use to compile against this library"
    import re
 
    targets = map(lambda x: str(x), target)
    sources = map(lambda x: str(x), source)
+
+   submap = env['submap']
 
    # Build each target from its source
    for i in range(len(targets)):
@@ -119,11 +118,36 @@ def BuildIRIXEnvironment():
       LIBS        = [],
    )
 
+def HasCppUnit(env):
+   "Tests if the user has CppUnit available"
+   sys.stdout.write('checking for cppunit... ')
+   if env['with-cppunit'] == None:
+      found = 0
+   else:
+      cfg = os.path.join(env['with-cppunit'], 'bin', 'cppunit-config')
+      found = os.path.isfile(cfg)
+
+   if found:
+      sys.stdout.write('yes\n')
+   else:
+      sys.stdout.write('no\n')
+   return found
+
+def SetupCppUnit(env):
+   "Sets up env for CppUnit"
+   if not HasCppUnit(env):
+      print 'ERROR: Could not find CppUnit installation.'
+      sys.exit(1)
+   cfg = pj(env['with-cppunit'], 'bin', 'cppunit-config')
+   ParseConfig(env, cfg + ' --cflags --libs')
+Export('SetupCppUnit')
+
+
 
 #------------------------------------------------------------------------------
 # Grok the arguments to this build
 #------------------------------------------------------------------------------
-RequireSConsVersion(0.08)
+EnsureSConsVersion(0,10)
 
 # Figure out what version of GMTL we're building
 GMTL_VERSION = GetGMTLVersion()
@@ -133,6 +157,7 @@ print 'Building GMTL Version: %i.%i.%i' % GMTL_VERSION
 optimize = ARGUMENTS.get('optimize', 'no')
 profile = ARGUMENTS.get('profile', 'no')
 PREFIX = ARGUMENTS.get('prefix', '/usr/local')
+Prefix(PREFIX)
 Export('PREFIX')
 
 # Create the extra builders
@@ -153,18 +178,50 @@ else:
    sys.exit(-1)
 Export('baseEnv')
 
+opts = Options('config.cache')
+opts.Add('with-cppunit',
+         'CppUnit installation directory',
+         '/usr',
+         lambda k,v: WhereIs(pj(v, 'bin', 'cppunit-config')) != None
+        )
+opts.Update(baseEnv)
+Help(opts.GenerateHelpText(baseEnv))
+
+
+# Create the GMTL package
+pkg = Package('gmtl', '%i.%i.%i' % GMTL_VERSION)
+pkg.addExtraDist(Split("""
+   AUTHORS
+   ChangeLog
+   COPYING
+   gmtl-config.in
+   SConstruct
+   docs/Makefile
+   docs/docbook.mk
+   docs/gmtl.doxy
+   docs/gmtl.latex.doxy
+   docs/gmtl.man.doxy
+   docs/version.mk.doxy
+   docs/programmer.guide/Makefile
+   docs/programmer.guide/guide.xml
+   gmtl/gmtl.doxygen
+   gmtl/SConstruct
+   gmtl/External/SConstruct
+   gmtl/Util/SConstruct
+   Test/SConstruct
+   Test/TestSuite/SConstruct
+   Test/TestSuite/TestCases/SConstruct
+   Test/TestSuite/TestCases/InfoTests/SConstruct
+"""))
+Export('pkg')
+
 # Process subdirectories
-subdirs = Split("""
-   gmtl
-   Test
-""")
+subdirs = Split('gmtl')
+if HasCppUnit(baseEnv):
+   subdirs.append('Test')
+SConscript(dirs = subdirs)
 
-for s in subdirs:
-   SConscript(dirs = s)
-
-# install target
-baseEnv.Alias('install', PREFIX)
-
+# Setup the builder for gmtl-config
 env = baseEnv.Copy(BUILDERS = builders)
 env.ConfigBuilder('gmtl-config','gmtl-config.in',
    submap = {
@@ -184,4 +241,3 @@ env.Install(pj(PREFIX, 'bin'), 'gmtl-config')
 
 # Build everything by default
 Default('.')
-

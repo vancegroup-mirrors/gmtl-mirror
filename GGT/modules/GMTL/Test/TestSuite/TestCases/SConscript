@@ -36,9 +36,6 @@ sources = Split("""
    XformTest
 """)
 
-#sources = Split("""
-#""")
-
 sources = map(lambda n: n + '.cpp', sources)
 
 # Get sources in the InfoTests dir
