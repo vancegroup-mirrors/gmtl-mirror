@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Intersection.h,v $
- * Date modified: $Date: 2002-11-26 06:32:25 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2003-01-10 18:42:01 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -40,8 +40,12 @@
 #include <gmtl/Point.h>
 #include <gmtl/Sphere.h>
 #include <gmtl/Vec.h>
+#include <gmtl/Plane.h>
 #include <gmtl/VecOps.h>
 #include <gmtl/Math.h>
+#include <gmtl/Ray.h>
+#include <gmtl/LineSeg.h>
+#include <gmtl/Tri.h>
 
 namespace gmtl
 {
@@ -277,6 +281,114 @@ namespace gmtl
    {
       return intersect(box, sph);
    }
+
+   /**
+    * Tests if the given plane and ray intersect with each other.
+    *
+    *  @param ray - the Ray
+    *  @param plane - the Plane
+    *  @param t - t gives you the intersection point:
+    *         isect_point = ray.origin + ray.dir * t 
+    *
+    *  @return true if the ray intersects the plane.
+    */
+   template<class DATA_TYPE>
+   bool intersect( const Plane<DATA_TYPE>& plane, const Ray<DATA_TYPE>& ray, DATA_TYPE& t )
+   {
+      Vec<DATA_TYPE, 3> N( plane.getNormal() );
+      t = dot( N, N * plane.getOffset() - ray.getOrigin() ) / dot( N, ray.getDir() );
+      return (DATA_TYPE)0 <= t && t <= (DATA_TYPE)1.0; 
+   }
+
+   /**
+    * Tests if the given plane and ray intersect with each other.
+    *
+    *  @param tri - the triangle (ccw ordering)
+    *  @param ray - the ray
+    *  @param u,v - tangent space u/v coordinates of the intersection
+    *  @param t - t gives you the intersection point:
+    *         isect = ray.dir * t + ray.origin
+    *
+    *  @return true if the ray intersects the triangle.
+    *  @see from http://www.acm.org/jgt/papers/MollerTrumbore97/code.html
+    */
+   template<class DATA_TYPE>
+   bool intersect( const Tri<DATA_TYPE>& tri, const Ray<DATA_TYPE>& ray, 
+   						   float& u, float& v, float& t )
+   {
+	   const float EPSILON = (DATA_TYPE)0.00001;
+	   Vec<DATA_TYPE, 3> edge1, edge2, tvec, pvec, qvec;
+      float det,inv_det;
+
+      /* find vectors for two edges sharing vert0 */
+      edge1 = tri[1] - tri[0];
+      edge2 = tri[2] - tri[0];
+
+      /* begin calculating determinant - also used to calculate U parameter */
+      gmtl::cross( pvec, ray.getDir(), edge2 );
+
+      /* if determinant is near zero, ray lies in plane of triangle */
+      det = gmtl::dot( edge1, pvec );
+
+      if (det < EPSILON)
+         return false;
+
+      /* calculate distance from vert0 to ray origin */
+      tvec = ray.getOrigin() - tri[0];
+
+      /* calculate U parameter and test bounds */
+      u = gmtl::dot( tvec, pvec );
+      if (u < 0.0 || u > det)
+         return false;
+
+      /* prepare to test V parameter */
+      gmtl::cross( qvec, tvec, edge1 );
+
+      /* calculate V parameter and test bounds */
+      v = gmtl::dot( ray.getDir(), qvec );
+      if (v < 0.0 || u + v > det)
+         return false;
+
+      /* calculate t, scale parameters, ray intersects triangle */
+      t = gmtl::dot( edge2, qvec );
+      inv_det = ((DATA_TYPE)1.0) / det;
+      t *= inv_det;
+      u *= inv_det;
+      v *= inv_det;
+      
+      // test if t is within the ray boundary (when t >= 0)
+      return t >= (DATA_TYPE)0;
+   }
+
+   /**
+    * Tests if the given plane and ray intersect with each other.
+    *
+    *  @param tri - the triangle (ccw ordering)
+    *  @param ray - the ray
+    *  @param u,v - tangent space u/v coordinates of the intersection
+    *  @param t - t gives you the intersection point:
+    *         isect = ray.dir * t + ray.origin
+    *
+    *  @return true if the ray intersects the triangle.
+    */
+   template<class DATA_TYPE>
+   bool intersect( const Tri<DATA_TYPE>& tri, const LineSeg<DATA_TYPE>& lineseg, 
+   						   float& u, float& v, float& t )
+   {
+      const DATA_TYPE eps = (DATA_TYPE)0.0001010101;
+      DATA_TYPE l = length( lineseg.getDir() );
+      if (eps < l)
+      {
+         Ray<DATA_TYPE> temp( lineseg.getOrigin(), lineseg.getDir() / l );
+         bool result = intersect( tri, temp, u, v, t );
+         t /= lineseg.getLength(); // need to normalize the result
+         return result && t <= (DATA_TYPE)1.0;
+      }
+      else 
+         return false;
+   }
 }
+
+   
 
 #endif

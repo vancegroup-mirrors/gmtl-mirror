@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: LineSegTest.h,v $
- * Date modified: $Date: 2002-10-17 09:20:30 $
- * Version:       $Revision: 1.11 $
+ * Date modified: $Date: 2003-01-10 18:42:00 $
+ * Version:       $Revision: 1.12 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -40,6 +40,8 @@
 
 #include <gmtl/LineSeg.h>
 #include <gmtl/LineSegOps.h>
+#include <gmtl/Plane.h>
+#include <gmtl/Intersection.h>
 
 namespace gmtlTest
 {
@@ -166,27 +168,29 @@ public:
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("PlaneTest/WhichSideOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
-
+*/
+   /*
    void testFindNearestPt()
    {
       gmtl::Point<float, 3> answer, test_point, correct_result;
+      gmtl::Plane<float> xy_plane( gmtl::Vec<float, 3>( 0,1,0 ), 0 );
       float dist;
 
       // XY dist to point off origin
       test_point = gmtl::Point<float, 3>(0.0,0.0,1.0);
-      CPPUNIT_ASSERT(distance(xy_plane, test_point) == findNearestPt(xy_plane, test_point, answer));
+      CPPUNIT_ASSERT(gmtl::distance(xy_plane, test_point) == gmtl::findNearestPt(xy_plane, test_point, answer));
       CPPUNIT_ASSERT(answer == origin);
 
       // XY dist to point at 12,21
       test_point = gmtl::Point<float, 3>(12.0,-21.0,-13.0);
       correct_result = gmtl::Point<float, 3>(12.0,-21.0,0.0);
-      CPPUNIT_ASSERT(distance(xy_plane, test_point) == findNearestPt(xy_plane, test_point, answer));
-      CPPUNIT_ASSERT(answer == correct_result);
+      CPPUNIT_ASSERT( gmtl::distance(xy_plane, test_point) == gmtl::findNearestPt(xy_plane, test_point, answer));
+      CPPUNIT_ASSERT( answer == correct_result);
 
       // XY dist to point on plane at -17.05, 0.334
       test_point = gmtl::Point<float, 3>(-17.05,0.334,0.0);
-      CPPUNIT_ASSERT(distance(xy_plane, test_point) == findNearestPt(xy_plane, test_point, answer));
-      CPPUNIT_ASSERT(answer == test_point);
+      CPPUNIT_ASSERT( gmtl::distance(xy_plane, test_point) == gmtl::findNearestPt(xy_plane, test_point, answer));
+      CPPUNIT_ASSERT( answer == test_point);
 
       // Test findNearestPt performance
       const long iters(400000);
@@ -204,7 +208,48 @@ public:
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("PlaneTest/FindNearestPtOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
-*/
+   */
+
+   void intersectLineSegPlane()
+   {
+      float t;
+      bool result;
+      gmtl::LineSeg<float> lineseg( gmtl::Point<float, 3>( 0,1,0 ), gmtl::Point<float, 3>( 0,-1,0 ) );
+      gmtl::Plane<float> plane( gmtl::Vec<float, 3>( 0,1,0 ), 0 );
+      result = gmtl::intersect( plane, lineseg, t );
+      CPPUNIT_ASSERT( t == 0.5 && result == true );
+   }
+
+   void intersectLineSegTri()
+   {
+      bool result;
+      gmtl::LineSeg<float> l( gmtl::Point3f( 0,1,0 ), gmtl::Point3f( 0,-1,0 ) );
+      gmtl::Tri<float> tri( gmtl::Point3f( -1,0,1 ), gmtl::Point3f( 1,0,1 ), gmtl::Point3f( 0,0,-1 ) );
+      float u, v, t;
+      result = gmtl::intersect( tri, l, u, v, t );
+      CPPUNIT_ASSERT( t == 0.5 && result == true );
+   }
+
+   void intersectRayPlane()
+   {
+      bool result;
+      gmtl::Ray<float> r( gmtl::Point3f( 0,1,0 ), gmtl::Vec3f( 0,-1,0 ) );
+      gmtl::Planef plane( gmtl::Vec3f( 0,1,0 ), 0 );
+      float t;
+      result = gmtl::intersect( plane, r, t );
+      CPPUNIT_ASSERT( t == 1.0 && result == true );
+   }
+
+   void intersectRayTri()
+   {
+      bool result;
+      gmtl::Ray<float> r( gmtl::Point3f( 0,1,0 ), gmtl::Vec3f( 0,-1,0 ) );
+      gmtl::Tri<float> tri( gmtl::Point3f( -1,0,1 ), gmtl::Point3f( 1,0,1 ), gmtl::Point3f( 0,0,-1 ) );
+      float u, v, t;
+      result = gmtl::intersect( tri, r, u, v, t );
+      CPPUNIT_ASSERT( t == 1.0 && result == true );
+   }
+
    static CppUnit::Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("LineSegTest");
@@ -219,6 +264,16 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<LineSegTest>("testGetDir", &LineSegTest::testGetDir));
       test_suite->addTest( new CppUnit::TestCaller<LineSegTest>("testSetDir", &LineSegTest::testSetDir));
       test_suite->addTest( new CppUnit::TestCaller<LineSegTest>("testGetLength", &LineSegTest::testGetLength));
+
+      test_suite->addTest( new CppUnit::TestCaller<LineSegTest>("intersectLineSegPlane", &LineSegTest::intersectLineSegPlane));
+      test_suite->addTest( new CppUnit::TestCaller<LineSegTest>("intersectLineSegTri", &LineSegTest::intersectLineSegTri));
+      test_suite->addTest( new CppUnit::TestCaller<LineSegTest>("intersectLineSegPlane", &LineSegTest::intersectRayPlane));
+      test_suite->addTest( new CppUnit::TestCaller<LineSegTest>("intersectLineSegTri", &LineSegTest::intersectRayTri));
+      
+      
+
+      
+
 //      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testDistance", &PlaneTest::testDistance));
 //      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testWhichSide", &PlaneTest::testWhichSide));
 //      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testFindNearestPt", &PlaneTest::testFindNearestPt));
