@@ -163,13 +163,10 @@ def SetupPython(env, requiredVersion):
 
    # Build up the env information
    py_cpppath = pj(prefix, 'include', 'python'+py_ver)
-   py_libpath = pj(prefix, 'lib', 'python'+py_ver, 'config')
-   py_lib = 'python'+py_ver
 
    # Setup the env
    env.Append(CPPPATH   = [py_cpppath],
-              LIBPATH   = [py_libpath],
-              LIBS      = [py_lib, 'pthread', 'util'])
+              LIBS      = ['pthread'])
 
 def SetupBoostPython(env):
    "Sets up the env for Boost Python"
