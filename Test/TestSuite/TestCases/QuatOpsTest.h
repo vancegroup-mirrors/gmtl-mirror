@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatOpsTest.h,v $
- * Date modified: $Date: 2002-03-09 23:32:55 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2002-03-10 20:19:53 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -281,7 +281,7 @@ public:
       gmtl::div( q5, q3, q4 );
       gmtl::div( q6, q4, q3 );
       
-      gmtl::Quat<float> expected_result1( 0.173913, 0.347826, -0, -1.52174 ), expected_result2( 4, 8, 0, 35 );
+      gmtl::Quat<float> expected_result1( 0.173913f, 0.347826f, -0.0f, -1.52174f ), expected_result2( 4, 8, 0, 35 );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, q5, eps ) );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result2, q6, eps ) );
    }
@@ -374,7 +374,7 @@ public:
    {
       // test out mult( result, quat, quat )
       const float eps = 0.0001f;
-      gmtl::Quat<float> q( 0.2, 0.33, 0.44, 0.101 ), expected_result( -0.567053, -0.935637, -1.24752, 0.286362 );
+      gmtl::Quat<float> q( 0.2f, 0.33f, 0.44f, 0.101f ), expected_result( -0.567053f, -0.935637f, -1.24752f, 0.286362f );
       gmtl::Quat<float> q2( q );
       gmtl::Quat<float> q3( gmtl::invert( q2 ) );
       CPPUNIT_ASSERT( gmtl::isEqual( expected_result, q3, eps ) );
