@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixGenTest.cpp,v $
- * Date modified: $Date: 2004-07-21 16:06:31 $
- * Version:       $Revision: 1.17 $
+ * Date modified: $Date: 2004-07-21 18:43:59 $
+ * Version:       $Revision: 1.18 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -231,7 +231,7 @@ namespace gmtlTest
 
       // Test point going from T to I
       result_pt = i_M_t * pt_T;
-      std::cout << "result_pt:1: " << result_pt << std::endl;
+      //std::cout << "result_pt:1: " << result_pt << std::endl;
       CPPUNIT_ASSERT( gmtl::isEqual(result_pt, pt_I, eps));
 
       // Test point going from I to T
@@ -577,9 +577,9 @@ namespace gmtlTest
          // test cos y = 0 singularity
          gmtl::set( matrix, gmtl::AxisAnglef( gmtl::Math::deg2Rad( 90.0f ), 0.0f, 1.0f, 0.0f ) );
          gmtl::set( euler, matrix );
-         std::cout<<gmtl::Math::rad2Deg( euler[0] )<<" "
-                  <<gmtl::Math::rad2Deg( euler[1] )<<" "
-                  <<gmtl::Math::rad2Deg( euler[2] )<<" "<<std::endl;
+         //std::cout<<gmtl::Math::rad2Deg( euler[0] )<<" "
+         //         <<gmtl::Math::rad2Deg( euler[1] )<<" "
+         //         <<gmtl::Math::rad2Deg( euler[2] )<<" "<<std::endl;
          /* XXX: FIX ME
          CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( euler[0] ), 0.0f, eps ) );
          CPPUNIT_ASSERT( gmtl::Math::isEqual( gmtl::Math::rad2Deg( euler[1] ), 90.0f, eps ) );
