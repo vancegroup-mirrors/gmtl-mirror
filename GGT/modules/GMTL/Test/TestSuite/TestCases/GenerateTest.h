@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: GenerateTest.h,v $
- * Date modified: $Date: 2002-02-22 20:12:58 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-02-25 19:00:24 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -264,6 +264,168 @@ public:
       }
    }
 
+   void testGenTimingMakeInvert()
+   {
+      gmtl::Quatf<double> q1;
+      const long iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+      bool result = false;
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         q1 = makeInvert( q1 );
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE( "GenTest/makeInvert(quatd)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      gmtl::Quatf<float> q2;
+      CPPUNIT_METRIC_START_TIMING();
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         q2 = makeInvert( q2 );
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE( "GenTest/makeInvert(quatf)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+   
+   void testGenTimingMakeConj()
+   {
+      gmtl::Quatf<double> q1;
+      const long iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+      bool result = false;
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         q1 = makeConj( q1 );
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE( "GenTest/makeConj(quatd)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      gmtl::Quatf<float> q2;
+      CPPUNIT_METRIC_START_TIMING();
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         q2 = makeConj( q2 );
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE( "GenTest/makeConj(quatf)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }   
+   
+   void testGenTimingMakePure()
+   {
+      gmtl::Quatf<double> q1;
+      gmtl::Vec<double, 3> v1;
+      const long iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+      bool result = false;
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         q1 = makePure( v1 );
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE( "GenTest/makePure(vec3d)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      gmtl::Quatf<float> q2;
+      gmtl::Vec<float, 3> v2;
+      CPPUNIT_METRIC_START_TIMING();
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         q2 = makePure( v2 );
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE( "GenTest/makePure(vec3f)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }   
+   
+   void testGenTimingMakeVec()
+   {
+      gmtl::Quatf<double> q1;
+      gmtl::Vec<double, 3> v1;
+      const long iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+      bool result = false;
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         v1 = makeVec( q1 );
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE( "GenTest/makeVec(quatd)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      gmtl::Quatf<float> q2;
+      gmtl::Vec<float, 3> v2;
+      CPPUNIT_METRIC_START_TIMING();
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         v2 = makeVec( q2 );
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE( "GenTest/makeVec(quatf)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }   
+   
+   void testGenTimingMakeNormal()
+   {
+      gmtl::Quatf<double> q1;
+      const long iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+      bool result = false;
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         q1 = makeNormal( q1 );
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE( "GenTest/makeNormal(quatd)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      gmtl::Quatf<float> q2;
+      CPPUNIT_METRIC_START_TIMING();
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         q2 = makeNormal( q2 );
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE( "GenTest/makeNormal(quatf)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }  
+   
+   void testGenTimingMakeRot()
+   {
+      gmtl::Quatf<double> q1;
+      const long iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+      bool result = false;
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         gmtl::makeRot( q1, 1.0, 1.0, 1.0, 1.0 );
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE( "GenTest/makeRot(quatd,d,d,d,d)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      gmtl::Quatf<float> q2;
+      CPPUNIT_METRIC_START_TIMING();
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         gmtl::makeRot( q2, 1.0f, 1.0f, 1.0f, 1.0f );
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE( "GenTest/makeRot(quatf,f,f,f,f)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      gmtl::Quatf<double> q3;
+      CPPUNIT_METRIC_START_TIMING();
+      bool result = false;
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         gmtl::makeRot( q3, 1.0, gmtl::Vec<double, 3>( 1,1,1 ) );
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE( "GenTest/makeRot(quatd,d,vecd)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      gmtl::Quatf<float> q4;
+      CPPUNIT_METRIC_START_TIMING();
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         gmtl::makeRot( q4, 1.0f, gmtl::Vec<float, 3>( 1,1,1 ) );
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE( "GenTest/makeRot(quatf,f,vecf)", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+   }  
+   
    /** @todo implement quat makeRot Euler */
    static CppUnit::Test* suite()
    {
@@ -275,6 +437,15 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<GenerateTest>( "testQuatMakeRot", &GenerateTest::testQuatMakeRot ) );
       test_suite->addTest( new CppUnit::TestCaller<GenerateTest>( "testQuatGetRot", &GenerateTest::testQuatGetRot ) );
       test_suite->addTest( new CppUnit::TestCaller<GenerateTest>( "testQuatMakeGetMakeRot", &GenerateTest::testQuatMakeGetMakeRot ) );
+      
+      test_suite->addTest( new CppUnit::TestCaller<GenerateTest>( "testGenTimingMakeInvert", &GenerateTest::testGenTimingMakeInvert ) );
+      test_suite->addTest( new CppUnit::TestCaller<GenerateTest>( "testGenTimingMakeConj", &GenerateTest::testGenTimingMakeConj ) );
+      test_suite->addTest( new CppUnit::TestCaller<GenerateTest>( "testGenTimingMakePure", &GenerateTest::testGenTimingMakePure ) );
+      test_suite->addTest( new CppUnit::TestCaller<GenerateTest>( "testGenTimingMakeVec", &GenerateTest::testGenTimingMakeVec ) );
+      test_suite->addTest( new CppUnit::TestCaller<GenerateTest>( "testGenTimingMakeNormal", &GenerateTest::testGenTimingMakeNormal ) );
+      test_suite->addTest( new CppUnit::TestCaller<GenerateTest>( "testGenTimingMakeRot", &GenerateTest::testGenTimingMakeRot ) );
+      
+      
       return test_suite;
    }
 
