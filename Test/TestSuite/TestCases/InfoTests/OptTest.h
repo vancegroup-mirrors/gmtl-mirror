@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: OptTest.h,v $
- * Date modified: $Date: 2002-02-09 22:24:51 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-02-09 23:56:34 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -45,7 +45,69 @@
 
 namespace gmtlTest
 {
-
+class ArrayVec3
+   {
+   public:
+      ArrayVec3() 
+      {
+         vec[0] = 0.0f;
+         vec[1] = 0.0f;
+         vec[2] = 0.0f;
+      }
+      ArrayVec3( const ArrayVec3& v )
+      {
+         vec[0] = v.vec[0];
+         vec[1] = v.vec[1];
+         vec[2] = v.vec[2];
+      }
+      ArrayVec3( float x, float y, float z )
+      {
+         vec[0] = x;
+         vec[1] = y;
+         vec[2] = z;
+      }
+      float vec[3];
+   };
+   
+   class SeparateVec3
+   {
+   public:
+      SeparateVec3() 
+      {
+         vec1 = 0.0f;
+         vec2 = 0.0f;
+         vec0 = 0.0f;
+      }
+      SeparateVec3( const SeparateVec3& v )
+      {
+         vec0 = v.vec0;
+         vec1 = v.vec1;
+         vec2 = v.vec2;
+      }
+      SeparateVec3( float x, float y, float z )
+      {
+         vec0 = x;
+         vec1 = y;
+         vec2 = z;
+      }
+      float vec0, vec1, vec2;
+   };
+   
+   SeparateVec3& operator+=( SeparateVec3& lhs, const SeparateVec3& rhs )
+   {
+      lhs.vec0 = rhs.vec0;
+      lhs.vec1 = rhs.vec1;
+      lhs.vec2 = rhs.vec2;
+      return lhs;
+   }   
+   SeparateVec3 operator+( const SeparateVec3& lhs, const SeparateVec3& rhs )
+   {
+      return SeparateVec3( lhs.vec0 + rhs.vec0, lhs.vec1 + rhs.vec1, lhs.vec2 + rhs.vec2 );
+   }
+//   SeparateVec3 addOpt( const SeparateVec3& lhs, const SeparateVec3& rhs )
+//   {
+//      return SeparateVec3( lhs ) += rhs;
+//   }
 class OptTest : public CppUnit::TestCase
 {
 public:
@@ -67,6 +129,16 @@ public:
    {
       
    }
+   
+   void testLoopUnrolling()
+   {
+      
+   }
+   
+   void testRetValOptUsingInternalTemporary()
+   {
+      
+   }
 
    static Test* suite()
    {
@@ -81,7 +153,8 @@ public:
       //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
       return test_suite;
    }
-
+private:
+   
 };
 
 };
