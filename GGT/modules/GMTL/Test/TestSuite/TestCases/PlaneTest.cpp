@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PlaneTest.cpp,v $
- * Date modified: $Date: 2003-02-06 01:12:27 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2003-05-14 21:31:26 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -371,6 +371,16 @@ namespace gmtlTest
       CPPUNIT_ASSERT_METRIC_TIMING_LE("PlaneTest/WhichSideOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
 
+   void PlaneTest::testFindReflect()
+   {
+      gmtl::Planef plane( gmtl::Vec3f( 0,1,0 ), 0 );
+      gmtl::Point3f point( 3,5,6 );
+      gmtl::Point3f result;
+
+      gmtl::reflect( result, plane, point );
+      CPPUNIT_ASSERT( result == gmtl::Vec3f( 3,-5,6 ) );
+   }
+   
    void PlaneTest::testFindNearestPt()
    {
       gmtl::Point<float, 3> answer, test_point, correct_result;
