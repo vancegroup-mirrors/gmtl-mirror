@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Xforms.h,v $
- * Date modified: $Date: 2002-03-09 23:17:54 $
- * Version:       $Revision: 1.16 $
+ * Date modified: $Date: 2002-03-10 19:04:59 $
+ * Version:       $Revision: 1.17 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -47,17 +47,21 @@
 namespace gmtl
 {
    /** transform a vector by a rotation quaternion.
-    * @pre give a vector
-    * @post Rv = q P(v) q*
-    * @post vector = rotquat * pure_quat_from_vector * rotquat_conj
+    * @pre give a vector, and a rotation quaternion (by definition, a rotation quaternion is normalized).
+    * @post v' = q P(v) q*  (where result is v', rot is q, and vector is v.  q* is conj(q), and P(v) is pure quaternion made from v)
     * @see game programming gems #1 p199
     * @see shoemake siggraph notes
     * @notes for the implementation, inv and conj should both work for the "q*" in "Rv = q P(v) q*"
-    *        but conj is actually faster so we usually choose that.
+    *        but conj is actually faster so we usually choose that.  
+    * @notes also note, that if the input quat wasn't normalized (and thus isn't a rotation quat), 
+    *        then this might not give the correct result, since conj and invert is only equiv when normalized...
     */
    template <typename DATA_TYPE>
-   inline Vec<DATA_TYPE, 3>& xform( Vec<DATA_TYPE, 3>& result_vec, const Quat<DATA_TYPE>& rot, const Vec<DATA_TYPE, 3>& vector )
+   inline Vec<DATA_TYPE, 3>& xform( Vec<DATA_TYPE, 3>& result, const Quat<DATA_TYPE>& rot, const Vec<DATA_TYPE, 3>& vector )
    {
+      // check preconditions...
+      ggtASSERT( Math::isEqual( length( rot ), (DATA_TYPE)1.0, (DATA_TYPE)0.0001 ) && "must pass a rotation quaternion to xform(result,quat,vec) - by definition, a rotation quaternion is normalized).  if you need non-rotation quaternion support, let us know." );
+      
       // easiest to write and understand (slowest too)
       //return result_vec = makeVec( rot * makePure( vector ) * makeConj( rot ) );
 
@@ -72,38 +76,22 @@ namespace gmtl
          pure[Welt]*rot_conj[Zelt] + pure[Zelt]*rot_conj[Welt] + pure[Xelt]*rot_conj[Yelt] - pure[Yelt]*rot_conj[Xelt],
          pure[Welt]*rot_conj[Welt] - pure[Xelt]*rot_conj[Xelt] - pure[Yelt]*rot_conj[Yelt] - pure[Zelt]*rot_conj[Zelt] );
       
-      result_vec.set( 
+      result.set( 
          rot[Welt]*temp[Xelt] + rot[Xelt]*temp[Welt] + rot[Yelt]*temp[Zelt] - rot[Zelt]*temp[Yelt],
          rot[Welt]*temp[Yelt] + rot[Yelt]*temp[Welt] + rot[Zelt]*temp[Xelt] - rot[Xelt]*temp[Zelt],
          rot[Welt]*temp[Zelt] + rot[Zelt]*temp[Welt] + rot[Xelt]*temp[Yelt] - rot[Yelt]*temp[Xelt] );
-      return result_vec;
+      return result;
    }
 
    /** transform a vector by a rotation quaternion.
-    * @pre give a vector
-    * @post result = quat * vector
+    * @pre give a vector, and a rotation quaternion (by definition, a rotation quaternion is normalized).
+    * @post v' = q P(v) q*  (where result is v', rot is q, and vector is v.  q* is conj(q), and P(v) is pure quaternion made from v)
     */
    template <typename DATA_TYPE>
    inline Vec<DATA_TYPE, 3> operator*( const Quat<DATA_TYPE>& rot, const Vec<DATA_TYPE, 3>& vector )
    {
-      // easiest to write and understand (slowest too)
-      //return makeVec( rot * makePure( vector ) * makeConj( rot ) );
-      
-      // completely hand expanded 
-      // (faster by 24% in gcc 2.96 debug mode.)
-      // (faster by 29% in gcc 2.96 opt3 mode (74% for doubles))
-      Quat<DATA_TYPE> rot_conj( -rot[Xelt], -rot[Yelt], -rot[Zelt], rot[Welt] ); 
-      Quat<DATA_TYPE> pure( vector[0], vector[1], vector[2], (DATA_TYPE)0.0 );
-      Quat<DATA_TYPE> temp( 
-         pure[Welt]*rot_conj[Xelt] + pure[Xelt]*rot_conj[Welt] + pure[Yelt]*rot_conj[Zelt] - pure[Zelt]*rot_conj[Yelt],
-         pure[Welt]*rot_conj[Yelt] + pure[Yelt]*rot_conj[Welt] + pure[Zelt]*rot_conj[Xelt] - pure[Xelt]*rot_conj[Zelt],
-         pure[Welt]*rot_conj[Zelt] + pure[Zelt]*rot_conj[Welt] + pure[Xelt]*rot_conj[Yelt] - pure[Yelt]*rot_conj[Xelt],
-         pure[Welt]*rot_conj[Welt] - pure[Xelt]*rot_conj[Xelt] - pure[Yelt]*rot_conj[Yelt] - pure[Zelt]*rot_conj[Zelt] );
-
-      return Vec<DATA_TYPE, 3>( 
-         rot[Welt]*temp[Xelt] + rot[Xelt]*temp[Welt] + rot[Yelt]*temp[Zelt] - rot[Zelt]*temp[Yelt],
-         rot[Welt]*temp[Yelt] + rot[Yelt]*temp[Welt] + rot[Zelt]*temp[Xelt] - rot[Xelt]*temp[Zelt],
-         rot[Welt]*temp[Zelt] + rot[Zelt]*temp[Welt] + rot[Xelt]*temp[Yelt] - rot[Yelt]*temp[Xelt] );
+      Vec<DATA_TYPE, 3> temporary;
+      return xform( temporary, rot, vector );
    }
 
    
