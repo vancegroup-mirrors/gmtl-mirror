@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Plane.h,v $
- * Date modified: $Date: 2002-02-10 04:45:24 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-02-18 21:56:11 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,9 +35,11 @@
 #ifndef _GMTL_PLANE_H
 #define _GMTL_PLANE_H
 
-#include <gmtl/Vec3.h>
-#include <gmtl/Point3.h>
-#include <gmtl/matVecFuncs.h>
+#include <gmtl/gmtlConfig.h>
+#include <gmtl/Vec.h>
+#include <gmtl/Point.h>
+#include <gmtl/VecOps.h>
+#include <gmtl/Compare.h>
 
 namespace gmtl
 {
@@ -57,12 +59,15 @@ namespace gmtl
 //  |-d-|
 //__|___|-->N
 //  |   |
+template< class DATA_TYPE>
 class Plane
 {
 public:
-   // Which side of the plane are we on
-   // POS_SIDE: Side that the normal points
-   // NEG_SIDE: Side away from the normal
+   /**
+    * Used to describe which side of the plane we are on.
+    * POS_SIDE: Side that the normal points
+    * NEG_SIDE: Side away from the normal
+    */
    enum Side
    {
       ON_PLANE,
@@ -71,68 +76,137 @@ public:
    };
 
 public:
-	// Constructors
-   Plane();
-	Plane(const Point3& pt1, const Point3& pt2, const Point3& pt3);
-	Plane(const Vec3& norm, const Point3& _pt);
-   Plane(const Vec3& norm, float dPlaneConst);
+   /**
+    * Creates an uninitialized Plane. In other words, the normal is (0,0,0) and
+    * the offset is 0.
+    */
+   Plane()
+      : mOffset( 0 )
+   {}
 
-   Plane(const Plane& plane);
-		
-	// Helper distance functions
+   /**
+    * Creates a plane that the given points lie on.
+    *
+    * @param pt1     a point on the plane
+    * @param pt2     a point on the plane
+    * @param pt3     a point on the plane
+    */
+   Plane( const Point<DATA_TYPE, 3>& pt1, const Point<DATA_TYPE, 3>& pt2,
+          const Point<DATA_TYPE, 3>& pt3)
+   {
+      Vec<DATA_TYPE, 3> vec12( pt2-pt1 );
+      Vec<DATA_TYPE, 3> vec13( pt3-pt1 );
+
+      mNorm = cross( vec12, vec13 );
+      normalize( mNorm );
+
+      mOffset = dot( static_cast< Vec<DATA_TYPE, 3> >(pt1), mNorm );  // Graphics Gems I: Page 390
+   }
+
+   /**
+    * Creates a plane with the given normal on which pt resides.
+    *
+    * @param norm    the normal of the plane
+    * @param pt      a point that lies on the plane
+    */
+   Plane( const Vec<DATA_TYPE, 3>& norm, const Point<DATA_TYPE, 3>& pt )
+      : mNorm( norm )
+   {
+      mOffset = dot( static_cast< Vec<DATA_TYPE, 3> >(pt), norm );
+   }
+
+   /**
+    * Creates a plane with the given normal and offset.
+    *
+    * @param norm          the normal of the plane
+    * @param dPlaneConst   the plane offset constant
+    */
+   Plane( const Vec<DATA_TYPE, 3>& norm, float dPlaneConst )
+      : mNorm( norm ), mOffset( dPlaneConst )
+   {}
+
+   /**
+    * Creates an exact duplicate of the given plane.
+    *
+    * @param plane   the plane to copy
+    */
+   Plane( const Plane<DATA_TYPE>& plane )
+      : mNorm( plane.mNorm ), mOffset( plane.mOffset )
+   {}
+
+   /**
+    * Gets the normal for this plane.
+    *
+    * @return  this plane's normal
+    */
+   const Vec<DATA_TYPE, 3>& getNormal() const
+   {
+      return mNorm;
+   }
+
+   /**
+    * Sets the normal for this plane to the given vector.
+    *
+    * @param norm    the new normal
+    *
+    * @pre |norm| = 1
+    */
+   void setNormal( const Vec<DATA_TYPE, 3>& norm )
+   {
+      mNorm = norm;
+   }
+
+   /**
+    * Gets the offset of this plane from the origin such that the offset is the
+    * negative distance from the origin.
+    *
+    * @return  this plane's offset
+    */
+   const DATA_TYPE& getOffset() const
+   {
+      return mOffset;
+   }
+
+   /**
+    * Sets the offset of this plane from the origin.
+    *
+    * @param offset     the new offset
+    */
+   void setOffset( const DATA_TYPE& offset )
+   {
+      mOffset = offset;
+   }
+/*
+   // Helper distance functions
    float distanceToPt(const Point3& pt) const;
 
    Side whichSide(const Point3& pt) const;
    inline Side whichSide(const Point3& pt, const float& eps) const;
 
    //: Find nearest pt on the plane
-	//! RETURN: distance to the point
-	//+ If d is positive, pt lies on same side as normal
-	//+ If d is negative, pt lies on opposite side from normal
-	//+ if d is "near" zero, pt is on the plane
-	float findNearestPt(const Point3& pt, Point3& nearPt) const;
-	
+   //! RETURN: distance to the point
+   //+ If d is positive, pt lies on same side as normal
+   //+ If d is negative, pt lies on opposite side from normal
+   //+ if d is "near" zero, pt is on the plane
+   float findNearestPt(const Point3& pt, Point3& nearPt) const;
+*/
 public:
    // dot(Pt,mNorm) = mOffset
-   // NOTE: mOffset = -D (neg dist from origin)
-	Vec3    mNorm;       // The normal
-	float   mOffset;     // offset
+   /**
+    * The normal for this vector. For any point on the plane,
+    * dot( pt, mNorm) = mOffset.
+    */
+   Vec<DATA_TYPE, 3> mNorm;
+
+   /**
+    * This plane's offset from the origin such that for any point pt,
+    * dot( pt, mNorm ) = mOffset. Note that mOffset = -D (neg dist from the
+    * origin).
+    */
+   DATA_TYPE mOffset;
 };
 
-
-Plane::Plane()
-{;}
-
-Plane::Plane(const Vec3& norm, float dPlaneConst)
-{
-   mNorm = norm;
-   mOffset = dPlaneConst;
-}
-
-/// Create a plane containing the given points.
- Plane::Plane(const Point3& pt1, const Point3& pt2, const Point3& pt3)
-{
-    Vec3 vec12(pt2-pt1);
-    Vec3 vec13(pt3-pt1);
-
-    mNorm = vec12.cross(vec13);
-    mNorm.normalize();
-
-    mOffset = pt1.dot(mNorm);	// Graphics Gems I: Page 390
-}
-
-Plane::Plane(const Vec3& norm, const Point3& _pt)
-{
-    mNorm = norm;
-    mOffset = _pt.dot(norm);
-}
-
-Plane::Plane(const Plane& plane)
-{
-   mNorm = plane.mNorm;
-   mOffset = plane.mOffset;
-}
-
+/*
 inline
 float Plane::distanceToPt(const Point3& pt) const
 {
@@ -179,7 +253,7 @@ float Plane::findNearestPt(const Point3& pt, Point3& nearPt) const
 	nearPt = pt - (mNorm*dist_to_plane);
 	return dist_to_plane;
 }
-
+*/
 /*
 #include <geomdist.h>
 
@@ -246,5 +320,5 @@ int sgPlane::isectLine(const sgSeg& seg, float* t)
 }
 */
 
-}
+} // namespace gmtl
 #endif

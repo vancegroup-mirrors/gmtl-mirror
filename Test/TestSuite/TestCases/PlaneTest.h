@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PlaneTest.h,v $
- * Date modified: $Date: 2002-02-10 04:38:06 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-02-18 21:56:11 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -48,11 +48,7 @@ class PlaneTest : public CppUnit::TestCase
 {
 public:
    PlaneTest( std::string name = "PlaneTest")
-   : TestCase (name),
-      origin(gmtl::ZeroVec3),
-      x1_pt(gmtl::XUnitVec3),
-      y1_pt(gmtl::YUnitVec3),
-      z1_pt(gmtl::ZUnitVec3)
+   : TestCase (name)
    {;}
 
    virtual ~PlaneTest()
@@ -60,9 +56,17 @@ public:
 
    virtual void setUp()
    {
-      xy_plane = gmtl::Plane(origin,x1_pt,y1_pt);
-      zx_plane = gmtl::Plane(origin,z1_pt,x1_pt);
-      yz_plane = gmtl::Plane(origin,y1_pt,z1_pt);
+      std::cout<<"Testing plane"<<std::endl;
+      origin.set( 0,0,0 );
+      x1_v.set( 1,0,0 );
+      y1_v.set( 0,1,0 );
+      z1_v.set( 0,0,1 );
+      x1_pt.set( 1,0,0 );
+      y1_pt.set( 0,1,0 );
+      z1_pt.set( 0,0,1 );
+      xy_plane = gmtl::Plane<float>(origin,x1_pt,y1_pt);
+      zx_plane = gmtl::Plane<float>(origin,z1_pt,x1_pt);
+      yz_plane = gmtl::Plane<float>(origin,y1_pt,z1_pt);
    }
 
    virtual void tearDown()
@@ -71,51 +75,134 @@ public:
    // ------------------------
    // CREATION TESTS
    // ------------------------
+   void testCreation()
+   {
+      gmtl::Plane<float> test_plane;
+      gmtl::Vec<float, 3> zeroVec(0,0,0);
+      CPPUNIT_ASSERT( test_plane.mNorm == zeroVec );
+      CPPUNIT_ASSERT( test_plane.mOffset == 0.0f );
+
+      // Test overhead of creation
+      const long iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+
+      for( long iter=0;iter<iters; ++iter)
+      {
+         gmtl::Plane<float> test_plane2;
+         test_plane.mOffset = 1.0f;
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("PlaneTest/DefaultCreationOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+
    void testThreePtCreation()
    {
-     // Check normals of the standard planes
-     CPPUNIT_ASSERT(xy_plane.mNorm == gmtl::ZUnitVec3);   // Z-Plane
-     CPPUNIT_ASSERT(zx_plane.mNorm == gmtl::YUnitVec3);   // Y-Plane
-     CPPUNIT_ASSERT(yz_plane.mNorm == gmtl::XUnitVec3);   // Z-Plane
-     CPPUNIT_ASSERT(xy_plane.mOffset == 0.0f);
-     CPPUNIT_ASSERT(zx_plane.mOffset == 0.0f);
-     CPPUNIT_ASSERT(yz_plane.mOffset == 0.0f);
+      // Check normals of the standard planes
+      CPPUNIT_ASSERT(xy_plane.mNorm == z1_v);    // Z-Plane
+      CPPUNIT_ASSERT(zx_plane.mNorm == y1_v);    // Y-Plane
+      CPPUNIT_ASSERT(yz_plane.mNorm == x1_v);    // Z-Plane
+      CPPUNIT_ASSERT(xy_plane.mOffset == 0.0f);
+      CPPUNIT_ASSERT(zx_plane.mOffset == 0.0f);
+      CPPUNIT_ASSERT(yz_plane.mOffset == 0.0f);
 
-     // Test offset of some simple planes
-     gmtl::Plane test_plane;
-     test_plane = gmtl::Plane(gmtl::Point3(1.0,0.0,0.0), gmtl::Point3(1.0,1.0,0.0), gmtl::Point3(1.0,0.0,1.0));
-     CPPUNIT_ASSERT(test_plane.mNorm == gmtl::XUnitVec3);
-     CPPUNIT_ASSERT(test_plane.mOffset == 1.0f);
+      // Test offset of some simple planes
+      gmtl::Plane<float> test_plane;
+      test_plane = gmtl::Plane<float>(
+           gmtl::Point<float, 3>(1.0,0.0,0.0),
+           gmtl::Point<float, 3>(1.0,1.0,0.0),
+           gmtl::Point<float, 3>(1.0,0.0,1.0)
+      );
+      CPPUNIT_ASSERT(test_plane.mNorm == x1_v);
+      CPPUNIT_ASSERT(test_plane.mOffset == 1.0f);
+
+      // Test overhead of creation
+      const long iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+
+      for( long iter=0;iter<iters; ++iter)
+      {
+         gmtl::Plane<float> test_plane( x1_pt, y1_pt, z1_pt );
+         test_plane.mOffset = 1.0f;
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("PlaneTest/ThreePtCreationOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
 
    void testNormPtCreation()
    {
-      gmtl::Plane test_plane;
-      test_plane = gmtl::Plane(gmtl::XUnitVec3, origin);    // X-axis through origin
-      CPPUNIT_ASSERT(test_plane.mNorm == gmtl::XUnitVec3);
+      gmtl::Plane<float> test_plane;
+      test_plane = gmtl::Plane<float>(x1_v, origin);    // X-axis through origin
+      CPPUNIT_ASSERT(test_plane.mNorm == x1_v);
       CPPUNIT_ASSERT(test_plane.mOffset == 0.0f);
 
-      test_plane = gmtl::Plane(gmtl::XUnitVec3, x1_pt);    // X-axis through 1,0,0
-      CPPUNIT_ASSERT(test_plane.mNorm == gmtl::XUnitVec3);
+      test_plane = gmtl::Plane<float>(x1_v, x1_pt);    // X-axis through 1,0,0
+      CPPUNIT_ASSERT(test_plane.mNorm == x1_v);
       CPPUNIT_ASSERT(test_plane.mOffset == 1.0f);
 
-      test_plane = gmtl::Plane(gmtl::ZUnitVec3, x1_pt);    // Z-axis through 1,0,0
-      CPPUNIT_ASSERT(test_plane.mNorm == gmtl::ZUnitVec3);
+      test_plane = gmtl::Plane<float>(z1_v, x1_pt);    // Z-axis through 1,0,0
+      CPPUNIT_ASSERT(test_plane.mNorm == z1_v);
       CPPUNIT_ASSERT(test_plane.mOffset == 0.0f);
 
-      test_plane = gmtl::Plane(gmtl::ZUnitVec3, gmtl::Point3(0,0,-1));    // Z-axis through 0,0,-1
-      CPPUNIT_ASSERT(test_plane.mNorm == gmtl::ZUnitVec3);
+      test_plane = gmtl::Plane<float>(z1_v, gmtl::Point<float, 3>(0,0,-1));    // Z-axis through 0,0,-1
+      CPPUNIT_ASSERT(test_plane.mNorm == z1_v);
       CPPUNIT_ASSERT(test_plane.mOffset == -1.0f);
+
+      // Test overhead of creation
+      const long iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+
+      for( long iter=0;iter<iters; ++iter)
+      {
+         gmtl::Plane<float> test_plane2( x1_v, z1_pt );
+         test_plane.mOffset = 1.0f;
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("PlaneTest/NormPtCreationOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
 
    void testNormOffsetCreation()
    {
-      gmtl::Plane test_plane;
-      test_plane = gmtl::Plane(gmtl::XUnitVec3, 0.0f);    // X-axis through origin
-      CPPUNIT_ASSERT(test_plane.mNorm == gmtl::XUnitVec3);
+      gmtl::Plane<float> test_plane(x1_v, 0.0f);    // X-axis through origin
+      CPPUNIT_ASSERT(test_plane.mNorm == x1_v);
       CPPUNIT_ASSERT(test_plane.mOffset == 0.0f);
+
+      // Test overhead of creation
+      const long iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+
+      for( long iter=0;iter<iters; ++iter)
+      {
+         gmtl::Plane<float> test_plane2( x1_v, 25.0f );
+         test_plane.mOffset = 1.0f;
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("PlaneTest/NormOffsetCreationOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
 
+   void testCopyConstruct()
+   {
+      gmtl::Plane<float> test_plane( xy_plane );
+      CPPUNIT_ASSERT( test_plane.mNorm == xy_plane.mNorm );
+      CPPUNIT_ASSERT( test_plane.mOffset == xy_plane.mOffset );
+
+      // Test overhead of creation
+      const long iters(400000);
+      CPPUNIT_METRIC_START_TIMING();
+
+      for( long iter=0;iter<iters; ++iter)
+      {
+         gmtl::Plane<float> test_plane2( test_plane );
+         test_plane.mOffset = 1.0f;
+      }
+
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("PlaneTest/CopyConstructOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+   }
+/*
    // --------------------------
    // Dist and side tests
    // --------------------------
@@ -177,17 +264,19 @@ public:
       CPPUNIT_ASSERT(xy_plane.distanceToPt(test_point) == xy_plane.findNearestPt(test_point, answer));
       CPPUNIT_ASSERT(answer == test_point);
    }
-
+*/
 
    static Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("PlaneTest");
+      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testCreation", &PlaneTest::testCreation));
       test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testThreePtCreation", &PlaneTest::testThreePtCreation));
       test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testNormPtCreation", &PlaneTest::testNormPtCreation));
       test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testNormOffsetCreation", &PlaneTest::testNormOffsetCreation));
-      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testDistToPt", &PlaneTest::testDistToPt));
-      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testWhichSide", &PlaneTest::testWhichSide));
-      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testFindNearestPt", &PlaneTest::testFindNearestPt));
+      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testCopyConstruct", &PlaneTest::testCopyConstruct));
+//      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testDistToPt", &PlaneTest::testDistToPt));
+//      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testWhichSide", &PlaneTest::testWhichSide));
+//      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testFindNearestPt", &PlaneTest::testFindNearestPt));
 
       return test_suite;
    }
@@ -200,14 +289,17 @@ public:
    }
 
 protected:
-   gmtl::Vec3 origin;
-   gmtl::Vec3 x1_pt;
-   gmtl::Vec3 y1_pt;
-   gmtl::Vec3 z1_pt;
+   gmtl::Point<float, 3> origin;
+   gmtl::Point<float, 3> x1_pt;
+   gmtl::Point<float, 3> y1_pt;
+   gmtl::Point<float, 3> z1_pt;
+   gmtl::Vec<float, 3> x1_v;
+   gmtl::Vec<float, 3> y1_v;
+   gmtl::Vec<float, 3> z1_v;
 
-   gmtl::Plane xy_plane;
-   gmtl::Plane zx_plane;
-   gmtl::Plane yz_plane;
+   gmtl::Plane<float> xy_plane;
+   gmtl::Plane<float> zx_plane;
+   gmtl::Plane<float> yz_plane;
 };
 
-};
+} // namespace gmtlTest
