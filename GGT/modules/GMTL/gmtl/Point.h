@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Point.h,v $
- * Date modified: $Date: 2002-02-11 23:53:04 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-02-22 21:47:46 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -56,8 +56,8 @@ public:
     */
    Point()
    {
-      for(unsigned i=0;i<SIZE;++i)
-         mData[i] = 0.0f;
+      for (unsigned i = 0; i < SIZE; ++i)
+         mData[i] = (DATA_TYPE)0;
    }
 
    /** @name Value constructors
