@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AABoxOpsTest.cpp,v $
- * Date modified: $Date: 2002-07-04 20:14:18 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-07-11 17:06:48 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -103,7 +103,7 @@ namespace gmtlTest
          CPPUNIT_METRIC_STOP_TIMING();
          CPPUNIT_ASSERT_METRIC_TIMING_LE("AABoxOpsTest/EqualityCompareOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
 
-         CPPUNIT_ASSERT(true_count >= 0);
+         CPPUNIT_ASSERT(true_count == 0);
       }
       {
          // Inequality
@@ -115,7 +115,7 @@ namespace gmtlTest
 
          for(long iter=0;iter<iters; ++iter)
          {
-            if (box1 == box2)
+            if (box1 != box2)
             {
                ++true_count;
             }
@@ -124,7 +124,7 @@ namespace gmtlTest
          CPPUNIT_METRIC_STOP_TIMING();
          CPPUNIT_ASSERT_METRIC_TIMING_LE("AABoxOpsTest/InequalityCompareOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
 
-         CPPUNIT_ASSERT(true_count >= 0);
+         CPPUNIT_ASSERT(true_count > 0);
       }
    }
 
