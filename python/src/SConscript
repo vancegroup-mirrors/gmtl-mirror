@@ -1,0 +1,23 @@
+import os
+pj = os.path.join
+
+Import('pkg baseEnv PREFIX')
+
+headers = Split("""
+   gmtl-functions.h
+   gmtl-getData-wrappers.h
+   gmtl-intersect-wrappers.h
+   gmtl-wrappers.h
+""")
+
+subdirs = Split("""
+   gmtl
+""")
+
+for s in subdirs:
+   SConscript(dirs = s)
+
+for h in headers:
+   baseEnv.Install(pj(PREFIX, 'python', 'src'), h)
+   pkg.addExtraDist([File(h)])
+
