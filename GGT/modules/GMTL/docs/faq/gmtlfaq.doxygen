@@ -535,6 +535,34 @@
  *  }
  *
  *
+ *
+ *  @subsection Collision Collision and Containment Detection
+ *  <b>How do I perform collision detection and containment tests?</b>
+ *  GMTL provides various spatial objects, including spheres, line segments, 
+ *  rays, points, triangles, planes, axially-aligned bounding boxes, and 
+ *  oriented bounding boxes.
+ *
+ *  The library also provides functions to test whether particular objects
+ *  are intersecting each other or whether one object is contained by another.
+ *  See below for specific examples.
+ *
+ *  <b>How do I test if a point is contained by a sphere?</b>
+ *  <b>How do I test if a point is on the surface of a sphere?</b>
+ *  <b>How do I test if one sphere is contained by another?</b>
+ *  <b>How do I test if two spheres intersect while moving?</b>
+ *  <b>How do I change a sphere so that it contains a given point?</b>
+ *  <b>How do I change a sphere so that it contains a set of points?</b>
+ *  <b>How do I change a sphere so that it contains another sphere?</b>
+ *  <b>How do I test if two AABoxes intersect?</b>
+ *  <b>How do I test if an AABox is contained by another?</b>
+ *  <b>How do I test if a point is inside an AABox?</b>
+ *  <b>How do I test if two AABoxes intersect while moving?</b>
+ *  <b>How do I change an AABox so that it contains a given point?</b>
+ *  <b>How do I change an AABox so that it contains another AABox?</b>
+ *  <b>How do I change an AABox so that it contains a given sphere?</b>
+ *  <b>How do I test if a sphere intersects with an AABox?</b>
+ *  <b>How do I test if a ray intersects with a plane?</b>
+ *
  *  @subsection General General Math
  *  <b>How do I use GMTL's C math abstraction?</b>
  *
