@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatOps.h,v $
- * Date modified: $Date: 2002-03-10 23:46:09 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2002-03-11 00:28:02 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -513,6 +513,17 @@ namespace gmtl
                    Math::isEqual( q1[1], q2[1], tol ) &&
                    Math::isEqual( q1[2], q2[2], tol ) &&
                    Math::isEqual( q1[3], q2[3], tol )    );
+   }
+   
+   /** Compare two quaternions for geometric equivelence (with tolerance).
+    * there exist 2 quats for every possible rotation: the original, 
+    * and its negative.  the negative of a rotation quaternion is geometrically 
+    * equivelent to the original.
+    */
+   template <typename DATA_TYPE>
+   bool isEquiv( const Quat<DATA_TYPE>& q1, const Quat<DATA_TYPE>& q2, DATA_TYPE tol = 0.0 )
+   {
+      return bool( isEqual( q1, q2, tol ) || isEqual( q1, -q2, tol ) );
    }
 }
 
