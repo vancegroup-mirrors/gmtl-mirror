@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOps.h,v $
- * Date modified: $Date: 2004-09-22 20:32:25 $
- * Version:       $Revision: 1.37 $
+ * Date modified: $Date: 2004-11-12 01:28:44 $
+ * Version:       $Revision: 1.38 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -516,7 +516,7 @@ namespace gmtl
       do
       {
          --p;
-         gmtlASSERT((p>=0) && (p<SIZE));
+         gmtlASSERT(p<SIZE);
 
          // If row was swapped
          if(swapped[p] != p)
