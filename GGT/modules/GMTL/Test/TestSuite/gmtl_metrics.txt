@@ -182,7 +182,7 @@ gfxn3/Debug/TriTest/EqualOpsOverhead                               1.35908
 gfxn3/Debug/TriTest/IsEqualOverhead                                1.36693
 gfxn3/Debug/TriTest/NormalOverhead                                 1.34752
 gfxn3/Debug/TriTest/TriCreationOverhead                            0.240235
-gfxn3/Debug/TriTest/edgeOverhead                                   0.389327
+gfxn3/Debug/TriTest/edgeOverhead                                   0.35856
 gfxn3/Debug/TriTest/operator[]Overhead                             0.06565
 gfxn3/Debug/VecBaseTest/ConstructorsOverhead                       0.154363
 gfxn3/Debug/VecBaseTest/CopyConstructOverhead                      0.210125
@@ -195,6 +195,7 @@ gfxn3/Debug/VecGenTest/makeNormal(vec4d)                           0.4084
 gfxn3/Debug/VecGenTest/makeNormal(vec4f)                           0.40056
 gfxn3/Debug/VecGenTest/makeVec(quatd)                              0.18136
 gfxn3/Debug/VecGenTest/makeVec(quatf)                              0.1632
+gfxn3/Debug/VecOpsTest/lerp()                                      0.3485
 gfxn3/Debug/VecTest/(const_vec*scalar):perf                        0.5325
 gfxn3/Debug/VecTest/(vec*cross(vec,vec)):perf                      0.7929
 gfxn3/Debug/VecTest/(vec*dot(const_vec,vec)):perf                  0.8565

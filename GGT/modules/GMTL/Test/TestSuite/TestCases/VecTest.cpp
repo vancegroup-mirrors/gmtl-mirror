@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.cpp,v $
- * Date modified: $Date: 2002-03-20 16:06:50 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-03-21 16:30:17 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -1059,4 +1059,60 @@ namespace gmtlTest
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("VecTest/CrossOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
+   
+   void VecTest::testVecTimingLerp()
+   {
+      gmtl::Vec<float, 4> from, result;
+      const long iters(10000);
+      CPPUNIT_METRIC_START_TIMING();
+      for (long iter = 0; iter < iters; ++iter)
+      {
+         gmtl::lerp( result, ((float)iter) / ((float)iters), from, result );
+      }
+      CPPUNIT_METRIC_STOP_TIMING();
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("VecOpsTest/lerp()", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      // Make sure the compiler doesn't optimize out
+      CPPUNIT_ASSERT( result[2] != 1234.5f );
+   }
+   
+   void VecTest::testLerp()
+   {
+      const float eps = 0.0001f;
+      {
+         gmtl::Vec<float, 2> q1( 2, 3 ), q2( 9.01, 8.4 );
+         gmtl::Vec<float, 2> expected_result1( q1 ), res1;
+         gmtl::Vec<float, 2> expected_result2( q2 ), res2;
+
+         gmtl::lerp( res1, 0.0f, q1, q2 );
+         gmtl::lerp( res2, 1.0f, q1, q2 );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, res1, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result2, res2, eps ) );
+
+         /// @todo, test interpolated values...
+      }
+      {
+         gmtl::Vec<float, 3> q1( 2, 3, 4 ), q2( 9.01, 8.4, 7.1 );
+         gmtl::Vec<float, 3> expected_result1( q1 ), res1;
+         gmtl::Vec<float, 3> expected_result2( q2 ), res2;
+
+         gmtl::lerp( res1, 0.0f, q1, q2 );
+         gmtl::lerp( res2, 1.0f, q1, q2 );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, res1, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result2, res2, eps ) );
+
+         /// @todo, test interpolated values...
+      }
+      {
+         gmtl::Vec<float, 4> q1( 2, 3, 4, 5 ), q2( 9.01, 8.4, 7.1, 10009 );
+         gmtl::Vec<float, 4> expected_result1( q1 ), res1;
+         gmtl::Vec<float, 4> expected_result2( q2 ), res2;
+
+         gmtl::lerp( res1, 0.0f, q1, q2 );
+         gmtl::lerp( res2, 1.0f, q1, q2 );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result1, res1, eps ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( expected_result2, res2, eps ) );
+
+         /// @todo, test interpolated values...
+      }
+   }   
 }
