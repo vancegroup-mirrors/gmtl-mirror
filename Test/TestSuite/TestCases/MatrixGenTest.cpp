@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixGenTest.cpp,v $
- * Date modified: $Date: 2002-04-10 14:39:01 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2002-05-10 23:16:09 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -912,6 +912,39 @@ namespace gmtlTest
                                         expected_mat, eps ) );
       }
 
+   }
+
+   template <typename DATA_TYPE>
+   class matMakeInverse
+   {
+   public:
+      static void go()
+      {
+         gmtl::Matrix<DATA_TYPE, 4, 4> mat1, expected_value, result, identity;
+         DATA_TYPE eps = 0.001;
+         mat1.set( 0.78,  1.4,   2.9, 3.45,
+                   4.21, 57.9,  65.9, 74.6,
+                   89.2, 99.2,  10.9, 11.9,
+                   12.5, 13.9, 14.78, 15.6 );
+         expected_value.set( 0.3071733,  -0.0239700,   0.0034853,   0.0440345,
+                            -0.2891106,   0.0216826,   0.0079218,  -0.0457924,
+                            -3.0532152,   0.0305681,  -0.0547335,   0.5708037,
+                             2.9041982,  -0.0290744,   0.0420053,  -0.4711792 );
+
+         // Make sure our pre-computed answer is right
+         gmtl::mult( result, mat1, expected_value );
+         CPPUNIT_ASSERT( gmtl::isEqual( result, identity, eps ) );
+
+         // Test inversion
+         result = gmtl::makeInverse( mat1 );
+         CPPUNIT_ASSERT( gmtl::isEqual( result, expected_value, eps ) );
+      }
+   };
+
+   void MatrixGenTest::testMatrixmakeInverse()
+   {
+      matMakeInverse<float>::go();
+      matMakeInverse<double>::go();
    }
 
    void MatrixGenTest::testTimingsetTrans()

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixGenTest.h,v $
- * Date modified: $Date: 2002-04-10 14:39:01 $
- * Version:       $Revision: 1.23 $
+ * Date modified: $Date: 2002-05-10 23:16:09 $
+ * Version:       $Revision: 1.24 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -73,6 +73,7 @@ public:
    void testMatrixsetRot();
    void testMatrixsetRotEuler();
    void testMatrixgetRotEuler();
+   void testMatrixmakeInverse();
    
    // performance tests
    void testTimingsetTrans();
@@ -103,6 +104,7 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testMatrixsetRotEuler", &MatrixGenTest::testMatrixsetRotEuler ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testMatrixsetScale", &MatrixGenTest::testMatrixsetScale ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testMatrixsetRot", &MatrixGenTest::testMatrixsetRot ) );
+       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testMatrixmakeInverse", &MatrixGenTest::testMatrixmakeInverse ) );
 
       return test_suite;
    }

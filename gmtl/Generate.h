@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-05-10 05:38:47 $
- * Version:       $Revision: 1.49 $
+ * Date modified: $Date: 2002-05-10 23:16:10 $
+ * Version:       $Revision: 1.50 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -947,6 +947,23 @@ namespace gmtl
       gmtl::ignore_unused_variable_warning(t);
       ROTATION_TYPE temporary;
       return setAxes( temporary, xAxis, yAxis, zAxis );
+   }
+
+   /**
+    * Creates a matrix that is the inverse of the given source matrix.
+    *
+    * @param src     the matrix to compute the inverse of
+    *
+    * @return  the inverse of source
+    */
+   template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
+   inline Matrix<DATA_TYPE, ROWS, COLS> makeInverse(
+                        const Matrix<DATA_TYPE, ROWS, COLS> src,
+                        Type2Type< Matrix<DATA_TYPE, ROWS, COLS> > t
+                              = Type2Type< Matrix< DATA_TYPE, ROWS, COLS > >() )
+   {
+      Matrix<DATA_TYPE, ROWS, COLS> result;
+      return invert(result, src);
    }
 
    //@}
