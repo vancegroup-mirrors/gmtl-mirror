@@ -3,6 +3,9 @@ DATE       AUTHOR       CHANGE
 2003-03-15 nonchocoboy  Replaced gmtl::version variable with a
                         gmtl::getVersion() inlined method to avoid mulitply
                         defined linker errors.
+2003-03-13 jahare       Fixed quaternion multiplication ordering bug.
+2003-03-10 jahare       Added Point *= Matrix, Point *= Quat, and Vec *= Quat
+                        operators.
 2003-03-03 patrickh     NEW VERSION: 0.2.0
 2003-02-24 allenb       Changed Matrix::op[] to allow element access using
                         row, column ordering.  The access element directly
