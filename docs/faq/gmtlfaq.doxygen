@@ -109,6 +109,14 @@
  *  GMTL matrices are represented in the same way that OpenGL represents data
  *  in a matrix, in column major order. 
  *
+ *  <b>What are the general concepts behind GMTL?</b>
+ *  <b>What's with all the 'make' and 'set' functions</b>
+ *
+ *  @section Spatial Spatial Objects
+ *  <b>What is a spatial object?</b>
+ *  <b>What kinds of spatial objects does GMTL support?</b>
+ *
+ *
  *  @section Howto How Do I ...?
  *
  *  @subsection Vectors Vectors
@@ -546,22 +554,224 @@
  *  are intersecting each other or whether one object is contained by another.
  *  See below for specific examples.
  *
+ *  In general, you can use the 'intersect' function on any two spatial objects
+ *  to test whether they intersect with each other or not. And you can use
+ *  the 'isInVolume' to tell whether one volumetric object (such as a sphere or
+ *  box) contains some other spatial object.
+ *
  *  <b>How do I test if a point is contained by a sphere?</b>
+ *  Use the isInVolume function, which returns a boolean value. Note that if
+ *  the point is on the outer boundary of the sphere, it is still considered
+ *  to be contained.
+ * 
+ *  gmtl::Point3f myPoint;
+ *  gmtl::Spheref mySphere;
+ *
+ *  if ( gmtl::isInVolume( mySphere, myPoint ) )
+ *  {
+ *     cout << "Point is inside the sphere" << endl;
+ *  }
+ *  
+ *
  *  <b>How do I test if a point is on the surface of a sphere?</b>
+ *  Use the isOnVolume function, which returns a boolean value.
+ *  
+ *  gmtl::Point3f myPoint;
+ *  gmtl::Spheref mySphere;
+ *
+ *  if ( gmtl::isOnVolume( mySphere, myPoint ) )
+ *  {
+ *     cout << "Point is on the sphere" << endl;
+ *  }
+ *
+ *  You can optionally supply a tolerance argument, which will change the
+ *  function to compute whether the point is within a certain distance of the
+ *  sphere's surface.
+ *
+ *  float tolerance = 0.001;
+ *  if ( gmtl::isOnVolume( mySphere, myPoint, tolerance ))
+ *  {
+ *    cout << "Point is on the sphere" << endl;
+ *  }
+ *
+ *
  *  <b>How do I test if one sphere is contained by another?</b>
+ *  Use the isInVolume function, which returns a boolean value.
+ *  
+ *  gmtl::Spheref sphereA, sphereB;
+ *  if ( gmtl::isInVolume( sphereA, sphereB ) )
+ *  {
+ *     cout << "Sphere is within the other sphere" << endl;
+ *  }
+ * 
+ *
  *  <b>How do I test if two spheres intersect while moving?</b>
+ *  We can use the intersect function to compute this. We need a vector for
+ *  each sphere representing the sphere's movement over the timestep. You also
+ *  pass by reference 2 floating point numbers that will be modified by the 
+ *  function. The first of these numbers will be the normalized time of contact.
+ *  The second is the normalized time of disconnection. The second number will
+ *  only be set when the spheres pass through each other, in which case it
+ *  will be set to the time when they stop intersecting.
+ *
+ *  gmtl::Spheref sphereA, sphereB;
+ *  gmtl::Vec3f pathA, pathB;
+ *  float contactTime, disconnectTime;
+ *
+ *  if ( gmtl::intersect( sphereA, sphereB, pathA, pathB, contactTime, disconnectTime ) )
+ *  {
+ *     cout << "Spheres intersect at some time" << endl;
+ *  }
+ *  
+ *
  *  <b>How do I change a sphere so that it contains a given point?</b>
+ *  Use the extendVolume function. This will keep the sphere's centerpoint
+ *  in the same location, but extend its radius just enough to contain the
+ *  given point. If the point is already inside the sphere, no change occurs.
+ *
+ *  gmtl::Spheref mySphere;
+ *  gmtl::Point3f myPoint;
+ * 
+ *  gmtl::extendVolume( mySphere, myPoint );
+ *
+ *
  *  <b>How do I change a sphere so that it contains a set of points?</b>
+ *  There is a version of the extendVolume function that takes a STL vector
+ *  containing an arbitrary number of points and will increase a sphere's 
+ *  radius to be just large enough to contain all of these points. If the sphere
+ *  already contains all of the points, then the sphere will be unchanged.
+ * 
+ *  gmtl::Spheref mySphere;
+ *  std::vector<gmtl::Point3f> myPoints;
+ *
+ *  gmtl::extendVolume( mySphere, myPoints );
+ *
+ *
  *  <b>How do I change a sphere so that it contains another sphere?</b>
+ *  Use the extendVolume function. The first sphere's radius will be increased 
+ *  to be just large enough to contain the other sphere. If the first sphere
+ *  already contains the other sphere, no change occurs.
+ *
+ *  gmtl::Spheref sphereA, sphereB;
+ *
+ *  gmtl::extendVolume( sphereA, sphereB );
+ *
+ *
  *  <b>How do I test if two AABoxes intersect?</b>
+ *  Use the intersect function, which returns a boolean value.
+ *
+ *  gmtl::AABoxf boxA, boxB;
+ *
+ *  if ( gmtl::intersect( boxA, boxB ) )
+ *  {
+ *     cout << "Boxes intersect" << endl;
+ *  }
+ *
+ *
  *  <b>How do I test if an AABox is contained by another?</b>
+ *  Use the isInVolume function, which returns a boolean value.
+ *
+ *  gmtl::AABoxf boxA, boxB;
+ *
+ *  if ( gmtl::isInVolume( boxA, boxB ) )
+ *  {
+ *     cout << "Box A contains box B" << endl;
+ *  }
+ *
+ *
  *  <b>How do I test if a point is inside an AABox?</b>
+ *  Use the isInVolume function, which returns a boolean value. Note that if
+ *  the point is on the box's surface, it is still considered to be contained.
+ *  
+ *  gmtl::AABoxf myBox;
+ *  gmtl::Point3f myPoint;
+ *  
+ *  if ( gmtl::isInVolume( myBox, myPoint ) )
+ *  {
+ *     cout << "The point is inside the box" << endl;
+ *  }
+ *
+ *
  *  <b>How do I test if two AABoxes intersect while moving?</b>
+ *  We can use the intersect function to compute this. We need a vector for
+ *  each AABox representing the box's movement over the timestep. You also
+ *  pass by reference 2 floating point numbers that will be modified by the 
+ *  function. The first of these numbers will be the normalized time of contact.
+ *  The second is the normalized time of disconnection. The second number will
+ *  only be set when the boxes pass through each other, in which case it
+ *  will be set to the time when they stop intersecting.
+ *
+ *  gmtl::AABoxf boxA, boxB;
+ *  gmtl::Vec3f pathA, pathB;
+ *  float contactTime, disconnectTime;
+ *
+ *  if ( gmtl::intersect( boxA, boxB, pathA, pathB, contactTime, disconnectTime ) )
+ *  {
+ *     cout << "AABoxes intersect at some time" << endl;
+ *  }
+ *
+ *
  *  <b>How do I change an AABox so that it contains a given point?</b>
+ *  Use the extendVolume function. This will increase the size of one or more 
+ *  of the box's bounding faces. If the point is already inside the box, then
+ *  no change occurs.
+ *
+ *  gmtl::AABox myBox;
+ *  gmtl::Point3f myPoint;
+ *
+ *  gmtl::extendVolume( myBox, myPoint );
+ *
+ *
  *  <b>How do I change an AABox so that it contains another AABox?</b>
+ *  Use the extendVolume function. This will increase the size of one or more 
+ *  of the first box's bounding faces. If the other box is already inside 
+ *  the first box, then no change occurs.
+ *
+ *  gmtl::AABoxf boxA, boxB;
+ *  
+ *  gmtl::extendVolume( boxA, boxB );
+ *
+ *
  *  <b>How do I change an AABox so that it contains a given sphere?</b>
+ *  Use the extendVolume function. This will increase the size of one or more 
+ *  of the box's bounding faces. If the sphere is already inside the box, then 
+ *  no change occurs.
+ * 
+ *  gmtl::AABoxf myBox;
+ *  gmtl::Spheref mySphere;
+ *
+ *  gmtl::extendVolume( myBox, mySphere );
+ *
+ *
  *  <b>How do I test if a sphere intersects with an AABox?</b>
+ *  Use the intersect function, which returns a boolean value.
+ *  
+ *  gmtl::AABoxf myBox;
+ *  gmtl::Spheref mySphere;
+ * 
+ *  if ( gmtl::intersect( myBox, mySphere ) 0
+ *  {
+ *     cout << "Box and sphere intersect\n" << endl;
+ *  }
+ *
+ *
  *  <b>How do I test if a ray intersects with a plane?</b>
+ *  Use the intersect function, which returns a boolean value. You also must
+ *  pass by reference a floating point value, which will be modified to be 
+ *  an indicator of the point in space where the ray intersects the plane. You
+ *  can then compute the exact point of intersection.
+ *
+ *  gmtl::Planef myPlane;
+ *  gmtl::Rayf myRay;
+ *  float isect;
+ *  
+ *  if ( gmtl::intersect( myPlane, myRay, isect ) )
+ *  {
+ *     cout << "The ray intersects the plane" << endl;
+ *  }
+ *
+ *  gmtl::Point3f intersectPoint = myRay.origin + mRay.dir * isect; 
+ *
  *
  *  @subsection General General Math
  *  <b>How do I use GMTL's C math abstraction?</b>
