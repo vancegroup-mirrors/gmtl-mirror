@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Intersection.h,v $
- * Date modified: $Date: 2004-08-03 04:19:12 $
- * Version:       $Revision: 1.22 $
+ * Date modified: $Date: 2004-09-02 15:57:06 $
+ * Version:       $Revision: 1.22.2.1 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -522,7 +522,7 @@ namespace gmtl
          else
          { return false; }
       }
-      t = dot( N, N * plane.getOffset() - ray.getOrigin() ) / denom;
+      t = dot( N, Vec<DATA_TYPE,3>(N * plane.getOffset() - ray.getOrigin()) ) / denom;
 
       return (DATA_TYPE)0 <= t;
    }

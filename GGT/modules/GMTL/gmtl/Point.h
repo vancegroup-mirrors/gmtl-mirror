@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Point.h,v $
- * Date modified: $Date: 2004-09-02 14:27:23 $
- * Version:       $Revision: 1.16.4.1 $
+ * Date modified: $Date: 2004-09-02 15:57:06 $
+ * Version:       $Revision: 1.16.4.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -78,12 +78,20 @@ public:
     * Construct with copy of rVec
     */
    //@{
+   /*
    Point(const Point<DATA_TYPE, SIZE>& rVec)
       : BaseType(static_cast<BaseType>(rVec))
    {;}
    Point(const VecBase<DATA_TYPE, SIZE>& rVec)
       : BaseType(rVec)
    {;}
+   */
+
+   template<typename REP2>
+   Point( const VecBase<DATA_TYPE, SIZE, REP2>& rVec )
+      : BaseType( rVec )
+   {
+   }
 
    /**
     * Construct a 2-D point with 2 given values

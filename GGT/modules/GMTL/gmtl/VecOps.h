@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecOps.h,v $
- * Date modified: $Date: 2004-09-02 14:27:23 $
- * Version:       $Revision: 1.29.2.1 $
+ * Date modified: $Date: 2004-09-02 15:57:06 $
+ * Version:       $Revision: 1.29.2.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -58,6 +58,7 @@ namespace gmtl
  *
  * @return  the result of negating v1.
  */
+/*
 template<typename DATA_TYPE, unsigned SIZE>
 Vec<DATA_TYPE, SIZE> operator- (const VecBase<DATA_TYPE, SIZE>& v1)
 {
@@ -67,6 +68,15 @@ Vec<DATA_TYPE, SIZE> operator- (const VecBase<DATA_TYPE, SIZE>& v1)
       ret_val[i] = -v1[i];
    }
    return ret_val;
+}
+*/
+template<typename T, unsigned SIZE, typename R1>
+inline VecBase<T,SIZE, meta::VecUnaryExpr<VecBase<T,SIZE,R1>, meta::VecNegUnary> >
+operator-(const VecBase<T,SIZE,R1>& v1)
+{
+   return VecBase<T,SIZE,
+                  meta::VecUnaryExpr<VecBase<T,SIZE,R1>, meta::VecNegUnary> >
+                        ( meta::VecUnaryExpr<VecBase<T,SIZE,R1>, meta::VecNegUnary>(v1) );
 }
 
 /**
@@ -205,6 +215,7 @@ VecBase<DATA_TYPE, SIZE>& operator *=(VecBase<DATA_TYPE, SIZE>& v1,
  *
  * @return  the result of multiplying v1 by scalar
  */
+/*
 template<class DATA_TYPE, unsigned SIZE, class SCALAR_TYPE>
 VecBase<DATA_TYPE, SIZE> operator *(const VecBase<DATA_TYPE, SIZE>& v1,
                                     const SCALAR_TYPE& scalar)
@@ -215,6 +226,37 @@ VecBase<DATA_TYPE, SIZE> operator *(const VecBase<DATA_TYPE, SIZE>& v1,
 
    //return VecBase<DATA_TYPE, SIZE>(v1) *= scalar;
 }
+*/
+
+template<typename T, unsigned SIZE, typename R1>
+inline VecBase<T,SIZE, meta::VecBinaryExpr<VecBase<T,SIZE,R1>, VecBase<T,SIZE, meta::ScalarArg<T> >, meta::VecMultBinary> >
+operator*(const VecBase<T,SIZE,R1>& v1, const T scalar)
+{
+   return VecBase<T,SIZE,
+             meta::VecBinaryExpr<VecBase<T,SIZE,R1>,
+                                 VecBase<T,SIZE, meta::ScalarArg<T> >,
+                                 meta::VecMultBinary> >(
+                                       meta::VecBinaryExpr<VecBase<T,SIZE,R1>,
+                                                           VecBase<T,SIZE, meta::ScalarArg<T> >,
+                                                           meta::VecMultBinary>(v1,
+                                                                                meta::ScalarArg<T>(scalar)) );
+}
+
+template<typename T, unsigned SIZE, typename R1>
+inline VecBase<T,SIZE, meta::VecBinaryExpr< VecBase<T,SIZE, meta::ScalarArg<T> >,
+                                            VecBase<T,SIZE,R1>,
+                                            meta::VecMultBinary> >
+operator*(const T scalar, const VecBase<T,SIZE,R1>& v1)
+{
+   return VecBase<T,SIZE,
+             meta::VecBinaryExpr<VecBase<T,SIZE, meta::ScalarArg<T> >,
+                                 VecBase<T,SIZE,R1>,
+                                 meta::VecMultBinary> >(
+                                       meta::VecBinaryExpr<VecBase<T,SIZE, meta::ScalarArg<T> >,
+                                                           VecBase<T,SIZE,R1>,
+                                                           meta::VecMultBinary>(meta::ScalarArg<T>(scalar), v1 ) );
+}
+
 
 /**
  * Multiplies v1 by a scalar value and returns the result. Thus result = scalar
@@ -225,6 +267,7 @@ VecBase<DATA_TYPE, SIZE> operator *(const VecBase<DATA_TYPE, SIZE>& v1,
  *
  * @return  the result of multiplying v1 by scalar
  */
+/*
 template<class DATA_TYPE, unsigned SIZE, class SCALAR_TYPE>
 VecBase<DATA_TYPE, SIZE> operator *(const SCALAR_TYPE& scalar,
                                     const VecBase<DATA_TYPE, SIZE>& v1)
@@ -235,6 +278,7 @@ VecBase<DATA_TYPE, SIZE> operator *(const SCALAR_TYPE& scalar,
 
    //return VecBase<DATA_TYPE, SIZE>(v1) *= scalar;
 }
+*/
 
 /**
  * Divides v1 by a scalar value and stores the result in v1. This is
@@ -266,6 +310,7 @@ VecBase<DATA_TYPE, SIZE>& operator /=(VecBase<DATA_TYPE, SIZE>& v1,
  *
  * @return  the result of dividing v1 by scalar
  */
+/*
 template<class DATA_TYPE, unsigned SIZE, class SCALAR_TYPE>
 VecBase<DATA_TYPE, SIZE> operator /(const VecBase<DATA_TYPE, SIZE>& v1,
                                     const SCALAR_TYPE& scalar)
@@ -275,6 +320,22 @@ VecBase<DATA_TYPE, SIZE> operator /(const VecBase<DATA_TYPE, SIZE>& v1,
    return ret_val;
    // return VecBase<DATA_TYPE, SIZE>(v1)( /= scalar;
 }
+*/
+
+template<typename T, unsigned SIZE, typename R1>
+inline VecBase<T,SIZE, meta::VecBinaryExpr<VecBase<T,SIZE,R1>, VecBase<T,SIZE, meta::ScalarArg<T> >, meta::VecDivBinary> >
+operator/(const VecBase<T,SIZE,R1>& v1, const T scalar)
+{
+   return VecBase<T,SIZE,
+             meta::VecBinaryExpr<VecBase<T,SIZE,R1>,
+                                 VecBase<T,SIZE, meta::ScalarArg<T> >,
+                                 meta::VecDivBinary> >(
+                                       meta::VecBinaryExpr<VecBase<T,SIZE,R1>,
+                                                           VecBase<T,SIZE, meta::ScalarArg<T> >,
+                                                           meta::VecDivBinary>(v1,
+                                                                               meta::ScalarArg<T>(scalar)) );
+}
+
 
 /** @} */
 
