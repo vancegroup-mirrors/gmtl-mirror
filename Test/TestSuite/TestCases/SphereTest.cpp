@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: SphereTest.cpp,v $
- * Date modified: $Date: 2003-02-05 02:21:17 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2003-02-26 23:25:07 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -33,7 +33,7 @@
 *
  ************************************************************ ggt-cpr end */
 #include "SphereTest.h"
-#include <cppunit/extensions/HelperMacros.h>
+#include "../Suites.h"
 #include <cppunit/extensions/MetricRegistry.h>
 
 #include <gmtl/Sphere.h>
@@ -43,6 +43,7 @@
 namespace gmtlTest
 {
    CPPUNIT_TEST_SUITE_REGISTRATION(SphereTest);
+   CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(SphereMetricTest, Suites::metric());
 
    void SphereTest::testCreation()
    {
@@ -52,7 +53,10 @@ namespace gmtlTest
       CPPUNIT_ASSERT( test_sph.mCenter[1] == 0.0f );
       CPPUNIT_ASSERT( test_sph.mCenter[2] == 0.0f );
       CPPUNIT_ASSERT( test_sph.mRadius == 0.0f );
+   }
 
+   void SphereMetricTest::testTimingCreation()
+   {
       // Test overhead of creation
       const long iters(400000);
       float use_value(0);
@@ -85,7 +89,10 @@ namespace gmtlTest
       CPPUNIT_ASSERT( test_sph_copy.mCenter[1] == 4.0f);
       CPPUNIT_ASSERT( test_sph_copy.mCenter[2] == 8.0f);
       CPPUNIT_ASSERT( test_sph_copy.mRadius == 25.0f);
+   }
 
+   void SphereMetricTest::testTimingCopyConstruct()
+   {
       // Test copy construction overhead
       const long iters(400000);
       gmtl::Sphere<float> test_sph2;
@@ -111,7 +118,10 @@ namespace gmtlTest
       CPPUNIT_ASSERT( test_sph.mCenter[1] == 2.0f);
       CPPUNIT_ASSERT( test_sph.mCenter[2] == 3.0f);
       CPPUNIT_ASSERT( test_sph.mRadius == 25.0f);
+   }
 
+   void SphereMetricTest::testTimingConstructors()
+   {
       // Test constructor
       const long iters(400000);
       float use_value(0.0f);     // A temp just here to use the objs so the copiler (hopefully) does not opt them out
@@ -135,6 +145,12 @@ namespace gmtlTest
       gmtl::Point<float, 3> center( 1.0f, 2.0f, 3.0f );
       gmtl::Sphere<float> test_sph( center, 25.0f );
       CPPUNIT_ASSERT( test_sph.getCenter() == center );
+   }
+
+   void SphereMetricTest::testTimingGetCenter()
+   {
+      gmtl::Point<float, 3> center( 1.0f, 2.0f, 3.0f );
+      gmtl::Sphere<float> test_sph( center, 25.0f );
 
       // Test getCenter overhead
       const long iters(400000);
@@ -157,6 +173,12 @@ namespace gmtlTest
       float radius = 25.0f;
       gmtl::Sphere<float> test_sph( gmtl::Point<float, 3>( 1.0f, 2.0f, 3.0f ), radius );
       CPPUNIT_ASSERT( test_sph.getRadius() == radius );
+   }
+
+   void SphereMetricTest::testTimingGetRadius()
+   {
+      float radius = 25.0f;
+      gmtl::Sphere<float> test_sph( gmtl::Point<float, 3>( 1.0f, 2.0f, 3.0f ), radius );
 
       // Test getCenter overhead
       const long iters(400000);
@@ -183,6 +205,12 @@ namespace gmtlTest
       gmtl::Point<float, 3> center( 2.0f, 4.0f, 1.0f );
       test_sph.setCenter( center );
       CPPUNIT_ASSERT( test_sph.getCenter() == center );
+   }
+
+   void SphereMetricTest::testTimingSetCenter()
+   {
+      gmtl::Sphere<float> test_sph( gmtl::Point<float, 3>( 1.0f, 2.0f, 3.0f ), 25.0f );
+      gmtl::Point<float, 3> center( 2.0f, 4.0f, 1.0f );
 
       // Test getCenter overhead
       const long iters(400000);
@@ -204,7 +232,11 @@ namespace gmtlTest
       gmtl::Sphere<float> test_sph( gmtl::Point<float, 3>( 1.0f, 2.0f, 3.0f ), 25.0f );
       test_sph.setRadius( 45.0f );
       CPPUNIT_ASSERT( test_sph.getRadius() == 45.0f );
+   }
 
+   void SphereMetricTest::testTimingSetRadius()
+   {
+      gmtl::Sphere<float> test_sph( gmtl::Point<float, 3>( 1.0f, 2.0f, 3.0f ), 25.0f );
       // Test getCenter overhead
       const long iters(400000);
       float use_value(0.0f);     // A temp just here to use the objs so the compiler (hopefully) does not opt them out
@@ -239,6 +271,12 @@ namespace gmtlTest
       test_sph2.mRadius = 21.10f;
       CPPUNIT_ASSERT( test_sph1 != test_sph2);
       CPPUNIT_ASSERT(! (test_sph1 == test_sph2));
+   }
+
+   void SphereMetricTest::testTimingEqualityCompare()
+   {
+      gmtl::Sphere<float> test_sph1( gmtl::Point<float, 3>(1.0f, 2.0f, 3.0f), 4.0f);
+      gmtl::Sphere<float> test_sph2(test_sph1);
 
       // Test comparison performance
       // Test constructor
@@ -311,6 +349,12 @@ namespace gmtlTest
          CPPUNIT_ASSERT( gmtl::isEqual(test_sph1, test_sph2, 20.1f) );
          CPPUNIT_ASSERT( gmtl::isEqual(test_sph1, test_sph2, 22.0f) );
       }
+   }
+
+   void SphereMetricTest::testTimingIsEqual()
+   {
+      gmtl::Sphere<float> test_sph1( gmtl::Point<float, 3>(1.0f, 2.0f, 3.0f), 4.0f );
+      gmtl::Sphere<float> test_sph2(test_sph1);
 
       // Test comparison performance
       // Test constructor
@@ -350,6 +394,12 @@ namespace gmtlTest
       CPPUNIT_ASSERT( gmtl::isInVolume(test_sph, pt) );
       pt[0] = 5.0f;
       CPPUNIT_ASSERT( ! gmtl::isInVolume(test_sph, pt) );
+   }
+
+   void SphereMetricTest::testTimingIsInVolumePoint()
+   {
+      gmtl::Sphere<float> test_sph( gmtl::Point<float, 3>(0.0f, 0.0f, 0.0f), 4.0f);
+      gmtl::Point<float, 3> pt( 0.5, 0.5f, 0.5f );
 
       // test isInVolume performace
       const float iters(400000);
@@ -375,6 +425,12 @@ namespace gmtlTest
       CPPUNIT_ASSERT( gmtl::isInVolume(test_sph, sph) );
       sph.mCenter[0] = 5.0f;
       CPPUNIT_ASSERT( ! gmtl::isInVolume(test_sph, sph) );
+   }
+
+   void SphereMetricTest::testTimingIsInVolumeSphere()
+   {
+      gmtl::Sphere<float> test_sph( gmtl::Point<float, 3>(0.0f, 0.0f, 0.0f), 4.0f);
+      gmtl::Sphere<float> sph( gmtl::Point<float, 3>(0.5f, 0.5f, 0.5f ), 2.0f);
 
       // test isInVolume performace
       const float iters(400000);
@@ -420,11 +476,17 @@ namespace gmtlTest
          CPPUNIT_ASSERT( ! gmtl::isOnVolume(test_sph, pt, 1.9f) );
          CPPUNIT_ASSERT( ! gmtl::isOnVolume(test_sph, pt, 1.0f) );
       }
+   }
+
+   void SphereMetricTest::testTimingIsOnVolume()
+   {
+      gmtl::Sphere<float> test_sph( gmtl::Point<float, 3>(0.0f, 0.0f, 0.0f), 4.0f);
+      gmtl::Point<float, 3> pt( 0.0, 0.0f, 4.0f );
 
       // test isOnVolume performance
       const float iters(400000);
       unsigned true_count(0);
-      eps = 0;
+      float eps(0.0f);
       pt.set( 0.0f, 0.0f, 0.0f );
 
       CPPUNIT_METRIC_START_TIMING();
@@ -459,6 +521,12 @@ namespace gmtlTest
          CPPUNIT_ASSERT( test_sph2.mCenter == pt2 );
          CPPUNIT_ASSERT( test_sph2.mRadius == 2.0f );
       }
+   }
+
+   void SphereMetricTest::testTimingExtendVolumePoint()
+   {
+      gmtl::Sphere<float> test_sph1( gmtl::Point<float, 3>(0.0f, 0.0f, 0.0f), 1.0f );
+      gmtl::Point<float, 3> pt1( 2.0f, 0.0f, 0.0f );
 
       // test extendVolume performance
       const float iters(400000);
@@ -499,6 +567,12 @@ namespace gmtlTest
          CPPUNIT_ASSERT( test_sph2.mCenter == pt1 );
          CPPUNIT_ASSERT( test_sph2.mRadius == 4.0f );
       }
+   }
+
+   void SphereMetricTest::testTimingExtendVolumeSphere()
+   {
+      gmtl::Sphere<float> test_sph1( gmtl::Point<float, 3>(0.0f, 0.0f, 0.0f), 0.0f );
+      gmtl::Sphere<float> sph( gmtl::Point<float, 3>(0.0f, 0.0f, 0.0f), 0.0f );
 
       // test extendVolume performance
       const float iters(400000);
@@ -535,6 +609,12 @@ namespace gmtlTest
       gmtl::Point<float, 3> pt(0.25f, 3.75f, 0.0f);
       CPPUNIT_ASSERT( gmtl::Math::isEqual( test_sph.mRadius, 10.08f, 0.01f ) );
       CPPUNIT_ASSERT( test_sph.mCenter == pt);
+   }
+
+   void SphereMetricTest::testTimingMakeVolumePoint()
+   {
+      gmtl::Sphere<float> test_sph;
+      std::vector< gmtl::Point<float, 3> > pts;
 
       // test makeVolume performance
       const float iters(2500);
