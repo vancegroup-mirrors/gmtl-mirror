@@ -1,7 +1,7 @@
 #ifndef GMTL_OPENSG_CONVERT_H_
 #define GMTL_OPENSG_CONVERT_H_
 
-/** @file GMTL to OpenSG conversion functions
+/** @file OpenSGConvert.h GMTL to OpenSG conversion functions
 * 
 * methods to convert between gtml and opensg matrix classes
 */
