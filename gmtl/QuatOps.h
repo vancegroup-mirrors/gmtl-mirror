@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatOps.h,v $
- * Date modified: $Date: 2002-02-21 21:37:08 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2002-02-22 10:03:09 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -32,8 +32,8 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 *
  ************************************************************ ggt-cpr end */
-#ifndef _GMTL_QUAT_H_
-#define _GMTL_QUAT_H_
+#ifndef _GMTL_QUAT_OPS_H_
+#define _GMTL_QUAT_OPS_H_
 
 #include <gmtl/gmtlConfig.h>
 #include <gmtl/Quat.h>
@@ -70,7 +70,7 @@ namespace gmtl
       */
             
       // Here is the same, only expanded... (grassman product)
-      Quat temporary; // avoid aliasing problems...
+      Quat<DATA_TYPE> temporary; // avoid aliasing problems...
       temporary[Xelt] = q1[Welt]*q2[Xelt] + q1[Xelt]*q2[Welt] + q1[Yelt]*q2[Zelt] - q1[Zelt]*q2[Yelt];
       temporary[Yelt] = q1[Welt]*q2[Yelt] + q1[Yelt]*q2[Welt] + q1[Zelt]*q2[Xelt] - q1[Xelt]*q2[Zelt];
       temporary[Zelt] = q1[Welt]*q2[Zelt] + q1[Zelt]*q2[Welt] + q1[Xelt]*q2[Yelt] - q1[Yelt]*q2[Xelt];
@@ -87,6 +87,18 @@ namespace gmtl
       return result;
    }
    
+   /** product of two quaternions (quaternion product)
+    *  @post this' = q1 * q2
+    *  @see Quat
+    *  @todo metaprogramming on quat operator*()
+    */
+   template <typename DATA_TYPE>
+   Quat<DATA_TYPE> operator*( const Quat<DATA_TYPE>& q1, const Quat<DATA_TYPE>& q2 )
+   {
+      Quat<DATA_TYPE> temporary;
+      return mult( temporary, q1, q2 );
+   }
+   
    /** vector scalar multiplication
     * @post result' = [qx*s, qy*s, qz*s, qw*s]
     * @see Quat
@@ -98,6 +110,7 @@ namespace gmtl
       result[1] = q[1] * s;
       result[2] = q[2] * s;
       result[3] = q[3] * s;
+      return result;
    }
    
    /** quotient of two quaternions
@@ -107,10 +120,10 @@ namespace gmtl
    template <typename DATA_TYPE>
    Quat<DATA_TYPE>& div( Quat<DATA_TYPE>& result, const Quat<DATA_TYPE>& q1, const Quat<DATA_TYPE>& q2 )
    {
-      Quat q2_inv( q2 ), r, s;
+      Quat<DATA_TYPE> q2_inv( q2 ), r, s;
 
-      // invert the quat
-      invert( q2_inv );
+      // conj the quat
+      conj( q2_inv );
 
       mult( r, q1, q2_inv );
       mult( s, q2_inv, q2_inv );
@@ -133,6 +146,7 @@ namespace gmtl
       result[1] = q1[1] + q2[1];
       result[2] = q1[2] + q2[2];
       result[3] = q1[3] + q2[3];
+      return result;
    }
 
    /** vector subtraction
@@ -145,6 +159,7 @@ namespace gmtl
       result[1] = q1[1] - q2[1];
       result[2] = q1[2] - q2[2];
       result[3] = q1[3] - q2[3];
+      return result;
    }
 
    /** vector dot product
@@ -153,7 +168,7 @@ namespace gmtl
     *  @see Quat
     */
    template <typename DATA_TYPE>
-   DATA_TYPE dot( const Quat<DATA_TYPE>& q1, const Quat<DATA_TYPE>& q2 ) const
+   DATA_TYPE dot( const Quat<DATA_TYPE>& q1, const Quat<DATA_TYPE>& q2 )
    {
       return DATA_TYPE( (q1[0] * q2[0]) + 
                         (q1[1] * q2[1]) + 
@@ -168,7 +183,7 @@ namespace gmtl
     *  @see Quat
     */
    template <typename DATA_TYPE>
-   DATA_TYPE lengthSquared( const Quat<DATA_TYPE>& q ) const
+   DATA_TYPE lengthSquared( const Quat<DATA_TYPE>& q )
    {
       return dot( q, q );
    }
@@ -180,7 +195,7 @@ namespace gmtl
     *  @see Quat
     */
    template <typename DATA_TYPE>
-   DATA_TYPE length( const Quat<DATA_TYPE>& q ) const
+   DATA_TYPE length( const Quat<DATA_TYPE>& q )
    {
       return Math::sqrt( lengthSquared( q ) );
    } 
@@ -208,6 +223,29 @@ namespace gmtl
       return result;
    }
    
+   /** normalize without the square root - faster but not precise (you might not want to use this)...
+    *  @pre magnitude should be > 0, otherwise no calculation is done.
+    *  @post result' = normalize( result ), where normalize makes length( result ) == 1
+    *  @see Quat
+    */
+   template <typename DATA_TYPE>
+   Quat<DATA_TYPE>& normalizeFast( Quat<DATA_TYPE>& result )
+   {
+      DATA_TYPE l = lengthSquared( result );
+   
+      // return if no magnitude (already as normalized as possible)
+      if (l < (DATA_TYPE)0.0001) 
+         return result;
+
+      DATA_TYPE l_inv = ((DATA_TYPE)1.0) / l;
+      result[Xelt] *= l_inv;
+      result[Yelt] *= l_inv;
+      result[Zelt] *= l_inv;
+      result[Welt] *= l_inv;
+      
+      return result;
+   }
+   
    /**
     * Determines if the given vector is normalized within the given tolerance. The
     * vector is normalized if its lengthSquared is 1.
@@ -218,23 +256,33 @@ namespace gmtl
     * @return  true if the vector is normalized, false otherwise
     */
    template< typename DATA_TYPE >
-   bool isNormalized( const Quat<DATA_TYPE>& v1, const DATA_TYPE eps = (DATA_TYPE)0.0001f )
+   bool isNormalized( const Quat<DATA_TYPE>& q1, const DATA_TYPE eps = (DATA_TYPE)0.0001f )
    {
       return Math::isEqual( lengthSquared( q1 ), DATA_TYPE(1), eps );
    }
    
-   /** quaternion complex conjugate (when quat is a rotation, this is also the same as the inverse of the rotation).
+   /** quaternion complex conjugate.
     *  @post set result to the complex conjugate of result.
     *  @post result'[x,y,z,w] == result[-x,-y,-z,w]
     *  @see Quat
     */
    template <typename DATA_TYPE>
-   Quat<DATA_TYPE>& invert( Quat<DATA_TYPE>& result )
+   Quat<DATA_TYPE>& conj( Quat<DATA_TYPE>& result )
    {
       result[Xelt] = -result[Xelt];
       result[Yelt] = -result[Yelt];
       result[Zelt] = -result[Zelt];
       return result;
+   }
+   
+   /** quaternion multiplicative inverse.
+    *  @post self becomes the multiplicative inverse of self
+    *  @see Quat
+    */
+   template <typename DATA_TYPE>
+   Quat<DATA_TYPE>& invert( Quat<DATA_TYPE>& result )
+   {
+      return normalizeFast( conj( result ) );
    }
    
    /** complex exponentiation.
@@ -301,13 +349,13 @@ namespace gmtl
    template <typename DATA_TYPE>
    Quat<DATA_TYPE>& slerp( Quat<DATA_TYPE>& result, const DATA_TYPE t, const Quat<DATA_TYPE>& from, const Quat<DATA_TYPE>& to)
    {
-      const Quat& p = from; // just an alias to match q
+      const Quat<DATA_TYPE>& p = from; // just an alias to match q
       
       // calc cosine theta
       DATA_TYPE cosom = dot( from, to );
 
       // adjust signs (if necessary)
-      Quat q;
+      Quat<DATA_TYPE> q;
       if (cosom < (DATA_TYPE)0.0)
       {
          cosom = -cosom;
@@ -356,16 +404,16 @@ namespace gmtl
     *  @see Quat
     */
    template <typename DATA_TYPE>
-   Quat<DATA_TYPE>& lerp( Quat& result, const DATA_TYPE t, const Quat<DATA_TYPE>& from, const Quat& to)
+   Quat<DATA_TYPE>& lerp( Quat<DATA_TYPE>& result, const DATA_TYPE t, const Quat<DATA_TYPE>& from, const Quat<DATA_TYPE>& to)
    {
       // just an alias to match q
-      const Quat& p = from; 
+      const Quat<DATA_TYPE>& p = from; 
       
       // calc cosine theta
       DATA_TYPE cosom = dot( from, to );
 
       // adjust signs (if necessary)
-      Quat q;
+      Quat<DATA_TYPE> q;
       if (cosom < (DATA_TYPE)0.0)
       {
          q.vec[0] = -to.vec[0];   // Reverse all signs
@@ -392,13 +440,14 @@ namespace gmtl
    
    /** WARNING: not implemented (do not use) */
    template <typename DATA_TYPE>
-   void squad( Quat& result, DATA_TYPE t, const Quat<DATA_TYPE>& q1, const Qua<DATA_TYPE>t& q2, const Quat<DATA_TYPE>& a, const Quat& b ) 
+   void squad( Quat<DATA_TYPE>& result, DATA_TYPE t, const Quat<DATA_TYPE>& q1, const Quat<DATA_TYPE>& q2, const Quat<DATA_TYPE>& a, const Quat<DATA_TYPE>& b ) 
    {
       ggtASSERT( false );
    }
 
    /** WARNING: not implemented (do not use) */
-   void meanTangent( Quat<dataType>& result, const Quat<dataType>& q1, const Quat<dataType>& q2, const Quat<dataType>& q3 )
+   template <typename DATA_TYPE>
+   void meanTangent( Quat<DATA_TYPE>& result, const Quat<DATA_TYPE>& q1, const Quat<DATA_TYPE>& q2, const Quat<DATA_TYPE>& q3 )
    {
        ggtASSERT( false );
    }
@@ -407,15 +456,37 @@ namespace gmtl
 
    //-- COMPARISONS --//
 
+   /** Compare two quaternions for equality. 
+    * @see isEqual( Quat, Quat )
+    */
+   template <class DATA_TYPE>
+   inline bool operator==( const Quat<DATA_TYPE>& q1, const Quat<DATA_TYPE>& q2 )
+   {
+      return bool( q1[0] == q2[0] &&
+                   q1[1] == q2[1] &&
+                   q1[2] == q2[2] &&
+                   q1[3] == q2[3]  );
+   }
+   
+   /** Compare two quaternions for not-equality. 
+    * @see isEqual( Quat, Quat )
+    */
+   template <class DATA_TYPE>
+   inline bool operator!=( const Quat<DATA_TYPE>& q1, const Quat<DATA_TYPE>& q2 )
+   {
+      return !operator==( q1, q2 );
+   }
+
+   /** Compare two quaternions for equality with tolerance.
+    */
    template <typename DATA_TYPE>
-   bool isEqual( const Quat<DATA_TYPE>& q1, const Quat<DATA_TYPE>& q2, DATA_TYPE tol = 0.0 ) 
+   bool isEqual( const Quat<DATA_TYPE>& q1, const Quat<DATA_TYPE>& q2, DATA_TYPE tol = 0.0 )
    {
       return bool( Math::isEqual( q1[0], q2[0], tol ) &&
                    Math::isEqual( q1[1], q2[1], tol ) &&
                    Math::isEqual( q1[2], q2[2], tol ) &&
                    Math::isEqual( q1[3], q2[3], tol )    );
    }
-   
 }
 
 #endif
