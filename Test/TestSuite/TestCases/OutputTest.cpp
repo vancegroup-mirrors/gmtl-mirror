@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: OutputTest.cpp,v $
- * Date modified: $Date: 2003-02-06 01:12:27 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2004-09-03 14:07:33 $
+ * Version:       $Revision: 1.8.4.1 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -67,6 +67,11 @@ namespace gmtlTest
       gmtl::Vec<int, 3> v3( 1, 2, 3 );
       out3 << v3;
       CPPUNIT_ASSERT( out3.str() == "(1, 2, 3)" );
+
+      std::ostringstream out4;
+      gmtl::Vec<int,3> v4(1,1,1);
+      out4 << (v3+v4);
+      CPPUNIT_ASSERT( out4.str() == "(2, 3, 4)" );
    }
 
    void OutputTest::testPoint()
