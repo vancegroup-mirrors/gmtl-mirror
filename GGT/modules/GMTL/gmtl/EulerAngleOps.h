@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: EulerAngleOps.h,v $
- * Date modified: $Date: 2003-02-23 07:05:41 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2003-03-03 00:54:04 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -46,63 +46,62 @@ namespace gmtl
  */
 
 /**
- * Compares v1 and v2 to see if they are exactly the same with zero tolerance.
+ * Compares 2 EulerAngles (component-wise) to see if they are exactly the same.
  *
- * @param v1   the first rotation
- * @param v2   the second rotation
+ * @param e1   the first EulerAngle
+ * @param e2   the second EulerAngle
  *
- * @return  true if v1 equals v2; false if they differ
+ * @return  true if e1 equals e2; false if they differ
  */
 template<class DATA_TYPE, typename ROT_ORDER>
-inline bool operator==(const EulerAngle<DATA_TYPE, ROT_ORDER>& v1,
-                       const EulerAngle<DATA_TYPE, ROT_ORDER>& v2)
+inline bool operator==(const EulerAngle<DATA_TYPE, ROT_ORDER>& e1,
+                       const EulerAngle<DATA_TYPE, ROT_ORDER>& e2)
 {
    // @todo metaprogramming.
-   if (v1[0] != v2[0]) return false;
-   if (v1[1] != v2[1]) return false;
-   if (v1[2] != v2[2]) return false;
+   if (e1[0] != e2[0]) return false;
+   if (e1[1] != e2[1]) return false;
+   if (e1[2] != e2[2]) return false;
    return true;
 }
 
 /**
- * Compares v1 and v2 to see if they are NOT exactly the same with zero
- * tolerance.
+ * Compares e1 and e2 (component-wise) to see if they are NOT exactly the same.
  *
- * @param v1   the first rotation
- * @param v2   the second rotation
+ * @param e1   the first EulerAngle
+ * @param e2   the second EulerAngle
  *
- * @return  true if v1 does not equal v2; false if they are equal
+ * @return  true if e1 does not equal e2; false if they are equal
  */
 template<class DATA_TYPE, typename ROT_ORDER>
-inline bool operator!=(const EulerAngle<DATA_TYPE, ROT_ORDER>& v1,
-                       const EulerAngle<DATA_TYPE, ROT_ORDER>& v2)
+inline bool operator!=(const EulerAngle<DATA_TYPE, ROT_ORDER>& e1,
+                       const EulerAngle<DATA_TYPE, ROT_ORDER>& e2)
 {
-   return(! (v1 == v2));
+   return(! (e1 == e2));
 }
 
 /**
- * Compares v1 and v2 to see if they are the same within the given epsilon
- * tolerance.
+ * Compares e1 and e2 (component-wise) to see if they are the same within a
+ * given tolerance.
  *
  * @pre eps must be >= 0
  *
- * @param v1   the first rotation
- * @param v2   the second rotation
- * @param eps  the epsilon tolerance value
+ * @param e1   the first EulerAngle
+ * @param e2   the second EulerAngle
+ * @param eps  the epsilon tolerance value, in radians
  *
- * @return  true if v1 equals v2; false if they differ
+ * @return  true if e1 is within the tolerance of e2; false if not
  */
 template<class DATA_TYPE, typename ROT_ORDER>
-inline bool isEqual( const EulerAngle<DATA_TYPE, ROT_ORDER>& v1,
-                     const EulerAngle<DATA_TYPE, ROT_ORDER>& v2,
+inline bool isEqual( const EulerAngle<DATA_TYPE, ROT_ORDER>& e1,
+                     const EulerAngle<DATA_TYPE, ROT_ORDER>& e2,
                      const DATA_TYPE& eps = (DATA_TYPE)0 )
 {
    gmtlASSERT(eps >= (DATA_TYPE)0);
    
    // @todo metaprogramming.
-   if (!Math::isEqual( v1[0], v2[0], eps )) return false;
-   if (!Math::isEqual( v1[1], v2[1], eps )) return false;
-   if (!Math::isEqual( v1[2], v2[2], eps )) return false;
+   if (!Math::isEqual( e1[0], e2[0], eps )) return false;
+   if (!Math::isEqual( e1[1], e2[1], eps )) return false;
+   if (!Math::isEqual( e1[2], e2[2], eps )) return false;
    return true;
 }
 

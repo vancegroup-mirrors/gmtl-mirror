@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Tri.h,v $
- * Date modified: $Date: 2002-05-20 22:39:22 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2003-03-03 00:54:05 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -93,7 +93,7 @@ public:
     * @param idx     the index to the vertex in the triangle
     * @pre 0 <= idx <= 2
     *
-    * @return  the nth vertex
+    * @return  the nth vertex as a point
     */
    //@{
    Point<DATA_TYPE, 3>& operator[]( int idx )

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Coord.h,v $
- * Date modified: $Date: 2003-02-23 07:05:41 $
- * Version:       $Revision: 1.12 $
+ * Date modified: $Date: 2003-03-03 00:54:04 $
+ * Version:       $Revision: 1.13 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -48,15 +48,15 @@ namespace gmtl
 /** coord is a position/rotation pair. 
  *  coord consists of a position element and a rotation element.
  *
- * <h3> "How to define an Point/Euler pair (32 bit float precision):" </h3>
+ * <h3> "How to define an Vector/Euler pair (32 bit float precision):" </h3>
  * \code
- *    Coord<float, 3, 3> myEulerCoord;
+ *    Coord<Vec3f, EulerAngleXYZf> myEulerCoord;
  * \endcode
  *
  * <h3> "Or use the built in typedefs:" </h3>
  * \code
- *    CoordVec3dEuler myEulerCoord;
- *    CoordVec4fEuler myOtherEulerCoord;
+ *    CoordVec3fEulerAngleXYZf myEulerCoord;
+ *    Coord3fQuat myOtherEulerCoord;
  * \endcode
  * @see Vec, AxisAngle, EulerAngle 
  * @ingroup Types

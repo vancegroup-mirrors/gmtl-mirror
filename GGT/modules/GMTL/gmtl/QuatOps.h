@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatOps.h,v $
- * Date modified: $Date: 2003-02-23 07:05:41 $
- * Version:       $Revision: 1.19 $
+ * Date modified: $Date: 2003-03-03 00:54:05 $
+ * Version:       $Revision: 1.20 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -124,7 +124,7 @@ namespace gmtl
    /** Vector negation - negate each element in the quaternion vector.
     * the negative of a rotation quaternion is geometrically equivelent
     * to the original. there exist 2 quats for every possible rotation.
-    * @post returns the negation of the given quat.
+    * @return returns the negation of the given quat.
     */
    template <typename DATA_TYPE>
    Quat<DATA_TYPE>& negate( Quat<DATA_TYPE>& result )
@@ -139,7 +139,7 @@ namespace gmtl
    /** Vector negation - (operator-) return a temporary that is the negative of the given quat.
     * the negative of a rotation quaternion is geometrically equivelent
     * to the original. there exist 2 quats for every possible rotation.
-    * @post returns the negation of the given quat
+    * @return returns the negation of the given quat
     */
    template <typename DATA_TYPE>
    Quat<DATA_TYPE> operator-( const Quat<DATA_TYPE>& quat )
@@ -311,7 +311,7 @@ namespace gmtl
    /** vector dot product between two quaternions.
     *  get the lengthSquared between two quat vectors...
     *  @post N(q) = x1*x2 + y1*y2 + z1*z2 + w1*w2
-    *  @post result = x1*x2 + y1*y2 + z1*z2 + w1*w2
+    *  @return dot product of q1 and q2
     *  @see Quat
     */
    template <typename DATA_TYPE>
@@ -372,13 +372,13 @@ namespace gmtl
    }
 
    /**
-    * Determines if the given vector is normalized within the given tolerance. The
-    * vector is normalized if its lengthSquared is 1.
+    * Determines if the given quaternion is normalized within the given tolerance. The
+    * quaternion is normalized if its lengthSquared is 1.
     *
-    * @param v1      the vector to test
+    * @param q1      the quaternion to test
     * @param eps     the epsilon tolerance
     *
-    * @return  true if the vector is normalized, false otherwise
+    * @return  true if the quaternion is normalized, false otherwise
     */
    template< typename DATA_TYPE >
    bool isNormalized( const Quat<DATA_TYPE>& q1, const DATA_TYPE eps = (DATA_TYPE)0.0001f )

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: EulerAngle.h,v $
- * Date modified: $Date: 2002-06-13 20:44:40 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2003-03-03 00:54:04 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -62,8 +62,6 @@ namespace gmtl
  * @see EulerAnglef, EulerAngled
  * @see Matrix, Quat, AxisAngle
  * @ingroup Types
- * @todo bug: might not want to derive from vec, otherwise EulerXYZ == EulerZYX
- *         works, when it shouldn't even compile...
  */
 template <typename DATA_TYPE, typename ROTATION_ORDER>
 class EulerAngle

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: LineSegOps.h,v $
- * Date modified: $Date: 2002-11-26 04:10:56 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2003-03-03 00:54:05 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -73,8 +73,7 @@ inline DATA_TYPE distance( const LineSeg<DATA_TYPE>& lineseg,
 
 //--- LineSeg Comparitor ---//
 /**
- * Compare two line segments to see if they are EXACTLY the same. In other
- * words, this comparison is done with zero tolerance.
+ * Compare two line segments to see if they are EXACTLY the same.
  *
  * @param ls1     the first lineseg to compare
  * @param ls2     the second lineseg to compare
@@ -88,8 +87,7 @@ inline bool operator==( const LineSeg<DATA_TYPE>& ls1, const LineSeg<DATA_TYPE>&
 }
 
 /**
- * Compare two line segments to see if they are not EXACTLY the same. In other
- * words, this comparison is done with zero tolerance.
+ * Compare two line segments to see if they are not EXACTLY the same.
  *
  * @param ls1     the first lineseg to compare
  * @param ls2     the second lineseg to compare
@@ -109,11 +107,11 @@ inline bool operator!=( const LineSeg<DATA_TYPE>& ls1,
  *
  * @param ls1     the first lineseg to compare
  * @param ls2     the second lineseg to compare
- * @param pre     the tolerance value to use
+ * @param eps     the tolerance value to use
  *
  * @pre eps must be >= 0
  *
- * @return  true if they are equal, false otherwise
+ * @return  true if they are equal within the tolerance, false otherwise
  */
 template< class DATA_TYPE >
 inline bool isEqual( const LineSeg<DATA_TYPE>& ls1,

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Defines.h,v $
- * Date modified: $Date: 2003-01-31 03:15:24 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2003-03-03 00:54:04 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -54,8 +54,8 @@ namespace gmtl
    /**
     * Used to describe where a point lies in relationship to a plane.
     * ON_PLANE means the point lies on the plane.
-    * POS_SIDE means the point lies on the side that the normal points.
-    * NEG_SIDE means the point lies on the side away from the normal.
+    * POS_SIDE means the point lies on the same side as the surface normal.
+    * NEG_SIDE means the point lies on the opposite side as the ssurface normal.
     * @ingroup Defines
     */
    enum PlaneSide
