@@ -157,7 +157,7 @@ def ValidateBoostOption(key, value, environ):
       boost_ver_filename = pj(value, 'include', 'boost', 'version.hpp')
       if not os.path.isfile(boost_ver_filename):
          sys.stdout.write("[%s] not found.\n" % boost_ver_filename)
-         Exit()
+         enable_python = False
          return False
       ver_file = file(boost_ver_filename)
 
