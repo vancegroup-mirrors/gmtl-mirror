@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: testSuite.cpp,v $
- * Date modified: $Date: 2002-03-21 22:06:21 $
- * Version:       $Revision: 1.39 $
+ * Date modified: $Date: 2002-03-21 22:13:33 $
+ * Version:       $Revision: 1.40 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -135,7 +135,7 @@ int main (int ac, char **av)
    gmtl_suite->addTest( gmtlTest::VecBaseTest::suite() );
    gmtl_suite->addTest( gmtlTest::VecTest::suite() );
    gmtl_suite->addTest( gmtlTest::PointTest::suite() );
-   
+
    gmtl_suite->addTest( gmtlTest::SphereTest::suite() );
    gmtl_suite->addTest( gmtlTest::TriTest::suite() );
    gmtl_suite->addTest( gmtlTest::PlaneTest::suite() );
@@ -147,7 +147,7 @@ int main (int ac, char **av)
    gmtl_suite->addTest( gmtlTest::MatrixGenTest::suite() );
    gmtl_suite->addTest( gmtlTest::QuatGenTest::suite() );
    gmtl_suite->addTest( gmtlTest::VecGenTest::suite() );
-   
+
    gmtl_suite->addTest( gmtlTest::CoordClassTest::suite() );
    gmtl_suite->addTest( gmtlTest::CoordCompareTest::suite() );
    gmtl_suite->addTest( gmtlTest::CoordGenTest::suite() );
@@ -156,12 +156,12 @@ int main (int ac, char **av)
    gmtl_suite->addTest( gmtlTest::QuatCompareTest::suite() );
    gmtl_suite->addTest( gmtlTest::QuatOpsTest::suite() );
    gmtl_suite->addTest( gmtlTest::QuatStuffTest::suite() );
-   
-   gmtl_suite->addTest( gmtlTest::XformTest::suite() );   
+
+   gmtl_suite->addTest( gmtlTest::XformTest::suite() );
    gmtl_suite->addTest( gmtlTest::ConvertTest::suite() );
 
    gmtl_suite->addTest( gmtlTest::OutputTest::suite() );
-   
+
    /*
    gmtl_suite->addTest( gmtlTest::Point3Test::suite() );
    gmtl_suite->addTest( gmtlTest::Vec3Test::suite() );
@@ -179,6 +179,8 @@ int main (int ac, char **av)
    perf_suite->addTest( gmtlTest::MatrixClassTest::perfSuite() );
    perf_suite->addTest( gmtlTest::MatrixCompareTest::perfSuite() );
    perf_suite->addTest( gmtlTest::MatrixOpsTest::perfSuite() );
+   perf_suite->addTest( gmtlTest::MatrixGenTest::perfSuite() );
+
 
    perf_suite->addTest( gmtlTest::CoordClassTest::perfSuite() );
    perf_suite->addTest( gmtlTest::CoordCompareTest::perfSuite() );
@@ -209,7 +211,7 @@ int main (int ac, char **av)
       runner.run( "gmtl_suite" );
       runner.run( "perf_suite" );
       usage( av );
-   }   
+   }
 
    return 0;
 }

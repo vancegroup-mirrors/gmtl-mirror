@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixGenTest.h,v $
- * Date modified: $Date: 2002-03-19 23:06:49 $
- * Version:       $Revision: 1.21 $
+ * Date modified: $Date: 2002-03-21 22:13:33 $
+ * Version:       $Revision: 1.22 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -22,7 +22,7 @@
 * License as published by the Free Software Foundation; either
 * version 2.1 of the License, or (at your option) any later version.
 *
-* This library is distributed in the hope that it will be useful, 
+* This library is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 * Lesser General Public License for more details.
@@ -65,20 +65,22 @@ public:
    {
    }
 
+   // correctness tests
    void testMatrixsetTrans();
    void testMatrixsetAxes();
    void testMatrixsetDirCos();
    void testMatrixsetScale();
    void testMatrixsetRot();
    void testMatrixsetRotEuler();
+
+   // performance tests
    void testTimingsetTrans();
    void testTimingsetScale();
    void testTimingsetRot33();
    void testTimingsetRot34();
    void testTimingsetRot44();
    void testTimingGetRot();
-   
-         
+
    // makeRot Euler tests...
    void testTimingsetRotEuler33();
    void testTimingsetRotEuler34();
@@ -90,29 +92,35 @@ public:
    void testTimingsetAxes34();
    void testTimingsetAxes44();
    void testTimingsetAxes();
-         
+
    static CppUnit::Test* suite()
    {
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("MatrixGenTest");
-      
+
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testMatrixsetTrans", &MatrixGenTest::testMatrixsetTrans ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testMatrixsetAxes", &MatrixGenTest::testMatrixsetAxes ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testMatrixsetDirCos", &MatrixGenTest::testMatrixsetDirCos ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testMatrixsetRotEuler", &MatrixGenTest::testMatrixsetRotEuler ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testMatrixsetScale", &MatrixGenTest::testMatrixsetScale ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testMatrixsetRot", &MatrixGenTest::testMatrixsetRot ) );
-      
-      
+
+      return test_suite;
+   }
+
+   static CppUnit::Test* perfSuite()
+   {
+      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("MatrixGenPerfTest");
+
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingsetTrans", &MatrixGenTest::testTimingsetTrans ) );
       /*
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testTimingMakeTransStatic", &MatrixGenTest::testTimingMakeTransStatic ) );
       */
-            
+
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingsetScale", &MatrixGenTest::testTimingsetScale ) );
-      /* 
+      /*
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingMakeScaleStatic", &MatrixGenTest::testTimingMakeScaleStatic) );
       */
-      
+
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingsetRot33", &MatrixGenTest::testTimingsetRot33 ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingsetRot34", &MatrixGenTest::testTimingsetRot34 ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingsetRot44", &MatrixGenTest::testTimingsetRot44 ) );
@@ -121,9 +129,9 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingMakeRot34Static", &MatrixGenTest::testTimingMakeRot34Static ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingMakeRot44Static", &MatrixGenTest::testTimingMakeRot44Static ) );
       */
-            
+
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingGetRot", &MatrixGenTest::testTimingGetRot ) );
-      
+
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingsetRotEuler33", &MatrixGenTest::testTimingsetRotEuler33 ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingsetRotEuler34", &MatrixGenTest::testTimingsetRotEuler34 ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingsetRotEuler44", &MatrixGenTest::testTimingsetRotEuler44 ) );
@@ -132,7 +140,7 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingMakeRotEuler34Static", &MatrixGenTest::testTimingMakeRot34Static ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingMakeRotEuler44Static", &MatrixGenTest::testTimingMakeRot44Static ) );
       */
-            
+
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingsetDirCos33", &MatrixGenTest::testTimingsetDirCos33 ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingsetDirCos34", &MatrixGenTest::testTimingsetDirCos34 ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingsetDirCos44", &MatrixGenTest::testTimingsetDirCos44 ) );
@@ -141,7 +149,7 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingMakeDirCos34Static", &MatrixGenTest::testTimingMakeDirCos34Static ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingMakeDirCos44Static", &MatrixGenTest::testTimingMakeDirCos44Static ) );
       */
-            
+
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testTimingsetAxes33", &MatrixGenTest::testTimingsetAxes33 ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testTimingsetAxes34", &MatrixGenTest::testTimingsetAxes34 ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testTimingsetAxes44", &MatrixGenTest::testTimingsetAxes44 ) );
@@ -150,8 +158,7 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testTimingMakeAxes34Static", &MatrixGenTest::testTimingMakeAxes34Static ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>("testTimingMakeAxes44Static", &MatrixGenTest::testTimingMakeAxes44Static ) );
       */
-            
-      
+
       return test_suite;
    }
 
