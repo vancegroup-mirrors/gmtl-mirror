@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: CoordGenTest.h,v $
- * Date modified: $Date: 2002-03-20 22:54:49 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-03-21 21:15:22 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -69,8 +69,11 @@ public:
    {
    }
 
+   // correctness tests
    void testCoordMakeCoord();
    void testCoordGetMatrix();
+
+   // timing tests
    void testGenTimingMakeCoord();
    void testGenTimingMakeMatrix();
    void testGenTimingSetCoord();
@@ -81,6 +84,14 @@ public:
       CppUnit::TestSuite* test_suite = new CppUnit::TestSuite( "CoordGenTest" );
       test_suite->addTest( new CppUnit::TestCaller<CoordGenTest>( "testCoordMakeCoord", &CoordGenTest::testCoordMakeCoord ) );
       test_suite->addTest( new CppUnit::TestCaller<CoordGenTest>( "testCoordGetMatrix", &CoordGenTest::testCoordGetMatrix ) );
+
+      return test_suite;
+   }
+
+   static CppUnit::Test* perfSuite()
+   {
+      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite( "CoordGenPerfTest" );
+
       test_suite->addTest( new CppUnit::TestCaller<CoordGenTest>( "testGenTimingMakeCoord", &CoordGenTest::testGenTimingMakeCoord ) );
       test_suite->addTest( new CppUnit::TestCaller<CoordGenTest>( "testGenTimingMakeMatrix", &CoordGenTest::testGenTimingMakeMatrix ) );
       test_suite->addTest( new CppUnit::TestCaller<CoordGenTest>( "testGenTimingSetCoord", &CoordGenTest::testGenTimingSetCoord ) );
