@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Containment.h,v $
- * Date modified: $Date: 2002-06-24 05:48:26 $
- * Version:       $Revision: 1.11 $
+ * Date modified: $Date: 2002-11-02 22:40:07 $
+ * Version:       $Revision: 1.12 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -36,6 +36,7 @@
 #define _GMTL_CONTAINMENT_H_
 
 // new stuff
+#include <vector>
 #include <gmtl/Sphere.h>
 #include <gmtl/AABox.h>
 #include <gmtl/VecOps.h>
