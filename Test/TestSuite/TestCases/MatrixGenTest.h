@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixGenTest.h,v $
- * Date modified: $Date: 2002-03-11 19:01:31 $
- * Version:       $Revision: 1.15 $
+ * Date modified: $Date: 2002-03-15 18:18:17 $
+ * Version:       $Revision: 1.16 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -1316,9 +1316,9 @@ public:
             
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingGetRot", &MatrixGenTest::testTimingGetRot ) );
       
-      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingMakeRotEuler33", &MatrixGenTest::testTimingMakeRot33 ) );
-      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingMakeRotEuler34", &MatrixGenTest::testTimingMakeRot34 ) );
-      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingMakeRotEuler44", &MatrixGenTest::testTimingMakeRot44 ) );
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingMakeRotEuler33", &MatrixGenTest::testTimingMakeRotEuler33 ) );
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingMakeRotEuler34", &MatrixGenTest::testTimingMakeRotEuler34 ) );
+      test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingMakeRotEuler44", &MatrixGenTest::testTimingMakeRotEuler44 ) );
       /*
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingMakeRotEuler33Static", &MatrixGenTest::testTimingMakeRot33Static ) );
       test_suite->addTest( new CppUnit::TestCaller<MatrixGenTest>( "testTimingMakeRotEuler34Static", &MatrixGenTest::testTimingMakeRot34Static ) );
