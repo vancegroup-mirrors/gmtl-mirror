@@ -1,0 +1,100 @@
+/************************************************************** ggt-head beg
+ *
+ * GGT: Generic Graphics Toolkit
+ *
+ * Original Authors:
+ *   Allen Bierbaum
+ *
+ * -----------------------------------------------------------------
+ * File:          $RCSfile: Sphere.h,v $
+ * Date modified: $Date: 2002-02-12 05:46:22 $
+ * Version:       $Revision: 1.1 $
+ * -----------------------------------------------------------------
+ *
+ *********************************************************** ggt-head end */
+/*************************************************************** ggt-cpr beg
+*
+* GGT: The Generic Graphics Toolkit
+* Copyright (C) 2001,2002 Allen Bierbaum
+*
+* This library is free software; you can redistribute it and/or
+* modify it under the terms of the GNU Lesser General Public
+* License as published by the Free Software Foundation; either
+* version 2.1 of the License, or (at your option) any later version.
+*
+* This library is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+* Lesser General Public License for more details.
+*
+* You should have received a copy of the GNU Lesser General Public
+* License along with this library; if not, write to the Free Software
+* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+*
+ ************************************************************ ggt-cpr end */
+#ifndef _GMTL_SPHERE_H_
+#define _GMTL_SPHERE_H_
+
+#include <gmtl/gmtlConfig.h>
+#include <gmtl/Point.h>
+
+namespace gmtl
+{
+
+/**
+ * Describes a sphere in 3D space by its center point and its radius.
+ *
+ * @param DATA_TYPE     the internal type used for the point and radius
+ */
+template<class DATA_TYPE>
+class Sphere
+{
+public:
+   typedef DATA_TYPE DataType;
+
+public:
+   /**
+    * Constructs a sphere centered at the origin with a radius of 0.
+    */
+   Sphere()
+      : mRadius( 0 )
+   {}
+
+   /**
+    * Constructs a sphere with the given center and radius.
+    *
+    * @param center     the point at which to center the sphere
+    * @param radius     the radius of the sphere
+    */
+   Sphere( const Point<DATA_TYPE, 3>& center, const DATA_TYPE& radius )
+      : mCenter( center ), mRadius( radius )
+   {}
+
+   /**
+    * Constructs a duplicate of the given sphere.
+    *
+    * @param sphere     the sphere to make a copy of
+    */
+   Sphere( const Sphere<DATA_TYPE>& sphere )
+      : mCenter( sphere.mCenter ), mRadius( sphere.mRadius )
+   {}
+
+public:
+   /**
+    * The center of the sphere.
+    */
+   Point<DATA_TYPE, 3> mCenter;
+
+   /**
+    * The radius of the sphere.
+    */
+   DATA_TYPE mRadius;
+};
+
+// --- helper types --- //
+typedef Sphere<float>   Spheref;
+typedef Sphere<double>  Sphered;
+
+};
+
+#endif

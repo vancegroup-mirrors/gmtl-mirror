@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Compare.h,v $
- * Date modified: $Date: 2002-02-11 20:19:31 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-02-12 05:46:22 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -40,6 +40,7 @@
 // Core types
 #include <gmtl/Vec.h>
 #include <gmtl/Point.h>
+#include <gmtl/Sphere.h>
 
 namespace gmtl
 {
@@ -80,7 +81,7 @@ bool operator !=(const VecBase<DATA_TYPE, SIZE>& v1, const VecBase<DATA_TYPE, SI
 */
 template<class DATA_TYPE, unsigned SIZE>
 bool isEqual(const VecBase<DATA_TYPE, SIZE>& v1, const VecBase<DATA_TYPE, SIZE>& v2, const DATA_TYPE& eps)
-{  
+{
    ggtASSERT(eps >= 0);
 
   for(int i=0;i<SIZE;++i)
@@ -92,7 +93,55 @@ bool isEqual(const VecBase<DATA_TYPE, SIZE>& v1, const VecBase<DATA_TYPE, SIZE>&
 }
 
 
+// --- Sphere comparisons -- //
 
+/**
+ * Compare two spheres to see if they are EXACTLY the same. In other words, this
+ * comparison is done with zero tolerance.
+ *
+ * @param s1      the first sphere to compare
+ * @param s2      the second sphere to compare
+ *
+ * @return  true if they are equal, false otherwise
+ */
+template< class DATA_TYPE >
+bool operator==( const Sphere<DATA_TYPE>& s1, const Sphere<DATA_TYPE>& s2 )
+{
+   return ( (s1.mCenter == s2.mCenter) && (s1.mRadius == s2.mRadius) );
+}
+
+/**
+ * Compare two spheres to see if they are not EXACTLY the same. In other words,
+ * this comparison is done with zero tolerance.
+ *
+ * @param s1      the first sphere to compare
+ * @param s2      the second sphere to compare
+ *
+ * @return  true if they are not equal, false otherwise
+ */
+template< class DATA_TYPE >
+bool operator!=( const Sphere<DATA_TYPE>& s1, const Sphere<DATA_TYPE>& s2 )
+{
+   return (! (s1 == s2));
+}
+
+/**
+ * Compare two spheres to see if they are the same within the given tolerance.
+ *
+ * @param s1      the first sphere to compare
+ * @param s2      the second sphere to compare
+ * @param eps     the tolerance value to use
+ *
+ * @pre eps must be >= 0
+ *
+ * @return  true if they are equal, false otherwise
+ */
+template< class DATA_TYPE >
+bool isEqual( const Sphere<DATA_TYPE>& s1, const Sphere<DATA_TYPE>& s2, const DATA_TYPE& eps )
+{
+   ggtASSERT( eps >= 0 );
+   return ( (isEqual(s1.mCenter, s2.mCenter, eps)) && (fabs(s1.mRadius - s2.mRadius) <= eps) );
+}
 
 };
 
