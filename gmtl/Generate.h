@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-02-20 00:29:35 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-02-20 14:58:32 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -44,13 +44,13 @@ namespace gmtl
    /** Create a translation matrix from vec.
     * @pre if making an n x n matrix, then for
     * <ul>
-    *  <li><b>non-homogeneous vector:</b> SIZE of vector needs to equal number of Matrix ROWS - 1  
-    *  <li><b>homogeneous vector:</b> SIZE of vector needs to equal number of Matrix ROWS 
+    *  <li><b>vector is homogeneous:</b> SIZE of vector needs to equal number of Matrix ROWS - 1  
+    *  <li><b>vector has scale component:</b> SIZE of vector needs to equal number of Matrix ROWS 
     * </ul>
     * if making an n x n+1 matrix, then for
     * <ul>
-    *  <li><b>non-homogeneous vector:</b> SIZE of vector needs to equal number of Matrix ROWS 
-    *  <li><b>homogeneous vector:</b> SIZE of vector needs to equal number of Matrix ROWS + 1
+    *  <li><b>vector is homogeneous:</b> SIZE of vector needs to equal number of Matrix ROWS 
+    *  <li><b>vector has scale component:</b> SIZE of vector needs to equal number of Matrix ROWS + 1
     * </ul>
     * @post if preconditions are not met, then function is undefined (will not compile)
     */
