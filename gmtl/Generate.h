@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2004-09-22 20:38:09 $
- * Version:       $Revision: 1.85 $
+ * Date modified: $Date: 2004-10-30 18:24:32 $
+ * Version:       $Revision: 1.86 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,6 +35,7 @@
 #ifndef _GMTL_GENERATE_H_
 #define _GMTL_GENERATE_H_
 
+#include <gmtl/Defines.h>
 #include <gmtl/Util/Assert.h>
 
 #include <gmtl/Vec.h>    // for Vec
@@ -671,9 +672,15 @@ namespace gmtl
     *    - <b>vector has scale component:</b> SIZE of vector needs to equal number of Matrix ROWS + 1
     * @post if preconditions are not met, then function is undefined (will not compile)
     */
+#ifdef GMTL_NO_METAPROG
+   template< typename DATA_TYPE, unsigned ROWS, unsigned COLS, unsigned SIZE >
+   inline Matrix<DATA_TYPE, ROWS, COLS>& setTrans( Matrix<DATA_TYPE, ROWS, COLS>& result,
+                                                   const VecBase<DATA_TYPE, SIZE>& trans )
+#else
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS, unsigned SIZE, typename REP >
    inline Matrix<DATA_TYPE, ROWS, COLS>& setTrans( Matrix<DATA_TYPE, ROWS, COLS>& result,
                                                    const VecBase<DATA_TYPE, SIZE, REP>& trans )
+#endif
    {
       /* @todo make this a compile time assert... */
       // if n x n   then (homogeneous case) vecsize == rows-1 or (scale component case) vecsize == rows

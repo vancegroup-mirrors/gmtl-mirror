@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecBase.h,v $
- * Date modified: $Date: 2004-10-20 01:35:05 $
- * Version:       $Revision: 1.17 $
+ * Date modified: $Date: 2004-10-30 18:24:33 $
+ * Version:       $Revision: 1.18 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -35,6 +35,7 @@
 #ifndef _GMTL_VECBASE_H_
 #define _GMTL_VECBASE_H_
 
+#include <gmtl/Defines.h>
 #include <gmtl/Util/Assert.h>
 #include <gmtl/Util/Meta.h>
 #include <gmtl/Config.h>
@@ -44,11 +45,13 @@
 namespace gmtl
 {
 
+#ifndef GMTL_NO_METAPROG
 namespace meta
 {
    struct DefaultVecTag
    {};
 }
+#endif
 
 
 /**
@@ -60,6 +63,7 @@ namespace meta
  * @param SIZE       the number of components this VecB has
  * @param REP        the representation to use for the vector.  (expression template or default)
  */
+#ifndef GMTL_NO_METAPROG
 template<class DATA_TYPE, unsigned SIZE, typename REP=meta::DefaultVecTag>
 class VecBase
 {
@@ -101,6 +105,7 @@ public:
       return expRep[i];
    }
 };
+#endif
 
 
 /**
@@ -111,12 +116,21 @@ public:
  * @param SIZE       the number of components this VecBase has
  */
 template<class DATA_TYPE, unsigned SIZE>
+#ifdef GMTL_NO_METAPROG
+class VecBase
+#else
 class VecBase<DATA_TYPE,SIZE,meta::DefaultVecTag>
+#endif
 {
 public:
    /// The datatype used for the components of this VecBase.
    typedef DATA_TYPE DataType;
+
+#ifdef GMTL_NO_METAPROG
+   typedef VecBase<DATA_TYPE, SIZE> VecType;
+#else
    typedef VecBase<DATA_TYPE, SIZE, meta::DefaultVecTag> VecType;
+#endif
 
    /// The number of components this VecBase has.
    enum Params { Size = SIZE };
@@ -145,12 +159,15 @@ public:
 #ifdef GMTL_COUNT_CONSTRUCT_CALLS
       gmtl::helpers::VecCtrCounterInstance()->inc();
 #endif
-      //for(unsigned i=0;i<SIZE;++i)
-      //   mData[i] = rVec.mData[i];
-
+#ifdef GMTL_NO_METAPROG
+      for(unsigned i=0;i<SIZE;++i)
+         mData[i] = rVec.mData[i];
+#else
       gmtl::meta::AssignVecUnrolled<SIZE-1, VecBase<DATA_TYPE,SIZE> >::func(*this, rVec);
+#endif
    }
 
+#ifndef GMTL_NO_METAPROG
    template<typename REP2>
    VecBase(const VecBase<DATA_TYPE, SIZE, REP2>& rVec)
    {
@@ -160,6 +177,7 @@ public:
       for(unsigned i=0;i<SIZE;++i)
       {  mData[i] = rVec[i]; }
    }
+#endif
 
    //@{
    /**
@@ -251,6 +269,17 @@ public:
    //@}
 
    /** Assign from different rep. */
+#ifdef GMTL_NO_METAPROG
+   inline VecType& operator=(const VecBase<DATA_TYPE,SIZE>& rhs)
+   {
+      for(unsigned i=0;i<SIZE;++i)
+      {
+         mData[i] = rhs[i];
+      }
+
+      return *this;
+   }
+#else
    template<typename REP2>
    inline VecType& operator=(const VecBase<DATA_TYPE,SIZE,REP2>& rhs)
    {
@@ -262,6 +291,7 @@ public:
       //gmtl::meta::AssignVecUnrolled<SIZE-1, VecBase<DATA_TYPE,SIZE> >::func(*this, rVec);
       return *this;
    }
+#endif
 
    /*
     Assign from another of same type.
@@ -293,6 +323,6 @@ public:
 };
 
 
-};
+}
 
 #endif
