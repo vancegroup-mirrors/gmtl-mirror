@@ -420,7 +420,7 @@ gfxn3/Debug/MatrixGenTest/MakeRot34                                0.58974
 gfxn3/Debug/MatrixGenTest/MakeRot34Static                          1.68024
 gfxn3/Debug/MatrixGenTest/MakeRot44                                0.65965
 gfxn3/Debug/MatrixGenTest/MakeRot44Static                          2.1233
-gfxn3/Debug/MatrixGenTest/MakeScale                                6.82934
+gfxn3/Debug/MatrixGenTest/MakeScale                                8.05362
 gfxn3/Debug/MatrixGenTest/MakeTrans                                4.29556
 gfxn3/Debug/MatrixOpsTest/Add44                                    1.24508
 gfxn3/Debug/MatrixOpsTest/Mult44                                   6.25859
@@ -435,6 +435,7 @@ gfxn3/Debug/MatrixTest/OpEqualOverhead                             0.31954
 gfxn3/Debug/MatrixTest/OpParenOverhead                             0.135978
 gfxn3/Debug/MatrixTest/SetOverhead                                 0.257045
 gfxn3/Debug/MatrixTest/SetPtrOverhead                              0.71263
+gfxn3/Debug/MatrixTest/SetTransposePtrOverhead                     1.57098
 gfxn3/Debug/PointTest/ConstructorsOverhead                         0.223708
 gfxn3/Debug/PointTest/CopyConstructOverhead                        0.252475
 gfxn3/Debug/PointTest/EqualityCompareOverhead                      0.218757
@@ -497,7 +498,7 @@ gfxn3/Debug/VecTest/SetOverhead                                    0.16708
 gfxn3/Debug/VecTest/SetPtrOverhead                                 0.259018
 gfxn3/Debug/VecTest/VecCreationOverhead                            0.221963
 gfxn3/Debug/VecTest/const_vec+const_vec+const_vec:perf             0.925
-gfxn3/Debug/VecTest/const_vec-const_vec-const_vec:perf             0.9364
+gfxn3/Debug/VecTest/const_vec-const_vec-const_vec:perf             0.8587
 gfxn3/Debug/VecTest/isEqualOverhead                                0.630933
 gfxn3/Debug/VecTest/vec+vec+vec:perf                               1.2757
 gfxn3/Debug/VecTest/vec-vec-vec:perf                               1.254
