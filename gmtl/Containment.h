@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Containment.h,v $
- * Date modified: $Date: 2003-01-14 20:51:25 $
- * Version:       $Revision: 1.14 $
+ * Date modified: $Date: 2004-09-02 15:56:56 $
+ * Version:       $Revision: 1.14.4.1 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -72,7 +72,7 @@ bool isInVolume( const Sphere<DATA_TYPE>& container,
    // the sphere to the point has a magnitude less than or equal to the radius
    // of the sphere.
    // |pt - center| <= radius
-   return ( length(pt - container.mCenter) <= container.mRadius );
+   return ( length(gmtl::Vec<DATA_TYPE,3>(pt - container.mCenter)) <= container.mRadius );
 }
 
 /**
@@ -92,7 +92,7 @@ bool isInVolume( const Sphere<DATA_TYPE>& container,
    // spheres plus the radius of the inner sphere is less than or equal to the
    // radius of the containing sphere.
    // |sphere.center - container.center| + sphere.radius <= container.radius
-   return ( length(sphere.mCenter - container.mCenter) + sphere.mRadius
+   return ( length(gmtl::Vec<DATA_TYPE,3>(sphere.mCenter - container.mCenter)) + sphere.mRadius
             <= container.mRadius );
 }
 
@@ -191,14 +191,14 @@ void makeVolume( Sphere<DATA_TYPE>& container,
       sum += *itr;
       ++itr;
    }
-   container.mCenter = sum / pts.size();
+   container.mCenter = sum / DATA_TYPE(pts.size());
 
    // compute the distance from the computed center to point furthest from that
    // center as the radius
    DATA_TYPE radiusSqr(0);
    for ( itr = pts.begin(); itr != pts.end(); ++itr )
    {
-      float len = lengthSquared( *itr - container.mCenter );
+      float len = lengthSquared( gmtl::Vec<DATA_TYPE,3>( (*itr) - container.mCenter) );
       if ( len > radiusSqr )
          radiusSqr = len;
    }
@@ -290,7 +290,7 @@ bool isOnVolume( const Sphere<DATA_TYPE>& container,
                  const Point<DATA_TYPE, 3>& pt )
 {
    // |center - pt| - radius == 0
-   return ( length(container.mCenter - pt) - container.mRadius == 0 );
+   return ( length(gmtl::Vec<DATA_TYPE,3>(container.mCenter - pt)) - container.mRadius == 0 );
 }
 
 /**
@@ -311,7 +311,7 @@ bool isOnVolume( const Sphere<DATA_TYPE>& container,
    gmtlASSERT( tol >= 0 && "tolerance must be positive" );
 
    // abs( |center-pt| - radius ) < tol
-   return ( Math::abs( length(container.mCenter - pt) - container.mRadius )
+   return ( Math::abs( length( gmtl::Vec<DATA_TYPE,3>(container.mCenter - pt)) - container.mRadius )
             <= tol );
 }
 
