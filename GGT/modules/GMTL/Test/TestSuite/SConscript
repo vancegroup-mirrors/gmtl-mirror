@@ -16,8 +16,11 @@ sources.extend(testcases_sources)
 # Setup the runtests executable target
 env = baseEnv.Copy()
 SetupCppUnit(env)
-env.Append(CPPPATH = Split('#Test/TestSuite #'),
-           LIBS = Split('dl'))
+env.Append(CPPPATH = Split('#Test/TestSuite #'))
+
+# Win32 doesn't have libdl
+if GetPlatform != 'win32':
+   env.Append(LIBS = Split('dl'))
 
 if GetPlatform() == 'linux':
    env.Append(CXXFLAGS = ['-fexceptions'])
