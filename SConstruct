@@ -1,5 +1,8 @@
 #!python
 
+EnsureSConsVersion(0,96)
+SConsignFile()
+
 import os, string, sys
 import re
 import distutils.sysconfig
@@ -20,6 +23,9 @@ if sys.version[:3] == '2.2' and sys.version[3] != '.':
 enable_python = False
 boost_version = '1.31'
 have_cppunit  = False
+
+try: has_help_flag = SCons.Script.Main.options.help_msg
+except AttributeError: has_help_flag = SCons.Script.options.help_msg
 
 #------------------------------------------------------------------------------
 # Define some generally useful functions
@@ -223,6 +229,25 @@ def BuildWin32Environment():
 
    return env
 
+def BuildPlatformEnv():
+   env = None
+
+   # Create and export the base environment
+   if GetPlatform() == 'irix':
+      env = BuildIRIXEnvironment()
+   elif GetPlatform() == 'linux' or GetPlatform()[:7] == 'freebsd':
+      env = BuildLinuxEnvironment()
+   elif GetPlatform() == 'darwin':
+      env = BuildDarwinEnvironment()
+   elif GetPlatform() == 'win32':
+      env = BuildWin32Environment()
+   else:
+      print 'Unsupported build environment: ' + GetPlatform(), "Trying default"
+      env = Environment()
+
+   return env
+      
+      
 # ########################################
 # Options
 # ########################################
@@ -457,7 +482,6 @@ Export('ApplyBoostOptions ApplyPythonOptions ApplyCppUnitOptions')
 #------------------------------------------------------------------------------
 # Grok the arguments to this build
 #------------------------------------------------------------------------------
-EnsureSConsVersion(0,91)
 
 # Figure out what version of GMTL we're building
 GMTL_VERSION = GetGMTLVersion()
@@ -479,21 +503,8 @@ print "Install prefix: ", Prefix()
 builders = {
    'ConfigBuilder'   : Builder(action = CreateConfig)
 }
-
-# Create and export the base environment
-if GetPlatform() == 'irix':
-   baseEnv = BuildIRIXEnvironment()
-elif GetPlatform() == 'linux' or GetPlatform()[:7] == 'freebsd':
-   baseEnv = BuildLinuxEnvironment()
-elif GetPlatform() == 'darwin':
-   baseEnv = BuildDarwinEnvironment()
-elif GetPlatform() == 'win32':
-   baseEnv = BuildWin32Environment()
-elif GetPlatform() == 'cygwin':
-   baseEnv = BuildCygwinEnvironment()
-else:
-   print 'Unsupported build environment: ' + GetPlatform()
-   sys.exit(-1)
+   
+baseEnv = BuildPlatformEnv()
 baseEnv['enable_python'] = False
 Export('baseEnv')
 
@@ -505,7 +516,7 @@ AddBoostOptions(opts)
 if SCons.Util.WhereIs('distcc'):
    baseEnv.Prepend(CXX = "distcc ", CC = "distcc ")
 
-if not SCons.Script.options.help_msg:
+if not has_help_flag:
    opts.Update(baseEnv);
    opts.Save('options.cache', baseEnv);
 
@@ -525,7 +536,7 @@ This file will be loaded each time.  Note: Options are cached in the file: optio
 installed_targets = []   # List of targets in the install location
 Export('installed_targets')
 
-if not SCons.Script.options.help_msg:
+if not has_help_flag:
    print "Preparing build settings...\n"
 
    # Create the GMTL package
@@ -545,9 +556,6 @@ if not SCons.Script.options.help_msg:
       docs/programmer.guide/Makefile
       docs/programmer.guide/guide.xml
       gmtl/gmtl.doxygen
-      gmtl/SConscript
-      gmtl/External/SConscript
-      gmtl/Util/SConscript
       python/SConscript
       Test/SConscript
       Test/TestSuite/SConscript
@@ -557,8 +565,18 @@ if not SCons.Script.options.help_msg:
    """))
    Export('pkg')
 
+   # Find gmtl headers, set up install rule and add to package
+   gmtl_headers = []
+   for root, dirs, files in os.walk('gmtl'):
+      gmtl_headers.extend([pj(root,f) for f in files if f.endswith(".h")])
+   #print "GMTL Headers:\n", gmtl_headers, "\n"
+   
+   for h in gmtl_headers:
+      installed_targets += baseEnv.InstallAs(pj(PREFIX, 'include', h), h)
+      pkg.addExtraDist([File(h)])
+   
    # Process subdirectories
-   subdirs = Split('gmtl')
+   subdirs = []
    if enable_python:
       subdirs.append('python')
    if have_cppunit:
