@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: LineSegTest.h,v $
- * Date modified: $Date: 2002-02-24 22:47:02 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2002-02-24 23:37:03 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -40,6 +40,7 @@
 #include <cppunit/TestCaller.h>
 
 #include <gmtl/LineSeg.h>
+#include <gmtl/LineSegOps.h>
 
 namespace gmtlTest
 {
@@ -291,90 +292,93 @@ public:
       // make sure the compiler doesn't optimize this test out
       CPPUNIT_ASSERT( use_value > 0 );
    }
-/*
+
    // --------------------------
    // Comparison tests
    // --------------------------
    void testEqualityCompare()
    {
-      gmtl::Plane<float> test_plane1( x1_v, 35.0f );
-      gmtl::Plane<float> test_plane2( test_plane1 );
+      gmtl::LineSeg<float> test_lineseg1( x1_pt, x1_v );
+      gmtl::LineSeg<float> test_lineseg2( test_lineseg1 );
 
-      CPPUNIT_ASSERT( test_plane1 == test_plane2 );
-      CPPUNIT_ASSERT( !(test_plane1 != test_plane2) );
+      CPPUNIT_ASSERT( test_lineseg1 == test_lineseg2 );
+      CPPUNIT_ASSERT( !(test_lineseg1 != test_lineseg2) );
 
-      // set equal, vary normal
-      test_plane2 = test_plane1;
-      test_plane2.mNorm[0] += 2.0f;
-      CPPUNIT_ASSERT( test_plane1 != test_plane2 );
-      CPPUNIT_ASSERT( !(test_plane1 == test_plane2) );
+      // set equal, vary origin
+      test_lineseg2 = test_lineseg1;
+      test_lineseg2.mOrigin[0] += 2.0f;
+      CPPUNIT_ASSERT( test_lineseg1 != test_lineseg2 );
+      CPPUNIT_ASSERT( !(test_lineseg1 == test_lineseg2) );
 
-      // set equal, vary offset
-      test_plane2 = test_plane1;
-      test_plane2.mOffset += 2.0f;
-      CPPUNIT_ASSERT( test_plane1 != test_plane2 );
-      CPPUNIT_ASSERT( !(test_plane1 == test_plane2) );
+      // set equal, vary dir
+      test_lineseg2 = test_lineseg1;
+      test_lineseg2.mDir[0] += 2.0f;
+      CPPUNIT_ASSERT( test_lineseg1 != test_lineseg2 );
+      CPPUNIT_ASSERT( !(test_lineseg1 == test_lineseg2) );
 
       // test comparison performance
       const long iters(400000);
       unsigned true_count(0);
 
       // -- Equality
-      test_plane2 = test_plane1;
+      test_lineseg2 = test_lineseg1;
 
       CPPUNIT_METRIC_START_TIMING();
       for( long iter=0; iter<iters; ++iter )
       {
-         test_plane1.mOffset += 1.0f;
-         test_plane2.mOffset += 2.0f;
-         if ( test_plane1 == test_plane2 )
-            true_count++;
+         if ( test_lineseg1 == test_lineseg2 )
+            ++true_count;
+         test_lineseg1.mOrigin[0] += 1.0f;
+         test_lineseg2.mOrigin[0] += 2.0f;
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE("PlaneTest/EqualityCompareOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("LineSegTest/EqualityCompareOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
 
       // -- Inequality
-      test_plane1.mNorm = x1_v;
-      test_plane1.mOffset = 0.0f;
-      test_plane2 = test_plane1;
+      test_lineseg1.mOrigin = x1_pt;
+      test_lineseg1.mDir = x1_v;
+      test_lineseg2 = test_lineseg1;
 
       CPPUNIT_METRIC_START_TIMING();
       for( long iter=0; iter<iters; ++iter )
       {
-         test_plane1.mOffset += 1.0f;
-         test_plane2.mOffset += 2.0f;
-         if ( test_plane1 == test_plane2 )
-            true_count++;
+         if ( test_lineseg1 == test_lineseg2 )
+            ++true_count;
+         test_lineseg1.mOrigin[0] += 1.0f;
+         test_lineseg2.mOrigin[0] += 2.0f;
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE("PlaneTest/InequalityCompareOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("LineSegTest/InequalityCompareOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+
+      // make sure the compiler doesn't optimize this test out
+      CPPUNIT_ASSERT( true_count > 0 );
    }
 
    void testIsEqual()
    {
-      gmtl::Plane<float> test_plane1( x1_v, 0.0f );
-      gmtl::Plane<float> test_plane2( test_plane1 );
+      gmtl::LineSeg<float> test_lineseg1( x1_pt, x1_v );
+      gmtl::LineSeg<float> test_lineseg2( test_lineseg1 );
       float eps(0.0f);
 
       for( eps=0.0f; eps<10.0f; eps+=0.05f )
       {
-         CPPUNIT_ASSERT( gmtl::isEqual(test_plane1, test_plane2, eps) );
+         CPPUNIT_ASSERT( gmtl::isEqual(test_lineseg1, test_lineseg2, eps) );
       }
 
-      for ( unsigned elt=0; elt<4; ++elt )
+      for ( unsigned elt=0; elt<6; ++elt )
       {
-         test_plane2 = test_plane1;
+         test_lineseg2 = test_lineseg1;
          if ( elt < 3 ) {
-            test_plane2.mNorm[elt] += 20.0f;
+            test_lineseg2.mOrigin[elt] += 20.0f;
          } else {
-            test_plane2.mOffset += 20.0f;
+            test_lineseg2.mDir[elt] += 20.0f;
          }
-         CPPUNIT_ASSERT( !gmtl::isEqual(test_plane1, test_plane2, 10.0f) );
-         CPPUNIT_ASSERT( !gmtl::isEqual(test_plane1, test_plane2, 19.9f) );
-         CPPUNIT_ASSERT( gmtl::isEqual(test_plane1, test_plane2, 20.1f) );
-         CPPUNIT_ASSERT( gmtl::isEqual(test_plane1, test_plane2, 22.0f) );
+         CPPUNIT_ASSERT( !gmtl::isEqual(test_lineseg1, test_lineseg2, 10.0f) );
+         CPPUNIT_ASSERT( !gmtl::isEqual(test_lineseg1, test_lineseg2, 19.9f) );
+         CPPUNIT_ASSERT( gmtl::isEqual(test_lineseg1, test_lineseg2, 20.1f) );
+         CPPUNIT_ASSERT( gmtl::isEqual(test_lineseg1, test_lineseg2, 22.0f) );
       }
 
       // Test comparison performance
@@ -383,24 +387,24 @@ public:
 
       // -- Equality
       CPPUNIT_METRIC_START_TIMING();
-      test_plane2 = test_plane1;
+      test_lineseg2 = test_lineseg1;
 
       for( long iter=0;iter<iters; ++iter)
       {
-         test_plane1.mOffset += 1.0f;
-         test_plane2.mOffset += 2.0f;
-         if(gmtl::isEqual(test_plane1, test_plane2, 1.0f) )
+         test_lineseg1.mOrigin[0] += 1.0f;
+         test_lineseg2.mOrigin[0] += 2.0f;
+         if(gmtl::isEqual(test_lineseg1, test_lineseg2, 1.0f) )
             true_count++;
-         if(gmtl::isEqual(test_plane1, test_plane2, 0.1f) )
+         if(gmtl::isEqual(test_lineseg1, test_lineseg2, 0.1f) )
             true_count++;
-         if(gmtl::isEqual(test_plane1, test_plane2, 100000.0f) )
+         if(gmtl::isEqual(test_lineseg1, test_lineseg2, 100000.0f) )
             true_count++;
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE("PlaneTest/isEqualOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("LineSegTest/isEqualOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
-
+/*
    // --------------------------
    // Operations tests
    // --------------------------
@@ -519,8 +523,8 @@ public:
       test_suite->addTest( new CppUnit::TestCaller<LineSegTest>("testPtVecCreation", &LineSegTest::testPtVecCreation));
       test_suite->addTest( new CppUnit::TestCaller<LineSegTest>("testPtPtCreation", &LineSegTest::testPtPtCreation));
       test_suite->addTest( new CppUnit::TestCaller<LineSegTest>("testCopyConstruct", &LineSegTest::testCopyConstruct));
-//      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testEqualityCompare", &PlaneTest::testEqualityCompare));
-//      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testIsEqual", &PlaneTest::testIsEqual));
+      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testEqualityCompare", &PlaneTest::testEqualityCompare));
+      test_suite->addTest( new CppUnit::TestCaller<PlaneTest>("testIsEqual", &PlaneTest::testIsEqual));
       test_suite->addTest( new CppUnit::TestCaller<LineSegTest>("testGetOrigin", &LineSegTest::testGetOrigin));
       test_suite->addTest( new CppUnit::TestCaller<LineSegTest>("testSetOrigin", &LineSegTest::testSetOrigin));
       test_suite->addTest( new CppUnit::TestCaller<LineSegTest>("testGetDir", &LineSegTest::testGetDir));
