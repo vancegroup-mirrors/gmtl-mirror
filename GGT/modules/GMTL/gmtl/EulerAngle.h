@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: EulerAngle.h,v $
- * Date modified: $Date: 2002-06-10 18:28:15 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-06-10 20:16:51 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -45,15 +45,19 @@ namespace gmtl
  *  Euler angle can be used to represent rotations in 3-space.
  *
  *  To some people this rotation format can be more intuitive to specify than
- *  Matrix, Quat, or EulerParam formatted rotation.
+ *  Matrix, Quat, or AxisAngle formatted rotation.
  *
  *  For efficiency and to minimize problems from gimbal-lock, you should use
  *  one of the other rotation formats instead (Quat or Matrix are preferred).
  *
+ *  The internal data format is an array of 3 DATA_TYPE angle values, 
+ *  plus a RotationOrder that specifies how to build a rotation transform
+ *  from the 3 angle value.
+ *
  * @pre all angles are in radians.
  *
- * @see EulerAngle3f, EulerAngle3d
- * @see Matrix, Quat, EulerParam
+ * @see EulerAnglef, EulerAngled
+ * @see Matrix, Quat, AxisAngle
  * @ingroup Types
  */
 template <typename DATA_TYPE>
