@@ -7,8 +7,8 @@ dnl   Allen Bierbaum
 dnl
 dnl -----------------------------------------------------------------
 dnl File:          $RCSfile: gmtl.m4,v $
-dnl Date modified: $Date: 2002-05-04 15:25:15 $
-dnl Version:       $Revision: 1.6 $
+dnl Date modified: $Date: 2002-06-04 20:44:04 $
+dnl Version:       $Revision: 1.7 $
 dnl -----------------------------------------------------------------
 dnl
 dnl ************************************************************** ggt-head end
@@ -34,18 +34,40 @@ dnl
 dnl *************************************************************** ggt-cpr end
 
 dnl ---------------------------------------------------------------------------
-dnl GMTL_PATH([MINIMUM-VERSION, [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND [, MODULES]]]])
+dnl Test for GMTL and then define GMTL_CXXFLAGS, GMTL_INCLUDES, and
+dnl GMTL_VERSION.
 dnl
-dnl Test for GMTL and then define GMTL_CXXFLAGS and GMTL_VERSION.
+dnl Usage:
+dnl    GMTL_PATH(version , gmtl-root [, include-path [, action-if-found [, action-if-not-found]]])
+dnl
+dnl Arguments:
+dnl    version             - The minimum required version.
+dnl    gmtl-root           - The default directory where the GMTL installation
+dnl                          is rooted.  This directory should contain an
+dnl                          include/gmtl directory with the GMTL headers.
+dnl                          The value given is used as the default value of
+dnl                          the --with-gmtl-prefix command-line argument.
+dnl    gmtl-inc            - The directory where the GMTL headers can be
+dnl                          found.  This is used to override the use of
+dnl                          <gmtl-root>/include as the default path to
+dnl                          those headers.  This argument is optional.
+dnl    action-if-found     - The action to take if a GMTL implementation is
+dnl                          found.  This argument is optional.
+dnl    action-if-not-found - The action to take if a GMTL implementation is
+dnl                          not found.  This argument is optional.
 dnl ---------------------------------------------------------------------------
 AC_DEFUN(GMTL_PATH,
 [
    dnl Get the cflags and libraries from the gmtl-config script
    AC_ARG_WITH(gmtl-prefix,
                [  --with-gmtl-prefix=<PATH>
-                          Prefix where GMTL is installed
-                          (optional)                      [No default]],
-               gmtl_config_prefix="$withval", gmtl_config_prefix="")
+                          Prefix where GMTL is installed  [default=$2]],
+               [GTML_ROOT="$withval"], [GTML_ROOT=""])
+   AC_ARG_WITH(gmtl-includes,
+               [  --with-gmtl-includes=<DIR>
+                          GMTL header file directory      [default=$2/include]],
+               [gmtl_inc_dir="$withval"],
+               ifelse([$3], , [gmtl_inc_dir=$2/include], [gmtl_inc_dir=$3]))
    AC_ARG_WITH(gmtl-exec-prefix,
                [  --with-gmtl-exec-prefix=<PATH>
                           Exec prefix where GMTL is
@@ -63,11 +85,11 @@ dnl                         test GMTL program], , enable_gmtltest=yes)
       fi
    fi
 
-   if test "x$gmtl_config_prefix" != "x" ; then
-      gmtl_config_args="$gmtl_config_args --prefix=$gmtl_config_prefix"
+   if test "x$GTML_ROOT" != "x" ; then
+      gmtl_config_args="$gmtl_config_args --prefix=$GTML_ROOT"
 
       if test x${GMTL_CONFIG+set} != xset ; then
-         GMTL_CONFIG="$gmtl_config_prefix/bin/gmtl-config"
+         GMTL_CONFIG="$GTML_ROOT/bin/gmtl-config"
       fi
    fi
 
@@ -96,16 +118,72 @@ dnl                         test GMTL program], , enable_gmtltest=yes)
       GMTL_CXXFLAGS=`$GMTL_CONFIG $gmtl_config_args --cxxflags`
    fi
 
-   if test "x$no_gmtl" = "xyes" ; then
-      if test "$GMTL_CONFIG" = "no" ; then
-         echo "*** The gmtl-config script installed by GMTL could not be found"
-         echo "*** If GMTL was installed in PREFIX, make sure"
-         echo "*** PREFIX/include/gmtl exists." 
+   ggt_save_CPPFLAGS="$CPPFLAGS"
+
+   dnl Add the user-specified Boost installation directory to the preprocessor
+   dnl arguments.  Ensure that /usr/include is not included multiple times if
+   dnl $BOOST_ROOT is "/usr".  The goal here is to let the user specify either
+   dnl the Boost root directory, the Boost include directory, or both.
+   if test "x$GMTL_ROOT" != "x/usr" -o "x$gmtl_inc_dir" != "xno" ; then
+      dnl No Boost include directory, so append "/include" to $GMTL_ROOT.
+      if test "x$gmtl_inc_dir" = "xno" ; then
+         ggt_gmtl_incdir="$GMTL_ROOT/include"
+      dnl We have a Boost include directory, so we'll use it and hope for
+      dnl the best.
+      else
+         ggt_gmtl_incdir="$gmtl_inc_dir"
       fi
-      GMTL_VERSION='-1'
-      ifelse([$3], , :, [$3])
+
+      CPPFLAGS="$CPPFLAGS -I$ggt_gmtl_incdir"
    fi
 
+   AC_CHECK_HEADER([gmtl/Version.h], [ggt_have_gmtl='yes'], [$5])
+
+   dnl Restore all the variables now that we are done testing.
+   CPPFLAGS="$ggt_save_CPPFLAGS"
+
+   dnl Do the version number comparison.
+   if test "x$ggt_have_gmtl" = "xyes" ; then
+      dnl This expression passed to grep(1) is not great.  It could stand to
+      dnl test for one or more whitespace characters instead of just one for
+      dnl book-ending GMTL_VERSION_*.
+      gmtl_patch=`grep 'define GMTL_VERSION_PATCH ' $ggt_gmtl_incdir/gmtl/Version.h | awk '{ print $[3] }' -`
+      gmtl_minor=`grep 'define GMTL_VERSION_MINOR ' $ggt_gmtl_incdir/gmtl/Version.h | awk '{ print $[3] }' -`
+      gmtl_major=`grep 'define GMTL_VERSION_MAJOR ' $ggt_gmtl_incdir/gmtl/Version.h | awk '{ print $[3] }' -`
+      gmtl_version="$gmtl_major.$gmtl_minor.$gmtl_patch"
+
+      DPP_VERSION_CHECK_MSG([GMTL], [$gmtl_version], [$1],
+                            ggt_cv_gmtl_version_okay, ,
+                            [ggt_have_gmtl='no'
+                            $5])
+   fi
+
+   if test "x$ggt_have_gmtl" = "xyes" ; then
+      ifelse([$4], , :, [$4])
+   fi
+
+   dnl If GMTL API files were found, define this extra stuff that may be
+   dnl helpful in some Makefiles.
+   if test "x$ggt_have_gmtl" = "xyes" ; then
+      if test "x$ggt_gmtl_incdir" != "x" ; then
+         GMTL_INCLUDES="-I$ggt_gmtl_incdir"
+      fi
+
+      GMTL='yes'
+   fi
+
+   dnl XXX: Get this working again.
+dnl   if test "x$no_gmtl" = "xyes" ; then
+dnl      if test "$GMTL_CONFIG" = "no" ; then
+dnl         echo "*** The gmtl-config script installed by GMTL could not be found"
+dnl         echo "*** If GMTL was installed in PREFIX, make sure"
+dnl         echo "*** PREFIX/include/gmtl exists." 
+dnl      fi
+dnl      GMTL_VERSION='-1'
+dnl      ifelse([$4], , :, [$4])
+dnl   fi
+
    AC_SUBST(GMTL_CXXFLAGS)
+   AC_SUBST(GMTL_INCLUDES)
    AC_SUBST(GMTL_VERSION)
 ])
