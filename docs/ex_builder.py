@@ -59,12 +59,17 @@ def replaceExInclude(match):
    # Replace skips
    skip_re = re.compile("@exskip.*?@exendskip", re.DOTALL);
    noskip_contents = skip_re.sub("",file_contents);
+   num_subs = 0;
    
    # - Surround the code
    # NOTE: This will also match the case */ <space> /* which we dont' want
    code_bounds_re = re.compile("\*/(.*?)/\*", re.DOTALL);
-   bad_codes_re = re.compile("@code\W*?@endcode", re.DOTALL);
+   bad_codes_re = re.compile("@code\W*?@endcode", re.DOTALL);    # re to remove codes that don't have content
+   hanging_code_re = re.compile("\*/.*?(?! \*/)", re.DOTALL);    # re to handle the case of hanging code at the end of the document (ie. */ comment then code and nothing else)
    with_code_contents = code_bounds_re.sub("\n@code\n\\1\n@endcode\n", noskip_contents);
+   (with_code_contents, num_subs) = hanging_code_re.subn("\n@code\n", with_code_contents);
+   if num_subs > 0:                                              # If we added a hanging code, we need to close it too
+      with_code_contents += "\n@endcode\n";
    fixed_code_content = bad_codes_re.sub("", with_code_contents);
    
    # -- Remove comment bookends
