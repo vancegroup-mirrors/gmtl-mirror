@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Version.h,v $
- * Date modified: $Date: 2003-04-25 12:50:55 $
- * Version:       $Revision: 1.20 $
+ * Date modified: $Date: 2003-08-15 22:05:50 $
+ * Version:       $Revision: 1.21 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -51,7 +51,7 @@
 // The major/minor/patch version (up to 3 digits each).
 #define GMTL_VERSION_MAJOR    0
 #define GMTL_VERSION_MINOR    3
-#define GMTL_VERSION_PATCH    1
+#define GMTL_VERSION_PATCH    2
 
 //--------------------------------------------------------------------------
 //--------------------------------------------------------------------------
