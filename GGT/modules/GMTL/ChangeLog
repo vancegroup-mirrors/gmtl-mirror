@@ -2,6 +2,8 @@ DATE       AUTHOR       CHANGE
 ---------- ------------ -------------------------------------------------------
 2004-07-21 allenb       Refactored code for seg/line intersect with plane
                         to better handle border cases.
+                        Added overloaded calls for Math::abs that call the
+                        system method for float, double, long, and int.
 [0.3.5 released - 7.12.2004]===================================================
 2004-07-12 patrickh     Filled in critical missing functions in PyGMTL.
 
