@@ -1,0 +1,166 @@
+# =============================================================================
+# $Id: make.defs.mk.in,v 1.1.1.1 2002-01-18 20:43:10 allenb Exp $
+#
+# Generated for use on @PLATFORM@
+# -----------------------------------------------------------------------------
+# =============================================================================
+
+# =============================================================================
+# Common variables typically needed by other makefiles.
+# =============================================================================
+bindir		= @bindir@
+datadir		= @datadir@
+exec_prefix	= @exec_prefix@
+libdir		= @libdir@
+libexecdir	= @libexecdir@
+prefix		= @prefix@
+sbindir		= @sbindir@
+releasedir	= @SAFE_BSYS_SRC_ROOT_ABS@/release
+scriptdir	= $(releasedir)/scripts
+sysconfdir	= @sysconfdir@
+topdir		= @topdir@
+GFX_PKG		= Gfx
+BSYS_SRC_ROOT	= $(top_srcdir)
+BSYS_SRC_ROOT_ABS	= @SAFE_BSYS_SRC_ROOT_ABS@
+
+# Various commands and their associated options.
+AR		= @AR@ $(EXTRA_ARFLAGS) $(ARFLAGS)
+ARFLAGS		= @ARFLAGS@
+AR_NAME_FLAG	= @AR_NAME_FLAG@
+CC		= @CC@
+CXX		= @CXX@
+CPP		= @CPP@
+CXXCPP		= @CXXCPP@
+CFLAGS		= @CFLAGS@ $(OPTIMIZER)
+CPPFLAGS	= @CPPFLAGS@
+CXXFLAGS	= @CXXFLAGS@ $(OPTIMIZER)
+DEFS		= @DEFS@
+DEP_GEN_FLAG	= @DEP_GEN_FLAG@
+DEPEND_FLAGS	= @DEPEND_FLAGS@ @INCLUDES@ -I$(BSYS_SRC_ROOT_ABS) -I$(topdir)
+DEPEND_EXTRAS	= @DEPEND_EXTRAS@ $(DEFS)
+IDL		= @IDL@
+INCLUDES	= @INCLUDES@ -I$(BSYS_SRC_ROOT) -I$(topdir)
+INSTALL		= @INSTALL@
+JAVAC		= @JAVAC@
+JAR		= @JAR@
+JIDL		= @JIDL@
+JTC_ROOT	= @JTC_ROOT@
+JTC_LIB_STATIC	= @JTC_LIB_STATIC@
+LD		= @LD@ $(EXTRA_LDFLAGS)
+LDFLAGS		= @LDFLAGS@ -L/usr/lib$(LIBBITSUF)
+LDFLAGS_STATIC	= @LDFLAGS_STATIC@
+LDFLAGS_DYNAMIC	= @LDFLAGS_DYNAMIC@
+LDOPTS		= @LDOPTS@ $(EXTRA_LDOPTS)
+LDOPTS_DBG	= @LDOPTS_DBG@
+LDOPTS_OPT	= @LDOPTS_OPT@
+LIBS		= @LIBS@
+LN_S		= @LN_S@
+MAKEFLAGS	+= --no-print-directory
+MKPATH		= $(BSYS_SRC_ROOT_ABS)/mk
+NSPR_ROOT	= @NSPR_ROOT@
+NSPR_LIB_STATIC	= @NSPR_LIB_STATIC@
+PLC_LIB_STATIC	= @PLC_LIB_STATIC@
+PLDS_LIB_STATIC	= @PLDS_LIB_STATIC@
+OBJ_FILE_SUFFIX	= @OBJ_FILE_SUFFIX@
+OBJ_NAME_FLAG	= @OBJ_NAME_FLAG@
+ORB_JAR		= @ORB_JAR@
+ORB_ROOT	= @ORB_ROOT@
+ORB_LIB_STATIC	= @ORB_LIB_STATIC@
+RANLIB		= @RANLIB@
+SYS_LIBS	= @SYS_LIBS@
+
+# Installation information (permissions, ownership).
+OWNER_NAME	= @OWNER_NAME@
+GROUP_NAME	= @GROUP_NAME@
+FILE_PERMS	= @FILE_PERMS@
+EXEC_PERMS	= @EXEC_PERMS@
+DIR_PERMS	= @DIR_PERMS@
+
+@SET_MAKE@
+
+# =============================================================================
+# Compiler command lines.
+# =============================================================================
+DBG_FLAGS	= -D_DEBUG @DBG_FLAGS@
+OPT_FLAGS	= @OPT_FLAGS@
+C_COMPILE	= $(CC) $(DEFS) $(INCLUDES) $(CPPFLAGS) $(CFLAGS)
+CXX_COMPILE	= $(CXX) $(DEFS) $(INCLUDES) $(CPPFLAGS) $(CXXFLAGS)
+
+# =============================================================================
+# Platform- and binary-specific options.  The assignments preceding the
+# ifeq ... endif blocks are the default values.  Depending on the value of
+# $(ABI), further settings may be made to allow for building with multiple
+# ABIs.
+# =============================================================================
+ifdef DSO_ABI
+    ifeq ($(DSO_ABI), O32)
+        ABI	= O32
+        ISA	= mips2
+    endif
+    ifeq ($(DSO_ABI), N32_M3)
+        ABI	= N32
+        ISA	= mips3
+    endif
+    ifeq ($(DSO_ABI), N32_M4)
+        ABI	= N32
+        ISA	= mips4
+    endif
+    ifeq ($(DSO_ABI), 64_M3)
+        ABI	= 64
+        ISA	= mips3
+    endif
+    ifeq ($(DSO_ABI), 64_M4)
+        ABI	= 64
+        ISA	= mips4
+    endif
+    ifeq ($(DSO_ABI), ELF_i386)
+        ABI	= ELF
+        ISA	= i386
+    endif
+else
+    ABI		= @ABI@
+    ISA		= @ISA@
+    LIBBITSUF	= @LIBBITSUF@
+endif
+
+PLATFORM	= @PLATFORM@
+
+ifeq ($(ABI), O32)
+    ARFLAGS	:= -o32 -mips2 $(ARFLAGS)
+    CFLAGS	+= -o32 -mips2
+    CXXFLAGS	+= -o32 -mips2
+    LDOPTS	+= -o32 -mips2
+    LIBBITSUF	=
+endif
+ifeq ($(ABI), N32)
+    ARFLAGS	:= -n32 $(ARFLAGS)
+    CFLAGS	+= -n32
+    CXXFLAGS	+= -n32
+    LDOPTS	+= -n32
+    LIBBITSUF	= 32
+endif
+ifeq ($(ABI), 64)
+    ARFLAGS	:= -64 $(ARFLAGS)
+    CFLAGS	+= -64
+    CXXFLAGS	+= -64
+    LDOPTS	+= -64
+    LIBBITSUF	= 64
+endif
+ifeq ($(ABI), ELF)
+    LIBBITSUF	=
+endif
+
+ifeq ($(ISA), mips3)
+    ARFLAGS	:= -mips3 $(ARFLAGS)
+    CFLAGS	+= -mips3
+    CXXFLAGS	+= -mips3
+    LDOPTS	+= -mips3
+endif
+ifeq ($(ISA), mips4)
+    ARFLAGS	:= -mips4 $(ARFLAGS)
+    CFLAGS	+= -mips4
+    CXXFLAGS	+= -mips4
+    LDOPTS	+= -mips4
+endif
+
+BSYS_LIBRARY	= libgfx

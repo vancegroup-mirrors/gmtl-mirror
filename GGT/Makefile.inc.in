@@ -1,0 +1,364 @@
+# =============================================================================
+# $Id: Makefile.inc.in,v 1.1.1.1 2002-01-18 20:43:10 allenb Exp $
+#
+# Specialized include file for the top-level makefile.  Targets and variables
+# needed for building the whole source tree are provided here.  This file
+# should only be included by the top-level makefile.  It is written in such a
+# way that no assumptions are made by this file about what the including file
+# provides except that it includes make.defs.mk.
+#
+# Generated for use on @PLATFORM@
+# =============================================================================
+
+# =============================================================================
+# Miscellaneous initial settings.
+# =============================================================================
+
+# Define $(_LOCAL_CLEAN) and $(_LOCAL_CLEANDEP) to inform the shared 'clean'
+# and 'cleandepend' targets that there is a '_clean' target and a
+# '_cleandepend' target to be run besides the standard targets.
+_LOCAL_CLEAN	= 1
+_LOCAL_CLEANDEP	= 1
+
+# SGI-specific dynamic-shared-object information.
+DSOREGFILE	= @DSOREGFILE@
+DSOVERSION      = @DSOVERSION@
+DSOVERSIONOPTS  = @DSOVERSIONOPTS@
+
+# Append $(DSOVERSIONOPTS) to $(LDOPTS) so that those extra options (if any)
+# will be used by $(LD).
+LDOPTS          := $(LDOPTS) $(DSOVERSIONOPTS)
+
+# =============================================================================
+# Build and installation directory naming and permission information.
+# =============================================================================
+_DEBUG_DIR	= debug
+_OPTIM_DIR	= opt
+_DEFAULT_DIR	= $(_DEBUG_DIR)
+
+_UMASK		= 002
+
+# ------------------------------------------------
+# Object file build and installation directories.
+# ------------------------------------------------
+_BUILDDIR_BASE	= $(topdir)/obj
+_BUILDDIR	= $(_BUILDDIR_BASE)/$(PLATFORM)/$(ABI)/$(ISA)
+_DBG_BUILDDIR	= $(_BUILDDIR)/$(_DEBUG_DIR)
+_OPT_BUILDDIR	= $(_BUILDDIR)/$(_OPTIM_DIR)
+_JAVA_BUILDDIR	= $(_BUILDDIR_BASE)
+
+# --------------------------------------------
+# Library build and installation directories.
+# --------------------------------------------
+
+# $(_install_libdir_abs) is the full path to the base directory (minus any
+# debugging or optimized subdirectories) where the libraries will be
+# installed.  $(_install_libdir_rel) is only the $(ISA) subdirectory of the
+# full path.
+_install_libdir_abs = $(libdir)$(LIBBITSUF)/$(ISA)
+_install_libdir_rel = ./$(ISA)
+
+# $(_LIBDIR_NAME) is the name of the library directory including an ABI suffix
+# if applicable.
+_LIBDIR_NAME    = lib$(LIBBITSUF)
+
+# $(_LIBDIR_BASE) is the base directory where the libraries will be built.
+_LIBDIR_BASE    = $(topdir)/$(_LIBDIR_NAME)
+
+# $(_LIBDIR) is the first-level subdirectory of $(_LIBDIR_BASE) that is
+# named by the instruction set being used ($(ISA)).
+_LIBDIR         = $(_LIBDIR_BASE)/$(ISA)
+
+# $(_DBG_LIBDIR) and $(_OPT_LIBDIR) are the directories where the libraries
+# are actually built.  The first is for a debugging copy of the libraries and
+# the second is for an optimized version of the libraries.
+_DBG_LIBDIR     = $(_LIBDIR)/$(_DEBUG_DIR)
+_OPT_LIBDIR     = $(_LIBDIR)/$(_OPTIM_DIR)
+
+SHLIB_MAJOR     = 1
+SHLIB_MINOR     = 0
+
+# Full names of the static and dynamic versions of the libraries.
+BSYS_LIB_STATIC  = $(BSYS_LIBRARY).@STATICLIB_EXT@
+BSYS_LIB_DYNAMIC = $(BSYS_LIBRARY).@SHAREDLIB_EXT@
+
+ABI_LIST	= @ABI_LIST@
+
+# =============================================================================
+# Library targets.
+# =============================================================================
+
+# Things to do before the object files and library are built.  Currently,
+# this runs the 'idl' target.
+beforebuild:
+	@$(MAKE) $(_IDL_TARGET)
+
+# Things to do after the object files and library are built.
+afterbuild:
+
+# ----------------------------------
+# Generate code from the IDL files.
+# ----------------------------------
+idl:
+	@echo "------------------------------------------------------------"
+	@echo "IDL C++ generation"
+	@echo "------------------------------------------------------------"
+	@$(MAKE) RECTARGET="$@" BEFOREBUILD=1 recursive
+
+jidl:
+	@echo "------------------------------------------------------------"
+	@echo "IDL Java generation"
+	@echo "------------------------------------------------------------"
+	@$(MAKE) RECTARGET="$@" BEFOREBUILD=1 recursive
+
+# ---------------------------------------------
+# Make the debugging version of the libraries.
+# ---------------------------------------------
+dbg:
+	@echo "------------------------------------------------------------"
+	@echo "Building static debugging version"
+	@echo "------------------------------------------------------------"
+	@$(MAKE) _IDL_TARGET="idl" beforebuild
+	@$(MAKE) _build_dbg_obj
+	@$(MAKE) _build_dbg_lib_static
+	@$(MAKE) afterbuild
+	@echo "------------------------------------------------------------"
+	@echo "$@ complete"
+	@echo "------------------------------------------------------------"
+
+# ------------------------------------------------------------
+# Make the debugging version of the libraries that uses DSOs.
+# ------------------------------------------------------------
+ddso:
+	@echo "------------------------------------------------------------"
+	@echo "Building dynamic debugging version"
+	@echo "------------------------------------------------------------"
+	@$(MAKE) _IDL_TARGET="idl" beforebuild
+	@$(MAKE) _build_dbg_obj
+	@$(MAKE) _build_dbg_lib_dynamic
+	@$(MAKE) afterbuild
+	@echo "------------------------------------------------------------"
+	@echo "$@ complete"
+	@echo "------------------------------------------------------------"
+
+# ---------------------------------------------
+# Make the optimized version of the libraries.
+# ---------------------------------------------
+opt:
+	@echo "------------------------------------------------------------"
+	@echo "Building static optimized version"
+	@echo "------------------------------------------------------------"
+	@$(MAKE) _IDL_TARGET="idl" beforebuild
+	@$(MAKE) _build_opt_obj
+	@$(MAKE) _build_opt_lib_static
+	@$(MAKE) afterbuild
+	@echo "------------------------------------------------------------"
+	@echo "$@ complete"
+	@echo "------------------------------------------------------------"
+
+# ------------------------------------------------------------
+# Make the optimized version of the libraries that uses DSOs.
+# ------------------------------------------------------------
+dso:
+	@echo "------------------------------------------------------------"
+	@echo "Building dynamic optimized version"
+	@echo "------------------------------------------------------------"
+	@$(MAKE) _IDL_TARGET="idl" beforebuild
+	@$(MAKE) _build_opt_obj
+	@$(MAKE) _build_opt_lib_dynamic
+	@$(MAKE) afterbuild
+	@echo "------------------------------------------------------------"
+	@echo "$@ complete"
+	@echo "------------------------------------------------------------"
+
+# Build the object files with the debugging flags enabled.
+_build_dbg_obj:
+	@echo "------------------------------------------------------------"
+	@echo "Building object files with debugging symbols"
+	@echo "------------------------------------------------------------"
+	$(SHELL) $(BSYS_SRC_ROOT_ABS)/mkinstalldirs $(_DBG_BUILDDIR)
+	@$(MAKE) RECTARGET="dbg" OPTIMIZER="$(DBG_FLAGS)"	\
+          BASE_OBJDIR="$(_DBG_BUILDDIR)" recursive
+
+# Build the object files with the optimization flags enabled.
+_build_opt_obj:
+	@echo "------------------------------------------------------------"
+	@echo "Building object files with debugging symbols"
+	@echo "------------------------------------------------------------"
+	$(SHELL) $(BSYS_SRC_ROOT_ABS)/mkinstalldirs $(_OPT_BUILDDIR)
+	@$(MAKE) RECTARGET="opt" OPTIMIZER="$(OPT_FLAGS)" 	\
+          BASE_OBJDIR="$(_OPT_BUILDDIR)" recursive
+
+_build_java:
+	@echo "------------------------------------------------------------"
+	@echo "Building Java class files"
+	@echo "------------------------------------------------------------"
+	$(SHELL) $(BSYS_SRC_ROOT_ABS)/mkinstalldirs $(_JAVA_BUILDDIR)
+	@$(MAKE) RECTARGET="java" BASE_OBJDIR="$(_JAVA_BUILDDIR)" recursive
+
+# Build the optimized and debugging object files, static libraries and
+# shared libraries.  Once this has been done, make the links in $(_LIBDIR).
+libs:
+	@$(MAKE) _build_opt_obj
+	@$(MAKE) _build_opt_lib_static
+	@$(MAKE) _build_opt_lib_dynamic
+	@$(MAKE) _build_dbg_obj
+	@$(MAKE) _build_dbg_lib_static
+	@$(MAKE) _build_dbg_lib_dynamic
+	@$(MAKE) _LIB_LINK_DIR="$(_LIBDIR)" _lib_links
+	@$(MAKE) _build_java
+	@$(MAKE) _build_dso_jar
+
+# Make symlinks in $(_LIB_LINK_DIR) pointing to the library binaries in
+# $(_DEFAULT_DIR).
+_lib_links:
+	@echo "------------------------------------------------"
+	@echo "Creating symlinks in $(_LIB_LINK_DIR)"
+	@echo "------------------------------------------------"
+	cd $(_LIB_LINK_DIR) && rm -f ./$(BSYS_LIB_STATIC) &&		\
+          $(LN_S) $(_DEFAULT_DIR)/$(BSYS_LIB_STATIC) ./
+	cd $(_LIB_LINK_DIR) && rm -f ./$(BSYS_LIB_DYNAMIC) &&		\
+          $(LN_S) $(_DEFAULT_DIR)/$(BSYS_LIB_DYNAMIC) ./
+
+# Build the static libraries with the debugging flags enabled.
+_build_dbg_lib_static:
+	@echo "------------------------------------------------------------"
+	@echo "Building static debugging library"
+	@echo "------------------------------------------------------------"
+	@$(MAKE) OBJDIR="$(_DBG_BUILDDIR)" LIBDIR="$(_DBG_LIBDIR)"	\
+          $(_DBG_LIBDIR)/$(BSYS_LIB_STATIC)
+
+# Build the shared libraries with the debugging flags enabled.
+_build_dbg_lib_dynamic:
+ifneq (@OS_TYPE@, Win32)
+	@echo "------------------------------------------------------------"
+	@echo "Building dynamic debugging library"
+	@echo "------------------------------------------------------------"
+	@$(MAKE) OBJDIR="$(_DBG_BUILDDIR)" LIBDIR="$(_DBG_LIBDIR)"	\
+          $(_DBG_LIBDIR)/$(BSYS_LIB_DYNAMIC)
+else
+	@echo "------------------------------------------------------------"
+	@echo "Cannot build dynamic libs on Win32 yet!"
+	@echo "------------------------------------------------------------"
+endif
+
+# Build the static libraries with the optimization flags enabled.
+_build_opt_lib_static:
+	@echo "------------------------------------------------------------"
+	@echo "Building static optimized library"
+	@echo "------------------------------------------------------------"
+	@$(MAKE) OBJDIR="$(_OPT_BUILDDIR)" LIBDIR="$(_OPT_LIBDIR)"	\
+          $(_OPT_LIBDIR)/$(BSYS_LIB_STATIC)
+
+# Build the shared libraries with the optimization flags enabled.
+_build_opt_lib_dynamic:
+ifneq (@OS_TYPE@, Win32)
+	@echo "------------------------------------------------------------"
+	@echo "Building dynamic optimized library"
+	@echo "------------------------------------------------------------"
+	@$(MAKE) OBJDIR="$(_OPT_BUILDDIR)" LIBDIR="$(_OPT_LIBDIR)"	\
+          $(_OPT_LIBDIR)/$(BSYS_LIB_DYNAMIC)
+else
+	@echo "------------------------------------------------------------"
+	@echo "Cannot build dynamic libs on Win32 yet!"
+	@echo "------------------------------------------------------------"
+endif
+
+# -----------------------------------------------
+# Construct the static version of the libraries.
+# -----------------------------------------------
+static-libs: $(BSYS_LIB_STATIC)
+
+$(LIBDIR)/$(BSYS_LIB_STATIC): $(OBJDIR)/*.$(OBJ_FILE_SUFFIX)
+	@echo "------------------------------------------------"
+	@echo "Creating $@"
+	@echo "------------------------------------------------"
+	@$(SHELL) $(BSYS_SRC_ROOT_ABS)/mkinstalldirs $(LIBDIR)
+	$(AR) $(AR_NAME_FLAG)$@ $(OBJDIR)/*.$(OBJ_FILE_SUFFIX)
+	$(RANLIB) $@
+	cd $(_LIBDIR_BASE) && rm -f ./$(notdir $@) && $(LN_S) $@ ./
+	@echo "------------------------------------------------"
+	@echo "$@ done"
+	@echo "------------------------------------------------"
+
+# -------------------------------------------------------
+# Construct the dynamic shared version of the libraries.
+# -------------------------------------------------------
+shared-libs: $(BSYS_LIB_DYNAMIC)
+
+$(LIBDIR)/$(BSYS_LIB_DYNAMIC): $(OBJDIR)/*.$(OBJ_FILE_SUFFIX)
+	@echo "------------------------------------------------"
+	@echo "Creating $@"
+	@echo "------------------------------------------------"
+	@$(SHELL) $(BSYS_SRC_ROOT_ABS)/mkinstalldirs $(LIBDIR)
+	$(LD) $(LDOPTS) -o $@ $(OBJDIR)/*.$(OBJ_FILE_SUFFIX)
+	cd $(_LIBDIR_BASE) && rm -f ./$(notdir $@) && $(LN_S) $@ ./
+	@echo "------------------------------------------------"
+	@echo "$@ done"
+	@echo "------------------------------------------------"
+
+# Create the JAR file containing the Java class files for the CORBA skeleton
+# code.
+_build_dso_jar:
+	@echo "------------------------------------------------------------"
+	@echo "Creating Java skeleton code JAR file"
+	@echo "------------------------------------------------------------"
+	@$(MAKE) OBJDIR="$(_JAVA_BUILDDIR)" LIBDIR="$(_LIBDIR_BASE)"	\
+          $(_LIBDIR_BASE)/Dso.jar
+
+$(LIBDIR)/Dso.jar: $(OBJDIR)/$(GFX_PKG)/*.class
+	@echo "------------------------------------------------"
+	@echo "Creating $@"
+	@echo "------------------------------------------------"
+	@$(SHELL) $(BSYS_SRC_ROOT_ABS)/mkinstalldirs $(LIBDIR)
+	cd $(OBJDIR) && $(JAR) cvf $@ $(GFX_PKG)
+	@echo "------------------------------------------------"
+	@echo "$@ done"
+	@echo "------------------------------------------------"
+
+# =============================================================================
+# Clean-up targets.  '_clean' removes all the files in the build directories.
+# '_cleandepend' removes all the dependency files (the .d makefiles) in the
+# build directories.  'clobber' removes the $(_BUILDDIR_BASE) and
+# $(_LIBDIR_NAME) directories.
+# =============================================================================
+_clean:
+	@echo "------------------------------------------------------------"
+	@echo "Cleaning up the build tree"
+	@echo "------------------------------------------------------------"
+	@$(MAKE) RECTARGET="clean" recursive
+	@echo "------------------------------------------------------------"
+	@echo "Done with 'clean'"
+	@echo "------------------------------------------------------------"
+
+_cleandepend:
+	@echo "------------------------------------------------------------"
+	@echo "Cleaning up dependency files"
+	@echo "------------------------------------------------------------"
+	@$(MAKE) DO_CLEANDEPEND=1 RECTARGET="cleandepend" recursive
+	@echo "------------------------------------------------------------"
+	@echo "Done with 'cleandepend'"
+	@echo "------------------------------------------------------------"
+
+clobber:
+	@$(MAKE) DO_CLEANDEPEND=1 _clean
+	@echo "------------------------------------------------------------"
+	@echo "Clobbering build directories"
+	@echo "------------------------------------------------------------"
+	@if test -d $(_BUILDDIR_BASE) ; then				\
+            echo "------------------------------------------------" ;	\
+            echo "Removing $(_BUILDDIR_BASE) ..."                   ;	\
+            echo "------------------------------------------------" ;	\
+            rm -rf $(_BUILDDIR_BASE) ;					\
+        fi
+	@if test -d $(_LIBDIR_NAME); then				\
+            echo "------------------------------------------------" ;	\
+            echo "Removing $(_LIBDIR_NAME) ..."                     ;	\
+            echo "------------------------------------------------" ;	\
+            rm -rf $(_LIBDIR_NAME) ;					\
+        fi
+	@echo "------------------------------------------------------------"
+	@echo "Done with '$@'"
+	@echo "------------------------------------------------------------"
+
+include $(MKPATH)/bsys.clean.mk
