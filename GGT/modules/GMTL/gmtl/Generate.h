@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2003-04-25 12:47:01 $
- * Version:       $Revision: 1.77 $
+ * Date modified: $Date: 2003-05-02 23:26:43 $
+ * Version:       $Revision: 1.78 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -603,19 +603,19 @@ namespace gmtl
     * @result Set matrix to perspective transform 
     */
    template <typename T, unsigned COLS, unsigned ROWS >
-   inline const Matrix<T, ROWS, COLS>& setPerspective( Matrix<T, ROWS, COLS>& result, 
-                                                       T fovy, T aspect, T nr, T fr )
+   inline Matrix<T, ROWS, COLS>& setPerspective( Matrix<T, ROWS, COLS>& result, 
+                                                 T fovy, T aspect, T nr, T fr )
    {
       assert( nr > 0 && fr > nr && "invalid near and far values" );
-      float theta = Math::deg2Rad( fovy * T( 0.5 ) );
-      float tangentTheta = Math::tan( theta );
+      T theta = Math::deg2Rad( fovy * T( 0.5 ) );
+      T tangentTheta = Math::tan( theta );
       
       // tan(theta) = right / nr
       // top = tan(theta) * nr
       // right = tan(theta) * nr * aspect
       
-      float top = tangentTheta * nr;
-      float right = top * aspect; // aspect determines the fieald of view in the x-axis
+      T top = tangentTheta * nr;
+      T right = top * aspect; // aspect determines the fieald of view in the x-axis
       
       // TODO: args need to match...
       return setFrustum( result, -right, top, right, -top, nr, fr );
