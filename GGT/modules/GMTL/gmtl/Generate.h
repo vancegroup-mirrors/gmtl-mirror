@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-05-05 19:41:01 $
- * Version:       $Revision: 1.45 $
+ * Date modified: $Date: 2002-05-05 19:58:54 $
+ * Version:       $Revision: 1.46 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -359,6 +359,7 @@ namespace gmtl
    }
 
    /** Create a translation matrix from a vec
+    * @todo in .net vc7 you have to explicitly give SIZE.  This is not what we want.
    */
    template< typename MATRIX_TYPE, unsigned SIZE >
    inline MATRIX_TYPE makeTrans( const Vec<typename MATRIX_TYPE::DataType, SIZE>& trans, Type2Type< MATRIX_TYPE > t = Type2Type< MATRIX_TYPE >() )
