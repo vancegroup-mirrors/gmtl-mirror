@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2002-05-29 19:48:05 $
- * Version:       $Revision: 1.55 $
+ * Date modified: $Date: 2002-05-29 21:19:01 $
+ * Version:       $Revision: 1.56 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -434,11 +434,15 @@ namespace gmtl
       return ret_trans;
    }
    
-   /** Make vector from matrix translation.
+   /**
+    * Make new vector by extracting the translational aspect of the given matrix.
+    *
+    * @param arg  the matrix to extract the translation from
+    *
     * @pre if making an n x n matrix, then for
     *    - <b>vector is homogeneous:</b> SIZE of vector needs to equal number of Matrix ROWS - 1
     *    - <b>vector has scale component:</b> SIZE of vector needs to equal number of Matrix ROWS
-    * if making an n x n+1 matrix, then for
+    * <br>if making an n x n+1 matrix, then for
     *    - <b>vector is homogeneous:</b> SIZE of vector needs to equal number of Matrix ROWS
     *    - <b>vector has scale component:</b> SIZE of vector needs to equal number of Matrix ROWS + 1
     * @post if preconditions are not met, then function is undefined (will not compile)
