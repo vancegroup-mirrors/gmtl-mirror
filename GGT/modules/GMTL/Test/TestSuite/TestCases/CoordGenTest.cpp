@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: CoordGenTest.cpp,v $
- * Date modified: $Date: 2002-06-12 19:38:53 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2003-02-05 22:50:38 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -18,8 +18,7 @@
 * Copyright (C) 2001,2002 Allen Bierbaum
 *
 * This library is free software; you can redistribute it and/or
-* modify it under th MathPrimitives  [PrimName]Ops.h  Vec & Point [100%] -ab
-Coord [] -km Transforcoordions XformInterface? Xform.h   Collision detection CollisionInterface? Intersection.h   Bounding volumes BoundingInterface? Containment.h   Math factories MathFactories Builder.h  e terms of the GNU Lesser General Public
+* modify it under the terms of the GNU Lesser General Public
 * License as published by the Free Software Foundation; either
 * version 2.1 of the License, or (at your option) any later version.
 *
@@ -34,6 +33,8 @@ Coord [] -km Transforcoordions XformInterface? Xform.h   Collision detection Col
 *
  ************************************************************ ggt-cpr end */
 #include "CoordGenTest.h"
+#include "../Suites.h"
+#include <cppunit/extensions/HelperMacros.h>
 #include <cppunit/extensions/MetricRegistry.h>
 
 #include <gmtl/Generate.h>
@@ -47,6 +48,9 @@ Coord [] -km Transforcoordions XformInterface? Xform.h   Collision detection Col
 
 namespace gmtlTest
 {
+   CPPUNIT_TEST_SUITE_REGISTRATION(CoordGenTest);
+   CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(CoordGenMetricTest, Suites::metric());
+
    void CoordGenTest::testCoordMakeCoord()
    {
       gmtl::Matrix44f mat;
@@ -153,7 +157,7 @@ namespace gmtlTest
    }
 
 
-   void CoordGenTest::testGenTimingMakeCoord()
+   void CoordGenMetricTest::testGenTimingMakeCoord()
    {
       gmtl::Matrix44f mat;
       gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float, gmtl::XYZ> > q1;
@@ -172,7 +176,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( q1.pos()[1] != 10000.0f );
    }
    
-   void CoordGenTest::testGenTimingMakeMatrix()
+   void CoordGenMetricTest::testGenTimingMakeMatrix()
    {
       gmtl::Matrix44f mat;
       gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float, gmtl::XYZ> > q1;
@@ -191,7 +195,7 @@ namespace gmtlTest
    }
 
 
-   void CoordGenTest::testGenTimingSetCoord()
+   void CoordGenMetricTest::testGenTimingSetCoord()
    {
       gmtl::Matrix44f mat;
       gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float, gmtl::XYZ> > q1;

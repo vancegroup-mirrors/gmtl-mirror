@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: IntersectionTest.h,v $
- * Date modified: $Date: 2002-11-26 06:32:26 $
- * Version:       $Revision: 1.11 $
+ * Date modified: $Date: 2003-02-05 22:50:40 $
+ * Version:       $Revision: 1.12 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -32,79 +32,60 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 *
  ************************************************************ ggt-cpr end */
-#ifndef _GMTL_INTERSECTIONTEST_H_
-#define _GMTL_INTERSECTIONTEST_H_
-#include <iostream>
+#ifndef _GMTL_INTERSECTION_TEST_H_
+#define _GMTL_INTERSECTION_TEST_H_
 
-#include <cppunit/TestCase.h>
-#include <cppunit/TestSuite.h>
-#include <cppunit/TestCaller.h>
+#include <cppunit/extensions/HelperMacros.h>
 
 namespace gmtlTest
 {
-
-class IntersectionTest : public CppUnit::TestCase
-{
-public:
-   IntersectionTest( std::string name = "IntersectionTest" )
-      : CppUnit::TestCase (name)
-   {}
-
-   //---------------------------------------------------------------------------
-   // Functionality tests
-   //---------------------------------------------------------------------------
-   void testIntersectAABoxAABox();
-   void testIntersectAABoxPoint();
-   void testIntersectAABoxSphere();
-
-   void testIntersectAABoxSweep();
-   void testIntersectSphereSweep();
-
-   //---------------------------------------------------------------------------
-   // Performance tests
-   //---------------------------------------------------------------------------
-   void testTimingIntersectAABoxAABox();
-   void testTimingIntersectAABoxPoint();
-
-   void testTimingIntersectAABoxSweep();
-   void testTimingIntersectSphereSweep();
-
-   static CppUnit::Test* suite()
+   /**
+    * Functionality tests
+    */
+   class IntersectionTest : public CppUnit::TestFixture
    {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("IntersectionTest");
-#define ADD_TEST(x) test_suite->addTest(new CppUnit::TestCaller<IntersectionTest>( "test" #x, &IntersectionTest::test ## x))
-      ADD_TEST(IntersectAABoxAABox);
-      ADD_TEST(IntersectAABoxPoint);
-      ADD_TEST(IntersectAABoxSphere);
-      ADD_TEST(IntersectAABoxSweep);
-      ADD_TEST(IntersectSphereSweep);
-#undef ADD_TEST
-      return test_suite;
-   }
+      CPPUNIT_TEST_SUITE(IntersectionTest);
 
-   static CppUnit::Test* perfSuite()
+      CPPUNIT_TEST(testIntersectAABoxAABox);
+      CPPUNIT_TEST(testIntersectAABoxPoint);
+      CPPUNIT_TEST(testIntersectAABoxSphere);
+
+      CPPUNIT_TEST(testIntersectAABoxSweep);
+      CPPUNIT_TEST(testIntersectSphereSweep);
+
+      CPPUNIT_TEST_SUITE_END();
+
+   public:
+      void testIntersectAABoxAABox();
+      void testIntersectAABoxPoint();
+      void testIntersectAABoxSphere();
+
+      void testIntersectAABoxSweep();
+      void testIntersectSphereSweep();
+   };
+
+   /**
+    * Metric tests.
+    */
+   class IntersectionMetricTest : public CppUnit::TestFixture
    {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("IntersectionPerfTest");
-#define ADD_TEST(x) test_suite->addTest(new CppUnit::TestCaller<IntersectionTest>( "testTiming" #x, &IntersectionTest::testTiming ## x))
-      ADD_TEST(IntersectAABoxAABox);
-      ADD_TEST(IntersectAABoxPoint);
-      ADD_TEST(IntersectAABoxSweep);
-      ADD_TEST(IntersectSphereSweep);
-#undef ADD_TEST
-      return test_suite;
-   }
+      CPPUNIT_TEST_SUITE(IntersectionMetricTest);
 
-   static CppUnit::Test* interactiveSuite()
-   {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite ("InteractiveIntersectionTest");
-      //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>("interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
-      return test_suite;
-   }
+      CPPUNIT_TEST(testTimingIntersectAABoxAABox);
+      CPPUNIT_TEST(testTimingIntersectAABoxPoint);
 
-protected:
+      CPPUNIT_TEST(testTimingIntersectAABoxSweep);
+      CPPUNIT_TEST(testTimingIntersectSphereSweep);
 
-};
+      CPPUNIT_TEST_SUITE_END();
 
+   public:
+      void testTimingIntersectAABoxAABox();
+      void testTimingIntersectAABoxPoint();
+
+      void testTimingIntersectAABoxSweep();
+      void testTimingIntersectSphereSweep();
+   };
 }
 
 #endif

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: EulerAngleClassTest.cpp,v $
- * Date modified: $Date: 2002-06-12 19:52:39 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2003-02-05 22:50:38 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -33,11 +33,17 @@
 *
  ************************************************************ ggt-cpr end */
 #include "EulerAngleClassTest.h"
+#include "../Suites.h"
+#include <cppunit/extensions/HelperMacros.h>
 #include <cppunit/extensions/MetricRegistry.h>
+
 #include <gmtl/EulerAngle.h>
 
 namespace gmtlTest
 {
+   CPPUNIT_TEST_SUITE_REGISTRATION(EulerAngleClassTest);
+   CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(EulerAngleClassMetricTest, Suites::metric());
+
    void EulerAngleClassTest::testEulerAngleClassTestCreation()
    {
       // test that it initializes to the identity
@@ -90,7 +96,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( q9[2] == 0.0f );
    }
 
-   void EulerAngleClassTest::testEulerAngleTimingDefaultConstructor()
+   void EulerAngleClassMetricTest::testEulerAngleTimingDefaultConstructor()
    {
       const long iters( 400000 );
       float use_value(1);
@@ -108,7 +114,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( use_value != 0 );
    }
 
-   void EulerAngleClassTest::testEulerAngleTimingElementConstructor()
+   void EulerAngleClassMetricTest::testEulerAngleTimingElementConstructor()
    {
       const long iters( 400000 );
       float use_value(1);
@@ -126,7 +132,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( use_value != 0 );
    }
 
-   void EulerAngleClassTest::testEulerAngleTimingCopyConstructor()
+   void EulerAngleClassMetricTest::testEulerAngleTimingCopyConstructor()
    {
       const long iters( 400000 );
       float use_value(1);
@@ -145,7 +151,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( use_value != 0 );
    }
 
-   void EulerAngleClassTest::testEulerAngleTimingSet()
+   void EulerAngleClassMetricTest::testEulerAngleTimingSet()
    {
       const long iters( 400000 );
       float use_value(0);
@@ -163,7 +169,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( use_value >= 0.0f );
    }
 
-   void EulerAngleClassTest::testEulerAngleTimingOpBracket()
+   void EulerAngleClassMetricTest::testEulerAngleTimingOpBracket()
    {
       const long iters( 400000 );
       float use_value(0);
@@ -184,7 +190,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( use_value > 0.0f );
    }
 
-   void EulerAngleClassTest::testEulerAngleTimingGetData()
+   void EulerAngleClassMetricTest::testEulerAngleTimingGetData()
    {
       const long iters( 400000 );
       float use_value(0);
@@ -202,7 +208,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( use_value > 0.0f );
    }
 
-   void EulerAngleClassTest::testEulerAngleTimingOpEqual()
+   void EulerAngleClassMetricTest::testEulerAngleTimingOpEqual()
    {
       const long iters( 400000 );
       gmtl::EulerAngleXYZf q4, q2( 0.0f, 2.0f, 1.0f );

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: IntersectionTest.cpp,v $
- * Date modified: $Date: 2002-11-26 06:32:26 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2003-02-05 22:50:39 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -33,12 +33,17 @@
 *
  ************************************************************ ggt-cpr end */
 #include "IntersectionTest.h"
+#include "../Suites.h"
+#include <cppunit/extensions/HelperMacros.h>
 #include <cppunit/extensions/MetricRegistry.h>
 
 #include <gmtl/Intersection.h>
 
 namespace gmtlTest
 {
+   CPPUNIT_TEST_SUITE_REGISTRATION(IntersectionTest);
+   CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(IntersectionMetricTest, Suites::metric());
+
    void IntersectionTest::testIntersectAABoxAABox()
    {
       // Test overlapping boxes
@@ -63,7 +68,7 @@ namespace gmtlTest
       }
    }
 
-   void IntersectionTest::testTimingIntersectAABoxAABox()
+   void IntersectionMetricTest::testTimingIntersectAABoxAABox()
    {
       gmtl::AABoxf box1(gmtl::Point3f(-1,-1,-1), gmtl::Point3f(1,1,1));
       gmtl::AABoxf box2(gmtl::Point3f(0,0,0), gmtl::Point3f(2,2,2));
@@ -179,7 +184,7 @@ namespace gmtlTest
       //        in and out and on the edges...
    }
 
-   void IntersectionTest::testTimingIntersectAABoxPoint()
+   void IntersectionMetricTest::testTimingIntersectAABoxPoint()
    {
       gmtl::AABoxf box1(gmtl::Point3f(-1,-1,-1), gmtl::Point3f(1,1,1));
       gmtl::Point3f point(gmtl::Point3f(-0.5f,-0.5,-1.01f));
@@ -241,7 +246,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT(second == 0.6f);
    }
 
-   void IntersectionTest::testTimingIntersectAABoxSweep()
+   void IntersectionMetricTest::testTimingIntersectAABoxSweep()
    {
       gmtl::AABoxf box1(gmtl::Point3f(-3,1,-3), gmtl::Point3f(-2,2,-2));
       gmtl::AABoxf box2(gmtl::Point3f( 2,1,-3), gmtl::Point3f( 3,3,-2));
@@ -282,7 +287,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT(gmtl::Math::isEqual(second, 0.8f, 0.001f));
    }
 
-   void IntersectionTest::testTimingIntersectSphereSweep()
+   void IntersectionMetricTest::testTimingIntersectSphereSweep()
    {
       gmtl::Spheref sph1(gmtl::Point3f(-3,1,-3), 2);
       gmtl::Spheref sph2(gmtl::Point3f( 2,1,-3), 1);

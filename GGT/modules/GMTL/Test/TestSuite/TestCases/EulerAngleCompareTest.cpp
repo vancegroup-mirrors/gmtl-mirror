@@ -8,8 +8,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: EulerAngleCompareTest.cpp,v $
- * Date modified: $Date: 2002-06-12 19:38:53 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2003-02-05 22:50:38 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -34,11 +34,59 @@
 *
  ************************************************************ ggt-cpr end */
 #include "EulerAngleCompareTest.h"
+#include "../Suites.h"
+#include <cppunit/extensions/HelperMacros.h>
 #include <cppunit/extensions/MetricRegistry.h>
-#include "gmtl/EulerAngleOps.h"
+
+#include <gmtl/EulerAngle.h>
+#include <gmtl/EulerAngleOps.h>
 
 namespace gmtlTest
 {
+   CPPUNIT_TEST_SUITE_REGISTRATION(EulerAngleCompareTest);
+   CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(EulerAngleCompareMetricTest, Suites::metric());
+
+   template<typename T>
+   class testEqual
+   {
+   public:
+      static void go()
+      {
+         gmtl::EulerAngle<T, gmtl::ZYX> euler1, euler2;
+         euler1.set( (T)1.0, (T)2.0, (T)34.0 );
+         euler1 = euler2;
+         CPPUNIT_ASSERT( euler1 == euler2 );
+         CPPUNIT_ASSERT( euler2 == euler1 );
+
+         // Test that != works on all elements
+         for (int j = 0; j < 3; ++j)
+         {
+            euler2[j] = (T)1221.0f;
+            CPPUNIT_ASSERT(  (euler1 != euler2) );
+            CPPUNIT_ASSERT( !(euler1 == euler2) );
+            euler2[j] = euler1[j]; // put it back
+         }
+         
+         // just for fun
+         CPPUNIT_ASSERT(  (euler1 == euler2) );
+         CPPUNIT_ASSERT( !(euler1 != euler2) );
+
+         // Test for epsilon equals working
+         CPPUNIT_ASSERT( gmtl::isEqual( euler1, euler2 ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( euler1, euler2, (T)0.0f ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( euler2, euler1, (T)0.0f ) );
+         CPPUNIT_ASSERT( gmtl::isEqual( euler2, euler1, (T)100000.0f ) );
+         T eps = (T)10.0;
+         for (int j = 0; j < 3; ++j)
+         {
+            euler2[j] = euler1[j] - (eps / (T)2.0);
+            CPPUNIT_ASSERT(  gmtl::isEqual( euler1, euler2, eps ) );
+            CPPUNIT_ASSERT( !gmtl::isEqual( euler1, euler2, (T)(eps / 3.0) ) );
+            euler2[j] = euler1[j]; // put it back
+         }
+      }
+   };
+
    void EulerAngleCompareTest::testEulerAngleEqualityFloatTest()
    {
       testEqual<float>::go();
@@ -75,7 +123,7 @@ namespace gmtlTest
       testEqual<double>::go();
    }
 
-   void EulerAngleCompareTest::testEulerAngleTimingOpEqualityTest()
+   void EulerAngleCompareMetricTest::testEulerAngleTimingOpEqualityTest()
    {
       // Test overhead of creation
       const long iters(400000);
@@ -130,7 +178,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( true_count > 0 );
    }
 
-   void EulerAngleCompareTest::testEulerAngleTimingOpNotEqualityTest()
+   void EulerAngleCompareMetricTest::testEulerAngleTimingOpNotEqualityTest()
    {
       // Test overhead of creation
       const long iters(400000);
@@ -185,7 +233,7 @@ namespace gmtlTest
       CPPUNIT_ASSERT( true_count > 0 );
    }
 
-   void EulerAngleCompareTest::testEulerAngleTimingIsEqualTest()
+   void EulerAngleCompareMetricTest::testEulerAngleTimingIsEqualTest()
    {
       // Test overhead of creation
       const long iters(400000);

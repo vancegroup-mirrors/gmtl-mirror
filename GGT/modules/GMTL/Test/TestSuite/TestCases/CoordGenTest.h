@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: CoordGenTest.h,v $
- * Date modified: $Date: 2002-05-20 22:39:23 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2003-02-05 22:50:38 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -18,8 +18,7 @@
 * Copyright (C) 2001,2002 Allen Bierbaum
 *
 * This library is free software; you can redistribute it and/or
-* modify it under th MathPrimitives  [PrimName]Ops.h  Vec & Point [100%] -ab
-Coord [] -km Transforquations XformInterface? Xform.h   Collision detection CollisionInterface? Intersection.h   Bounding volumes BoundingInterface? Containment.h   Math factories MathFactories Builder.h  e terms of the GNU Lesser General Public
+* modify it under the terms of the GNU Lesser General Public
 * License as published by the Free Software Foundation; either
 * version 2.1 of the License, or (at your option) any later version.
 *
@@ -33,80 +32,50 @@ Coord [] -km Transforquations XformInterface? Xform.h   Collision detection Coll
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 *
  ************************************************************ ggt-cpr end */
-#include <iostream>
+#ifndef _GMTL_COORD_GEN_TEST_H_
+#define _GMTL_COORD_GEN_TEST_H_
 
-#include <cppunit/TestCase.h>
-#include <cppunit/TestSuite.h>
-#include <cppunit/TestCaller.h>
-
-#include <gmtl/Vec.h>
-#include <gmtl/VecOps.h>
-#include <gmtl/Coord.h>
-#include <gmtl/CoordOps.h>
-#include <gmtl/Generate.h>
-
+#include <cppunit/extensions/HelperMacros.h>
 
 /// @todo test/timing on makeRot( quat ) (euler version)
 
 namespace gmtlTest
 {
-
-class CoordGenTest : public CppUnit::TestCase
-{
-public:
-   CoordGenTest( std::string name = "CoordGenTest" )
-   : CppUnit::TestCase (name)
-   {;}
-
-   virtual ~CoordGenTest()
-   {}
-
-   virtual void setUp()
-   {;}
-
-   virtual void tearDown()
+   /**
+    * Functionality tests
+    */
+   class CoordGenTest : public CppUnit::TestFixture
    {
-   }
+      CPPUNIT_TEST_SUITE(CoordGenTest);
 
-   // correctness tests
-   void testCoordMakeCoord();
-   void testCoordGetMatrix();
+      CPPUNIT_TEST(testCoordMakeCoord);
+      CPPUNIT_TEST(testCoordGetMatrix);
 
-   // timing tests
-   void testGenTimingMakeCoord();
-   void testGenTimingMakeMatrix();
-   void testGenTimingSetCoord();
+      CPPUNIT_TEST_SUITE_END();
 
-   /** @todo implement quat makeRot Euler */
-   static CppUnit::Test* suite()
+   public:
+      void testCoordMakeCoord();
+      void testCoordGetMatrix();
+   };
+
+   /**
+    * Metric tests.
+    */
+   class CoordGenMetricTest : public CppUnit::TestFixture
    {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite( "CoordGenTest" );
-      test_suite->addTest( new CppUnit::TestCaller<CoordGenTest>( "testCoordMakeCoord", &CoordGenTest::testCoordMakeCoord ) );
-      test_suite->addTest( new CppUnit::TestCaller<CoordGenTest>( "testCoordGetMatrix", &CoordGenTest::testCoordGetMatrix ) );
+      CPPUNIT_TEST_SUITE(CoordGenMetricTest);
 
-      return test_suite;
-   }
+      CPPUNIT_TEST(testGenTimingMakeCoord);
+      CPPUNIT_TEST(testGenTimingMakeMatrix);
+      CPPUNIT_TEST(testGenTimingSetCoord);
 
-   static CppUnit::Test* perfSuite()
-   {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite( "CoordGenPerfTest" );
+      CPPUNIT_TEST_SUITE_END();
 
-      test_suite->addTest( new CppUnit::TestCaller<CoordGenTest>( "testGenTimingMakeCoord", &CoordGenTest::testGenTimingMakeCoord ) );
-      test_suite->addTest( new CppUnit::TestCaller<CoordGenTest>( "testGenTimingMakeMatrix", &CoordGenTest::testGenTimingMakeMatrix ) );
-      test_suite->addTest( new CppUnit::TestCaller<CoordGenTest>( "testGenTimingSetCoord", &CoordGenTest::testGenTimingSetCoord ) );
+   public:
+      void testGenTimingMakeCoord();
+      void testGenTimingMakeMatrix();
+      void testGenTimingSetCoord();
+   };
+}
 
-      return test_suite;
-   }
-
-   static CppUnit::Test* interactiveSuite()
-   {
-      CppUnit::TestSuite* test_suite = new CppUnit::TestSuite( "InteractiveThreadTest" );
-      //test_suite->addTest( new CppUnit::TestCaller<ThreadTest>( "interactiveCPUGrind", &ThreadTest::interactiveTestCPUGrind));
-      return test_suite;
-   }
-
-protected:
-
-};
-
-};
+#endif
