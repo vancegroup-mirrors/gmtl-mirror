@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Intersection.h,v $
- * Date modified: $Date: 2002-11-26 06:04:52 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-11-26 06:32:25 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -229,6 +229,53 @@ namespace gmtl
       }
 
       return false;
+   }
+
+   /**
+    * Tests if the given AABox and Sphere intersect with each other. On an edge
+    * IS considered intersection by this algorithm.
+    *
+    * @param box  the box to test
+    * @param sph  the sphere to test
+    *
+    * @return  true if the items intersect; false otherwise
+    */
+   template<class DATA_TYPE>
+   bool intersect(const AABox<DATA_TYPE>& box, const Sphere<DATA_TYPE>& sph)
+   {
+      DATA_TYPE dist_sqr = DATA_TYPE(0);
+
+      // Compute the square of the distance from the sphere to the box
+      for (int i=0; i<3; ++i)
+      {
+         if (sph.getCenter()[i] < box.getMin()[i])
+         {
+            DATA_TYPE s = sph.getCenter()[i] - box.getMin()[i];
+            dist_sqr += s*s;
+         }
+         else if (sph.getCenter()[i] > box.getMax()[i])
+         {
+            DATA_TYPE s = sph.getCenter()[i] - box.getMax()[i];
+            dist_sqr += s*s;
+         }
+      }
+
+      return dist_sqr <= (sph.getRadius()*sph.getRadius());
+   }
+
+   /**
+    * Tests if the given AABox and Sphere intersect with each other. On an edge
+    * IS considered intersection by this algorithm.
+    *
+    * @param sph  the sphere to test
+    * @param box  the box to test
+    *
+    * @return  true if the items intersect; false otherwise
+    */
+   template<class DATA_TYPE>
+   bool intersect(const Sphere<DATA_TYPE>& sph, const AABox<DATA_TYPE>& box)
+   {
+      return intersect(box, sph);
    }
 }
 
