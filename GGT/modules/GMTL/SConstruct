@@ -40,7 +40,9 @@ def GetPlatform():
    elif string.find(sys.platform, 'linux') != -1:
       return 'linux'
    elif string.find(sys.platform, 'freebsd') != -1:
-      return 'linux'
+      return 'freebsd'
+   elif string.find(sys.platform, 'darwin') != -1:
+      return 'darwin'
    elif string.find(sys.platform, 'cygwin') != -1:
       return 'win32'
    elif string.find(os.name, 'win32') != -1:
@@ -111,8 +113,12 @@ def BuildDarwinEnvironment():
 
    CXX = 'g++'
    LINK = CXX
-   CXXFLAGS = ['-Wall', '-pipe']
-   LINKFLAGS = []
+   CXXFLAGS = ['-ftemplate-depth-256', '-DBOOST_PYTHON_DYNAMIC_LIB',
+               '-Wno-long-double', '-no-cpp-precomp', '-fno-inline',
+               '-Wall', '-fcoalesce-templates', '-F/System/Library/Frameworks',
+               '-pipe']
+   LINKFLAGS = ['-bundle', '-F/System/Library/Frameworks', '-framework',
+                'Python']
 
    # Enable profiling?
    if profile != 'no':
@@ -210,30 +216,50 @@ def ValidateBoostOption(key, value, environ):
       sys.stdout.write("found version: %s\n" % ver_num)
 
       if ver_num < req_boost_version:
-         print "   Boost version to old: required version:%s\n" % req_boost_version
+         print "   Boost version too old!  Required version: %s" % req_boost_version
          Exit()
          return False
 
-      platform = GetPlatform()
-
-      if platform == 'win32':
-         tool = 'vc71'
-      elif platform == 'irix':
-         tool = 'mp'
-      elif platform == 'linux':
-         tool = 'gcc'
-
       # Check on the libraries that I need to use
       if enable_python:
+         platform = GetPlatform()
+
          if platform == 'win32':
-            boost_python_lib_name = pj(value, 'lib',
-                                       'boost_python-%s-mt-1_31.dll' % tool)
+            tool = '-vc71'
+         elif platform == 'irix':
+            tool = '-mp'
+         elif platform == 'darwin':
+            tool = ''
          else:
-            boost_python_lib_name = pj(value, 'lib',
-                                       'libboost_python-%s-1_31.so' % tool)
+            tool = 'gcc'
+
+         if platform == 'darwin':
+            threading = ''
+         else:
+            threading = '-mt'
+
+         if platform == 'win32':
+            shlib_prefix = ''
+            shlib_ext = 'dll'
+         elif platform == 'darwin':
+            shlib_prefix = 'lib'
+            shlib_ext = 'dylib'
+         else:
+            shlib_prefix = 'lib'
+            shlib_ext = 'so'
+
+         boost_sub_minor_ver = ver_num % 100
+         boost_minor_ver     = ver_num / 100 % 1000
+         boost_major_ver     = ver_num / 100000
+
+         version = '-%d_%d' % (boost_major_ver, boost_minor_ver)
+         boost_python_lib_name = pj(value, 'lib',
+                                    '%sboost_python%s%s%s.%s' % \
+                                       (shlib_prefix, tool, threading,
+                                        version, shlib_ext))
 
          if not os.path.isfile(boost_python_lib_name):
-            print "[%s] not found."%boost_python_lib_name
+            print "[%s] not found." % boost_python_lib_name
             Exit()
             return False
 
@@ -244,16 +270,16 @@ def ValidateBoostOption(key, value, environ):
 
          environ.Append(BoostLIBPATH = [pj(value, 'lib')])
 
-         version = '-1_31'
          if optimize == 'no':
             if platform == 'win32':
-               dbg = 'gd'
+               dbg = '-gd'
             else:
-               dbg = 'd'
-
-            environ.Append(BoostLIBS = ['boost_python-%s-mt-%s%s' % (tool, dbg, version)])
+               dbg = '-d'
          else:
-            environ.Append(BoostLIBS = ['boost_python-%s-mt%s' % (tool, version)])
+            dbg = ''
+
+         environ.Append(BoostLIBS = ['boost_python%s%s%s%s' % \
+                                        (tool, threading, dbg, version)])
 
    else:
       assert False, "Invalid Boost key"
