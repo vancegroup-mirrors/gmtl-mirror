@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Quat.h,v $
- * Date modified: $Date: 2002-02-22 21:44:39 $
- * Version:       $Revision: 1.11 $
+ * Date modified: $Date: 2002-03-09 04:14:50 $
+ * Version:       $Revision: 1.12 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -37,6 +37,7 @@
 
 #include <gmtl/gmtlConfig.h>
 #include <gmtl/gmtlDefines.h>
+#include <gmtl/Vec.h>
 
 namespace gmtl
 {
