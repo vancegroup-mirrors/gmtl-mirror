@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2003-04-01 00:40:53 $
- * Version:       $Revision: 1.70 $
+ * Date modified: $Date: 2003-04-01 15:34:28 $
+ * Version:       $Revision: 1.71 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -678,6 +678,70 @@ namespace gmtl
     *  @name Matrix Generators
     *  @{
     */
+
+   /** Set an arbitrary projection matrix
+    *  @result: set a projection matrix (similar to glFrustum).
+    */
+   template <typename T, unsigned ROWS, unsigned COLS >
+   inline Matrix<T, ROWS, COLS>& setFrustum( Matrix<T, ROWS, COLS>& result, 
+                                                   T left, T top, T right, 
+                                                   T bottom, T nr, T fr )
+   {
+      result.mData[0] = ( T( 2.0 ) * nr ) / ( right - left );
+      result.mData[1] = T( 0.0 );
+      result.mData[2] = T( 0.0 );
+      result.mData[3] = T( 0.0 );
+                  
+      result.mData[4] = T( 0.0 );
+      result.mData[5] = ( T( 2.0 ) * nr ) / ( top - bottom );
+      result.mData[6] = T( 0.0 );
+      result.mData[7] = T( 0.0 );
+                                  
+      result.mData[8] = ( right + left ) / ( right - left );
+      result.mData[9] = ( top + bottom ) / ( top - bottom );
+      result.mData[10] = -( fr + nr ) / ( fr - nr );
+      result.mData[11] = T( -1.0 );
+   
+      result.mData[12] = T( 0.0 );
+      result.mData[13] = T( 0.0 );
+      result.mData[14] = -( T( 2.0 ) * fr * nr ) / ( fr - nr );
+      result.mData[15] = T( 0.0 );
+
+      return result;
+   }
+
+ 
+   /** Set a symmetric perspective projection matrix
+    * @param fovy 
+    *   The field of view angle, in degrees, about the y-axis. 
+    * @param aspect 
+    *   The aspect ratio that determines the field of view about the x-axis. 
+    *   The aspect ratio is the ratio of x (width) to y (height).
+    * @param zNear 
+    *   The distance from the viewer to the near clipping plane (always positive). 
+    * @param zFar 
+    *   The distance from the viewer to the far clipping plane (always positive). 
+    * @result Set matrix to perspective transform 
+    */
+   template <typename T, unsigned COLS, unsigned ROWS >
+   inline const Matrix<T, ROWS, COLS>& setPerspective( Matrix<T, ROWS, COLS>& result, 
+                                                       T fovy, T aspect, T nr, T fr )
+   {
+      assert( nr > 0 && fr > nr && "invalid near and far values" );
+      float theta = Math::deg2Rad( fovy * T( 0.5 ) );
+      float tangentTheta = Math::tan( theta );
+      
+      // tan(theta) = right / nr
+      // top = tan(theta) * nr
+      // right = tan(theta) * nr * aspect
+      
+      float top = tangentTheta * nr;
+      float right = top * aspect; // aspect determines the fieald of view in the x-axis
+      
+      // TODO: args need to match...
+      setFrustum( result, -right, top, right, -top, nr, fr );
+   }
+
 
    /** Set matrix translation from vec.
     * @pre if making an n x n matrix, then for
