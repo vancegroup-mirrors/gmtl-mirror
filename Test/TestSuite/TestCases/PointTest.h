@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: PointTest.h,v $
- * Date modified: $Date: 2003-02-06 01:12:27 $
- * Version:       $Revision: 1.13 $
+ * Date modified: $Date: 2003-02-26 20:47:45 $
+ * Version:       $Revision: 1.14 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -89,6 +89,54 @@ namespace gmtlTest
       void testOpMultScalar();
       void testOpDivScalarEq();
       void testOpDivScalar();
+   };
+
+
+   /**
+    * Metric tests.
+    */
+   class PointMetricTest : public CppUnit::TestFixture
+   {
+      CPPUNIT_TEST_SUITE(PointMetricTest);
+
+      CPPUNIT_TEST(testTimingCreation);
+      CPPUNIT_TEST(testTimingCopyConstruct);
+      CPPUNIT_TEST(testTimingConstructors);
+      CPPUNIT_TEST(testTimingSet);
+      CPPUNIT_TEST(testTimingSetPtr);
+      CPPUNIT_TEST(testTimingEqualityCompare);
+      CPPUNIT_TEST(testTimingIsEqual);
+      CPPUNIT_TEST(testTimingOpPlusEq);
+      CPPUNIT_TEST(testTimingOpPlus);
+      CPPUNIT_TEST(testTimingOpMinusEq);
+      CPPUNIT_TEST(testTimingOpMinus);
+      CPPUNIT_TEST(testTimingOpMultScalarEq);
+      CPPUNIT_TEST(testTimingOpMultScalar);
+      CPPUNIT_TEST(testTimingOpDivScalarEq);
+      CPPUNIT_TEST(testTimingOpDivScalar);
+
+      CPPUNIT_TEST_SUITE_END();
+
+   public:
+      void testTimingCreation();
+      void testTimingCopyConstruct();
+      void testTimingConstructors();
+
+      void testTimingSet();
+      void testTimingSetPtr();
+      void testTimingGetData();
+
+      void testTimingEqualityCompare();
+      void testTimingIsEqual();
+
+      void testTimingOpPlusEq();
+      void testTimingOpPlus();
+      void testTimingOpMinusEq();
+      void testTimingOpMinus();
+      void testTimingOpMultScalarEq();
+      void testTimingOpMultScalar();
+      void testTimingOpDivScalarEq();
+      void testTimingOpDivScalar();
    };
 }
 
