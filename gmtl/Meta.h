@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Meta.h,v $
- * Date modified: $Date: 2002-05-10 05:38:47 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2002-05-17 19:49:10 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -36,6 +36,7 @@
 #define _GMTL_METAPROGRAMMING_H
 
 /** @defgroup Meta Template Metaprogramming Utilities */
+/** @defgroup HelperMeta Template Metaprogramming Utilities (Helpers) */
 
 namespace gmtl
 {  
@@ -55,7 +56,7 @@ namespace gmtl
    
    //@}
 
-   /** @addtogroup Helper Meta */
+   /** @addtogroup HelperMeta */
    //@{
    template <class T> inline void ignore_unused_variable_warning(const T&) { }
 
