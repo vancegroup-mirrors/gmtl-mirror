@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixCompareTest.h,v $
- * Date modified: $Date: 2002-02-22 19:45:18 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-02-22 21:48:34 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -167,7 +167,6 @@ public:
       testEqual<int, 1, 2>::go();
       testEqual<int, 1, 1>::go();
    }
-   
 
    void testMatTimingOpEqualityTest()
    {
@@ -197,22 +196,30 @@ public:
       src_mat34[5] = 2.0f;
       src_mat44[15] = 3.0f;
       src_mat101[9] = 1.0f;
+
+      unsigned true_count(0);
       
       CPPUNIT_METRIC_START_TIMING();
-
-      bool result = false;
       for( long iter=0;iter<iters; ++iter)
       {
-         result = (src_mat11 == test_mat11);
-         result = (src_mat22 == test_mat22);
-         result = (src_mat33 == test_mat33);
-         result = (src_mat34 == test_mat34);
-         result = (src_mat44 == test_mat44);
-         result = (src_mat101 == test_mat101);
+         if (src_mat11 == test_mat11)
+            ++true_count;
+         if (src_mat22 == test_mat22)
+            ++true_count;
+         if (src_mat33 == test_mat33)
+            ++true_count;
+         if (src_mat34 == test_mat34)
+            ++true_count;
+         if (src_mat44 == test_mat44)
+            ++true_count;
+         if (src_mat101 == test_mat101)
+            ++true_count;
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixCompareTest/OpEqualityTest", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      // make sure compiler uses true_count
+      CPPUNIT_ASSERT( true_count > 0 );
    }
    
    void testMatTimingOpNotEqualityTest()
@@ -243,22 +250,30 @@ public:
       src_mat34[5] = 2.0f;
       src_mat44[15] = 3.0f;
       src_mat101[9] = 1.0f;
+
+      unsigned true_count(0);
       
       CPPUNIT_METRIC_START_TIMING();
-
-      bool result = false;
       for( long iter=0;iter<iters; ++iter)
       {
-         result = (src_mat11 != test_mat11);
-         result = (src_mat22 != test_mat22);
-         result = (src_mat33 != test_mat33);
-         result = (src_mat34 != test_mat34);
-         result = (src_mat44 != test_mat44);
-         result = (src_mat101 != test_mat101);
+         if (src_mat11 != test_mat11)
+            ++true_count;
+         if (src_mat22 != test_mat22)
+            ++true_count;
+         if (src_mat33 != test_mat33)
+            ++true_count;
+         if (src_mat34 != test_mat34)
+            ++true_count;
+         if (src_mat44 != test_mat44)
+            ++true_count;
+         if (src_mat101 != test_mat101)
+            ++true_count;
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixCompareTest/OpNotEqualityTest", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      // make sure compiler uses true_count
+      CPPUNIT_ASSERT( true_count > 0 );
    }
    
    void testMatTimingIsEqualTest()
@@ -290,21 +305,28 @@ public:
       src_mat44[15] = 3.0f;
       src_mat101[9] = 1.0f;
       
+      unsigned true_count(0);
+      
       CPPUNIT_METRIC_START_TIMING();
-
-      bool result = false;
       for( long iter=0;iter<iters; ++iter)
       {
-         result = gmtl::isEqual( src_mat11,  test_mat11, 0.0f  );
-         result = gmtl::isEqual( src_mat22,  test_mat22, 0.2f  );
-         result = gmtl::isEqual( src_mat33,  test_mat33, 0.3f  );
-         result = gmtl::isEqual( src_mat34,  test_mat34, 0.6f  );
-         result = gmtl::isEqual( src_mat44,  test_mat44, 0.8f  );
-         result = gmtl::isEqual( src_mat101, test_mat101, 111.1 );
+         if (gmtl::isEqual( src_mat11,  test_mat11, 0.0f ))
+            ++true_count;
+         if (gmtl::isEqual( src_mat22,  test_mat22, 0.2f ))
+            ++true_count;
+         if (gmtl::isEqual( src_mat33,  test_mat33, 0.3f ))
+            ++true_count;
+         if (gmtl::isEqual( src_mat34,  test_mat34, 0.6f ))
+            ++true_count;
+         if (gmtl::isEqual( src_mat44,  test_mat44, 0.8f ))
+            ++true_count;
+         if (gmtl::isEqual( src_mat101, test_mat101, 111.1 ))
+            ++true_count;
       }
-
       CPPUNIT_METRIC_STOP_TIMING();
       CPPUNIT_ASSERT_METRIC_TIMING_LE("MatrixCompareTest/IsEqualTest", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      // make sure compiler uses true_count
+      CPPUNIT_ASSERT( true_count > 0 );
    }   
    
    static CppUnit::Test* suite()

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixClassTest.h,v $
- * Date modified: $Date: 2002-02-22 19:45:18 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2002-02-22 21:48:34 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -277,18 +277,18 @@ public:
       gmtl::Matrix<float, 3, 3> test_mat33;
       gmtl::Matrix<float, 3, 4> test_mat34;
       gmtl::Matrix<double, 4, 4> test_mat44;
-      float bok;
-      double bokk;
+      float bok = 0.0f;
+      double bokk = 0.0;
       for (long iter = 0; iter < iters; ++iter)
       {
          const float* temp1 = test_mat22.getData();
-         bok = temp1[0];
+         bok += temp1[0];
          const float* temp2 = test_mat33.getData();
-         bok = temp2[3];
+         bok += temp2[3];
          const float* temp3 = test_mat34.getData();
-         bok = temp3[11];
+         bok += temp3[11];
          const double* temp4 = test_mat44.getData();
-         bokk = temp4[15];
+         bokk += temp4[15];
       }
 
       CPPUNIT_METRIC_STOP_TIMING();

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOpsTest.h,v $
- * Date modified: $Date: 2002-02-22 19:45:18 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2002-02-22 21:48:34 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -79,7 +79,6 @@ public:
       const long iters(400000);
       CPPUNIT_METRIC_START_TIMING();
 
-      bool result = false;
       for( long iter=0;iter<iters; ++iter)
       {
          gmtl::transpose( test_mat1 );
@@ -102,7 +101,6 @@ public:
       const long iters(400000);
       CPPUNIT_METRIC_START_TIMING();
 
-      bool result = false;
       for( long iter=0;iter<iters; ++iter)
       {
          gmtl::mult( res_mat, test_mat1, test_mat2 );
@@ -136,7 +134,6 @@ public:
       const long iters(400000);
       CPPUNIT_METRIC_START_TIMING();
 
-      bool result = false;
       for( long iter=0;iter<iters; ++iter)
       {
          gmtl::add( res_mat, test_mat1, test_mat2 );
@@ -159,7 +156,6 @@ public:
       const long iters(400000);
       CPPUNIT_METRIC_START_TIMING();
 
-      bool result = false;
       for( long iter=0;iter<iters; ++iter)
       {
          gmtl::sub( res_mat, test_mat1, test_mat2 );

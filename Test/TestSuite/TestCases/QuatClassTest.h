@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: QuatClassTest.h,v $
- * Date modified: $Date: 2002-02-22 19:45:18 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2002-02-22 21:48:34 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -65,7 +65,7 @@ namespace gmtlTest
       void testQuatClassTestCreation()
       {
          // test that it initializes to the multiplication identity
-         gmtl::Quatf q;
+         gmtl::Quat<float> q;
          CPPUNIT_ASSERT( q[gmtl::Xelt] == 0.0f );
          CPPUNIT_ASSERT( q[gmtl::Yelt] == 0.0f );
          CPPUNIT_ASSERT( q[gmtl::Zelt] == 0.0f );
@@ -102,21 +102,21 @@ namespace gmtlTest
          CPPUNIT_ASSERT( w == 8.0f );
 
          // try out element constructor
-         gmtl::Quatf q2( 10, 11, 12, 13 );
+         gmtl::Quat<float> q2( 10, 11, 12, 13 );
          CPPUNIT_ASSERT( q2[gmtl::Xelt] == 10.0f );
          CPPUNIT_ASSERT( q2[gmtl::Yelt] == 11.0f );
          CPPUNIT_ASSERT( q2[gmtl::Zelt] == 12.0f );
          CPPUNIT_ASSERT( q2[gmtl::Welt] == 13.0f );
 
          // try out copy constructor
-         gmtl::Quatf q3( q );
+         gmtl::Quat<float> q3( q );
          CPPUNIT_ASSERT( q3[gmtl::Xelt] == 5.0f );
          CPPUNIT_ASSERT( q3[gmtl::Yelt] == 6.0f );
          CPPUNIT_ASSERT( q3[gmtl::Zelt] == 7.0f );
          CPPUNIT_ASSERT( q3[gmtl::Welt] == 8.0f );
          
          // try out operator=() function
-         gmtl::Quatf q4;
+         gmtl::Quat<float> q4;
          CPPUNIT_ASSERT( q4[gmtl::Xelt] == 0.0f );
          CPPUNIT_ASSERT( q4[gmtl::Yelt] == 0.0f );
          CPPUNIT_ASSERT( q4[gmtl::Zelt] == 0.0f );
@@ -128,19 +128,19 @@ namespace gmtlTest
          CPPUNIT_ASSERT( q4[gmtl::Welt] == 13.0f );
          
          // check out the const identities...
-         gmtl::Quatf q9( gmtl::QUAT_IDENTITYF );
+         gmtl::Quat<float> q9( gmtl::QUAT_IDENTITYF );
          CPPUNIT_ASSERT( q9[gmtl::Xelt] == 0.0f );
          CPPUNIT_ASSERT( q9[gmtl::Yelt] == 0.0f );
          CPPUNIT_ASSERT( q9[gmtl::Zelt] == 0.0f );
          CPPUNIT_ASSERT( q9[gmtl::Welt] == 1.0f );
          
-         gmtl::Quatf q10( gmtl::QUAT_MULT_IDENTITYF );
+         gmtl::Quat<float> q10( gmtl::QUAT_MULT_IDENTITYF );
          CPPUNIT_ASSERT( q10[gmtl::Xelt] == 0.0f );
          CPPUNIT_ASSERT( q10[gmtl::Yelt] == 0.0f );
          CPPUNIT_ASSERT( q10[gmtl::Zelt] == 0.0f );
          CPPUNIT_ASSERT( q10[gmtl::Welt] == 1.0f );
          
-         gmtl::Quatf q11( gmtl::QUAT_ADD_IDENTITYF );
+         gmtl::Quat<float> q11( gmtl::QUAT_ADD_IDENTITYF );
          CPPUNIT_ASSERT( q11[gmtl::Xelt] == 0.0f );
          CPPUNIT_ASSERT( q11[gmtl::Yelt] == 0.0f );
          CPPUNIT_ASSERT( q11[gmtl::Zelt] == 0.0f );
@@ -154,7 +154,7 @@ namespace gmtlTest
          for (long iter = 0; iter < iters; ++iter)
          {
             // performance of def constructor
-            gmtl::Quatf q;
+            gmtl::Quat<float> q;
          }
          CPPUNIT_METRIC_STOP_TIMING();
          CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatTest/DefaultConstructor", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
@@ -167,7 +167,7 @@ namespace gmtlTest
          for (long iter = 0; iter < iters; ++iter)
          {
             // performance of element constructor
-            gmtl::Quatf q2( 10, 11, 12, 13 );
+            gmtl::Quat<float> q2( 10, 11, 12, 13 );
          }
          CPPUNIT_METRIC_STOP_TIMING();
          CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatTest/ElementConstructor", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
@@ -177,11 +177,11 @@ namespace gmtlTest
       {
          const long iters( 400000 );
          CPPUNIT_METRIC_START_TIMING();
-         gmtl::Quatf q( 67, 68, 69, 60 );
+         gmtl::Quat<float> q( 67, 68, 69, 60 );
          for (long iter = 0; iter < iters; ++iter)
          {
             // performance of copy constructor
-            gmtl::Quatf q3( q );
+            gmtl::Quat<float> q3( q );
          }
          CPPUNIT_METRIC_STOP_TIMING();
          CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatTest/CopyConstructor", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
@@ -192,7 +192,7 @@ namespace gmtlTest
       {
          const long iters( 400000 );
          CPPUNIT_METRIC_START_TIMING();
-         gmtl::Quatf q;
+         gmtl::Quat<float> q;
          float x = 102, y = 103, z = 101, w = 100;
          for (long iter = 0; iter < iters; ++iter)
          {
@@ -207,7 +207,7 @@ namespace gmtlTest
       {
          const long iters( 400000 );
          CPPUNIT_METRIC_START_TIMING();
-         gmtl::Quatf q;
+         gmtl::Quat<float> q;
          for (long iter = 0; iter < iters; ++iter)
          {
             // performance of set...
@@ -221,7 +221,7 @@ namespace gmtlTest
       {
          const long iters( 400000 );
          CPPUNIT_METRIC_START_TIMING();
-         gmtl::Quatf q;
+         gmtl::Quat<float> q;
          float x = 102, y = 103, z = 101, w = 100;
          for (long iter = 0; iter < iters; ++iter)
          {
@@ -239,14 +239,13 @@ namespace gmtlTest
       {
          const long iters( 400000 );
          CPPUNIT_METRIC_START_TIMING();
-         gmtl::Quatf q;
+         gmtl::Quat<float> q;
          float w = 100;
-         float* d = NULL;
          for (long iter = 0; iter < iters; ++iter)
          {
             // performance of getData...
             const float* d = q.getData();
-            w = d[3];
+            w += d[3];
          }
          CPPUNIT_METRIC_STOP_TIMING();
          CPPUNIT_ASSERT_METRIC_TIMING_LE("QuatTest/getData()", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
@@ -256,7 +255,7 @@ namespace gmtlTest
       {
          const long iters( 400000 );
          CPPUNIT_METRIC_START_TIMING();
-         gmtl::Quatf q4, q2( 0, 2, 1, 3 );
+         gmtl::Quat<float> q4, q2( 0, 2, 1, 3 );
          for (long iter = 0; iter < iters; ++iter)
          {
             // performance of operator=() function

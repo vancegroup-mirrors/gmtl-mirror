@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecTest.h,v $
- * Date modified: $Date: 2002-02-22 19:45:18 $
- * Version:       $Revision: 1.13 $
+ * Date modified: $Date: 2002-02-22 21:48:34 $
+ * Version:       $Revision: 1.14 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -380,7 +380,6 @@ public:
       // Test constructor
       const float iters(400000);
       unsigned true_count(0);
-      unsigned false_count(0);
 
       // -- Equality
       CPPUNIT_METRIC_START_TIMING();
