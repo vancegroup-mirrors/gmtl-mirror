@@ -1,7 +1,7 @@
 #ifndef GFX_ASSERT_H
 #define GFX_ASSERT_H
 
-#include <gfxConfig.h>
+#include <gmtl/gmtlConfig.h>
 
 
 // -- VERY simple assertion stuff -- //
