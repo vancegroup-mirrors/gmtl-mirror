@@ -569,8 +569,9 @@ if not has_help_flag:
 
    # Find gmtl headers, set up install rule and add to package
    gmtl_headers = []
-   for root, dirs, files in os.walk('gmtl'):
-      gmtl_headers.extend([pj(root,f) for f in files if f.endswith(".h")])
+   def get_headers(hdrs, dirname, flist):
+      hdrs.extend( [pj(dirname,f) for f in flist if f.endswith('.h')])
+   os.path.walk('gmtl',get_headers,gmtl_headers)
    #print "GMTL Headers:\n", gmtl_headers, "\n"
    
    for h in gmtl_headers:
