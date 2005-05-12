@@ -1,5 +1,7 @@
 DATE       AUTHOR       CHANGE
 ---------- ------------ -------------------------------------------------------
+2005-05-12 allenb       Added missing output operator for gmtl::Coord<>
+                        NEW VERSION: 0.4.7
 2004-12-08 allenb       Added new isInVolumeExclusive method for AABox.
                         NEW VERSION: 0.4.6
 2004-11-25 allenb       Disable vector creation counting.  Only use this

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Output.h,v $
- * Date modified: $Date: 2004-10-30 18:24:33 $
- * Version:       $Revision: 1.16 $
+ * Date modified: $Date: 2005-05-12 21:42:10 $
+ * Version:       $Revision: 1.17 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -47,6 +47,7 @@
 #include <gmtl/AABox.h>
 #include <gmtl/Ray.h>
 #include <gmtl/LineSeg.h>
+#include <gmtl/Coord.h>
 
 namespace gmtl
 {
@@ -141,7 +142,6 @@ namespace gmtl
       out << "{" << angle_data[0] << ", " << angle_data[1] << ", " << angle_data[2] << "}";
       return out;
    }
-
 
    /**
     * Outputs a string representation of the given Matrix to the given output
@@ -315,6 +315,13 @@ namespace gmtl
    std::ostream& operator<<( std::ostream& out, const LineSeg<DATA_TYPE>& b )
    {
       out << b.getOrigin() << " " << b.getDir();
+      return out;
+   }
+
+   template< typename POS_TYPE, typename ROT_TYPE>
+   std::ostream& operator<<( std::ostream& out, const Coord<POS_TYPE,ROT_TYPE>& c)
+   {
+      out << "p:" << c.getPos() << " r:" << c.getRot();
       return out;
    }
    //@}
