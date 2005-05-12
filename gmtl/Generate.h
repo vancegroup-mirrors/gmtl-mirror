@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2004-11-16 15:37:12 $
- * Version:       $Revision: 1.88 $
+ * Date modified: $Date: 2005-05-12 19:01:56 $
+ * Version:       $Revision: 1.89 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -1129,6 +1129,7 @@ namespace gmtl
    }
 
    /** Convert a Coord to a Matrix
+    * Note: It is set directly, but this is equivalent to T*R where T is the translation matrix and R is the rotation matrix.
     * @see Coord
     * @see Matrix
     */

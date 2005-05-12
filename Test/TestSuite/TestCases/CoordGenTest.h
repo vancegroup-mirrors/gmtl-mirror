@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: CoordGenTest.h,v $
- * Date modified: $Date: 2003-02-05 22:50:38 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2005-05-12 19:01:54 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -48,12 +48,14 @@ namespace gmtlTest
    {
       CPPUNIT_TEST_SUITE(CoordGenTest);
 
+      CPPUNIT_TEST(testCoordSetMatrix);
       CPPUNIT_TEST(testCoordMakeCoord);
       CPPUNIT_TEST(testCoordGetMatrix);
 
       CPPUNIT_TEST_SUITE_END();
 
    public:
+      void testCoordSetMatrix();
       void testCoordMakeCoord();
       void testCoordGetMatrix();
    };
