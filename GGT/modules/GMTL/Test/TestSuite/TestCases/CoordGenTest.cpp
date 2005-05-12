@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: CoordGenTest.cpp,v $
- * Date modified: $Date: 2003-02-25 05:19:23 $
- * Version:       $Revision: 1.11 $
+ * Date modified: $Date: 2005-05-12 19:01:54 $
+ * Version:       $Revision: 1.12 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -50,6 +50,23 @@ namespace gmtlTest
 {
    CPPUNIT_TEST_SUITE_REGISTRATION(CoordGenTest);
    CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(CoordGenMetricTest, Suites::metric());
+
+   void CoordGenTest::testCoordSetMatrix()
+   {
+      // Test setting a matrix with a coord and then extracting it again.
+      gmtl::Matrix44f mat1,mat2;
+
+      gmtl::Coord<gmtl::Vec<float,3>, gmtl::EulerAngle<float, gmtl::XYZ> > q1,q2;
+
+      q1.pos().set(2,3,4);
+      q1.rot().set(0.2, 0.5, 0.6);
+
+      gmtl::set(mat1, q1);    // set the mat
+      gmtl::set(q2,mat1);     // extract it
+
+      CPPUNIT_ASSERT(gmtl::isEqual(q1,q2,0.01f));
+
+   }
 
    void CoordGenTest::testCoordMakeCoord()
    {
