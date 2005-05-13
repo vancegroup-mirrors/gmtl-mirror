@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Coord_gmtl_Vec_float_4_gmtl_Quat_float.cpp,v $
- * Date modified: $Date: 2004-10-27 19:01:33 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2005-05-13 15:08:57 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -52,6 +52,7 @@ void _Export_Coord_gmtl_Vec_float_4_gmtl_Quat_float()
         .def_pickle(gmtlPickle::Coord_pickle< gmtl::Vec<float, 4>,gmtl::Quat<float> >())
         .def(self == self)
         .def(self != self)
+        .def(self_ns::str(self))
     );
 
     enum_< gmtl::Coord<gmtl::Vec<float, 4>,gmtl::Quat<float> >::Params >("Params")
