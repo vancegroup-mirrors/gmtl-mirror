@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-pickle.h,v $
- * Date modified: $Date: 2004-10-27 19:01:32 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2005-05-13 22:11:16 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -107,12 +107,12 @@ struct Coord_pickle : boost::python::pickle_suite
 template<typename T, typename ROTATION_ORDER>
 struct EulerAngle_pickle : boost::python::pickle_suite
 {
-   static boost::python::tuple getstate(const gmtl::EulerAngle<T, ROTATION_ORDER> e)
+   static boost::python::tuple getstate(const gmtl::EulerAngle<T, ROTATION_ORDER>& e)
    {
       return boost::python::make_tuple(e[0], e[1], e[2]);
    }
 
-   static void setstate(gmtl::EulerAngle<T, ROTATION_ORDER> e,
+   static void setstate(gmtl::EulerAngle<T, ROTATION_ORDER>& e,
                         boost::python::tuple state)
    {
       e[0] = boost::python::extract<T>(state[0]);
