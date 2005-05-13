@@ -20,9 +20,10 @@ if sys.version[:3] == '2.2' and sys.version[3] != '.':
    False = 0
    True  = 1
 
-enable_python = False
-boost_version = '1.31'
-have_cppunit  = False
+enable_python      = False
+boost_version      = '1.31'
+have_cppunit       = False
+compiler_major_ver = 0
 
 try: has_help_flag = SCons.Script.Main.options.help_msg
 except AttributeError: has_help_flag = SCons.Script.options.help_msg
@@ -138,7 +139,7 @@ def BuildCygwinEnvironment():
 
 def BuildDarwinEnvironment():
    "Builds a base environment for other modules to build on set up for Darwin."
-   global optimize, profile, builders
+   global optimize, profile, builders, compiler_major_ver
 
    exp = re.compile('^(.*)\/Python\.framework.*$')
    m = exp.search(distutils.sysconfig.get_config_var('prefix'))
@@ -157,8 +158,10 @@ def BuildDarwinEnvironment():
                '-Wno-long-double', '-no-cpp-precomp', '-Wall', framework_opt,
                '-pipe']
 
+   compiler_major_ver = int(match_obj.group(2))
+
    # GCC 4.0 in Mac OS X 10.4 and newer does not have -fcoalesce-templates.
-   if int(match_obj.group(2)) < 4:
+   if compiler_major_ver < 4:
       CXXFLAGS.append('-fcoalesce-templates')
 
    SHLIBSUFFIX = distutils.sysconfig.get_config_var('SO')
@@ -224,20 +227,42 @@ def BuildIRIXEnvironment():
    )
 
 def BuildWin32Environment():
+   global optimize, compiler_major_ver
+
    env = Environment(ENV = os.environ)
    for t in ['msvc', 'mslink']:
       Tool(t)(env)
 
+   ver_re = re.compile(r'Compiler Version ((\d+)\.(\d+)\.(\d+))')
+
+   # CL.EXE does not actually have a /v option, but using /? would use the
+   # build to hang forever waiting on user input to page through the output.
+   # XXX: How can env['CXX'] be used in the call to os.popen3()?
+   (cv_stdout, cv_stdin, cv_stderr) = os.popen3('cl /v')
+   ver_str = cv_stderr.read()
+
+   match_obj = ver_re.search(ver_str)
+   compiler_major_ver = int(match_obj.group(2))
+
    # We need exception handling support turned on for Boost.Python.
-   env['LINKFLAGS'] += ' /subsystem:console /incremental:no'
-   env['CXXFLAGS'] += '/Zm800 /GX /GR /Op /DBOOST_PYTHON_DYNAMIC_LIB /Zc:wchar_t,forScope'
+   env.Append(LINKFLAGS = ['/subsystem:console', '/incremental:no'])
+   env.Append(CXXFLAGS = ['/Zm800', '/EHsc', '/GR', '/Zc:wchar_t,forScope',
+                          '/DBOOST_PYTHON_DYNAMIC_LIB'])
+
+   if compiler_major_ver < 14:
+      env.Append(CXXFLAGS = '/Op')
 
    if optimize != 'no':
-      env['CXXFLAGS'] += ' /Ogity /O2 /Gs /Ob2 /MD /D_OPT /DNDEBUG'
-      env['LINKFLAGS'] += ' /RELEASE'
+      if compiler_major_ver < 14:
+         env.Append(CXXFLAGS = '/Ogity')
+      else:
+         env.Append(CXXFLAGS = '/Oity')
+
+      env.Append(CXXFLAGS = '/O2 /Gs /Ob2 /MD /D_OPT /DNDEBUG'.split())
+      env.Append(LINKFLAGS = ['/RELEASE'])
    else:   
-      env['CXXFLAGS'] += ' /Z7 /Od /Ob0 /MDd /D_DEBUG'
-      env['LINKFLAGS'] += ' /DEBUG'
+      env.Append(CXXFLAGS = ['/Z7', '/Od', '/Ob0', '/MDd', '/D_DEBUG'])
+      env.Append(LINKFLAGS = ['/DEBUG'])
 
    return env
 
@@ -278,7 +303,7 @@ def ValidateBoostVersion(key, value, environ):
 
 def ValidateBoostOption(key, value, environ):
    "Validate the boost option settings"
-   global enable_python, optimize
+   global enable_python, optimize, compiler_major_ver
    req_boost_version = 103100
    sys.stdout.write("checking for %s [%s]...\n" % (key, value))
 
@@ -319,7 +344,10 @@ def ValidateBoostOption(key, value, environ):
          platform = GetPlatform()
 
          if platform == 'win32':
-            tool = '-vc71'
+            if compiler_major_ver < 14:
+               tool = '-vc71'
+            else:
+               tool = '-vc80'
          elif platform == 'irix':
             tool = '-mp'
          elif platform == 'darwin':
