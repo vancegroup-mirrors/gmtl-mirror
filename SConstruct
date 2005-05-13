@@ -145,10 +145,22 @@ def BuildDarwinEnvironment():
    framework_opt = '-F' + m.group(1)
 
    CXX = 'g++'
+
+   ver_re = re.compile(r'gcc version ((\d+)\.(\d+)\.(\d+))')
+   (gv_stdout, gv_stdin, gv_stderr) = os.popen3(CXX + ' -v')
+   ver_str = gv_stderr.read()
+
+   match_obj = ver_re.search(ver_str)
+
    LINK = CXX
    CXXFLAGS = ['-ftemplate-depth-256', '-DBOOST_PYTHON_DYNAMIC_LIB',
-               '-Wno-long-double', '-no-cpp-precomp', '-Wall',
-               '-fcoalesce-templates', framework_opt, '-pipe']
+               '-Wno-long-double', '-no-cpp-precomp', '-Wall', framework_opt,
+               '-pipe']
+
+   # GCC 4.0 in Mac OS X 10.4 and newer does not have -fcoalesce-templates.
+   if int(match_obj.group(2)) < 4:
+      CXXFLAGS.append('-fcoalesce-templates')
+
    SHLIBSUFFIX = distutils.sysconfig.get_config_var('SO')
    # NOTE: The -m  option deals with a problem of multiply defined symbols
    # that might be the result of a compiler bug.
