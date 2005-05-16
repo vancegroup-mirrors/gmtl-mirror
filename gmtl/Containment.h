@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Containment.h,v $
- * Date modified: $Date: 2004-12-08 22:29:45 $
- * Version:       $Revision: 1.16 $
+ * Date modified: $Date: 2005-05-16 14:19:44 $
+ * Version:       $Revision: 1.17 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -198,7 +198,7 @@ void makeVolume( Sphere<DATA_TYPE>& container,
    DATA_TYPE radiusSqr(0);
    for ( itr = pts.begin(); itr != pts.end(); ++itr )
    {
-      float len = lengthSquared( gmtl::Vec<DATA_TYPE,3>( (*itr) - container.mCenter) );
+      DATA_TYPE len = lengthSquared( gmtl::Vec<DATA_TYPE,3>( (*itr) - container.mCenter) );
       if ( len > radiusSqr )
          radiusSqr = len;
    }

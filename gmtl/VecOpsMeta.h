@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecOpsMeta.h,v $
- * Date modified: $Date: 2004-09-16 19:40:36 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2005-05-16 14:19:44 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -50,7 +50,7 @@ namespace meta
 template<int ELT, typename T1, typename T2>
 struct DotVecUnrolled
 {
-   static float func(const T1& v1, const T2& v2)
+   static typename T1::DataType func(const T1& v1, const T2& v2)
    {  return (v1[ELT]*v2[ELT]) + DotVecUnrolled<ELT-1,T1,T2>::func(v1,v2); }
 };
 
@@ -58,7 +58,7 @@ struct DotVecUnrolled
 template<typename T1, typename T2>
 struct DotVecUnrolled<0,T1,T2>
 {
-   static float func(const T1& v1, const T2& v2)
+   static typename T1::DataType func(const T1& v1, const T2& v2)
    {   return (v1[0]*v2[0]); }
 };
 
@@ -66,7 +66,7 @@ struct DotVecUnrolled<0,T1,T2>
 template<int ELT, typename T>
 struct LenSqrVecUnrolled
 {
-   static float func(const T& v)
+   static typename T::DataType func(const T& v)
    {  return (v[ELT]*v[ELT]) + LenSqrVecUnrolled<ELT-1,T>::func(v); }
 };
 
@@ -74,7 +74,7 @@ struct LenSqrVecUnrolled
 template<typename T>
 struct LenSqrVecUnrolled<0,T>
 {
-   static float func(const T& v)
+   static typename T::DataType func(const T& v)
    {   return (v[0]*v[0]); }
 };
 
