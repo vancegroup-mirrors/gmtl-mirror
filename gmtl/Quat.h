@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Quat.h,v $
- * Date modified: $Date: 2004-11-15 17:43:04 $
- * Version:       $Revision: 1.23 $
+ * Date modified: $Date: 2005-05-16 14:46:27 $
+ * Version:       $Revision: 1.24 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -86,8 +86,8 @@ public:
     *  [x,y,z,w] == [0,0,0,1].
     *  NOTE: the addition identity is [0,0,0,0]
     */
-   Quat<DATA_TYPE>()
-         : mData( (DATA_TYPE)0.0, (DATA_TYPE)0.0, (DATA_TYPE)0.0, (DATA_TYPE)1.0 )
+   Quat()
+      : mData( (DATA_TYPE)0.0, (DATA_TYPE)0.0, (DATA_TYPE)0.0, (DATA_TYPE)1.0 )
    {
    }
    
@@ -95,15 +95,15 @@ public:
     *  [x,y,z,w] == [0,0,0,1].
     *  NOTE: the addition identity is [0,0,0,0]
     */
-   Quat<DATA_TYPE>( const DATA_TYPE x, const DATA_TYPE y,
-                    const DATA_TYPE z, const DATA_TYPE w )
-         : mData( x, y, z, w )
+   Quat( const DATA_TYPE x, const DATA_TYPE y, const DATA_TYPE z,
+         const DATA_TYPE w )
+      : mData( x, y, z, w )
    {
    }
 
    /** copy constructor
     */
-   Quat<DATA_TYPE>( const Quat<DATA_TYPE>& q ) : mData( q.mData )
+   Quat( const Quat<DATA_TYPE>& q ) : mData( q.mData )
    {
    }
 
