@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixOps.h,v $
- * Date modified: $Date: 2004-11-12 01:28:44 $
- * Version:       $Revision: 1.38 $
+ * Date modified: $Date: 2005-05-16 14:19:44 $
+ * Version:       $Revision: 1.39 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -367,9 +367,9 @@ namespace gmtl
       // do non-uniform scale inversion
       if (src.mState & Matrix<DATA_TYPE, ROWS, COLS>::NON_UNISCALE)
       {
-         float l0 = gmtl::lengthSquared( gmtl::Vec3f( result[0][0], result[0][1], result[0][2] ) );
-         float l1 = gmtl::lengthSquared( gmtl::Vec3f( result[1][0], result[1][1], result[1][2] ) );
-         float l2 = gmtl::lengthSquared( gmtl::Vec3f( result[2][0], result[2][1], result[2][2] ) );
+         DATA_TYPE l0 = gmtl::lengthSquared( gmtl::Vec<DATA_TYPE, 3>( result[0][0], result[0][1], result[0][2] ) );
+         DATA_TYPE l1 = gmtl::lengthSquared( gmtl::Vec<DATA_TYPE, 3>( result[1][0], result[1][1], result[1][2] ) );
+         DATA_TYPE l2 = gmtl::lengthSquared( gmtl::Vec<DATA_TYPE, 3>( result[2][0], result[2][1], result[2][2] ) );
          if (gmtl::Math::abs( l0 ) > eps) l0 = 1.0f / l0;
          if (gmtl::Math::abs( l1 ) > eps) l1 = 1.0f / l1;
          if (gmtl::Math::abs( l2 ) > eps) l2 = 1.0f / l2;
@@ -394,16 +394,16 @@ namespace gmtl
          result[3][0] = result[3][1] = result[3][2] = 0;
 
          // The translation components of the original matrix.
-         const float& tx = src[0][3];
-         const float& ty = src[1][3];
-         const float& tz = src[2][3];
+         const DATA_TYPE& tx = src[0][3];
+         const DATA_TYPE& ty = src[1][3];
+         const DATA_TYPE& tz = src[2][3];
 
 
          // Rresult = -(Tm * Rm) to get the translation part of the inverse
          if (ROWS == 4)
          {
             // invert scale.
-            const float tw = (gmtl::Math::abs( src[3][3] ) > eps) ? 1.0f / src[3][3] : 0.0f;
+            const DATA_TYPE tw = (gmtl::Math::abs( src[3][3] ) > eps) ? 1.0f / src[3][3] : 0.0f;
 
             // handle uniform scale in Nx4 matrices
             result[0][3] = -( result[0][0] * tx + result[0][1] * ty + result[0][2] * tz ) * tw;
