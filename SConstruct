@@ -230,8 +230,6 @@ def BuildWin32Environment():
    global optimize, compiler_major_ver
 
    env = Environment(ENV = os.environ)
-   for t in ['msvc', 'mslink']:
-      Tool(t)(env)
 
    ver_re = re.compile(r'Compiler Version ((\d+)\.(\d+)\.(\d+))')
 
