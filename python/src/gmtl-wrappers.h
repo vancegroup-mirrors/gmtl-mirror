@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-wrappers.h,v $
- * Date modified: $Date: 2004-10-28 00:04:56 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2005-06-01 22:08:57 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -139,65 +139,69 @@ namespace gmtlWrappers
    template gmtl::Quatf     makeRotQuat(const gmtl::Vec3f&, const gmtl::Vec3f&);
    template gmtl::Quatd     makeRotQuat(const gmtl::Vec3d&, const gmtl::Vec3d&);
 
-#ifndef _MSC_VER
-   template<typename DATA_TYPE>
-   gmtl::Matrix<DATA_TYPE, 3, 3> makeDirCosMatrix33(const gmtl::Vec<DATA_TYPE, 3>& xDestAxis,
-                                                    const gmtl::Vec<DATA_TYPE, 3>& yDestAxis,
-                                                    const gmtl::Vec<DATA_TYPE, 3>& zDestAxis,
-                                                    const gmtl::Vec<DATA_TYPE, 3>& xSrcAxis = gmtl::Vec<DATA_TYPE, 3>(1, 0, 0),
-                                                    const gmtl::Vec<DATA_TYPE, 3>& ySrcAxis = gmtl::Vec<DATA_TYPE, 3>(0, 1, 0),
-                                                    const gmtl::Vec<DATA_TYPE, 3>& zSrcAxis = gmtl::Vec<DATA_TYPE, 3>(0, 0, 1))
+   inline gmtl::Matrix<float, 3, 3>
+   makeDirCosMatrix33(const gmtl::Vec<float, 3>& xDestAxis,
+                      const gmtl::Vec<float, 3>& yDestAxis,
+                      const gmtl::Vec<float, 3>& zDestAxis,
+                      const gmtl::Vec<float, 3>& xSrcAxis = gmtl::Vec<float, 3>(1, 0, 0),
+                      const gmtl::Vec<float, 3>& ySrcAxis = gmtl::Vec<float, 3>(0, 1, 0),
+                      const gmtl::Vec<float, 3>& zSrcAxis = gmtl::Vec<float, 3>(0, 0, 1))
    {
-      return gmtl::makeDirCos< gmtl::Matrix<DATA_TYPE, 3, 3> >(xDestAxis,
-                                                               yDestAxis,
-                                                               zDestAxis,
-                                                               xSrcAxis,
-                                                               ySrcAxis,
-                                                               zSrcAxis);
+      return gmtl::makeDirCos< gmtl::Matrix<float, 3, 3> >(xDestAxis,
+                                                           yDestAxis,
+                                                           zDestAxis,
+                                                           xSrcAxis,
+                                                           ySrcAxis,
+                                                           zSrcAxis);
    }
 
-   template<typename DATA_TYPE>
-   gmtl::Matrix<DATA_TYPE, 4, 4> makeDirCosMatrix44(const gmtl::Vec<DATA_TYPE, 3>& xDestAxis,
-                                                    const gmtl::Vec<DATA_TYPE, 3>& yDestAxis,
-                                                    const gmtl::Vec<DATA_TYPE, 3>& zDestAxis,
-                                                    const gmtl::Vec<DATA_TYPE, 3>& xSrcAxis = gmtl::Vec<DATA_TYPE, 3>(1, 0, 0),
-                                                    const gmtl::Vec<DATA_TYPE, 3>& ySrcAxis = gmtl::Vec<DATA_TYPE, 3>(0, 1, 0),
-                                                    const gmtl::Vec<DATA_TYPE, 3>& zSrcAxis = gmtl::Vec<DATA_TYPE, 3>(0, 0, 1))
+   inline gmtl::Matrix<double, 3, 3>
+   makeDirCosMatrix33(const gmtl::Vec<double, 3>& xDestAxis,
+                      const gmtl::Vec<double, 3>& yDestAxis,
+                      const gmtl::Vec<double, 3>& zDestAxis,
+                      const gmtl::Vec<double, 3>& xSrcAxis = gmtl::Vec<double, 3>(1, 0, 0),
+                      const gmtl::Vec<double, 3>& ySrcAxis = gmtl::Vec<double, 3>(0, 1, 0),
+                      const gmtl::Vec<double, 3>& zSrcAxis = gmtl::Vec<double, 3>(0, 0, 1))
    {
-      return gmtl::makeDirCos< gmtl::Matrix<DATA_TYPE, 4, 4> >(xDestAxis,
-                                                               yDestAxis,
-                                                               zDestAxis,
-                                                               xSrcAxis,
-                                                               ySrcAxis,
-                                                               zSrcAxis);
+      return gmtl::makeDirCos< gmtl::Matrix<double, 3, 3> >(xDestAxis,
+                                                            yDestAxis,
+                                                            zDestAxis,
+                                                            xSrcAxis,
+                                                            ySrcAxis,
+                                                            zSrcAxis);
    }
 
-   template gmtl::Matrix33f makeDirCosMatrix33(const gmtl::Vec3f&,
-                                               const gmtl::Vec3f&,
-                                               const gmtl::Vec3f&,
-                                               const gmtl::Vec3f&,
-                                               const gmtl::Vec3f&,
-                                               const gmtl::Vec3f&);
-   template gmtl::Matrix33d makeDirCosMatrix33(const gmtl::Vec3d&,
-                                               const gmtl::Vec3d&,
-                                               const gmtl::Vec3d&,
-                                               const gmtl::Vec3d&,
-                                               const gmtl::Vec3d&,
-                                               const gmtl::Vec3d&);
-   template gmtl::Matrix44f makeDirCosMatrix44(const gmtl::Vec3f&,
-                                               const gmtl::Vec3f&,
-                                               const gmtl::Vec3f&,
-                                               const gmtl::Vec3f&,
-                                               const gmtl::Vec3f&,
-                                               const gmtl::Vec3f&);
-   template gmtl::Matrix44d makeDirCosMatrix44(const gmtl::Vec3d&,
-                                               const gmtl::Vec3d&,
-                                               const gmtl::Vec3d&,
-                                               const gmtl::Vec3d&,
-                                               const gmtl::Vec3d&,
-                                               const gmtl::Vec3d&);
-#endif
+   inline gmtl::Matrix<float, 4, 4>
+   makeDirCosMatrix44(const gmtl::Vec<float, 3>& xDestAxis,
+                      const gmtl::Vec<float, 3>& yDestAxis,
+                      const gmtl::Vec<float, 3>& zDestAxis,
+                      const gmtl::Vec<float, 3>& xSrcAxis = gmtl::Vec<float, 3>(1, 0, 0),
+                      const gmtl::Vec<float, 3>& ySrcAxis = gmtl::Vec<float, 3>(0, 1, 0),
+                      const gmtl::Vec<float, 3>& zSrcAxis = gmtl::Vec<float, 3>(0, 0, 1))
+   {
+      return gmtl::makeDirCos< gmtl::Matrix<float, 4, 4> >(xDestAxis,
+                                                           yDestAxis,
+                                                           zDestAxis,
+                                                           xSrcAxis,
+                                                           ySrcAxis,
+                                                           zSrcAxis);
+   }
 
+   inline gmtl::Matrix<double, 4, 4>
+   makeDirCosMatrix44(const gmtl::Vec<double, 3>& xDestAxis,
+                      const gmtl::Vec<double, 3>& yDestAxis,
+                      const gmtl::Vec<double, 3>& zDestAxis,
+                      const gmtl::Vec<double, 3>& xSrcAxis = gmtl::Vec<double, 3>(1, 0, 0),
+                      const gmtl::Vec<double, 3>& ySrcAxis = gmtl::Vec<double, 3>(0, 1, 0),
+                      const gmtl::Vec<double, 3>& zSrcAxis = gmtl::Vec<double, 3>(0, 0, 1))
+   {
+      return gmtl::makeDirCos< gmtl::Matrix<double, 4, 4> >(xDestAxis,
+                                                            yDestAxis,
+                                                            zDestAxis,
+                                                            xSrcAxis,
+                                                            ySrcAxis,
+                                                            zSrcAxis);
+   }
 
    template<typename DATA_TYPE>
    gmtl::Matrix<DATA_TYPE, 4, 4> makeTransMatrix44(const gmtl::Vec<DATA_TYPE, 3>& v)
