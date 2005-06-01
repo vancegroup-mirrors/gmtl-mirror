@@ -1,5 +1,8 @@
 DATE       AUTHOR       CHANGE
 ---------- ------------ -------------------------------------------------------
+2005-06-01 patrickh     Fixed PyGMTL interface inconsistencies that resulted in
+                        some functions being unavailable on Windows.  Now, the
+                        entire PyGMTL interface is available on all platforms.
 2005-05-12 allenb       Added missing output operator for gmtl::Coord<>
                         NEW VERSION: 0.4.7
 2004-12-08 allenb       Added new isInVolumeExclusive method for AABox.
@@ -32,6 +35,7 @@ DATE       AUTHOR       CHANGE
                         to better handle border cases.
                         Added overloaded calls for Math::abs that call the
                         system method for float, double, long, and int.
+
 [0.3.5 released - 7.12.2004]===================================================
 2004-07-12 patrickh     Filled in critical missing functions in PyGMTL.
 
