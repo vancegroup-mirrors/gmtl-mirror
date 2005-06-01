@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-CoordOps.h,v $
- * Date modified: $Date: 2003-08-30 21:13:52 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2005-06-01 21:40:09 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -49,6 +49,8 @@
 
 namespace gmtl
 {
+   // With Visual C++, these forward declarations do not work, but since they
+   // are only to help out Pyste, we don't really need them.
 #ifndef _MSC_VER
    template bool isEqual(const gmtl::Coord3fXYZ&, const gmtl::Coord3fXYZ&,
                          float);

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _gmtl_CoordOps_h.cpp,v $
- * Date modified: $Date: 2003-08-30 17:22:10 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2005-06-01 21:40:10 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -52,7 +52,6 @@ BOOST_PYTHON_FUNCTION_OVERLOADS(isEqual_overloads_2_3, gmtl::isEqual, 2, 3)
 // Module ======================================================================
 void _Export_gmtl_CoordOps_h()
 {
-#ifndef _MSC_VER
     def("isEqual", (bool (*)(const gmtl::Coord<gmtl::Vec<double, 3>,gmtl::EulerAngle<double, gmtl::XYZ> > &, const gmtl::Coord<gmtl::Vec<double, 3>,gmtl::EulerAngle<double, gmtl::XYZ> > &, double))&gmtl::isEqual, isEqual_overloads_2_3());
     def("isEqual", (bool (*)(const gmtl::Coord<gmtl::Vec<double, 4>,gmtl::AxisAngle<double> > &, const gmtl::Coord<gmtl::Vec<double, 4>,gmtl::AxisAngle<double> > &, double))&gmtl::isEqual, isEqual_overloads_2_3());
     def("isEqual", (bool (*)(const gmtl::Coord<gmtl::Vec<float, 4>,gmtl::AxisAngle<float> > &, const gmtl::Coord<gmtl::Vec<float, 4>,gmtl::AxisAngle<float> > &, float))&gmtl::isEqual, isEqual_overloads_2_3());
@@ -73,5 +72,4 @@ void _Export_gmtl_CoordOps_h()
     def("isEqual", (bool (*)(const gmtl::Coord<gmtl::Vec<float, 3>,gmtl::EulerAngle<float, gmtl::XYZ> > &, const gmtl::Coord<gmtl::Vec<float, 3>,gmtl::EulerAngle<float, gmtl::XYZ> > &, float))&gmtl::isEqual, isEqual_overloads_2_3());
     def("isEqual", (bool (*)(const gmtl::Coord<gmtl::Vec<float, 3>,gmtl::EulerAngle<float, gmtl::ZXY> > &, const gmtl::Coord<gmtl::Vec<float, 3>,gmtl::EulerAngle<float, gmtl::ZXY> > &, float))&gmtl::isEqual, isEqual_overloads_2_3());
     def("isEqual", (bool (*)(const gmtl::Coord<gmtl::Vec<float, 4>,gmtl::EulerAngle<float, gmtl::XYZ> > &, const gmtl::Coord<gmtl::Vec<float, 4>,gmtl::EulerAngle<float, gmtl::XYZ> > &, float))&gmtl::isEqual, isEqual_overloads_2_3());
-#endif
 }
