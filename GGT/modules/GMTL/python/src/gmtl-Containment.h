@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-Containment.h,v $
- * Date modified: $Date: 2003-08-17 06:32:59 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2005-06-02 04:40:16 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -59,10 +59,22 @@ namespace gmtl
    template void makeVolume(gmtl::Spheref&, const std::vector<gmtl::Point3f>&);
    template void makeVolume(gmtl::Sphered&, const std::vector<gmtl::Point3d>&);
 
+   template bool isOnVolume(const gmtl::Spheref&, const gmtl::Point3f&);
+   template bool isOnVolume(const gmtl::Sphered&, const gmtl::Point3d&);
+
    template bool isOnVolume(const gmtl::Spheref&, const gmtl::Point3f&,
                             const float&);
    template bool isOnVolume(const gmtl::Sphered&, const gmtl::Point3d&,
                             const double&);
+
+   template bool isInVolume(const gmtl::AABoxf&, const gmtl::Point3f&);
+   template bool isInVolume(const gmtl::AABoxd&, const gmtl::Point3d&);
+
+   template bool isInVolumeExclusive(const gmtl::AABoxf&, const gmtl::Point3f&);
+   template bool isInVolumeExclusive(const gmtl::AABoxd&, const gmtl::Point3d&);
+
+   template bool isInVolume(const gmtl::AABoxf&, const gmtl::AABoxf&);
+   template bool isInVolume(const gmtl::AABoxd&, const gmtl::AABoxd&);
 
    template void extendVolume(gmtl::AABoxf&, const gmtl::Point3f&);
    template void extendVolume(gmtl::AABoxd&, const gmtl::Point3d&);

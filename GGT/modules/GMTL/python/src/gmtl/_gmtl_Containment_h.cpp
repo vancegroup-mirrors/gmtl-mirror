@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _gmtl_Containment_h.cpp,v $
- * Date modified: $Date: 2003-08-17 06:32:59 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2005-06-02 04:40:18 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -40,6 +40,15 @@
 // Using =======================================================================
 using namespace boost::python;
 
+// Declarations ================================================================
+namespace  {
+
+
+BOOST_PYTHON_FUNCTION_OVERLOADS(isOnVolume_overloads_2_3, gmtl::isOnVolume, 2, 3)
+
+
+}// namespace 
+
 // Module ======================================================================
 void _Export_gmtl_Containment_h()
 {
@@ -55,8 +64,14 @@ void _Export_gmtl_Containment_h()
     def("isInVolume", (bool (*)(const gmtl::Sphere<double> &, const gmtl::Point<double,3> &))&gmtl::isInVolume);
     def("isInVolume", (bool (*)(const gmtl::Sphere<double> &, const gmtl::Sphere<double> &))&gmtl::isInVolume);
     def("isInVolume", (bool (*)(const gmtl::Sphere<float> &, const gmtl::Point<float,3> &))&gmtl::isInVolume);
-    def("isOnVolume", (bool (*)(const gmtl::Sphere<double> &, const gmtl::Point<double,3> &, const double &))&gmtl::isOnVolume);
-    def("isOnVolume", (bool (*)(const gmtl::Sphere<float> &, const gmtl::Point<float,3> &, const float &))&gmtl::isOnVolume);
+    def("isInVolume", (bool (*)(const gmtl::AABox<double> &, const gmtl::Point<double,3> &))&gmtl::isInVolume);
+    def("isInVolume", (bool (*)(const gmtl::AABox<float> &, const gmtl::Point<float,3> &))&gmtl::isInVolume);
+    def("isInVolume", (bool (*)(const gmtl::AABox<double> &, const gmtl::AABox<double> &))&gmtl::isInVolume);
+    def("isInVolume", (bool (*)(const gmtl::AABox<float> &, const gmtl::AABox<float> &))&gmtl::isInVolume);
+    def("isInVolumeExclusive", (bool (*)(const gmtl::AABox<double> &, const gmtl::Point<double,3> &))&gmtl::isInVolumeExclusive);
+    def("isInVolumeExclusive", (bool (*)(const gmtl::AABox<float> &, const gmtl::Point<float,3> &))&gmtl::isInVolumeExclusive);
+    def("isOnVolume", (bool (*)(const gmtl::Sphere<double> &, const gmtl::Point<double,3> &, const double &))&gmtl::isOnVolume, isOnVolume_overloads_2_3());
+    def("isOnVolume", (bool (*)(const gmtl::Sphere<float> &, const gmtl::Point<float,3> &, const float &))&gmtl::isOnVolume, isOnVolume_overloads_2_3());
     def("makeVolume", (void (*)(gmtl::Sphere<float> &, const std::vector<gmtl::Point<float, 3>,std::allocator<gmtl::Point<float, 3> > > &))&gmtl::makeVolume, return_internal_reference< 1 >());
     def("makeVolume", (void (*)(gmtl::AABox<float> &, const gmtl::Sphere<float> &))&gmtl::makeVolume, return_internal_reference< 1 >());
     def("makeVolume", (void (*)(gmtl::Sphere<double> &, const std::vector<gmtl::Point<double, 3>,std::allocator<gmtl::Point<double, 3> > > &))&gmtl::makeVolume, return_internal_reference< 1 >());
