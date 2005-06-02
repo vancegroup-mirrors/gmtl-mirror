@@ -25,6 +25,8 @@ o------------------------------------------------------------------------------o
   a list of the minimum requirements.
 
     * A standards comformant C++ compiler with good template support
+       - To compile PyGMTL on Windows, Visual C++ 7.1 (part of Visual
+         Studio .NET 2003) or newer is required
     * SCons 0.96
     * Python 2.2 or newer
     * Boost.Python v2 compiled and installed from Boost 1.31.0 or newer
