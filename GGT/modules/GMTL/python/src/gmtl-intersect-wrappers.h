@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-intersect-wrappers.h,v $
- * Date modified: $Date: 2003-05-20 18:57:15 $
- * Version:       $Revision: 1.1.1.1 $
+ * Date modified: $Date: 2005-06-02 16:55:42 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -149,6 +149,17 @@ namespace gmtlWrappers
 
    template tuple intersect(const gmtl::Planef&, const gmtl::Rayf&);
    template tuple intersect(const gmtl::Planed&, const gmtl::Rayd&);
+
+   template<typename T>
+   tuple intersect(const gmtl::Plane<T>& p, const gmtl::LineSeg<T>& r)
+   {
+      T val;
+      bool result = gmtl::intersect(p, r, val);
+      return make_tuple(result, val);
+   }
+
+   template tuple intersect(const gmtl::Planef&, const gmtl::LineSegf&);
+   template tuple intersect(const gmtl::Planed&, const gmtl::LineSegd&);
 
    template<typename T>
    tuple intersect(const gmtl::Tri<T>& t, const gmtl::Ray<T>& r)
