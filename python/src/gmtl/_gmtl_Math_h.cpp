@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _gmtl_Math_h.cpp,v $
- * Date modified: $Date: 2003-05-20 18:57:15 $
- * Version:       $Revision: 1.1.1.1 $
+ * Date modified: $Date: 2005-06-02 23:10:49 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -33,11 +33,58 @@
 // Using =======================================================================
 using namespace boost::python;
 
+// Declarations ================================================================
+
+
+namespace gmtlWrappers
+{
+   template<typename T, typename U>
+   T lerp(const U& lerp, const T& a, const T& b)
+   {
+      T result;
+      gmtl::Math::lerp(result, lerp, a, b);
+      return result;
+   }
+
+   template double lerp(const double&, const double&, const double&);
+   template float lerp(const float&, const float&, const float&);
+
+   template<typename T>
+   tuple quadraticFormula(const T& a, const T& b, const T& c)
+   {
+      T r1, r2;
+      bool result = gmtl::Math::quadraticFormula(r1, r2, a, b, c);
+      return make_tuple(result, r1, r2);
+   }
+
+   template tuple quadraticFormula(const double& a, const double& b,
+                                   const double& c);
+   template tuple quadraticFormula(const float& a, const float& b,
+                                   const float& c);
+}
+
 // Module ======================================================================
 void _Export_gmtl_Math_h()
 {
+    def("sign", (int (*)(int)) &gmtl::Math::sign);
+    def("sign", (int (*)(float)) &gmtl::Math::sign);
+    def("sign", (int (*)(double)) &gmtl::Math::sign);
+    def("fastInvSqrt", &gmtl::Math::fastInvSqrt);
+    def("fastInvSqrt2", &gmtl::Math::fastInvSqrt2);
+    def("fastInvSqrt3", &gmtl::Math::fastInvSqrt3);
     def("deg2Rad", (double (*)(double))&gmtl::Math::deg2Rad);
     def("deg2Rad", (float (*)(float))&gmtl::Math::deg2Rad);
     def("rad2Deg", (float (*)(float))&gmtl::Math::rad2Deg);
     def("rad2Deg", (double (*)(double))&gmtl::Math::rad2Deg);
+    def("factorial", (double (*)(double)) &gmtl::Math::factorial);
+    def("factorial", (float (*)(float)) &gmtl::Math::factorial);
+    def("factorial", (int (*)(int)) &gmtl::Math::factorial);
+    def("lerp",
+        (double (gmtlWrappers::*)(const double&, const double&, const double&)) &gmtlWrappers::lerp);
+    def("lerp",
+        (float (gmtlWrappers::*)(const float&, const float&, const float&)) &gmtlWrappers::lerp);
+    def("quadraticFormula",
+        (tuple (gmtlWrappers::*)(const double&, const double&, const double&)) &gmtlWrappers::quadraticFormula);
+    def("quadraticFormula",
+        (tuple (gmtlWrappers::*)(const float&, const float&, const float&)) &gmtlWrappers::quadraticFormula);
 }
