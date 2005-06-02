@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Ray_double.cpp,v $
- * Date modified: $Date: 2004-10-27 19:01:33 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2005-06-02 22:07:58 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -29,6 +29,8 @@
 // Includes ====================================================================
 #include <boost/python.hpp>
 #include <gmtl/Ray.h>
+#include <gmtl/RayOps.h>
+#include <gmtl/Output.h>
 #include <gmtl-pickle.h>
 
 // Using =======================================================================
@@ -47,6 +49,9 @@ void _Export_Ray_double()
         .def("getDir", &gmtl::Ray<double>::getDir, return_value_policy< copy_const_reference >())
         .def("setDir", &gmtl::Ray<double>::setDir)
         .def_pickle(gmtlPickle::Ray_pickle<double>())
+        .def(self == self)
+        .def(self != self)
+        .def(self_ns::str(self))
     ;
 
 }

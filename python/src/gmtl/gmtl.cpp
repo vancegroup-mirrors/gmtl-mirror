@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl.cpp,v $
- * Date modified: $Date: 2005-06-02 21:22:35 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2005-06-02 22:07:58 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -104,6 +104,7 @@ void _Export_gmtl_SphereOps_h();
 void _Export_gmtl_AxisAngleOps_h();
 void _Export_gmtl_EulerAngleOps_h();
 void _Export_gmtl_AABoxOps_h();
+void _Export_gmtl_RayOps_h();
 void _Export_gmtl_TriOps_h();
 void _Export_gmtl_QuatOps_h();
 void _Export_gmtl_VecOps_h();
@@ -193,6 +194,7 @@ BOOST_PYTHON_MODULE(gmtl)
     _Export_gmtl_AxisAngleOps_h();
     _Export_gmtl_AABoxOps_h();
     _Export_gmtl_EulerAngleOps_h();
+    _Export_gmtl_RayOps_h();
     _Export_gmtl_TriOps_h();
     _Export_gmtl_QuatOps_h();
     _Export_gmtl_VecOps_h();
