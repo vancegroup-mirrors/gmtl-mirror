@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _gmtl_Math_h.cpp,v $
- * Date modified: $Date: 2005-06-03 02:11:20 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2005-06-03 02:11:50 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -46,9 +46,6 @@ namespace gmtlWrappers
       return result;
    }
 
-   template double lerp(const double&, const double&, const double&);
-   template float lerp(const float&, const float&, const float&);
-
    template<typename T>
    tuple quadraticFormula(const T& a, const T& b, const T& c)
    {
@@ -56,11 +53,6 @@ namespace gmtlWrappers
       bool result = gmtl::Math::quadraticFormula(r1, r2, a, b, c);
       return make_tuple(result, r1, r2);
    }
-
-   template tuple quadraticFormula(const double& a, const double& b,
-                                   const double& c);
-   template tuple quadraticFormula(const float& a, const float& b,
-                                   const float& c);
 }
 
 // Module ======================================================================
