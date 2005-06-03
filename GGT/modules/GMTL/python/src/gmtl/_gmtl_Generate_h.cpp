@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _gmtl_Generate_h.cpp,v $
- * Date modified: $Date: 2004-09-16 21:22:10 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2005-06-03 15:07:11 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -221,11 +221,15 @@ void _Export_gmtl_Generate_h()
     def("setTrans", (gmtl::Vec<double,3> & (*)(gmtl::Vec<double,3> &, const gmtl::Matrix<double,4,4> &))&gmtl::setTrans, return_internal_reference< 1 >());
     def("setTrans", (gmtl::Vec<float,3> & (*)(gmtl::Vec<float,3> &, const gmtl::Matrix<float,4,4> &))&gmtl::setTrans, return_internal_reference< 1 >());
     def("setTrans", (gmtl::Vec<float,4> & (*)(gmtl::Vec<float,4> &, const gmtl::Matrix<float,3,3> &))&gmtl::setTrans, return_internal_reference< 1 >());
+    def("setTrans", (gmtl::Vec<float,2> & (*)(gmtl::Vec<float,2> &, const gmtl::Matrix<float,3,3> &))&gmtl::setTrans, return_internal_reference< 1 >());
+    def("setTrans", (gmtl::Vec<double,2> & (*)(gmtl::Vec<double,2> &, const gmtl::Matrix<double,3,3> &))&gmtl::setTrans, return_internal_reference< 1 >());
     def("setTrans", (gmtl::Matrix<float,4,4> & (*)(gmtl::Matrix<float,4,4> &, const gmtl::VecBase<float,4> &))&gmtl::setTrans, return_internal_reference< 1 >());
     def("setTrans", (gmtl::Matrix<float,3,3> & (*)(gmtl::Matrix<float,3,3> &, const gmtl::VecBase<float,3> &))&gmtl::setTrans, return_internal_reference< 1 >());
     def("setTrans", (gmtl::Matrix<float,3,3> & (*)(gmtl::Matrix<float,3,3> &, const gmtl::VecBase<float,4> &))&gmtl::setTrans, return_internal_reference< 1 >());
     def("setTrans", (gmtl::Matrix<float,4,4> & (*)(gmtl::Matrix<float,4,4> &, const gmtl::VecBase<float,3> &))&gmtl::setTrans, return_internal_reference< 1 >());
     def("setTrans", (gmtl::Matrix<double,4,4> & (*)(gmtl::Matrix<double,4,4> &, const gmtl::VecBase<double,3> &))&gmtl::setTrans, return_internal_reference< 1 >());
+    def("setTrans", (gmtl::Matrix<float,3,3> & (*)(gmtl::Matrix<float,3,3> &, const gmtl::VecBase<float,2> &))&gmtl::setTrans, return_internal_reference< 1 >());
+    def("setTrans", (gmtl::Matrix<double,3,3> & (*)(gmtl::Matrix<double,3,3> &, const gmtl::VecBase<double,2> &))&gmtl::setTrans, return_internal_reference< 1 >());
     def("setRow", (void (*)(gmtl::Vec<float, 3>&, const gmtl::Matrix<float, 3, 3>&, unsigned))&gmtl::setRow);
     def("setRow", (void (*)(gmtl::Vec<double, 3>&, const gmtl::Matrix<double, 3, 3>&, unsigned))&gmtl::setRow);
     def("setRow", (void (*)(gmtl::Vec<float, 4>&, const gmtl::Matrix<float, 4, 4>&, unsigned))&gmtl::setRow);

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-Generate.h,v $
- * Date modified: $Date: 2004-09-16 21:22:09 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2005-06-03 15:07:10 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -62,6 +62,9 @@ namespace gmtl
 
    template gmtl::Vec3f& setTrans(gmtl::Vec3f&, const gmtl::Matrix44f&);
    template gmtl::Vec3d& setTrans(gmtl::Vec3d&, const gmtl::Matrix44d&);
+
+   template gmtl::Vec2f& setTrans(gmtl::Vec2f&, const gmtl::Matrix33f&);
+   template gmtl::Vec2d& setTrans(gmtl::Vec2d&, const gmtl::Matrix33d&);
 
    template gmtl::Quatf& setPure(gmtl::Quatf&, const gmtl::Vec3f&);
    template gmtl::Quatd& setPure(gmtl::Quatd&, const gmtl::Vec3d&);
@@ -124,6 +127,10 @@ namespace gmtl
    template gmtl::Matrix44d& setPerspective(gmtl::Matrix44d&, double,
                                             double, double, double);
 
+   template gmtl::Matrix33f& setTrans(gmtl::Matrix33f&,
+                                      const gmtl::VecBase<float, 2>&);
+   template gmtl::Matrix33d& setTrans(gmtl::Matrix33d&,
+                                      const gmtl::VecBase<double, 2>&);
    template gmtl::Matrix44f& setTrans(gmtl::Matrix44f&,
                                       const gmtl::VecBase<float, 3>&);
    template gmtl::Matrix44d& setTrans(gmtl::Matrix44d&,

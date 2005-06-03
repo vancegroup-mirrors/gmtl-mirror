@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl.cpp,v $
- * Date modified: $Date: 2005-06-02 22:07:58 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2005-06-03 15:07:11 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -90,10 +90,13 @@ void _Export_Point_float_2();
 void _Export_Point_float_3();
 void _Export_Point_int_2();
 void _Export_Point_int_3();
+void _Export_Vec_double_2();
 void _Export_Vec_double_3();
 void _Export_Vec_double_4();
+void _Export_Vec_float_2();
 void _Export_Vec_float_3();
 void _Export_Vec_float_4();
+void _Export_Vec_int_2();
 void _Export_Vec_int_3();
 void _Export_Vec_int_4();
 void _Export_gmtl_Math_h();
@@ -180,10 +183,13 @@ BOOST_PYTHON_MODULE(gmtl)
     _Export_Point_float_3();
     _Export_Point_int_2();
     _Export_Point_int_3();
+    _Export_Vec_double_2();
     _Export_Vec_double_3();
     _Export_Vec_double_4();
+    _Export_Vec_float_2();
     _Export_Vec_float_3();
     _Export_Vec_float_4();
+    _Export_Vec_int_2();
     _Export_Vec_int_3();
     _Export_Vec_int_4();
     _Export_gmtl_Math_h();
