@@ -9,8 +9,8 @@
 # 
 #  -----------------------------------------------------------------
 #  File:          $RCSfile: testsuite.py,v $
-#  Date modified: $Date: 2005-06-03 14:40:07 $
-#  Version:       $Revision: 1.3 $
+#  Date modified: $Date: 2005-06-03 17:17:37 $
+#  Version:       $Revision: 1.4 $
 #  -----------------------------------------------------------------
 # 
 # ********************************************************** ggt-head end
@@ -802,8 +802,8 @@ class ConvertTest(unittest.TestCase):
 
       # Simple rotation around x-axis.
       mat1 = gmtl.Matrix44f()
-      gmtl.set(mat1, gmtl.makeNormal(gmtl.AxisAnglef(gmtl.deg2Rad(90.0), 1.0,
-                                                     0.0, 0.0)))
+      gmtl.set(mat1, gmtl.makeNormal(gmtl.AxisAnglef(gmtl.Math.deg2Rad(90.0),
+                                                     1.0, 0.0, 0.0)))
       gmtl.set(quat0, mat1)     # quat0 = mat1
       gmtl.set(mat2, quat0)     # mat2 = quat0
       assert gmtl.isEqual(mat1, mat2, eps)
@@ -813,8 +813,8 @@ class ConvertTest(unittest.TestCase):
 
       # More complex rotation mat1 -> quat0 -> mat2 -> quat1
       mat1 = gmtl.Matrix44f()
-      gmtl.set(mat1, gmtl.makeNormal(gmtl.AxisAnglef(gmtl.deg2Rad(123.4), 1.0,
-                                                     1.0, -1.0)))
+      gmtl.set(mat1, gmtl.makeNormal(gmtl.AxisAnglef(gmtl.Math.deg2Rad(123.4),
+                                                     1.0, 1.0, -1.0)))
       gmtl.set(quat0, mat1)     # quat0 = mat1
       gmtl.set(mat2, quat0)     # mat2 = quat0
       assert gmtl.isEqual(mat1, mat2, eps)
@@ -1276,9 +1276,9 @@ class CoordGenTest(unittest.TestCase):
                             0.683013, -0.183013, -0.707107,
                             0.258819, 0.965926, 0.0 )
 
-      q1.rot()[0] = gmtl.deg2Rad(90.0)
-      q1.rot()[1] = gmtl.deg2Rad(45.0)
-      q1.rot()[2] = gmtl.deg2Rad(15.0)
+      q1.rot()[0] = gmtl.Math.deg2Rad(90.0)
+      q1.rot()[1] = gmtl.Math.deg2Rad(45.0)
+      q1.rot()[2] = gmtl.Math.deg2Rad(15.0)
 
       mat = gmtl.Matrix33f()
       gmtl.set(mat, q1)
@@ -1286,16 +1286,16 @@ class CoordGenTest(unittest.TestCase):
 
       q1 = gmtl.Coord3fZXY(trans, gmtl.EulerAngleZXYf(4.0, 5.0, 6.0))
       expected_result44 = gmtl.Matrix44f()
-      expected_result44.set(-0.918494, 0.283617, -0.275553, gmtl.deg2Rad(1.0),
-                            -0.395247, -0.637014, 0.66181, gmtl.deg2Rad(2.0),
-                            0.0121696, 0.71678, 0.697193, gmtl.deg2Rad(3.0),
+      expected_result44.set(-0.918494, 0.283617, -0.275553, gmtl.Math.deg2Rad(1.0),
+                            -0.395247, -0.637014, 0.66181, gmtl.Math.deg2Rad(2.0),
+                            0.0121696, 0.71678, 0.697193, gmtl.Math.deg2Rad(3.0),
                             0.0, 0.0, 0.0, 1.0)
-      q1.pos()[0] = gmtl.deg2Rad(1.0)
-      q1.pos()[1] = gmtl.deg2Rad(2.0)
-      q1.pos()[2] = gmtl.deg2Rad(3.0)
-      q1.rot()[0] = gmtl.deg2Rad(-156.0)
-      q1.rot()[1] = gmtl.deg2Rad(45.7892892)
-      q1.rot()[2] = gmtl.deg2Rad(-361.0)
+      q1.pos()[0] = gmtl.Math.deg2Rad(1.0)
+      q1.pos()[1] = gmtl.Math.deg2Rad(2.0)
+      q1.pos()[2] = gmtl.Math.deg2Rad(3.0)
+      q1.rot()[0] = gmtl.Math.deg2Rad(-156.0)
+      q1.rot()[1] = gmtl.Math.deg2Rad(45.7892892)
+      q1.rot()[2] = gmtl.Math.deg2Rad(-361.0)
 
       mat = gmtl.Matrix44f()
       gmtl.set(mat, q1)
@@ -2346,30 +2346,30 @@ class LineSegMetricTest(unittest.TestCase):
 
 class MathTest(unittest.TestCase):
    def testQuadraticFormula(self):
-      (result, r1, r2) = gmtl.quadraticFormula(1.0, 3.0, 2.0)
+      (result, r1, r2) = gmtl.Math.quadraticFormula(1.0, 3.0, 2.0)
       assert result
       assert r1 == -1
       assert r2 == -2
 
-      (result, r1, r2) = gmtl.quadraticFormula(1.0, 5.0, 6.0)
+      (result, r1, r2) = gmtl.Math.quadraticFormula(1.0, 5.0, 6.0)
       assert result
       assert r1 == -2
       assert r2 == -3
 
       # Imaginary roots.
-      (result, r1, r2) = gmtl.quadraticFormula(1.0, 2.0, 3.0)
+      (result, r1, r2) = gmtl.Math.quadraticFormula(1.0, 2.0, 3.0)
       assert not result
 
    def testSign(self):
       def __testSign(self, dataType):
          val = dataType(2.5)
-         assert gmtl.sign(val) == 1
+         assert gmtl.Math.sign(val) == 1
 
          val = dataType(-2.5)
-         assert gmtl.sign(val) == -1
+         assert gmtl.Math.sign(val) == -1
 
          val = dataType(0)
-         assert gmtl.sign(val) == 0
+         assert gmtl.Math.sign(val) == 0
 
       def testSigni(self):
          self.__testSign(int)
