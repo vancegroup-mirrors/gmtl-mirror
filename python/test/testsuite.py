@@ -1,43 +1,44 @@
 #!/usr/bin/env python
 
 # ************************************************************* ggt-head beg
-# 
+#
 #  GGT: Generic Graphics Toolkit
-# 
+#
 #  Original Authors:
 #    Allen Bierbaum
-# 
+#
 #  -----------------------------------------------------------------
 #  File:          $RCSfile: testsuite.py,v $
-#  Date modified: $Date: 2005-06-03 17:17:37 $
-#  Version:       $Revision: 1.4 $
+#  Date modified: $Date: 2005-06-03 22:52:43 $
+#  Version:       $Revision: 1.5 $
 #  -----------------------------------------------------------------
-# 
+#
 # ********************************************************** ggt-head end
 # ************************************************************** ggt-cpr beg
-# 
+#
 # GGT: The Generic Graphics Toolkit
 # Copyright (C) 2001,2002 Allen Bierbaum
-# 
+#
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
 # License as published by the Free Software Foundation; either
 # version 2.1 of the License, or (at your option) any later version.
-# 
+#
 # This library is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 # Lesser General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-# 
+#
 # *********************************************************** ggt-cpr end
 
 import math
 import unittest
 import gmtl
+import random
 
 
 class AABoxContainTest(unittest.TestCase):
@@ -2415,9 +2416,9 @@ class MatrixClassTest(unittest.TestCase):
 
       # Make sure copy constructor works.
       src_mat = gmtl.Matrix44f()
-      src_mat.set(1.0, 2.0, 3.0, 4.0, 
-                  5.0, 6.0, 7.0, 8.0, 
-                  9.0, 1.0, 2.0, 3.0, 
+      src_mat.set(1.0, 2.0, 3.0, 4.0,
+                  5.0, 6.0, 7.0, 8.0,
+                  9.0, 1.0, 2.0, 3.0,
                   4.0, 5.0, 6.0, 7.0)
       test_mat = gmtl.Matrix44f(src_mat)
       assert src_mat == test_mat
@@ -2431,9 +2432,9 @@ class MatrixClassTest(unittest.TestCase):
 
       # Make sure assginment works (this is rather pointless in Python).
       src_mat = gmtl.Matrix44f()
-      src_mat.set(1.0, 2.0, 3.0, 4.0, 
-                  5.0, 6.0, 7.0, 8.0, 
-                  9.0, 1.0, 2.0, 3.0, 
+      src_mat.set(1.0, 2.0, 3.0, 4.0,
+                  5.0, 6.0, 7.0, 8.0,
+                  9.0, 1.0, 2.0, 3.0,
                   4.0, 5.0, 6.0, 7.0)
       test_mat = src_mat
       assert test_mat == src_mat
@@ -2453,6 +2454,23 @@ class MatrixClassTest(unittest.TestCase):
          dataType(12.0), dataType(13.0), dataType(14.0), dataType(15.0)]
       test_mat = matType()
       test_mat.set(mat44)
+
+      assert test_mat(0, 0) == 0
+      assert test_mat(1, 0) == 1
+      assert test_mat(2, 0) == 2
+      assert test_mat(3, 0) == 3
+      assert test_mat(0, 1) == 4
+      assert test_mat(1, 1) == 5
+      assert test_mat(2, 1) == 6
+      assert test_mat(3, 1) == 7
+      assert test_mat(0, 2) == 8
+      assert test_mat(1, 2) == 9
+      assert test_mat(2, 2) == 10
+      assert test_mat(3, 2) == 11
+      assert test_mat(0, 3) == 12
+      assert test_mat(1, 3) == 13
+      assert test_mat(2, 3) == 14
+      assert test_mat(3, 3) == 15
 
       assert test_mat[0][0] == 0
       assert test_mat[1][0] == 1
@@ -2479,6 +2497,16 @@ class MatrixClassTest(unittest.TestCase):
       ]
       test_mat = matType()
       test_mat.set(mat33)
+
+      assert test_mat(0, 0) == 0
+      assert test_mat(1, 0) == 1
+      assert test_mat(2, 0) == 2
+      assert test_mat(0, 1) == 3
+      assert test_mat(1, 1) == 4
+      assert test_mat(2, 1) == 5
+      assert test_mat(0, 2) == 6
+      assert test_mat(1, 2) == 7
+      assert test_mat(2, 2) == 8
 
       assert test_mat[0][0] == 0
       assert test_mat[1][0] == 1
@@ -2628,6 +2656,17 @@ class MatrixClassMetricTest(unittest.TestCase):
          test_mat33 = src_mat33
          test_mat44 = src_mat44
 
+   def testTimingOpParen(self):
+      iters = 25000
+
+      test_mat33 = gmtl.Matrix33f()
+      test_mat44 = gmtl.Matrix44f()
+
+      for iter in xrange(iters):
+         # Note: gmtl.Matrix*.__call__ returns a read-only value.
+         test_mat33(1, 1)
+         test_mat44(3, 3)
+
    def testTimingOpBracket(self):
       iters = 25000
       test_mat33 = gmtl.Matrix33f()
@@ -2680,6 +2719,2048 @@ class MatrixClassMetricTest(unittest.TestCase):
          test_mat33.set(2, 3, 4, 5, 6, 7, 7, 10, 1451235)
          test_mat44.set(2, 3, 4, 5, 6, 7, 7, 10, 1451235, 1, 2, 3, 1, 2, 3, 4)
 
+class MatrixCompareTest(unittest.TestCase):
+   def __testMatEquality(self, matType, dataType):
+      array = [
+         dataType(0.78), dataType(1.4), dataType(2.9), dataType(3.45),
+         dataType(4.21), dataType(57.9), dataType(65.9), dataType(74.6),
+         dataType(89.2), dataType(99.2), dataType(10.9), dataType(11.9),
+         dataType(12.5), dataType(13.9), dataType(14.78), dataType(15.6),
+         dataType(4.21), dataType(57.9), dataType(65.9), dataType(74.6),
+         dataType(89.2), dataType(99.2), dataType(10.9), dataType(11.9),
+         dataType(89.2), dataType(99.2), dataType(10.9), dataType(11.9)
+      ]
+      mat1 = matType()
+      mat1.set(array)
+      mat2 = matType()
+      mat1 = matType(mat2)
+      assert mat1 == mat2
+      assert mat2 == mat1
+      for i in range(matType.Params.Rows):
+         for j in range(matType.Params.Cols):
+            mat2[i][j] = dataType(1221.0)
+            assert mat1 != mat2
+            assert not mat1 == mat2
+            mat2[i][j] = mat1[i][j]
+
+      # Test for epsilon equals working.
+      assert gmtl.isEqual(mat1, mat2)
+      assert gmtl.isEqual(mat1, mat2, dataType(0.0))
+      assert gmtl.isEqual(mat2, mat1, dataType(0.0))
+      assert gmtl.isEqual(mat2, mat1, dataType(100000))
+
+      eps = dataType(10.0)
+      for i in range(matType.Params.Rows):
+         for j in range(matType.Params.Cols):
+            mat2[i][j] = mat1[i][j] - (eps / dataType(2.0))
+            assert gmtl.isEqual(mat1, mat2, eps)
+            assert not gmtl.isEqual(mat1, mat2, dataType(eps / 3.0))
+            mat2[i][j] = mat1[i][j]
+
+   def testMatEqualityFloatTest(self):
+      self.__testMatEquality(gmtl.Matrix44f, float)
+      self.__testMatEquality(gmtl.Matrix33f, float)
+
+#   def testMatEqualityDoubleTest(self):
+#      self.__testMatEquality(gmtl.Matrix44d, double)
+#      self.__testMatEquality(gmtl.Matrix33d, double)
+
+#   def testMatEqualityIntTest(self):
+#      self.__testMatEquality(gmtl.Matrix44i, int)
+#      self.__testMatEquality(gmtl.Matrix33i, int)
+
+class MatrixCompareMetricTest(unittest.TestCase):
+   def testMatTimingOpEqualityTest(self):
+      iters = 25000
+
+      src_mat33 = gmtl.Matrix33f()
+      src_mat44 = gmtl.Matrix44f()
+
+      # Half will be equal.
+      src_mat33[1][1] = 2.0
+
+      test_mat33 = gmtl.Matrix33f(src_mat33)
+      test_mat44 = gmtl.Matrix44f(src_mat44)
+
+      # Half will be unequal.
+      src_mat44[3][3] = 3.0
+
+      true_count = 0
+
+      for iter in xrange(iters):
+         if src_mat33 == test_mat33:
+            true_count += 1
+         if src_mat44 == test_mat44:
+            true_count += 1
+
+      assert true_count > 0
+
+   def testMatTimingOpNotEqualityTest(self):
+      iters = 25000
+
+      src_mat33 = gmtl.Matrix33f()
+      src_mat44 = gmtl.Matrix44f()
+
+      # Half will be equal.
+      src_mat33[1][1] = 2.0
+
+      test_mat33 = gmtl.Matrix33f(src_mat33)
+      test_mat44 = gmtl.Matrix44f(src_mat44)
+
+      # Half will be unequal.
+      src_mat44[3][3] = 3.0
+
+      true_count = 0
+
+      for iter in xrange(iters):
+         if src_mat33 != test_mat33:
+            true_count += 1
+         if src_mat44 != test_mat44:
+            true_count += 1
+
+      assert true_count > 0
+
+   def testMatTimingIsEqualTest(self):
+      iters = 25000
+
+      src_mat33 = gmtl.Matrix33f()
+      src_mat44 = gmtl.Matrix44f()
+
+      # Half will be equal.
+      src_mat33[1][1] = 2.0
+
+      test_mat33 = gmtl.Matrix33f(src_mat33)
+      test_mat44 = gmtl.Matrix44f(src_mat44)
+
+      # Half will be unequal.
+      src_mat44[3][3] = 3.0
+
+      true_count = 0
+
+      for iter in xrange(iters):
+         if gmtl.isEqual(src_mat33, test_mat33):
+            true_count += 1
+         if gmtl.isEqual(src_mat44, test_mat44):
+            true_count += 1
+
+      assert true_count > 0
+
+class MatrixGenTest(unittest.TestCase):
+   def testMatrixsetViewing(self):
+      mat = gmtl.Matrix44f()
+      gmtl.setFrustum(mat, -1.0, 1.0, 1.0, -1.0, 0.02, 100.0)
+      data = [
+         0.02, 0.0, 0.0, 0.0,
+         0.0, 0.02, 0.0, 0.0,
+         0.0, 0.0, -1.0004, -0.040008,
+         0.0, 0.0, -1.0, 0.0
+      ]
+
+      expected = gmtl.Matrix44f()
+      expected.setTranspose(data)
+
+      assert gmtl.isEqual(expected, mat, 0.001)
+
+      mat = gmtl.Matrix44f()
+      gmtl.setPerspective(mat, 89.0, 1.33, 0.001, 1000.0)
+
+      data = [
+         0.765118, 0.0, 0.0, 0.0,
+         0.0, 1.01761, 0.0, 0.0,
+         0.0, 0.0, -1.0, -0.002,
+         0.0, 0.0, -1.0, 0.0
+      ]
+
+      expected = gmtl.Matrix44f()
+      expected.setTranspose(data)
+
+      assert gmtl.isEqual(expected, mat, 0.001)
+
+   def testMatrixsetTrans(self):
+      eps = 0.001
+
+      # 2D rot/trans/skew.
+      mat33 = gmtl.Matrix33f()
+      trans_vec = gmtl.Vec2f(32.0, 33.0)
+      expected_result33 = gmtl.Matrix33f()
+      expected_result33.set(1.0, 0.0, 32.0,
+                            0.0, 1.0, 33.0,
+                            0.0, 0.0, 1.0)
+      gmtl.setTrans(mat33, trans_vec)
+      assert gmtl.isEqual(expected_result33, mat33, eps)
+      test_trans_vec = gmtl.makeTransVec2(mat33)
+      assert test_trans_vec == trans_vec
+
+      # 2D rot/trans/skew by homogeneous vector.
+      mat33 = gmtl.Matrix33f()
+      trans_vec = gmtl.Vec3f(32.0, 33.0, 0.5)
+      expected_result33 = gmtl.Matrix33f()
+      expected_result33.set(1.0, 0.0, 64.0,
+                            0.0, 1.0, 66.0,
+                            0.0, 0.0, 1.0)
+      gmtl.setTrans(mat33, trans_vec)
+      assert gmtl.isEqual(expected_result33, mat33, eps)
+      test_trans_vec = gmtl.makeTransVec3(mat33)
+      assert test_trans_vec == gmtl.Vec3f(64.0, 66.0, 1.0)
+
+      # 3D rot/trans/skew.
+      mat44 = gmtl.Matrix44f()
+      expected_result44 = gmtl.Matrix44f()
+      expected_result44.set(1.0, 0.0, 0.0, 32.0,
+                            0.0, 1.0, 0.0, 33.0,
+                            0.0, 0.0, 1.0, 34.0,
+                            0.0, 0.0, 0.0, 1.0)
+      gmtl.setTrans(mat44, gmtl.Vec3f(32.0, 33.0, 34.0))
+      assert gmtl.isEqual(expected_result44, mat44, eps)
+
+      # 3D rot/trans/skew by homogeneous vector.
+      mat44 = gmtl.Matrix44f()
+      expected_result44 = gmtl.Matrix44f()
+      expected_result44.set(1.0, 0.0, 0.0, 64.0,
+                            0.0, 1.0, 0.0, 66.0,
+                            0.0, 0.0, 1.0, 68.0,
+                            0.0, 0.0, 0.0, 1.0)
+      gmtl.setTrans(mat44, gmtl.Vec4f(32.0, 33.0, 34.0, 0.5))
+      assert gmtl.isEqual(expected_result44, mat44, eps)
+
+      # Test standalone makeTrans(trans) against setTrans(mat, trans).
+      expected_mat = gmtl.Matrix44f()
+      trans3 = gmtl.Vec3f(1.0, 2.0, 3.0)
+      gmtl.setTrans(expected_mat, trans3)
+      assert gmtl.isEqual(gmtl.makeTransMatrix44(trans3), expected_mat, eps)
+
+   def testMatrixsetAxes(self):
+      eps = 0.001
+      a = 98234576.0
+
+      mat33 = gmtl.Matrix33f()
+      data = []
+      for i in range(9):
+         data.append(a)
+      mat33.set(data)
+      expected_result33 = gmtl.Matrix33f()
+      expected_result33.set(0.0, 1.0, 0.0,
+                            1.0, 0.0, 0.0,
+                            0.0, 0.0, -1.0)
+      gmtl.setAxes(mat33, gmtl.Vec3f(0.0, 1.0, 0.0), gmtl.Vec3f(1.0, 0.0, 0.0),
+                   gmtl.Vec3f(0.0, 0.0, -1.0))
+
+      assert gmtl.isEqual(expected_result33, mat33, eps)
+      test_mat = gmtl.makeAxesMatrix33(gmtl.Vec3f(0.0, 1.0, 0.0),
+                                       gmtl.Vec3f(1.0, 0.0, 0.0),
+                                       gmtl.Vec3f(0.0, 0.0, -1.0))
+      assert test_mat == mat33
+
+      mat44 = gmtl.Matrix44f()
+      data = []
+      for i in range(16):
+         data.append(a)
+      mat44.set(data)
+      expected_result44 = gmtl.Matrix44f()
+      expected_result44.set(0.0, 1.0, 0.0, a,
+                            1.0, 0.0, 0.0, a,
+                            0.0, 0.0, -1.0, a,
+                            a, a, a, a)
+      gmtl.setAxes(mat44, gmtl.Vec3f(0.0, 1.0, 0.0), gmtl.Vec3f(1.0, 0.0, 0.0),
+                   gmtl.Vec3f(0.0, 0.0, -1.0))
+      assert gmtl.isEqual(expected_result44, mat44, eps)
+
+      # Make sure make and set are the same.
+      new_mat = gmtl.Matrix44f()
+      gmtl.setAxes(new_mat, gmtl.Vec3f(0.0, 1.0, 0.0),
+                   gmtl.Vec3f(1.0, 0.0, 0.0), gmtl.Vec3f(0.0, 0.0, -1.0))
+      test_mat = gmtl.makeAxesMatrix44(gmtl.Vec3f(0.0, 1.0, 0.0),
+                                       gmtl.Vec3f(1.0, 0.0, 0.0),
+                                       gmtl.Vec3f(0.0, 0.0, -1.0))
+      assert test_mat == new_mat
+
+   def testMatrixsetDirCos(self):
+      eps = 0.01
+
+      # Two points that should match in different frames.
+      pt_I = gmtl.Point3f(1.0, 0.0, 0.0)        # Point in identity frame
+      pt_T = gmtl.Point3f(0.0, 0.0, 1.0)        # Point in the transformed frame
+
+      # Basis vectors of the T coordinate frame in the I coordinate frame.
+      x_axis = gmtl.Vec3f(0.0, 1.0, 0.0)
+      y_axis = gmtl.Vec3f(0.0, 0.0, 1.0)
+      z_axis = gmtl.Vec3f(1.0, 0.0, 0.0)
+
+      # Build the transformation matrix.
+      i_M_t = gmtl.makeDirCosMatrix44(x_axis, y_axis, z_axis)
+
+      # Test point going from T to I.
+      result_pt = i_M_t * pt_T
+      assert gmtl.isEqual(result_pt, pt_I, eps)
+
+      # Test point going from I to T.
+      result_pt = gmtl.makeInvert(i_M_t) * pt_I
+      assert gmtl.isEqual(result_pt, pt_T, eps)
+
+   def testMatrixsetScale(self):
+      eps = 0.001
+      a = 98234576.0
+
+      # 2D rot/trans/skew.
+      mat33 = gmtl.Matrix33f()
+      data = []
+      for i in range(9):
+         data.append(a)
+      mat33.set(data)
+      expected_result33 = gmtl.Matrix33f()
+      expected_result33.set(32.0, a, a,
+                            a, 33.0, a,
+                            a, a, a)
+      gmtl.setScale(mat33, gmtl.Vec2f(32.0, 33.0))
+      assert gmtl.isEqual(expected_result33, mat33, eps)
+
+      # Make sure set and make are the same.
+      new_mat = gmtl.Matrix33f()
+      gmtl.setScale(new_mat, gmtl.Vec2f(32.0, 33.0))
+      assert gmtl.makeScaleMatrix33(gmtl.Vec2f(32.0, 33.0)) == new_mat
+
+      # 3D rot/trans/skew.
+      mat44 = gmtl.Matrix44f()
+      data = []
+      for i in range(16):
+         data.append(a)
+      mat44.set(data)
+      expected_result44 = gmtl.Matrix44f()
+      expected_result44.set(32.0, a, a, a,
+                            a, 33.0, a, a,
+                            a, a, 34.0, a,
+                            a, a, a, a)
+      gmtl.setScale(mat44, gmtl.Vec3f(32.0, 33.0, 34.0))
+      assert gmtl.isEqual(expected_result44, mat44, eps)
+
+      # Make sure set and make are the same.
+      new_mat = gmtl.Matrix44f()
+      gmtl.setScale(new_mat, gmtl.Vec3f(32.0, 33.0, 34.0))
+      assert gmtl.makeScaleMatrix44(gmtl.Vec3f(32.0, 33.0, 34.0)) == new_mat
+
+      # 2D rot/trans/skew.
+      mat33 = gmtl.Matrix33f()
+      data = []
+      for i in range(9):
+         data.append(a)
+      mat33.set(data)
+      expected_result33 = gmtl.Matrix33f()
+      expected_result33.set(32.0, a, a,
+                            a, 32.0, a,
+                            a, a, a)
+      gmtl.setScale(mat33, 32.0)
+      assert gmtl.isEqual(expected_result33, mat33, eps)
+
+      # Make sure set and make are the same.
+      new_mat = gmtl.Matrix33f()
+      gmtl.setScale(new_mat, 32.0)
+      assert gmtl.makeScaleMatrix33(32.0) == new_mat
+
+      # 3D rot/trans/skew.
+      mat44 = gmtl.Matrix44f()
+      data = []
+      for i in range(16):
+         data.append(a)
+      mat44.set(data)
+      expected_result44 = gmtl.Matrix44f()
+      expected_result44.set(32.0, a, a, a,
+                            a, 32.0, a, a,
+                            a, a, 32.0, a,
+                            a, a, a, a)
+      gmtl.setScale(mat44, 32.0)
+      assert gmtl.isEqual(expected_result44, mat44, eps)
+
+      # MAke sure set and make are the same.
+      new_mat = gmtl.Matrix44f()
+      gmtl.setScale(new_mat, 32.0)
+      assert gmtl.makeScaleMatrix44(32.0) == new_mat
+
+   def testMatrixsetRot(self):
+      eps = 0.01
+      a = 98234576.0
+
+      mat = gmtl.Matrix33f()
+      data = []
+      for i in range(9):
+         data.append(a)
+      mat.set(data)
+
+      expected_result33 = gmtl.Matrix33f()
+      expected_result33.set(1.0, 0.0, 0.0,
+                            0.0, 0.0, -1.0,
+                            0.0, 1.0, 0.0)
+      vec = gmtl.Vec3f(1.0, 0.0, 0.0)
+      gmtl.normalize(vec)
+      gmtl.setRot(mat, gmtl.AxisAnglef(gmtl.Math.deg2Rad(90.0), vec))
+      assert gmtl.isEqual(expected_result33, mat, eps)
+
+      # Make sure that the other version works the same.
+      mat2 = gmtl.Matrix33f()
+      gmtl.setRot(mat2, gmtl.makeNormal(gmtl.AxisAnglef(gmtl.Math.deg2Rad(90.0),
+                                                        1.0, 0.0, 0.0)))
+      assert gmtl.isEqual(mat2, mat, eps)
+
+      # Make sure set and make are the smae.
+      mat3 = gmtl.makeRotMatrix33(gmtl.makeNormal(gmtl.AxisAnglef(gmtl.Math.deg2Rad(90.0),
+                                                                  1.0, 0.0, 0.0)))
+      assert mat3 == mat2
+
+      mat = gmtl.Matrix33f()
+      data = []
+      for i in range(9):
+         data.append(a)
+      mat.set(data)
+      expected_result33 = gmtl.Matrix33f()
+      expected_result33.set(1.0, 0.0, 0.0,
+                            0.0, 1.0, 0.0,
+                            0.0, 0.0, 1.0)
+      vec = gmtl.Vec3f(-1.0, 1.0, -1.0)
+      gmtl.normalize(vec)
+      gmtl.setRot(mat, gmtl.AxisAnglef(gmtl.Math.deg2Rad(-360.0), vec))
+      assert gmtl.isEqual(expected_result33, mat, eps)
+
+      # Make sure that the other version works the same.
+      mat2 = gmtl.Matrix33f()
+      gmtl.setRot(mat2,
+                  gmtl.makeNormal(gmtl.AxisAnglef(gmtl.Math.deg2Rad(-360.0),
+                                                  -1.0, 1.0, -1.0)))
+      assert gmtl.isEqual(mat2, mat, eps)
+
+      # Make sure set and make are the smae.
+      mat3 = gmtl.makeRotMatrix33(gmtl.makeNormal(gmtl.AxisAnglef(gmtl.Math.deg2Rad(-360.0),
+                                                                  -1.0, 1.0, -1.0)))
+      assert gmtl.isEqual(mat3, mat2, eps)
+      mat3 = gmtl.makeRotMatrix33(gmtl.AxisAnglef(gmtl.Math.deg2Rad(-360.0),
+                                                  vec))
+      assert gmtl.isEqual(mat3, mat2, eps)
+
+      # Test that unnormalized vedc works.
+      mat = gmtl.Matrix44f()
+      data = []
+      for i in range(16):
+         data.append(a)
+      mat.set(data)
+      expected_result44 = gmtl.Matrix44f()
+      expected_result44.set(0.804738, -0.310617, 0.505879, a,
+                            0.505879, 0.804738, -0.310617, a,
+                            -0.310617, 0.505879, 0.804738, a,
+                            a, a, a, a)
+      vec = gmtl.Vec3f(1.7, 1.7, 1.7)
+      gmtl.normalize(vec)
+      gmtl.setRot(mat, gmtl.AxisAnglef(gmtl.Math.deg2Rad(45.0), vec))
+      assert gmtl.isEqual(expected_result44, mat, eps)
+
+      # Make sure that the other version works the same.
+      mat2 = gmtl.Matrix44f()
+      mat2.set(data)
+      gmtl.setRot(mat2, gmtl.makeNormal(gmtl.AxisAnglef(gmtl.Math.deg2Rad(45.0),
+                                                        1.7, 1.7, 1.7)))
+      assert gmtl.isEqual(mat2, mat, eps)
+
+      # Make sure set and make are the same.
+      new_mat = gmtl.Matrix44f()
+      gmtl.setRot(new_mat,
+                  gmtl.makeNormal(gmtl.AxisAnglef(gmtl.Math.deg2Rad(45.0),
+                                                  1.7, 1.7, 1.7)))
+      assert gmtl.makeRotMatrix44(gmtl.makeNormal(gmtl.AxisAnglef(gmtl.Math.deg2Rad(45.0),
+                                                                  1.7, 1.7, 1.7))) == new_mat
+      gmtl.setRot(new_mat, gmtl.AxisAnglef(gmtl.Math.deg2Rad(45.0), vec))
+      assert gmtl.makeRotMatrix44(gmtl.AxisAnglef(gmtl.Math.deg2Rad(45.0), vec)) == new_mat
+
+      # Test standalone now.
+      mat = gmtl.Matrix44f()
+      rot_axis = gmtl.Vec3f(1.0, 2.0, 3.0)
+      gmtl.normalize(rot_axis)
+      axis_angle = gmtl.AxisAnglef(1.1, rot_axis)
+      expected_mat = gmtl.Matrix44f()
+      gmtl.setRot(expected_mat, axis_angle)
+      mat = gmtl.makeRotMatrix44(axis_angle)
+      assert gmtl.isEqual(mat, expected_mat, eps)
+      assert gmtl.isEqual(gmtl.makeRotMatrix44(axis_angle), expected_mat, eps)
+
+   def testMatrixgetRotEuler(self):
+      eps = 0.01
+      matrix = gmtl.Matrix44f()
+
+      # XYZ
+      euler = gmtl.EulerAngleXYZf()
+      gmtl.set(matrix, gmtl.AxisAnglef(gmtl.Math.deg2Rad(90.0), 1.0, 0.0, 0.0))
+      gmtl.set(euler, matrix)
+      assert isEqual(gmtl.Math.rad2Deg(euler[0]), 90.0, eps)
+      assert isEqual(gmtl.Math.rad2Deg(euler[1]), 0.0, eps)
+      assert isEqual(gmtl.Math.rad2Deg(euler[2]), 0.0, eps)
+
+      gmtl.set(matrix, gmtl.AxisAnglef(gmtl.Math.deg2Rad(-90.0), 1.0, 0.0, 0.0))
+      gmtl.set(euler, matrix)
+      assert isEqual(gmtl.Math.rad2Deg(euler[0]), -90.0, eps)
+      assert isEqual(gmtl.Math.rad2Deg(euler[1]), 0.0, eps)
+      assert isEqual(gmtl.Math.rad2Deg(euler[2]), 0.0, eps)
+
+      gmtl.set(matrix, gmtl.AxisAnglef(gmtl.Math.deg2Rad(35.0), 0.0, 1.0, 0.0))
+      gmtl.set(euler, matrix)
+      assert isEqual(gmtl.Math.rad2Deg(euler[0]), 0.0, eps)
+      assert isEqual(gmtl.Math.rad2Deg(euler[1]), 35.0, eps)
+      assert isEqual(gmtl.Math.rad2Deg(euler[2]), 0.0, eps)
+
+      # Test cos y = 0 singularity.
+      gmtl.set(matrix, gmtl.AxisAnglef(gmtl.Math.deg2Rad(90.0), 0.0, 1.0, 0.0))
+      gmtl.set(euler, matrix)
+      assert isEqual(gmtl.Math.rad2Deg(euler[0]), -180.0, eps)
+      assert isEqual(gmtl.Math.rad2Deg(euler[1]), 90.0, eps)
+      assert isEqual(gmtl.Math.rad2Deg(euler[2]), -180.0, eps)
+
+      # Test cos z = 0 singularity.
+      gmtl.set(matrix, gmtl.AxisAnglef(gmtl.Math.deg2Rad(90.0), 0.0, 0.0, 1.0))
+      gmtl.set(euler, matrix)
+      assert isEqual(gmtl.Math.rad2Deg(euler[0]), 0.0, eps)
+      assert isEqual(gmtl.Math.rad2Deg(euler[1]), 0.0, eps)
+      assert isEqual(gmtl.Math.rad2Deg(euler[2]), 90.0, eps)
+
+      # ZYX
+      euler = gmtl.EulerAngleZYXf()
+      gmtl.set(matrix, gmtl.AxisAnglef(gmtl.Math.deg2Rad(90.0), 1.0, 0.0, 0.0))
+      gmtl.set(euler, matrix)
+      assert isEqual(gmtl.Math.rad2Deg(euler[0]), 0.0, eps)
+      assert isEqual(gmtl.Math.rad2Deg(euler[1]), 0.0, eps)
+      assert isEqual(gmtl.Math.rad2Deg(euler[2]), 90.0, eps)
+
+      gmtl.set(matrix, gmtl.AxisAnglef(gmtl.Math.deg2Rad(-90.0), 1.0, 0.0, 0.0))
+      gmtl.set(euler, matrix)
+      assert isEqual(gmtl.Math.rad2Deg(euler[0]), 0.0, eps)
+      assert isEqual(gmtl.Math.rad2Deg(euler[1]), 0.0, eps)
+      assert isEqual(gmtl.Math.rad2Deg(euler[2]), -90.0, eps)
+
+      # Test sin x = 0 singularity.
+      gmtl.set(matrix, gmtl.AxisAnglef(gmtl.Math.deg2Rad(90.0), 0.0, 0.0, 1.0))
+      gmtl.set(euler, matrix)
+#      assert isEqual(gmtl.Math.rad2Deg(euler[0]), 0.0, eps)
+#      assert isEqual(gmtl.Math.rad2Deg(euler[1]), 35.0, eps)
+#      assert isEqual(gmtl.Math.rad2Deg(euler[2]), 0.0, eps)
+
+      # Test cos y = 0 singularity.
+      gmtl.set(matrix, gmtl.AxisAnglef(gmtl.Math.deg2Rad(90.0), 0.0, 1.0, 0.0))
+      gmtl.set(euler, matrix)
+      assert isEqual(gmtl.Math.rad2Deg(euler[0]), 180.0, eps)
+      assert isEqual(gmtl.Math.rad2Deg(euler[1]), 90.0, eps)
+      assert isEqual(gmtl.Math.rad2Deg(euler[2]), 180.0, eps)
+
+   def testMatrixsetRotEuler(self):
+      eps = 0.001
+      a = 98234576.0
+
+      mat = gmtl.Matrix33f()
+      data = []
+      for i in range(9):
+         data.append(a)
+      mat.set(data)
+      expected_result33 = gmtl.Matrix33f()
+      expected_result33.set(0.683013, -0.183013, 0.707107,
+                            0.683013, -0.183013, -0.707107,
+                            0.258819, 0.965926, 0.0)
+      gmtl.setRot(mat, gmtl.EulerAngleXYZf(gmtl.Math.deg2Rad(90.0),
+                                           gmtl.Math.deg2Rad(45.0),
+                                           gmtl.Math.deg2Rad(15.0)))
+      assert gmtl.isEqual(expected_result33, mat, eps)
+
+      mat = gmtl.Matrix33f()
+      data = []
+      for i in range(9):
+         data.append(a)
+      mat.set(data)
+      expected_result33 = gmtl.Matrix33f()
+      expected_result33.set(1.0, 0.0, 0.0,
+                            0.0, 0.0, -1.0,
+                            0.0, 1.0, 0.0)
+      gmtl.setRot(mat, gmtl.EulerAngleXYZf(gmtl.Math.deg2Rad(90.0),
+                                           gmtl.Math.deg2Rad(0.0),
+                                           gmtl.Math.deg2Rad(0.0)))
+      assert gmtl.isEqual(expected_result33, mat, eps)
+
+      # Make sure set and make are the same.
+      assert gmtl.makeRotMatrix33(gmtl.EulerAngleXYZf(gmtl.Math.deg2Rad(90.0),
+                                                      gmtl.Math.deg2Rad(0.0),
+                                                      gmtl.Math.deg2Rad(0.0))) == mat
+
+      mat = gmtl.Matrix33f()
+      data = []
+      for i in range(9):
+         data.append(a)
+      mat.set(data)
+      expected_result33 = gmtl.Matrix33f()
+      expected_result33.set(0.0, 0.0, 1.0,
+                            0.0, 1.0, 0.0,
+                            -1.0, 0.0, 0.0)
+      gmtl.setRot(mat, gmtl.EulerAngleXYZf(gmtl.Math.deg2Rad(0.0),
+                                           gmtl.Math.deg2Rad(90.0),
+                                           gmtl.Math.deg2Rad(0.0)))
+      assert gmtl.isEqual(expected_result33, mat, eps)
+
+      # Make sure set and make are the same.
+      assert gmtl.makeRotMatrix33(gmtl.EulerAngleXYZf(gmtl.Math.deg2Rad(0.0),
+                                                      gmtl.Math.deg2Rad(90.0),
+                                                      gmtl.Math.deg2Rad(0.0))) == mat
+
+      mat = gmtl.Matrix33f()
+      data = []
+      for i in range(9):
+         data.append(a)
+      mat.set(data)
+      expected_result33 = gmtl.Matrix33f()
+      expected_result33.set(0.0, -1.0, 0.0,
+                            1.0, 0.0, 0.0,
+                            0.0, 0.0, 1.0)
+      gmtl.setRot(mat, gmtl.EulerAngleXYZf(gmtl.Math.deg2Rad(0.0),
+                                           gmtl.Math.deg2Rad(0.0),
+                                           gmtl.Math.deg2Rad(90.0)))
+      assert gmtl.isEqual(expected_result33, mat, eps)
+
+      # Make sure set and make are the same.
+      assert gmtl.makeRotMatrix33(gmtl.EulerAngleXYZf(gmtl.Math.deg2Rad(0.0),
+                                                      gmtl.Math.deg2Rad(0.0),
+                                                      gmtl.Math.deg2Rad(90.0))) == mat
+
+      mat = gmtl.Matrix44f()
+      data = []
+      for i in range(16):
+         data.append(a)
+      mat.set(data)
+      expected_result44 = gmtl.Matrix44f()
+      expected_result44.set(0.697193, 0.0121696, 0.71678, a,
+                            -0.275553, -0.918494, 0.283617, a,
+                            0.66181, -0.395247, -0.637014, a,
+                            a, a, a, a)
+      gmtl.setRot(mat, gmtl.EulerAngleXYZf(gmtl.Math.deg2Rad(-156.0),
+                                           gmtl.Math.deg2Rad(45.7892892),
+                                           gmtl.Math.deg2Rad(-361.0)))
+      assert gmtl.isEqual(expected_result44, mat, eps)
+
+      # Make sure set and make are the same.
+      new_mat = gmtl.Matrix44f()
+      gmtl.setRot(new_mat, gmtl.EulerAngleXYZf(gmtl.Math.deg2Rad(-156.0),
+                                               gmtl.Math.deg2Rad(45.7892892),
+                                               gmtl.Math.deg2Rad(-361.0)))
+      assert gmtl.makeRotMatrix44(gmtl.EulerAngleXYZf(gmtl.Math.deg2Rad(-156.0),
+                                                      gmtl.Math.deg2Rad(45.7892892),
+                                                      gmtl.Math.deg2Rad(-361.0))) == new_mat
+
+      # ZYX.
+      mat = gmtl.Matrix33f()
+      data = []
+      for i in range(9):
+         data.append(a)
+      mat.set(data)
+      expected_result33 = gmtl.Matrix33f()
+      expected_result33.set(0.0, -0.965926, 0.258819,
+                            0.707107, 0.183013, 0.683013,
+                            -0.707107, 0.183013, 0.683013)
+      gmtl.setRot(mat, gmtl.EulerAngleZYXf(gmtl.Math.deg2Rad(90.0),
+                                           gmtl.Math.deg2Rad(45.0),
+                                           gmtl.Math.deg2Rad(15.0)))
+      assert gmtl.isEqual(expected_result33, mat, eps)
+
+      # Make sure set and make are the same.
+      assert gmtl.makeRotMatrix33(gmtl.EulerAngleZYXf(gmtl.Math.deg2Rad(90.0),
+                                                      gmtl.Math.deg2Rad(45.0),
+                                                      gmtl.Math.deg2Rad(15.0))) == mat
+
+      mat = gmtl.Matrix33f()
+      data = []
+      for i in range(9):
+         data.append(a)
+      mat.set(data)
+      expected_result33 = gmtl.Matrix33f()
+      expected_result33.set(0.0, -1.0, 0.0,
+                            1.0, 0.0, 0.0,
+                            0.0, 0.0, 1.0)
+      gmtl.setRot(mat, gmtl.EulerAngleZYXf(gmtl.Math.deg2Rad(90.0),
+                                           gmtl.Math.deg2Rad(0.0),
+                                           gmtl.Math.deg2Rad(0.0)))
+      assert gmtl.isEqual(expected_result33, mat, eps)
+
+      # Make sure set and make are the same.
+      new_mat = gmtl.Matrix33f()
+      gmtl.setRot(new_mat, gmtl.EulerAngleZYXf(gmtl.Math.deg2Rad(90.0),
+                                               gmtl.Math.deg2Rad(0.0),
+                                               gmtl.Math.deg2Rad(0.0)))
+      assert gmtl.makeRotMatrix33(gmtl.EulerAngleZYXf(gmtl.Math.deg2Rad(90.0),
+                                                      gmtl.Math.deg2Rad(0.0),
+                                                      gmtl.Math.deg2Rad(0.0))) == new_mat
+
+      mat = gmtl.Matrix33f()
+      data = []
+      for i in range(9):
+         data.append(a)
+      mat.set(data)
+      expected_result33 = gmtl.Matrix33f()
+      expected_result33.set(0.0, 0.0, 1.0,
+                            0.0, 1.0, 0.0,
+                            -1.0, 0.0, 0.0)
+      gmtl.setRot(mat, gmtl.EulerAngleZYXf(gmtl.Math.deg2Rad(0.0),
+                                           gmtl.Math.deg2Rad(90.0),
+                                           gmtl.Math.deg2Rad(0.0)))
+      assert gmtl.isEqual(expected_result33, mat, eps)
+
+      # Make sure set and make are the same.
+      assert gmtl.makeRotMatrix33(gmtl.EulerAngleZYXf(gmtl.Math.deg2Rad(0.0),
+                                                      gmtl.Math.deg2Rad(90.0),
+                                                      gmtl.Math.deg2Rad(0.0))) == mat
+
+      mat = gmtl.Matrix33f()
+      data = []
+      for i in range(9):
+         data.append(a)
+      mat.set(data)
+      expected_result33 = gmtl.Matrix33f()
+      expected_result33.set(1.0, 0.0, 0.0,
+                            0.0, 0.0, -1.0,
+                            0.0, 1.0, 0.0)
+      gmtl.setRot(mat, gmtl.EulerAngleZYXf(gmtl.Math.deg2Rad(0.0),
+                                           gmtl.Math.deg2Rad(0.0),
+                                           gmtl.Math.deg2Rad(90.0)))
+      assert gmtl.isEqual(expected_result33, mat, eps)
+
+      # Make sure set and make are the same.
+      assert gmtl.makeRotMatrix33(gmtl.EulerAngleZYXf(gmtl.Math.deg2Rad(0.0),
+                                                      gmtl.Math.deg2Rad(0.0),
+                                                      gmtl.Math.deg2Rad(90.0))) == mat
+
+      mat = gmtl.Matrix44f()
+      data = []
+      for i in range(16):
+         data.append(a)
+      mat.set(data)
+      expected_result44 = gmtl.Matrix44f()
+      expected_result44.set(-0.637014, 0.418103, -0.647613, a,
+                            -0.283617, -0.908318, -0.30744, a,
+                            -0.71678, -0.0121696, 0.697193, a,
+                            a, a, a, a)
+      gmtl.setRot(mat, gmtl.EulerAngleZYXf(gmtl.Math.deg2Rad(-156.0),
+                                           gmtl.Math.deg2Rad(45.7892892),
+                                           gmtl.Math.deg2Rad(-361.0)))
+      assert gmtl.isEqual(expected_result44, mat, eps)
+
+      # Make sure set and make are the same.
+      new_mat = gmtl.Matrix44f()
+      gmtl.setRot(new_mat, gmtl.EulerAngleZYXf(gmtl.Math.deg2Rad(-156.0),
+                                               gmtl.Math.deg2Rad(45.7892892),
+                                               gmtl.Math.deg2Rad(-361.0)))
+      assert gmtl.makeRotMatrix44(gmtl.EulerAngleZYXf(gmtl.Math.deg2Rad(-156.0),
+                                                      gmtl.Math.deg2Rad(45.7892892),
+                                                      gmtl.Math.deg2Rad(-361.0))) == new_mat
+
+      # ZXY.
+      mat = gmtl.Matrix33f()
+      data = []
+      for i in range(9):
+         data.append(a)
+      mat.set(data)
+      expected_result33 = gmtl.Matrix33f()
+      expected_result33.set(-0.183013, -0.707107, 0.683013,
+                             0.965926, 0.0,       0.258819,
+                            -0.183013, 0.707107,  0.683013)
+      gmtl.setRot(mat, gmtl.EulerAngleZXYf(gmtl.Math.deg2Rad(90.0),
+                                           gmtl.Math.deg2Rad(45.0),
+                                           gmtl.Math.deg2Rad(15.0)))
+      assert gmtl.isEqual(expected_result33, mat, eps)
+
+      mat = gmtl.Matrix33f()
+      data = []
+      for i in range(9):
+         data.append(a)
+      mat.set(data)
+      expected_result33 = gmtl.Matrix33f()
+      expected_result33.set(0.0, -1.0, 0.0,
+                            1.0, 0.0, 0.0,
+                            0.0, 0.0, 1.0)
+      gmtl.setRot(mat, gmtl.EulerAngleZXYf(gmtl.Math.deg2Rad(90.0),
+                                           gmtl.Math.deg2Rad(0.0),
+                                           gmtl.Math.deg2Rad(0.0)))
+      assert gmtl.isEqual(expected_result33, mat, eps)
+
+      mat = gmtl.Matrix33f()
+      data = []
+      for i in range(9):
+         data.append(a)
+      mat.set(data)
+      expected_result33 = gmtl.Matrix33f()
+      expected_result33.set(1.0, 0.0, 0.0,
+                            0.0, 0.0, -1.0,
+                            0.0, 1.0, 0.0)
+      gmtl.setRot(mat, gmtl.EulerAngleZXYf(gmtl.Math.deg2Rad(0.0),
+                                           gmtl.Math.deg2Rad(90.0),
+                                           gmtl.Math.deg2Rad(0.0)))
+      assert gmtl.isEqual(expected_result33, mat, eps)
+
+      mat = gmtl.Matrix33f()
+      data = []
+      for i in range(9):
+         data.append(a)
+      mat.set(data)
+      expected_result33 = gmtl.Matrix33f()
+      expected_result33.set(0.0, 0.0, 1.0,
+                            0.0, 1.0, 0.0,
+                            -1.0, 0.0, 0.0)
+      gmtl.setRot(mat, gmtl.EulerAngleZXYf(gmtl.Math.deg2Rad(0.0),
+                                           gmtl.Math.deg2Rad(0.0),
+                                           gmtl.Math.deg2Rad(90.0)))
+      assert gmtl.isEqual(expected_result33, mat, eps)
+
+      mat = gmtl.Matrix44f()
+      data = []
+      for i in range(16):
+         data.append(a)
+      mat.set(data)
+      expected_result44 = gmtl.Matrix44f()
+      expected_result44.set(-0.918494, 0.283617, -0.275553, a,
+                            -0.395247, -0.637014, 0.66181, a,
+                            0.0121696, 0.71678, 0.697193, a,
+                            a, a, a, a)
+      gmtl.setRot(mat, gmtl.EulerAngleZXYf(gmtl.Math.deg2Rad(-156.0),
+                                           gmtl.Math.deg2Rad(45.7892892),
+                                           gmtl.Math.deg2Rad(-361.0)))
+      assert gmtl.isEqual(expected_result44, mat, eps)
+
+      # Test standalone setRot(val, val, val) against setRot(mat, val, val, val)
+      expected_mat = gmtl.Matrix44f()
+      gmtl.setRot(expected_mat, gmtl.EulerAngleXYZf(0.1, 2.3, -2.1))
+      mat = gmtl.makeRotMatrix44(gmtl.EulerAngleXYZf(0.1, 2.3, -2.1))
+      assert gmtl.isEqual(mat, expected_mat, eps)
+
+      gmtl.setRot(expected_mat, gmtl.EulerAngleZXYf(0.1, 2.3, -2.1))
+      mat = gmtl.makeRotMatrix44(gmtl.EulerAngleZXYf(0.1, 2.3, -2.1))
+      assert gmtl.isEqual(mat, expected_mat, eps)
+
+      gmtl.setRot(expected_mat, gmtl.EulerAngleZYXf(0.1, 2.3, -2.1))
+      mat = gmtl.makeRotMatrix44(gmtl.EulerAngleZYXf(0.1, 2.3, -2.1))
+      assert gmtl.isEqual(mat, expected_mat, eps)
+
+      expected_mat = gmtl.Matrix33f()
+      gmtl.setRot(expected_mat, gmtl.EulerAngleXYZf(0.1, 2.3, -2.1))
+      mat = gmtl.makeRotMatrix33(gmtl.EulerAngleXYZf(0.1, 2.3, -2.1))
+      assert gmtl.isEqual(mat, expected_mat, eps)
+
+      gmtl.setRot(expected_mat, gmtl.EulerAngleZXYf(0.1, 2.3, -2.1))
+      mat = gmtl.makeRotMatrix33(gmtl.EulerAngleZXYf(0.1, 2.3, -2.1))
+      assert gmtl.isEqual(mat, expected_mat, eps)
+
+      gmtl.setRot(expected_mat, gmtl.EulerAngleZYXf(0.1, 2.3, -2.1))
+      mat = gmtl.makeRotMatrix33(gmtl.EulerAngleZYXf(0.1, 2.3, -2.1))
+      assert gmtl.isEqual(mat, expected_mat, eps)
+
+   def __matMakeInverse(self, matType):
+      eps = 0.001
+      mat1 = matType()
+      mat1.set(0.78,  1.4,   2.9, 3.45,
+               4.21, 57.9,  65.9, 74.6,
+               89.2, 99.2,  10.9, 11.9,
+               12.5, 13.9, 14.78, 15.6)
+      expected_value = matType()
+      expected_value.set( 0.3071733, -0.0239700,  0.0034853,  0.0440345,
+                         -0.2891106,  0.0216826,  0.0079218, -0.0457924,
+                         -3.0532152,  0.0305681, -0.0547335,  0.5708037,
+                          2.9041982, -0.0290744,  0.0420053, -0.4711792)
+
+      identity = matType()
+
+      # Make sure our pre-computed answer is right.
+      result = matType()
+      gmtl.mult(result, mat1, expected_value)
+      assert gmtl.isEqual(result, identity, eps)
+
+      # Test inversion.
+      result = gmtl.makeInvert(mat1)
+      assert gmtl.isEqual(result, expected_value, eps)
+
+   def testMatrixmakeInverse(self):
+      self.__matMakeInverse(gmtl.Matrix44f)
+#      self.__matMakeInverse(gmtl.Matrix44d)
+
+class MatrixGenMetricTest(unittest.TestCase):
+   def testTimingsetTrans(self):
+      mat33 = gmtl.Matrix33f()
+      mat44 = gmtl.Matrix44f()
+      a = 1.0
+      iters = 25000
+
+      # 2D translation.
+      for iter in xrange(iters):
+         gmtl.setTrans(mat33, gmtl.Vec2f(a, 2.0))
+         a += mat33.data[3]
+
+      assert mat33.data[3] != 1234.0456 and a != 987654.321
+
+      for iter in xrange(iters):
+         gmtl.setTrans(mat33, gmtl.Vec3f(1.0, a, 1.0))   # homogeneous
+         a += mat33.data[3]
+
+      assert mat33.data[3] != 1234.0456 and a != 987654.321
+
+      # 3D translation.
+      for iter in xrange(iters):
+         gmtl.setTrans(mat44, gmtl.Vec3f(30.0, a, 121.0))
+         a += mat44.data[3]
+
+      assert mat44.data[3] != 1234.0456 and a != 987654.321
+
+      for iter in xrange(iters):
+         gmtl.setTrans(mat44, gmtl.Vec4f(30.0, 32.0, a, 1.0))   # homogeneous
+         a += mat44.data[3]
+
+      assert mat44.data[3] != 1234.0456 and a != 987654.321
+
+   def testTimingsetScale(self):
+      a = 2.1
+      mat33 = gmtl.Matrix33f()
+      mat44 = gmtl.Matrix44f()
+      iters = 25000
+
+      for iter in xrange(iters):
+         gmtl.setScale(mat33, gmtl.Vec2f(a, 2.0))
+         a += mat33.data[3]
+
+      assert mat33.data[3] != 1234.0456 and a != 987654.321
+
+      for iter in xrange(iters):
+         gmtl.setScale(mat44, gmtl.Vec3f(30.0, 32.0, a))
+         a += mat44.data[3]
+
+      assert mat44.data[3] != 1234.0456 and a != 987654.321
+
+      for iter in xrange(iters):
+         gmtl.setScale(mat33, a)
+         a += mat33.data[3]
+
+      assert mat33.data[3] != 1234.0456 and a != 987654.321
+
+      for iter in xrange(iters):
+         gmtl.setScale(mat44, a)
+         a += mat44.data[3]
+
+      assert mat44.data[3] != 1234.0456 and a != 987654.321
+
+   def testTimingsetRot33(self):
+      mat = gmtl.Matrix33f()
+      a = 0.0
+      iters = 25000
+
+      for iter in xrange(iters):
+         gmtl.setRot(mat, gmtl.AxisAnglef(gmtl.Math.deg2Rad(a), 1.0, 0.0, 0.0))
+         a += mat.data[3]
+
+      assert mat.data[3] != 1234.0456 and a != 987654.321
+
+   def testTimingsetRot44(self):
+      mat = gmtl.Matrix44f()
+      a = 0.0
+      iters = 25000
+
+      for iter in xrange(iters):
+         gmtl.setRot(mat, gmtl.AxisAnglef(gmtl.Math.deg2Rad(a), 1.0, 0.0, 0.0))
+         a += mat.data[3]
+
+      assert mat.data[3] != 1234.0456 and a != 987654.321
+
+   def testTimingGetRot(self):
+      pass
+
+   def __testTimingsetRotEuler(self, mat):
+      a = 0.0
+      iters = 25000
+
+      for iter in xrange(iters):
+         gmtl.setRot(mat, gmtl.EulerAngleZXYf(a, 45.0, 35.0))
+         a -= mat.data[4]
+
+      assert mat.data[3] != 1234.0456 and a != 987654.321
+
+      for iter in xrange(iters):
+         gmtl.setRot(mat, gmtl.EulerAngleZYXf(a, 45.0, 35.0))
+         a += mat.data[4]
+
+      assert mat.data[3] != 1234.0456 and a != 987654.321
+
+      for iter in xrange(iters):
+         gmtl.setRot(mat, gmtl.EulerAngleXYZf(a, 45.0, 35.0))
+         a -= mat.data[4]
+
+      assert mat.data[3] != 1234.0456 and a != 987654.321
+
+   def testTimingsetRotEuler33(self):
+      self.__testTimingsetRotEuler(gmtl.Matrix33f())
+
+#   def testTimingsetRotEuler34(self):
+#      self.__testTimingsetRotEuler(gmtl.Matrix34f())
+
+   def testTimingsetRotEuler44(self):
+      self.__testTimingsetRotEuler(gmtl.Matrix44f())
+
+   def __testTimingsetDirCos(self, mat):
+      a = 0.0
+      iters = 25000
+
+      for iter in xrange(iters):
+         gmtl.setDirCos(mat, gmtl.Vec3f(1.0, 0.0, 0.0),
+                        gmtl.Vec3f(a, 1.0, 0.0), gmtl.Vec3f(0.0, 0.0, 1.0))
+         a += mat.data[1]
+
+      assert mat.data[3] != 1234.0456 and a != 987654.321
+
+   def testTimingsetDirCos33(self):
+      self.__testTimingsetDirCos(gmtl.Matrix33f())
+
+#   def testTimingsetDirCos34(self):
+#      self.__testTimingsetDirCos(gmtl.Matrix34f())
+
+   def testTimingsetDirCos44(self):
+      self.__testTimingsetDirCos(gmtl.Matrix44f())
+
+   def __testTimingsetAxes(self, mat):
+      a = 0.0
+      iters = 25000
+
+      for iter in xrange(iters):
+         gmtl.setAxes(mat, gmtl.Vec3f(1.0, a, 0.0), gmtl.Vec3f(0.0, 1.0, 0.0),
+                      gmtl.Vec3f(0.0, 0.0, 1.0))
+         a += mat.data[1]
+
+      assert mat.data[3] != 1234.0456 and a != 987654.321
+
+   def testTimingsetAxes33(self):
+      self.__testTimingsetAxes(gmtl.Matrix33f())
+
+#   def testTimingsetAxes34(self):
+#      self.__testTimingsetAxes(gmtl.Matrix34f())
+
+   def testTimingsetAxes44(self):
+      self.__testTimingsetAxes(gmtl.Matrix44f())
+
+class MatrixOpsTest(unittest.TestCase):
+   def testMatrixIdentity(self):
+      ident_mat = gmtl.Matrix44f()
+      test_mat = gmtl.Matrix44f()
+      test_mat.set(0.0, 1.0, 2.0, 3.0,
+                   0.0, 1.0, 2.0, 3.0,
+                   0.0, 1.0, 2.0, 3.0,
+                   0.0, 1.0, 2.0, 3.0)
+      assert test_mat != ident_mat
+      gmtl.identity(test_mat)
+      assert test_mat == ident_mat
+
+   def testMatrixSetTrans(self):
+      eps = 0.01
+
+      # 3D trans.
+      mat44 = gmtl.Matrix44f()
+      expected_result44 = gmtl.Matrix44f()
+      gmtl.setRot(expected_result44, gmtl.EulerAngleXYZf(0.5, 1.0, -1.0))
+      expected_result44[0][3] = 21
+      expected_result44[1][3] = 22
+      expected_result44[2][3] = 23
+
+      gmtl.setRot(mat44, gmtl.EulerAngleXYZf(0.5, 1.0, -1.0))
+      gmtl.setTrans(mat44, gmtl.Vec3f(21.0, 22.0, 23.0))
+      assert gmtl.isEqual(expected_result44, mat44, eps)
+
+      # 3D rot/trans/skew set by homogeneous vector.
+      mat44 = gmtl.Matrix44f()
+      expected_result44 = gmtl.Matrix44f()
+
+      gmtl.setRot(expected_result44, gmtl.EulerAngleXYZf(0.5, 1.0, -1.0))
+      expected_result44[0][3] = 42
+      expected_result44[1][3] = 44
+      expected_result44[2][3] = 46
+
+      gmtl.setRot(mat44, gmtl.EulerAngleXYZf(0.5, 1.0, -1.0))
+      gmtl.setTrans(mat44, gmtl.Vec4f(21.0, 22.0, 23.0, 0.5))
+      assert gmtl.isEqual(expected_result44, mat44, eps)
+
+   def __transposeTest(self, matType):
+      test_mat = matType()
+      res_mat  = matType()
+      test_mat[test_mat.Params.Rows - 1][0] = 9
+      res_mat[0][test_mat.Params.Rows - 1]  = 9
+
+      test_mat[1][0] = 2
+      res_mat[0][1]  = 2
+
+      gmtl.transpose(res_mat)
+      assert res_mat == test_mat
+      gmtl.transpose(res_mat)
+
+      # Test the other transpose op.
+      gmtl.transpose(res_mat, res_mat)
+      assert res_mat == test_mat
+
+   def testMatrixTranspose(self):
+      test_mat = gmtl.Matrix33f()
+      res_mat  = gmtl.Matrix33f()
+      test_mat.set(0.0, 1.0, 2.0,
+                   4.0, 5.0, 6.0,
+                   8.0, 9.0, 10.0)
+      res_mat.set(0.0, 4.0, 8.0,
+                  1.0, 5.0, 9.0,
+                  2.0, 6.0, 10.0)
+      gmtl.transpose(res_mat)
+      assert res_mat == test_mat
+      gmtl.transpose(res_mat)
+
+      gmtl.transpose(res_mat, res_mat)
+      assert res_mat == test_mat
+
+      test_mat = gmtl.Matrix44f()
+      res_mat  = gmtl.Matrix44f()
+      test_mat.set(0.0, 1.0, 2.0, 3.0,
+                   4.0, 5.0, 6.0, 7.0,
+                   8.0, 9.0, 10.0, 11.0,
+                   12.0, 13.0, 14.0, 15.0)
+      res_mat.set(0.0, 4.0, 8.0, 12.0,
+                  1.0, 5.0, 9.0, 13.0,
+                  2.0, 6.0, 10.0, 14.0,
+                  3.0, 7.0, 11.0, 15.0)
+      gmtl.transpose(res_mat)
+      assert res_mat == test_mat
+      gmtl.transpose(res_mat)
+
+      gmtl.transpose(res_mat, res_mat)
+      assert res_mat == test_mat
+
+      self.__transposeTest(gmtl.Matrix33f)
+      self.__transposeTest(gmtl.Matrix44f)
+
+   def testMatrixAddSub33(self):
+      test_mat1 = gmtl.Matrix33f()
+      res_mat   = gmtl.Matrix33f()
+      ans_mat   = gmtl.Matrix33f()
+
+      test_mat1.set(0.0, 1.0, 2.0,
+                    4.0, 5.0, 6.0,
+                    8.0, 9.0, 10.0)
+      test_mat2 = gmtl.Matrix33f(test_mat1)
+      ans_mat.set(0.0, 2.0, 4.0,
+                  8.0, 10.0, 12.0,
+                  16.0, 18.0, 20.0)
+      gmtl.add(res_mat, test_mat1, test_mat2)   # rm = m1 + m2
+      assert res_mat == ans_mat
+
+      diff_mat = gmtl.Matrix33f()
+      gmtl.sub(diff_mat, res_mat, test_mat1)    # rm = m1 - m2
+      assert diff_mat != res_mat
+      assert diff_mat == test_mat2
+
+      test_mat1 = gmtl.Matrix44f()
+      res_mat   = gmtl.Matrix44f()
+      ans_mat   = gmtl.Matrix44f()
+
+      test_mat1.set(0.0, 1.0, 2.0, 3.0,
+                    4.0, 5.0, 6.0, 7.0,
+                    8.0, 9.0, 10.0, 11.0,
+                    12.0, 13.0, 14.0, 15.0)
+      test_mat2 = gmtl.Matrix44f(test_mat1)
+      ans_mat.set(0.0, 2.0, 4.0, 6.0,
+                  8.0, 10.0, 12.0, 14.0,
+                  16.0, 18.0, 20.0, 22.0,
+                  24.0, 26.0, 28.0, 30.0)
+      gmtl.add(res_mat, test_mat1, test_mat2)   # rm = m1 + m2
+      assert res_mat == ans_mat
+
+      diff_mat = gmtl.Matrix44f()
+      gmtl.sub(diff_mat, res_mat, test_mat1)    # rm = m1 - m2
+      assert diff_mat != res_mat
+      assert diff_mat == test_mat2
+
+   def testMatrixMult33(self):
+      mat1 = gmtl.Matrix33f()
+      mat2 = gmtl.Matrix33f()
+      eps = 0.001
+
+      mat1.set(1.1000, 2.2000, 3.3000,
+               5.5000, 6.6000, 7.7000,
+               9.9000, 10.1000, 11.1100)
+      mat2.set(43.0, -8.0, -4.0,
+               23.0, 22.0, 72.0,
+               -34.0, -23.0, 99.0)
+
+      # Make sure mat3 = mat1 * mat2 yields the correct result.
+      mat3 = gmtl.Matrix33f()
+      gmtl.mult(mat3, mat1, mat2)
+      res_mat = gmtl.Matrix33f()
+      res_mat.set(-14.300, -36.300, 480.700,
+                  126.500, -75.900, 1215.500,
+                  280.260, -112.530, 1787.490)
+      assert gmtl.isEqual(res_mat, mat3, eps)
+
+      # Test post and pre mult operators.
+      m1 = gmtl.Matrix33f(mat1)
+      m2 = gmtl.Matrix33f(mat2)
+      gmtl.postMult(m1, m2)
+      assert gmtl.isEqual(res_mat, m1, eps)
+
+      m1 = gmtl.Matrix33f(mat1)
+      m2 = gmtl.Matrix33f(mat2)
+      m1 *= m2
+      assert gmtl.isEqual(res_mat, m1, eps)
+
+      m1 = gmtl.Matrix33f(mat1)
+      m2 = gmtl.Matrix33f(mat2)
+      gmtl.preMult(m2, m1)
+      assert gmtl.isEqual(res_mat, m2, eps)
+
+      m1 = gmtl.Matrix33f(mat1)
+      m2 = gmtl.Matrix33f(mat2)
+      result = mat1 * mat2
+      assert gmtl.isEqual(res_mat, result, eps)
+
+      # Make sure mult is not commutitive.
+      gmtl.mult(mat3, mat2, mat1)
+      assert not gmtl.isEqual(res_mat, mat3, eps)
+
+      # Make sure mat3 = mat2 * mat1 yields the correct result.
+      res_mat.set(-36.3000,   1.4000,   35.8600,
+                  859.1000, 923.0000, 1045.2200,
+                  816.2000, 773.3000,  810.5900)
+      assert gmtl.isEqual(res_mat, mat3, eps)
+
+      # Test post and pre mult operators.
+      m1 = gmtl.Matrix33f(mat1)
+      m2 = gmtl.Matrix33f(mat2)
+      gmtl.postMult(m2, m1)
+      assert gmtl.isEqual(res_mat, m2, eps)
+
+      m1 = gmtl.Matrix33f(mat1)
+      m2 = gmtl.Matrix33f(mat2)
+      m2 *= m1
+      assert gmtl.isEqual(res_mat, m2, eps)
+
+      m1 = gmtl.Matrix33f(mat1)
+      m2 = gmtl.Matrix33f(mat2)
+      gmtl.preMult(m1, m2)
+      assert gmtl.isEqual(res_mat, m1, eps)
+
+      m1 = gmtl.Matrix33f(mat1)
+      m2 = gmtl.Matrix33f(mat2)
+      result = mat2 * mat1
+      assert gmtl.isEqual(res_mat, result, eps)
+
+   def testMatrixMult44(self):
+      mat1 = gmtl.Matrix44f()
+      mat2 = gmtl.Matrix44f()
+      eps = 0.001
+
+      mat1.set( 1.1000,  2.2000,  3.3000,  4.4000,
+                5.5000,  6.6000,  7.7000,  8.8000,
+                9.9000, 10.1000, 11.1100, 12.1200,
+               13.1300, 14.1400, 15.1500, 16.1600)
+      mat2.set( 43,  -8, -4,   7,
+                23,  22, 72,  69,
+               -34, -23, 99, -48,
+                12,  16, 21,  18)
+
+      # Make sure mat3 = mat1 * mat2 yields the correct result.
+      mat3 = gmtl.Matrix44f()
+      gmtl.mult(mat3, mat1, mat2)
+      res_mat = gmtl.Matrix44f()
+      res_mat.set( 38.500,  34.100,  573.100,  80.300,
+                  232.100,  64.900, 1400.300, 282.700,
+                  425.700,  81.390, 2042.010, 451.080,
+                  568.630, 116.150, 2804.770, 631.250)
+      assert gmtl.isEqual(res_mat, mat3, eps)
+
+      # Test post and pre mult operators.
+      m1 = gmtl.Matrix44f(mat1)
+      m2 = gmtl.Matrix44f(mat2)
+      gmtl.postMult(m1, m2)
+      assert gmtl.isEqual(res_mat, m1, eps)
+
+      m1 = gmtl.Matrix44f(mat1)
+      m2 = gmtl.Matrix44f(mat2)
+      m1 *= m2
+      assert gmtl.isEqual(res_mat, m1, eps)
+
+      m1 = gmtl.Matrix44f(mat1)
+      m2 = gmtl.Matrix44f(mat2)
+      gmtl.preMult(m2, m1)
+      assert gmtl.isEqual(res_mat, m2, eps)
+
+      m1 = gmtl.Matrix44f(mat1)
+      m2 = gmtl.Matrix44f(mat2)
+      result = mat1 * mat2
+      assert gmtl.isEqual(res_mat, result, eps)
+
+      # Make sure mult is not commutitive.
+      gmtl.mult(mat3, mat2, mat1)
+      assert not gmtl.isEqual(res_mat, mat3, eps)
+
+      # Make sure mat3 = mat2 * mat1 yields the correct result.
+      res_mat.set(  55.610,  100.380,  141.910,  183.440,
+                  1765.070, 1898.660, 2090.570, 2282.480,
+                   185.960,   94.580,   83.390,   72.200,
+                   545.440,  598.620,  668.810,  739.000)
+      assert gmtl.isEqual(res_mat, mat3, eps)
+
+      # Test post and pre mult operators.
+      m1 = gmtl.Matrix44f(mat1)
+      m2 = gmtl.Matrix44f(mat2)
+      gmtl.postMult(m2, m1)
+      assert gmtl.isEqual(res_mat, m2, eps)
+
+      m1 = gmtl.Matrix44f(mat1)
+      m2 = gmtl.Matrix44f(mat2)
+      m2 *= m1
+      assert gmtl.isEqual(res_mat, m2, eps)
+
+      m1 = gmtl.Matrix44f(mat1)
+      m2 = gmtl.Matrix44f(mat2)
+      gmtl.preMult(m1, m2)
+      assert gmtl.isEqual(res_mat, m1, eps)
+
+      m1 = gmtl.Matrix44f(mat1)
+      m2 = gmtl.Matrix44f(mat2)
+      result = mat2 * mat1
+      assert gmtl.isEqual(res_mat, result, eps)
+
+   def testMatrixScalarMult44(self):
+      mat1            = gmtl.Matrix44f()
+      expected_result = gmtl.Matrix44f()
+
+      eps = 0.001
+
+      mat1.set( 1.1000,  2.2000,  3.3000,  4.4000,
+                5.5000,  6.6000,  7.7000,  8.8000,
+                9.9000, 10.1000, 11.1100, 12.1200,
+               13.1300, 14.1400, 15.1500, 16.1600)
+      expected_result.set( 3.3000,  6.6000,  9.9000, 13.2000,
+                          16.5000, 19.8000, 23.1000, 26.4000,
+                          29.7000, 30.3000, 33.3300, 36.3600,
+                          39.3900, 42.4200, 45.4500, 48.4800)
+
+      res_mat = gmtl.Matrix44f()
+
+      # result = mat * scalar
+      gmtl.mult(res_mat, mat1, 3)
+      assert gmtl.isEqual(expected_result, res_mat, eps)
+
+      # result *= scalar
+      res_mat = gmtl.Matrix44f(mat1)
+      gmtl.mult(res_mat, 3)
+      assert gmtl.isEqual(expected_result, res_mat, eps)
+
+      # result *= scalar
+      res_mat = gmtl.Matrix44f(mat1)
+      res_mat *= 3
+      assert gmtl.isEqual(expected_result, res_mat, eps)
+
+   def testMatInvertKnownFull44(self):
+      mat1           = gmtl.Matrix44f()
+      expected_value = gmtl.Matrix44f()
+
+      mat1.set(0.78,  1.4,   2.9, 3.45,
+               4.21, 57.9,  65.9, 74.6,
+               89.2, 99.2,  10.9, 11.9,
+               12.5, 13.9, 14.78, 15.6)
+      expected_value.set( 0.3071733, -0.0239700,  0.0034853,  0.0440345,
+                         -0.2891106,  0.0216826,  0.0079218, -0.0457924,
+                         -3.0532152,  0.0305681, -0.0547335,  0.5708037,
+                          2.9041982, -0.0290744,  0.0420053, -0.4711792)
+
+      eps = 0.001
+
+      result = gmtl.Matrix44f()
+      identity = gmtl.Matrix44f()
+
+      # Make sure our pre-computed answer is right.
+      gmtl.mult(result, mat1, expected_value)
+      assert gmtl.isEqual(result, identity, eps)
+
+      # Test inversion.
+      result = gmtl.Matrix44f()
+      gmtl.invert(result, mat1)
+      assert gmtl.isEqual(result, expected_value, eps)
+
+      # Test inversion in place.
+      gmtl.invert(mat1)
+      assert gmtl.isEqual(mat1, expected_value, eps)
+
+   def __testMatInvertFull(self, matType):
+      iters = 100
+      eps = 0.001
+
+      mat     = matType()
+      inv_mat = matType()
+      expected_mat = matType()
+
+      for iter in xrange(iters):
+         for r in range(mat.Params.Rows):
+            for c in range(mat.Params.Cols):
+               mat[r][c] = float(random.randrange(1, 10)) / 10.0
+
+         mat.state = matType.XformState.FULL
+
+         gmtl.invert(inv_mat, mat)
+         mult_mat = mat * inv_mat
+         # This fails sometimes, but I don't know why.
+         assert gmtl.isEqual(mult_mat, expected_mat, eps)
+
+         inv_mat = matType(mat)
+         gmtl.invert(inv_mat)
+         assert gmtl.isEqual(mult_mat, expected_mat, eps)
+
+   def testMatInvert(self):
+      eps = 0.001
+
+      # Test translation creation and inversion.
+      trans_range = 100
+      trans_inc = 10
+
+      for x in range(-trans_range, trans_range, trans_inc):
+         for y in range(-trans_range, trans_range, trans_inc):
+            for z in range(-trans_range, trans_range, trans_inc):
+               expected_inv = gmtl.Matrix44f()
+               expected_inv.set(1.0, 0.0, 0.0, -x,
+                                0.0, 1.0, 0.0, -y,
+                                0.0, 0.0, 1.0, -z,
+                                0.0, 0.0, 0.0, 1.0)
+               src_mat = gmtl.Matrix44f()
+               gmtl.setTrans(src_mat, gmtl.Vec3f(x, y, z))
+               inv_mat = gmtl.Matrix44f()
+               gmtl.invertFull_GJ(inv_mat, src_mat)
+               assert gmtl.isEqual(inv_mat, expected_inv, eps)
+               gmtl.identity(inv_mat)
+               gmtl.invert(inv_mat, src_mat)
+               assert gmtl.isEqual(inv_mat, expected_inv, eps)
+
+      self.__testMatInvertFull(gmtl.Matrix33f)
+      self.__testMatInvertFull(gmtl.Matrix44f)
+
+class MatrixOpsMetricTest(unittest.TestCase):
+   def testMatrixTimeIdentity44f(self):
+      test_mat = gmtl.Matrix44f()
+      bogus_value = 0.0
+      iters = 50000
+
+      for iter in xrange(iters):
+         test_mat.set(0.0, iter + 1, iter +2, iter + 3,
+                      0.0, 1.0, 2.0, 3.0,
+                      0.0, 1.0, 2.0, 3.0,
+                      0.0, 1.0, 2.0, 3.0)
+         gmtl.identity(test_mat)
+         bogus_value += test_mat(1, 1)  # Should add noe every time
+
+      assert isEqual(bogus_value, iters, 0.5)
+
+   def testTimingMakeTrans(self):
+      mat33 = gmtl.Matrix33f()
+      mat44 = gmtl.Matrix44f()
+
+      a = 1.0
+      iters = 100000
+
+      for iter in xrange(iters):
+         gmtl.setTrans(mat33, gmtl.Vec2f(a, 2.0))
+         a += mat33.data[3]
+
+      assert mat33.data[3] != 1234.0456 and a != 987654.311
+
+      for iter in xrange(iters):
+         gmtl.setTrans(mat33, gmtl.Vec3f(1.0, a, 1.0))  # homogeneous
+         a += mat33.data[3]
+
+      assert mat33.data[3] != 1234.0456 and a != 987654.311
+
+      for iter in xrange(iters):
+         gmtl.setTrans(mat44, gmtl.Vec3f(30.0, a, 121.0))
+         a += mat44.data[3]
+
+      assert mat44.data[3] != 1234.0456 and a != 987654.311
+
+      for iter in xrange(iters):
+         gmtl.setTrans(mat44, gmtl.Vec4f(30.0, 32.0, a, 1.0))   # homogeneous
+         a += mat44.data[3]
+
+      assert mat44.data[3] != 1234.0456 and a != 987654.311
+
+   def testMatrixTimeTranspose44f(self):
+      test_mat1 = gmtl.Matrix44f()
+      test_mat1.set(0.0, 1.0, 2.0, 3.0,
+                    4.0, 5.0, 6.0, 7.0,
+                    8.0, 9.0, 10.0, 11.0,
+                    12.0, 13.0, 14.0, 15.0)
+
+      iters = 50000
+      for iter in xrange(iters):
+         gmtl.transpose(test_mat1)
+         test_mat1[0][2] += test_mat1.data[3]
+         test_mat1[0][4] += test_mat1.data[1]
+
+      assert test_mat1.data[2] != test_mat1.data[0]
+
+   def testMatrixTimeMult44_mult(self):
+      test_mat1 = gmtl.Matrix44f()
+      test_mat1.set(0.0, 1.0, 2.0, 3.0,
+                    4.0, 5.0, 6.0, 7.0,
+                    8.0, 9.0, 10.0, 11.0,
+                    12.0, 13.0, 14.0, 15.0)
+
+      test_mat2 = gmtl.Matrix44f(test_mat1)
+      res_mat   = gmtl.Matrix44f(test_mat2)
+
+      iters = 50000
+      for iter in xrange(iters):
+         gmtl.mult(res_mat, res_mat, test_mat1)
+
+      assert test_mat1.data[2] != test_mat2.data[0]
+
+   def testMatrixTimeMult44_operatorStar(self):
+      test_mat1 = gmtl.Matrix44f()
+      test_mat1.set(0.0, 1.0, 2.0, 3.0,
+                    4.0, 5.0, 6.0, 7.0,
+                    8.0, 9.0, 10.0, 11.0,
+                    12.0, 13.0, 14.0, 15.0)
+
+      test_mat2 = gmtl.Matrix44f(test_mat1)
+      res_mat   = gmtl.Matrix44f(test_mat2)
+
+      iters = 50000
+
+      for iter in xrange(iters):
+         res_mat = test_mat1 * res_mat
+
+      assert test_mat1.data[2] != test_mat2.data[0]
+
+   def testMatrixTimeMult44_operatorStarStar(self):
+      test_mat1 = gmtl.Matrix44f()
+      test_mat1.set(0.0, 1.0, 2.0, 3.0,
+                    4.0, 5.0, 6.0, 7.0,
+                    8.0, 9.0, 10.0, 11.0,
+                    12.0, 13.0, 14.0, 15.0)
+
+      test_mat2 = gmtl.Matrix44f(test_mat1)
+      res_mat   = gmtl.Matrix44f(test_mat2)
+
+      iters = 50000
+
+      for iter in xrange(iters):
+         res_mat = test_mat1 * res_mat * test_mat2
+
+      assert test_mat1.data[2] != test_mat2.data[0]
+
+   def testMatrixTimeMult33_operatorStarStar(self):
+      test_mat1 = gmtl.Matrix33f()
+      test_mat1.set(0.0, 1.0, 2.0,
+                    3.0, 4.0, 5.0,
+                    6.0, 7.0, 8.0)
+
+      test_mat2 = gmtl.Matrix33f(test_mat1)
+      res_mat   = gmtl.Matrix33f(test_mat2)
+
+      iters = 50000
+
+      for iter in xrange(iters):
+         res_mat = test_mat1 * res_mat
+
+      assert test_mat1.data[2] != test_mat2.data[0]
+
+   def testMatrixTimeAdd44(self):
+      test_mat1 = gmtl.Matrix44f()
+      test_mat1.set(0.0, 1.0, 2.0, 3.0,
+                    4.0, 5.0, 6.0, 7.0,
+                    8.0, 9.0, 10.0, 11.0,
+                    12.0, 13.0, 14.0, 15.0)
+
+      test_mat2 = gmtl.Matrix44f(test_mat1)
+      res_mat   = gmtl.Matrix44f(test_mat2)
+
+      iters = 50000
+
+      for iter in xrange(iters):
+         gmtl.add(res_mat, res_mat, test_mat2)
+
+      assert test_mat1.data[2] != test_mat2.data[0]
+      assert res_mat.data[2] != 1000.0
+
+   def testMatrixTimeAdd44(self):
+      test_mat1 = gmtl.Matrix44f()
+      test_mat1.set(0.0, 1.0, 2.0, 3.0,
+                    4.0, 5.0, 6.0, 7.0,
+                    8.0, 9.0, 10.0, 11.0,
+                    12.0, 13.0, 14.0, 15.0)
+
+      test_mat2 = gmtl.Matrix44f(test_mat1)
+      res_mat   = gmtl.Matrix44f(test_mat2)
+
+      iters = 50000
+
+      for iter in xrange(iters):
+         gmtl.sub(res_mat, res_mat, test_mat2)
+
+      assert test_mat1.data[2] != test_mat2.data[0]
+      assert res_mat.data[2] != 1000.0
+
+class MatrixStateTrackingTest(unittest.TestCase):
+   def testMatrixStateTracking(self):
+      test_states = [
+         gmtl.Matrix44f.XformState.IDENTITY,
+         gmtl.Matrix44f.XformState.TRANS,
+         gmtl.Matrix44f.XformState.ORTHOGONAL,
+         gmtl.Matrix44f.XformState.AFFINE,
+         gmtl.Matrix44f.XformState.NON_UNISCALE,
+         gmtl.Matrix44f.XformState.AFFINE | gmtl.Matrix44f.XformState.NON_UNISCALE,
+         gmtl.Matrix44f.XformState.FULL,
+         gmtl.Matrix44f.XformState.XFORM_ERROR,
+      ]
+
+      # Test combine utility function.
+      expected = [
+            gmtl.Matrix44f.XformState.IDENTITY, # ident
+            gmtl.Matrix44f.XformState.TRANS,
+            gmtl.Matrix44f.XformState.ORTHOGONAL,
+            gmtl.Matrix44f.XformState.AFFINE,
+            gmtl.Matrix44f.XformState.XFORM_ERROR,
+            gmtl.Matrix44f.XformState.AFFINE | gmtl.Matrix44f.XformState.NON_UNISCALE,
+            gmtl.Matrix44f.XformState.FULL,
+            gmtl.Matrix44f.XformState.XFORM_ERROR,
+            gmtl.Matrix44f.XformState.TRANS,    # trans
+            gmtl.Matrix44f.XformState.TRANS,
+            gmtl.Matrix44f.XformState.AFFINE,
+            gmtl.Matrix44f.XformState.AFFINE,
+            gmtl.Matrix44f.XformState.XFORM_ERROR,
+            gmtl.Matrix44f.XformState.AFFINE | gmtl.Matrix44f.XformState.NON_UNISCALE,
+            gmtl.Matrix44f.XformState.FULL,
+            gmtl.Matrix44f.XformState.XFORM_ERROR,
+            gmtl.Matrix44f.XformState.ORTHOGONAL,    # ORTHOGONAL
+            gmtl.Matrix44f.XformState.AFFINE,
+            gmtl.Matrix44f.XformState.ORTHOGONAL,
+            gmtl.Matrix44f.XformState.AFFINE,
+            gmtl.Matrix44f.XformState.XFORM_ERROR,
+            gmtl.Matrix44f.XformState.AFFINE | gmtl.Matrix44f.XformState.NON_UNISCALE,
+            gmtl.Matrix44f.XformState.FULL,
+            gmtl.Matrix44f.XformState.XFORM_ERROR,
+            gmtl.Matrix44f.XformState.AFFINE,    # AFFINE
+            gmtl.Matrix44f.XformState.AFFINE,
+            gmtl.Matrix44f.XformState.AFFINE,
+            gmtl.Matrix44f.XformState.AFFINE,
+            gmtl.Matrix44f.XformState.XFORM_ERROR,
+            gmtl.Matrix44f.XformState.AFFINE | gmtl.Matrix44f.XformState.NON_UNISCALE,
+            gmtl.Matrix44f.XformState.FULL,
+            gmtl.Matrix44f.XformState.XFORM_ERROR,
+            gmtl.Matrix44f.XformState.XFORM_ERROR,    # NON_UNISCALE
+            gmtl.Matrix44f.XformState.XFORM_ERROR,
+            gmtl.Matrix44f.XformState.XFORM_ERROR,
+            gmtl.Matrix44f.XformState.XFORM_ERROR,
+            gmtl.Matrix44f.XformState.XFORM_ERROR,
+            gmtl.Matrix44f.XformState.XFORM_ERROR,
+            gmtl.Matrix44f.XformState.XFORM_ERROR,
+            gmtl.Matrix44f.XformState.XFORM_ERROR,
+            gmtl.Matrix44f.XformState.AFFINE | gmtl.Matrix44f.XformState.NON_UNISCALE,    # AFFINE | NON_UNISCALE
+            gmtl.Matrix44f.XformState.AFFINE | gmtl.Matrix44f.XformState.NON_UNISCALE,
+            gmtl.Matrix44f.XformState.AFFINE | gmtl.Matrix44f.XformState.NON_UNISCALE,
+            gmtl.Matrix44f.XformState.AFFINE | gmtl.Matrix44f.XformState.NON_UNISCALE,
+            gmtl.Matrix44f.XformState.XFORM_ERROR,
+            gmtl.Matrix44f.XformState.AFFINE | gmtl.Matrix44f.XformState.NON_UNISCALE,
+            gmtl.Matrix44f.XformState.FULL,
+            gmtl.Matrix44f.XformState.XFORM_ERROR,
+            gmtl.Matrix44f.XformState.FULL,    # FULL
+            gmtl.Matrix44f.XformState.FULL,
+            gmtl.Matrix44f.XformState.FULL,
+            gmtl.Matrix44f.XformState.FULL,
+            gmtl.Matrix44f.XformState.XFORM_ERROR,
+            gmtl.Matrix44f.XformState.FULL,
+            gmtl.Matrix44f.XformState.FULL,
+            gmtl.Matrix44f.XformState.XFORM_ERROR,
+            gmtl.Matrix44f.XformState.XFORM_ERROR,    # XFORM_ERROR
+            gmtl.Matrix44f.XformState.XFORM_ERROR,
+            gmtl.Matrix44f.XformState.XFORM_ERROR,
+            gmtl.Matrix44f.XformState.XFORM_ERROR,
+            gmtl.Matrix44f.XformState.XFORM_ERROR,
+            gmtl.Matrix44f.XformState.XFORM_ERROR,
+            gmtl.Matrix44f.XformState.XFORM_ERROR,
+            gmtl.Matrix44f.XformState.XFORM_ERROR
+      ]
+
+      total = 0
+      for x in range(len(test_states)):
+         for y in range(len(test_states)):
+            assert gmtl.combineMatrixStates(test_states[x], test_states[y]) == expected[total]
+            total += 1
+
+      # Test core matrix class.
+
+      # Test default constructor.
+      mat = gmtl.Matrix44f()
+      assert mat.state == gmtl.Matrix44f.XformState.IDENTITY
+
+      # Test copy constructor.
+      mat1 = gmtl.Matrix44f()
+      mat1.state = gmtl.Matrix44f.XformState.FULL
+      mat2 = gmtl.Matrix44f(mat1)
+      assert mat2.state == gmtl.Matrix44f.XformState.FULL
+
+      # Test set.
+      mat = gmtl.Matrix44f()
+      mat.set(range(16))
+      assert mat.state == gmtl.Matrix44f.XformState.FULL
+
+      # Test gmtl.setTranspose()
+      mat = gmtl.Matrix44f()
+      gmtl.identity(mat)
+      assert mat.state == gmtl.Matrix44f.XformState.IDENTITY
+
+      # Make sure gmtl.identity() sets the flag when matrix wasn't originally
+      # identity.
+      mat.state = gmtl.Matrix44f.XformState.FULL
+      gmtl.identity(mat)
+      assert mat.state == gmtl.Matrix44f.XformState.IDENTITY
+
+      # Test gmtl.zero().
+      mat = gmtl.Matrix44f()
+      gmtl.zero(mat)
+
+      # Test composing two matrices.
+      for x in range(len(test_states)):
+         for y in range(len(test_states)):
+            mat1 = gmtl.Matrix44f()
+            mat2 = gmtl.Matrix44f()
+            mat1.state = test_states[x]
+            mat2.state = test_states[y]
+
+            # Multiply two matrices using __mult__
+            result = mat1 * mat2
+            assert result.state == gmtl.combineMatrixStates(test_states[x],
+                                                            test_states[y])
+            result = mat2 * mat1
+            assert result.state == gmtl.combineMatrixStates(test_states[x],
+                                                            test_states[y])
+
+            # Multiply two matrices using gmtl.mult()
+            gmtl.mult(result, mat1, mat2)
+            assert result.state == gmtl.combineMatrixStates(test_states[x],
+                                                            test_states[y])
+            gmtl.mult(result, mat2, mat1)
+            assert result.state == gmtl.combineMatrixStates(test_states[x],
+                                                            test_states[y])
+
+            # Multiply two matrices using gmtl.preMult()
+            result.state = test_states[y]
+            gmtl.preMult(result, mat1)
+            assert result.state == gmtl.combineMatrixStates(test_states[x],
+                                                            test_states[y])
+            gmtl.preMult(result, mat1)
+            assert result.state == gmtl.combineMatrixStates(test_states[x],
+                                                            test_states[y])
+
+            # Multiply two matrices using gmtl.postMult()
+            result.state = test_states[y]
+            gmtl.postMult(result, mat1)
+            assert result.state == gmtl.combineMatrixStates(test_states[x],
+                                                            test_states[y])
+            gmtl.postMult(result, mat1)
+            assert result.state == gmtl.combineMatrixStates(test_states[x],
+                                                            test_states[y])
+
+            # add(res, mat, mat), sub(res, mat, mat)
+            gmtl.add(result, mat1, mat2)
+            assert result.state == gmtl.combineMatrixStates(test_states[x],
+                                                            test_states[y])
+            gmtl.add(result, mat2, mat1)
+            assert result.state == gmtl.combineMatrixStates(test_states[x],
+                                                            test_states[y])
+
+            gmtl.sub(result, mat1, mat2)
+            assert result.state == gmtl.combineMatrixStates(test_states[x],
+                                                            test_states[y])
+            gmtl.sub(result, mat2, mat1)
+            assert result.state == gmtl.combineMatrixStates(test_states[x],
+                                                            test_states[y])
+
+            # mutl(res, mat, scalar)
+            gmtl.mult(result, mat1, 45.0)
+            assert result.state == mat1.state
+
+            # mutl(res, scalar)
+            result.state = test_states[x]
+            gmtl.mult(result, 45.0)
+            assert result.state == test_states[x]
+
+            # operator*=(mat, mat)
+            mat1.state   = test_states[x]
+            result.state = test_states[y]
+            result *= mat1
+            assert result.state == gmtl.combineMatrixStates(test_states[x],
+                                                            test_states[y])
+            mat1.state   = test_states[x]
+            result.state = test_states[y]
+            mat1 *= result
+
+      # test copying, equality, inequality, isEqual()
+      mat1   = gmtl.Matrix44f()
+      result = gmtl.Matrix44f()
+      mat1.state = gmtl.Matrix44f.XformState.ORTHOGONAL
+
+      result.state = gmtl.Matrix44f.XformState.FULL
+      result = gmtl.Matrix44f(mat1)
+      assert result.state == gmtl.Matrix44f.XformState.ORTHOGONAL
+
+      # Make sure they are still equal (== and != should not observe the state)
+      result.state = gmtl.Matrix44f.XformState.FULL
+      assert not result != mat1
+
+      result.state = gmtl.Matrix44f.XformState.ORTHOGONAL
+      assert result == mat1
+
+      result.state = gmtl.Matrix44f.XformState.FULL
+      assert gmtl.isEqual(result, mat1, 0.0001)
+
+      # Generators.
+
+      # Test gmtl.setScale()
+      mat = gmtl.Matrix44f()
+      gmtl.setScale(mat, 2345.0)
+      assert mat.state == gmtl.Matrix44f.XformState.AFFINE | gmtl.Matrix44f.XformState.NON_UNISCALE
+
+      mat2 = gmtl.makeScaleMatrix44(2345.0)
+      assert mat2.state == gmtl.Matrix44f.XformState.AFFINE | gmtl.Matrix44f.XformState.NON_UNISCALE
+
+      mat = gmtl.Matrix44f()
+      mat2 = gmtl.Matrix44f()
+      gmtl.setScale(mat, gmtl.Vec3f(983.0, 234.0, 1.0))
+      assert mat.state == gmtl.Matrix44f.XformState.AFFINE | gmtl.Matrix44f.XformState.NON_UNISCALE
+
+      mat2 = gmtl.makeScaleMatrix44(gmtl.Vec3f(983.0, 234.0, 1.0))
+      assert mat2.state == gmtl.Matrix44f.XformState.AFFINE | gmtl.Matrix44f.XformState.NON_UNISCALE
+
+      # Test gmtl.setTrans()
+      mat = gmtl.Matrix44f()
+
+      # Set
+      gmtl.setTrans(mat, gmtl.Vec3f(983.0, 234.0, 1.0))
+      assert mat.state == gmtl.Matrix44f.XformState.TRANS
+
+      mat.state = gmtl.Matrix44f.XformState.FULL
+      gmtl.setTrans(mat, gmtl.Vec3f(983.0, 234.0, 1.0))
+      assert mat.state == gmtl.Matrix44f.XformState.FULL
+
+      mat.state = gmtl.Matrix44f.XformState.ORTHOGONAL
+      gmtl.setTrans(mat, gmtl.Vec3f(983.0, 234.0, 1.0))
+      assert mat.state == gmtl.Matrix44f.XformState.AFFINE
+
+      mat.state = gmtl.Matrix44f.XformState.AFFINE
+      gmtl.setTrans(mat, gmtl.Vec3f(983.0, 234.0, 1.0))
+      assert mat.state == gmtl.Matrix44f.XformState.AFFINE
+
+      # make
+      mat2 = gmtl.makeTransMatrix44(gmtl.Vec3f(983.0, 234.0, 1.0))
+      assert mat2.state == gmtl.Matrix44f.XformState.TRANS
+
+      # Test setRot(gmtl.AxisAngle)
+      self.__testStateTracking_setRot(gmtl.AxisAnglef(90.0,
+                                                      gmtl.Vec3f(0.0, 1.0, 0.0)))
+
+      # Test setRot(gmtl.EulerAngle)
+      self.__testStateTracking_setRot(gmtl.EulerAngleXYZf())
+
+      # Test gmtl.setFrustum()
+      mat = gmtl.Matrix44f()
+      gmtl.setFrustum(mat, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0)
+      assert mat.state == gmtl.Matrix44f.XformState.FULL
+
+      mat.state = gmtl.Matrix44f.XformState.ORTHOGONAL
+      gmtl.setFrustum(mat, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0)
+      assert mat.state == gmtl.Matrix44f.XformState.FULL
+
+      # Test gmtl.setPerspective()
+      mat = gmtl.Matrix44f()
+      gmtl.setPerspective(mat, 60.0, 1.33, 0.0004, 100.0)
+      assert mat.state == gmtl.Matrix44f.XformState.FULL
+
+      mat.state = gmtl.Matrix44f.XformState.ORTHOGONAL
+      gmtl.setPerspective(mat, 60.0, 1.33, 0.0004, 100.0)
+      assert mat.state == gmtl.Matrix44f.XformState.FULL
+
+      # Test set(gmtl.Coord3fXYZ)
+      self.__testStateTracking_set(gmtl.Coord3fXYZ(),
+                                   gmtl.Matrix44f.XformState.AFFINE)
+
+      # Test set(gmtl.Coord3fQuat)
+      self.__testStateTracking_set(gmtl.Coord3fQuat(),
+                                   gmtl.Matrix44f.XformState.AFFINE)
+
+      # Test set(gmtl.Coord3fAxisAngle)
+      self.__testStateTracking_set(gmtl.Coord3fAxisAngle(),
+                                   gmtl.Matrix44f.XformState.AFFINE)
+
+      # Test set(gmtl.Quatf)
+      self.__testStateTracking_set(gmtl.Quatf(),
+                                   gmtl.Matrix44f.XformState.ORTHOGONAL)
+
+      # Test set(gmtl.AxisAnglef)
+      self.__testStateTracking_set(gmtl.AxisAnglef(),
+                                   gmtl.Matrix44f.XformState.ORTHOGONAL)
+
+      # Test gmtl.invert()
+      for x in range(len(test_states)):
+         # gmtl.invertFull(result, mat)
+         self.__testStateTracking_invert(test_states[x], gmtl.invertFull)
+
+         # gmtl.invertTrans(result, mat)
+         self.__testStateTracking_invert(test_states[x], gmtl.invertTrans)
+
+         # gmtl.invertOrthogonal(result, mat)
+         self.__testStateTracking_invert(test_states[x], gmtl.invertOrthogonal)
+
+         # gmtl.invertAffine(result, mat)
+         self.__testStateTracking_invert(test_states[x], gmtl.invertAffine)
+
+      mat = gmtl.Matrix44f()
+      eps = 0.0001
+
+      # gmtl.Matrix44f.XformState.IDENTITY
+      mat.set( 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 )
+      mat.state   = gmtl.Matrix44f.XformState.IDENTITY
+      iv          = gmtl.Matrix44f(mat)
+      iv_full     = gmtl.Matrix44f(mat)
+      iv_nochange = gmtl.Matrix44f(mat)
+      gmtl.invert(iv)
+      gmtl.invertFull(iv_full, iv_full)
+      assert gmtl.isEqual(iv, iv_nochange, eps) and gmtl.isEqual(iv, iv_full, eps)
+
+      # gmtl.Matrix44f.XformState.TRANS
+      mat.set(1, 0, 0, 4,
+              0, 1, 0, 5,
+              0, 0, 1, 6,
+              0, 0, 0, 1)
+      mat.state   = gmtl.Matrix44f.XformState.TRANS
+      iv          = gmtl.Matrix44f(mat)
+      iv_full     = gmtl.Matrix44f(mat)
+      iv_trans    = gmtl.Matrix44f(mat)
+      gmtl.invert(iv)
+      gmtl.invertFull(iv_full, iv_full)
+      gmtl.invertTrans(iv_trans, iv_trans)
+      assert gmtl.isEqual(iv, iv_trans, eps) and gmtl.isEqual(iv, iv_full, eps)
+
+      # gmtl.Matrix44f.XformState.ORTHOGONAL
+      mat.set(0, 0, -1, 0,
+              1, 0, 0, 0,
+              0, -1, 0, 0,
+              0, 0, 0, 1)
+      mat.state   = gmtl.Matrix44f.XformState.ORTHOGONAL
+      iv          = gmtl.Matrix44f(mat)
+      iv_full     = gmtl.Matrix44f(mat)
+      iv_ortho    = gmtl.Matrix44f(mat)
+      gmtl.invert(iv)
+      gmtl.invertFull(iv_full, iv_full)
+      gmtl.invertOrthogonal(iv_ortho, iv_ortho)
+      assert gmtl.isEqual(iv, iv_ortho, eps) and gmtl.isEqual(iv, iv_full, eps)
+
+      # gmtl.Matrix44f.XformState.AFFINE
+      mat.set(0, 0, -1, 10,
+              1, 0, 0, 11,
+              0, -1, 0, 12,
+              0, 0, 0, 20057)
+      mat.state   = gmtl.Matrix44f.XformState.AFFINE
+      iv          = gmtl.Matrix44f(mat)
+      iv_full     = gmtl.Matrix44f(mat)
+      iv_affine   = gmtl.Matrix44f(mat)
+      gmtl.invert(iv)
+      gmtl.invertFull(iv_full, iv_full)
+      gmtl.invertAffine(iv_affine, iv_affine)
+      assert gmtl.isEqual(iv, iv_affine, eps) and gmtl.isEqual(iv, iv_full, eps)
+
+      # gmtl.Matrix44f.XformState.AFFINE | gmtl.Matrix44f.XformState.NON_UNISCALE
+      mat.set(0, 2, 0, 10,
+              0, 0, -8, 11,
+              -3, 0, 0, 12,
+              0, 0, 0, 1)
+      mat.state   = gmtl.Matrix44f.XformState.AFFINE | gmtl.Matrix44f.XformState.NON_UNISCALE
+      iv          = gmtl.Matrix44f(mat)
+      iv_full     = gmtl.Matrix44f(mat)
+      iv_affine   = gmtl.Matrix44f(mat)
+      gmtl.invert(iv)
+      gmtl.invertFull(iv_full, iv_full)
+      gmtl.invertAffine(iv_affine, iv_affine)
+      assert gmtl.isEqual(iv, iv_affine, eps) and gmtl.isEqual(iv, iv_full, eps)
+
+      mat.set(0, 2, 0, 10,
+              0, 0, -8, 11,
+              -3, 0, 0, 12,
+              0, 0, 0, 23489)
+      mat.state   = gmtl.Matrix44f.XformState.AFFINE | gmtl.Matrix44f.XformState.NON_UNISCALE
+      iv          = gmtl.Matrix44f(mat)
+      iv_full     = gmtl.Matrix44f(mat)
+      iv_affine   = gmtl.Matrix44f(mat)
+      gmtl.invert(iv)
+      gmtl.invertFull(iv_full, iv_full)
+      gmtl.invertAffine(iv_affine, iv_affine)
+      assert gmtl.isEqual(iv, iv_affine, eps) and gmtl.isEqual(iv, iv_full, eps)
+
+      # gmtl.Matrix44f.XformState.FULL
+      mat.set(range(1, 17))
+      mat.state   = gmtl.Matrix44f.XformState.FULL
+      iv          = gmtl.Matrix44f(mat)
+      iv_full     = gmtl.Matrix44f(mat)
+      gmtl.invert(iv)
+      gmtl.invertFull(iv_full, iv_full)
+      assert gmtl.isEqual(iv, iv_full, eps)
+
+   def __testStateTracking_setRot(self, rot):
+      mat = gmtl.Matrix44f()
+
+      # Set
+      gmtl.setRot(mat, rot)
+      assert mat.state == gmtl.Matrix44f.XformState.ORTHOGONAL
+
+      mat.state = gmtl.Matrix44f.XformState.ORTHOGONAL
+      gmtl.setRot(mat, rot)
+      assert mat.state == gmtl.Matrix44f.XformState.ORTHOGONAL
+
+      mat.state = gmtl.Matrix44f.XformState.TRANS
+      gmtl.setRot(mat, rot)
+      assert mat.state == gmtl.Matrix44f.XformState.AFFINE
+
+      mat.state = gmtl.Matrix44f.XformState.AFFINE
+      gmtl.setRot(mat, rot)
+      assert mat.state == gmtl.Matrix44f.XformState.AFFINE
+
+      mat.state = gmtl.Matrix44f.XformState.FULL
+      gmtl.setRot(mat, rot)
+      assert mat.state == gmtl.Matrix44f.XformState.FULL
+
+      # make
+      mat2 = gmtl.makeRotMatrix44(rot)
+      assert mat2.state == gmtl.Matrix44f.XformState.ORTHOGONAL
+
+   def __testStateTracking_set(self, xform, state):
+      mat = gmtl.Matrix44f()
+
+      # set
+      gmtl.set(mat, xform)
+      assert mat.state == state
+
+      mat.state = gmtl.Matrix44f.XformState.ORTHOGONAL
+      gmtl.set(mat, xform)
+      assert mat.state == state
+
+      mat.state = gmtl.Matrix44f.XformState.TRANS
+      gmtl.set(mat, xform)
+      assert mat.state == state
+
+      mat.state = gmtl.Matrix44f.XformState.AFFINE
+      gmtl.set(mat, xform)
+      assert mat.state == state
+
+      mat.state = gmtl.Matrix44f.XformState.FULL
+      gmtl.set(mat, xform)
+      assert mat.state == state
+
+      # make
+#      mat2 = gmtl.makeMatrix44(xform)
+#      assert mat2.state == state
+
+   def __testStateTracking_invert(self, state, inverter):
+      mat = gmtl.Matrix44f()
+      result = gmtl.Matrix44f()
+      mat.state = state
+      inverter(result, mat)
+      assert result.state == mat.state
+
 def isEqual(v0, v1, tolerance = 0.001):
    return math.fabs(v0 - v1) <= tolerance
 
@@ -2693,6 +4774,8 @@ def getTests(testCase):
 #      all_tests.remove(t)
 
    return all_tests
+
+random.seed()
 
 suite = unittest.TestSuite()
 #suite.addTests(map(AABoxContainTest, getTests(AABoxContainTest)))
@@ -2711,8 +4794,15 @@ suite = unittest.TestSuite()
 #suite.addTests(map(LineSegTest, getTests(LineSegTest)))
 #suite.addTests(map(LineSegMetricTest, getTests(LineSegMetricTest)))
 #suite.addTests(map(MathTest, getTests(MathTest)))
-suite.addTests(map(MatrixClassTest, getTests(MatrixClassTest)))
-suite.addTests(map(MatrixClassMetricTest, getTests(MatrixClassMetricTest)))
+#suite.addTests(map(MatrixClassTest, getTests(MatrixClassTest)))
+#suite.addTests(map(MatrixClassMetricTest, getTests(MatrixClassMetricTest)))
+#suite.addTests(map(MatrixCompareTest, getTests(MatrixCompareTest)))
+#suite.addTests(map(MatrixCompareMetricTest, getTests(MatrixCompareMetricTest)))
+#suite.addTests(map(MatrixGenTest, getTests(MatrixGenTest)))
+#suite.addTests(map(MatrixGenMetricTest, getTests(MatrixGenMetricTest)))
+#suite.addTests(map(MatrixOpsTest, getTests(MatrixOpsTest)))
+#suite.addTests(map(MatrixOpsMetricTest, getTests(MatrixOpsMetricTest)))
+suite.addTests(map(MatrixStateTrackingTest, getTests(MatrixStateTrackingTest)))
 
 runner = unittest.TextTestRunner()
 runner.run(suite)
