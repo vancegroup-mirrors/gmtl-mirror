@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Matrix_float_4_4.cpp,v $
- * Date modified: $Date: 2005-05-12 19:35:54 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2005-06-03 20:34:27 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -33,6 +33,7 @@
 #include <gmtl-wrappers.h>
 #include <gmtl-getData-wrappers.h>
 #include <gmtl-array-wrappers.h>
+#include <gmtl-callable-wrappers.h>
 #include <gmtl-pickle.h>
 
 // Using =======================================================================
@@ -53,8 +54,11 @@ void _Export_Matrix_float_4_4()
         .def("isError", &gmtl::Matrix<float,4,4>::isError)
         .def("setError", &gmtl::Matrix<float,4,4>::setError)
         .def("__getitem__", (gmtl::Matrix<float,4,4>::RowAccessor (gmtl::Matrix<float,4,4>::*)(const unsigned) )&gmtl::Matrix<float,4,4>::operator[])
+        .def("__call__", (float (*)(gmtl::Matrix<float,4,4>*, const unsigned int, const unsigned int))&gmtlWrappers::callable)
         .def_pickle(gmtlPickle::Matrix44_pickle<float>())
         .def(self * self)
+        .def(self * gmtl::Point3f())
+        .def(self * gmtl::Vec3f())
         .def(self *= self)
 //        .def(self * float())
         .def(self *= float())
