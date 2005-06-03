@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _gmtl_Math_h.cpp,v $
- * Date modified: $Date: 2005-06-03 02:11:50 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2005-06-03 17:12:51 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -55,28 +55,58 @@ namespace gmtlWrappers
    }
 }
 
+namespace
+{
+
+class Fake : public boost::noncopyable
+{
+};
+
+}
+
+
 // Module ======================================================================
 void _Export_gmtl_Math_h()
 {
-    def("sign", (int (*)(int)) &gmtl::Math::sign);
-    def("sign", (int (*)(float)) &gmtl::Math::sign);
-    def("sign", (int (*)(double)) &gmtl::Math::sign);
-    def("fastInvSqrt", &gmtl::Math::fastInvSqrt);
-    def("fastInvSqrt2", &gmtl::Math::fastInvSqrt2);
-    def("fastInvSqrt3", &gmtl::Math::fastInvSqrt3);
+    // Retained (temporarily) for backwards compatibility.
     def("deg2Rad", (double (*)(double))&gmtl::Math::deg2Rad);
     def("deg2Rad", (float (*)(float))&gmtl::Math::deg2Rad);
     def("rad2Deg", (float (*)(float))&gmtl::Math::rad2Deg);
     def("rad2Deg", (double (*)(double))&gmtl::Math::rad2Deg);
-    def("factorial", (double (*)(double)) &gmtl::Math::factorial);
-    def("factorial", (float (*)(float)) &gmtl::Math::factorial);
-    def("factorial", (int (*)(int)) &gmtl::Math::factorial);
-    def("lerp",
-        (double (*)(const double&, const double&, const double&)) &gmtlWrappers::lerp);
-    def("lerp",
-        (float (*)(const float&, const float&, const float&)) &gmtlWrappers::lerp);
-    def("quadraticFormula",
-        (tuple (*)(const double&, const double&, const double&)) &gmtlWrappers::quadraticFormula);
-    def("quadraticFormula",
-        (tuple (*)(const float&, const float&, const float&)) &gmtlWrappers::quadraticFormula);
+
+    scope* gmtl_Math_scope = new scope(
+    class_< Fake, boost::noncopyable >("Math", no_init)
+        .def("sign", (int (*)(int)) &gmtl::Math::sign)
+        .def("sign", (int (*)(float)) &gmtl::Math::sign)
+        .def("sign", (int (*)(double)) &gmtl::Math::sign)
+        .def("fastInvSqrt", &gmtl::Math::fastInvSqrt)
+        .def("fastInvSqrt2", &gmtl::Math::fastInvSqrt2)
+        .def("fastInvSqrt3", &gmtl::Math::fastInvSqrt3)
+        .def("deg2Rad", (double (*)(double))&gmtl::Math::deg2Rad)
+        .def("deg2Rad", (float (*)(float))&gmtl::Math::deg2Rad)
+        .def("rad2Deg", (float (*)(float))&gmtl::Math::rad2Deg)
+        .def("rad2Deg", (double (*)(double))&gmtl::Math::rad2Deg)
+        .def("factorial", (double (*)(double)) &gmtl::Math::factorial)
+        .def("factorial", (float (*)(float)) &gmtl::Math::factorial)
+        .def("factorial", (int (*)(int)) &gmtl::Math::factorial)
+        .def("lerp",
+            (double (*)(const double&, const double&, const double&)) &gmtlWrappers::lerp)
+        .def("lerp",
+            (float (*)(const float&, const float&, const float&)) &gmtlWrappers::lerp)
+        .def("quadraticFormula",
+            (tuple (*)(const double&, const double&, const double&)) &gmtlWrappers::quadraticFormula)
+        .def("quadraticFormula",
+            (tuple (*)(const float&, const float&, const float&)) &gmtlWrappers::quadraticFormula)
+        .staticmethod("sign")
+        .staticmethod("fastInvSqrt")
+        .staticmethod("fastInvSqrt2")
+        .staticmethod("fastInvSqrt3")
+        .staticmethod("deg2Rad")
+        .staticmethod("rad2Deg")
+        .staticmethod("factorial")
+        .staticmethod("lerp")
+        .staticmethod("quadraticFormula")
+    );
+
+    delete gmtl_Math_scope;
 }
