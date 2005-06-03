@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-MatrixOps.h,v $
- * Date modified: $Date: 2004-05-25 16:59:56 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2005-06-03 22:02:23 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -87,6 +87,11 @@ namespace gmtl
                                        const gmtl::Matrix44f&);
    template gmtl::Matrix33f& transpose(gmtl::Matrix33f&,
                                        const gmtl::Matrix33f&);
+
+   template gmtl::Matrix44f& invertFull_GJ(gmtl::Matrix44f&,
+                                           const gmtl::Matrix44f&);
+   template gmtl::Matrix33f& invertFull_GJ(gmtl::Matrix33f&,
+                                           const gmtl::Matrix33f&);
 
    template gmtl::Matrix44f& invertFull(gmtl::Matrix44f&,
                                         const gmtl::Matrix44f&);
