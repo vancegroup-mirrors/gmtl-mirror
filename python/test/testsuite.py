@@ -9,8 +9,8 @@
 # 
 #  -----------------------------------------------------------------
 #  File:          $RCSfile: testsuite.py,v $
-#  Date modified: $Date: 2005-06-02 23:12:48 $
-#  Version:       $Revision: 1.2 $
+#  Date modified: $Date: 2005-06-03 14:40:07 $
+#  Version:       $Revision: 1.3 $
 #  -----------------------------------------------------------------
 # 
 # ********************************************************** ggt-head end
@@ -2382,101 +2382,6 @@ class MathTest(unittest.TestCase):
 
 class MatrixClassTest(unittest.TestCase):
    def testMatrixIdentity(self):
-      iters = 25000
-      use_value = 0.0
-
-      for iter in xrange(iters):
-         test_mat33 = gmtl.Matrix33f()
-         test_mat33.data[4] = 2.0
-         test_mat44 = gmtl.Matrix44f()
-         test_mat44.data[15] = 3.0
-
-         use_value = use_value + test_mat33.data[4] + test_mat44.data[15]
-
-      assert use_value > 0.0
-
-   def testTimingCopyConstructor(self):
-      src_mat33 = gmtl.Matrix33f()
-      src_mat33.data[5] = 2.0
-      src_mat44 = gmtl.Matrix44f()
-      src_mat44.data[15] = 3.0
-
-      iters = 25000
-      for iter in xrange(iters):
-         test_mat33 = gmtl.Matrix33f(src_mat33)
-         test_mat44 = gmtl.Matrix44f(src_mat44)
-
-         test_mat33.data[4] = 2.0
-         test_mat44.data[15] = 3.0
-
-   def testTimingOpEqual(self):
-      src_mat33 = gmtl.Matrix33f()
-      src_mat33.data[4] = 2.0
-      src_mat44 = gmtl.Matrix44f()
-      src_mat44.data[15] = 3.0
-
-      iters = 25000
-
-      test_mat33 = gmtl.Matrix33f()
-      test_mat44 = gmtl.Matrix44f()
-
-      for iter in xrange(iters):
-         test_mat33 = src_mat33
-         test_mat44 = src_mat44
-
-   def testTimingOpBracket(self):
-      iters = 25000
-      test_mat33 = gmtl.Matrix33f()
-      test_mat44 = gmtl.Matrix44f()
-
-      for iter in xrange(iters):
-         test_mat33[1][1] = 0.0
-         test_mat44[3][3] = 0.0
-
-   def testTimingSetPtr(self):
-      iters = 25000
-      test_mat33 = gmtl.Matrix33f()
-      test_mat44 = gmtl.Matrix44f()
-
-      for iter in xrange(iters):
-         test_mat33.set(gmtl.Matrix33f().getData())
-         test_mat44.set(gmtl.Matrix44f().getData())
-
-   def testTimingSetTransposePtr(self):
-      iters = 25000
-
-      test_mat33 = gmtl.Matrix33f()
-      test_mat44 = gmtl.Matrix44f()
-
-      for iter in xrange(iters):
-         test_mat33.setTranspose(gmtl.Matrix33f().getData())
-         test_mat44.setTranspose(gmtl.Matrix44f().getData())
-
-   def testTimingGetData(self):
-      iters = 25000
-
-      test_mat33 = gmtl.Matrix33f()
-      test_mat44 = gmtl.Matrix44f()
-      bok = 0.0
-      bokk = 0.0
-
-      for iter in xrange(iters):
-         temp2 = test_mat33.getData()
-         bok += temp2[3]
-         temp4 = test_mat44.getData()
-         bokk += temp4[15]
-
-   def testTimingSet(self):
-      iters = 25000
-
-      test_mat33 = gmtl.Matrix33f()
-      test_mat44 = gmtl.Matrix44f()
-
-      for iter in xrange(iters):
-         test_mat33.set(2, 3, 4, 5, 6, 7, 7, 10, 1451235)
-         test_mat44.set(2, 3, 4, 5, 6, 7, 7, 10, 1451235, 1, 2, 3, 1, 2, 3, 4)
-
-   def testMatrixIdentity(self):
       mat44 = gmtl.Matrix44f()
       assert mat44[0][0] == 1.0
       assert mat44[1][1] == 1.0
@@ -2540,10 +2445,13 @@ class MatrixClassTest(unittest.TestCase):
       test_mat = src_mat
       assert src_mat == test_mat
 
-   def testMatrixSetPtr(self):
-      mat44 = [0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0,
-               12.0, 13.0, 14.0, 15.0]
-      test_mat = gmtl.Matrix44f()
+   def __testMatrix44SetPtr(self, matType, dataType):
+      mat44 = [
+         dataType(0.0), dataType(1.0), dataType(2.0), dataType(3.0),
+         dataType(4.0), dataType(5.0), dataType(6.0), dataType(7.0),
+         dataType(8.0), dataType(9.0), dataType(10.0), dataType(11.0),
+         dataType(12.0), dataType(13.0), dataType(14.0), dataType(15.0)]
+      test_mat = matType()
       test_mat.set(mat44)
 
       assert test_mat[0][0] == 0
@@ -2563,8 +2471,13 @@ class MatrixClassTest(unittest.TestCase):
       assert test_mat[2][3] == 14
       assert test_mat[3][3] == 15
 
-      mat33 = [0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0]
-      test_mat = gmtl.Matrix33f()
+   def __testMatrix33SetPtr(self, matType, dataType):
+      mat33 = [
+         dataType(0.0), dataType(1.0), dataType(2.0),
+         dataType(3.0), dataType(4.0), dataType(5.0),
+         dataType(6.0), dataType(7.0), dataType(8.0)
+      ]
+      test_mat = matType()
       test_mat.set(mat33)
 
       assert test_mat[0][0] == 0
@@ -2577,10 +2490,18 @@ class MatrixClassTest(unittest.TestCase):
       assert test_mat[1][2] == 7
       assert test_mat[2][2] == 8
 
-   def testMatrixSetTransposePtr(self):
-      mat44 = [0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0,
-               12.0, 13.0, 14.0, 15.0]
-      test_mat = gmtl.Matrix44f()
+   def testMatrixSetPtr(self):
+      self.__testMatrix44SetPtr(gmtl.Matrix44f, float)
+      self.__testMatrix33SetPtr(gmtl.Matrix33f, float)
+
+   def __testMatrix44SetTransposePtr(self, matType, dataType):
+      mat44 = [
+         dataType(0.0), dataType(1.0), dataType(2.0), dataType(3.0),
+         dataType(4.0), dataType(5.0), dataType(6.0), dataType(7.0),
+         dataType(8.0), dataType(9.0), dataType(10.0), dataType(11.0),
+         dataType(12.0), dataType(13.0), dataType(14.0), dataType(15.0)
+      ]
+      test_mat = matType()
       test_mat.setTranspose(mat44)
 
       assert test_mat[0][0] == 0
@@ -2600,8 +2521,13 @@ class MatrixClassTest(unittest.TestCase):
       assert test_mat[3][2] == 14
       assert test_mat[3][3] == 15
 
-      mat33 = [0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0]
-      test_mat = gmtl.Matrix33f()
+   def __testMatrix33SetTransposePtr(self, matType, dataType):
+      mat33 = [
+         dataType(0.0), dataType(1.0), dataType(2.0),
+         dataType(3.0), dataType(4.0), dataType(5.0),
+         dataType(6.0), dataType(7.0), dataType(8.0)
+      ]
+      test_mat = matType()
       test_mat.setTranspose(mat33)
 
       assert test_mat[0][0] == 0
@@ -2613,6 +2539,10 @@ class MatrixClassTest(unittest.TestCase):
       assert test_mat[2][0] == 6
       assert test_mat[2][1] == 7
       assert test_mat[2][2] == 8
+
+   def testMatrixSetTransposePtr(self):
+      self.__testMatrix44SetTransposePtr(gmtl.Matrix44f, float)
+      self.__testMatrix33SetTransposePtr(gmtl.Matrix33f, float)
 
    def testMatrix44Creation(self):
       src_mat = gmtl.Matrix44f()
@@ -2654,6 +2584,102 @@ class MatrixClassTest(unittest.TestCase):
       assert src_mat[1][2] == 5
       assert src_mat[2][2] == 8
 
+class MatrixClassMetricTest(unittest.TestCase):
+   def testTimingDefaultConstructor(self):
+      iters = 25000
+      use_value = 0.0
+
+      for iter in xrange(iters):
+         test_mat33 = gmtl.Matrix33f()
+         test_mat33[1][1] = 2.0
+         test_mat44 = gmtl.Matrix44f()
+         test_mat44[3][3] = 3.0
+
+         use_value = use_value + test_mat33.data[4] + test_mat44.data[15]
+
+      assert use_value > 0.0
+
+   def testTimingCopyConstructor(self):
+      src_mat33 = gmtl.Matrix33f()
+      src_mat33[1][1] = 2.0
+      src_mat44 = gmtl.Matrix44f()
+      src_mat44[3][3] = 3.0
+
+      iters = 25000
+      for iter in xrange(iters):
+         test_mat33 = gmtl.Matrix33f(src_mat33)
+         test_mat44 = gmtl.Matrix44f(src_mat44)
+
+         test_mat33[1][1] = 2.0
+         test_mat44[3][3] = 3.0
+
+   def testTimingOpEqual(self):
+      src_mat33 = gmtl.Matrix33f()
+      src_mat33[1][1] = 2.0
+      src_mat44 = gmtl.Matrix44f()
+      src_mat44[3][3] = 3.0
+
+      iters = 25000
+
+      test_mat33 = gmtl.Matrix33f()
+      test_mat44 = gmtl.Matrix44f()
+
+      for iter in xrange(iters):
+         test_mat33 = src_mat33
+         test_mat44 = src_mat44
+
+   def testTimingOpBracket(self):
+      iters = 25000
+      test_mat33 = gmtl.Matrix33f()
+      test_mat44 = gmtl.Matrix44f()
+
+      for iter in xrange(iters):
+         test_mat33[1][1] = 0.0
+         test_mat44[3][3] = 0.0
+
+   def testTimingSetPtr(self):
+      iters = 25000
+      test_mat33 = gmtl.Matrix33f()
+      test_mat44 = gmtl.Matrix44f()
+
+      for iter in xrange(iters):
+         test_mat33.set(gmtl.Matrix33f().getData())
+         test_mat44.set(gmtl.Matrix44f().getData())
+
+   def testTimingSetTransposePtr(self):
+      iters = 25000
+
+      test_mat33 = gmtl.Matrix33f()
+      test_mat44 = gmtl.Matrix44f()
+
+      for iter in xrange(iters):
+         test_mat33.setTranspose(gmtl.Matrix33f().getData())
+         test_mat44.setTranspose(gmtl.Matrix44f().getData())
+
+   def testTimingGetData(self):
+      iters = 25000
+
+      test_mat33 = gmtl.Matrix33f()
+      test_mat44 = gmtl.Matrix44f()
+      bok = 0.0
+      bokk = 0.0
+
+      for iter in xrange(iters):
+         temp2 = test_mat33.getData()
+         bok += temp2[3]
+         temp4 = test_mat44.getData()
+         bokk += temp4[15]
+
+   def testTimingSet(self):
+      iters = 25000
+
+      test_mat33 = gmtl.Matrix33f()
+      test_mat44 = gmtl.Matrix44f()
+
+      for iter in xrange(iters):
+         test_mat33.set(2, 3, 4, 5, 6, 7, 7, 10, 1451235)
+         test_mat44.set(2, 3, 4, 5, 6, 7, 7, 10, 1451235, 1, 2, 3, 1, 2, 3, 4)
+
 def isEqual(v0, v1, tolerance = 0.001):
    return math.fabs(v0 - v1) <= tolerance
 
@@ -2684,8 +2710,9 @@ suite = unittest.TestSuite()
 #suite.addTests(map(IntersectionMetricTest, getTests(IntersectionMetricTest)))
 #suite.addTests(map(LineSegTest, getTests(LineSegTest)))
 #suite.addTests(map(LineSegMetricTest, getTests(LineSegMetricTest)))
-suite.addTests(map(MathTest, getTests(MathTest)))
-#suite.addTests(map(MatrixClassTest, getTests(MatrixClassTest)))
+#suite.addTests(map(MathTest, getTests(MathTest)))
+suite.addTests(map(MatrixClassTest, getTests(MatrixClassTest)))
+suite.addTests(map(MatrixClassMetricTest, getTests(MatrixClassMetricTest)))
 
 runner = unittest.TextTestRunner()
 runner.run(suite)
