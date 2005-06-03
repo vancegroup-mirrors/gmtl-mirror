@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Matrix_float_4_4.cpp,v $
- * Date modified: $Date: 2005-06-03 20:34:27 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2005-06-03 21:44:14 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -45,7 +45,7 @@ void _Export_Matrix_float_4_4()
     scope* gmtl_Matrix_float_4_4_scope = new scope(
     class_< gmtl::Matrix<float,4,4> >("Matrix44f", init<  >())
         .def(init< const gmtl::Matrix<float,4,4> & >())
-        .def_readwrite("mState", &gmtl::Matrix<float,4,4>::mState)
+        .def_readwrite("state", &gmtl::Matrix<float,4,4>::mState)
         .def("set", (void (gmtl::Matrix<float,4,4>::*)(float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float) )&gmtl::Matrix<float,4,4>::set)
         .def("set", (void (*)(gmtl::Matrix<float,4,4>*,list))&gmtlWrappers::Matrix_4_4_set)
         .def("setTranspose", (void (*)(gmtl::Matrix<float,4,4>*,list))&gmtlWrappers::Matrix_4_4_setTranspose)
