@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-Generate.h,v $
- * Date modified: $Date: 2005-06-03 15:07:10 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2005-06-03 22:51:39 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -136,9 +136,13 @@ namespace gmtl
    template gmtl::Matrix44d& setTrans(gmtl::Matrix44d&,
                                       const gmtl::VecBase<double, 3>&);
 
+   template gmtl::Matrix33f& setScale(gmtl::Matrix33f&, const gmtl::Vec2f&);
+   template gmtl::Matrix33d& setScale(gmtl::Matrix33d&, const gmtl::Vec2d&);
    template gmtl::Matrix44f& setScale(gmtl::Matrix44f&, const gmtl::Vec3f&);
    template gmtl::Matrix44d& setScale(gmtl::Matrix44d&, const gmtl::Vec3d&);
 
+   template gmtl::Matrix33f& setScale(gmtl::Matrix33f&, const float);
+   template gmtl::Matrix33d& setScale(gmtl::Matrix33d&, const double);
    template gmtl::Matrix44f& setScale(gmtl::Matrix44f&, const float);
    template gmtl::Matrix44d& setScale(gmtl::Matrix44d&, const double);
 
@@ -183,15 +187,10 @@ namespace gmtl
    template double makeZRot(const gmtl::Matrix33d&);
    template double makeZRot(const gmtl::Matrix44d&);
 
-   template gmtl::Matrix44f& setDirCos(gmtl::Matrix44f&, const gmtl::Vec3f&,
-                                       const gmtl::Vec3f&, const gmtl::Vec3f&,
-                                       const gmtl::Vec3f&, const gmtl::Vec3f&,
-                                       const gmtl::Vec3f&);
-   template gmtl::Matrix44d& setDirCos(gmtl::Matrix44d&, const gmtl::Vec3d&,
-                                       const gmtl::Vec3d&, const gmtl::Vec3d&,
-                                       const gmtl::Vec3d&, const gmtl::Vec3d&,
-                                       const gmtl::Vec3d&);
-
+   template gmtl::Matrix33f& setAxes(gmtl::Matrix33f&, const gmtl::Vec3f&,
+                                       const gmtl::Vec3f&, const gmtl::Vec3f&);
+   template gmtl::Matrix33d& setAxes(gmtl::Matrix33d&, const gmtl::Vec3d&,
+                                       const gmtl::Vec3d&, const gmtl::Vec3d&);
    template gmtl::Matrix44f& setAxes(gmtl::Matrix44f&, const gmtl::Vec3f&,
                                        const gmtl::Vec3f&, const gmtl::Vec3f&);
    template gmtl::Matrix44d& setAxes(gmtl::Matrix44d&, const gmtl::Vec3d&,
