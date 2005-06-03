@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _gmtl_Math_h.cpp,v $
- * Date modified: $Date: 2005-06-02 23:10:49 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2005-06-03 02:11:20 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -80,11 +80,11 @@ void _Export_gmtl_Math_h()
     def("factorial", (float (*)(float)) &gmtl::Math::factorial);
     def("factorial", (int (*)(int)) &gmtl::Math::factorial);
     def("lerp",
-        (double (gmtlWrappers::*)(const double&, const double&, const double&)) &gmtlWrappers::lerp);
+        (double (*)(const double&, const double&, const double&)) &gmtlWrappers::lerp);
     def("lerp",
-        (float (gmtlWrappers::*)(const float&, const float&, const float&)) &gmtlWrappers::lerp);
+        (float (*)(const float&, const float&, const float&)) &gmtlWrappers::lerp);
     def("quadraticFormula",
-        (tuple (gmtlWrappers::*)(const double&, const double&, const double&)) &gmtlWrappers::quadraticFormula);
+        (tuple (*)(const double&, const double&, const double&)) &gmtlWrappers::quadraticFormula);
     def("quadraticFormula",
-        (tuple (gmtlWrappers::*)(const float&, const float&, const float&)) &gmtlWrappers::quadraticFormula);
+        (tuple (*)(const float&, const float&, const float&)) &gmtlWrappers::quadraticFormula);
 }
