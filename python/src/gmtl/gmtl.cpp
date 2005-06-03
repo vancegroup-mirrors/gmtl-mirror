@@ -19,14 +19,15 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl.cpp,v $
- * Date modified: $Date: 2005-06-03 15:07:11 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2005-06-03 15:39:05 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
 
 // Include =====================================================================
 #include <boost/python.hpp>
+#include <gmtl/Version.h>
 
 // Exports =====================================================================
 void _Export_AABox_double();
@@ -122,6 +123,8 @@ void _Export_gmtl_wrappers_h();
 // Module ======================================================================
 BOOST_PYTHON_MODULE(gmtl)
 {
+    boost::python::scope().attr("__version__") = gmtl::getVersion();
+
     _Export_AABox_double();
     _Export_AABox_float();
     _Export_Coord_gmtl_Vec_double_3_gmtl_AxisAngle_double();
