@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _gmtl_PlaneOps_h.cpp,v $
- * Date modified: $Date: 2003-08-30 17:22:10 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2005-06-04 18:53:49 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -45,6 +45,8 @@ void _Export_gmtl_PlaneOps_h()
 {
     def("findNearestPt", (float (*)(const gmtl::Plane<float> &, const gmtl::Point<float,3> &, gmtl::Point<float,3> &))&gmtl::findNearestPt);
     def("findNearestPt", (double (*)(const gmtl::Plane<double> &, const gmtl::Point<double,3> &, gmtl::Point<double,3> &))&gmtl::findNearestPt);
+    def("reflect", (void (*)(gmtl::Point<float,3> &, const gmtl::Plane<float> &, const gmtl::Point<float,3> &))&gmtl::reflect);
+    def("reflect", (void (*)(gmtl::Point<double,3> &, const gmtl::Plane<double> &, const gmtl::Point<double,3> &))&gmtl::reflect);
     def("distance", (double (*)(const gmtl::Plane<double> &, const gmtl::Point<double,3> &))&gmtl::distance);
     def("distance", (float (*)(const gmtl::Plane<float> &, const gmtl::Point<float,3> &))&gmtl::distance);
     def("whichSide", (gmtl::PlaneSide (*)(const gmtl::Plane<double> &, const gmtl::Point<double,3> &))&gmtl::whichSide);
