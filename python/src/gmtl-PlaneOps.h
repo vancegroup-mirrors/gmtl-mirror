@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-PlaneOps.h,v $
- * Date modified: $Date: 2003-08-30 17:22:10 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2005-06-04 18:53:49 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -40,6 +40,8 @@
 // needed for Boost.Python to do its thing.
 
 #include <gmtl/Plane.h>
+#include <gmtl/Point.h>
+#include <gmtl/VecOps.h>
 #include <gmtl/PlaneOps.h>
 
 
@@ -62,6 +64,11 @@ namespace gmtl
                                 gmtl::Point3f&);
    template double findNearestPt(const gmtl::Planed&, const gmtl::Point3d&,
                                  gmtl::Point3d&);
+
+   template void reflect(gmtl::Point3f&, const gmtl::Planef&,
+                         const gmtl::Point3f&);
+   template void reflect(gmtl::Point3d&, const gmtl::Planed&,
+                         const gmtl::Point3d&);
 
    template bool isEqual(const gmtl::Planef&, const gmtl::Planef&,
                          const float&);
