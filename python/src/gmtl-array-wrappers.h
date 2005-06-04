@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-array-wrappers.h,v $
- * Date modified: $Date: 2005-06-04 19:35:29 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2005-06-04 19:45:38 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -40,14 +40,15 @@
 #include <gmtl/Matrix.h>
 #include <gmtl/VecBase.h>
 
+
 namespace gmtlWrappers
 {
-   template<typename T>
-   void Matrix_3_3_set(gmtl::Matrix<T, 3, 3>* m, boost::python::list pyData)
+   template<typename T, unsigned int ROWS, unsigned int COLS>
+   void Matrix_set(gmtl::Matrix<T, ROWS, COLS>* m, boost::python::list pyData)
    {
-      T gmtl_data[9];
+      T gmtl_data[ROWS * COLS];
 
-      for ( int i = 0; i < 9; ++i )
+      for ( unsigned int i = 0; i < ROWS * COLS; ++i )
       {
          gmtl_data[i] = boost::python::extract<T>(pyData[i]);
       }
@@ -55,16 +56,16 @@ namespace gmtlWrappers
       m->set(gmtl_data);
    }
 
-   template void Matrix_3_3_set(gmtl::Matrix<float, 3, 3>*,
-                                boost::python::list);
+   template void Matrix_set(gmtl::Matrix<float, 3, 3>*, boost::python::list);
+   template void Matrix_set(gmtl::Matrix<float, 4, 4>*, boost::python::list);
 
-   template<typename T>
-   void Matrix_3_3_setTranspose(gmtl::Matrix<T, 3, 3>* m,
-                                boost::python::list pyData)
+   template<typename T, unsigned int ROWS, unsigned int COLS>
+   void Matrix_setTranspose(gmtl::Matrix<T, ROWS, COLS>* m,
+                            boost::python::list pyData)
    {
-      T gmtl_data[9];
+      T gmtl_data[ROWS * COLS];
 
-      for ( int i = 0; i < 9; ++i )
+      for ( unsigned int i = 0; i < ROWS * COLS; ++i )
       {
          gmtl_data[i] = boost::python::extract<T>(pyData[i]);
       }
@@ -72,41 +73,10 @@ namespace gmtlWrappers
       m->setTranspose(gmtl_data);
    }
 
-   template void Matrix_3_3_setTranspose(gmtl::Matrix<float, 3, 3>*,
-                                         boost::python::list);
-
-   template<typename T>
-   void Matrix_4_4_set(gmtl::Matrix<T, 4, 4>* m, boost::python::list pyData)
-   {
-      T gmtl_data[16];
-
-      for ( int i = 0; i < 16; ++i )
-      {
-         gmtl_data[i] = boost::python::extract<T>(pyData[i]);
-      }
-
-      m->set(gmtl_data);
-   }
-
-   template void Matrix_4_4_set(gmtl::Matrix<float, 4, 4>*,
-                                boost::python::list);
-
-   template<typename T>
-   void Matrix_4_4_setTranspose(gmtl::Matrix<T, 4, 4>* m,
-                                boost::python::list pyData)
-   {
-      T gmtl_data[16];
-
-      for ( int i = 0; i < 16; ++i )
-      {
-         gmtl_data[i] = boost::python::extract<T>(pyData[i]);
-      }
-
-      m->setTranspose(gmtl_data);
-   }
-
-   template void Matrix_4_4_setTranspose(gmtl::Matrix<float, 4, 4>*,
-                                         boost::python::list);
+   template void Matrix_setTranspose(gmtl::Matrix<float, 3, 3>*,
+                                     boost::python::list);
+   template void Matrix_setTranspose(gmtl::Matrix<float, 4, 4>*,
+                                     boost::python::list);
 
    template<typename T, unsigned int SIZE>
    void VecBase_set(gmtl::VecBase<T, SIZE>* v, boost::python::list pyData)
