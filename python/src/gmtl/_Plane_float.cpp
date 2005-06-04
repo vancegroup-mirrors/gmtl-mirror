@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Plane_float.cpp,v $
- * Date modified: $Date: 2004-10-27 19:01:33 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2005-06-04 17:13:46 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -44,8 +44,8 @@ void _Export_Plane_float()
         .def(init< const gmtl::Vec<float,3> &, const gmtl::Point<float,3> & >())
         .def(init< const gmtl::Vec<float,3> &, const float & >())
         .def(init< const gmtl::Plane<float> & >())
-        .def_readwrite("mNorm", &gmtl::Plane<float>::mNorm)
-        .def_readwrite("mOffset", &gmtl::Plane<float>::mOffset)
+        .def_readwrite("norm", &gmtl::Plane<float>::mNorm)
+        .def_readwrite("offset", &gmtl::Plane<float>::mOffset)
         .def("getNormal", &gmtl::Plane<float>::getNormal, return_value_policy< copy_const_reference >())
         .def("setNormal", &gmtl::Plane<float>::setNormal)
         .def("getOffset", &gmtl::Plane<float>::getOffset, return_value_policy< copy_const_reference >())

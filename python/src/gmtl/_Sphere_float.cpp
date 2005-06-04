@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Sphere_float.cpp,v $
- * Date modified: $Date: 2004-10-27 19:01:33 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2005-06-04 17:13:46 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -42,8 +42,8 @@ void _Export_Sphere_float()
     class_< gmtl::Sphere<float> >("Spheref", init<  >())
         .def(init< const gmtl::Point<float,3> &, const float & >())
         .def(init< const gmtl::Sphere<float> & >())
-        .def_readwrite("mCenter", &gmtl::Sphere<float>::mCenter)
-        .def_readwrite("mRadius", &gmtl::Sphere<float>::mRadius)
+        .def_readwrite("center", &gmtl::Sphere<float>::mCenter)
+        .def_readwrite("radius", &gmtl::Sphere<float>::mRadius)
         .def("getCenter", &gmtl::Sphere<float>::getCenter, return_value_policy< copy_const_reference >())
         .def("getRadius", &gmtl::Sphere<float>::getRadius, return_value_policy< copy_const_reference >())
         .def("setCenter", &gmtl::Sphere<float>::setCenter)

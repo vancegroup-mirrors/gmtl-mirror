@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _AABox_double.cpp,v $
- * Date modified: $Date: 2004-10-27 19:01:32 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2005-06-04 17:13:46 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -42,9 +42,9 @@ void _Export_AABox_double()
     class_< gmtl::AABox<double> >("AABoxd", init<  >())
         .def(init< const gmtl::Point<double,3> &, const gmtl::Point<double,3> & >())
         .def(init< const gmtl::AABox<double> & >())
-        .def_readwrite("mMin", &gmtl::AABox<double>::mMin)
-        .def_readwrite("mMax", &gmtl::AABox<double>::mMax)
-        .def_readwrite("mEmpty", &gmtl::AABox<double>::mEmpty)
+        .def_readwrite("min", &gmtl::AABox<double>::mMin)
+        .def_readwrite("max", &gmtl::AABox<double>::mMax)
+        .def_readwrite("empty", &gmtl::AABox<double>::mEmpty)
         .def("getMin", &gmtl::AABox<double>::getMin, return_value_policy< copy_const_reference >())
         .def("getMax", &gmtl::AABox<double>::getMax, return_value_policy< copy_const_reference >())
         .def("isEmpty", &gmtl::AABox<double>::isEmpty)

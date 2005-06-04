@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Sphere_double.cpp,v $
- * Date modified: $Date: 2004-10-27 19:01:33 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2005-06-04 17:13:46 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -42,8 +42,8 @@ void _Export_Sphere_double()
     class_< gmtl::Sphere<double> >("Sphered", init<  >())
         .def(init< const gmtl::Point<double,3> &, const double & >())
         .def(init< const gmtl::Sphere<double> & >())
-        .def_readwrite("mCenter", &gmtl::Sphere<double>::mCenter)
-        .def_readwrite("mRadius", &gmtl::Sphere<double>::mRadius)
+        .def_readwrite("center", &gmtl::Sphere<double>::mCenter)
+        .def_readwrite("radius", &gmtl::Sphere<double>::mRadius)
         .def("getCenter", &gmtl::Sphere<double>::getCenter, return_value_policy< copy_const_reference >())
         .def("getRadius", &gmtl::Sphere<double>::getRadius, return_value_policy< copy_const_reference >())
         .def("setCenter", &gmtl::Sphere<double>::setCenter)

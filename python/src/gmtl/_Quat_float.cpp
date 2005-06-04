@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Quat_float.cpp,v $
- * Date modified: $Date: 2004-10-27 19:01:33 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2005-06-04 17:13:46 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -43,7 +43,6 @@ void _Export_Quat_float()
     class_< gmtl::Quat<float> >("Quatf", init<  >())
         .def(init< const float, const float, const float, const float >())
         .def(init< const gmtl::Quat<float> & >())
-        .def_readwrite("mData", &gmtl::Quat<float>::mData)
         .def("set", &gmtl::Quat<float>::set)
         .def("get", &gmtl::Quat<float>::get)
         .def("getData", (tuple (*)(gmtl::Quat<float>*)) &gmtlWrappers::Quat_getData)
