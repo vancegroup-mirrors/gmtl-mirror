@@ -9,8 +9,8 @@
 #
 #  -----------------------------------------------------------------
 #  File:          $RCSfile: testsuite.py,v $
-#  Date modified: $Date: 2005-06-04 15:26:43 $
-#  Version:       $Revision: 1.6 $
+#  Date modified: $Date: 2005-06-04 15:49:24 $
+#  Version:       $Revision: 1.7 $
 #  -----------------------------------------------------------------
 #
 # ********************************************************** ggt-head end
@@ -39,6 +39,7 @@ import math
 import unittest
 import gmtl
 import random
+import types
 
 
 class AABoxContainTest(unittest.TestCase):
@@ -4774,45 +4775,21 @@ class MatrixStateTrackingTest(unittest.TestCase):
 def isEqual(v0, v1, tolerance = 0.001):
    return math.fabs(v0 - v1) <= tolerance
 
-def getTimingTests(testCase):
-   return [m for m in testCase.__dict__.keys() if m.find('Timing') != -1]
-
 def getTests(testCase):
-#   timing_tests = getTimingTests(testCase)
-   all_tests = [m for m in testCase.__dict__.keys() if m.startswith('test')]
-#   for t in timing_tests:
-#      all_tests.remove(t)
-
-   return all_tests
+   return [m for m in testCase.__dict__.keys() if m.startswith('test')]
 
 random.seed()
 
 suite = unittest.TestSuite()
-suite.addTests(map(AABoxContainTest, getTests(AABoxContainTest)))
-suite.addTests(map(AABoxOpsTest, getTests(AABoxOpsTest)))
-suite.addTests(map(AABoxTest, getTests(AABoxTest)))
-suite.addTests(map(AxisAngleClassTest, getTests(AxisAngleClassTest)))
-suite.addTests(map(AxisAngleCompareTest, getTests(AxisAngleCompareTest)))
-suite.addTests(map(ConvertTest, getTests(ConvertTest)))
-suite.addTests(map(CoordClassTest, getTests(CoordClassTest)))
-suite.addTests(map(CoordCompareTest, getTests(CoordCompareTest)))
-suite.addTests(map(CoordGenTest, getTests(CoordGenTest)))
-suite.addTests(map(EulerAngleClassTest, getTests(EulerAngleClassTest)))
-suite.addTests(map(EulerAngleCompareTest, getTests(EulerAngleCompareTest)))
-suite.addTests(map(IntersectionTest, getTests(IntersectionTest)))
-suite.addTests(map(IntersectionMetricTest, getTests(IntersectionMetricTest)))
-suite.addTests(map(LineSegTest, getTests(LineSegTest)))
-suite.addTests(map(LineSegMetricTest, getTests(LineSegMetricTest)))
-suite.addTests(map(MathTest, getTests(MathTest)))
-suite.addTests(map(MatrixClassTest, getTests(MatrixClassTest)))
-suite.addTests(map(MatrixClassMetricTest, getTests(MatrixClassMetricTest)))
-suite.addTests(map(MatrixCompareTest, getTests(MatrixCompareTest)))
-suite.addTests(map(MatrixCompareMetricTest, getTests(MatrixCompareMetricTest)))
-suite.addTests(map(MatrixGenTest, getTests(MatrixGenTest)))
-suite.addTests(map(MatrixGenMetricTest, getTests(MatrixGenMetricTest)))
-suite.addTests(map(MatrixOpsTest, getTests(MatrixOpsTest)))
-suite.addTests(map(MatrixOpsMetricTest, getTests(MatrixOpsMetricTest)))
-suite.addTests(map(MatrixStateTrackingTest, getTests(MatrixStateTrackingTest)))
+metric_suite = unittest.TestSuite()
+
+for k in locals().keys():
+   v = locals()[k]
+   if type(v) is types.ClassType:
+      if k.find('Metric') != -1:
+         metric_suite.addTests(map(v, getTests(v)))
+      else:
+         suite.addTests(map(v, getTests(v)))
 
 runner = unittest.TextTestRunner()
 runner.run(suite)
