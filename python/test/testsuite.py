@@ -9,8 +9,8 @@
 #
 #  -----------------------------------------------------------------
 #  File:          $RCSfile: testsuite.py,v $
-#  Date modified: $Date: 2005-06-03 22:52:43 $
-#  Version:       $Revision: 1.5 $
+#  Date modified: $Date: 2005-06-04 15:26:43 $
+#  Version:       $Revision: 1.6 $
 #  -----------------------------------------------------------------
 #
 # ********************************************************** ggt-head end
@@ -63,20 +63,6 @@ class AABoxContainTest(unittest.TestCase):
       pt_on_surf = gmtl.Point3f(1.0, 0.0, 0.0)
       assert gmtl.isInVolume(box2, pt_on_surf)
 
-   def testTimingIsInVolumePt(self):
-      box = gmtl.AABoxf(gmtl.Point3f(-1.0, -1.0, -1.0),
-                        gmtl.Point3f(1.0, 1.0, 1.0))
-      origin = gmtl.Point3f()
-
-      iters = 400000
-      use_value = 0.0
-
-      for iter in xrange(iters):
-         gmtl.isInVolume(box, origin)
-         use_value = use_value + box.mMin[0] + 2.0
-
-      assert use_value > 0.0
-
    def testIsInVolumeAABox(self):
       # Test valid box against empty box.
       empty = gmtl.AABoxf()
@@ -99,21 +85,6 @@ class AABoxContainTest(unittest.TestCase):
 
       # Test valid box against itself
       assert gmtl.isInVolume(box, box)
-
-   def testTimingIsInVolumeAABox(self):
-      box = gmtl.AABoxf(gmtl.Point3f(-1.0, -1.0, -1.0),
-                        gmtl.Point3f(1.0, 1.0, 1.0))
-      box2 = gmtl.AABoxf(gmtl.Point3f(0.0, 0.0, 0.0),
-                         gmtl.Point3f(-0.5, -0.5, -0.5))
-
-      iters = 400000
-      use_value = 0.0
-
-      for iter in xrange(iters):
-         gmtl.isInVolume(box, box2)
-         use_value = use_value + box.mMin[0] + 2.0
-
-      assert use_value > 0.0
 
    def testExtendVolumePt(self):
       # Test empty box and point.
@@ -143,20 +114,6 @@ class AABoxContainTest(unittest.TestCase):
       assert not result.isEmpty()
       assert result.getMin() == expMin
       assert result.getMax() == expMax
-
-   def testTimingExtendVolumePt(self):
-      box = gmtl.AABoxf(gmtl.Point3f(-1.0, -1.0, -1.0),
-                        gmtl.Point3f(1.0, 1.0, 1.0))
-      origin = gmtl.Point3f()
-
-      iters = 400000
-      use_value = 0.0
-
-      for iter in xrange(iters):
-         gmtl.extendVolume(box, origin)
-         use_value = use_value + box.mMin[0] + 2.0
-
-      assert use_value > 0.0
 
    def testExtendVolumeAABox(self):
       empty = gmtl.AABoxf()
@@ -197,6 +154,62 @@ class AABoxContainTest(unittest.TestCase):
       assert result.getMin() == expMin
       assert result.getMax() == expMax
 
+   def testMakeVolumeSphere(self):
+      sph = gmtl.Spheref(gmtl.Point3f(1.0, 1.0, 1.0), 2.0)
+      box = gmtl.AABoxf()
+
+      expected_min = gmtl.Point3f(-1.0, -1.0, -1.0)
+      expected_max = gmtl.Point3f(3.0, 3.0, 3.0)
+
+      gmtl.makeVolume(box, sph)
+      assert box.getMin() == expected_min
+      assert box.getMax() == expected_max
+      assert not box.isEmpty()
+
+class AABoxContainMetricTest(unittest.TestCase):
+   def testTimingIsInVolumePt(self):
+      box = gmtl.AABoxf(gmtl.Point3f(-1.0, -1.0, -1.0),
+                        gmtl.Point3f(1.0, 1.0, 1.0))
+      origin = gmtl.Point3f()
+
+      iters = 400000
+      use_value = 0.0
+
+      for iter in xrange(iters):
+         gmtl.isInVolume(box, origin)
+         use_value = use_value + box.mMin[0] + 2.0
+
+      assert use_value > 0.0
+
+   def testTimingIsInVolumeAABox(self):
+      box = gmtl.AABoxf(gmtl.Point3f(-1.0, -1.0, -1.0),
+                        gmtl.Point3f(1.0, 1.0, 1.0))
+      box2 = gmtl.AABoxf(gmtl.Point3f(0.0, 0.0, 0.0),
+                         gmtl.Point3f(-0.5, -0.5, -0.5))
+
+      iters = 400000
+      use_value = 0.0
+
+      for iter in xrange(iters):
+         gmtl.isInVolume(box, box2)
+         use_value = use_value + box.mMin[0] + 2.0
+
+      assert use_value > 0.0
+
+   def testTimingExtendVolumePt(self):
+      box = gmtl.AABoxf(gmtl.Point3f(-1.0, -1.0, -1.0),
+                        gmtl.Point3f(1.0, 1.0, 1.0))
+      origin = gmtl.Point3f()
+
+      iters = 400000
+      use_value = 0.0
+
+      for iter in xrange(iters):
+         gmtl.extendVolume(box, origin)
+         use_value = use_value + box.mMin[0] + 2.0
+
+      assert use_value > 0.0
+
    def testTimingExtendVolumeAABox(self):
       box = gmtl.AABoxf(gmtl.Point3f(-1.0, -1.0, -1.0),
                         gmtl.Point3f(1.0, 1.0, 1.0))
@@ -211,18 +224,6 @@ class AABoxContainTest(unittest.TestCase):
          use_value = use_value + box.mMin[0] + 2.0
 
       assert use_value > 0.0
-
-   def testMakeVolumeSphere(self):
-      sph = gmtl.Spheref(gmtl.Point3f(1.0, 1.0, 1.0), 2.0)
-      box = gmtl.AABoxf()
-
-      expected_min = gmtl.Point3f(-1.0, -1.0, -1.0)
-      expected_max = gmtl.Point3f(3.0, 3.0, 3.0)
-
-      gmtl.makeVolume(box, sph)
-      assert box.getMin() == expected_min
-      assert box.getMax() == expected_max
-      assert not box.isEmpty()
 
 class AABoxOpsTest(unittest.TestCase):
    def testEqualityCompare(self):
@@ -266,6 +267,20 @@ class AABoxOpsTest(unittest.TestCase):
       assert box1 != box2
       assert not box1 == box2
 
+   def testIsEqual(self):
+      box = gmtl.AABoxf(gmtl.Point3f(-1.0, -2.0, -3.0),
+                        gmtl.Point3f(4.0, 5.0, 6.0))
+      bok = gmtl.AABoxf(gmtl.Point3f(-1.0, -2.0, -3.0),
+                        gmtl.Point3f(4.0, 5.0, 6.0))
+      mok = gmtl.AABoxf(gmtl.Point3f(-1.0, -2.0, -3.0),
+                        gmtl.Point3f(4.0, 5.0, 7.0))
+      assert gmtl.isEqual(bok, box, 0.0001)
+      assert bok == box
+      assert bok != mok
+      assert not gmtl.isEqual(bok, mok, 0.0001)
+      assert gmtl.isEqual(bok, mok, 1.0001)
+
+class AABoxOpsMetricTest(unittest.TestCase):
    def testTimingEqualityCompare(self):
       box1 = gmtl.AABoxf(gmtl.Point3f(-1.0, -1.0, -1.0),
                          gmtl.Point3f(1.0, 1.0, 1.0))
@@ -289,19 +304,6 @@ class AABoxOpsTest(unittest.TestCase):
 
       assert true_count > 0
 
-   def testIsEqual(self):
-      box = gmtl.AABoxf(gmtl.Point3f(-1.0, -2.0, -3.0),
-                        gmtl.Point3f(4.0, 5.0, 6.0))
-      bok = gmtl.AABoxf(gmtl.Point3f(-1.0, -2.0, -3.0),
-                        gmtl.Point3f(4.0, 5.0, 6.0))
-      mok = gmtl.AABoxf(gmtl.Point3f(-1.0, -2.0, -3.0),
-                        gmtl.Point3f(4.0, 5.0, 7.0))
-      assert gmtl.isEqual(bok, box, 0.0001)
-      assert bok == box
-      assert bok != mok
-      assert not gmtl.isEqual(bok, mok, 0.0001)
-      assert gmtl.isEqual(bok, mok, 1.0001)
-
    def testTimingIsEqual(self):
       pass
 
@@ -313,16 +315,6 @@ class AABoxTest(unittest.TestCase):
       assert box.mMin == zeroPoint
       assert box.mMax == zeroPoint
       assert box.mEmpty
-
-   def testTimingCreation(self):
-      iters = 400000
-      use_value = 0.0
-
-      for iter in xrange(iters):
-         box = gmtl.AABoxf()
-         use_value = use_value + box.mMin[0] + 1.0
-
-      assert use_value > 0.0
 
    def testCopyConstructor(self):
       box = gmtl.AABoxf()
@@ -336,6 +328,58 @@ class AABoxTest(unittest.TestCase):
       assert box_copy.mMax == gmtl.Point3f( 2.0,  4.0,  8.0)
       assert box_copy.mEmpty == False
 
+   def testConstructors(self):
+      box = gmtl.AABoxf(gmtl.Point3f(1.0, 2.0, 3.0),
+                        gmtl.Point3f(4.0, 5.0, 6.0))
+      assert box.mMin == gmtl.Point3f(1.0, 2.0, 3.0)
+      assert box.mMax == gmtl.Point3f(4.0, 5.0, 6.0)
+      assert box.mEmpty == False
+
+   def testGetMin(self):
+      amin = gmtl.Point3f(-1.0, -2.0, -3.0)
+      box = gmtl.AABoxf(amin, gmtl.Point3f())
+      assert box.getMin() == amin
+
+   def testGetMax(self):
+      amax = gmtl.Point3f(1.0, 2.0, 3.0)
+      box = gmtl.AABoxf(gmtl.Point3f(), amax)
+      assert box.getMax() == amax
+
+   def testIsEmpty(self):
+      box = gmtl.AABoxf()
+      box2 = gmtl.AABoxf(gmtl.Point3f(-1.0, -2.0, -3.0),
+                         gmtl.Point3f(1.0, 2.0, 3.0))
+      assert box.isEmpty() == True
+      assert box2.isEmpty() == False
+
+   def testSetMin(self):
+      box = gmtl.AABoxf()
+      amin = gmtl.Point3f(-2.0, -4.0, -1.0)
+      box.setMin(amin)
+      assert box.getMin() == amin
+
+   def testSetMax(self):
+      box = gmtl.AABoxf()
+      amax = gmtl.Point3f(2.0, 4.0, 1.0)
+      box.setMax(amax)
+      assert box.getMax() == amax
+
+   def testSetEmpty(self):
+      box = gmtl.AABoxf()
+      box.setEmpty(False)
+      assert box.isEmpty() == False
+
+class AABoxMetricTest(unittest.TestCase):
+   def testTimingCreation(self):
+      iters = 400000
+      use_value = 0.0
+
+      for iter in xrange(iters):
+         box = gmtl.AABoxf()
+         use_value = use_value + box.mMin[0] + 1.0
+
+      assert use_value > 0.0
+
    def testTimingCopyConstruct(self):
       iters = 400000
       box2 = gmtl.AABoxf()
@@ -348,13 +392,6 @@ class AABoxTest(unittest.TestCase):
 
       assert use_value > 0.0
 
-   def testConstructors(self):
-      box = gmtl.AABoxf(gmtl.Point3f(1.0, 2.0, 3.0),
-                        gmtl.Point3f(4.0, 5.0, 6.0))
-      assert box.mMin == gmtl.Point3f(1.0, 2.0, 3.0)
-      assert box.mMax == gmtl.Point3f(4.0, 5.0, 6.0)
-      assert box.mEmpty == False
-
    def testTimingConstructors(self):
       iters = 400000
       use_value = 0.0
@@ -365,11 +402,6 @@ class AABoxTest(unittest.TestCase):
          use_value += box2.mMin[0]
 
       assert use_value > 0.0
-
-   def testGetMin(self):
-      amin = gmtl.Point3f(-1.0, -2.0, -3.0)
-      box = gmtl.AABoxf(amin, gmtl.Point3f())
-      assert box.getMin() == amin
 
    def testTimingGetMin(self):
       amin = gmtl.Point3f(-1.0, -2.0, -3.0)
@@ -384,11 +416,6 @@ class AABoxTest(unittest.TestCase):
 
       assert use_value > 0.0
 
-   def testGetMax(self):
-      amax = gmtl.Point3f(1.0, 2.0, 3.0)
-      box = gmtl.AABoxf(gmtl.Point3f(), amax)
-      assert box.getMax() == amax
-
    def testTimingGetMax(self):
       amax = gmtl.Point3f(1.0, 2.0, 3.0)
       box = gmtl.AABoxf(gmtl.Point3f(), amax)
@@ -402,13 +429,6 @@ class AABoxTest(unittest.TestCase):
 
       assert use_value > 0.0
 
-   def testIsEmpty(self):
-      box = gmtl.AABoxf()
-      box2 = gmtl.AABoxf(gmtl.Point3f(-1.0, -2.0, -3.0),
-                         gmtl.Point3f(1.0, 2.0, 3.0))
-      assert box.isEmpty() == True
-      assert box2.isEmpty() == False
-
    def testTimingIsEmpty(self):
       box = gmtl.AABoxf()
 
@@ -421,12 +441,6 @@ class AABoxTest(unittest.TestCase):
 
       use_value > 0
 
-   def testSetMin(self):
-      box = gmtl.AABoxf()
-      amin = gmtl.Point3f(-2.0, -4.0, -1.0)
-      box.setMin(amin)
-      assert box.getMin() == amin
-
    def testTimingSetMin(self):
       box = gmtl.AABoxf()
       amin = gmtl.Point3f()
@@ -437,12 +451,6 @@ class AABoxTest(unittest.TestCase):
          amin.set(float(iter), float(iter), float(iter))
          box.setMin(amin)
 
-   def testSetMax(self):
-      box = gmtl.AABoxf()
-      amax = gmtl.Point3f(2.0, 4.0, 1.0)
-      box.setMax(amax)
-      assert box.getMax() == amax
-
    def testTimingSetMax(self):
       box = gmtl.AABoxf()
       amax = gmtl.Point3f()
@@ -452,11 +460,6 @@ class AABoxTest(unittest.TestCase):
       for iter in xrange(iters):
          amax.set(float(iter), float(iter), float(iter))
          box.setMax(amax)
-
-   def testSetEmpty(self):
-      box = gmtl.AABoxf()
-      box.setEmpty(False)
-      assert box.isEmpty() == False
 
    def setTimingSetEmpty(self):
       box = gmtl.AABoxf()
@@ -511,6 +514,7 @@ class AxisAngleClassTest(unittest.TestCase):
       assert q3[2] == 7.0
       assert q3[3] == 901
 
+class AxisAngleClassMetricTest(unittest.TestCase):
    def testAxisAngleTimingDefaultConstructor(self):
       iters = 400000
       use_value = 1.0
@@ -616,6 +620,7 @@ class AxisAngleCompareTest(unittest.TestCase):
       for i in range(15):
          self.__testAxisAngleEqualityTest(gmtl.AxisAngled)
 
+class AxisAngleCompareMetricTest(unittest.TestCase):
    def testAxisAngleTimingOpEqualityTest(self):
       # Test overhead of creation
       iters = 400000
@@ -1004,6 +1009,7 @@ class CoordClassTest(unittest.TestCase):
 #      assert coord.rot()[2] == 7.0
 #      assert coord.rot()[3] == 8.0
 
+class CoordClassMetricTest(unittest.TestCase):
    def testCoordTimingDefaultConstructor(self):
       iters = 400000
       use_value = 1.0
@@ -1100,6 +1106,7 @@ class CoordCompareTest(unittest.TestCase):
 #         self.__testCoordEquality(gmtl.Coord3dXYZ, gmtl.Vec3d,
 #                                  gmtl.EulerAngleXYZd)
 
+class CoordCompareMetricTest(unittest.TestCase):
    def testCoordTimingOpEqualityTest(self):
       iters = 400000
 
@@ -1302,6 +1309,7 @@ class CoordGenTest(unittest.TestCase):
       gmtl.set(mat, q1)
       assert gmtl.isEqual(expected_result44, mat, eps)
 
+class CoordGenMetricTest(unittest.TestCase):
    def testGenTimingMakeCoord(self):
       mat = gmtl.Matrix44f()
       iters = 25000
@@ -1368,6 +1376,7 @@ class EulerAngleClassTest(unittest.TestCase):
       assert q3[1] == 6.0
       assert q3[2] == 7.0
 
+class EulerAngleClassMetricTest(unittest.TestCase):
    def testEulerAngleTimingDefaultConstructor(self):
       iters = 400000
       use_value = 1.0
@@ -1487,6 +1496,7 @@ class EulerAngleCompareTest(unittest.TestCase):
 #      for i in range(10):
 #         self.__testEulerAngleEquality(gmtl.EulerAngleZYXd, double)
 
+class EulerAngleCompareMetricTest(unittest.TestCase):
    def testEulerAngleTimingOpEqualityTest(self):
       iters = 400000
 
@@ -4778,30 +4788,30 @@ def getTests(testCase):
 random.seed()
 
 suite = unittest.TestSuite()
-#suite.addTests(map(AABoxContainTest, getTests(AABoxContainTest)))
-#suite.addTests(map(AABoxOpsTest, getTests(AABoxOpsTest)))
-#suite.addTests(map(AABoxTest, getTests(AABoxTest)))
-#suite.addTests(map(AxisAngleClassTest, getTests(AxisAngleClassTest)))
-#suite.addTests(map(AxisAngleCompareTest, getTests(AxisAngleCompareTest)))
-#suite.addTests(map(ConvertTest, getTests(ConvertTest)))
-#suite.addTests(map(CoordClassTest, getTests(CoordClassTest)))
-#suite.addTests(map(CoordCompareTest, getTests(CoordCompareTest)))
-#suite.addTests(map(CoordGenTest, getTests(CoordGenTest)))
-#suite.addTests(map(EulerAngleClassTest, getTests(EulerAngleClassTest)))
-#suite.addTests(map(EulerAngleCompareTest, getTests(EulerAngleCompareTest)))
-#suite.addTests(map(IntersectionTest, getTests(IntersectionTest)))
-#suite.addTests(map(IntersectionMetricTest, getTests(IntersectionMetricTest)))
-#suite.addTests(map(LineSegTest, getTests(LineSegTest)))
-#suite.addTests(map(LineSegMetricTest, getTests(LineSegMetricTest)))
-#suite.addTests(map(MathTest, getTests(MathTest)))
-#suite.addTests(map(MatrixClassTest, getTests(MatrixClassTest)))
-#suite.addTests(map(MatrixClassMetricTest, getTests(MatrixClassMetricTest)))
-#suite.addTests(map(MatrixCompareTest, getTests(MatrixCompareTest)))
-#suite.addTests(map(MatrixCompareMetricTest, getTests(MatrixCompareMetricTest)))
-#suite.addTests(map(MatrixGenTest, getTests(MatrixGenTest)))
-#suite.addTests(map(MatrixGenMetricTest, getTests(MatrixGenMetricTest)))
-#suite.addTests(map(MatrixOpsTest, getTests(MatrixOpsTest)))
-#suite.addTests(map(MatrixOpsMetricTest, getTests(MatrixOpsMetricTest)))
+suite.addTests(map(AABoxContainTest, getTests(AABoxContainTest)))
+suite.addTests(map(AABoxOpsTest, getTests(AABoxOpsTest)))
+suite.addTests(map(AABoxTest, getTests(AABoxTest)))
+suite.addTests(map(AxisAngleClassTest, getTests(AxisAngleClassTest)))
+suite.addTests(map(AxisAngleCompareTest, getTests(AxisAngleCompareTest)))
+suite.addTests(map(ConvertTest, getTests(ConvertTest)))
+suite.addTests(map(CoordClassTest, getTests(CoordClassTest)))
+suite.addTests(map(CoordCompareTest, getTests(CoordCompareTest)))
+suite.addTests(map(CoordGenTest, getTests(CoordGenTest)))
+suite.addTests(map(EulerAngleClassTest, getTests(EulerAngleClassTest)))
+suite.addTests(map(EulerAngleCompareTest, getTests(EulerAngleCompareTest)))
+suite.addTests(map(IntersectionTest, getTests(IntersectionTest)))
+suite.addTests(map(IntersectionMetricTest, getTests(IntersectionMetricTest)))
+suite.addTests(map(LineSegTest, getTests(LineSegTest)))
+suite.addTests(map(LineSegMetricTest, getTests(LineSegMetricTest)))
+suite.addTests(map(MathTest, getTests(MathTest)))
+suite.addTests(map(MatrixClassTest, getTests(MatrixClassTest)))
+suite.addTests(map(MatrixClassMetricTest, getTests(MatrixClassMetricTest)))
+suite.addTests(map(MatrixCompareTest, getTests(MatrixCompareTest)))
+suite.addTests(map(MatrixCompareMetricTest, getTests(MatrixCompareMetricTest)))
+suite.addTests(map(MatrixGenTest, getTests(MatrixGenTest)))
+suite.addTests(map(MatrixGenMetricTest, getTests(MatrixGenMetricTest)))
+suite.addTests(map(MatrixOpsTest, getTests(MatrixOpsTest)))
+suite.addTests(map(MatrixOpsMetricTest, getTests(MatrixOpsMetricTest)))
 suite.addTests(map(MatrixStateTrackingTest, getTests(MatrixStateTrackingTest)))
 
 runner = unittest.TextTestRunner()
