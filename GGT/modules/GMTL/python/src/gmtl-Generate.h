@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-Generate.h,v $
- * Date modified: $Date: 2005-06-03 22:51:39 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2005-06-04 20:13:09 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -42,6 +42,7 @@
 #include <gmtl/Generate.h>
 
 
+#if ! defined(__APPLE__)
 namespace gmtl
 {
    // See gmtl-wrappers.h for GMTL functions that use the Type2Type idiom.
@@ -322,5 +323,7 @@ namespace gmtl
    template gmtl::Vec4f makeColumn(const gmtl::Matrix44f&, unsigned);
    template gmtl::Vec4d makeColumn(const gmtl::Matrix44d&, unsigned);
 }
+#endif
+
 
 #endif /* _PYGMTL_GENERATE_H_ */

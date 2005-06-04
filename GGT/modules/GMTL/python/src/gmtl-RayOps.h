@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-RayOps.h,v $
- * Date modified: $Date: 2005-06-02 22:07:57 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2005-06-04 20:13:09 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -43,6 +43,7 @@
 #include <gmtl/RayOps.h>
 
 
+#if ! defined(__APPLE__)
 namespace gmtl
 {
    template bool isEqual(const gmtl::Rayd&, const gmtl::Rayd&,
@@ -50,5 +51,7 @@ namespace gmtl
    template bool isEqual(const gmtl::Rayf&, const gmtl::Rayf&,
                          const float&);
 }
+#endif
+
 
 #endif /* _PYGMTL_LINE_SEG_OPS_H_ */

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-callable-wrappers.h,v $
- * Date modified: $Date: 2005-06-03 20:34:27 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2005-06-04 20:13:09 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -44,18 +44,23 @@
 
 namespace gmtlWrappers
 {
-
    template<typename DATA_TYPE, unsigned ROWS, unsigned COLS>
    DATA_TYPE callable(gmtl::Matrix<DATA_TYPE, ROWS, COLS>* m,
                       const unsigned int row, const unsigned int col)
    {
       return (*m)(row, col);
    }
+}
 
+#if ! defined(__APPLE__)
+namespace gmtlWrappers
+{
    template float callable(gmtl::Matrix33f*, const unsigned int,
                            const unsigned int);
    template float callable(gmtl::Matrix44f*, const unsigned int,
                            const unsigned int);
 }
+#endif
+
 
 #endif /* _PYGMTL_CALLABLE_WRAPPERS_H_ */

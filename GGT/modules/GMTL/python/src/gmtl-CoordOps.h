@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-CoordOps.h,v $
- * Date modified: $Date: 2005-06-01 21:40:09 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2005-06-04 20:13:09 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -47,6 +47,7 @@
 #include <gmtl/CoordOps.h>
 
 
+#if ! defined(__APPLE__)
 namespace gmtl
 {
    // With Visual C++, these forward declarations do not work, but since they
@@ -101,6 +102,7 @@ namespace gmtl
                          const gmtl::Coord4dAxisAngle&, double);
 #endif
 }
+#endif
 
 
 #endif /* _PYGMTL_COORD_OPS_H_ */

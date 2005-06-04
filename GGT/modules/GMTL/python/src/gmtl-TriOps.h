@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-TriOps.h,v $
- * Date modified: $Date: 2003-08-30 17:22:10 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2005-06-04 20:13:09 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -43,6 +43,7 @@
 #include <gmtl/TriOps.h>
 
 
+#if ! defined(__APPLE__)
 namespace gmtl
 {
    template gmtl::Point3f center(const gmtl::Trif&);
@@ -56,5 +57,7 @@ namespace gmtl
    template bool isEqual(const gmtl::Trif&, const gmtl::Trif&, const float&);
    template bool isEqual(const gmtl::Trid&, const gmtl::Trid&, const double&);
 }
+#endif
+
 
 #endif /* _PYGMTL_TRI_OPS_H_ */

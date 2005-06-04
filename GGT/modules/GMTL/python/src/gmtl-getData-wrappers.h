@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-getData-wrappers.h,v $
- * Date modified: $Date: 2004-07-12 13:53:36 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2005-06-04 20:13:09 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -54,15 +54,11 @@ namespace gmtlWrappers
       return makeDataList<float, 9>(m->mData);
    }
 
-   template boost::python::list Matrix_3_3_getData(gmtl::Matrix<float, 3, 3>*);
-
    template<typename T>
    boost::python::list Matrix_4_4_getData(gmtl::Matrix<T, 4, 4>* m)
    {
       return makeDataList<float, 16>(m->mData);
    }
-
-   template boost::python::list Matrix_4_4_getData(gmtl::Matrix<float, 4, 4>*);
 
    template<typename T>
    boost::python::tuple VecBase_2_getData(gmtl::VecBase<T, 2>* v)
@@ -70,19 +66,11 @@ namespace gmtlWrappers
       return boost::python::make_tuple(v->mData[0], v->mData[1]);
    }
 
-   template boost::python::tuple VecBase_2_getData(gmtl::VecBase<double, 2>*);
-   template boost::python::tuple VecBase_2_getData(gmtl::VecBase<float, 2>*);
-   template boost::python::tuple VecBase_2_getData(gmtl::VecBase<int, 2>*);
-
    template<typename T>
    boost::python::tuple VecBase_3_getData(gmtl::VecBase<T, 3>* v)
    {
       return boost::python::make_tuple(v->mData[0], v->mData[1], v->mData[2]);
    }
-
-   template boost::python::tuple VecBase_3_getData(gmtl::VecBase<double, 3>*);
-   template boost::python::tuple VecBase_3_getData(gmtl::VecBase<float, 3>*);
-   template boost::python::tuple VecBase_3_getData(gmtl::VecBase<int, 3>*);
 
    template<typename T>
    boost::python::tuple VecBase_4_getData(gmtl::VecBase<T, 4>* v)
@@ -91,10 +79,6 @@ namespace gmtlWrappers
                                        v->mData[3]);
    }
 
-   template boost::python::tuple VecBase_4_getData(gmtl::VecBase<double, 4>*);
-   template boost::python::tuple VecBase_4_getData(gmtl::VecBase<float, 4>*);
-   template boost::python::tuple VecBase_4_getData(gmtl::VecBase<int, 4>*);
-
    template<typename T>
    boost::python::tuple Quat_getData(gmtl::Quat<T>* q)
    {
@@ -102,19 +86,41 @@ namespace gmtlWrappers
                                        q->mData[3]);
    }
 
-   template boost::python::tuple Quat_getData(gmtl::Quatd*);
-   template boost::python::tuple Quat_getData(gmtl::Quatf*);
-
    template<typename TYPE, typename ROT>
    boost::python::tuple EulerAngle_getData(gmtl::EulerAngle<TYPE, ROT>* ang)
    {
       return boost::python::make_tuple(ang->getData()[0], ang->getData()[1],
                                        ang->getData()[2]);
    }
+}
+
+#if ! defined(__APPLE__)
+namespace gmtlWrappers
+{
+   template boost::python::list Matrix_3_3_getData(gmtl::Matrix<float, 3, 3>*);
+
+   template boost::python::list Matrix_4_4_getData(gmtl::Matrix<float, 4, 4>*);
+
+   template boost::python::tuple VecBase_2_getData(gmtl::VecBase<double, 2>*);
+   template boost::python::tuple VecBase_2_getData(gmtl::VecBase<float, 2>*);
+   template boost::python::tuple VecBase_2_getData(gmtl::VecBase<int, 2>*);
+
+   template boost::python::tuple VecBase_3_getData(gmtl::VecBase<double, 3>*);
+   template boost::python::tuple VecBase_3_getData(gmtl::VecBase<float, 3>*);
+   template boost::python::tuple VecBase_3_getData(gmtl::VecBase<int, 3>*);
+
+   template boost::python::tuple VecBase_4_getData(gmtl::VecBase<double, 4>*);
+   template boost::python::tuple VecBase_4_getData(gmtl::VecBase<float, 4>*);
+   template boost::python::tuple VecBase_4_getData(gmtl::VecBase<int, 4>*);
+
+   template boost::python::tuple Quat_getData(gmtl::Quatd*);
+   template boost::python::tuple Quat_getData(gmtl::Quatf*);
 
    template boost::python::tuple EulerAngle_getData(gmtl::EulerAngleXYZf*);
    template boost::python::tuple EulerAngle_getData(gmtl::EulerAngleZYXf*);
    template boost::python::tuple EulerAngle_getData(gmtl::EulerAngleZXYf*);
 }
+#endif
+
 
 #endif /* _GMTL_GETDATA_WRAPPERS_H_ */

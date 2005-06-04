@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-EulerAngleOps.h,v $
- * Date modified: $Date: 2004-05-25 16:59:56 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2005-06-04 20:13:09 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -43,6 +43,7 @@
 #include <gmtl/EulerAngleOps.h>
 
 
+#if ! defined(__APPLE__)
 namespace gmtl
 {
    template bool isEqual(const EulerAngleXYZf&, const EulerAngleXYZf&,
@@ -52,6 +53,7 @@ namespace gmtl
    template bool isEqual(const EulerAngleZYXf&, const EulerAngleZYXf&,
                          const float);
 }
+#endif
 
 
 #endif /* _PYGMTL_EULER_ANGLE_OPS_H_ */

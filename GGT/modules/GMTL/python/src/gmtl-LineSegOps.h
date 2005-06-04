@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-LineSegOps.h,v $
- * Date modified: $Date: 2003-08-30 17:22:10 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2005-06-04 20:13:09 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -43,6 +43,7 @@
 #include <gmtl/LineSegOps.h>
 
 
+#if ! defined(__APPLE__)
 namespace gmtl
 {
    template float distanceSquared(const gmtl::LineSegf&, const gmtl::Point3f&);
@@ -56,5 +57,7 @@ namespace gmtl
    template float distance(const gmtl::LineSegf&, const gmtl::Point3f&);
    template double distance(const gmtl::LineSegd&, const gmtl::Point3d&);
 }
+#endif
+
 
 #endif /* _PYGMTL_LINE_SEG_OPS_H_ */
