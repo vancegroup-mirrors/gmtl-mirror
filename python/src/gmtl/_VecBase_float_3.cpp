@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _VecBase_float_3.cpp,v $
- * Date modified: $Date: 2004-10-27 19:01:33 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2005-06-04 17:49:09 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -50,7 +50,6 @@ void _Export_VecBase_float_3()
         .def("__setitem__", (void (*)(gmtl::VecBase<float,3>*, const unsigned, float)) &gmtlWrappers::setArrayElement)
         .def_pickle(gmtlPickle::VecBase3_pickle<float>())
         .def(-self)
-        .def(self += self)
         .def(self += self)
         .def(self + self)
         .def(self -= self)

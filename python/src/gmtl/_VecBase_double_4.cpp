@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _VecBase_double_4.cpp,v $
- * Date modified: $Date: 2004-10-27 19:01:33 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2005-06-04 17:49:09 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -50,7 +50,6 @@ void _Export_VecBase_double_4()
         .def("__setitem__", (void (*)(gmtl::VecBase<double,4>*, const unsigned, double)) &gmtlWrappers::setArrayElement)
         .def_pickle(gmtlPickle::VecBase4_pickle<double>())
         .def(-self)
-        .def(self += self)
         .def(self += self)
         .def(self + self)
         .def(self -= self)
