@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-array-wrappers.h,v $
- * Date modified: $Date: 2005-05-12 19:35:54 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2005-06-04 19:35:29 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -38,6 +38,7 @@
 
 #include <boost/python/list.hpp>
 #include <gmtl/Matrix.h>
+#include <gmtl/VecBase.h>
 
 namespace gmtlWrappers
 {
@@ -106,6 +107,29 @@ namespace gmtlWrappers
 
    template void Matrix_4_4_setTranspose(gmtl::Matrix<float, 4, 4>*,
                                          boost::python::list);
+
+   template<typename T, unsigned int SIZE>
+   void VecBase_set(gmtl::VecBase<T, SIZE>* v, boost::python::list pyData)
+   {
+      T gmtl_data[SIZE];
+
+      for ( unsigned int i = 0; i < SIZE; ++i )
+      {
+         gmtl_data[i] = boost::python::extract<T>(pyData[i]);
+      }
+
+      v->set(gmtl_data);
+   }
+
+   template void VecBase_set(gmtl::VecBase<double, 2>*, boost::python::list);
+   template void VecBase_set(gmtl::VecBase<double, 3>*, boost::python::list);
+   template void VecBase_set(gmtl::VecBase<double, 4>*, boost::python::list);
+   template void VecBase_set(gmtl::VecBase<float, 2>*, boost::python::list);
+   template void VecBase_set(gmtl::VecBase<float, 3>*, boost::python::list);
+   template void VecBase_set(gmtl::VecBase<float, 4>*, boost::python::list);
+   template void VecBase_set(gmtl::VecBase<int, 2>*, boost::python::list);
+   template void VecBase_set(gmtl::VecBase<int, 3>*, boost::python::list);
+   template void VecBase_set(gmtl::VecBase<int, 4>*, boost::python::list);
 }
 
 #endif /* _PYGMTL_GMTL_ARRAY_WRAPPERS_H_ */

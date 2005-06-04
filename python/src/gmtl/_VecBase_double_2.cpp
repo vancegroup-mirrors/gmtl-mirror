@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _VecBase_double_2.cpp,v $
- * Date modified: $Date: 2005-06-04 17:49:09 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2005-06-04 19:34:43 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -30,6 +30,7 @@
 #include <gmtl/VecBase.h>
 #include <gmtl/Output.h>
 #include <gmtl-wrappers.h>
+#include <gmtl-array-wrappers.h>
 #include <gmtl-getData-wrappers.h>
 #include <gmtl-pickle.h>
 
@@ -44,6 +45,7 @@ void _Export_VecBase_double_2()
         .def(init< const gmtl::VecBase<double,2> & >())
         .def(init< const double &, const double & >())
         .def("set", (void (gmtl::VecBase<double,2>::*)(const double &, const double &) )&gmtl::VecBase<double,2>::set)
+        .def("set", (void (*)(gmtl::VecBase<double,2>*, list))&gmtlWrappers::VecBase_set)
         .def("getData", (tuple (*)(gmtl::VecBase<double,2>*)) &gmtlWrappers::VecBase_2_getData)
         .add_property("data", (tuple (*)(gmtl::VecBase<double,2>*)) &gmtlWrappers::VecBase_2_getData)
         .def("__getitem__", (double& (gmtl::VecBase<double,2>::*)(const unsigned) ) &gmtl::VecBase<double,2>::operator[], return_value_policy<copy_non_const_reference>())
