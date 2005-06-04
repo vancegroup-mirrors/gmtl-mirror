@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-AxisAngleOps.h,v $
- * Date modified: $Date: 2004-05-25 16:59:41 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2005-06-04 20:13:09 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -43,11 +43,13 @@
 #include <gmtl/AxisAngleOps.h>
 
 
+#if ! defined(__APPLE__)
 namespace gmtl
 {
    template bool isEqual(const AxisAnglef&, const AxisAnglef&, const float);
    template bool isEqual(const AxisAngled&, const AxisAngled&, const double);
 }
+#endif
 
 
 #endif /* _PYGMTL_AXIS_ANGLE_OPS_H_ */

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-Xforms.h,v $
- * Date modified: $Date: 2003-08-17 06:32:59 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2005-06-04 20:13:09 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -42,6 +42,7 @@
 #include <gmtl/Xforms.h>
 
 
+#if ! defined(__APPLE__)
 namespace gmtl
 {
    template gmtl::VecBase<float, 3>& xform(gmtl::VecBase<float, 3>&,
@@ -95,5 +96,7 @@ namespace gmtl
                                           const gmtl::Matrix<double, 4, 4>&,
                                           const gmtl::Point<double, 3>&);
 }
+#endif
+
 
 #endif /* _PYGMTL_XFORMS_H_ */

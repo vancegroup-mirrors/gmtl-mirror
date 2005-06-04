@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-SphereOps.h,v $
- * Date modified: $Date: 2003-08-30 17:22:10 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2005-06-04 20:13:09 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -43,6 +43,7 @@
 #include <gmtl/SphereOps.h>
 
 
+#if ! defined(__APPLE__)
 namespace gmtl
 {
    template bool isEqual(const gmtl::Spheref&, const gmtl::Spheref&,
@@ -50,6 +51,7 @@ namespace gmtl
    template bool isEqual(const gmtl::Sphered&, const gmtl::Sphered&,
                          const double&);
 }
+#endif
 
 
 #endif /* _PYGMTL_SPHERE_OPS_H_ */

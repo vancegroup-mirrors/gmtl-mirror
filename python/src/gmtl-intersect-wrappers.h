@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-intersect-wrappers.h,v $
- * Date modified: $Date: 2005-06-02 16:55:42 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2005-06-04 20:13:09 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -48,17 +48,11 @@ namespace gmtlWrappers
       return make_tuple(gmtl::intersect(b1, b2));
    }
 
-   template tuple intersect(const gmtl::AABoxf&, const gmtl::AABoxf&);
-   template tuple intersect(const gmtl::AABoxd&, const gmtl::AABoxd&);
-
    template<typename T>
    tuple intersect(const gmtl::AABox<T>& b, const gmtl::Point<T, 3>& p)
    {
       return make_tuple(gmtl::intersect(b, p));
    }
-
-   template tuple intersect(const gmtl::AABoxf&, const gmtl::Point3f&);
-   template tuple intersect(const gmtl::AABoxd&, const gmtl::Point3d&);
 
    template<typename T>
    tuple intersect(const gmtl::AABox<T>& b1, const gmtl::Vec<T, 3>& v1,
@@ -69,11 +63,6 @@ namespace gmtlWrappers
       return make_tuple(result, val1, val2);
    }
 
-   template tuple intersect(const gmtl::AABoxf&, const gmtl::Vec3f&,
-                            const gmtl::AABoxf&, const gmtl::Vec3f&);
-   template tuple intersect(const gmtl::AABoxd&, const gmtl::Vec3d&,
-                            const gmtl::AABoxd&, const gmtl::Vec3d&);
-
    template<typename T>
    tuple intersect(const gmtl::Sphere<T>& s1, const gmtl::Vec<T, 3>& v1,
                    const gmtl::Sphere<T>& s2, const gmtl::Vec<T, 3>& v2)
@@ -83,19 +72,11 @@ namespace gmtlWrappers
       return make_tuple(result, val1, val2);
    }
 
-   template tuple intersect(const gmtl::Spheref&, const gmtl::Vec3f&,
-                            const gmtl::Spheref&, const gmtl::Vec3f&);
-   template tuple intersect(const gmtl::Sphered&, const gmtl::Vec3d&,
-                            const gmtl::Sphered&, const gmtl::Vec3d&);
-
    template<typename T>
    tuple intersect(const gmtl::AABox<T>& b, const gmtl::Sphere<T>& s)
    {
       return make_tuple(gmtl::intersect(b, s));
    }
-
-   template tuple intersect(const gmtl::AABoxf&, const gmtl::Spheref&);
-   template tuple intersect(const gmtl::AABoxd&, const gmtl::Sphered&);
 
    template<typename T>
    tuple intersect(const gmtl::Sphere<T>& s, const gmtl::AABox<T>& b)
@@ -103,17 +84,11 @@ namespace gmtlWrappers
       return make_tuple(gmtl::intersect(s, b));
    }
 
-   template tuple intersect(const gmtl::Spheref&, const gmtl::AABoxf&);
-   template tuple intersect(const gmtl::Sphered&, const gmtl::AABoxd&);
-
    template<typename T>
    tuple intersect(const gmtl::Sphere<T>& s, const gmtl::Point<T, 3>& p)
    {
       return make_tuple(gmtl::intersect(s, p));
    }
-
-   template tuple intersect(const gmtl::Spheref&, const gmtl::Point3f&);
-   template tuple intersect(const gmtl::Sphered&, const gmtl::Point3d&);
 
    template<typename T>
    tuple intersect(const gmtl::Sphere<T>& s, const gmtl::Ray<T>& r)
@@ -124,9 +99,6 @@ namespace gmtlWrappers
       return make_tuple(result, c, val1, val2);
    }
 
-   template tuple intersect(const gmtl::Spheref&, const gmtl::Rayf&);
-   template tuple intersect(const gmtl::Sphered&, const gmtl::Rayd&);
-
    template<typename T>
    tuple intersect(const gmtl::Sphere<T>& s, const gmtl::LineSeg<T>& l)
    {
@@ -136,9 +108,6 @@ namespace gmtlWrappers
       return make_tuple(result, c, val1, val2);
    }
 
-   template tuple intersect(const gmtl::Spheref&, const gmtl::LineSegf&);
-   template tuple intersect(const gmtl::Sphered&, const gmtl::LineSegd&);
-
    template<typename T>
    tuple intersect(const gmtl::Plane<T>& p, const gmtl::Ray<T>& r)
    {
@@ -146,9 +115,6 @@ namespace gmtlWrappers
       bool result = gmtl::intersect(p, r, val);
       return make_tuple(result, val);
    }
-
-   template tuple intersect(const gmtl::Planef&, const gmtl::Rayf&);
-   template tuple intersect(const gmtl::Planed&, const gmtl::Rayd&);
 
    template<typename T>
    tuple intersect(const gmtl::Plane<T>& p, const gmtl::LineSeg<T>& r)
@@ -158,9 +124,6 @@ namespace gmtlWrappers
       return make_tuple(result, val);
    }
 
-   template tuple intersect(const gmtl::Planef&, const gmtl::LineSegf&);
-   template tuple intersect(const gmtl::Planed&, const gmtl::LineSegd&);
-
    template<typename T>
    tuple intersect(const gmtl::Tri<T>& t, const gmtl::Ray<T>& r)
    {
@@ -169,9 +132,6 @@ namespace gmtlWrappers
       return make_tuple(result, val1, val2, val3);
    }
 
-   template tuple intersect(const gmtl::Trif&, const gmtl::Rayf&);
-   template tuple intersect(const gmtl::Trid&, const gmtl::Rayd&);
-
    template<typename T>
    tuple intersect(const gmtl::Tri<T>& t, const gmtl::LineSeg<T>& l)
    {
@@ -179,10 +139,55 @@ namespace gmtlWrappers
       bool result = gmtl::intersect(t, l, val1, val2, val3);
       return make_tuple(result, val1, val2, val3);
    }
+}
+
+#if ! defined(__APPLE__)
+namespace gmtlWrappers
+{
+   template tuple intersect(const gmtl::AABoxf&, const gmtl::AABoxf&);
+   template tuple intersect(const gmtl::AABoxd&, const gmtl::AABoxd&);
+
+   template tuple intersect(const gmtl::AABoxf&, const gmtl::Point3f&);
+   template tuple intersect(const gmtl::AABoxd&, const gmtl::Point3d&);
+
+   template tuple intersect(const gmtl::AABoxf&, const gmtl::Vec3f&,
+                            const gmtl::AABoxf&, const gmtl::Vec3f&);
+   template tuple intersect(const gmtl::AABoxd&, const gmtl::Vec3d&,
+                            const gmtl::AABoxd&, const gmtl::Vec3d&);
+
+   template tuple intersect(const gmtl::Spheref&, const gmtl::Vec3f&,
+                            const gmtl::Spheref&, const gmtl::Vec3f&);
+   template tuple intersect(const gmtl::Sphered&, const gmtl::Vec3d&,
+                            const gmtl::Sphered&, const gmtl::Vec3d&);
+
+   template tuple intersect(const gmtl::AABoxf&, const gmtl::Spheref&);
+   template tuple intersect(const gmtl::AABoxd&, const gmtl::Sphered&);
+
+   template tuple intersect(const gmtl::Spheref&, const gmtl::AABoxf&);
+   template tuple intersect(const gmtl::Sphered&, const gmtl::AABoxd&);
+
+   template tuple intersect(const gmtl::Spheref&, const gmtl::Point3f&);
+   template tuple intersect(const gmtl::Sphered&, const gmtl::Point3d&);
+
+   template tuple intersect(const gmtl::Spheref&, const gmtl::Rayf&);
+   template tuple intersect(const gmtl::Sphered&, const gmtl::Rayd&);
+
+   template tuple intersect(const gmtl::Spheref&, const gmtl::LineSegf&);
+   template tuple intersect(const gmtl::Sphered&, const gmtl::LineSegd&);
+
+   template tuple intersect(const gmtl::Planef&, const gmtl::Rayf&);
+   template tuple intersect(const gmtl::Planed&, const gmtl::Rayd&);
+
+   template tuple intersect(const gmtl::Planef&, const gmtl::LineSegf&);
+   template tuple intersect(const gmtl::Planed&, const gmtl::LineSegd&);
+
+   template tuple intersect(const gmtl::Trif&, const gmtl::Rayf&);
+   template tuple intersect(const gmtl::Trid&, const gmtl::Rayd&);
 
    template tuple intersect(const gmtl::Trif&, const gmtl::LineSegf&);
    template tuple intersect(const gmtl::Trid&, const gmtl::LineSegd&);
 }
+#endif
 
 
 #endif /* _PYJUGGLER_GMTL_INTERSECT_WRAPPERS_H_ */

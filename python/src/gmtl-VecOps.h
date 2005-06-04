@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-VecOps.h,v $
- * Date modified: $Date: 2004-09-16 21:22:09 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2005-06-04 20:13:09 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -43,6 +43,7 @@
 #include <gmtl/VecOps.h>
 
 
+#if ! defined(__APPLE__)
 namespace gmtl
 {
    typedef gmtl::VecBase<float, 3> VecBase3f;
@@ -102,6 +103,7 @@ namespace gmtl
    template bool isEqual(const gmtl::VecBase4d&, const gmtl::VecBase4d&,
                          const double);
 }
+#endif
 
 
 #endif /* _PYGMTL_VEC_OPS_H_ */

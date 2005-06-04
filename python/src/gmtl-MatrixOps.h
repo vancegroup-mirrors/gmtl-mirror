@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-MatrixOps.h,v $
- * Date modified: $Date: 2005-06-03 22:51:39 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2005-06-04 20:13:09 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -43,6 +43,7 @@
 #include <gmtl/MatrixOps.h>
 
 
+#if ! defined(__APPLE__)
 namespace gmtl
 {
    template gmtl::Matrix44f& identity(gmtl::Matrix44f&);
@@ -124,5 +125,7 @@ namespace gmtl
    template bool isEqual(const gmtl::Matrix33f&, const gmtl::Matrix33f&,
                          const float);
 }
+#endif
+
 
 #endif /* _PYGMTL_MATRIX_OPS_H_ */

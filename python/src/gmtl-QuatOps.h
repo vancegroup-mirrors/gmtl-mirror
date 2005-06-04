@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-QuatOps.h,v $
- * Date modified: $Date: 2003-08-30 17:22:10 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2005-06-04 20:13:09 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -43,6 +43,7 @@
 #include <gmtl/QuatOps.h>
 
 
+#if ! defined(__APPLE__)
 namespace gmtl
 {
    template gmtl::Quatf& mult(gmtl::Quatf&, const gmtl::Quatf&,
@@ -120,5 +121,7 @@ namespace gmtl
    template bool isEqual(const gmtl::Quatf&, const gmtl::Quatf&, float);
    template bool isEqual(const gmtl::Quatd&, const gmtl::Quatd&, double);
 }
+#endif
+
 
 #endif /* _PYGMTL_QUAT_OPS_H_ */

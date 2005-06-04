@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-AABoxOps.h,v $
- * Date modified: $Date: 2003-08-30 17:22:10 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2005-06-04 20:13:09 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -43,6 +43,7 @@
 #include <gmtl/AABoxOps.h>
 
 
+#if ! defined(__APPLE__)
 namespace gmtl
 {
    template bool isEqual(const gmtl::AABoxf&, const gmtl::AABoxf&,
@@ -50,6 +51,7 @@ namespace gmtl
    template bool isEqual(const gmtl::AABoxd&, const gmtl::AABoxd&,
                          const double&);
 }
+#endif
 
 
 #endif /* _PYGMTL_AABOX_OPS_H_ */

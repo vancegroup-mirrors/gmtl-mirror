@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-wrappers.h,v $
- * Date modified: $Date: 2005-06-03 22:51:39 $
- * Version:       $Revision: 1.11 $
+ * Date modified: $Date: 2005-06-04 20:13:09 $
+ * Version:       $Revision: 1.12 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -103,31 +103,6 @@ namespace gmtlWrappers
       return gmtl::makeRot< gmtl::EulerAngle<DATA_TYPE, gmtl::ZXY> >(m);
    }
 
-   template gmtl::Matrix33f      makeRotMatrix33(const gmtl::Quatf&);
-   template gmtl::Matrix33d      makeRotMatrix33(const gmtl::Quatd&);
-   template gmtl::Matrix33f      makeRotMatrix33(const gmtl::EulerAngleXYZf&);
-   template gmtl::Matrix33f      makeRotMatrix33(const gmtl::EulerAngleZYXf&);
-   template gmtl::Matrix33f      makeRotMatrix33(const gmtl::EulerAngleZXYf&);
-   template gmtl::Matrix33f      makeRotMatrix33(const gmtl::AxisAnglef&);
-   template gmtl::Matrix33d      makeRotMatrix33(const gmtl::AxisAngled&);
-   template gmtl::Matrix44f      makeRotMatrix44(const gmtl::Quatf&);
-   template gmtl::Matrix44d      makeRotMatrix44(const gmtl::Quatd&);
-   template gmtl::Matrix44f      makeRotMatrix44(const gmtl::EulerAngleXYZf&);
-   template gmtl::Matrix44f      makeRotMatrix44(const gmtl::EulerAngleZYXf&);
-   template gmtl::Matrix44f      makeRotMatrix44(const gmtl::EulerAngleZXYf&);
-   template gmtl::Matrix44f      makeRotMatrix44(const gmtl::AxisAnglef&);
-   template gmtl::Matrix44d      makeRotMatrix44(const gmtl::AxisAngled&);
-   template gmtl::Quatf          makeRotQuat(const gmtl::Matrix44f&);
-   template gmtl::Quatd          makeRotQuat(const gmtl::Matrix44d&);
-   template gmtl::Quatf          makeRotQuat(const gmtl::AxisAnglef&);
-   template gmtl::Quatd          makeRotQuat(const gmtl::AxisAngled&);
-   template gmtl::EulerAngleXYZf makeRotEulerAngleXYZ(const gmtl::Matrix44f&);
-   template gmtl::EulerAngleZYXf makeRotEulerAngleZYX(const gmtl::Matrix44f&);
-   template gmtl::EulerAngleZXYf makeRotEulerAngleZXY(const gmtl::Matrix44f&);
-   template gmtl::EulerAngleXYZd makeRotEulerAngleXYZ(const gmtl::Matrix44d&);
-   template gmtl::EulerAngleZYXd makeRotEulerAngleZYX(const gmtl::Matrix44d&);
-   template gmtl::EulerAngleZXYd makeRotEulerAngleZXY(const gmtl::Matrix44d&);
-
    template<typename DATA_TYPE>
    gmtl::Matrix<DATA_TYPE, 4, 4> makeRotMatrix44(const gmtl::Vec<DATA_TYPE, 3>& from,
                                                  const gmtl::Vec<DATA_TYPE, 3>& to)
@@ -141,11 +116,6 @@ namespace gmtlWrappers
    {
       return gmtl::makeRot< gmtl::Quat<DATA_TYPE> >(from, to);
    }
-
-   template gmtl::Matrix44f makeRotMatrix44(const gmtl::Vec3f&,
-                                            const gmtl::Vec3f&);
-   template gmtl::Quatf     makeRotQuat(const gmtl::Vec3f&, const gmtl::Vec3f&);
-   template gmtl::Quatd     makeRotQuat(const gmtl::Vec3d&, const gmtl::Vec3d&);
 
    inline gmtl::Matrix<float, 3, 3>
    makeDirCosMatrix33(const gmtl::Vec<float, 3>& xDestAxis,
@@ -241,31 +211,11 @@ namespace gmtlWrappers
       return gmtl::makeTrans< gmtl::Point<DATA_TYPE, 3> >(m);
    }
 
-   template gmtl::Matrix33f makeTransMatrix33(const gmtl::Vec2f&);
-   template gmtl::Matrix33d makeTransMatrix33(const gmtl::Vec2d&);
-   template gmtl::Matrix33f makeTransMatrix33(const gmtl::Vec3f&);
-   template gmtl::Matrix33d makeTransMatrix33(const gmtl::Vec3d&);
-   template gmtl::Matrix44f makeTransMatrix44(const gmtl::Vec3f&);
-   template gmtl::Matrix44d makeTransMatrix44(const gmtl::Vec3d&);
-   template gmtl::Vec3f     makeTransVec3(const gmtl::Matrix44f&);
-   template gmtl::Vec3d     makeTransVec3(const gmtl::Matrix44d&);
-   template gmtl::Vec3f     makeTransVec3(const gmtl::Matrix33f&);
-   template gmtl::Vec3d     makeTransVec3(const gmtl::Matrix33d&);
-   template gmtl::Vec2f     makeTransVec2(const gmtl::Matrix33f&);
-   template gmtl::Vec2d     makeTransVec2(const gmtl::Matrix33d&);
-   template gmtl::Point3f   makeTransPoint3(const gmtl::Matrix44f&);
-   template gmtl::Point3d   makeTransPoint3(const gmtl::Matrix44d&);
-
    template<typename DATA_TYPE, unsigned SIZE>
    gmtl::Matrix<DATA_TYPE, 3, 3> makeScaleMatrix33(const gmtl::Vec<DATA_TYPE, SIZE>& scale)
    {
       return gmtl::makeScale< gmtl::Matrix<DATA_TYPE, 3, 3> >(scale);
    }
-
-   template gmtl::Matrix33f makeScaleMatrix33<float, 2>(const gmtl::Vec2f&);
-   template gmtl::Matrix33d makeScaleMatrix33<double, 2>(const gmtl::Vec2d&);
-   template gmtl::Matrix33f makeScaleMatrix33<float, 3>(const gmtl::Vec3f&);
-   template gmtl::Matrix33d makeScaleMatrix33<double, 3>(const gmtl::Vec3d&);
 
    template<typename DATA_TYPE>
    gmtl::Matrix<DATA_TYPE, 3, 3> makeScaleMatrix33(const DATA_TYPE& scale)
@@ -273,28 +223,17 @@ namespace gmtlWrappers
       return gmtl::makeScale< gmtl::Matrix<DATA_TYPE, 3, 3> >(scale);
    }
 
-   template gmtl::Matrix33f makeScaleMatrix33<float>(const float&);
-   template gmtl::Matrix33d makeScaleMatrix33<double>(const double&);
-
    template<typename DATA_TYPE, unsigned SIZE>
    gmtl::Matrix<DATA_TYPE, 4, 4> makeScaleMatrix44(const gmtl::Vec<DATA_TYPE, SIZE>& scale)
    {
       return gmtl::makeScale< gmtl::Matrix<DATA_TYPE, 4, 4> >(scale);
    }
 
-   template gmtl::Matrix44f makeScaleMatrix44<float, 3>(const gmtl::Vec3f&);
-   template gmtl::Matrix44d makeScaleMatrix44<double, 3>(const gmtl::Vec3d&);
-   template gmtl::Matrix44f makeScaleMatrix44<float, 4>(const gmtl::Vec4f&);
-   template gmtl::Matrix44d makeScaleMatrix44<double, 4>(const gmtl::Vec4d&);
-
    template<typename DATA_TYPE>
    gmtl::Matrix<DATA_TYPE, 4, 4> makeScaleMatrix44(const DATA_TYPE& scale)
    {
       return gmtl::makeScale< gmtl::Matrix<DATA_TYPE, 4, 4> >(scale);
    }
-
-   template gmtl::Matrix44f makeScaleMatrix44<float>(const float&);
-   template gmtl::Matrix44d makeScaleMatrix44<double>(const double&);
 
    template<typename DATA_TYPE>
    gmtl::Matrix<DATA_TYPE, 4, 4> makeAxesMatrix44(const gmtl::Vec<DATA_TYPE, 3>& xAxis,
@@ -314,6 +253,77 @@ namespace gmtlWrappers
                                                              zAxis);
    }
 
+   template<typename T, typename DATA_TYPE>
+   void setArrayElement(T* obj, const unsigned i, DATA_TYPE value)
+   {
+      (*obj)[i] = value;
+   }
+}
+
+#if ! defined(__APPLE__)
+namespace gmtlWrappers
+{
+   template gmtl::Matrix33f      makeRotMatrix33(const gmtl::Quatf&);
+   template gmtl::Matrix33d      makeRotMatrix33(const gmtl::Quatd&);
+   template gmtl::Matrix33f      makeRotMatrix33(const gmtl::EulerAngleXYZf&);
+   template gmtl::Matrix33f      makeRotMatrix33(const gmtl::EulerAngleZYXf&);
+   template gmtl::Matrix33f      makeRotMatrix33(const gmtl::EulerAngleZXYf&);
+   template gmtl::Matrix33f      makeRotMatrix33(const gmtl::AxisAnglef&);
+   template gmtl::Matrix33d      makeRotMatrix33(const gmtl::AxisAngled&);
+   template gmtl::Matrix44f      makeRotMatrix44(const gmtl::Quatf&);
+   template gmtl::Matrix44d      makeRotMatrix44(const gmtl::Quatd&);
+   template gmtl::Matrix44f      makeRotMatrix44(const gmtl::EulerAngleXYZf&);
+   template gmtl::Matrix44f      makeRotMatrix44(const gmtl::EulerAngleZYXf&);
+   template gmtl::Matrix44f      makeRotMatrix44(const gmtl::EulerAngleZXYf&);
+   template gmtl::Matrix44f      makeRotMatrix44(const gmtl::AxisAnglef&);
+   template gmtl::Matrix44d      makeRotMatrix44(const gmtl::AxisAngled&);
+   template gmtl::Quatf          makeRotQuat(const gmtl::Matrix44f&);
+   template gmtl::Quatd          makeRotQuat(const gmtl::Matrix44d&);
+   template gmtl::Quatf          makeRotQuat(const gmtl::AxisAnglef&);
+   template gmtl::Quatd          makeRotQuat(const gmtl::AxisAngled&);
+   template gmtl::EulerAngleXYZf makeRotEulerAngleXYZ(const gmtl::Matrix44f&);
+   template gmtl::EulerAngleZYXf makeRotEulerAngleZYX(const gmtl::Matrix44f&);
+   template gmtl::EulerAngleZXYf makeRotEulerAngleZXY(const gmtl::Matrix44f&);
+   template gmtl::EulerAngleXYZd makeRotEulerAngleXYZ(const gmtl::Matrix44d&);
+   template gmtl::EulerAngleZYXd makeRotEulerAngleZYX(const gmtl::Matrix44d&);
+   template gmtl::EulerAngleZXYd makeRotEulerAngleZXY(const gmtl::Matrix44d&);
+
+   template gmtl::Matrix44f makeRotMatrix44(const gmtl::Vec3f&,
+                                            const gmtl::Vec3f&);
+   template gmtl::Quatf     makeRotQuat(const gmtl::Vec3f&, const gmtl::Vec3f&);
+   template gmtl::Quatd     makeRotQuat(const gmtl::Vec3d&, const gmtl::Vec3d&);
+
+   template gmtl::Matrix33f makeTransMatrix33(const gmtl::Vec2f&);
+   template gmtl::Matrix33d makeTransMatrix33(const gmtl::Vec2d&);
+   template gmtl::Matrix33f makeTransMatrix33(const gmtl::Vec3f&);
+   template gmtl::Matrix33d makeTransMatrix33(const gmtl::Vec3d&);
+   template gmtl::Matrix44f makeTransMatrix44(const gmtl::Vec3f&);
+   template gmtl::Matrix44d makeTransMatrix44(const gmtl::Vec3d&);
+   template gmtl::Vec3f     makeTransVec3(const gmtl::Matrix44f&);
+   template gmtl::Vec3d     makeTransVec3(const gmtl::Matrix44d&);
+   template gmtl::Vec3f     makeTransVec3(const gmtl::Matrix33f&);
+   template gmtl::Vec3d     makeTransVec3(const gmtl::Matrix33d&);
+   template gmtl::Vec2f     makeTransVec2(const gmtl::Matrix33f&);
+   template gmtl::Vec2d     makeTransVec2(const gmtl::Matrix33d&);
+   template gmtl::Point3f   makeTransPoint3(const gmtl::Matrix44f&);
+   template gmtl::Point3d   makeTransPoint3(const gmtl::Matrix44d&);
+
+   template gmtl::Matrix33f makeScaleMatrix33<float, 2>(const gmtl::Vec2f&);
+   template gmtl::Matrix33d makeScaleMatrix33<double, 2>(const gmtl::Vec2d&);
+   template gmtl::Matrix33f makeScaleMatrix33<float, 3>(const gmtl::Vec3f&);
+   template gmtl::Matrix33d makeScaleMatrix33<double, 3>(const gmtl::Vec3d&);
+
+   template gmtl::Matrix33f makeScaleMatrix33<float>(const float&);
+   template gmtl::Matrix33d makeScaleMatrix33<double>(const double&);
+
+   template gmtl::Matrix44f makeScaleMatrix44<float, 3>(const gmtl::Vec3f&);
+   template gmtl::Matrix44d makeScaleMatrix44<double, 3>(const gmtl::Vec3d&);
+   template gmtl::Matrix44f makeScaleMatrix44<float, 4>(const gmtl::Vec4f&);
+   template gmtl::Matrix44d makeScaleMatrix44<double, 4>(const gmtl::Vec4d&);
+
+   template gmtl::Matrix44f makeScaleMatrix44<float>(const float&);
+   template gmtl::Matrix44d makeScaleMatrix44<double>(const double&);
+
    template gmtl::Matrix44f makeAxesMatrix44(const gmtl::Vec3f&,
                                              const gmtl::Vec3f&,
                                              const gmtl::Vec3f&);
@@ -326,12 +336,6 @@ namespace gmtlWrappers
    template gmtl::Matrix33d makeAxesMatrix33(const gmtl::Vec3d&,
                                              const gmtl::Vec3d&,
                                              const gmtl::Vec3d&);
-
-   template<typename T, typename DATA_TYPE>
-   void setArrayElement(T* obj, const unsigned i, DATA_TYPE value)
-   {
-      (*obj)[i] = value;
-   }
 
    template void setArrayElement(gmtl::VecBase<int, 2>*, const unsigned, int);
    template void setArrayElement(gmtl::VecBase<float, 2>*, const unsigned, float);
@@ -365,6 +369,7 @@ namespace gmtlWrappers
    template void setArrayElement(gmtl::Tri<double>*, const unsigned,
                                  const gmtl::Point<double, 3>&);
 }
+#endif
 
 
 #endif /* _PYJUGGLER_GMTL_WRAPPERS_H_ */

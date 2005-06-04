@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-Containment.h,v $
- * Date modified: $Date: 2005-06-02 04:40:16 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2005-06-04 20:13:09 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -42,6 +42,7 @@
 #include <gmtl/Containment.h>
 
 
+#if ! defined(__APPLE__)
 namespace gmtl
 {
    template bool isInVolume(const gmtl::Spheref&, const gmtl::Point3f&);
@@ -85,5 +86,7 @@ namespace gmtl
    template void makeVolume(gmtl::AABoxf&, const gmtl::Spheref&);
    template void makeVolume(gmtl::AABoxd&, const gmtl::Sphered&);
 }
+#endif
+
 
 #endif /* _PYGMTL_CONTAINMENT_H_ */

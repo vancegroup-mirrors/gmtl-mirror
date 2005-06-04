@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-PlaneOps.h,v $
- * Date modified: $Date: 2005-06-04 18:53:49 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2005-06-04 20:13:09 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -45,6 +45,7 @@
 #include <gmtl/PlaneOps.h>
 
 
+#if ! defined(__APPLE__)
 namespace gmtl
 {
    template gmtl::PlaneSide whichSide(const gmtl::Planef&,
@@ -75,5 +76,7 @@ namespace gmtl
    template bool isEqual(const gmtl::Planed&, const gmtl::Planed&,
                          const double&);
 }
+#endif
+
 
 #endif /* _PYGMTL_PLANE_OPS_H_ */

@@ -165,9 +165,7 @@ def BuildDarwinEnvironment():
       CXXFLAGS.append('-fcoalesce-templates')
 
    SHLIBSUFFIX = distutils.sysconfig.get_config_var('SO')
-   # NOTE: The -m  option deals with a problem of multiply defined symbols
-   # that might be the result of a compiler bug.
-   SHLINKFLAGS = ['-bundle', '-m', framework_opt, '-framework', 'Python']
+   SHLINKFLAGS = ['-bundle', framework_opt, '-framework', 'Python']
    LINKFLAGS = []
 
    # Enable profiling?
