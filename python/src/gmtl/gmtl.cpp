@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl.cpp,v $
- * Date modified: $Date: 2005-06-03 15:39:05 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2005-06-04 19:00:08 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -87,6 +87,8 @@ void _Export_AxisAngle_double();
 void _Export_AxisAngle_float();
 void _Export_LineSeg_double();
 void _Export_LineSeg_float();
+void _Export_Point_double_2();
+void _Export_Point_double_3();
 void _Export_Point_float_2();
 void _Export_Point_float_3();
 void _Export_Point_int_2();
@@ -182,6 +184,8 @@ BOOST_PYTHON_MODULE(gmtl)
     _Export_AxisAngle_float();
     _Export_LineSeg_double();
     _Export_LineSeg_float();
+    _Export_Point_double_2();
+    _Export_Point_double_3();
     _Export_Point_float_2();
     _Export_Point_float_3();
     _Export_Point_int_2();
