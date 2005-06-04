@@ -1,5 +1,12 @@
 DATE       AUTHOR       CHANGE
 ---------- ------------ -------------------------------------------------------
+2005-06-04 patrickh     Renamed class properties in PyGMTL classes to use the
+                        Python convention instead of the C++ member name (for
+                        example, "origin" instead of "mOrigin").  The modified
+                        classes are gmtl.AABox*, gmtl.Coord*, gmtl.Plane*,
+                        gmtl.Quat*, gmtl.Ray*, and gmtl.Sphere*.
+2005-06-03 patrickh     Introduced gmtl.Math in PyGMTL to contain the free C++
+                        functions in the gmtl::Math namespace.
 2005-06-01 patrickh     Fixed PyGMTL interface inconsistencies that resulted in
                         some functions being unavailable on Windows.  Now, the
                         entire PyGMTL interface is available on all platforms.

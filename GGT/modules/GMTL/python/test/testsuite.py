@@ -9,8 +9,8 @@
 #
 #  -----------------------------------------------------------------
 #  File:          $RCSfile: testsuite.py,v $
-#  Date modified: $Date: 2005-06-04 15:49:24 $
-#  Version:       $Revision: 1.7 $
+#  Date modified: $Date: 2005-06-04 17:13:46 $
+#  Version:       $Revision: 1.8 $
 #  -----------------------------------------------------------------
 #
 # ********************************************************** ggt-head end
@@ -178,7 +178,7 @@ class AABoxContainMetricTest(unittest.TestCase):
 
       for iter in xrange(iters):
          gmtl.isInVolume(box, origin)
-         use_value = use_value + box.mMin[0] + 2.0
+         use_value = use_value + box.min[0] + 2.0
 
       assert use_value > 0.0
 
@@ -193,7 +193,7 @@ class AABoxContainMetricTest(unittest.TestCase):
 
       for iter in xrange(iters):
          gmtl.isInVolume(box, box2)
-         use_value = use_value + box.mMin[0] + 2.0
+         use_value = use_value + box.min[0] + 2.0
 
       assert use_value > 0.0
 
@@ -207,7 +207,7 @@ class AABoxContainMetricTest(unittest.TestCase):
 
       for iter in xrange(iters):
          gmtl.extendVolume(box, origin)
-         use_value = use_value + box.mMin[0] + 2.0
+         use_value = use_value + box.min[0] + 2.0
 
       assert use_value > 0.0
 
@@ -222,7 +222,7 @@ class AABoxContainMetricTest(unittest.TestCase):
 
       for iter in xrange(iters):
          gmtl.extendVolume(box, box2)
-         use_value = use_value + box.mMin[0] + 2.0
+         use_value = use_value + box.min[0] + 2.0
 
       assert use_value > 0.0
 
@@ -313,28 +313,28 @@ class AABoxTest(unittest.TestCase):
       box = gmtl.AABoxf()
       zeroPoint = gmtl.Point3f()
 
-      assert box.mMin == zeroPoint
-      assert box.mMax == zeroPoint
-      assert box.mEmpty
+      assert box.min == zeroPoint
+      assert box.max == zeroPoint
+      assert box.empty
 
    def testCopyConstructor(self):
       box = gmtl.AABoxf()
-      box.mMin.set(-2.0, -4.0, -8.0)
-      box.mMax.set(2.0, 4.0, 8.0)
-      box.mEmpty = False
+      box.min.set(-2.0, -4.0, -8.0)
+      box.max.set(2.0, 4.0, 8.0)
+      box.empty = False
 
       box_copy = gmtl.AABoxf(box)
 
-      assert box_copy.mMin == gmtl.Point3f(-2.0, -4.0, -8.0)
-      assert box_copy.mMax == gmtl.Point3f( 2.0,  4.0,  8.0)
-      assert box_copy.mEmpty == False
+      assert box_copy.min == gmtl.Point3f(-2.0, -4.0, -8.0)
+      assert box_copy.max == gmtl.Point3f( 2.0,  4.0,  8.0)
+      assert box_copy.empty == False
 
    def testConstructors(self):
       box = gmtl.AABoxf(gmtl.Point3f(1.0, 2.0, 3.0),
                         gmtl.Point3f(4.0, 5.0, 6.0))
-      assert box.mMin == gmtl.Point3f(1.0, 2.0, 3.0)
-      assert box.mMax == gmtl.Point3f(4.0, 5.0, 6.0)
-      assert box.mEmpty == False
+      assert box.min == gmtl.Point3f(1.0, 2.0, 3.0)
+      assert box.max == gmtl.Point3f(4.0, 5.0, 6.0)
+      assert box.empty == False
 
    def testGetMin(self):
       amin = gmtl.Point3f(-1.0, -2.0, -3.0)
@@ -377,19 +377,19 @@ class AABoxMetricTest(unittest.TestCase):
 
       for iter in xrange(iters):
          box = gmtl.AABoxf()
-         use_value = use_value + box.mMin[0] + 1.0
+         use_value = use_value + box.min[0] + 1.0
 
       assert use_value > 0.0
 
    def testTimingCopyConstruct(self):
       iters = 400000
       box2 = gmtl.AABoxf()
-      box2.mMin[0] = 2.0
+      box2.min[0] = 2.0
       use_value = 0.0
 
       for iter in xrange(iters):
          box2_copy = gmtl.AABoxf(box2)
-         use_value += box2_copy.mMin[0]
+         use_value += box2_copy.min[0]
 
       assert use_value > 0.0
 
@@ -400,7 +400,7 @@ class AABoxMetricTest(unittest.TestCase):
       for iter in xrange(iters):
          box2 = gmtl.AABoxf(gmtl.Point3f(1.0, 2.0, 3.0),
                             gmtl.Point3f(4.0, 5.0, 6.0))
-         use_value += box2.mMin[0]
+         use_value += box2.min[0]
 
       assert use_value > 0.0
 
@@ -470,7 +470,7 @@ class AABoxMetricTest(unittest.TestCase):
 
       for iter in xrange(iters):
          box.setEmpty(True)
-         if box.mEmpty:
+         if box.empty:
             use_value += 1
 
       assert use_value > 0
@@ -928,32 +928,32 @@ class CoordClassTest(unittest.TestCase):
    def testCoordClassTestCreation(self):
       # Test that it initializes to the multiplication identity.
       q = gmtl.Coord3fXYZ()
-      assert q.pos()[0] == 0.0
-      assert q.pos()[1] == 0.0
-      assert q.pos()[2] == 0.0
-      assert q.rot()[0] == 0.0
-      assert q.rot()[1] == 0.0
-      assert q.rot()[2] == 0.0
+      assert q.pos[0] == 0.0
+      assert q.pos[1] == 0.0
+      assert q.pos[2] == 0.0
+      assert q.rot[0] == 0.0
+      assert q.rot[1] == 0.0
+      assert q.rot[2] == 0.0
 
       # Try out element constructor.
       p = gmtl.Vec3f(1.0, 2.0, 3.0)
       r = gmtl.EulerAngleXYZf(4.0, 5.0, 6.0)
       q2 = gmtl.Coord3fXYZ(p, r)
-      assert q2.pos()[0] == 1.0
-      assert q2.pos()[1] == 2.0
-      assert q2.pos()[2] == 3.0
-      assert q2.rot()[0] == 4.0
-      assert q2.rot()[1] == 5.0
-      assert q2.rot()[2] == 6.0
+      assert q2.pos[0] == 1.0
+      assert q2.pos[1] == 2.0
+      assert q2.pos[2] == 3.0
+      assert q2.rot[0] == 4.0
+      assert q2.rot[1] == 5.0
+      assert q2.rot[2] == 6.0
 
       # Try out copy constructor.
       q3 = gmtl.Coord3fXYZ(q2)
-      assert q3.pos()[0] == 1.0
-      assert q3.pos()[1] == 2.0
-      assert q3.pos()[2] == 3.0
-      assert q3.rot()[0] == 4.0
-      assert q3.rot()[1] == 5.0
-      assert q3.rot()[2] == 6.0
+      assert q3.pos[0] == 1.0
+      assert q3.pos[1] == 2.0
+      assert q3.pos[2] == 3.0
+      assert q3.rot[0] == 4.0
+      assert q3.rot[1] == 5.0
+      assert q3.rot[2] == 6.0
 
       # Instantiate one copy of all types that we are supposed to support.
       CoordVec3dXYZ_test = gmtl.Coord3dXYZ()
@@ -984,31 +984,31 @@ class CoordClassTest(unittest.TestCase):
 
 #   def testMultiArgConstructors(self):
 #      coord = gmtl.Coord3fXYZ(1.0, 2.0, 3.0, 4.0, 5.0, 6.0)
-#      assert coord.pos()[0] == 1.0
-#      assert coord.pos()[1] == 2.0
-#      assert coord.pos()[2] == 3.0
-#      assert coord.rot()[0] == 4.0
-#      assert coord.rot()[1] == 5.0
-#      assert coord.rot()[2] == 6.0
+#      assert coord.pos[0] == 1.0
+#      assert coord.pos[1] == 2.0
+#      assert coord.pos[2] == 3.0
+#      assert coord.rot[0] == 4.0
+#      assert coord.rot[1] == 5.0
+#      assert coord.rot[2] == 6.0
 #
 #      coord = gmtl.Coord4fXYZ(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0)
-#      assert coord.pos()[0] == 1.0
-#      assert coord.pos()[1] == 2.0
-#      assert coord.pos()[2] == 3.0
-#      assert coord.pos()[3] == 4.0
-#      assert coord.rot()[0] == 5.0
-#      assert coord.rot()[1] == 6.0
-#      assert coord.rot()[2] == 7.0
+#      assert coord.pos[0] == 1.0
+#      assert coord.pos[1] == 2.0
+#      assert coord.pos[2] == 3.0
+#      assert coord.pos[3] == 4.0
+#      assert coord.rot[0] == 5.0
+#      assert coord.rot[1] == 6.0
+#      assert coord.rot[2] == 7.0
 #
 #      coord = gmtl.Coord4fAxisAngle(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0)
-#      assert coord.pos()[0] == 1.0
-#      assert coord.pos()[1] == 2.0
-#      assert coord.pos()[2] == 3.0
-#      assert coord.pos()[3] == 4.0
-#      assert coord.rot()[0] == 5.0
-#      assert coord.rot()[1] == 6.0
-#      assert coord.rot()[2] == 7.0
-#      assert coord.rot()[3] == 8.0
+#      assert coord.pos[0] == 1.0
+#      assert coord.pos[1] == 2.0
+#      assert coord.pos[2] == 3.0
+#      assert coord.pos[3] == 4.0
+#      assert coord.rot[0] == 5.0
+#      assert coord.rot[1] == 6.0
+#      assert coord.rot[2] == 7.0
+#      assert coord.rot[3] == 8.0
 
 class CoordClassMetricTest(unittest.TestCase):
    def testCoordTimingDefaultConstructor(self):
@@ -1051,10 +1051,10 @@ class CoordClassMetricTest(unittest.TestCase):
       q = gmtl.Coord3fXYZ()
 
       for iter in xrange(iters):
-         use_value += use_value + q.pos()[0]
-         use_value += use_value + q.rot()[0]
-         q.rot()[0] -= use_value
-         q.pos()[0] -= use_value
+         use_value += use_value + q.pos[0]
+         use_value += use_value + q.rot[0]
+         q.rot[0] -= use_value
+         q.pos[0] -= use_value
 
       assert use_value != 8324908723.0
 
@@ -1068,15 +1068,15 @@ class CoordCompareTest(unittest.TestCase):
       assert coord2 == coord1
 
       for j in range(3):
-         coord2.pos()[j] = dataType(1221.0)
+         coord2.pos[j] = dataType(1221.0)
          assert coord1 != coord2
          assert not coord1 == coord2
-         coord2.pos()[j] = coord1.pos()[j]      # put it back
+         coord2.pos[j] = coord1.pos[j]      # put it back
 
-         coord2.rot()[j] = dataType(1221.0)
+         coord2.rot[j] = dataType(1221.0)
          assert coord1 != coord2
          assert not coord1 == coord2
-         coord2.rot()[j] = coord1.rot()[j]      # put it back
+         coord2.rot[j] = coord1.rot[j]      # put it back
 
       assert gmtl.isEqual(coord1, coord2)
       assert gmtl.isEqual(coord1, coord2, dataType(0.0))
@@ -1086,16 +1086,16 @@ class CoordCompareTest(unittest.TestCase):
       eps = dataType(10.0)
 
       for j in range(3):
-         coord2.pos()[j] = coord1.pos()[j] - (eps / dataType(2.0))
+         coord2.pos[j] = coord1.pos[j] - (eps / dataType(2.0))
          assert gmtl.isEqual(coord1, coord2, eps)
          assert not gmtl.isEqual(coord1, coord2, dataType(eps / 3.0))
 
-         coord2.pos()[j] = coord1.pos()[j]      # put it back
+         coord2.pos[j] = coord1.pos[j]      # put it back
 
-         coord2.rot()[j] = coord1.rot()[j] - (eps / dataType(2.0))
+         coord2.rot[j] = coord1.rot[j] - (eps / dataType(2.0))
          assert gmtl.isEqual(coord1, coord2, eps)
          assert not gmtl.isEqual(coord1, coord2, dataType(eps / 3.0))
-         coord2.rot()[j] = coord1.rot()[j]      # put it back
+         coord2.rot[j] = coord1.rot[j]      # put it back
 
    def testCoordEqualityFloatTest(self):
       for i in range(10):
@@ -1119,9 +1119,9 @@ class CoordCompareMetricTest(unittest.TestCase):
       src_coord101 = gmtl.Coord3dXYZ()
 
       # Half of them will be equal.
-      src_coord11.pos()[0] = 1.0
-      src_coord22.pos()[1] = 1.0
-      src_coord33.pos()[2] = 2.0
+      src_coord11.pos[0] = 1.0
+      src_coord22.pos[1] = 1.0
+      src_coord33.pos[2] = 2.0
 
       test_coord11  = gmtl.Coord3fXYZ(src_coord11)
       test_coord22  = gmtl.Coord3fXYZ(src_coord22)
@@ -1131,9 +1131,9 @@ class CoordCompareMetricTest(unittest.TestCase):
       test_coord101 = gmtl.Coord3dXYZ(src_coord101)
 
       # Half will be unequal.
-      src_coord34.pos()[0]  = 2.0
-      src_coord44.pos()[1]  = 3.0
-      src_coord101.pos()[2] = 1.0
+      src_coord34.pos[0]  = 2.0
+      src_coord44.pos[1]  = 3.0
+      src_coord101.pos[2] = 1.0
 
       true_count = 0
 
@@ -1164,9 +1164,9 @@ class CoordCompareMetricTest(unittest.TestCase):
       src_coord101 = gmtl.Coord3dXYZ()
 
       # Half of them will be equal.
-      src_coord11.pos()[0] = 1.0
-      src_coord22.pos()[1] = 1.0
-      src_coord33.pos()[2] = 2.0
+      src_coord11.pos[0] = 1.0
+      src_coord22.pos[1] = 1.0
+      src_coord33.pos[2] = 2.0
 
       test_coord11  = gmtl.Coord3fXYZ(src_coord11)
       test_coord22  = gmtl.Coord3fXYZ(src_coord22)
@@ -1176,9 +1176,9 @@ class CoordCompareMetricTest(unittest.TestCase):
       test_coord101 = gmtl.Coord3dXYZ(src_coord101)
 
       # Half will be unequal.
-      src_coord34.pos()[0]  = 2.0
-      src_coord44.pos()[1]  = 3.0
-      src_coord101.pos()[2] = 1.0
+      src_coord34.pos[0]  = 2.0
+      src_coord44.pos[1]  = 3.0
+      src_coord101.pos[2] = 1.0
 
       true_count = 0
 
@@ -1209,9 +1209,9 @@ class CoordCompareMetricTest(unittest.TestCase):
       src_coord101 = gmtl.Coord3dXYZ()
 
       # Half of them will be equal.
-      src_coord11.pos()[0] = 1.0
-      src_coord22.pos()[1] = 1.0
-      src_coord33.pos()[2] = 2.0
+      src_coord11.pos[0] = 1.0
+      src_coord22.pos[1] = 1.0
+      src_coord33.pos[2] = 2.0
 
       test_coord11  = gmtl.Coord3fXYZ(src_coord11)
       test_coord22  = gmtl.Coord3fXYZ(src_coord22)
@@ -1221,9 +1221,9 @@ class CoordCompareMetricTest(unittest.TestCase):
       test_coord101 = gmtl.Coord3dXYZ(src_coord101)
 
       # Half will be unequal.
-      src_coord34.pos()[0]  = 2.0
-      src_coord44.pos()[1]  = 3.0
-      src_coord101.pos()[2] = 1.0
+      src_coord34.pos[0]  = 2.0
+      src_coord44.pos[1]  = 3.0
+      src_coord101.pos[2] = 1.0
 
       true_count = 0
 
@@ -1246,8 +1246,8 @@ class CoordCompareMetricTest(unittest.TestCase):
 class CoordGenTest(unittest.TestCase):
    def testCoordSetMatrix(self):
       q1 = gmtl.Coord3fXYZ()
-      q1.pos().set(2.0, 3.0, 4.0)
-      q1.rot().set(0.2, 0.5, 0.6)
+      q1.pos.set(2.0, 3.0, 4.0)
+      q1.rot.set(0.2, 0.5, 0.6)
 
       mat1 = gmtl.Matrix44f()
       q2 = gmtl.Coord3fXYZ()
@@ -1285,9 +1285,9 @@ class CoordGenTest(unittest.TestCase):
                             0.683013, -0.183013, -0.707107,
                             0.258819, 0.965926, 0.0 )
 
-      q1.rot()[0] = gmtl.Math.deg2Rad(90.0)
-      q1.rot()[1] = gmtl.Math.deg2Rad(45.0)
-      q1.rot()[2] = gmtl.Math.deg2Rad(15.0)
+      q1.rot[0] = gmtl.Math.deg2Rad(90.0)
+      q1.rot[1] = gmtl.Math.deg2Rad(45.0)
+      q1.rot[2] = gmtl.Math.deg2Rad(15.0)
 
       mat = gmtl.Matrix33f()
       gmtl.set(mat, q1)
@@ -1299,12 +1299,12 @@ class CoordGenTest(unittest.TestCase):
                             -0.395247, -0.637014, 0.66181, gmtl.Math.deg2Rad(2.0),
                             0.0121696, 0.71678, 0.697193, gmtl.Math.deg2Rad(3.0),
                             0.0, 0.0, 0.0, 1.0)
-      q1.pos()[0] = gmtl.Math.deg2Rad(1.0)
-      q1.pos()[1] = gmtl.Math.deg2Rad(2.0)
-      q1.pos()[2] = gmtl.Math.deg2Rad(3.0)
-      q1.rot()[0] = gmtl.Math.deg2Rad(-156.0)
-      q1.rot()[1] = gmtl.Math.deg2Rad(45.7892892)
-      q1.rot()[2] = gmtl.Math.deg2Rad(-361.0)
+      q1.pos[0] = gmtl.Math.deg2Rad(1.0)
+      q1.pos[1] = gmtl.Math.deg2Rad(2.0)
+      q1.pos[2] = gmtl.Math.deg2Rad(3.0)
+      q1.rot[0] = gmtl.Math.deg2Rad(-156.0)
+      q1.rot[1] = gmtl.Math.deg2Rad(45.7892892)
+      q1.rot[2] = gmtl.Math.deg2Rad(-361.0)
 
       mat = gmtl.Matrix44f()
       gmtl.set(mat, q1)
@@ -1320,7 +1320,7 @@ class CoordGenMetricTest(unittest.TestCase):
          gmtl.set(q1, mat)
          mat[3][1] != q1.getPos()[2]
 
-      assert q1.pos()[1] != 10000.0
+      assert q1.pos[1] != 10000.0
 
    def testGenTimingMakeMatrix(self):
       iters = 25000
@@ -1328,9 +1328,9 @@ class CoordGenMetricTest(unittest.TestCase):
 
       for iter in xrange(iters):
          mat = gmtl.Matrix44f()
-         q1.pos()[2] += mat[3][3]
+         q1.pos[2] += mat[3][3]
 
-      assert q1.pos()[1] != 10000.0
+      assert q1.pos[1] != 10000.0
 
    def testGenTimingSetCoord(self):
       mat = gmtl.Matrix44f()
@@ -1341,7 +1341,7 @@ class CoordGenMetricTest(unittest.TestCase):
          gmtl.set(q1, mat)
          mat[3][3] += q1.getPos()[2]
 
-      assert q1.pos()[1] != 10000.0
+      assert q1.pos[1] != 10000.0
 
 class EulerAngleClassTest(unittest.TestCase):
    def testEulerAngleClassTestCreation(self):
@@ -1879,7 +1879,7 @@ class IntersectionMetricTest(unittest.TestCase):
       for iter in xrange(iters):
          if gmtl.intersect(box1, box2)[0]:
             true_count += 1
-         box2.mMax[0] += 0.01
+         box2.max[0] += 0.01
 
       assert true_count > 0
 
@@ -1948,35 +1948,35 @@ class LineSegTest(unittest.TestCase):
    def testCreation(self):
       test_lineseg = gmtl.LineSegf()
       zeroVec = gmtl.Vec3f(0.0, 0.0, 0.0)
-      assert test_lineseg.mOrigin == self.origin
-      assert test_lineseg.mDir == zeroVec
+      assert test_lineseg.origin == self.origin
+      assert test_lineseg.dir == zeroVec
 
    def testPtVecCreation(self):
-      assert self.x1_lineseg.mOrigin == self.origin
-      assert self.y1_lineseg.mOrigin == self.origin
-      assert self.z1_lineseg.mOrigin == self.origin
-      assert self.x1_lineseg.mDir == self.x1_v
-      assert self.y1_lineseg.mDir == self.y1_v
-      assert self.z1_lineseg.mDir == self.z1_v
+      assert self.x1_lineseg.origin == self.origin
+      assert self.y1_lineseg.origin == self.origin
+      assert self.z1_lineseg.origin == self.origin
+      assert self.x1_lineseg.dir == self.x1_v
+      assert self.y1_lineseg.dir == self.y1_v
+      assert self.z1_lineseg.dir == self.z1_v
 
       vec = gmtl.Vec3f(1.0, 1.0, 1.0)
       test_lineseg = gmtl.LineSegf(self.x1_pt, vec)
-      assert test_lineseg.mOrigin == self.x1_pt
-      assert test_lineseg.mDir == vec
+      assert test_lineseg.origin == self.x1_pt
+      assert test_lineseg.dir == vec
 
    def testPtPtCreation(self):
       test_lineseg = gmtl.LineSegf(self.origin, self.x1_pt)
-      assert test_lineseg.mOrigin == self.origin
-      assert test_lineseg.mDir == gmtl.Vec3f(self.x1_pt - self.origin)
+      assert test_lineseg.origin == self.origin
+      assert test_lineseg.dir == gmtl.Vec3f(self.x1_pt - self.origin)
 
       test_lineseg = gmtl.LineSegf(self.x1_pt, self.y1_pt)
-      assert test_lineseg.mOrigin == self.x1_pt
-      assert test_lineseg.mDir == gmtl.Vec3f(self.y1_pt - self.x1_pt)
+      assert test_lineseg.origin == self.x1_pt
+      assert test_lineseg.dir == gmtl.Vec3f(self.y1_pt - self.x1_pt)
 
    def testCopyConstruct(self):
       test_lineseg = gmtl.LineSegf(self.x1_lineseg)
-      assert test_lineseg.mOrigin == self.x1_lineseg.mOrigin
-      assert test_lineseg.mDir == self.x1_lineseg.mDir
+      assert test_lineseg.origin == self.x1_lineseg.origin
+      assert test_lineseg.dir == self.x1_lineseg.dir
 
    def testGetOrigin(self):
       assert self.x1_lineseg.getOrigin() == self.origin
@@ -2019,13 +2019,13 @@ class LineSegTest(unittest.TestCase):
 
       # Set equal, vary origin.
       test_lineseg2 = gmtl.LineSegf(test_lineseg1)
-      test_lineseg2.mOrigin[0] += 2.0
+      test_lineseg2.origin[0] += 2.0
       assert test_lineseg1 != test_lineseg2
       assert not test_lineseg1 == test_lineseg2
 
       # Set equal, vary dir
       test_lineseg2 = gmtl.LineSegf(test_lineseg1)
-      test_lineseg2.mDir[0] += 2.0
+      test_lineseg2.dir[0] += 2.0
       assert test_lineseg1 != test_lineseg2
       assert not test_lineseg1 == test_lineseg2
 
@@ -2042,9 +2042,9 @@ class LineSegTest(unittest.TestCase):
          test_lineseg2 = gmtl.LineSegf(test_lineseg1)
 
          if elt < 3:
-            test_lineseg2.mOrigin[elt] += 20.0
+            test_lineseg2.origin[elt] += 20.0
          else:
-            test_lineseg2.mDir[elt - 3] += 20.0
+            test_lineseg2.dir[elt - 3] += 20.0
 
          assert not gmtl.isEqual(test_lineseg1, test_lineseg2, 10.0)
          assert not gmtl.isEqual(test_lineseg1, test_lineseg2, 19.9)
@@ -2220,7 +2220,7 @@ class LineSegMetricTest(unittest.TestCase):
 
       for iter in xrange(iters):
          test_lineseg = gmtl.LineSegf()
-         use_value += test_lineseg.mDir[0] + 1.0
+         use_value += test_lineseg.dir[0] + 1.0
 
       assert use_value > 0.0
 
@@ -2230,7 +2230,7 @@ class LineSegMetricTest(unittest.TestCase):
 
       for iter in xrange(iters):
          test_lineseg2 = gmtl.LineSegf(self.y1_pt, self.z1_v)
-         use_value += test_lineseg2.mDir[0] + 1.0
+         use_value += test_lineseg2.dir[0] + 1.0
 
       assert use_value > 0
 
@@ -2240,7 +2240,7 @@ class LineSegMetricTest(unittest.TestCase):
 
       for iter in xrange(iters):
          test_lineseg2 = gmtl.LineSegf(self.x1_pt, self.z1_pt)
-         use_value += test_lineseg2.mDir[0]
+         use_value += test_lineseg2.dir[0]
 
       assert use_value != 0
 
@@ -2250,7 +2250,7 @@ class LineSegMetricTest(unittest.TestCase):
 
       for iter in xrange(iters):
          test_lineseg2 = gmtl.LineSegf(self.x1_lineseg)
-         use_value += test_lineseg2.mDir[0]
+         use_value += test_lineseg2.dir[0]
 
       assert use_value > 0
 
@@ -2272,7 +2272,7 @@ class LineSegMetricTest(unittest.TestCase):
 
       for iter in xrange(iters):
          test_lineseg.setOrigin(self.x1_pt)
-         use_value += test_lineseg.mOrigin[0]
+         use_value += test_lineseg.origin[0]
 
       assert use_value > 0
 
@@ -2294,7 +2294,7 @@ class LineSegMetricTest(unittest.TestCase):
 
       for iter in xrange(iters):
          test_lineseg.setDir(self.x1_v)
-         use_value += test_lineseg.mDir[0]
+         use_value += test_lineseg.dir[0]
 
       assert use_value > 0
 
@@ -2319,22 +2319,22 @@ class LineSegMetricTest(unittest.TestCase):
       for iter in xrange(iters):
          if test_lineseg1 == test_lineseg2:
             true_count += 1
-         test_lineseg1.mOrigin[0] += 1.0
-         test_lineseg2.mOrigin[0] += 2.0
+         test_lineseg1.origin[0] += 1.0
+         test_lineseg2.origin[0] += 2.0
 
       # Inequality.
-      test_lineseg1.mOrigin = self.x1_pt
-      test_lineseg1.mDir = self.x1_v
-      assert test_lineseg1.mOrigin is not self.x1_pt
-      assert test_lineseg1.mDir is not self.x1_v
+      test_lineseg1.origin = self.x1_pt
+      test_lineseg1.dir = self.x1_v
+      assert test_lineseg1.origin is not self.x1_pt
+      assert test_lineseg1.dir is not self.x1_v
 
       test_lineseg2 = gmtl.LineSegf(test_lineseg1)
 
       for iter in xrange(iters):
          if test_lineseg1 == test_lineseg2:
             true_count += 1
-         test_lineseg1.mOrigin[0] += 1.0
-         test_lineseg2.mOrigin[0] += 2.0
+         test_lineseg1.origin[0] += 1.0
+         test_lineseg2.origin[0] += 2.0
 
       assert true_count > 0
 
@@ -2346,8 +2346,8 @@ class LineSegMetricTest(unittest.TestCase):
       true_count = 0
 
       for iter in xrange(iters):
-         test_lineseg1.mOrigin[0] += 1.0
-         test_lineseg2.mOrigin[0] += 2.0
+         test_lineseg1.origin[0] += 1.0
+         test_lineseg2.origin[0] += 2.0
 
          if gmtl.isEqual(test_lineseg1, test_lineseg2, 1.0):
             true_count += 1

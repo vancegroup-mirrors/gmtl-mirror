@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Ray_double.cpp,v $
- * Date modified: $Date: 2005-06-02 22:07:58 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2005-06-04 17:13:46 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -42,8 +42,8 @@ void _Export_Ray_double()
     class_< gmtl::Ray<double> >("Rayd", init<  >())
         .def(init< const gmtl::Point<double,3> &, const gmtl::Vec<double,3> & >())
         .def(init< const gmtl::Ray<double> & >())
-        .def_readwrite("mOrigin", &gmtl::Ray<double>::mOrigin)
-        .def_readwrite("mDir", &gmtl::Ray<double>::mDir)
+        .def_readwrite("origin", &gmtl::Ray<double>::mOrigin)
+        .def_readwrite("dir", &gmtl::Ray<double>::mDir)
         .def("getOrigin", &gmtl::Ray<double>::getOrigin, return_value_policy< copy_const_reference >())
         .def("setOrigin", &gmtl::Ray<double>::setOrigin)
         .def("getDir", &gmtl::Ray<double>::getDir, return_value_policy< copy_const_reference >())

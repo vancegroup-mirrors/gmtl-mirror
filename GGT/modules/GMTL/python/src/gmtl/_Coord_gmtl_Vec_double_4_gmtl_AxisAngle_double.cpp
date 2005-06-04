@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Coord_gmtl_Vec_double_4_gmtl_AxisAngle_double.cpp,v $
- * Date modified: $Date: 2005-05-13 15:08:57 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2005-06-04 17:13:46 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -42,12 +42,10 @@ void _Export_Coord_gmtl_Vec_double_4_gmtl_AxisAngle_double()
     class_< gmtl::Coord<gmtl::Vec<double, 4>,gmtl::AxisAngle<double> > >("Coord4dAxisAngle", init<  >())
         .def(init< const gmtl::Coord<gmtl::Vec<double, 4>,gmtl::AxisAngle<double> > & >())
         .def(init< const gmtl::Vec<double,4> &, const gmtl::AxisAngle<double> & >())
-        .def_readwrite("mPos", &gmtl::Coord<gmtl::Vec<double, 4>,gmtl::AxisAngle<double> >::mPos)
-        .def_readwrite("mRot", &gmtl::Coord<gmtl::Vec<double, 4>,gmtl::AxisAngle<double> >::mRot)
+        .def_readwrite("pos", &gmtl::Coord<gmtl::Vec<double, 4>,gmtl::AxisAngle<double> >::mPos)
+        .def_readwrite("rot", &gmtl::Coord<gmtl::Vec<double, 4>,gmtl::AxisAngle<double> >::mRot)
         .def("getPos", &gmtl::Coord<gmtl::Vec<double, 4>,gmtl::AxisAngle<double> >::getPos, return_internal_reference< 1 >())
         .def("getRot", &gmtl::Coord<gmtl::Vec<double, 4>,gmtl::AxisAngle<double> >::getRot, return_internal_reference< 1 >())
-        .def("pos", &gmtl::Coord<gmtl::Vec<double, 4>,gmtl::AxisAngle<double> >::pos, return_internal_reference< 1 >())
-        .def("rot", &gmtl::Coord<gmtl::Vec<double, 4>,gmtl::AxisAngle<double> >::rot, return_internal_reference< 1 >())
         .def_pickle(gmtlPickle::Coord_pickle< gmtl::Vec<double, 4>,gmtl::AxisAngle<double> >())
         .def(self == self)
         .def(self != self)

@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Quat_double.cpp,v $
- * Date modified: $Date: 2004-10-27 19:01:33 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2005-06-04 17:13:46 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -43,7 +43,6 @@ void _Export_Quat_double()
     class_< gmtl::Quat<double> >("Quatd", init<  >())
         .def(init< const double, const double, const double, const double >())
         .def(init< const gmtl::Quat<double> & >())
-        .def_readwrite("mData", &gmtl::Quat<double>::mData)
         .def("set", &gmtl::Quat<double>::set)
         .def("get", &gmtl::Quat<double>::get)
         .def("getData", (tuple (*)(gmtl::Quat<double>*)) &gmtlWrappers::Quat_getData)
