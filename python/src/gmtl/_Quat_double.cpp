@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Quat_double.cpp,v $
- * Date modified: $Date: 2005-06-04 17:13:46 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2005-06-05 15:24:14 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -53,6 +53,7 @@ void _Export_Quat_double()
         .def(self * self)
         .def(self *= self)
         .def(-self)
+        .def(self * gmtl::Vec3d())
         .def(self * double())
         .def(self *= double())
         .def(self / self)
