@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _gmtl_Generate_h.cpp,v $
- * Date modified: $Date: 2005-06-03 22:51:40 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2005-06-05 15:40:36 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -221,13 +221,13 @@ void _Export_gmtl_Generate_h()
     def("setAxes", (gmtl::Matrix<double,4,4> & (*)(gmtl::Matrix<double,4,4> &, const gmtl::Vec<double,3> &, const gmtl::Vec<double,3> &, const gmtl::Vec<double,3> &))&gmtl::setAxes, return_internal_reference< 1 >());
     def("setAxes", (gmtl::Matrix<float,4,4> & (*)(gmtl::Matrix<float,4,4> &, const gmtl::Vec<float,3> &, const gmtl::Vec<float,3> &, const gmtl::Vec<float,3> &))&gmtl::setAxes, return_internal_reference< 1 >());
     def("setDirCos", &gmtlWrappers::setDirCosMatrix33f,
-        return_internal_reference<1>(), setDirCosMatrix33f_overloads_4_7());
+        setDirCosMatrix33f_overloads_4_7()[return_internal_reference<1>()]);
     def("setDirCos", &gmtlWrappers::setDirCosMatrix33d,
-        return_internal_reference<1>(), setDirCosMatrix33d_overloads_4_7());
+        setDirCosMatrix33d_overloads_4_7()[return_internal_reference<1>()]);
     def("setDirCos", &gmtlWrappers::setDirCosMatrix44f,
-        return_internal_reference<1>(), setDirCosMatrix44f_overloads_4_7());
+        setDirCosMatrix44f_overloads_4_7()[return_internal_reference<1>()]);
     def("setDirCos", &gmtlWrappers::setDirCosMatrix44d,
-        return_internal_reference<1>(), setDirCosMatrix44d_overloads_4_7());
+        setDirCosMatrix44d_overloads_4_7()[return_internal_reference<1>()]);
     def("setFrustum", (gmtl::Matrix<float,4,4> & (*)(gmtl::Matrix<float,4,4> &, float, float, float, float, float, float))&gmtl::setFrustum, return_internal_reference< 1 >());
     def("setFrustum", (gmtl::Matrix<double,4,4> & (*)(gmtl::Matrix<double,4,4> &, double, double, double, double, double, double))&gmtl::setFrustum, return_internal_reference< 1 >());
     def("setPerspective", (gmtl::Matrix<float,4,4> & (*)(gmtl::Matrix<float,4,4> &, float, float, float, float))&gmtl::setPerspective, return_internal_reference< 1 >());
