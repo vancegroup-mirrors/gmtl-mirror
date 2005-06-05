@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-array-wrappers.h,v $
- * Date modified: $Date: 2005-06-04 20:13:09 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2005-06-05 15:28:01 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -85,7 +85,7 @@ namespace gmtlWrappers
 }
 
 #if ! defined(__APPLE__)
-gmtlWrappers
+namespace gmtlWrappers
 {
    template void Matrix_set(gmtl::Matrix<float, 3, 3>*, boost::python::list);
    template void Matrix_set(gmtl::Matrix<float, 4, 4>*, boost::python::list);
