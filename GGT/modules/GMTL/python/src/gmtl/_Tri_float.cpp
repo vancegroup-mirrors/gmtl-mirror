@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Tri_float.cpp,v $
- * Date modified: $Date: 2004-10-28 00:04:57 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2005-06-05 22:19:45 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -46,7 +46,7 @@ void _Export_Tri_float()
         .def("edge", (gmtl::Vec<float, 3> (gmtl::Tri<float>::*)(int) const) &gmtl::Tri<float>::edge)
         .def("edge", (gmtl::Vec<float, 3> (gmtl::Tri<float>::*)(int, int) const) &gmtl::Tri<float>::edge)
         .def("set", &gmtl::Tri<float>::set)
-        .def("__getitem__", (gmtl::Point<float, 3>& (gmtl::Tri<float>::*)(const unsigned)) &gmtl::Tri<float>::operator[], return_value_policy<copy_non_const_reference>())
+        .def("__getitem__", (gmtl::Point<float, 3>& (gmtl::Tri<float>::*)(const unsigned)) &gmtl::Tri<float>::operator[], return_internal_reference< 1 >())
         .def("__setitem__", (void (*)(gmtl::Tri<float>*, const unsigned, const gmtl::Point<float, 3>&)) gmtlWrappers::setArrayElement)
         .def_pickle(gmtlPickle::Tri_pickle<float>())
         .def(self == self)
