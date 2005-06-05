@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _gmtl_Generate_h.cpp,v $
- * Date modified: $Date: 2005-06-05 15:48:42 $
- * Version:       $Revision: 1.7 $
+ * Date modified: $Date: 2005-06-05 19:37:30 $
+ * Version:       $Revision: 1.8 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -43,69 +43,10 @@ using namespace boost::python;
 // Declarations ================================================================
 
 
-namespace gmtlWrappers
-{
-
-// These wrappers around gmtl::setDirCos() are needed because we lose the
-// ability to have default function arguments otherwise.  When defining the
-// functions below, we would have to use casting to distinguish between the
-// different overloads of gmtl::setDirCos(), but in so doing, we lose the
-// default function arguments.  These thin wrappers allow gmtl::setDirCos()
-// to be used from Python with its default arguments as intended.
-gmtl::Matrix33f& setDirCosMatrix33f(gmtl::Matrix33f& m, const gmtl::Vec3f& v0,
-                                    const gmtl::Vec3f& v1,
-                                    const gmtl::Vec3f& v2,
-                                    const gmtl::Vec3f& v3 = gmtl::Vec3f(1.0f, 0.0f, 0.0f),
-                                    const gmtl::Vec3f& v4 = gmtl::Vec3f(0.0f, 1.0f, 0.0f),
-                                    const gmtl::Vec3f& v5 = gmtl::Vec3f(0.0f, 0.0f, 1.0f))
-{
-   return gmtl::setDirCos(m, v0, v1, v2, v3, v4, v5);
-}
-
-gmtl::Matrix33d& setDirCosMatrix33d(gmtl::Matrix33d& m, const gmtl::Vec3d& v0,
-                                    const gmtl::Vec3d& v1,
-                                    const gmtl::Vec3d& v2,
-                                    const gmtl::Vec3d& v3 = gmtl::Vec3d(1.0f, 0.0f, 0.0f),
-                                    const gmtl::Vec3d& v4 = gmtl::Vec3d(0.0f, 1.0f, 0.0f),
-                                    const gmtl::Vec3d& v5 = gmtl::Vec3d(0.0f, 0.0f, 1.0f))
-{
-   return gmtl::setDirCos(m, v0, v1, v2, v3, v4, v5);
-}
-
-gmtl::Matrix44f& setDirCosMatrix44f(gmtl::Matrix44f& m, const gmtl::Vec3f& v0,
-                                    const gmtl::Vec3f& v1,
-                                    const gmtl::Vec3f& v2,
-                                    const gmtl::Vec3f& v3 = gmtl::Vec3f(1.0f, 0.0f, 0.0f),
-                                    const gmtl::Vec3f& v4 = gmtl::Vec3f(0.0f, 1.0f, 0.0f),
-                                    const gmtl::Vec3f& v5 = gmtl::Vec3f(0.0f, 0.0f, 1.0f))
-{
-   return gmtl::setDirCos(m, v0, v1, v2, v3, v4, v5);
-}
-
-gmtl::Matrix44d& setDirCosMatrix44d(gmtl::Matrix44d& m, const gmtl::Vec3d& v0,
-                                    const gmtl::Vec3d& v1,
-                                    const gmtl::Vec3d& v2,
-                                    const gmtl::Vec3d& v3 = gmtl::Vec3d(1.0f, 0.0f, 0.0f),
-                                    const gmtl::Vec3d& v4 = gmtl::Vec3d(0.0f, 1.0f, 0.0f),
-                                    const gmtl::Vec3d& v5 = gmtl::Vec3d(0.0f, 0.0f, 1.0f))
-{
-   return gmtl::setDirCos(m, v0, v1, v2, v3, v4, v5);
-}
-
-}
-
-
 namespace  {
 
 
-BOOST_PYTHON_FUNCTION_OVERLOADS(setDirCosMatrix33f_overloads_4_7,
-                                gmtlWrappers::setDirCosMatrix33f, 4, 7)
-BOOST_PYTHON_FUNCTION_OVERLOADS(setDirCosMatrix33d_overloads_4_7,
-                                gmtlWrappers::setDirCosMatrix33d, 4, 7)
-BOOST_PYTHON_FUNCTION_OVERLOADS(setDirCosMatrix44f_overloads_4_7,
-                                gmtlWrappers::setDirCosMatrix44f, 4, 7)
-BOOST_PYTHON_FUNCTION_OVERLOADS(setDirCosMatrix44d_overloads_4_7,
-                                gmtlWrappers::setDirCosMatrix44d, 4, 7)
+BOOST_PYTHON_FUNCTION_OVERLOADS(setDirCos_overloads_4_7, gmtl::setDirCos, 4, 7)
 
 
 }// namespace 
@@ -220,14 +161,14 @@ void _Export_gmtl_Generate_h()
     def("setAxes", (gmtl::Matrix<float,3,3> & (*)(gmtl::Matrix<float,3,3> &, const gmtl::Vec<float,3> &, const gmtl::Vec<float,3> &, const gmtl::Vec<float,3> &))&gmtl::setAxes, return_internal_reference< 1 >());
     def("setAxes", (gmtl::Matrix<double,4,4> & (*)(gmtl::Matrix<double,4,4> &, const gmtl::Vec<double,3> &, const gmtl::Vec<double,3> &, const gmtl::Vec<double,3> &))&gmtl::setAxes, return_internal_reference< 1 >());
     def("setAxes", (gmtl::Matrix<float,4,4> & (*)(gmtl::Matrix<float,4,4> &, const gmtl::Vec<float,3> &, const gmtl::Vec<float,3> &, const gmtl::Vec<float,3> &))&gmtl::setAxes, return_internal_reference< 1 >());
-    def("setDirCos", &gmtlWrappers::setDirCosMatrix33f,
-        setDirCosMatrix33f_overloads_4_7()[return_internal_reference<1>()]);
-    def("setDirCos", &gmtlWrappers::setDirCosMatrix33d,
-        setDirCosMatrix33d_overloads_4_7()[return_internal_reference<1>()]);
-    def("setDirCos", &gmtlWrappers::setDirCosMatrix44f,
-        setDirCosMatrix44f_overloads_4_7()[return_internal_reference<1>()]);
-    def("setDirCos", &gmtlWrappers::setDirCosMatrix44d,
-        setDirCosMatrix44d_overloads_4_7()[return_internal_reference<1>()]);
+    def("setDirCos", (gmtl::Matrix<float,3,3> & (*)(gmtl::Matrix<float,3,3> &, const gmtl::Vec<float,3> &, const gmtl::Vec<float,3> &, const gmtl::Vec<float,3> &, const gmtl::Vec<float,3> &, const gmtl::Vec<float,3> &, const gmtl::Vec<float,3> &))&gmtl::setDirCos,
+        setDirCos_overloads_4_7()[return_internal_reference<1>()]);
+    def("setDirCos", (gmtl::Matrix<double,3,3> & (*)(gmtl::Matrix<double,3,3> &, const gmtl::Vec<double,3> &, const gmtl::Vec<double,3> &, const gmtl::Vec<double,3> &, const gmtl::Vec<double,3> &, const gmtl::Vec<double,3> &, const gmtl::Vec<double,3> &))&gmtl::setDirCos,
+        setDirCos_overloads_4_7()[return_internal_reference<1>()]);
+    def("setDirCos", (gmtl::Matrix<float,4,4> & (*)(gmtl::Matrix<float,4,4> &, const gmtl::Vec<float,3> &, const gmtl::Vec<float,3> &, const gmtl::Vec<float,3> &, const gmtl::Vec<float,3> &, const gmtl::Vec<float,3> &, const gmtl::Vec<float,3> &))&gmtl::setDirCos,
+        setDirCos_overloads_4_7()[return_internal_reference<1>()]);
+    def("setDirCos", (gmtl::Matrix<double,4,4> & (*)(gmtl::Matrix<double,4,4> &, const gmtl::Vec<double,3> &, const gmtl::Vec<double,3> &, const gmtl::Vec<double,3> &, const gmtl::Vec<double,3> &, const gmtl::Vec<double,3> &, const gmtl::Vec<double,3> &))&gmtl::setDirCos,
+        setDirCos_overloads_4_7()[return_internal_reference<1>()]);
     def("setFrustum", (gmtl::Matrix<float,4,4> & (*)(gmtl::Matrix<float,4,4> &, float, float, float, float, float, float))&gmtl::setFrustum, return_internal_reference< 1 >());
     def("setFrustum", (gmtl::Matrix<double,4,4> & (*)(gmtl::Matrix<double,4,4> &, double, double, double, double, double, double))&gmtl::setFrustum, return_internal_reference< 1 >());
     def("setPerspective", (gmtl::Matrix<float,4,4> & (*)(gmtl::Matrix<float,4,4> &, float, float, float, float))&gmtl::setPerspective, return_internal_reference< 1 >());
