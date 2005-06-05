@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _gmtl_Generate_h.cpp,v $
- * Date modified: $Date: 2005-06-05 15:40:36 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2005-06-05 15:48:42 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -250,6 +250,7 @@ void _Export_gmtl_Generate_h()
     def("setRot", (gmtl::Coord<gmtl::Vec<float, 4>,gmtl::EulerAngle<float, gmtl::XYZ> > & (*)(gmtl::Coord<gmtl::Vec<float, 4>,gmtl::EulerAngle<float, gmtl::XYZ> > &, const gmtl::Matrix<float,3,3> &))&gmtl::setRot, return_internal_reference< 1 >());
     def("setRot", (gmtl::Coord<gmtl::Vec<float, 3>,gmtl::EulerAngle<float, gmtl::ZXY> > & (*)(gmtl::Coord<gmtl::Vec<float, 3>,gmtl::EulerAngle<float, gmtl::ZXY> > &, const gmtl::Matrix<float,3,3> &))&gmtl::setRot, return_internal_reference< 1 >());
     def("setRot", (gmtl::Quat<float> & (*)(gmtl::Quat<float> &, const gmtl::Vec<float,3> &, const gmtl::Vec<float,3> &))&gmtl::setRot, return_internal_reference< 1 >());
+    def("setRot", (gmtl::Quat<double> & (*)(gmtl::Quat<double> &, const gmtl::Vec<double,3> &, const gmtl::Vec<double,3> &))&gmtl::setRot, return_internal_reference< 1 >());
     def("setRot", (gmtl::Coord<gmtl::Vec<float, 3>,gmtl::Quat<float> > & (*)(gmtl::Coord<gmtl::Vec<float, 3>,gmtl::Quat<float> > &, const gmtl::Matrix<float,3,3> &))&gmtl::setRot, return_internal_reference< 1 >());
     def("setRot", (gmtl::Coord<gmtl::Vec<float, 4>,gmtl::EulerAngle<float, gmtl::ZXY> > & (*)(gmtl::Coord<gmtl::Vec<float, 4>,gmtl::EulerAngle<float, gmtl::ZXY> > &, const gmtl::Matrix<float,4,4> &))&gmtl::setRot, return_internal_reference< 1 >());
     def("setRot", (gmtl::EulerAngle<float,gmtl::XYZ> & (*)(gmtl::EulerAngle<float,gmtl::XYZ> &, const gmtl::Matrix<float,4,4> &))&gmtl::setRot, return_internal_reference< 1 >());
