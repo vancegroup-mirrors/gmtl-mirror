@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _gmtl_Containment_h.cpp,v $
- * Date modified: $Date: 2005-06-02 04:40:18 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2005-06-05 21:26:16 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -41,6 +41,25 @@
 using namespace boost::python;
 
 // Declarations ================================================================
+namespace gmtlWrappers
+{
+
+template<typename DATA_TYPE>
+void makeVolume(gmtl::Sphere<DATA_TYPE>& container, list pts)
+{
+   const unsigned int size = extract<unsigned int>(pts.attr("__len__")());
+   std::vector< gmtl::Point<DATA_TYPE, 3> > pt_vec(size);
+
+   for ( unsigned int i = 0; i < size; ++i )
+   {
+      pt_vec[i] = extract< gmtl::Point<DATA_TYPE, 3> >(pts[i]);
+   }
+
+   gmtl::makeVolume(container, pt_vec);
+}
+
+}
+
 namespace  {
 
 
@@ -72,8 +91,8 @@ void _Export_gmtl_Containment_h()
     def("isInVolumeExclusive", (bool (*)(const gmtl::AABox<float> &, const gmtl::Point<float,3> &))&gmtl::isInVolumeExclusive);
     def("isOnVolume", (bool (*)(const gmtl::Sphere<double> &, const gmtl::Point<double,3> &, const double &))&gmtl::isOnVolume, isOnVolume_overloads_2_3());
     def("isOnVolume", (bool (*)(const gmtl::Sphere<float> &, const gmtl::Point<float,3> &, const float &))&gmtl::isOnVolume, isOnVolume_overloads_2_3());
-    def("makeVolume", (void (*)(gmtl::Sphere<float> &, const std::vector<gmtl::Point<float, 3>,std::allocator<gmtl::Point<float, 3> > > &))&gmtl::makeVolume, return_internal_reference< 1 >());
+    def("makeVolume", (void (*)(gmtl::Sphere<float> &, list))&gmtlWrappers::makeVolume, return_internal_reference< 1 >());
     def("makeVolume", (void (*)(gmtl::AABox<float> &, const gmtl::Sphere<float> &))&gmtl::makeVolume, return_internal_reference< 1 >());
-    def("makeVolume", (void (*)(gmtl::Sphere<double> &, const std::vector<gmtl::Point<double, 3>,std::allocator<gmtl::Point<double, 3> > > &))&gmtl::makeVolume, return_internal_reference< 1 >());
+    def("makeVolume", (void (*)(gmtl::Sphere<double> &, list))&gmtlWrappers::makeVolume, return_internal_reference< 1 >());
     def("makeVolume", (void (*)(gmtl::AABox<double> &, const gmtl::Sphere<double> &))&gmtl::makeVolume, return_internal_reference< 1 >());
 }
