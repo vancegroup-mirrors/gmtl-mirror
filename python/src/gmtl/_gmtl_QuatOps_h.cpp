@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _gmtl_QuatOps_h.cpp,v $
- * Date modified: $Date: 2005-06-05 05:23:26 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2005-06-05 15:27:00 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -135,10 +135,10 @@ void _Export_gmtl_QuatOps_h()
     def("negate", (gmtl::Quat<double> & (*)(gmtl::Quat<double> &))&gmtl::negate, return_internal_reference< 1 >());
     def("lerp", (gmtl::Quat<double> & (*)(gmtl::Quat<double> &, const double, const gmtl::Quat<double> &, const gmtl::Quat<double> &))&gmtl::lerp, return_internal_reference< 1 >());
     def("lerp", (gmtl::Quat<float> & (*)(gmtl::Quat<float> &, const float, const gmtl::Quat<float> &, const gmtl::Quat<float> &))&gmtl::lerp, return_internal_reference< 1 >());
-    def("slerp", &gmtlWrappers::slerpQuatd, return_internal_reference<1>(),
-        slerpQuatd_overloads_4_5());
-    def("slerp", &gmtlWrappers::slerpQuatf, return_internal_reference<1>(),
-        slerpQuatf_overloads_4_5());
+    def("slerp", &gmtlWrappers::slerpQuatd,
+        slerpQuatd_overloads_4_5()[return_internal_reference<1>()]);
+    def("slerp", &gmtlWrappers::slerpQuatf,
+        slerpQuatf_overloads_4_5()[return_internal_reference<1>()]);
     def("squad", (void (*)(gmtl::Quat<float> &, float, const gmtl::Quat<float> &, const gmtl::Quat<float> &, const gmtl::Quat<float> &, const gmtl::Quat<float> &))&gmtl::squad, return_internal_reference< 1 >());
     def("squad", (void (*)(gmtl::Quat<double> &, double, const gmtl::Quat<double> &, const gmtl::Quat<double> &, const gmtl::Quat<double> &, const gmtl::Quat<double> &))&gmtl::squad, return_internal_reference< 1 >());
     def("isEqual", (bool (*)(const gmtl::Quat<float> &, const gmtl::Quat<float> &, float))&gmtl::isEqual, isEqual_overloads_2_3());
