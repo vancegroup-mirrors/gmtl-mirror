@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _gmtl_intersect_wrappers_h.cpp,v $
- * Date modified: $Date: 2005-06-02 16:55:43 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2005-06-05 21:26:54 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -62,4 +62,8 @@ void _Export_gmtl_intersect_wrappers_h()
    def("intersect", (tuple (*)(const gmtl::Tri<double>&, const gmtl::Ray<double>&)) &gmtlWrappers::intersect);
    def("intersect", (tuple (*)(const gmtl::Tri<float>&, const gmtl::LineSeg<float>&)) &gmtlWrappers::intersect);
    def("intersect", (tuple (*)(const gmtl::Tri<double>&, const gmtl::LineSeg<double>&)) &gmtlWrappers::intersect);
+   def("intersectVolume", (tuple (*)(const gmtl::Sphere<float>&, const gmtl::Ray<float>&)) &gmtlWrappers::intersectVolume);
+   def("intersectVolume", (tuple (*)(const gmtl::Sphere<double>&, const gmtl::Ray<double>&)) &gmtlWrappers::intersectVolume);
+   def("intersectVolume", (tuple (*)(const gmtl::Sphere<float>&, const gmtl::LineSeg<float>&)) &gmtlWrappers::intersectVolume);
+   def("intersectVolume", (tuple (*)(const gmtl::Sphere<double>&, const gmtl::LineSeg<double>&)) &gmtlWrappers::intersectVolume);
 }

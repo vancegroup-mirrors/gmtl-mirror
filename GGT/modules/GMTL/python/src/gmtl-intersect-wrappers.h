@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-intersect-wrappers.h,v $
- * Date modified: $Date: 2005-06-04 20:13:09 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2005-06-05 21:26:54 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -139,6 +139,26 @@ namespace gmtlWrappers
       bool result = gmtl::intersect(t, l, val1, val2, val3);
       return make_tuple(result, val1, val2, val3);
    }
+
+   template<typename T>
+   tuple intersectVolume(const gmtl::Sphere<T>& sphere,
+                         const gmtl::LineSeg<T>& lineseg)
+   {
+      int num_hits;
+      float t0, t1;
+      bool result = gmtl::intersectVolume(sphere, lineseg, num_hits, t0, t1);
+      return make_tuple(result, num_hits, t0, t1);
+   }
+
+   template<typename T>
+   tuple intersectVolume(const gmtl::Sphere<T>& sphere,
+                         const gmtl::Ray<T>& ray)
+   {
+      int num_hits;
+      float t0, t1;
+      bool result = gmtl::intersectVolume(sphere, ray, num_hits, t0, t1);
+      return make_tuple(result, num_hits, t0, t1);
+   }
 }
 
 #if ! defined(__APPLE__)
@@ -186,6 +206,9 @@ namespace gmtlWrappers
 
    template tuple intersect(const gmtl::Trif&, const gmtl::LineSegf&);
    template tuple intersect(const gmtl::Trid&, const gmtl::LineSegd&);
+
+   template tuple intersectVolume(const gmtl::Spheref&, const gmtl::LineSegf&);
+   template tuple intersectVolume(const gmtl::Sphered&, const gmtl::LineSegd&);
 }
 #endif
 
