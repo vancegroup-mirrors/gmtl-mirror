@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecOps.h,v $
- * Date modified: $Date: 2004-10-30 18:24:33 $
- * Version:       $Revision: 1.31 $
+ * Date modified: $Date: 2005-06-05 22:19:09 $
+ * Version:       $Revision: 1.32 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -396,8 +396,8 @@ template<class DATA_TYPE, unsigned SIZE>
 DATA_TYPE length(const Vec<DATA_TYPE, SIZE>& v1)
 {
    DATA_TYPE ret_val = lengthSquared(v1);
-   if (ret_val == 0.0f)
-      return 0.0f;
+   if (ret_val == DATA_TYPE(0.0f))
+      return DATA_TYPE(0.0f);
    else
       return Math::sqrt(ret_val);
 }
