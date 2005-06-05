@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _VecBase_int_4_VecExpMeta.cpp,v $
- * Date modified: $Date: 2005-06-03 15:13:04 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2005-06-05 00:47:19 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -122,6 +122,50 @@ void _VecBase_int_4_VecExpMeta()
    ;
 
    delete gmtl_VecBase_int_4_VecBinaryExpr_VecDivBinary_scope;
+
+   typedef gmtl::VecBase<int, 4,
+                         gmtl::meta::VecBinaryExpr<gmtl::VecBase<int,4>,
+                                                   gmtl::VecBase<int,
+                                                                 4,
+                                                                 gmtl::meta::ScalarArg<int>
+                                                                >,
+                                                   gmtl::meta::VecMultBinary>
+                        > VecBase_ScalarArg_VecMultBinary_t;
+
+   scope* gmtl_VecBase_int_4_VecBinaryExpr_ScalarArg_VecMultBinary_scope = new scope(
+   class_<VecBase_ScalarArg_VecMultBinary_t>("VecBase4dScalarArgMultBinary",
+                                             init<const VecBase_ScalarArg_VecMultBinary_t&>())
+      .def("__getitem__",
+           (int (VecBase_ScalarArg_VecMultBinary_t::*)(const unsigned)) &VecBase_ScalarArg_VecMultBinary_t::operator[])
+   );
+
+   enum_<VecBase_ScalarArg_VecMultBinary_t::Params>("Params")
+      .value("Size", VecBase_ScalarArg_VecMultBinary_t::Size)
+   ;
+
+   delete gmtl_VecBase_int_4_VecBinaryExpr_ScalarArg_VecMultBinary_scope;
+
+   typedef gmtl::VecBase<int, 4,
+                         gmtl::meta::VecBinaryExpr<gmtl::VecBase<int,4>,
+                                                   gmtl::VecBase<int,
+                                                                 4,
+                                                                 gmtl::meta::ScalarArg<int>
+                                                                >,
+                                                   gmtl::meta::VecDivBinary>
+                        > VecBase_ScalarArg_VecDivBinary_t;
+
+   scope* gmtl_VecBase_int_4_VecBinaryExpr_ScalarArg_VecDivBinary_scope = new scope(
+   class_<VecBase_ScalarArg_VecDivBinary_t>("VecBase4dScalarArgDivBinary",
+                                            init<const VecBase_ScalarArg_VecDivBinary_t&>())
+      .def("__getitem__",
+           (int (VecBase_ScalarArg_VecDivBinary_t::*)(const unsigned)) &VecBase_ScalarArg_VecDivBinary_t::operator[])
+   );
+
+   enum_<VecBase_ScalarArg_VecDivBinary_t::Params>("Params")
+      .value("Size", VecBase_ScalarArg_VecDivBinary_t::Size)
+   ;
+
+   delete gmtl_VecBase_int_4_VecBinaryExpr_ScalarArg_VecDivBinary_scope;
 
    typedef gmtl::VecBase<int, 4,
                          gmtl::meta::VecUnaryExpr<gmtl::VecBase<int,4>,
