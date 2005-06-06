@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecBase.h,v $
- * Date modified: $Date: 2004-11-12 01:34:49 $
- * Version:       $Revision: 1.19 $
+ * Date modified: $Date: 2005-06-06 03:44:49 $
+ * Version:       $Revision: 1.20 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -219,7 +219,15 @@ public:
     */
    inline void set(const DATA_TYPE* dataPtr)
    {
-      gmtl::meta::AssignArrayUnrolled<SIZE-1, DATA_TYPE>::func(&(mData[0]), dataPtr);
+#ifdef GMTL_NO_METAPROG
+      for ( unsigned int i = 0; i < SIZE; ++i )
+      {
+         mData[i] = dataPtr[i];
+      }
+#else
+      gmtl::meta::AssignArrayUnrolled<SIZE-1, DATA_TYPE>::func(&(mData[0]),
+                                                               dataPtr);
+#endif
    }
 
    //@{
