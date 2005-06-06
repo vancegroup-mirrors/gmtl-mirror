@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _gmtl_Generate_h.cpp,v $
- * Date modified: $Date: 2005-06-06 03:46:52 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2005-06-06 15:06:13 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -162,6 +162,7 @@ void _Export_gmtl_Generate_h()
     def("setAxes", (gmtl::Matrix<float,3,3> & (*)(gmtl::Matrix<float,3,3> &, const gmtl::Vec<float,3> &, const gmtl::Vec<float,3> &, const gmtl::Vec<float,3> &))&gmtl::setAxes, return_internal_reference< 1 >());
     def("setAxes", (gmtl::Matrix<double,4,4> & (*)(gmtl::Matrix<double,4,4> &, const gmtl::Vec<double,3> &, const gmtl::Vec<double,3> &, const gmtl::Vec<double,3> &))&gmtl::setAxes, return_internal_reference< 1 >());
     def("setAxes", (gmtl::Matrix<float,4,4> & (*)(gmtl::Matrix<float,4,4> &, const gmtl::Vec<float,3> &, const gmtl::Vec<float,3> &, const gmtl::Vec<float,3> &))&gmtl::setAxes, return_internal_reference< 1 >());
+#ifndef _MSC_VER
     def("setDirCos", (gmtl::Matrix<float,3,3> & (*)(gmtl::Matrix<float,3,3> &, const gmtl::Vec<float,3> &, const gmtl::Vec<float,3> &, const gmtl::Vec<float,3> &, const gmtl::Vec<float,3> &, const gmtl::Vec<float,3> &, const gmtl::Vec<float,3> &))&gmtl::setDirCos,
         setDirCos_overloads_4_7()[return_internal_reference<1>()]);
     def("setDirCos", (gmtl::Matrix<double,3,3> & (*)(gmtl::Matrix<double,3,3> &, const gmtl::Vec<double,3> &, const gmtl::Vec<double,3> &, const gmtl::Vec<double,3> &, const gmtl::Vec<double,3> &, const gmtl::Vec<double,3> &, const gmtl::Vec<double,3> &))&gmtl::setDirCos,
@@ -170,6 +171,7 @@ void _Export_gmtl_Generate_h()
         setDirCos_overloads_4_7()[return_internal_reference<1>()]);
     def("setDirCos", (gmtl::Matrix<double,4,4> & (*)(gmtl::Matrix<double,4,4> &, const gmtl::Vec<double,3> &, const gmtl::Vec<double,3> &, const gmtl::Vec<double,3> &, const gmtl::Vec<double,3> &, const gmtl::Vec<double,3> &, const gmtl::Vec<double,3> &))&gmtl::setDirCos,
         setDirCos_overloads_4_7()[return_internal_reference<1>()]);
+#endif
     def("setFrustum", (gmtl::Matrix<float,4,4> & (*)(gmtl::Matrix<float,4,4> &, float, float, float, float, float, float))&gmtl::setFrustum, return_internal_reference< 1 >());
     def("setFrustum", (gmtl::Matrix<double,4,4> & (*)(gmtl::Matrix<double,4,4> &, double, double, double, double, double, double))&gmtl::setFrustum, return_internal_reference< 1 >());
     def("setPerspective", (gmtl::Matrix<float,4,4> & (*)(gmtl::Matrix<float,4,4> &, float, float, float, float))&gmtl::setPerspective, return_internal_reference< 1 >());
