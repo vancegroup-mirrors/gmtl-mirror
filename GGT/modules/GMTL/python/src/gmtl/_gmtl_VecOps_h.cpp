@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _gmtl_VecOps_h.cpp,v $
- * Date modified: $Date: 2004-09-16 21:22:10 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2005-06-06 03:46:52 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -68,6 +68,8 @@ void _Export_gmtl_VecOps_h()
     def("length", (float (*)(const gmtl::Vec<float,3> &))&gmtl::length);
     def("lengthSquared", (float (*)(const gmtl::Vec<float,4> &))&gmtl::lengthSquared);
     def("lengthSquared", (float (*)(const gmtl::Vec<float,3> &))&gmtl::lengthSquared);
+    def("lerp", (gmtl::VecBase<float,2> & (*)(gmtl::VecBase<float,2> &, const float &, const gmtl::VecBase<float,2> &, const gmtl::VecBase<float,2> &))&gmtl::lerp, return_internal_reference< 1 >());
+    def("lerp", (gmtl::VecBase<double,2> & (*)(gmtl::VecBase<double,2> &, const double &, const gmtl::VecBase<double,2> &, const gmtl::VecBase<double,2> &))&gmtl::lerp, return_internal_reference< 1 >());
     def("lerp", (gmtl::VecBase<float,3> & (*)(gmtl::VecBase<float,3> &, const float &, const gmtl::VecBase<float,3> &, const gmtl::VecBase<float,3> &))&gmtl::lerp, return_internal_reference< 1 >());
     def("lerp", (gmtl::VecBase<double,4> & (*)(gmtl::VecBase<double,4> &, const double &, const gmtl::VecBase<double,4> &, const gmtl::VecBase<double,4> &))&gmtl::lerp, return_internal_reference< 1 >());
     def("lerp", (gmtl::VecBase<float,4> & (*)(gmtl::VecBase<float,4> &, const float &, const gmtl::VecBase<float,4> &, const gmtl::VecBase<float,4> &))&gmtl::lerp, return_internal_reference< 1 >());
@@ -78,6 +80,8 @@ void _Export_gmtl_VecOps_h()
     def("reflect", (gmtl::VecBase<double,3> & (*)(gmtl::VecBase<double,3> &, const gmtl::VecBase<double,3> &, const gmtl::Vec<double,3> &))&gmtl::reflect, return_internal_reference< 1 >());
     def("reflect", (gmtl::VecBase<double,4> & (*)(gmtl::VecBase<double,4> &, const gmtl::VecBase<double,4> &, const gmtl::Vec<double,4> &))&gmtl::reflect, return_internal_reference< 1 >());
     def("reflect", (gmtl::VecBase<float,4> & (*)(gmtl::VecBase<float,4> &, const gmtl::VecBase<float,4> &, const gmtl::Vec<float,4> &))&gmtl::reflect, return_internal_reference< 1 >());
+    def("isEqual", (bool (*)(const gmtl::VecBase<float,2> &, const gmtl::VecBase<float,2> &, const float))&gmtl::isEqual);
+    def("isEqual", (bool (*)(const gmtl::VecBase<double,2> &, const gmtl::VecBase<double,2> &, const double))&gmtl::isEqual);
     def("isEqual", (bool (*)(const gmtl::VecBase<float,3> &, const gmtl::VecBase<float,3> &, const float))&gmtl::isEqual);
     def("isEqual", (bool (*)(const gmtl::VecBase<double,3> &, const gmtl::VecBase<double,3> &, const double))&gmtl::isEqual);
     def("isEqual", (bool (*)(const gmtl::VecBase<float,4> &, const gmtl::VecBase<float,4> &, const float))&gmtl::isEqual);
