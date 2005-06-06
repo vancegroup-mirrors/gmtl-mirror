@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Vec_int_2.cpp,v $
- * Date modified: $Date: 2005-06-03 15:07:11 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2005-06-06 03:57:41 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -48,11 +48,6 @@ void _Export_Vec_int_2()
     class_< gmtl::Vec<int,2>, bases< gmtl::VecBase<int,2> >  >("Vec2i", init<  >())
         .def(init< const gmtl::Vec<int,2> & >())
         .def(init< const gmtl::VecBase<int,2> & >())
-        .def(init< const gmtl::VecBase<int,2,gmtl::meta::VecBinaryExpr<gmtl::VecBase<int,2>, gmtl::VecBase<int,2>, gmtl::meta::VecPlusBinary> > & >())
-        .def(init< const gmtl::VecBase<int,2,gmtl::meta::VecBinaryExpr<gmtl::VecBase<int,2>, gmtl::VecBase<int,2>, gmtl::meta::VecMinusBinary> > & >())
-        .def(init< const gmtl::VecBase<int,2,gmtl::meta::VecBinaryExpr<gmtl::VecBase<int,2>, gmtl::VecBase<int,2>, gmtl::meta::VecMultBinary> > & >())
-        .def(init< const gmtl::VecBase<int,2,gmtl::meta::VecBinaryExpr<gmtl::VecBase<int,2>, gmtl::VecBase<int,2>, gmtl::meta::VecDivBinary> > & >())
-        .def(init< const gmtl::VecBase<int,2,gmtl::meta::VecUnaryExpr<gmtl::VecBase<int,2>, gmtl::meta::VecNegUnary> > & >())
         .def(init< const int &, const int & >())
         .def_pickle(gmtlPickle::Vec2_pickle<int>())
     );
