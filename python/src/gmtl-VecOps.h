@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-VecOps.h,v $
- * Date modified: $Date: 2005-06-04 20:13:09 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2005-06-06 03:46:52 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -80,6 +80,10 @@ namespace gmtl
    template VecBase4f& reflect(VecBase4f&, const VecBase4f&, const Vec4f&);
    template VecBase4d& reflect(VecBase4d&, const VecBase4d&, const Vec4d&);
 
+   template VecBase2f& lerp(VecBase2f&, const float&, const VecBase2f&,
+                            const VecBase2f&);
+   template VecBase2d& lerp(VecBase2d&, const double&, const VecBase2d&,
+                            const VecBase2d&);
    template VecBase3f& lerp(VecBase3f&, const float&, const VecBase3f&,
                             const VecBase3f&);
    template VecBase3d& lerp(VecBase3d&, const double&, const VecBase3d&,
@@ -94,6 +98,10 @@ namespace gmtl
    typedef gmtl::VecBase<float, 4> VecBase4f;
    typedef gmtl::VecBase<double, 4> VecBase4d;
 
+   template bool isEqual(const gmtl::VecBase2f&, const gmtl::VecBase2f&,
+                         const float);
+   template bool isEqual(const gmtl::VecBase2d&, const gmtl::VecBase2d&,
+                         const double);
    template bool isEqual(const gmtl::VecBase3f&, const gmtl::VecBase3f&,
                          const float);
    template bool isEqual(const gmtl::VecBase3d&, const gmtl::VecBase3d&,

@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-Generate.h,v $
- * Date modified: $Date: 2005-06-04 20:13:09 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2005-06-06 03:46:52 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -55,7 +55,9 @@ namespace gmtl
    template gmtl::Vec3d makeVec(const gmtl::Quatd&);
 
    template gmtl::Vec3f makeNormal(gmtl::Vec3f);
+   template gmtl::Vec3d makeNormal(gmtl::Vec3d);
    template gmtl::Vec4f makeNormal(gmtl::Vec4f);
+   template gmtl::Vec4d makeNormal(gmtl::Vec4d);
 
    template gmtl::Vec3i makeCross(const gmtl::Vec3i&, const gmtl::Vec3i&);
    template gmtl::Vec3d makeCross(const gmtl::Vec3d&, const gmtl::Vec3d&);

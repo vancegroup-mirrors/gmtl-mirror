@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _gmtl_Xforms_h.cpp,v $
- * Date modified: $Date: 2003-08-17 06:32:59 $
- * Version:       $Revision: 1.1 $
+ * Date modified: $Date: 2005-06-06 03:46:52 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -59,10 +59,14 @@ void _Export_gmtl_Xforms_h()
     def("xform", (gmtl::Vec<float,4> & (*)(gmtl::Vec<float,4> &, const gmtl::Matrix<float,4,4> &, const gmtl::Vec<float,4> &))&gmtl::xform, return_internal_reference< 1 >());
     def("xform", (gmtl::Vec<double,3> & (*)(gmtl::Vec<double,3> &, const gmtl::Matrix<double,3,3> &, const gmtl::Vec<double,3> &))&gmtl::xform, return_internal_reference< 1 >());
     def("xform", (gmtl::Vec<float,3> & (*)(gmtl::Vec<float,3> &, const gmtl::Matrix<float,3,3> &, const gmtl::Vec<float,3> &))&gmtl::xform, return_internal_reference< 1 >());
+    def("xform", (gmtl::Vec<double,2> & (*)(gmtl::Vec<double,2> &, const gmtl::Matrix<double,3,3> &, const gmtl::Vec<double,2> &))&gmtl::xform, return_internal_reference< 1 >());
+    def("xform", (gmtl::Vec<float,2> & (*)(gmtl::Vec<float,2> &, const gmtl::Matrix<float,3,3> &, const gmtl::Vec<float,2> &))&gmtl::xform, return_internal_reference< 1 >());
     def("xform", (gmtl::VecBase<double,3> & (*)(gmtl::VecBase<double,3> &, const gmtl::Quat<double> &, const gmtl::VecBase<double,3> &))&gmtl::xform, return_internal_reference< 1 >());
     def("xform", (gmtl::Point<double,4> & (*)(gmtl::Point<double,4> &, const gmtl::Matrix<double,4,4> &, const gmtl::Point<double,4> &))&gmtl::xform, return_internal_reference< 1 >());
     def("xform", (gmtl::Point<double,3> & (*)(gmtl::Point<double,3> &, const gmtl::Matrix<double,4,4> &, const gmtl::Point<double,3> &))&gmtl::xform, return_internal_reference< 1 >());
     def("xform", (gmtl::Point<double,3> & (*)(gmtl::Point<double,3> &, const gmtl::Matrix<double,3,3> &, const gmtl::Point<double,3> &))&gmtl::xform, return_internal_reference< 1 >());
     def("xform", (gmtl::Point<float,3> & (*)(gmtl::Point<float,3> &, const gmtl::Matrix<float,3,3> &, const gmtl::Point<float,3> &))&gmtl::xform, return_internal_reference< 1 >());
     def("xform", (gmtl::VecBase<float,3> & (*)(gmtl::VecBase<float,3> &, const gmtl::Quat<float> &, const gmtl::VecBase<float,3> &))&gmtl::xform, return_internal_reference< 1 >());
+    def("xform", (gmtl::Point<double,2> & (*)(gmtl::Point<double,2> &, const gmtl::Matrix<double,3,3> &, const gmtl::Point<double,2> &))&gmtl::xform, return_internal_reference< 1 >());
+    def("xform", (gmtl::Point<float,2> & (*)(gmtl::Point<float,2> &, const gmtl::Matrix<float,3,3> &, const gmtl::Point<float,2> &))&gmtl::xform, return_internal_reference< 1 >());
 }
