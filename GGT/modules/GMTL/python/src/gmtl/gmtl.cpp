@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl.cpp,v $
- * Date modified: $Date: 2005-06-04 19:00:08 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2005-06-06 03:57:41 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -77,12 +77,6 @@ void _Export_VecBase_float_4();
 void _Export_VecBase_int_2();
 void _Export_VecBase_int_3();
 void _Export_VecBase_int_4();
-void _VecBase_double_3_VecExpMeta();
-void _VecBase_double_4_VecExpMeta();
-void _VecBase_float_3_VecExpMeta();
-void _VecBase_float_4_VecExpMeta();
-void _VecBase_int_3_VecExpMeta();
-void _VecBase_int_4_VecExpMeta();
 void _Export_AxisAngle_double();
 void _Export_AxisAngle_float();
 void _Export_LineSeg_double();
@@ -174,12 +168,6 @@ BOOST_PYTHON_MODULE(gmtl)
     _Export_VecBase_int_2();
     _Export_VecBase_int_3();
     _Export_VecBase_int_4();
-    _VecBase_double_3_VecExpMeta();
-    _VecBase_double_4_VecExpMeta();
-    _VecBase_float_3_VecExpMeta();
-    _VecBase_float_4_VecExpMeta();
-    _VecBase_int_3_VecExpMeta();
-    _VecBase_int_4_VecExpMeta();
     _Export_AxisAngle_double();
     _Export_AxisAngle_float();
     _Export_LineSeg_double();

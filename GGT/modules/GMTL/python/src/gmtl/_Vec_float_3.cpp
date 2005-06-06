@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Vec_float_3.cpp,v $
- * Date modified: $Date: 2005-06-02 21:22:35 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2005-06-06 03:57:41 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -41,11 +41,6 @@ void _Export_Vec_float_3()
     class_< gmtl::Vec<float,3>, bases< gmtl::VecBase<float,3> > >("Vec3f", init<  >())
         .def(init< const gmtl::Vec<float,3> & >())
         .def(init< const gmtl::VecBase<float,3> & >())
-        .def(init< const gmtl::VecBase<float,3,gmtl::meta::VecBinaryExpr<gmtl::VecBase<float,3>, gmtl::VecBase<float,3>, gmtl::meta::VecPlusBinary> > & >())
-        .def(init< const gmtl::VecBase<float,3,gmtl::meta::VecBinaryExpr<gmtl::VecBase<float,3>, gmtl::VecBase<float,3>, gmtl::meta::VecMinusBinary> > & >())
-        .def(init< const gmtl::VecBase<float,3,gmtl::meta::VecBinaryExpr<gmtl::VecBase<float,3>, gmtl::VecBase<float,3>, gmtl::meta::VecMultBinary> > & >())
-        .def(init< const gmtl::VecBase<float,3,gmtl::meta::VecBinaryExpr<gmtl::VecBase<float,3>, gmtl::VecBase<float,3>, gmtl::meta::VecDivBinary> > & >())
-        .def(init< const gmtl::VecBase<float,3,gmtl::meta::VecUnaryExpr<gmtl::VecBase<float,3>, gmtl::meta::VecNegUnary> > & >())
         .def(init< const float &, const float &, const float & >())
         .def_pickle(gmtlPickle::Vec3_pickle<float>())
     );
