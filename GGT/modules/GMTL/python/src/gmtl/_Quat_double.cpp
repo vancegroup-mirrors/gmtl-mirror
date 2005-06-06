@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Quat_double.cpp,v $
- * Date modified: $Date: 2005-06-05 15:24:14 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2005-06-06 15:36:04 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -41,7 +41,7 @@ void _Export_Quat_double()
 {
     scope* gmtl_Quat_double_scope = new scope(
     class_< gmtl::Quat<double> >("Quatd", init<  >())
-        .def(init< const double, const double, const double, const double >())
+        .def(init< const double&, const double&, const double&, const double& >())
         .def(init< const gmtl::Quat<double> & >())
         .def("set", &gmtl::Quat<double>::set)
         .def("get", &gmtl::Quat<double>::get)
