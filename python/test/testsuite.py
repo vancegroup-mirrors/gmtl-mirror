@@ -9,8 +9,8 @@
 #
 #  -----------------------------------------------------------------
 #  File:          $RCSfile: testsuite.py,v $
-#  Date modified: $Date: 2005-06-06 13:53:52 $
-#  Version:       $Revision: 1.10 $
+#  Date modified: $Date: 2005-06-06 14:38:09 $
+#  Version:       $Revision: 1.11 $
 #  -----------------------------------------------------------------
 #
 # ********************************************************** ggt-head end
@@ -9283,7 +9283,10 @@ if __name__ == '__main__':
 
    for k in locals().keys():
       v = locals()[k]
-      if type(v) is types.ClassType:
+
+      # This bit with types.TypeType is to accomodate Python on Windows.
+      # For some reasson, class objects get identified being of type 'type'.
+      if type(v) is types.ClassType or type(v) is types.TypeType:
          if k.find('Metric') != -1:
             metric_suite.addTests(map(v, getTests(v)))
          else:
