@@ -1,5 +1,10 @@
 DATE       AUTHOR       CHANGE
 ---------- ------------ -------------------------------------------------------
+2005-06-05 patrickh     Completed work on fixing many bugs in and adding many
+                        enhancements to PyGMTL.  Among other things, PyGMTL
+                        now has a test suite that is nearly as comprehensive
+                        as the C++ code base.
+                        NEW VERSION: 0.4.8
 2005-06-04 patrickh     Renamed class properties in PyGMTL classes to use the
                         Python convention instead of the C++ member name (for
                         example, "origin" instead of "mOrigin").  The modified
