@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _LineSeg_double.cpp,v $
- * Date modified: $Date: 2004-10-27 19:01:33 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2005-06-06 03:48:27 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -30,6 +30,7 @@
 #include <boost/python.hpp>
 #include <gmtl/LineSeg.h>
 #include <gmtl/LineSegOps.h>
+#include <gmtl/Xforms.h>
 #include <gmtl/Output.h>
 #include <gmtl-pickle.h>
 
@@ -47,6 +48,8 @@ void _Export_LineSeg_double()
         .def_pickle(gmtlPickle::LineSeg_pickle<double>())
         .def(self == self)
         .def(self != self)
+        .def(self *= gmtl::Matrix<double,3,3>())
+        .def(self *= gmtl::Matrix<double,4,4>())
         .def(self_ns::str(self))
     ;
 
