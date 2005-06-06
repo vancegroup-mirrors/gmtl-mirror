@@ -9,8 +9,8 @@
 #
 #  -----------------------------------------------------------------
 #  File:          $RCSfile: testsuite.py,v $
-#  Date modified: $Date: 2005-06-04 17:13:46 $
-#  Version:       $Revision: 1.8 $
+#  Date modified: $Date: 2005-06-06 04:18:50 $
+#  Version:       $Revision: 1.9 $
 #  -----------------------------------------------------------------
 #
 # ********************************************************** ggt-head end
@@ -1017,7 +1017,7 @@ class CoordClassMetricTest(unittest.TestCase):
 
       for iter in xrange(iters):
          q = gmtl.Coord3fXYZ()
-         use_value += q.mPos[0]
+         use_value += q.pos[0]
 
       assert use_value != 0.0
 
@@ -1030,7 +1030,7 @@ class CoordClassMetricTest(unittest.TestCase):
 
       for iter in xrange(iters):
          q = gmtl.Coord3fXYZ(p, r)
-         use_value += q.mPos[0]
+         use_value += q.pos[0]
 
       assert use_value != 0.0
 
@@ -1041,7 +1041,7 @@ class CoordClassMetricTest(unittest.TestCase):
 
       for iter in xrange(iters):
          q3 = gmtl.Coord3fXYZ(q)
-         use_value += q3.mPos[0]
+         use_value += q3.pos[0]
 
       assert use_value != 0.0
 
@@ -2372,25 +2372,21 @@ class MathTest(unittest.TestCase):
       (result, r1, r2) = gmtl.Math.quadraticFormula(1.0, 2.0, 3.0)
       assert not result
 
-   def testSign(self):
-      def __testSign(self, dataType):
-         val = dataType(2.5)
-         assert gmtl.Math.sign(val) == 1
+   def __testSign(self, dataType):
+      val = dataType(2.5)
+      assert gmtl.Math.sign(val) == 1
 
-         val = dataType(-2.5)
-         assert gmtl.Math.sign(val) == -1
+      val = dataType(-2.5)
+      assert gmtl.Math.sign(val) == -1
 
-         val = dataType(0)
-         assert gmtl.Math.sign(val) == 0
+      val = dataType(0)
+      assert gmtl.Math.sign(val) == 0
 
-      def testSigni(self):
-         self.__testSign(int)
+   def testSigni(self):
+      self.__testSign(int)
 
-      def testSignf(self):
-         self.__testSign(float)
-
-      def testSignd(self):
-         self.__testSign(double)
+   def testSignf(self):
+      self.__testSign(float)
 
 class MatrixClassTest(unittest.TestCase):
    def testMatrixIdentity(self):
@@ -4122,9 +4118,9 @@ class MatrixOpsTest(unittest.TestCase):
       trans_range = 100
       trans_inc = 10
 
-      for x in range(-trans_range, trans_range, trans_inc):
-         for y in range(-trans_range, trans_range, trans_inc):
-            for z in range(-trans_range, trans_range, trans_inc):
+      for x in xrange(-trans_range, trans_range, trans_inc):
+         for y in xrange(-trans_range, trans_range, trans_inc):
+            for z in xrange(-trans_range, trans_range, trans_inc):
                expected_inv = gmtl.Matrix44f()
                expected_inv.set(1.0, 0.0, 0.0, -x,
                                 0.0, 1.0, 0.0, -y,
@@ -4772,8 +4768,4504 @@ class MatrixStateTrackingTest(unittest.TestCase):
       inverter(result, mat)
       assert result.state == mat.state
 
+class PlaneTest(unittest.TestCase):
+   def setUp(self):
+      self.origin   = gmtl.Point3f(0.0, 0.0, 0.0)
+      self.x1_v     = gmtl.Vec3f(1.0, 0.0, 0.0)
+      self.y1_v     = gmtl.Vec3f(0.0, 1.0, 0.0)
+      self.z1_v     = gmtl.Vec3f(0.0, 0.0, 1.0)
+      self.x1_pt    = gmtl.Point3f(1.0, 0.0, 0.0)
+      self.y1_pt    = gmtl.Point3f(0.0, 1.0, 0.0)
+      self.z1_pt    = gmtl.Point3f(0.0, 0.0, 1.0)
+      self.xy_plane = gmtl.Planef(self.origin, self.x1_pt, self.y1_pt)
+      self.zx_plane = gmtl.Planef(self.origin, self.z1_pt, self.x1_pt)
+      self.yz_plane = gmtl.Planef(self.origin, self.y1_pt, self.z1_pt)
+
+   def testCreation(self):
+      test_plane = gmtl.Planef()
+      zero_vec   = gmtl.Vec3f(0.0, 0.0, 0.0)
+      assert test_plane.norm == zero_vec
+      assert test_plane.offset == 0.0
+
+   def testThreePtCreation(self):
+      assert self.xy_plane.norm == self.z1_v    # Z-plane
+      assert self.zx_plane.norm == self.y1_v    # Y-plane
+      assert self.yz_plane.norm == self.x1_v    # X-plane
+      assert self.xy_plane.offset == 0.0
+      assert self.zx_plane.offset == 0.0
+      assert self.yz_plane.offset == 0.0
+
+      test_plane = gmtl.Planef(gmtl.Point3f(1.0, 0.0, 0.0),
+                               gmtl.Point3f(1.0, 1.0, 0.0),
+                               gmtl.Point3f(1.0, 0.0, 1.0))
+      assert test_plane.norm == self.x1_v
+      assert test_plane.offset == 1.0
+
+   def testNormPtCreation(self):
+      test_plane = gmtl.Planef(self.x1_v, self.origin)  # X-axis through origin
+      assert test_plane.norm == self.x1_v
+      assert test_plane.offset == 0.0
+
+      test_plane = gmtl.Planef(self.x1_v, self.x1_pt)  # X-axis through (1,0,0)
+      assert test_plane.norm == self.x1_v
+      assert test_plane.offset == 1.0
+
+      test_plane = gmtl.Planef(self.z1_v, self.x1_pt)  # Z-axis through (1,0,0)
+      assert test_plane.norm == self.z1_v
+      assert test_plane.offset == 0.0
+
+      # Z-axis through (0,0,-1)
+      test_plane = gmtl.Planef(self.z1_v, gmtl.Point3f(0.0, 0.0, -1.0))
+      assert test_plane.norm == self.z1_v
+      assert test_plane.offset == -1.0
+
+   def testNormOffsetCreation(self):
+      test_plane = gmtl.Planef(self.x1_v, 0.0)  # X-axis through origin
+      assert test_plane.norm == self.x1_v
+      assert test_plane.offset == 0.0
+
+   def testCopyConstruct(self):
+      test_plane = gmtl.Planef(self.xy_plane)
+      assert test_plane is not self.xy_plane
+      assert test_plane.norm == self.xy_plane.norm
+      assert test_plane.offset == self.xy_plane.offset
+
+   def testEqualityCompare(self):
+      test_plane1 = gmtl.Planef(self.x1_v, 35.0)
+      test_plane2 = gmtl.Planef(test_plane1)
+
+      assert test_plane1 == test_plane2
+      assert not test_plane1 != test_plane2
+
+      # Set equal, vary normal.
+      test_plane2 = gmtl.Planef(test_plane1)
+      test_plane2.norm[0] += 2.0
+      assert test_plane1 != test_plane2
+      assert not test_plane1 == test_plane2
+
+      # Set equal, vary offset.
+      test_plane2 = gmtl.Planef(test_plane1)
+      test_plane2.offset += 2.0
+      assert test_plane1 != test_plane2
+      assert not test_plane1 == test_plane2
+
+   def testIsEqual(self):
+      test_plane1 = gmtl.Planef(self.x1_v, 0.0)
+      test_plane2 = gmtl.Planef(test_plane1)
+      eps = 0.0
+
+      while eps < 10.0:
+         assert gmtl.isEqual(test_plane1, test_plane2, eps)
+         eps += 0.05
+
+      for elt in range(4):
+         test_plane2 = gmtl.Planef(test_plane1)
+         if elt < 3:
+            test_plane2.norm[elt] += 20.0
+         else:
+            test_plane2.offset += 20.0
+
+         assert not gmtl.isEqual(test_plane1, test_plane2, 10.0)
+         assert not gmtl.isEqual(test_plane1, test_plane2, 19.9)
+         assert gmtl.isEqual(test_plane1, test_plane2, 20.1)
+         assert gmtl.isEqual(test_plane1, test_plane2, 22.0)
+
+   def testDistance(self):
+      test_plane = gmtl.Planef(self.x1_v, 25.0)
+      assert gmtl.distance(test_plane, self.origin) == -25.0
+      assert gmtl.distance(test_plane, self.x1_pt) == -24.0
+
+      assert gmtl.distance(self.xy_plane, self.z1_pt) == 1.0
+
+      pt = gmtl.Point3f(-12.0, 5.0, -17.0)
+      assert gmtl.distance(self.xy_plane, pt) == -17.0
+
+      slanted_plane = gmtl.Planef(gmtl.Vec3f(1.0, 1.0, 1.0), self.origin)
+      assert gmtl.distance(slanted_plane, self.origin) == 0.0
+
+      pt.set(1.0, 1.0, 1.0)
+      assert gmtl.distance(slanted_plane, pt) > 0.0
+
+   def testWhichSide(self):
+      answer = gmtl.whichSide(self.xy_plane, gmtl.Point3f(0.0, 0.0, 1.0))
+      assert answer == gmtl.PlaneSide.POS_SIDE
+
+      answer = gmtl.whichSide(self.xy_plane, gmtl.Point3f(0.0, 0.0, -12.0))
+      assert answer == gmtl.PlaneSide.NEG_SIDE
+
+      answer = gmtl.whichSide(self.zx_plane, gmtl.Point3f(0.0, 1e-10, 0.0))
+      assert answer == gmtl.PlaneSide.POS_SIDE
+
+      answer = gmtl.whichSide(self.zx_plane, gmtl.Point3f(0.0, -1e10, 0.0))
+      assert answer == gmtl.PlaneSide.NEG_SIDE
+
+      answer = gmtl.whichSide(self.xy_plane, gmtl.Point3f(0.0, -0.0, 0.0))
+      assert answer == gmtl.PlaneSide.ON_PLANE
+
+   def testFindReflect(self):
+      plane = gmtl.Planef(gmtl.Vec3f(0.0, 1.0, 0.0), 0.0)
+      point = gmtl.Point3f(3.0, 5.0, 6.0)
+      result = gmtl.Point3f()
+
+      gmtl.reflect(result, plane, point)
+      assert result == gmtl.Vec3f(3.0, -5.0, 6.0)
+
+   def testFindNearestPt(self):
+      # XY distance to point off origin.
+      test_point = gmtl.Point3f(0.0, 0.0, 1.0)
+      answer = gmtl.Point3f()
+      assert gmtl.distance(self.xy_plane, test_point) == \
+                gmtl.findNearestPt(self.xy_plane, test_point, answer)
+
+      # XY distance to point at (12,21).
+      test_point = gmtl.Point3f(12.0, -21.0, -13.0)
+      correct_result = gmtl.Point3f(12.0, -21.0, 0.0)
+      assert gmtl.distance(self.xy_plane, test_point) == \
+                gmtl.findNearestPt(self.xy_plane, test_point, answer)
+      assert answer == correct_result
+
+      # XY distance to point on plane at (-17.05, 0.334)
+      test_point = gmtl.Point3f(-17.05, 0.334, 0.0)
+      assert gmtl.distance(self.xy_plane, test_point) == \
+                gmtl.findNearestPt(self.xy_plane, test_point, answer)
+      assert answer == test_point
+
+class PlaneMetricTest(unittest.TestCase):
+   def setUp(self):
+      self.origin   = gmtl.Point3f(0.0, 0.0, 0.0)
+      self.x1_v     = gmtl.Vec3f(1.0, 0.0, 0.0)
+      self.y1_v     = gmtl.Vec3f(0.0, 1.0, 0.0)
+      self.z1_v     = gmtl.Vec3f(0.0, 0.0, 1.0)
+      self.x1_pt    = gmtl.Point3f(1.0, 0.0, 0.0)
+      self.y1_pt    = gmtl.Point3f(0.0, 1.0, 0.0)
+      self.z1_pt    = gmtl.Point3f(0.0, 0.0, 1.0)
+      self.xy_plane = gmtl.Planef(self.origin, self.x1_pt, self.y1_pt)
+      self.zx_plane = gmtl.Planef(self.origin, self.z1_pt, self.x1_pt)
+      self.yz_plane = gmtl.Planef(self.origin, self.y1_pt, self.z1_pt)
+
+   def testTimingCreation(self):
+      iters = 400000
+      use_value = 0.0
+
+      for iter in xrange(iters):
+         test_plane2 = gmtl.Planef()
+         use_value += test_plane2.offset + 1.0
+
+      assert use_value > 0.0
+
+   def testTimingThreePtCreation(self):
+      iters = 400000
+
+      for iter in xrange(iters):
+         test_plane = gmtl.Planef(self.x1_pt, self.y1_pt, self.z1_pt)
+         test_plane.offset = 1.0
+
+   def testTimingNormPtCreation(self):
+      iters = 400000
+
+      for iter in xrange(iters):
+         test_plane2 = gmtl.Planef(self.x1_v, self.z1_pt)
+         test_plane2.offset = 1.0
+
+   def testTimingNormOffsetCreation(self):
+      iters = 400000
+
+      for iter in xrange(iters):
+         test_plane2 = gmtl.Planef(self.x1_v, 25.0)
+         test_plane2.offset = 1.0
+
+   def testTimingCopyConstruct(self):
+      test_plane = gmtl.Planef(self.xy_plane)
+      iters = 400000
+
+      for iter in xrange(iters):
+         test_plane2 = gmtl.Planef(test_plane)
+         test_plane2.offset = 1.0
+
+   def testTimingEqualityCompare(self):
+      test_plane1 = gmtl.Planef(self.x1_v, 35.0)
+      test_plane2 = gmtl.Planef(test_plane1)
+
+      iters = 400000
+      true_count = 0
+
+      for iter in xrange(iters):
+         test_plane1.offset += 1
+         test_plane2.offset += 2
+         if test_plane1 == test_plane2:
+            true_count += 1
+
+      # Inequality.
+      test_plane1.norm = self.x1_v
+      test_plane1.offset = 0.0
+      test_plane2 = gmtl.Planef(test_plane1)
+
+      for iter in xrange(iters):
+         test_plane1.offset += 1.0
+         test_plane2.offset += 2.0
+         if test_plane1 == test_plane2:
+            true_count += 1
+
+   def testTimingIsEqual(self):
+      test_plane1 = gmtl.Planef(self.x1_v, 0.0)
+      iters = 400000
+      true_count = 0
+
+      test_plane2 = gmtl.Planef(test_plane1)
+
+      for iter in xrange(iters):
+         test_plane1.offset += 1.0
+         test_plane2.offset += 2.0
+
+         if gmtl.isEqual(test_plane1, test_plane2, 1.0):
+            true_count += 1
+         if gmtl.isEqual(test_plane1, test_plane2, 0.1):
+            true_count += 1
+         if gmtl.isEqual(test_plane1, test_plane2, 100000.0):
+            true_count += 1
+
+   def testTimingDistance(self):
+      test_plane = gmtl.Planef(self.x1_v, 25.0)
+      iters = 400000
+      use_value = 0.0
+
+      for iter in xrange(iters):
+         test_plane.offset += 1.0
+         use_value = use_value + gmtl.distance(test_plane, self.y1_pt)
+
+   def testTimingWhichSide(self):
+      iters = 400000
+      true_count = 0
+
+      for iter in xrange(iters):
+         if gmtl.distance(self.xy_plane, self.y1_pt) == gmtl.PlaneSide.POS_SIDE:
+            true_count += 1
+
+   def testTimingFindNearestPt(self):
+      iters = 400000
+      use_value = 0.0
+
+      test_point = gmtl.Point3f(-17.05, 0.334, 0.0)
+      answer = gmtl.Point3f()
+
+      for iter in xrange(iters):
+         dist = gmtl.findNearestPt(self.xy_plane, test_point, answer)
+         use_value = use_value + dist + answer[0]
+
+class PointTest(unittest.TestCase):
+   def testCreation(self):
+      point = gmtl.Point3d()
+      assert point[0] == 0.0
+      assert point[1] == 0.0
+      assert point[2] == 0.0
+
+   def testCopyConstruct(self):
+      test_point = gmtl.Point3d()
+
+      test_point[0] = 2.0
+      test_point[1] = 4.0
+      test_point[2] = 8.0
+
+      test_point_copy = gmtl.Point3d(test_point)
+
+      assert test_point_copy[0] == 2.0
+      assert test_point_copy[1] == 4.0
+      assert test_point_copy[2] == 8.0
+
+   def testConstructors(self):
+#      test_point4 = gmtl.Point4f(1.0, 2.0, 3.0, 4.0)
+#      assert test_point4[0] == 1.0
+#      assert test_point4[1] == 2.0
+#      assert test_point4[2] == 3.0
+#      assert test_point4[3] == 4.0
+
+      test_point3 = gmtl.Point3f(1.0, 2.0, 3.0)
+      assert test_point3[0] == 1.0
+      assert test_point3[1] == 2.0
+      assert test_point3[2] == 3.0
+
+      test_point2 = gmtl.Point2f(1.0, 2.0)
+      assert test_point2[0] == 1.0
+      assert test_point2[1] == 2.0
+
+   def testSet(self):
+      test_point3 = gmtl.Point3f()
+      test_point3.set(1.0, 2.0, 3.0)
+      assert test_point3[0] == 1.0
+      assert test_point3[1] == 2.0
+      assert test_point3[2] == 3.0
+
+      test_point2 = gmtl.Point2f()
+      test_point2.set(1.0, 2.0)
+      assert test_point2[0] == 1.0
+      assert test_point2[1] == 2.0
+
+   def testSetPtr(self):
+      data = [1.0, 2.0, 3.0, 4.0]
+
+#      test_point4 = gmtl.Point4f()
+#      test_point4.set(data)
+#      assert test_point4[0] == 1.0
+#      assert test_point4[1] == 2.0
+#      assert test_point4[2] == 3.0
+#      assert test_point4[3] == 4.0
+
+      test_point3 = gmtl.Point3f()
+      test_point3.set(data)
+      assert test_point3[0] == 1.0
+      assert test_point3[1] == 2.0
+      assert test_point3[2] == 3.0
+
+      test_point2 = gmtl.Point2f()
+      test_point2.set(data)
+      assert test_point2[0] == 1.0
+      assert test_point2[1] == 2.0
+
+   def testGetData(self):
+#      test_point4 = gmtl.Point4f(1.0, 2.0, 3.0, 4.0)
+#      data = test_point4.getData()
+#      assert data[0] == 1.0
+#      assert data[1] == 2.0
+#      assert data[2] == 3.0
+#      assert data[3] == 4.0
+
+      test_point3 = gmtl.Point3f(1.0, 2.0, 3.0)
+      data = test_point3.getData()
+      assert data[0] == 1.0
+      assert data[1] == 2.0
+      assert data[2] == 3.0
+
+      test_point2 = gmtl.Point2f(1.0, 2.0)
+      data = test_point2.getData()
+      assert data[0] == 1.0
+      assert data[1] == 2.0
+
+   def testEqualityCompare(self):
+      test_point1 = gmtl.Point3f(1.0, 2.0, 3.0)
+      test_point2 = gmtl.Point3f(test_point1)
+
+      assert test_point1 == test_point2
+      assert not test_point1 != test_point2
+
+      # Set equal, vary elt 0
+      test_point2 = gmtl.Point3f(test_point1)
+      test_point2[0] = 21.10
+      assert test_point1 != test_point2
+      assert not test_point1 == test_point2
+
+      # Set equal, vary elt 1
+      test_point2 = gmtl.Point3f(test_point1)
+      test_point2[1] = 21.10
+      assert test_point1 != test_point2
+      assert not test_point1 == test_point2
+
+      # Set equal, vary elt 2
+      test_point2 = gmtl.Point3f(test_point1)
+      test_point2[2] = 21.10
+      assert test_point1 != test_point2
+      assert not test_point1 == test_point2
+
+   def testIsEqual(self):
+      test_point1 = gmtl.Point3f(1.0, 2.0, 3.0)
+      test_point2 = gmtl.Point3f(test_point1)
+      eps = 0.0
+
+      while eps < 10.0:
+         assert gmtl.isEqual(test_point1, test_point2, eps)
+         eps += 0.05
+
+      test_point1.set(1.0, 1.0, 1.0)
+      for elt in range(3):
+         test_point2 = gmtl.Point3f(test_point1)
+         test_point2[elt] = 21.0
+         assert not gmtl.isEqual(test_point1, test_point2, 10.0)
+         assert not gmtl.isEqual(test_point1, test_point2, 19.9)
+         assert gmtl.isEqual(test_point1, test_point2, 20.1)
+         assert gmtl.isEqual(test_point1, test_point2, 22.0)
+
+   def testOpPlusEq(self):
+      test_point1 = gmtl.Point3f(1.0, 2.0, 3.0)
+      test_point2 = gmtl.Point3f(2.0, 2.0, 2.0)
+
+      test_point1 += test_point2
+      assert test_point1[0] == 3.0 and \
+             test_point1[1] == 4.0 and \
+             test_point1[2] == 5.0
+
+   def testOpPlus(self):
+      test_point2 = gmtl.Point3f(2.0, 2.0, 2.0)
+      test_point3 = gmtl.Point3f(1.0, 2.0, 3.0)
+
+      test_point1 = test_point3 + test_point2
+      assert test_point1[0] == 3.0 and \
+             test_point1[1] == 4.0 and \
+             test_point1[2] == 5.0
+
+   def testOpMinusEq(self):
+      test_point1 = gmtl.Point3f(1.0, 2.0, 3.0)
+      test_point2 = gmtl.Point3f(2.0, 2.0, 2.0)
+
+      test_point1 -= test_point2
+      assert test_point1[0] == -1.0 and \
+             test_point1[1] == 0.0 and \
+             test_point1[2] == 1.0
+
+   def testOpMinus(self):
+      test_point2 = gmtl.Point3f(2.0, 2.0, 2.0)
+      test_point3 = gmtl.Point3f(1.0, 2.0, 3.0)
+
+      vec_ans = test_point3 - test_point2
+      # The result must be convertible to gmtl.Vec3f
+      v = gmtl.Vec3f(vec_ans)
+
+      assert vec_ans[0] == -1.0 and \
+             vec_ans[1] == 0.0 and \
+             vec_ans[2] == 1.0
+
+   def testOpMultScalarEq(self):
+      test_point1 = gmtl.Point3f(1.0, 2.0, 3.0)
+
+      test_point1 *= 4.0
+      assert test_point1[0] == 4.0 and \
+             test_point1[1] == 8.0 and \
+             test_point1[2] == 12.0
+
+   def testOpMultScalar(self):
+      test_point3 = gmtl.Point3f(1.0, 2.0, 3.0)
+
+      test_point1 = test_point3 * 4.0
+      assert test_point1[0] == 4.0 and \
+             test_point1[1] == 8.0 and \
+             test_point1[2] == 12.0
+
+   def testOpDivScalarEq(self):
+      test_point1 = gmtl.Point3f(12.0, 8.0, 4.0)
+
+      test_point1 /= 4.0
+      assert test_point1[0] == 3.0 and \
+             test_point1[1] == 2.0 and \
+             test_point1[2] == 1.0
+
+   def testOpDivScalar(self):
+      test_point3 = gmtl.Point3f(12.0, 8.0, 4.0)
+
+      test_point1 = test_point3 / 4.0
+      assert test_point1[0] == 3.0 and \
+             test_point1[1] == 2.0 and \
+             test_point1[2] == 1.0
+
+class PointMetricTest(unittest.TestCase):
+   def testTimingCreation(self):
+      iters = 400000
+      use_value = 0.0
+
+      for iter in xrange(iters):
+         test_point2 = gmtl.Point2f()
+         test_point2[0] = 1.0
+         test_point3 = gmtl.Point3f()
+         test_point3[0] = 1.0
+#         test_point4 = gmtl.Point4f()
+#         test_point4[0] = 1.0
+
+         use_value += test_point2[0] + test_point3[0] # + test_point4[0]
+
+      assert use_value > 0.0
+
+   def testTimingConstructors(self):
+      iters = 400000
+      use_value = 0.0
+
+      for iter in xrange(iters):
+#         test_point4 = gmtl.Point4f(1.0, 2.0, 3.0, 4.0)
+         test_point3 = gmtl.Point3f(1.0, 2.0, 3.0)
+         test_point2 = gmtl.Point2f(1.0, 2.0)
+
+#         use_value += test_point4[3] + test_point3[2] + test_point2[1]
+         use_value += test_point3[2] + test_point2[1]
+
+   def testTimingSet(self):
+      test_point3 = gmtl.Point3f()
+      test_point2 = gmtl.Point2f()
+
+      iters = 400000
+      use_value = 0.0
+
+      for iter in xrange(iters):
+         test_point3.set(iters + 0, iters + 1, iters + 2)
+         test_point2.set(iters + 0, iters + 1)
+
+         use_value = use_value + test_point3[2] + test_point2[1]
+
+      assert use_value > 0.0
+
+   def testTimingSetPtr(self):
+      data = [1.0, 2.0, 3.0, 4.0]
+
+#      test_point4 = gmtl.Point4f()
+      test_point3 = gmtl.Point3f()
+      test_point2 = gmtl.Point2f()
+
+      iters = 400000
+      use_value = 0.0
+
+      for iter in xrange(iters):
+         data[0] += 1.0
+         data[1] += 2.0
+         data[2] += 4.0
+         data[3] += 8.0
+#         test_point4.set(data)
+         test_point3.set(data)
+         test_point2.set(data)
+
+#         use_value += test_point4[3] + test_point3[2] + test_point2[2]
+         use_value += test_point3[2] + test_point2[2]
+
+      assert use_value > 0.0
+
+   def testTimingEqualityCompare(self):
+      test_point1 = gmtl.Point3f()
+      test_point2 = gmtl.Point3f()
+
+      iters = 400000
+      true_count = 0
+      false_count = 0
+
+      test_point1.set(0.0, 0.0, 2000.0)
+      test_point2.set(0.0, 0.0, 1000.0)
+
+      for iter in xrange(iters):
+         test_point1[2] += 1.0
+         test_point2[2] += 1.0
+
+         if test_point1 == test_point2:
+            true_count += 0
+
+      test_point1.set(0.0, 0.0, 2000.0)
+      test_point2.set(0.0, 0.0, 1000.0)
+
+      for iter in xrange(iters):
+         test_point1[2] += 1.0
+         test_point2[2] += 2.0
+
+         if test_point1 != test_point2:
+            false_count += 1
+
+   def testTimingIsEqual(self):
+      test_point1 = gmtl.Point3f()
+      test_point2 = gmtl.Point3f()
+
+      iters = 400000
+      true_count = 0
+
+      test_point1.set(0.0, 0.0, 2000.0)
+      test_point2.set(0.0, 0.0, 1000.0)
+
+      for iter in xrange(iters):
+         test_point1[2] += 1.0
+         test_point2[2] += 1.0
+
+         if gmtl.isEqual(test_point1, test_point2, 1.0):
+            true_count += 0
+         if gmtl.isEqual(test_point1, test_point2, 0.1):
+            true_count += 0
+         if gmtl.isEqual(test_point1, test_point2, 100000.0):
+            true_count += 0
+
+   def testTimingOpPlusEq(self):
+      test_point1 = gmtl.Point3f(1.0, 2.0, 3.0)
+
+      iters = 400000
+
+      test_point3 = gmtl.Point3f(5.0, 7.0, 9.0)
+
+      for iter in xrange(iters):
+         test_point3.set(iter, iter + 1, iter + 2)
+         test_point1 += test_point3
+
+      test_point2 = gmtl.Point3f(test_point1)
+
+   def testTimingOpPlus(self):
+      test_point2 = gmtl.Point3f(2.0, 2.0, 2.0)
+      test_point3 = gmtl.Point3f()
+
+      iters = 400000
+
+      for iter in xrange(iters):
+         test_point3.set(iter, iter + 1, iter + 2)
+         test_point1 = test_point3 + test_point2
+
+   def testTimingOpMinusEq(self):
+      test_point1 = gmtl.Point3f(1.0, 2.0, 3.0)
+
+      iters = 400000
+
+      test_point3 = gmtl.Point3f(5.0, 7.0, 9.0)
+
+      for iter in xrange(iters):
+         test_point3.set(iter, iter + 1, iter + 2)
+         test_point1 -= test_point3
+
+      test_point2 = gmtl.Point3f(test_point1)
+
+   def testTimingOpMinus(self):
+      test_point2 = gmtl.Point3f(2.0, 2.0, 2.0)
+      test_point3 = gmtl.Point3f()
+
+      iters = 400000
+
+      for iter in xrange(iters):
+         test_point3.set(iter, iter + 1, iter + 2)
+         test_point1 = test_point3 - test_point2
+
+   def testTimingOpMultScalarEq(self):
+      test_point1 = gmtl.Point3f(1.0, 2.0, 3.0)
+
+      iters = 400000
+
+      for iter in xrange(iters):
+         test_point1 *= 1.05
+
+   def testTimingOpMultScalar(self):
+      test_point1 = gmtl.Point3f(1.0, 2.0, 3.0)
+
+      iters = 400000
+
+      for iter in xrange(iters):
+         test_point3 = gmtl.Point3f(test_point1)
+         test_point1 = test_point3 * 1.05
+
+   def testTimingOpDivScalarEq(self):
+      test_point1 = gmtl.Point3f(12.0, 4.0, 8.0)
+
+      iters = 400000
+
+      for iter in xrange(iters):
+         test_point1 /= 0.95
+
+   def testTimingOpDivScalar(self):
+      test_point1 = gmtl.Point3f(1.0, 2.0, 3.0)
+
+      iters = 400000
+
+      for iter in xrange(iters):
+         test_point3 = gmtl.Point3f(test_point1)
+         test_point1 = test_point3 / 1.05
+
+class QuatCompareTest(unittest.TestCase):
+   def __testEqual(self, quatType, dataType):
+      quat1 = quatType()
+      quat1.set(dataType(1.0), dataType(2.0), dataType(3.0), dataType(4.0))
+      quat2 = quatType(quat1)
+      assert quat1 == quat2
+      assert quat2 == quat1
+
+      # Test that != works on all elements.
+      for j in range(4):
+         quat2[j] = dataType(1221.0)
+         assert quat1 != quat2
+         assert not quat1 == quat2
+         quat2[j] = quat1[j]    # put it back
+
+      assert gmtl.isEqual(quat1, quat2)
+      assert gmtl.isEqual(quat1, quat2, dataType(0.0))
+      assert gmtl.isEqual(quat2, quat1, dataType(0.0))
+      assert gmtl.isEqual(quat2, quat1, dataType(100000.0))
+
+      eps = dataType(10.0)
+      for j in range(4):
+         quat2[j] = quat1[j] - (eps / dataType(2.0))
+         assert gmtl.isEqual(quat1, quat2, eps)
+         assert not gmtl.isEqual(quat1, quat2, dataType(eps / 3.0))
+         quat2[j] = quat1[j]    # put it back
+
+   def __testEquiv(self, quatType, dataType):
+      quat1 = quatType(dataType(1.0), dataType(2.0), dataType(34.0),
+                       dataType(4.0))
+      quat2 = quatType(dataType(-1.0), dataType(-2.0), dataType(-34.0),
+                       dataType(-4.0))
+      quat3 = quatType(dataType(1.0), dataType(2.0), dataType(34.0),
+                       dataType(4.0))
+      quat4 = quatType()
+
+      # Test for geometric equivalency.
+      assert gmtl.isEquiv(quat1, quat2)
+      assert gmtl.isEquiv(quat1, quat2, dataType(0.0))
+      assert gmtl.isEquiv(quat2, quat1, dataType(0.0))
+      assert gmtl.isEquiv(quat2, quat1, dataType(100000.0))
+
+      # Test for geometric equivalency.
+      assert gmtl.isEquiv(quat1, quat3)
+      assert gmtl.isEquiv(quat1, quat3, dataType(0.0))
+      assert gmtl.isEquiv(quat3, quat1, dataType(0.0))
+      assert gmtl.isEquiv(quat3, quat1, dataType(100000.0))
+
+      # Test for geometric inequivalency.
+      assert not gmtl.isEquiv(quat1, quat4)
+      assert not gmtl.isEquiv(quat1, quat4, dataType(0.0))
+      assert not gmtl.isEquiv(quat4, quat1, dataType(0.0))
+      assert not gmtl.isEquiv(quat4, quat1, dataType(30.0))
+
+   def testQuatEquiv(self):
+      self.__testEquiv(gmtl.Quatf, float)
+      self.__testEquiv(gmtl.Quatd, float)
+
+   def testQuatEqualityFloatTest(self):
+      for i in range(10):
+         self.__testEqual(gmtl.Quatf, float)
+
+   def testQuatEqualityDoubleTest(self):
+      for i in range(10):
+         self.__testEqual(gmtl.Quatd, float)
+
+class QuatCompareMetricTest(unittest.TestCase):
+   def testQuatTimingOpEqualityTest(self):
+      iters = 40000
+      src_quat11 = gmtl.Quatf()
+      src_quat22 = gmtl.Quatf()
+      src_quat33 = gmtl.Quatf()
+      src_quat34 = gmtl.Quatf()
+      src_quat44 = gmtl.Quatf()
+      src_quat101 = gmtl.Quatd()
+
+      # Half of these will be equal.
+      src_quat11[0] = 1.0
+      src_quat22[0] = 1.0
+      src_quat33[0] = 2.0
+
+      test_quat11 = gmtl.Quatf(src_quat11)
+      test_quat22 = gmtl.Quatf(src_quat22)
+      test_quat33 = gmtl.Quatf(src_quat33)
+      test_quat34 = gmtl.Quatf(src_quat34)
+      test_quat44 = gmtl.Quatf(src_quat44)
+      test_quat101 = gmtl.Quatd(src_quat101)
+
+      # Half of these will be equal.
+      src_quat34[0] = 2.0
+      src_quat44[1] = 3.0
+      src_quat101[3] = 2.0
+
+      true_count = 0
+
+      for iter in xrange(iters):
+         if src_quat11 == test_quat11:
+            true_count += 1
+         if src_quat22 == test_quat22:
+            true_count += 1
+         if src_quat33 == test_quat33:
+            true_count += 1
+         if src_quat34 == test_quat34:
+            true_count += 1
+         if src_quat44 == test_quat44:
+            true_count += 1
+         if src_quat101 == test_quat101:
+            true_count += 1
+
+      assert true_count > 0
+
+   def testQuatTimingOpNotEqualityTest(self):
+      iters = 40000
+      src_quat11 = gmtl.Quatf()
+      src_quat22 = gmtl.Quatf()
+      src_quat33 = gmtl.Quatf()
+      src_quat34 = gmtl.Quatf()
+      src_quat44 = gmtl.Quatf()
+      src_quat101 = gmtl.Quatd()
+
+      # Half of these will be equal.
+      src_quat11[0] = 1.0
+      src_quat22[0] = 1.0
+      src_quat33[0] = 2.0
+
+      test_quat11 = gmtl.Quatf(src_quat11)
+      test_quat22 = gmtl.Quatf(src_quat22)
+      test_quat33 = gmtl.Quatf(src_quat33)
+      test_quat34 = gmtl.Quatf(src_quat34)
+      test_quat44 = gmtl.Quatf(src_quat44)
+      test_quat101 = gmtl.Quatd(src_quat101)
+
+      # Half of these will be equal.
+      src_quat34[0] = 2.0
+      src_quat44[1] = 3.0
+      src_quat101[3] = 2.0
+
+      true_count = 0
+
+      for iter in xrange(iters):
+         if src_quat11 != test_quat11:
+            true_count += 1
+         if src_quat22 != test_quat22:
+            true_count += 1
+         if src_quat33 != test_quat33:
+            true_count += 1
+         if src_quat34 != test_quat34:
+            true_count += 1
+         if src_quat44 != test_quat44:
+            true_count += 1
+         if src_quat101 != test_quat101:
+            true_count += 1
+
+      assert true_count > 0
+
+   def testQuatTimingOpIsEqualTest(self):
+      iters = 40000
+      src_quat11 = gmtl.Quatf()
+      src_quat22 = gmtl.Quatf()
+      src_quat33 = gmtl.Quatf()
+      src_quat34 = gmtl.Quatf()
+      src_quat44 = gmtl.Quatf()
+      src_quat101 = gmtl.Quatd()
+
+      # Half of these will be equal.
+      src_quat11[0] = 1.0
+      src_quat22[0] = 1.0
+      src_quat33[0] = 2.0
+
+      test_quat11 = gmtl.Quatf(src_quat11)
+      test_quat22 = gmtl.Quatf(src_quat22)
+      test_quat33 = gmtl.Quatf(src_quat33)
+      test_quat34 = gmtl.Quatf(src_quat34)
+      test_quat44 = gmtl.Quatf(src_quat44)
+      test_quat101 = gmtl.Quatd(src_quat101)
+
+      # Half of these will be equal.
+      src_quat34[0] = 2.0
+      src_quat44[1] = 3.0
+      src_quat101[3] = 2.0
+
+      true_count = 0
+
+      for iter in xrange(iters):
+         if gmtl.isEqual(src_quat11, test_quat11):
+            true_count += 1
+         if gmtl.isEqual(src_quat22, test_quat22):
+            true_count += 1
+         if gmtl.isEqual(src_quat33, test_quat33):
+            true_count += 1
+         if gmtl.isEqual(src_quat34, test_quat34):
+            true_count += 1
+         if gmtl.isEqual(src_quat44, test_quat44):
+            true_count += 1
+         if gmtl.isEqual(src_quat101, test_quat101):
+            true_count += 1
+
+      assert true_count > 0
+
+   def testQuatTimingEquiv(self):
+      quat1 = gmtl.Quatf(1.0, 2.0, 34.0, 4.0)
+      quat2 = gmtl.Quatf(-1.0, -2.0, -34.0, -4.0)
+
+      true_count = 0
+      iters = 200000
+
+      for iter in xrange(iters):
+         if gmtl.isEquiv(quat1, quat2, 0.0001):
+            true_count += 1
+
+      assert true_count > 0
+
+class QuatGenTest(unittest.TestCase):
+   def testQuatMakePure(self):
+      vec = gmtl.Vec3f(121, 232, 343)
+      quat = gmtl.Quatf(gmtl.makePure(vec))
+      assert quat[gmtl.VectorIndex.Xelt] == 121.0
+      assert quat[gmtl.VectorIndex.Yelt] == 232.0
+      assert quat[gmtl.VectorIndex.Zelt] == 343.0
+
+      # Make sure set works the same.
+      q2 = gmtl.Quatf()
+      gmtl.setPure(q2, vec)
+      assert q2[gmtl.VectorIndex.Xelt] == 121.0
+      assert q2[gmtl.VectorIndex.Yelt] == 232.0
+      assert q2[gmtl.VectorIndex.Zelt] == 343.0
+
+   def testQuatMakeConf(self):
+      quat = gmtl.Quatf(0.0, 21.0, 31.0, 1234.0)
+      quat2 = gmtl.makeConj(quat)
+
+      # Make sure the function didn't munge the data.
+      assert quat[gmtl.VectorIndex.Xelt] == 0.0
+      assert quat[gmtl.VectorIndex.Yelt] == 21.0
+      assert quat[gmtl.VectorIndex.Zelt] == 31.0
+      assert quat[gmtl.VectorIndex.Welt] == 1234.0
+
+      # Make sure conj worked.
+      assert quat2[gmtl.VectorIndex.Xelt] == -0.0
+      assert quat2[gmtl.VectorIndex.Yelt] == -21.0
+      assert quat2[gmtl.VectorIndex.Zelt] == -31.0
+      assert quat2[gmtl.VectorIndex.Welt] == 1234.0
+
+   def testQuatMakeInvert(self):
+      eps = 0.0001
+      q = gmtl.Quatf(0.2, 0.33, 0.44, 0.101)
+      expected_result = gmtl.Quatf(-0.567053, -0.935637, -1.24752, 0.286362)
+      q4 = gmtl.makeInvert(q)
+      assert gmtl.isEqual(expected_result, q4, eps)
+
+   def testQuatMakeRot(self):
+      eps = 0.0001
+      q1 = gmtl.Quatf()
+      q2 = gmtl.Quatf()
+      gmtl.set(q1, gmtl.AxisAnglef(gmtl.Math.deg2Rad(90.0), 1.0, 0.0, 0.0))
+      gmtl.set(q2, gmtl.AxisAnglef(gmtl.Math.deg2Rad(32.0), 0.0, 1.0, 0.0))
+      expected_result1 = gmtl.Quatf(0.707107, 0.0, 0.0, 0.707107)
+      expected_result2 = gmtl.Quatf(0.0, 0.275637, 0.0, 0.961262)
+
+      assert gmtl.isEqual(expected_result1, q1, eps)
+      assert gmtl.isEqual(expected_result2, q2, eps)
+
+      # Values from VR Juggler math library.
+      quats = [
+         gmtl.Quatf(0.0, 0.0, 0.0, -1.0),
+         gmtl.Quatf(-0, -0.173648, -0, -0.984808),
+         gmtl.Quatf(-0, -0.34202, -0, -0.939693 ),
+         gmtl.Quatf(-0, -0.5, -0, -0.866025     ),
+         gmtl.Quatf(-0, -0.642788, -0, -0.766044),
+         gmtl.Quatf(-0, -0.766044, -0, -0.642788),
+         gmtl.Quatf(-0, -0.866025, -0, -0.5     ),
+         gmtl.Quatf(-0, -0.939693, -0, -0.34202 ),
+         gmtl.Quatf(-0, -0.984808, -0, -0.173648),
+         gmtl.Quatf(-0, -1, -0, 0    ),
+         gmtl.Quatf(-0, -0.984808, -0, 0.173648 ),
+         gmtl.Quatf(-0, -0.939693, -0, 0.34202  ),
+         gmtl.Quatf(-0, -0.866025, -0, 0.5      ),
+         gmtl.Quatf(-0, -0.766044, -0, 0.642788 ),
+         gmtl.Quatf(-0, -0.642788, -0, 0.766044 ),
+         gmtl.Quatf(-0, -0.5, -0, 0.866025      ),
+         gmtl.Quatf(-0, -0.34202, -0, 0.939693  ),
+         gmtl.Quatf(-0, -0.173648, -0, 0.984808 ),
+         gmtl.Quatf(0, 0, 0, 1                  ),
+         gmtl.Quatf(0, 0.173648, 0, 0.984808    ),
+         gmtl.Quatf(0, 0.34202, 0, 0.939693     ),
+         gmtl.Quatf(0, 0.5, 0, 0.866025         ),
+         gmtl.Quatf(0, 0.642788, 0, 0.766044    ),
+         gmtl.Quatf(0, 0.766044, 0, 0.642788    ),
+         gmtl.Quatf(0, 0.866025, 0, 0.5         ),
+         gmtl.Quatf(0, 0.939693, 0, 0.34202     ),
+         gmtl.Quatf(0, 0.984808, 0, 0.173648    ),
+         gmtl.Quatf(0, 1, 0, 0       ),
+         gmtl.Quatf(0, 0.984808, 0, -0.173648   ),
+         gmtl.Quatf(0, 0.939693, 0, -0.34202    ),
+         gmtl.Quatf(0, 0.866025, 0, -0.5        ),
+         gmtl.Quatf(0, 0.766044, 0, -0.642788   ),
+         gmtl.Quatf(0, 0.642788, 0, -0.766044   ),
+         gmtl.Quatf(0, 0.5, 0, -0.866025        ),
+         gmtl.Quatf(0, 0.34202, 0, -0.939693    ),
+         gmtl.Quatf(0, 0.173648, 0, -0.984808   ),
+         gmtl.Quatf(-0, 0, -0, -1    ),
+      ]
+
+      count = 0
+      for x in xrange(-360, 360, 20):
+         assert count >= 0
+         q3 = gmtl.Quatf()
+         gmtl.set(q2, gmtl.AxisAnglef(gmtl.Math.deg2Rad(float(x)),
+                                      0.0, 1.0, 0.0))
+         gmtl.set(q3, gmtl.AxisAnglef(gmtl.Math.deg2Rad(float(x)),
+                                      gmtl.Vec3f(0.0, 1.0, 0.0)))
+         assert gmtl.isEqual(quats[count], q2, eps)
+         assert gmtl.isEqual(q3, q2, eps)
+
+         count += 1
+
+   def testQuatGetRot(self):
+      eps = 0.0001
+      vecs = [
+         gmtl.Vec4f( 6.28319, 1, 0, 0           ),
+         gmtl.Vec4f( 5.93412, -0, -1, -0        ),
+         gmtl.Vec4f( 5.58505, -0, -1, -0        ),
+         gmtl.Vec4f( 5.23599, -0, -1, -0        ),
+         gmtl.Vec4f( 4.88692, -0, -1, -0        ),
+         gmtl.Vec4f( 4.53786, -0, -1, -0        ),
+         gmtl.Vec4f( 4.18879, -0, -1, -0        ),
+         gmtl.Vec4f( 3.83972, -0, -1, -0        ),
+         gmtl.Vec4f( 3.49066, -0, -1, -0        ),
+         gmtl.Vec4f( 3.14159, -0, -1, -0        ),
+         gmtl.Vec4f( 2.79253, -0, -1, -0        ),
+         gmtl.Vec4f( 2.44346, -0, -1, -0        ),
+         gmtl.Vec4f( 2.0944, -0, -1, -0         ),
+         gmtl.Vec4f( 1.74533, -0, -1, -0        ),
+         gmtl.Vec4f( 1.39626, -0, -1, -0        ),
+         gmtl.Vec4f( 1.0472, -0, -1, -0         ),
+         gmtl.Vec4f( 0.698132, -0, -1, -0       ),
+         gmtl.Vec4f( 0.349066, -0, -0.999999, -0),
+         gmtl.Vec4f( 0, 1, 0, 0                 ),
+         gmtl.Vec4f( 0.349066, 0, 0.999999, 0   ),
+         gmtl.Vec4f( 0.698132, 0, 1, 0          ),
+         gmtl.Vec4f( 1.0472, 0, 1, 0            ),
+         gmtl.Vec4f( 1.39626, 0, 1, 0           ),
+         gmtl.Vec4f( 1.74533, 0, 1, 0           ),
+         gmtl.Vec4f( 2.0944, 0, 1, 0            ),
+         gmtl.Vec4f( 2.44346, 0, 1, 0           ),
+         gmtl.Vec4f( 2.79253, 0, 1, 0           ),
+         gmtl.Vec4f( 3.14159, 0, 1, 0           ),
+         gmtl.Vec4f( 3.49066, 0, 1, 0           ),
+         gmtl.Vec4f( 3.83972, 0, 1, 0           ),
+         gmtl.Vec4f( 4.18879, 0, 1, 0           ),
+         gmtl.Vec4f( 4.53786, 0, 1, 0           ),
+         gmtl.Vec4f( 4.88692, 0, 1, 0           ),
+         gmtl.Vec4f( 5.23599, 0, 1, 0           ),
+         gmtl.Vec4f( 5.58505, 0, 1, 0           ),
+         gmtl.Vec4f( 5.93412, 0, 1, 0           ),
+         gmtl.Vec4f( 6.28319, 1, 0, 0           ),
+      ]
+
+      q2 = gmtl.Quatf()
+      axis_angle = gmtl.AxisAnglef()
+      count = 0
+      for x in xrange(-360, 360, 20):
+         gmtl.set(q2, gmtl.AxisAnglef(gmtl.Math.deg2Rad(float(x)),
+                                      0.0, 1.0, 0.0))
+         gmtl.set(axis_angle, q2)
+         assert gmtl.isEqual(vecs[count], gmtl.Vec4f(axis_angle), eps)
+
+         count += 1
+
+   def testQuatMakeGetMakeRot(self):
+      eps = 0.0001
+      axis_angle = gmtl.AxisAnglef()
+      axis_angle1 = gmtl.AxisAnglef()
+      q2 = gmtl.Quatf()
+      q3 = gmtl.Quatf()
+
+      for x in xrange(-360, 360, 20):
+         gmtl.set(q2, gmtl.AxisAnglef(gmtl.Math.deg2Rad(float(x)),
+                                      0.0, 1.0, 0.0))
+         gmtl.set(axis_angle, q2)
+         gmtl.set(q3, axis_angle)
+         gmtl.set(axis_angle1, q3)
+         assert gmtl.isEqual(q3, q2, eps)
+         assert gmtl.isEqual(axis_angle1, axis_angle, eps)
+
+class QuatGenMetricTest(unittest.TestCase):
+   def testGenTimingMakeInvert1(self):
+      q1 = gmtl.Quatf()
+      iters = 25000
+
+      for iter in xrange(iters):
+         q1 = gmtl.makeInvert(q1)
+
+      q2 = gmtl.Quatd()
+
+      for iter in xrange(iters):
+         q2 = gmtl.makeInvert(q2)
+
+      assert q1[0] != 10000.0
+      assert q2[0] != 10000.0
+
+   def testGenTimingMakeConj(self):
+      q1 = gmtl.Quatf()
+      iters = 50000
+
+      for iter in xrange(iters):
+         q1 = gmtl.makeConj(q1)
+
+      q2 = gmtl.Quatd()
+
+      for iter in xrange(iters):
+         q2 = gmtl.makeConj(q2)
+
+      assert q1[0] != 10000.0
+      assert q2[0] != 10000.0
+
+   def testGenTimingMakePure(self):
+      v1 = gmtl.Vec3d()
+      iters = 25000
+
+      for iter in xrange(iters):
+         q1 = gmtl.makePure(v1)
+         q1[2] -= v1[0]
+
+      v2 = gmtl.Vec3f()
+
+      for iter in xrange(iters):
+         q2 = gmtl.makePure(v2)
+         q2[2] += v2[0]
+
+      assert q2[0] != 10000.0
+      assert q1[0] != 10000.0
+
+   def testGenTimingMakeNormalQuat(self):
+      q1 = gmtl.Quatf()
+      iters = 25000
+
+      for iter in xrange(iters):
+         q1 = gmtl.makeNormal(q1)
+
+      q2 = gmtl.Quatd()
+
+      for iter in xrange(iters):
+         q2 = gmtl.makeNormal(q2)
+
+      assert q1[0] != 10000.0
+      assert q2[0] != 10000.0
+
+   def testGenTimingMakeRot(self):
+      v = 1.0
+      q1 = gmtl.Quatd()
+      iters = 25000
+
+      for iter in xrange(iters):
+         gmtl.set(q1, gmtl.makeNormal(gmtl.AxisAngled(v, v, v, v)))
+         v += q1[2]
+
+      v = 1.0
+      q2 = gmtl.Quatf()
+
+      for iter in xrange(iters):
+         gmtl.set(q2, gmtl.makeNormal(gmtl.AxisAnglef(v, v, v, v)))
+         v += q2[2]
+
+      v = 1.0
+      q3 = gmtl.Quatd()
+
+      for iter in xrange(iters):
+         gmtl.set(q3, gmtl.makeNormal(gmtl.AxisAngled(v, gmtl.Vec3d(v, v, v))))
+         v *= q3[1] + 1.234
+
+      v = 1.0
+      q4 = gmtl.Quatf()
+
+      for iter in xrange(iters):
+         gmtl.set(q4, gmtl.makeNormal(gmtl.AxisAnglef(v, gmtl.Vec3f(v, v, v))))
+         v *= q4[1] + 1.234
+
+      q5 = gmtl.Quatd()
+      v4 = gmtl.Vec3d(1, 2, 3)
+      v5 = gmtl.Vec3d(1, 2, 3)
+
+      for iter in xrange(iters):
+         q5 = gmtl.makeRotQuat(gmtl.makeNormal(v4), gmtl.makeNormal(v5))
+         v4[2] += q5[1] + 1.234
+         v5[2] += q5[1] + 1.234
+
+      q6 = gmtl.Quatf()
+      v6 = gmtl.Vec3f(1, 2, 3)
+      v7 = gmtl.Vec3f(1, 2, 3)
+
+      for iter in xrange(iters):
+         q6 = gmtl.makeRotQuat(gmtl.makeNormal(v6), gmtl.makeNormal(v7))
+         v6[2] += q6[1] + 1.234
+         v7[2] += q6[1] + 1.234
+
+      axis_angle = gmtl.AxisAnglef()
+      for iter in xrange(iters):
+         gmtl.set(axis_angle, q6)
+         q6[0] = axis_angle[0] + axis_angle[1] - axis_angle[2] - axis_angle[3]
+         axis_angle[0] += q6[1] + 1.234
+         axis_angle[1] -= q6[2] * -0.22 + 1.234
+         axis_angle[2] += q6[1] + 0.1
+         axis_angle[3] -= q6[2] - 0.99
+
+      assert v != 0.998 and v != 0.0988
+      assert q1[0] != 10000.0
+      assert q2[1] != 10000.0
+      assert q3[2] != 10000.0
+      assert q4[3] != 10000.0
+      assert q5[0] != 10000.0
+      assert q6[1] != 10000.0
+
+   def testGenTimingSetRot(self):
+      v = 1.0
+      q1 = gmtl.Quatd()
+      iters = 25000
+
+      for iter in xrange(iters):
+         gmtl.set(q1, gmtl.makeNormal(gmtl.AxisAngled(v, v, v, v)))
+         v += q1[2]
+
+      q2 = gmtl.Quatf()
+      v  = 1.0
+
+      for iter in xrange(iters):
+         gmtl.set(q2, gmtl.makeNormal(gmtl.AxisAnglef(v, v, v, v)))
+         v -= q2[3]
+
+      q3 = gmtl.Quatd()
+      v  = 1.0
+
+      for iter in xrange(iters):
+         gmtl.set(q3, gmtl.makeNormal(gmtl.AxisAngled(v, gmtl.Vec3d(v, v, v))))
+         v *= q3[1] + 1.2
+
+      q4 = gmtl.Quatf()
+      v  = 1.0
+
+      for iter in xrange(iters):
+         gmtl.set(q4, gmtl.makeNormal(gmtl.AxisAnglef(v, gmtl.Vec3f(v, v, v))))
+         v += q4[1] + 1.2
+
+      q5 = gmtl.Quatd()
+      v4 = gmtl.Vec3d(1, 2, 3)
+      v5 = gmtl.Vec3d(1, 2, 3)
+
+      for iter in xrange(iters):
+         gmtl.setRot(q5, gmtl.makeNormal(v4), gmtl.makeNormal(v5))
+         v4[2] += q5[1] + 1.2
+         v5[2] += q5[2] + 1.2
+
+      q6 = gmtl.Quatd()
+      v6 = gmtl.Vec3d(1, 2, 3)
+      v7 = gmtl.Vec3d(1, 2, 3)
+
+      for iter in xrange(iters):
+         gmtl.setRot(q6, gmtl.makeNormal(v6), gmtl.makeNormal(v7))
+         v6[2] += q6[1] + 1.2
+         v7[2] += q6[2] + 1.2
+
+      assert v != 0.998 and v != 0.0998
+      assert q1[0] != 10000.0
+      assert q2[1] != 10000.0
+      assert q3[2] != 10000.0
+      assert q4[3] != 10000.0
+      assert q5[0] != 10000.0
+      assert q6[1] != 10000.0
+
+class QuatOpsTest(unittest.TestCase):
+   def testQuatMult(self):
+      def testMult(q, eps = 0.0001):
+         sx = gmtl.Vec3f(1.0, 0.0, 0.0)
+         sy = gmtl.Vec3f(0.0, 1.0, 0.0)
+         sz = gmtl.Vec3f(0.0, 0.0, 1.0)
+         ex = gmtl.Vec3f(0.0, 0.0, -1.0)
+         ey = gmtl.Vec3f(-1.0, 0.0, 0.0)
+         ez = gmtl.Vec3f(0.0, 1.0, 0.0)
+
+         tx = q * sx
+         ty = q * sy
+         tz = q * sz
+         assert gmtl.isEqual(ex, tx, eps)
+         assert gmtl.isEqual(ey, ty, eps)
+         assert gmtl.isEqual(ez, tz, eps)
+
+      q3 = gmtl.makeRotMatrix44(gmtl.AxisAnglef(gmtl.Math.deg2Rad(90.0),
+                                                0.0, 1.0, 0.0))
+      q4 = gmtl.makeRotMatrix44(gmtl.AxisAnglef(gmtl.Math.deg2Rad(90.0),
+                                                0.0, 0.0, 1.0))
+      q6 = gmtl.Matrix44f()
+
+      # Make sure the mult() function works.
+      gmtl.mult(q6, q4, q3)
+      testMult(q6)
+
+      # Make sure the operator* works, too.
+      q6 = q4 * q3
+      testMult(q6)
+
+      # Make sure the operator*= works, too.
+      q6 = gmtl.Matrix44f(q4)
+      q6 *= q3
+      testMult(q6)
+
+      q3 = gmtl.makeRotQuat(gmtl.AxisAnglef(gmtl.Math.deg2Rad(90.0),
+                                            0.0, 1.0, 0.0))
+      q4 = gmtl.makeRotQuat(gmtl.AxisAnglef(gmtl.Math.deg2Rad(90.0),
+                                            0.0, 0.0, 1.0))
+      q6 = gmtl.Quatf()
+
+      # Make sure the mult() function works.
+      gmtl.mult(q6, q4, q3)
+      testMult(q6)
+
+      # Make sure the operator* works, too.
+      q6 = q4 * q3
+      testMult(q6)
+
+      # Make sure the operator*= works, too.
+      q6 = gmtl.Quatf(q4)
+      q6 *= q3
+      testMult(q6)
+
+   def testQuatDif(self):
+      def testMult(q, eps = 0.0001):
+         sx = gmtl.Vec3f(6.0, 0.0, 0.0)
+         sy = gmtl.Vec3f(0.0, 4.0, 0.0)
+         sz = gmtl.Vec3f(0.0, 0.0, 9.0)
+         ex = gmtl.Vec3f(0.0, 0.0, 6.0)
+         ey = gmtl.Vec3f(-4.0, 0.0, 0.0)
+         ez = gmtl.Vec3f(0.0, -9.0, 0.0)
+
+         tx = q * sx
+         ty = q * sy
+         tz = q * sz
+         assert gmtl.isEqual(ex, tx, eps)
+         assert gmtl.isEqual(ey, ty, eps)
+         assert gmtl.isEqual(ez, tz, eps)
+
+      q3 = gmtl.makeRotMatrix44(gmtl.AxisAnglef(gmtl.Math.deg2Rad(90.0),
+                                                0.0, 1.0, 0.0))
+      q4 = gmtl.makeRotMatrix44(gmtl.AxisAnglef(gmtl.Math.deg2Rad(90.0),
+                                                0.0, 0.0, 1.0))
+      q6 = gmtl.Matrix44f()
+      gmtl.invert(q3)   # There is no matrix div, so do this to simulate it
+
+      # Make sure the mult() function works.
+      gmtl.mult(q6, q4, q3)
+      testMult(q6)
+
+      # Make sure the operator* works, too.
+      q6 = q4 * q3
+      testMult(q6)
+
+      # Make sure the operator*= works, too.
+      q6 = gmtl.Matrix44f(q4)
+      q6 *= q3
+      testMult(q6)
+
+      q3 = gmtl.makeRotQuat(gmtl.AxisAnglef(gmtl.Math.deg2Rad(90.0),
+                                            0.0, 1.0, 0.0))
+      q4 = gmtl.makeRotQuat(gmtl.AxisAnglef(gmtl.Math.deg2Rad(90.0),
+                                            0.0, 0.0, 1.0))
+      q6 = gmtl.Quatf()
+
+      # Make sure the div() function works.
+      gmtl.div(q6, q4, q3)
+      testMult(q6)
+
+      # Make sure the operator/ works, too.
+      q6 = q4 / q3
+      testMult(q6)
+
+      # Make sure the operator/= works, too.
+      q6 = gmtl.Quatf(q4)
+      q6 /= q3
+      testMult(q6)
+
+   def testQuatVectorMult(self):
+      eps = 0.0001
+      q3 = gmtl.Quatf(1.0, 2.0, 3.0, 4.0)
+      q5 = gmtl.Quatf()
+      gmtl.mult(q5, q3, 23.0)
+
+      expected_result = gmtl.Quatf(1 * 23.0, 2 * 23.0, 3 * 23.0, 4 * 23.0)
+      assert gmtl.isEqual(expected_result, q5, eps)
+
+   def testQuatVectorAdd(self):
+      eps = 0.0001
+      q3 = gmtl.Quatf(1.0, 2.0, 3.0, 4.0)
+      q6 = gmtl.Quatf(2.0, 3.0, 4.0, 5.0)
+      q5 = gmtl.Quatf()
+      gmtl.add(q5, q3, q6)
+
+      expected_result = gmtl.Quatf(3.0, 5.0, 7.0, 9.0)
+      assert gmtl.isEqual(expected_result, q5, eps)
+
+   def testQuatVectorSub(self):
+      eps = 0.0001
+      q3 = gmtl.Quatf(1.0, 2.0, 3.0, 4.0)
+      q6 = gmtl.Quatf(2.0, 3.0, 4.0, 5.0)
+      q5 = gmtl.Quatf()
+      gmtl.sub(q5, q3, q6)
+
+      expected_result = gmtl.Quatf(-1.0, -1.0, -1.0, -1.0)
+      assert gmtl.isEqual(expected_result, q5, eps)
+
+   def testQuatVectorDot(self):
+      eps = 0.0001
+      assert isEqual(gmtl.dot(gmtl.Quatf(1.0, 0.0, 0.0, 0.0),
+                              gmtl.Quatf(1.0, 0.0, 0.0, 0.0)),
+                     1.0, eps)
+      assert isEqual(gmtl.dot(gmtl.Quatf(1.0, 0.0, 0.0, 0.0),
+                              gmtl.Quatf(0.0, 1.0, 0.0, 0.0)),
+                     0.0, eps)
+      assert isEqual(gmtl.dot(gmtl.Quatf(1.0, 1.0, 0.0, 0.0),
+                              gmtl.Quatf(0.0, 1.0, 0.0, 0.0)),
+                     1.0, eps)
+      assert isEqual(gmtl.dot(gmtl.Quatf(1.0, 0.0, 0.0, 10.0),
+                              gmtl.Quatf(1.0, 0.0, 0.0, 223.0)),
+                     2231.0, eps)
+
+   def testQuatNorm(self):
+      eps = 0.0001
+      q1 = gmtl.Quatf(1.0, 1.0, 1.0, 1.0)
+      assert isEqual(gmtl.lengthSquared(q1), 4.0, eps)
+
+   def testQuatMag(self):
+      eps = 0.0001
+      q1 = gmtl.Quatf(1.0, 1.0, 1.0, 1.0)
+      assert isEqual(gmtl.length(q1), 2.0, eps)
+
+   def testQuatNormalize(self):
+      eps = 0.0001
+      q3 = gmtl.Quatf(0.0, 0.0, 342334.0, 0.0)
+      q5 = gmtl.Quatf(342334.0, -342334.0, 342334.0, -342334.0)
+      gmtl.normalize(q3)
+      gmtl.normalize(q5)
+
+      expected_result1 = gmtl.Quatf(0.0, 0.0, 1.0, 0.0)
+      expected_result2 = gmtl.Quatf(0.5, -0.5, 0.5, -0.5)
+      assert gmtl.isEqual(expected_result1, q3, eps)
+      assert gmtl.isEqual(expected_result2, q5, eps)
+
+   def testQuatConj(self):
+      eps = 0.0001
+      q3 = gmtl.Quatf(0.0, 0.0, 342334.0, 0.0)
+      q5 = gmtl.Quatf(342334.0, -342334.0, 342334.0, -342334.0)
+      gmtl.conj(q3)
+      gmtl.conj(q5)
+
+      expected_result1 = gmtl.Quatf(0.0, 0.0, -342334.0, 0.0)
+      expected_result2 = gmtl.Quatf(-342334.0, 342334.0, -342334.0, -342334.0)
+      assert gmtl.isEqual(expected_result1, q3, eps)
+      assert gmtl.isEqual(expected_result2, q5, eps)
+
+   def testQuatNegate(self):
+      eps = 0.0001
+      q3 = gmtl.Quatf(0.0, 0.0, 342334.0, 0.0)
+      q5 = gmtl.Quatf(342334.0, -342334.0, 342334.0, -342334.0)
+      expected_result1 = gmtl.Quatf(0.0, 0.0, -342334.0, 0.0)
+      expected_result2 = gmtl.Quatf(-342334.0, 342334.0, -342334.0, 342334.0)
+
+      # Test operator-
+      assert gmtl.isEqual(expected_result1, -q3, eps)
+      assert gmtl.isEqual(expected_result2, -q5, eps)
+
+      # Test gmtl.negate(quat)
+      gmtl.negate(q3)
+      gmtl.negate(q5)
+      assert gmtl.isEqual(expected_result1, q3, eps)
+      assert gmtl.isEqual(expected_result2, q5, eps)
+
+   def testQuatInvert(self):
+      eps = 0.0001
+      q = gmtl.Quatf(0.2, 0.33, 0.44, 0.101)
+      expected_result = gmtl.Quatf(-0.567053, -0.935637, -1.24752, 0.286362)
+      q2 = gmtl.Quatf(q)
+      q3 = gmtl.invert(q2)
+      assert gmtl.isEqual(expected_result, q3, eps)
+      assert gmtl.isEqual(expected_result, q2, eps)
+
+      q4 = gmtl.makeInvert(q)
+      assert gmtl.isEqual(expected_result, q4, eps)
+
+   def testQuatLerp(self):
+      eps = 0.0001
+      q1 = gmtl.Quatf(1.0, 2.0, 3.0, 4.0)
+      q2 = gmtl.Quatf(9.0, 8.0, 7.0, 6.0)
+
+      # Make sure they are valid rotation quaternions.
+      gmtl.normalize(q1)
+      gmtl.normalize(q2)
+
+      expected_result1 = gmtl.Quatf(q1)
+      expected_result2 = gmtl.Quatf(q2)
+      res1 = gmtl.Quatf()
+      res2 = gmtl.Quatf()
+
+      gmtl.lerp(res1, 0.0, q1, q2)
+      gmtl.lerp(res2, 1.0, q1, q2)
+      assert gmtl.isEqual(expected_result1, res1, eps)
+      assert gmtl.isEqual(expected_result2, res2, eps)
+
+   def testQuatSlerp(self):
+      eps = 0.0001
+      q1 = gmtl.Quatf(100.0, 2.0, 3.0, 4.0)
+      q2 = gmtl.Quatf(9.01, 8.4, 7.1, 6.0)
+
+      # Make sure they are valid rotation quaternions.
+      gmtl.normalize(q1)
+      gmtl.normalize(q2)
+
+      expected_result1 = gmtl.Quatf(q1)
+      expected_result2 = gmtl.Quatf(q2)
+      res1 = gmtl.Quatf()
+      res2 = gmtl.Quatf()
+
+      gmtl.slerp(res1, 0.0, q1, q2)
+      gmtl.slerp(res2, 1.0, q1, q2)
+      assert gmtl.isEqual(expected_result1, res1, eps)
+      assert gmtl.isEqual(expected_result2, res2, eps)
+
+      quadrant = [
+         gmtl.Vec3f( 1.0,  1.0,  1.0),
+         gmtl.Vec3f(-1.0,  1.0,  1.0),
+         gmtl.Vec3f(-1.0,  1.0, -1.0),
+         gmtl.Vec3f( 1.0,  1.0, -1.0),
+         gmtl.Vec3f( 1.0, -1.0, -1.0),
+         gmtl.Vec3f( 1.0, -1.0,  1.0),
+         gmtl.Vec3f(-1.0, -1.0,  1.0),
+         gmtl.Vec3f(-1.0, -1.0, -1.0)
+      ]
+
+      q0 = [
+         gmtl.Quatf(),
+         gmtl.Quatf(),
+         gmtl.Quatf(),
+         gmtl.Quatf(),
+         gmtl.Quatf(),
+         gmtl.Quatf(),
+         gmtl.Quatf(),
+         gmtl.Quatf(),
+      ]
+
+      q180 = [
+         gmtl.Quatf(),
+         gmtl.Quatf(),
+         gmtl.Quatf(),
+         gmtl.Quatf(),
+         gmtl.Quatf(),
+         gmtl.Quatf(),
+         gmtl.Quatf(),
+         gmtl.Quatf(),
+      ]
+
+      q90 = [
+         gmtl.Quatf(),
+         gmtl.Quatf(),
+         gmtl.Quatf(),
+         gmtl.Quatf(),
+         gmtl.Quatf(),
+         gmtl.Quatf(),
+         gmtl.Quatf(),
+         gmtl.Quatf(),
+      ]
+
+      q_0001 = [
+         gmtl.Quatf(),
+         gmtl.Quatf(),
+         gmtl.Quatf(),
+         gmtl.Quatf(),
+         gmtl.Quatf(),
+         gmtl.Quatf(),
+         gmtl.Quatf(),
+         gmtl.Quatf(),
+      ]
+
+      for x in range(len(quadrant)):
+         gmtl.normalize(quadrant[x])
+         gmtl.setRot(q0[x], gmtl.AxisAnglef(gmtl.Math.deg2Rad(0.0),
+                                            quadrant[x]))
+         gmtl.setRot(q180[x], gmtl.AxisAnglef(gmtl.Math.deg2Rad(180.0),
+                                              quadrant[x]))
+         gmtl.setRot(q90[x], gmtl.AxisAnglef(gmtl.Math.deg2Rad(90.0),
+                                             quadrant[x]))
+         gmtl.setRot(q_0001[x], gmtl.AxisAnglef(gmtl.Math.deg2Rad(0.0001),
+                                                quadrant[x]))
+
+         # same yields same.
+         result = gmtl.Quatf()
+         gmtl.slerp(result, 0.0, q0[x], q0[x])  # yields q0[x]
+         assert result == q0[x]
+         gmtl.slerp(result, 0.5, q0[x], q0[x])  # yields q0[x]
+         assert result == q0[x]
+         gmtl.slerp(result, 1.0, q0[x], q0[x])  # yields q0[x]
+         assert result == q0[x]
+
+#         # 180 degree - there is more then one valid path to take.
+#         gmtl.slerp(result, 0.0, q0[x], q180[x])        # yields q0[x]
+#         gmtl.slerp(result, 0.5, q0[x], q180[x])        # yields shortest path
+#         gmtl.slerp(result, 1.0, q0[x], q180[x])        # yields q90[x]
+#
+#         # 90 degree
+#         gmtl.slerp(result, 0.0, q0[x], q90[x])         # yields q0[x]
+#         gmtl.slerp(result, 0.5, q0[x], q90[x])         # yields shortest path
+#         gmtl.slerp(result, 1.0, q0[x], q90[x])         # yields q90[x]
+#
+#         # 0.0001 degree
+#         gmtl.slerp(result, 0.0, q0[x], q_0001[x])      # yields q0[x]
+#         gmtl.slerp(result, 0.5, q0[x], q_0001[x])      # yields shortest path
+#         gmtl.slerp(result, 1.0, q0[x], q_0001[x])      # yields q90[x]
+
+class QuatOpsMetricTest(unittest.TestCase):
+   def testQuatTimingNegate(self):
+      q4 = gmtl.Quatf()
+      iters = 25000
+
+      for iter in xrange(iters):
+         gmtl.negate(q4)
+         q4[1] += q4[2]
+
+      assert q4[2] != 1234.5
+
+   def testQuatTimingOperatorMinus(self):
+      q4 = gmtl.Quatf()
+      iters = 25000
+
+      for iter in xrange(iters):
+         q4 = -q4
+         q4[1] += q4[2]
+
+      assert q4[2] != 1234.5
+
+   def testQuatTimingMult(self):
+      q2 = gmtl.Quatf()
+      q4 = gmtl.Quatf()
+      iters = 25000
+
+      for iter in xrange(iters):
+         gmtl.mult(q4, q2, q4)
+
+      assert q4[2] != 1234.5
+
+   def testQuatTimingOperatorMult(self):
+      q2 = gmtl.Quatf()
+      q4 = gmtl.Quatf()
+      iters = 10000
+
+      for iter in xrange(iters):
+         q4 = q2 * q4
+
+      assert q4[2] != 1234.5
+
+   def testQuatTimingDiv(self):
+      q3 = gmtl.Quatf()
+      q4 = gmtl.Quatf()
+      iters = 10000
+
+      for iter in xrange(iters):
+         gmtl.div(q4, q4, q3)
+
+      assert q4[2] != 1234.5
+
+   def testQuatTimingLerp(self):
+      qfrom = gmtl.Quatf()
+      result = gmtl.Quatf()
+      iters = 10000
+
+      for iter in xrange(iters):
+         gmtl.lerp(result, float(iter) / float(iters), qfrom, result)
+
+      assert result[2] != 1234.5
+
+      for iter in xrange(iters):
+         gmtl.slerp(result, float(iter) / float(iters), qfrom, result)
+
+      assert result[2] != 1234.5
+
+   def testQuatTimingVectorMult(self):
+      q3 = gmtl.Quatf()
+      q4 = gmtl.Quatf()
+      iters = 10000
+
+      for iter in xrange(iters):
+         gmtl.mult(q4, q3, q4[2])
+
+      assert q4[2] != 1234.5
+
+   def testQuatTimingVectorAss(self):
+      q3 = gmtl.Quatf()
+      q4 = gmtl.Quatf()
+      iters = 10000
+
+      for iter in xrange(iters):
+         gmtl.add(q4, q4, q3)
+
+      assert q4[2] != 1234.5
+
+   def testQuatTimingVectorSub(self):
+      q3 = gmtl.Quatf()
+      q4 = gmtl.Quatf()
+      iters = 10000
+
+      for iter in xrange(iters):
+         gmtl.sub(q4, q4, q3)
+
+      assert q4[2] != 1234.5
+
+   def testQuatTimingVectorDot(self):
+      q1 = gmtl.Quatf()
+      q2 = gmtl.Quatf()
+      iters = 10000
+
+      for iter in xrange(iters):
+         q1[2] += gmtl.dot(q1, q2)
+
+      assert q1[2] != 1234.5
+
+   def testQuatTimingNorm(self):
+      q1 = gmtl.Quatf()
+      iters = 10000
+
+      for iter in xrange(iters):
+         q1[2] += gmtl.lengthSquared(q1)
+
+      assert q1[2] != 1234.5
+
+   def testQuatTimingMag(self):
+      q1 = gmtl.Quatf()
+      iters = 10000
+
+      for iter in xrange(iters):
+         q1[2] += gmtl.length(q1)
+
+      assert q1[2] != 1234.5
+
+   def testQuatTimingNormalize(self):
+      q4 = gmtl.Quatf()
+      iters = 10000
+
+      for iter in xrange(iters):
+         gmtl.normalize(q4)
+
+      assert q4[2] != 1234.5
+
+   def testQuatTimingConj(self):
+      q4 = gmtl.Quatf()
+      iters = 10000
+
+      for iter in xrange(iters):
+         gmtl.conj(q4)
+
+      assert q4[2] != 1234.5
+
+   def testQuatTimingInvert(self):
+      q4 = gmtl.Quatf()
+      iters = 10000
+
+      for iter in xrange(iters):
+         gmtl.invert(q4)
+
+      assert q4[2] != 1234.5
+
+class QuatStuffTest(unittest.TestCase):
+   def makeRotTest(self):
+      q1 = gmtl.Quatf()
+      q2 = gmtl.Quatf()
+      q3 = gmtl.set(q1, gmtl.AxisAnglef(gmtl.Math.deg2Rad(45.0), 0.0, 1.0, 0.0))
+      q4 = gmtl.set(q2, gmtl.AxisAnglef(gmtl.Math.deg2Rad(90.0), 1.0, 0.0, 0.0))
+      gmtl.normalize(q3)
+      gmtl.normalize(q4)
+
+      # Make sure that normalize doesn't change the rotation.
+      assert gmtl.isEqual(q1, q3, 0.0001)
+      assert gmtl.isEqual(q2, q4, 0.0001)
+
+      assert gmtl.isEqual(q1, gmtl.makeRotQuat(gmtl.AxisAnglef(gmtl.Math.deg2Rad(45.0), 0.0, 1.0, 0.0)), 0.0001)
+      assert gmtl.isEqual(q1, gmtl.makeRotQuat(gmtl.AxisAnglef(gmtl.Math.deg2Rad(90.0), 1.0, 0.0, 0.0)), 0.0001)
+
+      # Set the euler parameters from the given quat.
+      axis_angle = gmtl.AxisAnglef()
+      gmtl.set(axis_angle, q1)
+      assert gmtl.isEqual(axis_angle,
+                          gmtl.AxisAnglef(gmtl.Math.deg2Rad(45.0),
+                                          0.0, 1.0, 0.0),
+                          0.0001)
+
+      gmtl.set(axis_angle, q2)
+      assert gmtl.isEqual(axis_angle,
+                          gmtl.AxisAnglef(gmtl.Math.deg2Rad(90.0),
+                                          1.0, 0.0, 0.0),
+                          0.0001)
+
+   def testXformVecSweep(self):
+      q = gmtl.Quatf()
+      q2 = gmtl.Quatf()
+      v = gmtl.Vec3f(0.0, 0.0, 1.0)
+
+      for x in range(180, 90):
+         gmtl.set(q, gmtl.AxisAnglef(gmtl.Math.deg2Rad(x), 1.0, 0.0, 0.0))
+
+         result = gmtl.Vec3f(q * v)
+         if x == 0:
+            assert result[0] < 0.001 and result[1] < 0.001 and \
+                   result[2] > 0.999
+         if x == 90:
+            assert result[0] < 0.001 and result[1] < -0.999 and \
+                   result[2] < 0.001
+         if x == 180:
+            assert result[0] < 0.001 and result[1] < 0.0001 and \
+                   result[2] < -0.999
+
+   def testMakeRotGetRotSanity(self):
+      def round(x):
+         return math.floor(x + 0.5)
+
+      # Testing sanity of gmtl.makeRot() and gmtl.set(), the gmtl.makeRot()
+      for i in xrange(-360, 360, 20):
+         q = gmtl.Quatf()
+         gmtl.set(q, gmtl.AxisAnglef(gmtl.Math.deg2Rad(i), 1.0, 0.0, 0.0))
+
+         # Set euler parameters from quaternion.
+         axis_angle = gmtl.AxisAnglef()
+         gmtl.set(axis_angle, q)
+
+         # Set quaternion from euler parameters.
+         q2 = gmtl.Quatf()
+         gmtl.set(q2, axis_angle)
+
+         sanity = gmtl.Quatf()
+         gmtl.set(sanity, axis_angle)
+         assert q2 == sanity
+
+         assert gmtl.isEqual(q, q2, 0.0001)
+
+         b = float(i)
+         while b < 0.0:
+            b += 360.0
+
+         if i >= 0:
+            c = math.fabs(round(b) % 360)
+            temp1 = gmtl.rad2Deg(axis_angle.getAngle())
+            temp1 = round(temp1) % 360
+            temp2 = c + 0.5
+            temp3 = gmtl.Math.rad2Deg(axis_angle.getAngle())
+            temp3 = round(temp3) % 360
+            temp4 = c - 0.5
+
+            assert temp1 <= temp2 and temp3 >= temp4
+
+   def testSimpleQuatProduct(self):
+      q1 = gmtl.Quatf()
+      gmtl.set(q1, gmtl.AxisAnglef(0.0, 1.0, 0.0, 0.0))
+
+      q2 = gmtl.Quatf()
+      gmtl.set(q2, gmtl.AxisAnglef(gmtl.Math.deg2Rad(90.0), 1.0, 0.0, 0.0))
+
+      # First rotate by q2, then by q1.
+      q3 = q1 * q2
+
+      v = gmtl.Vec3f(0.0, 1.0, 0.0)
+      r = q3 * v
+
+      assert r[2] > 0.99
+
+   def testSecondQuatProduct(self):
+      q1 = gmtl.Quatf()
+      gmtl.set(q1, gmtl.AxisAnglef(gmtl.Math.deg2Rad(45.0), 0.0, 1.0, 0.0))
+
+      q2 = gmtl.Quatf()
+      gmtl.set(q2, gmtl.AxisAnglef(gmtl.Math.deg2Rad(90.0), 1.0, 0.0, 0.0))
+
+      # First rotate by q2, then by q1.
+      q3 = q1 * q2
+
+      v = gmtl.Vec3f(0.0, 1.0, 0.0)
+      r = q3 * v
+
+      assert r[0] > 0.7 and r[2] > 0.7
+
+   def testXformVec(self):
+      q1 = gmtl.Quatf()
+      q2 = gmtl.Quatf()
+      gmtl.set(q1, gmtl.AxisAnglef(gmtl.Math.deg2Rad(45.0), 0.0, -1.0, 0.0))
+      gmtl.set(q2, gmtl.AxisAnglef(gmtl.Math.deg2Rad(45.0), 1.0, 0.0, 0.0))
+
+      v = gmtl.Vec3f(0.0, 1.0, 0.0)
+
+      # Should not move.
+      r = q1 * v
+      assert r[1] > 0.999
+
+      # Rotate forward.
+      r = q2 * v
+      assert r[1] > 0.7 and r[2] > 0.7
+
+   def testSpecialCases(self):
+      q = gmtl.Quatf(0.0, -0.000313354, 0.0, 1.0)
+      axis_angle = gmtl.AxisAnglef()
+      gmtl.set(axis_angle, q)
+
+      half_angle = 0.000626708 * 0.5
+      sin_half_angle = math.sin(half_angle)
+      w = math.cos(half_angle)
+      sin_half_angle += 1.0     # use sin_half_angle
+      w += 1.0                  # use w
+
+      qqq = gmtl.Quatf()
+      gmtl.set(qqq, gmtl.AxisAnglef(gmtl.Math.deg2Rad(180.0), 0.0, 1.0, 0.0))
+      assert isEqual(qqq[gmtl.VectorIndex.Welt], 0.0, 0.0001) and \
+             qqq[gmtl.VectorIndex.Xelt] == 0.0 and \
+             isEqual(qqq[gmtl.VectorIndex.Yelt], 1.0, 0.0001) and \
+             qqq[gmtl.VectorIndex.Zelt] == 0.0
+
+   def testVectorScale(self):
+      for x in xrange(360):
+         q = gmtl.Quatf()
+         gmtl.set(q, gmtl.makeNormal(gmtl.AxisAnglef(gmtl.Math.deg2Rad(x),
+                                                     0.7, 0.7, 0.7)))
+         q2 = gmtl.Quatf()
+         gmtl.mult(q2, q, 0.5)
+
+         # No longer a valid rotation (non-unit length).
+         # Should be normalized to define an actual rotation.
+         assert not gmtl.isNormalized(q2)
+
+#         axis_angle = gmtl.AxisAnglef()
+#         gmtl.set(axis_angle, q2)
+
+      for x in xrange(360):
+         q = gmtl.Quatf()
+         gmtl.set(q, gmtl.makeNormal(gmtl.AxisAnglef(gmtl.Math.deg2Rad(x),
+                                                     0.7, 0.7, 0.7)))
+         q2 = gmtl.Quatf()
+         gmtl.mult(q2, q, 0.5)
+         gmtl.normalize(q2)
+
+         assert gmtl.isEqual(q2, q, 0.0001)
+
+   def testQuatAdd(self):
+      q1 = gmtl.Quatf()
+      gmtl.set(q1, gmtl.AxisAnglef(gmtl.Math.deg2Rad(90.0), 1.0, 0.0, 0.0))
+      q2 = gmtl.Quatf()
+      gmtl.set(q2, gmtl.AxisAnglef(gmtl.Math.deg2Rad(180.0), 1.0, 0.0, 0.0))
+
+      q = gmtl.Quatf()
+      gmtl.add(q, q1, q2)
+      gmtl.normalize(q)
+
+      q1 = gmtl.Quatf()
+      gmtl.set(q1, gmtl.AxisAnglef(gmtl.Math.deg2Rad(90.0), 1.0, 0.0, 0.0))
+      q = gmtl.Quatf()
+      q = q1 * q
+
+   def testPureQuatMult(self):
+      for x in xrange(100):
+         w = gmtl.Vec3f(0.0, x, 0.0)    # angular velocity
+         wq = gmtl.makePure(w)
+         q1 = gmtl.Quatf()
+         gmtl.set(q1, gmtl.AxisAnglef(gmtl.Math.deg2Rad(90.0), 0.0, 1.0, 0.0))
+         q2 = wq * q1
+
+      ww = gmtl.Vec3f(0.0, 56.0, 0.0)
+      wq = gmtl.makePure(ww)
+      q1 = gmtl.Quatf()
+      gmtl.set(q1, gmtl.AxisAnglef(gmtl.Math.deg2Rad(90.0), 0.0, 1.0, 0.0))
+      w1 = wq[gmtl.VectorIndex.Welt]
+      w2 = q1[gmtl.VectorIndex.Welt]
+      v1 = gmtl.Vec3f(wq[gmtl.VectorIndex.Xelt], wq[gmtl.VectorIndex.Yelt],
+                      wq[gmtl.VectorIndex.Zelt])
+      v2 = gmtl.Vec3f(q1[gmtl.VectorIndex.Xelt], q1[gmtl.VectorIndex.Yelt],
+                      q1[gmtl.VectorIndex.Zelt])
+
+      w = w1 * w2 - gmtl.dot(v1, v2)
+      v = (v2 * w1) + (v1 * w2) + gmtl.makeCross(v1, v2)
+      w += 1.0          # use w
+      v[0] += 1.0       # use v
+
+class SphereTest(unittest.TestCase):
+   def testCreation(self):
+      test_sph = gmtl.Spheref()
+
+      assert test_sph.center[0] == 0.0
+      assert test_sph.center[1] == 0.0
+      assert test_sph.center[2] == 0.0
+      assert test_sph.radius == 0.0
+
+   def testCopyConstruct(self):
+      test_sph = gmtl.Spheref()
+
+      test_sph.center[0] = 2.0
+      test_sph.center[1] = 4.0
+      test_sph.center[2] = 8.0
+      test_sph.radius    = 25.0
+
+      test_sph_copy = gmtl.Spheref(test_sph)
+      assert test_sph_copy.center[0] == 2.0
+      assert test_sph_copy.center[1] == 4.0
+      assert test_sph_copy.center[2] == 8.0
+      assert test_sph_copy.radius == 25.0
+
+   def testConstructors(self):
+      test_sph = gmtl.Spheref(gmtl.Point3f(1.0, 2.0, 3.0), 25.0)
+      assert test_sph.center[0] == 1.0
+      assert test_sph.center[1] == 2.0
+      assert test_sph.center[2] == 3.0
+      assert test_sph.radius == 25
+
+   def testGetCenter(self):
+      center = gmtl.Point3f(1.0, 2.0, 3.0)
+      test_sph = gmtl.Spheref(center, 25.0)
+      assert test_sph.getCenter() == center
+
+   def testGetRadius(self):
+      radius = 25.0
+      test_sph = gmtl.Spheref(gmtl.Point3f(1.0, 2.0, 3.0), radius)
+      assert test_sph.getRadius() == radius
+
+   def testSetCenter(self):
+      test_sph = gmtl.Spheref(gmtl.Point3f(1.0, 2.0, 3.0), 25.0)
+      center = gmtl.Point3f(2.0, 4.0, 1.0)
+      test_sph.setCenter(center)
+      assert test_sph.getCenter() == center
+
+   def testSetRadius(self):
+      test_sph = gmtl.Spheref(gmtl.Point3f(1.0, 2.0, 3.0), 25.0)
+      test_sph.setRadius(45.0)
+      assert test_sph.getRadius() == 45.0
+
+   def testEqualityCompare(self):
+      test_sph1 = gmtl.Spheref(gmtl.Point3f(1.0, 2.0, 3.0), 4.0)
+      test_sph2 = gmtl.Spheref(test_sph1)
+
+      assert test_sph1 == test_sph2
+      assert not test_sph1 != test_sph2
+
+      # Set equal, vary center.
+      test_sph2 = gmtl.Spheref(test_sph1)
+      test_sph2.center[0] = 21.10
+      assert test_sph1 != test_sph2
+      assert not test_sph1 == test_sph2
+
+      # Set equal, vary radius.
+      test_sph2 = gmtl.Spheref(test_sph1)
+      test_sph2.radius = 21.10
+      assert test_sph1 != test_sph2
+      assert not test_sph1 == test_sph2
+
+   def testIsEqual(self):
+      test_sph1 = gmtl.Spheref(gmtl.Point3f(1.0, 2.0, 3.0), 4.0)
+      test_sph2 = gmtl.Spheref(test_sph1)
+      eps = 0.0
+
+      while eps < 10.0:
+         assert gmtl.isEqual(test_sph1, test_sph2, eps)
+         eps += 0.05
+
+      test_sph1.center.set(1.0, 1.0, 1.0)
+      test_sph1.radius = 1.0
+
+      for elt in range(4):
+         test_sph2 = gmtl.Spheref(test_sph1)
+         if elt < 3:
+            test_sph2.center[elt] = 21.0
+         else:
+            test_sph2.radius = 21.0
+
+         assert not gmtl.isEqual(test_sph1, test_sph2, 10.0)
+         assert not gmtl.isEqual(test_sph1, test_sph2, 19.9)
+         assert gmtl.isEqual(test_sph1, test_sph2, 20.1)
+         assert gmtl.isEqual(test_sph1, test_sph2, 22.0)
+
+   def testIsInVolumePoint(self):
+      test_sph = gmtl.Spheref(gmtl.Point3f(0.0, 0.0, 0.0), 4.0)
+      pt = gmtl.Point3f(0.5, 0.5, 0.5)
+      assert gmtl.isInVolume(test_sph, pt)
+      pt[0] = 5.0
+      assert not gmtl.isInVolume(test_sph, pt)
+
+   def testIsInVolumeSphere(self):
+      test_sph = gmtl.Spheref(gmtl.Point3f(0.0, 0.0, 0.0), 4.0)
+      sph = gmtl.Spheref(gmtl.Point3f(0.5, 0.5, 0.5), 2.0)
+      assert gmtl.isInVolume(test_sph, sph)
+      sph.center[0] = 5.0
+      assert not gmtl.isInVolume(test_sph, sph)
+
+   def testIsOnVolume(self):
+      test_sph = gmtl.Spheref(gmtl.Point3f(0.0, 0.0, 0.0), 4.0)
+      pt = gmtl.Point3f(0.0, 0.0, 4.0)
+
+      # Zero tolerance.
+      assert gmtl.isOnVolume(test_sph, pt)
+      pt[0] = 1.0
+      assert not gmtl.isOnVolume(test_sph, pt)
+
+      # Epsilon tolerance.
+      pt.set(0.0, 0.0, 4.0)
+      eps = 0.0
+      while eps < 10.0:
+         assert gmtl.isOnVolume(test_sph, pt, eps)
+         eps += 0.05
+
+      for elt in range(3):
+         pt.set(0.0, 0.0, 0.0)
+         pt[elt] = 2.0
+         assert gmtl.isOnVolume(test_sph, pt, 21.0)
+         assert gmtl.isOnVolume(test_sph, pt, 2.0)
+         assert not gmtl.isOnVolume(test_sph, pt, 1.9)
+         assert not gmtl.isOnVolume(test_sph, pt, 1.0)
+
+   def testExtendVolumePoint(self):
+      test_sph1 = gmtl.Spheref(gmtl.Point3f(0.0, 0.0, 0.0), 1.0)
+      pt1 = gmtl.Point3f(2.0, 0.0, 0.0)
+      pt2 = gmtl.Point3f(pt1)
+
+      for elt in range(3):
+         test_sph2 = gmtl.Spheref(test_sph1)
+         pt1.set(0.0, 0.0, 0.0)
+         pt1[elt] = 3.0
+         pt2.set(0.0, 0.0, 0.0)
+         pt2[elt] = 1.0
+         gmtl.extendVolume(test_sph2, pt1)
+         assert test_sph2.center == pt2
+         assert test_sph2.radius == 2.0
+
+   def testExtendVolumeSphere(self):
+      test_sph1 = gmtl.Spheref(gmtl.Point3f(0.0, 0.0, 0.0), 0.0)
+      sph = gmtl.Spheref(gmtl.Point3f(0.0, 0.0, 0.0), 0.0)
+      pt1 = gmtl.Point3f(0.0, 0.0, 0.0)
+
+      for elt in range(3):
+         test_sph2 = gmtl.Spheref(test_sph1)
+         test_sph2.center.set(0.0, 0.0, 0.0)
+         test_sph2.radius = 1.0
+         sph.center.set(0.0, 0.0, 0.0)
+         sph.center[elt] = 5.0
+         sph.radius = 2.0
+         pt1.set(0.0, 0.0, 0.0)
+         pt1[elt] = 3.0
+         gmtl.extendVolume(test_sph2, sph)
+         assert test_sph2.center == pt1
+         assert test_sph2.radius == 4.0
+
+   def testMakeVolumePoint(self):
+      test_sph = gmtl.Spheref()
+      pts = [
+         gmtl.Point3f(1.0, 0.0, 0.0),
+         gmtl.Point3f(0.0, 5.0, 0.0),
+         gmtl.Point3f(0.0, 5.0, 10.0),
+         gmtl.Point3f(0.0, 5.0, -10.0),
+      ]
+
+      gmtl.makeVolume(test_sph, pts)
+
+      pt = gmtl.Point3f(0.25, 3.75, 0.0)
+      assert isEqual(test_sph.radius, 10.08, 0.01)
+      assert test_sph.center == pt
+
+   def __testSphereIntersect(self, x, y, z):
+      # Point.
+
+      # In
+      sphere = gmtl.Spheref(gmtl.Point3f(x, y, z), 1)
+      point = gmtl.Point3f(x, y, z)
+      assert gmtl.intersect(sphere, point)[0]
+
+      # Out
+      sphere = gmtl.Spheref(gmtl.Point3f(x, y, z), 1)
+      point = gmtl.Point3f(1.0001 + x, y, z)
+      assert not gmtl.intersect(sphere, point)[0]
+
+      # On
+      sphere = gmtl.Spheref(gmtl.Point3f(x, y, z), 1)
+      point = gmtl.Point3f(x, y, z - 1.0)
+      assert gmtl.intersect(sphere, point)[0]
+
+      # Shell tests, only register hits with the surface of the sphere.
+
+      # Ray
+      # origin to out
+      sphere = gmtl.Spheref(gmtl.Point3f(x, y, z), 1)
+      ray = gmtl.Rayf(gmtl.Point3f(x, y, z), gmtl.Vec3f(1.0, 0.0, 0.0))
+      (result, hits, t0, t1) = gmtl.intersect(sphere, ray)
+      assert result == True
+      assert hits == 1
+      assert t0 == 1.0
+
+      # interior point to out
+      sphere = gmtl.Spheref(gmtl.Point3f(x, y, z), 1)
+      ray = gmtl.Rayf(gmtl.Point3f(0.5 + x, y, z), gmtl.Vec3f(1.0, 0.0, 0.0))
+      (result, hits, t0, t1) = gmtl.intersect(sphere, ray)
+      assert result == True
+      assert hits == 1
+      assert t0 == 0.5
+
+      # edge to in
+      sphere = gmtl.Spheref(gmtl.Point3f(x, y, z), 1)
+      ray = gmtl.Rayf(gmtl.Point3f(1.0 + x, y, z), gmtl.Vec3f(-1.0, 0.0, 0.0))
+      (result, hits, t0, t1) = gmtl.intersect(sphere, ray)
+      assert result == True
+      assert hits == 2
+      assert t0 == 0.0
+      assert t1 == 2.0
+
+      # edge to out
+      sphere = gmtl.Spheref(gmtl.Point3f(x, y, z), 1)
+      ray = gmtl.Rayf(gmtl.Point3f(1.0 + x, y, z), gmtl.Vec3f(1.0, 0.0, 0.0))
+      (result, hits, t0, t1) = gmtl.intersect(sphere, ray)
+      assert result == True
+      assert hits == 1
+      assert t0 == 0.0
+
+      # outside through 1 edge (tangent surface)
+      sphere = gmtl.Spheref(gmtl.Point3f(x, y, z), 1)
+      ray = gmtl.Rayf(gmtl.Point3f(1.0 + x, -1.0 + y, z),
+                      gmtl.Vec3f(0.0, 1.0, 0.0))
+      (result, hits, t0, t1) = gmtl.intersect(sphere, ray)
+      assert result == True
+      assert hits == 1
+      assert t0 == 1.0
+
+      # outside through 2 edges
+      sphere = gmtl.Spheref(gmtl.Point3f(x, y, z), 1)
+      ray = gmtl.Rayf(gmtl.Point3f(0.0 + x, -4.0 + y, 0.0 + z),
+                      gmtl.Vec3f(0.0, 1.0, 0.0))
+      (result, hits, t0, t1) = gmtl.intersect(sphere, ray)
+      assert result == True
+      assert hits == 2
+      assert t0 == 3.0
+      assert t1 == 5.0
+
+      # outside to near miss
+      sphere = gmtl.Spheref(gmtl.Point3f(x, y, z), 1)
+      ray = gmtl.Rayf(gmtl.Point3f(1.0001 + x, -1.0 + y, z),
+                      gmtl.Vec3f(0.0, 1.0, 0.0))
+      (result, hits, t0, t1) = gmtl.intersect(sphere, ray)
+      assert result == False
+
+      # outside to away
+      sphere = gmtl.Spheref(gmtl.Point3f(x, y, z), 1)
+      ray = gmtl.Rayf(gmtl.Point3f(x, 6.0 + y, z), gmtl.Vec3f(0.0, 1.0, 0.0))
+      (result, hits, t0, t1) = gmtl.intersect(sphere, ray)
+      assert result == False
+
+      # LineSeg
+      # origin to interior point
+      sphere = gmtl.Spheref(gmtl.Point3f(x, y, z), 1)
+      lineseg = gmtl.LineSegf(gmtl.Point3f(x, y, z), gmtl.Vec3f(0.5, 0.0, 0.0))
+      (result, hits, t0, t1) = gmtl.intersectVolume(sphere, lineseg)
+      assert result == True
+      assert hits == 2
+      assert t0 == 0.0
+      assert t1 == 1.0
+
+      # origin to outside
+      sphere = gmtl.Spheref(gmtl.Point3f(x, y, z), 1)
+      lineseg = gmtl.LineSegf(gmtl.Point3f(x, y, z), gmtl.Vec3f(4.0, 0.0, 0.0))
+      (result, hits, t0, t1) = gmtl.intersectVolume(sphere, lineseg)
+      assert result == True
+      assert hits == 2
+      assert t0 == 0.0
+      assert t1 == 0.25
+
+      # interior point to origin
+      sphere = gmtl.Spheref(gmtl.Point3f(x, y, z), 1)
+      lineseg = gmtl.LineSegf(gmtl.Point3f(0.5 + x, y, z),
+                              gmtl.Vec3f(-0.5, 0.0, 0.0))
+      (result, hits, t0, t1) = gmtl.intersectVolume(sphere, lineseg)
+      assert result == True
+      assert hits == 2
+      assert t0 == 0.0
+      assert t1 == 1.0
+
+      # interior point to interoir point
+      sphere = gmtl.Spheref(gmtl.Point3f(x, y, z), 1)
+      lineseg = gmtl.LineSegf(gmtl.Point3f(0.5 + x, y, z),
+                              gmtl.Vec3f(-1.0, 0.0, 0.0))
+      (result, hits, t0, t1) = gmtl.intersectVolume(sphere, lineseg)
+      assert result == True
+      assert hits == 2
+      assert t0 == 0.0
+      assert t1 == 1.0
+
+      # interior point to edge
+      sphere = gmtl.Spheref(gmtl.Point3f(x, y, z), 1)
+      lineseg = gmtl.LineSegf(gmtl.Point3f(x, 0.5 + y, z),
+                              gmtl.Vec3f(0.0, -1.5, 0.0))
+      (result, hits, t0, t1) = gmtl.intersectVolume(sphere, lineseg)
+      assert result == True
+      assert hits == 2
+      assert t0 == 0.0
+      assert t1 == 1.0
+
+      # interior point to outside
+      sphere = gmtl.Spheref(gmtl.Point3f(x, y, z), 1)
+      lineseg = gmtl.LineSegf(gmtl.Point3f(x, y, z + 0.5),
+                              gmtl.Vec3f(0.0, 0.0, -2.0))
+      (result, hits, t0, t1) = gmtl.intersectVolume(sphere, lineseg)
+      assert result == True
+      assert hits == 2
+      assert t0 == 0.0
+      assert isEqual(t1, 0.75, 0.0001)
+
+      # edge to outside
+      sphere = gmtl.Spheref(gmtl.Point3f(x, y, z), 1)
+      lineseg = gmtl.LineSegf(gmtl.Point3f(1.0 + x, y, z),
+                              gmtl.Vec3f(-1.0, 0.0, 0.0))
+      (result, hits, t0, t1) = gmtl.intersectVolume(sphere, lineseg)
+      assert result == True
+      assert hits == 2
+      assert t0 == 0.0
+      assert t1 == 1.0
+
+      # edge to interior point
+      sphere = gmtl.Spheref(gmtl.Point3f(x, y, z), 1)
+      lineseg = gmtl.LineSegf(gmtl.Point3f(1.0 + x, y, z),
+                              gmtl.Vec3f(-1.5, 0.2, 0.0))
+      (result, hits, t0, t1) = gmtl.intersectVolume(sphere, lineseg)
+      assert result == True
+      assert hits == 2
+      assert t0 == 0.0
+      assert t1 == 1.0
+
+      # edge to edge
+      sphere = gmtl.Spheref(gmtl.Point3f(x, y, z), 1)
+      lineseg = gmtl.LineSegf(gmtl.Point3f(1.0 + x, y, z),
+                              gmtl.Vec3f(-2.0, 0.0, 0.0))
+      (result, hits, t0, t1) = gmtl.intersectVolume(sphere, lineseg)
+      assert result == True
+      assert hits == 2
+      assert t0 == 0.0
+      assert t1 == 1.0
+
+      # edge through edge to outside
+      sphere = gmtl.Spheref(gmtl.Point3f(x, y, z), 1)
+      lineseg = gmtl.LineSegf(gmtl.Point3f(1.0 + x, y, z),
+                              gmtl.Vec3f(-4.0, 0.0, 0.0))
+      (result, hits, t0, t1) = gmtl.intersectVolume(sphere, lineseg)
+      assert result == True
+      assert hits == 2
+      assert t0 == 0.0
+      assert t1 == 0.5
+
+      # edge to outside
+      sphere = gmtl.Spheref(gmtl.Point3f(x, y, z), 1)
+      lineseg = gmtl.LineSegf(gmtl.Point3f(1.0 + x, y, z),
+                              gmtl.Vec3f(45.0, 0.0, 0.0))
+      (result, hits, t0, t1) = gmtl.intersectVolume(sphere, lineseg)
+      assert result == True
+      assert hits == 2
+      assert t0 == 0.0
+      assert t1 == 0.0
+
+      # outside to origin
+      sphere = gmtl.Spheref(gmtl.Point3f(x, y, z), 1)
+      lineseg = gmtl.LineSegf(gmtl.Point3f(2.0 + x, y, z),
+                              gmtl.Vec3f(-2.0, 0.0, 0.0))
+      (result, hits, t0, t1) = gmtl.intersectVolume(sphere, lineseg)
+      assert result == True
+      assert hits == 2
+      assert t0 == 0.5
+      assert t1 == 1.0
+
+      # outside to interior point
+      sphere = gmtl.Spheref(gmtl.Point3f(x, y, z), 1)
+      lineseg = gmtl.LineSegf(gmtl.Point3f(x, 1.5 + y, z),
+                              gmtl.Vec3f(0.0, -2.0, 0.0))
+      (result, hits, t0, t1) = gmtl.intersectVolume(sphere, lineseg)
+      assert result == True
+      assert hits == 2
+      assert t0 == 0.25
+      assert t1 == 1.0
+
+      # outside to edge
+      sphere = gmtl.Spheref(gmtl.Point3f(x, y, z), 1)
+      lineseg = gmtl.LineSegf(gmtl.Point3f(x, y, 45.0 + z),
+                              gmtl.Vec3f(0.0, 0.0, -44.0))
+      (result, hits, t0, t1) = gmtl.intersectVolume(sphere, lineseg)
+      assert result == True
+      assert hits == 2
+      assert isEqual(t0, 1.0, 0.00001)
+      assert isEqual(t1, 1.0, 0.00001)
+
+      # outside through 1 edge (tangent surface) to outside
+      sphere = gmtl.Spheref(gmtl.Point3f(x, y, z), 1)
+      lineseg = gmtl.LineSegf(gmtl.Point3f(x, -2.0 + y, 1.0 + z),
+                              gmtl.Vec3f(0.0, 4.0, 0.0))
+      (result, hits, t0, t1) = gmtl.intersectVolume(sphere, lineseg)
+      assert result == True
+      assert hits == 1
+      assert t0 == 0.5
+
+      # outside through 2 edges to outside
+      sphere = gmtl.Spheref(gmtl.Point3f(x, y, z), 1)
+      lineseg = gmtl.LineSegf(gmtl.Point3f(x, -2.0 + y, z),
+                              gmtl.Vec3f(0.0, 4.0, 0.0))
+      (result, hits, t0, t1) = gmtl.intersectVolume(sphere, lineseg)
+      assert result == True
+      assert hits == 2
+      assert t0 == 0.25
+      assert t1 == 0.75
+
+      # outside to outside near miss
+      sphere = gmtl.Spheref(gmtl.Point3f(x, y, z), 1)
+      lineseg = gmtl.LineSegf(gmtl.Point3f(x, y - 2.0, z + 1.0001),
+                              gmtl.Vec3f(0.0, 4.0, 0.0))
+      (result, hits, t0, t1) = gmtl.intersectVolume(sphere, lineseg)
+      assert result == False
+
+      # outside to outside away from sphere
+      sphere = gmtl.Spheref(gmtl.Point3f(x, y, z), 1)
+      lineseg = gmtl.LineSegf(gmtl.Point3f(2.0 + x, y, z + 1.0001),
+                              gmtl.Vec3f(2.0, 0.0, 0.0))
+      (result, hits, t0, t1) = gmtl.intersectVolume(sphere, lineseg)
+      assert result == False
+
+      # outside to outside towards sphere
+      sphere = gmtl.Spheref(gmtl.Point3f(x, y, z), 1)
+      lineseg = gmtl.LineSegf(gmtl.Point3f(3.0 + x, y, z),
+                              gmtl.Vec3f(-1.0, 0.0, 0.0))
+      (result, hits, t0, t1) = gmtl.intersectVolume(sphere, lineseg)
+      assert result == False
+
+   def testSphereIntersections(self):
+      x = -5.0
+      while x < 5.0:
+         y = -5.0
+         while y < 5.0:
+            z = -5.0
+            while z < 5.0:
+               self.__testSphereIntersect(x * 10.0, y * 10.0, z * 10.0)
+               z += 0.75
+
+            y += 1.25
+
+         x += 0.5
+
+      # Other misc tests.
+      x = 0.0
+      y = 0.0
+      z = 0.0
+      g = -2.0
+      while g < 2.0:
+         sphere = gmtl.Spheref(gmtl.Point3f(x, y, z), 1)
+         ray = gmtl.Rayf(gmtl.Point3f(x, y, z), gmtl.Vec3f(0, g, 0))
+         (result, hits, t0, t1) = gmtl.intersect(sphere, ray)
+         assert result == True
+         g+= 0.01
+
+      # Some real world data sampled from a game while an actor was standing
+      # still inside a sphere.
+      sphere = gmtl.Spheref(gmtl.Point3f(0.0, 0.0, 0.0), 2.0)
+      ray = gmtl.LineSegf(gmtl.Point3f(-0.054072, -0.22992, -0.120733),
+                          gmtl.Vec3f(0.0, -0.000000119209, 0.0))
+      (result, hits, t0, t1) = gmtl.intersectVolume(sphere, ray)
+      assert result == True
+
+      sphere = gmtl.Spheref(gmtl.Point3f(0.0, 0.0, 0.0), 2.0)
+      ray = gmtl.LineSegf(gmtl.Point3f(-0.143958, -0.229931, -0.013235),
+                          gmtl.Vec3f(0.0, 0.000000119209, 0.0))
+      (result, hits, t0, t1) = gmtl.intersectVolume(sphere, ray)
+      assert result == True
+
+      sphere = gmtl.Spheref(gmtl.Point3f(0.0, 0.0, 0.0), 2.0)
+      ray = gmtl.LineSegf(gmtl.Point3f(0.0, 0.0, 0.0),
+                          gmtl.Vec3f(0.0, 0.0, 0.105271))
+      (result, hits, t0, t1) = gmtl.intersectVolume(sphere, ray)
+      assert result == True
+
+class SphereMetricTest(unittest.TestCase):
+   def testTimingCreation(self):
+      iters = 400000
+      use_value = 0.0
+
+      for iter in xrange(iters):
+         test_sph2 = gmtl.Spheref()
+         use_value += test_sph2.radius + 1.0
+
+      assert use_value > 0.0
+
+   def testTmingCopyConstruct(self):
+      iters = 400000
+      test_sph2 = gmtl.Spheref()
+      test_sph2.center[0] = 2.0
+      use_value = 0.0
+
+      for iter in xrange(iters):
+         test_sph2_copy = gmtl.Spheref(test_sph2)
+         use_value += test_sph2_copy.center[0]
+
+   def testTimingConstructors(self):
+      iters = 400000
+      use_value = 0.0
+
+      for iter in xrange(iters):
+         test_sph2 = gmtl.Spheref(gmtl.Point3f(1.0, 2.0, 3.0), 25.0)
+         use_value += test_sph2.center[0]
+
+   def testTimingGetCenter(self):
+      center = gmtl.Point3f(1.0, 2.0, 3.0)
+      test_sph = gmtl.Spheref(center, 25.0)
+
+      iters = 400000
+      use_value = 0.0
+
+      for iter in xrange(iters):
+         center = test_sph.getCenter()
+         use_value += center[0]
+
+   def testTimingGetRadius(self):
+      radius = 25.0
+      test_sph = gmtl.Spheref(gmtl.Point3f(1.0, 2.0, 3.0), radius)
+
+      iters = 400000
+      use_value = 0.0
+
+      for iter in xrange(iters):
+         radius = test_sph.getRadius()
+         use_value += radius
+
+   def testTimingSetCenter(self):
+      test_sph = gmtl.Spheref(gmtl.Point3f(1.0, 2.0, 3.0), 25.0)
+      center = gmtl.Point3f(2.0, 4.0, 1.0)
+
+      iters = 400000
+
+      for iter in xrange(iters):
+         center.set(iter, iter, iter)
+         test_sph.setCenter(center)
+
+   def testTimingSetRadius(self):
+      test_sph = gmtl.Spheref(gmtl.Point3f(1.0, 2.0, 3.0), 25.0)
+      center = gmtl.Point3f(2.0, 4.0, 1.0)
+      use_value = 1.0
+
+      iters = 400000
+
+      for iter in xrange(iters):
+         test_sph.setRadius(iter)
+         use_value += test_sph.radius
+
+   def testTimingEqualityCompare(self):
+      test_sph1 = gmtl.Spheref(gmtl.Point3f(1.0, 2.0, 3.0), 4.0)
+      test_sph2 = gmtl.Spheref(test_sph1)
+
+      iters = 400000
+      true_count = 0
+      false_count = 0
+
+      test_sph1.center.set(0.0, 0.0, 0.0)
+      test_sph1.radius = 2000.0
+      test_sph2 = gmtl.Spheref(test_sph1)
+      test_sph2.radius = 1000.0
+
+      for iter in xrange(iters):
+         test_sph1.radius += 1.0
+         test_sph2.radius += 2.0
+         if test_sph1 == test_sph2:
+            true_count += 1
+
+      test_sph1.center.set(0.0, 0.0, 0.0)
+      test_sph1.radius = 2000.0
+      test_sph2 = gmtl.Spheref(test_sph1)
+      test_sph2.radius = 1000.0
+
+      for iter in xrange(iters):
+         test_sph1.radius += 1.0
+         test_sph2.radius += 2.0
+         if test_sph1 != test_sph2:
+            false_count += 1
+
+   def testTimingIsEqual(self):
+      test_sph1 = gmtl.Spheref(gmtl.Point3f(1.0, 2.0, 3.0), 4.0)
+      test_sph2 = gmtl.Spheref(test_sph1)
+
+      iters = 400000
+      true_count = 0
+      false_count = 0
+
+      test_sph1.center.set(0.0, 0.0, 0.0)
+      test_sph1.radius = 2000.0
+      test_sph2 = gmtl.Spheref(test_sph1)
+      test_sph2.radius = 1000.0
+
+      for iter in xrange(iters):
+         test_sph1.radius += 1.0
+         test_sph2.radius += 2.0
+         if gmtl.isEqual(test_sph1, test_sph2, 1.0):
+            true_count += 1
+         if gmtl.isEqual(test_sph1, test_sph2, 0.1):
+            true_count += 1
+         if gmtl.isEqual(test_sph1, test_sph2, 100000.0):
+            true_count += 1
+
+      test_sph1.center.set(0.0, 0.0, 0.0)
+      test_sph1.radius = 2000.0
+      test_sph2 = gmtl.Spheref(test_sph1)
+      test_sph2.radius = 1000.0
+
+      for iter in xrange(iters):
+         test_sph1.radius += 1.0
+         test_sph2.radius += 2.0
+         if test_sph1 != test_sph2:
+            false_count += 1
+
+   def testTimingIsInVolumePoint(self):
+      test_sph = gmtl.Spheref(gmtl.Point3f(0.0, 0.0, 0.0), 4.0)
+      pt = gmtl.Point3f(0.5, 0.5, 0.5)
+
+      iters = 400000
+      true_count = 0
+      pt.set(0.0, 0.0, 0.0)
+
+      for iter in xrange(iters):
+         pt[0] += 0.05
+         if gmtl.isInVolume(test_sph, pt):
+            true_count += 1
+
+   def testTimingIsInVolumeSphere(self):
+      test_sph = gmtl.Spheref(gmtl.Point3f(0.0, 0.0, 0.0), 4.0)
+      sph = gmtl.Spheref(gmtl.Point3f(0.5, 0.5, 0.5), 2.0)
+
+      iters = 400000
+      true_count = 0
+      sph.center.set(0.0, 0.0, 0.0)
+
+      for iter in xrange(iters):
+         sph.center[0] += 0.05
+         if gmtl.isInVolume(test_sph, sph):
+            true_count += 1
+
+   def testTimingIsOnVolume(self):
+      test_sph = gmtl.Spheref(gmtl.Point3f(0.0, 0.0, 0.0), 4.0)
+      pt = gmtl.Point3f(0.0, 0.0, 4.0)
+
+      iters = 400000
+      true_count = 0
+      eps = 0.0
+      pt.set(0.0, 0.0, 0.0)
+
+      for iter in xrange(iters):
+         eps += 0.01
+         pt[2] += 0.1
+         if gmtl.isOnVolume(test_sph, pt, eps):
+            true_count += 1
+         if gmtl.isOnVolume(test_sph, pt):
+            true_count += 1
+
+   def testTimingExtendVolumePoint(self):
+      test_sph1 = gmtl.Spheref(gmtl.Point3f(0.0, 0.0, 0.0), 1.0)
+      pt1 = gmtl.Point3f(2.0, 0.0, 0.0)
+
+      iters = 400000
+      test_sph1.center.set(0.0, 0.0, 0.0)
+      test_sph1.radius = 0.0
+      pt1.set(0.0, 0.0, 0.0)
+
+      for iter in xrange(iters):
+         pt1[0] += 2.0
+         pt1[1] += 1.0
+         pt1[2] += 2.5
+         gmtl.extendVolume(test_sph1, pt1)
+
+   def testTimingExtendVolumeSphere(self):
+      test_sph1 = gmtl.Spheref(gmtl.Point3f(0.0, 0.0, 0.0), 0.0)
+      sph = gmtl.Spheref(gmtl.Point3f(0.0, 0.0, 0.0), 0.0)
+
+      iters = 400000
+      test_sph1.center.set(0.0, 0.0, 0.0)
+      test_sph1.radius = 0.0
+      sph.center.set(0.0, 0.0, 0.0)
+      sph.radius = 0.0
+
+      for iter in xrange(iters):
+         sph.center[0] += 2.0
+         sph.center[1] += 1.0
+         sph.center[2] += 2.5
+         sph.radius = 0.5
+         gmtl.extendVolume(test_sph1, sph)
+
+   def testTimingMakeVolumePoint(self):
+      test_sph = gmtl.Spheref()
+      pts = []
+
+      iters = 2500
+      for i in range(100):
+         pt = gmtl.Point3f()
+         pt[0] = random.randrange(-10000, 10000)
+         pt[1] = random.randrange(-10000, 10000)
+         pt[2] = random.randrange(-10000, 10000)
+         pts.append(pt)
+
+      for iter in xrange(iters):
+         pts[iter % len(pts)][2] += 12.0
+         gmtl.makeVolume(test_sph, pts)
+
+class TriTest(unittest.TestCase):
+   def testCreation(self):
+      test_tri = gmtl.Trif()
+      zero = gmtl.Point3f(0.0, 0.0, 0.0)
+      assert test_tri[0] == zero
+      assert test_tri[1] == zero
+      assert test_tri[2] == zero
+
+   def testCopyConstruct(self):
+      test_tri = gmtl.Trif()
+      test_tri[0][0] = 2.0
+      test_tri[1][1] = 4.0
+      test_tri[2][2] = 1.0
+
+      test_tri_copy = gmtl.Trif(test_tri)
+
+      assert test_tri_copy[0][0] == 2.0
+      assert test_tri_copy[1][1] == 4.0
+      assert test_tri_copy[2][2] == 1.0
+
+   def testConstructors(self):
+      test_tri = gmtl.Trif(gmtl.Point3f(0.0, 0.0, 0.0),
+                           gmtl.Point3f(1.0, 0.0, 0.0),
+                           gmtl.Point3f(0.0, 1.0, 0.0))
+      zero = gmtl.Point3f(0.0, 0.0, 0.0)
+      unitX = gmtl.Point3f(1.0, 0.0, 0.0)
+      unitY = gmtl.Point3f(0.0, 1.0, 0.0)
+      assert test_tri[0] == zero
+      assert test_tri[1] == unitX
+      assert test_tri[2] == unitY
+
+   def testVertexAccessor(self):
+      pt0 = gmtl.Point3f(2.0, 0.0, -5.0)
+      pt1 = gmtl.Point3f(1.0, 2.0, -5.0)
+      pt2 = gmtl.Point3f(1.0, -2.0, -5.0)
+      test_tri = gmtl.Trif(pt0, pt1, pt2)
+      assert test_tri[0] == pt0
+      assert test_tri[1] == pt1
+      assert test_tri[2] == pt2
+
+   def testEdges(self):
+      p0 = gmtl.Point3f(0.0, 0.0, 0.0)
+      p1 = gmtl.Point3f(1.0, 0.0, 0.0)
+      p2 = gmtl.Point3f(0.0, 1.0, 0.0)
+      test_tri = gmtl.Trif(p0, p1, p2)
+
+      e0 = gmtl.Vec3f(p1 - p0)
+      e1 = gmtl.Vec3f(p2 - p1)
+      e2 = gmtl.Vec3f(p0 - p2)
+      assert test_tri.edge(0) == e0
+      assert test_tri.edge(1) == e1
+      assert test_tri.edge(2) == e2
+
+   def testEqualOps(self):
+      test_tri1 = gmtl.Trif(gmtl.Point3f(0.0, 0.0, 0.0),
+                            gmtl.Point3f(1.0, 0.0, 0.0),
+                            gmtl.Point3f(0.0, 1.0, 0.0))
+      test_tri2 = gmtl.Trif(test_tri1)
+      test_tri3 = gmtl.Trif(test_tri1)
+      test_tri3[0][1] = 2.0
+
+      assert test_tri1 == test_tri1
+      assert not test_tri1 != test_tri1
+
+      assert test_tri1 == test_tri2
+      assert not test_tri1 != test_tri2
+      assert test_tri2 == test_tri1
+      assert not test_tri2 != test_tri1
+
+      assert not test_tri1 == test_tri3
+      assert test_tri1 != test_tri3
+      assert not test_tri3 == test_tri1
+      assert test_tri3 != test_tri1
+
+   def testIsEqual(self):
+      test_tri1 = gmtl.Trif(gmtl.Point3f(0.0, 0.0, 0.0),
+                            gmtl.Point3f(2.0, 0.0, 0.0),
+                            gmtl.Point3f(1.0, 2.0, 0.0))
+      test_tri2 = gmtl.Trif(test_tri1)
+      eps = 0.0
+
+      while eps < 10.0:
+         assert gmtl.isEqual(test_tri1, test_tri2, eps)
+         eps += 0.05
+
+      for p in range(3):
+         for elt in range(3):
+            test_tri2 = gmtl.Trif(test_tri1)
+            test_tri2[p][elt] += 20.0
+            assert not gmtl.isEqual(test_tri1, test_tri2, 10.0)
+            assert not gmtl.isEqual(test_tri1, test_tri2, 19.9)
+            assert gmtl.isEqual(test_tri1, test_tri2, 20.1)
+            assert gmtl.isEqual(test_tri1, test_tri2, 22.0)
+
+   def testCenter(self):
+      test_tri = gmtl.Trif(gmtl.Point3f(0.0, 0.0, 0.0),
+                           gmtl.Point3f(4.0, 0.0, 0.0),
+                           gmtl.Point3f(2.0, 4.0, 0.0))
+      center = gmtl.center(test_tri)
+      correct_center = gmtl.Vec3f(2, (4.0 / 3.0), 0)
+      assert center == correct_center
+
+   def testNormal(self):
+      test_tri = gmtl.Trif(gmtl.Point3f(0.0, 0.0, 0.0),
+                           gmtl.Point3f(4.0, 0.0, 0.0),
+                           gmtl.Point3f(2.0, 4.0, 0.0))
+      normal = gmtl.normal(test_tri)
+      correct_normal = gmtl.Vec3f(0.0, 0.0, 1.0)
+      assert normal == correct_normal
+
+class TriMetricTest(unittest.TestCase):
+   def testTimingCreation(self):
+      iters = 400000
+
+      for iter in xrange(iters):
+         test_tri2 = gmtl.Trif()
+         test_tri2[0][0] = 1.0
+
+   def testTimingCopyConstruct(self):
+      iters = 400000
+      test_tri2 = gmtl.Trif()
+      test_tri2[0][0] = 2.0
+      use_value = 0.0
+
+      for iter in xrange(iters):
+         test_tri2_copy = gmtl.Trif(test_tri2)
+         use_value += test_tri2_copy[0][0]
+
+   def testTimingConstructors(self):
+      iters = 400000
+      use_value = 0.0
+
+      for iter in xrange(iters):
+         test_tri2 = gmtl.Trif(gmtl.Point3f(1.0, 0.0, -5.0),
+                               gmtl.Point3f(1.0, 2.0, -5.0),
+                               gmtl.Point3f(1.0, -2.0, -5.0))
+         use_value += test_tri2[0][0]
+
+   def testTimingVertexAccessor(self):
+      pt0 = gmtl.Point3f(2.0, 0.0, -5.0)
+      pt1 = gmtl.Point3f(1.0, 2.0, -5.0)
+      pt2 = gmtl.Point3f(1.0, -2.0, -5.0)
+      test_tri = gmtl.Trif(pt0, pt1, pt2)
+      use_value = 0.0
+
+      iters = 400000
+      for iter in xrange(iters):
+         ptr0 = test_tri[0]
+         use_value += pt0[0]
+
+   def testTimingEdges(self):
+      p0 = gmtl.Point3f(0.0, 0.0, 0.0)
+      p1 = gmtl.Point3f(1.0, 0.0, 0.0)
+      p2 = gmtl.Point3f(0.0, 1.0, 0.0)
+      test_tri = gmtl.Trif(p0, p1, p2)
+
+      e0 = gmtl.Vec3f(p1 - p0)
+
+      iters = 400000
+      use_value = 0.0
+
+      for iter in xrange(iters):
+         e0 = test_tri.edge(iter % 3)
+         use_value += e0[0]
+
+   def testTimingEqualOps(self):
+      test_tri1 = gmtl.Trif(gmtl.Point3f(0.0, 0.0, 0.0),
+                            gmtl.Point3f(1.0, 0.0, 0.0),
+                            gmtl.Point3f(0.0, 1.0, 0.0))
+      test_tri2 = gmtl.Trif(test_tri1)
+      test_tri3 = gmtl.Trif(test_tri1)
+
+      iters = 400000
+      true_values = 0
+
+      for iter in xrange(iters):
+         if test_tri1 == test_tri2:
+            true_values += 1
+         if test_tri1 != test_tri2:
+            true_values += 1
+         if test_tri1 == test_tri3:
+            true_values += 1
+         if test_tri1 != test_tri3:
+            true_values += 1
+
+   def testTimingIsEqual(self):
+      test_tri1 = gmtl.Trif(gmtl.Point3f(0.0, 0.0, 0.0),
+                            gmtl.Point3f(2.0, 0.0, 0.0),
+                            gmtl.Point3f(1.0, 2.0, 0.0))
+      test_tri2 = gmtl.Trif(test_tri1)
+
+      iters = 400000
+      true_count = 0
+
+      for iter in xrange(iters):
+         if gmtl.isEqual(test_tri1, test_tri2, 1.0):
+            true_count += 1
+         if gmtl.isEqual(test_tri1, test_tri2, 0.1):
+            true_count += 1
+         if gmtl.isEqual(test_tri1, test_tri2, 100000.0):
+            true_count += 1
+
+   def testTimingCenter(self):
+      test_tri = gmtl.Trif(gmtl.Point3f(0.0, 0.0, 0.0),
+                           gmtl.Point3f(4.0, 0.0, 0.0),
+                           gmtl.Point3f(2.0, 4.0, 0.0))
+      center = gmtl.center(test_tri)
+
+      iters = 400000
+      use_value = 0.0
+      for iter in xrange(iters):
+         test_tri[1][1] += 2.0
+         center = gmtl.center(test_tri)
+         use_value += center[0]
+
+   def testTimingNormal(self):
+      test_tri = gmtl.Trif(gmtl.Point3f(0.0, 0.0, 0.0),
+                           gmtl.Point3f(4.0, 0.0, 0.0),
+                           gmtl.Point3f(2.0, 4.0, 0.0))
+      normal = gmtl.normal(test_tri)
+
+      iters = 400000
+      use_value = 0.0
+      for iter in xrange(iters):
+         test_tri[1][1] += 2.0
+         normal = gmtl.normal(test_tri)
+         use_value += normal[0]
+
+class VecBaseTest(unittest.TestCase):
+   def testVecBaseCreation(self):
+      vec = gmtl.VecBase3d()
+      vec[0] = 0.0
+
+   def testCopyConstruct(self):
+      test_vec = gmtl.VecBase3f()
+      test_vec[0] = 2.0
+      test_vec[1] = 4.0
+      test_vec[2] = 8.0
+
+      test_vec_copy = gmtl.VecBase3f(test_vec)
+
+      assert test_vec_copy[0] == 2.0
+      assert test_vec_copy[1] == 4.0
+      assert test_vec_copy[2] == 8.0
+
+   def testConstructors(self):
+      test_vec4 = gmtl.VecBase4f(1.0, 2.0, 3.0, 4.0)
+      assert test_vec4[0] == 1.0
+      assert test_vec4[1] == 2.0
+      assert test_vec4[2] == 3.0
+      assert test_vec4[3] == 4.0
+
+      test_vec3 = gmtl.VecBase3f(1.0, 2.0, 3.0)
+      assert test_vec4[0] == 1.0
+      assert test_vec4[1] == 2.0
+      assert test_vec4[2] == 3.0
+
+      test_vec2 = gmtl.VecBase2f(1.0, 2.0)
+      assert test_vec4[0] == 1.0
+      assert test_vec4[1] == 2.0
+
+   def testSet(self):
+      test_vec4 = gmtl.VecBase4f()
+      test_vec4.set(1.0, 2.0, 3.0, 4.0)
+      assert test_vec4[0] == 1.0
+      assert test_vec4[1] == 2.0
+      assert test_vec4[2] == 3.0
+      assert test_vec4[3] == 4.0
+
+      test_vec3 = gmtl.VecBase3f()
+      test_vec3.set(1.0, 2.0, 3.0)
+      assert test_vec4[0] == 1.0
+      assert test_vec4[1] == 2.0
+      assert test_vec4[2] == 3.0
+
+      test_vec2 = gmtl.VecBase2f()
+      test_vec2.set(1.0, 2.0)
+      assert test_vec4[0] == 1.0
+      assert test_vec4[1] == 2.0
+
+   def testSetPtr(self):
+      data = [1.0, 2.0, 3.0, 4.0]
+
+      test_vec4 = gmtl.VecBase4f()
+      test_vec4.set(data)
+      assert test_vec4[0] == 1.0
+      assert test_vec4[1] == 2.0
+      assert test_vec4[2] == 3.0
+      assert test_vec4[3] == 4.0
+
+      test_vec3 = gmtl.VecBase3f()
+      test_vec3.set(data)
+      assert test_vec4[0] == 1.0
+      assert test_vec4[1] == 2.0
+      assert test_vec4[2] == 3.0
+
+      test_vec2 = gmtl.VecBase2f()
+      test_vec2.set(data)
+      assert test_vec4[0] == 1.0
+      assert test_vec4[1] == 2.0
+
+   def testGetData(self):
+      test_vec4 = gmtl.VecBase4f(1.0, 2.0, 3.0, 4.0)
+      data = test_vec4.getData()
+      assert test_vec4[0] == 1.0
+      assert test_vec4[1] == 2.0
+      assert test_vec4[2] == 3.0
+      assert test_vec4[3] == 4.0
+
+      test_vec3 = gmtl.VecBase3f(1.0, 2.0, 3.0)
+      data = test_vec3.getData()
+      assert test_vec4[0] == 1.0
+      assert test_vec4[1] == 2.0
+      assert test_vec4[2] == 3.0
+
+      test_vec2 = gmtl.VecBase2f(1.0, 2.0)
+      data = test_vec2.getData()
+      assert test_vec4[0] == 1.0
+      assert test_vec4[1] == 2.0
+
+class VecBaseMetricTest(unittest.TestCase):
+   def testTimingVecBaseCreation(self):
+      iters = 400000
+      use_value = 0.0
+
+      for iter in xrange(iters):
+         test_vec2 = gmtl.VecBase2f()
+         test_vec2[0] = 1.0
+         test_vec3 = gmtl.VecBase3f()
+         test_vec3[0] = 2.0
+         test_vec4 = gmtl.VecBase4f()
+         test_vec4[0] = 3.0
+
+         use_value += test_vec2[0] + test_vec3[0] + test_vec4[0]
+
+      assert use_value > 0.0
+
+   def testTimingVecBaseCopyConstruct(self):
+      test_vec2 = gmtl.VecBase2f()
+      test_vec2[0] = 1.0
+      test_vec3 = gmtl.VecBase3f()
+      test_vec3[0] = 2.0
+      test_vec4 = gmtl.VecBase4f()
+      test_vec4[0] = 3.0
+
+      iters = 400000
+      use_value = 0.0
+
+      for iter in xrange(iters):
+         test_vec2_copy = gmtl.VecBase2f(test_vec2)
+         use_value += test_vec2_copy[0]
+         test_vec3_copy = gmtl.VecBase3f(test_vec3)
+         use_value += test_vec3_copy[0]
+         test_vec4_copy = gmtl.VecBase4f(test_vec4)
+         use_value += test_vec4_copy[0]
+
+      assert use_value > 0.0
+
+   def testTimingConstructors(self):
+      iters = 400000
+      use_value = 0.0
+
+      for iter in xrange(iters):
+         test_vec4 = gmtl.VecBase4f(1.0, 2.0, 3.0, 4.0)
+         test_vec3 = gmtl.VecBase3f(1.0, 2.0, 3.0)
+         test_vec2 = gmtl.VecBase2f(1.0, 2.0)
+
+         use_value += test_vec4[3] + test_vec3[2] + test_vec2[1]
+
+   def testTimingSet(self):
+      test_vec4 = gmtl.VecBase4f()
+      test_vec3 = gmtl.VecBase3f()
+      test_vec2 = gmtl.VecBase2f()
+
+      iters = 400000
+      use_value = 0.0
+
+      for iter in xrange(iters):
+         test_vec4.set(iters + 0, iters + 1, iters + 2, iters + 3)
+         test_vec3.set(iters + 0, iters + 1, iters + 2)
+         test_vec2.set(iters + 0, iters + 1)
+
+         use_value += test_vec4[2] + test_vec3[2] + test_vec2[1]
+
+      assert use_value > 0.0
+
+   def testTimingSetPtr(self):
+      data = [1.0, 2.0, 3.0, 4.0]
+      test_vec4 = gmtl.VecBase4f()
+      test_vec3 = gmtl.VecBase3f()
+      test_vec2 = gmtl.VecBase2f()
+
+      iters = 400000
+      use_value = 0.0
+
+      for iter in xrange(iters):
+         data[0] += 1.0
+         data[1] += 2.0
+         data[2] += 4.0
+         data[3] += 8.0
+         test_vec4.set(data)
+         test_vec3.set(data)
+         test_vec2.set(data)
+
+         use_value += test_vec4[2] + test_vec3[2] + test_vec2[1]
+
+      assert use_value > 0.0
+
+   def testTimingGetData(self):
+      test_vec4 = gmtl.VecBase4f(1.0, 2.0, 3.0, 4.0)
+
+      iters = 400000
+      use_value = 0.0
+
+      for iter in xrange(iters):
+         data = test_vec4.getData()
+         use_value += data[0]
+
+      assert use_value > 0.0
+
+class VecGenTest(unittest.TestCase):
+   def testMakeVecFromQuat(self):
+      quat = gmtl.Quatf(0.0, 21.0, 31.0, 1234.0)
+      vec  = gmtl.makeVec(quat)
+      assert vec[0] == 0.0
+      assert vec[1] == 21.0
+      assert vec[2] == 31.0
+
+   def testMakeNormalVecFromVec(self):
+      eps = 0.001
+      vec = gmtl.Vec3f(0.1, 0.0, 0.0)
+      expected = gmtl.Vec3f(1.0, 0.0, 0.0)
+      result = gmtl.makeNormal(vec)
+      assert gmtl.isEqual(expected, result, eps)
+
+      vec = gmtl.Vec3f(0.1, 128943139.0, 0.0)
+      expected = gmtl.Vec3f(0.0, 1.0, 0.0)
+      result = gmtl.makeNormal(vec)
+      assert gmtl.isEqual(expected, result, eps)
+
+      vec = gmtl.Vec3f(0.0, 0.0, 0.001)
+      expected = gmtl.Vec3f(0.0, 0.0, 1.0)
+      result = gmtl.makeNormal(vec)
+      assert gmtl.isEqual(expected, result, eps)
+
+   def __rowTest(self, matType):
+      # Create a matrix filled linearly.
+      mat = matType()
+      mat.set(range(mat.Params.Rows * mat.Params.Cols))
+
+      # Get each row and test it.
+      for i in range(mat.Params.Rows):
+         row = gmtl.makeRow(mat, i)
+         for col in range(mat.Params.Cols):
+            assert row[col] == col * mat.Params.Rows + i
+
+   def testMatrixRowAccess(self):
+      self.__rowTest(gmtl.Matrix33f)
+      self.__rowTest(gmtl.Matrix44f)
+
+   def __columnTest(self, matType):
+      # Create a matrix filled linearly.
+      mat = matType()
+      mat.set(range(mat.Params.Rows * mat.Params.Cols))
+
+      for i in range(mat.Params.Cols):
+         col = gmtl.makeColumn(mat, i)
+         for row in range(mat.Params.Rows):
+            assert col[row] == i * mat.Params.Rows + row
+
+   def testMatrixColumnAccess(self):
+      self.__columnTest(gmtl.Matrix33f)
+      self.__columnTest(gmtl.Matrix44f)
+
+class VecGenMetricTest(unittest.TestCase):
+   def testGenTimingMakeNormalVec1(self):
+      vec4d = gmtl.Vec4d()
+      iters = 25000
+      for iter in xrange(iters):
+         vec4d = gmtl.makeNormal(vec4d)
+
+      assert vec4d[0] != 10000.0 and vec4d[1] != 10000.0 and vec4d[2] != 10000.0
+
+   def testGenTimingMakeNormalVec2(self):
+      vec4f = gmtl.Vec4f()
+      iters = 25000
+      for iter in xrange(iters):
+         vec4f = gmtl.makeNormal(vec4f)
+
+      assert vec4f[0] != 10000.0 and vec4f[1] != 10000.0 and vec4f[2] != 10000.0
+
+   def testGenTimingMakeNormalVec3(self):
+      vec3d = gmtl.Vec3d()
+      iters = 25000
+      for iter in xrange(iters):
+         vec3d = gmtl.makeNormal(vec3d)
+
+      assert vec3d[0] != 10000.0 and vec3d[1] != 10000.0 and vec3d[2] != 10000.0
+
+   def testGenTimingMakeNormalVec4(self):
+      vec3f = gmtl.Vec3f()
+      iters = 25000
+      for iter in xrange(iters):
+         vec3f = gmtl.makeNormal(vec3f)
+
+      assert vec3f[0] != 10000.0 and vec3f[1] != 10000.0 and vec3f[2] != 10000.0
+
+   def testGenTimingMakeVec(self):
+      q1 = gmtl.Quatd()
+      iters = 25000
+
+      for iter in xrange(iters):
+         v1 = gmtl.makeVec(q1)
+
+      q2 = gmtl.Quatf()
+
+      for iter in xrange(iters):
+         v2 = gmtl.makeVec(q2)
+
+      assert v2[0] != 10000.0
+      assert v1[0] != 10000.0
+
+class VecTest(unittest.TestCase):
+   def testCreation(self):
+      vec = gmtl.Vec3d()
+      assert vec[0] == 0.0
+      assert vec[1] == 0.0
+      assert vec[2] == 0.0
+
+   def testCopyConstruct(self):
+      test_vec = gmtl.Vec3d()
+      test_vec[0] = 2.0
+      test_vec[1] = 4.0
+      test_vec[2] = 8.0
+
+      test_vec_copy = gmtl.Vec3d(test_vec)
+
+      assert test_vec_copy[0] == 2.0
+      assert test_vec_copy[1] == 4.0
+      assert test_vec_copy[2] == 8.0
+
+   def testConstructors(self):
+      test_vec4 = gmtl.Vec4f(1.0, 2.0, 3.0, 4.0)
+      assert test_vec4[0] == 1.0
+      assert test_vec4[1] == 2.0
+      assert test_vec4[2] == 3.0
+      assert test_vec4[3] == 4.0
+
+      test_vec3 = gmtl.Vec3f(1.0, 2.0, 3.0)
+      assert test_vec4[0] == 1.0
+      assert test_vec4[1] == 2.0
+      assert test_vec4[2] == 3.0
+
+      test_vec2 = gmtl.Vec2f(1.0, 2.0)
+      assert test_vec4[0] == 1.0
+      assert test_vec4[1] == 2.0
+
+   def testSet(self):
+      test_vec4 = gmtl.Vec4f()
+      test_vec4.set(1.0, 2.0, 3.0, 4.0)
+      assert test_vec4[0] == 1.0
+      assert test_vec4[1] == 2.0
+      assert test_vec4[2] == 3.0
+      assert test_vec4[3] == 4.0
+
+      test_vec3 = gmtl.Vec3f()
+      test_vec3.set(1.0, 2.0, 3.0)
+      assert test_vec4[0] == 1.0
+      assert test_vec4[1] == 2.0
+      assert test_vec4[2] == 3.0
+
+      test_vec2 = gmtl.Vec2f()
+      test_vec2.set(1.0, 2.0)
+      assert test_vec4[0] == 1.0
+      assert test_vec4[1] == 2.0
+
+   def testSetPtr(self):
+      data = [1.0, 2.0, 3.0, 4.0]
+
+      test_vec4 = gmtl.Vec4f()
+      test_vec4.set(data)
+      assert test_vec4[0] == 1.0
+      assert test_vec4[1] == 2.0
+      assert test_vec4[2] == 3.0
+      assert test_vec4[3] == 4.0
+
+      test_vec3 = gmtl.Vec3f()
+      test_vec3.set(data)
+      assert test_vec3[0] == 1.0
+      assert test_vec3[1] == 2.0
+      assert test_vec3[2] == 3.0
+
+      test_vec2 = gmtl.Vec2f()
+      test_vec2.set(data)
+      assert test_vec2[0] == 1.0
+      assert test_vec2[1] == 2.0
+
+   def testGetData(self):
+      test_vec4 = gmtl.Vec4f(1.0, 2.0, 3.0, 4.0)
+      data = test_vec4.getData()
+      assert data[0] == 1.0
+      assert data[1] == 2.0
+      assert data[2] == 3.0
+      assert data[3] == 4.0
+
+      test_vec3 = gmtl.Vec3f(1.0, 2.0, 3.0)
+      data = test_vec3.getData()
+      assert data[0] == 1.0
+      assert data[1] == 2.0
+      assert data[2] == 3.0
+
+      test_vec2 = gmtl.Vec2f(1.0, 2.0)
+      data = test_vec2.getData()
+      assert data[0] == 1.0
+      assert data[1] == 2.0
+
+   def testEqualityCompare(self):
+      test_vec1 = gmtl.Vec4f(1.0, 2.0, 3.0, 4.0)
+      test_vec2 = gmtl.Vec4f(test_vec1)
+
+      assert test_vec1 == test_vec2
+      assert not test_vec1 != test_vec2
+
+      # Set equal, vary elt 0
+      test_vec2 = gmtl.Vec4f(test_vec1)
+      test_vec2[0] = 21.10
+      assert test_vec1 != test_vec2
+      assert not test_vec1 == test_vec2
+
+      # Set equal, vary elt 1
+      test_vec2 = gmtl.Vec4f(test_vec1)
+      test_vec2[1] = 21.10
+      assert test_vec1 != test_vec2
+      assert not test_vec1 == test_vec2
+
+      # Set equal, vary elt 2
+      test_vec2 = gmtl.Vec4f(test_vec1)
+      test_vec2[2] = 21.10
+      assert test_vec1 != test_vec2
+      assert not test_vec1 == test_vec2
+
+      # Set equal, vary elt 3
+      test_vec2 = gmtl.Vec4f(test_vec1)
+      test_vec2[3] = 21.10
+      assert test_vec1 != test_vec2
+      assert not test_vec1 == test_vec2
+
+   def testIsEqual(self):
+      test_vec1 = gmtl.Vec4f(1.0, 2.0, 3.0, 4.0)
+      test_vec2 = gmtl.Vec4f(test_vec1)
+      eps = 0.0
+
+      while eps < 10.0:
+         assert gmtl.isEqual(test_vec1, test_vec2, eps)
+         eps += 0.05
+
+      test_vec1.set(1.0, 1.0, 1.0, 1.0)
+      for elt in range(4):
+         test_vec2 = gmtl.Vec4f(test_vec1)
+         test_vec2[elt] = 21.0
+         assert not gmtl.isEqual(test_vec1, test_vec2, 10.0)
+         assert not gmtl.isEqual(test_vec1, test_vec2, 19.9)
+         assert gmtl.isEqual(test_vec1, test_vec2, 20.1)
+         assert gmtl.isEqual(test_vec1, test_vec2, 22.0)
+
+   def testOpNegate(self):
+      test_vec1 = gmtl.Vec3f(1.0, 2.0, 3.0)
+
+      test_vec2 = -test_vec1
+      assert test_vec2[0] == -1.0 and \
+             test_vec2[1] == -2.0 and \
+             test_vec2[2] == -3.0
+
+   def testOpPlusEq(self):
+      test_vec1 = gmtl.Vec3f(1.0, 2.0, 3.0)
+      test_vec2 = gmtl.Vec3f(2.0, 2.0, 2.0)
+
+      test_vec1 += test_vec2
+      assert test_vec1[0] == 3.0 and \
+             test_vec1[1] == 4.0 and \
+             test_vec1[2] == 5.0
+
+   def testOpPlus(self):
+      test_vec1 = gmtl.Vec3f(1.0, 2.0, 3.0)
+      test_vec2 = gmtl.Vec3f(2.0, 2.0, 2.0)
+      test_vec3 = gmtl.Vec3f(1.0, 2.0, 3.0)
+
+      test_vec1 = test_vec3 + test_vec2
+      assert test_vec1[0] == 3.0 and \
+             test_vec1[1] == 4.0 and \
+             test_vec1[2] == 5.0
+
+   def testOpMinusEq(self):
+      test_vec1 = gmtl.Vec3f(1.0, 2.0, 3.0)
+      test_vec2 = gmtl.Vec3f(2.0, 2.0, 2.0)
+
+      test_vec1 -= test_vec2
+      assert test_vec1[0] == -1.0 and \
+             test_vec1[1] == 0.0 and \
+             test_vec1[2] == 1.0
+
+   def testOpMinus(self):
+      test_vec1 = gmtl.Vec3f(1.0, 2.0, 3.0)
+      test_vec2 = gmtl.Vec3f(2.0, 2.0, 2.0)
+      test_vec3 = gmtl.Vec3f(1.0, 2.0, 3.0)
+
+      test_vec1 = test_vec3 - test_vec2
+      assert test_vec1[0] == -1.0 and \
+             test_vec1[1] == 0.0 and \
+             test_vec1[2] == 1.0
+
+   def testOpMultScalarEq(self):
+      test_vec1 = gmtl.Vec3f(1.0, 2.0, 3.0)
+
+      test_vec1 *= 4.0
+      assert test_vec1[0] == 4.0 and \
+             test_vec1[1] == 8.0 and \
+             test_vec1[2] == 12.0
+
+   def testOpMultScalar(self):
+      test_vec1 = gmtl.Vec3f(1.0, 2.0, 3.0)
+      test_vec3 = gmtl.Vec3f(1.0, 2.0, 3.0)
+
+      test_vec1 = test_vec3 * 4.0
+      assert test_vec1[0] == 4.0 and \
+             test_vec1[1] == 8.0 and \
+             test_vec1[2] == 12.0
+
+   def testOpScalarVecMult(self):
+      test_vec1 = gmtl.Vec3f(1.0, 2.0, 3.0)
+      test_vec3 = gmtl.Vec3f(1.0, 2.0, 3.0)
+
+      test_vec1 = 4.0 * test_vec3
+      assert test_vec1[0] == 4.0 and \
+             test_vec1[1] == 8.0 and \
+             test_vec1[2] == 12.0
+
+   def testOpDivScalarEq(self):
+      test_vec1 = gmtl.Vec3f(12.0, 8.0, 4.0)
+
+      test_vec1 /= 4.0
+      assert test_vec1[0] == 3.0 and \
+             test_vec1[1] == 2.0 and \
+             test_vec1[2] == 1.0
+
+   def testOpDivScalar(self):
+      test_vec1 = gmtl.Vec3f(1.0, 2.0, 3.0)
+      test_vec3 = gmtl.Vec3f(12.0, 8.0, 4.0)
+
+      test_vec1 = test_vec3 / 4.0
+      assert test_vec1[0] == 3.0 and \
+             test_vec1[1] == 2.0 and \
+             test_vec1[2] == 1.0
+
+   def testReflect(self):
+      v1 = gmtl.Point3f(1.0, 1.0, 1.0)  # point or vec
+      v2 = gmtl.Point3f(3.0, 1.0, 2.0)
+      v3 = gmtl.Point3f(4.0, 5.0, 1.0)
+      n1 = gmtl.Vec3f(1.0, 0.0, 0.0)    # normal of the surface/plane
+      n2 = gmtl.Vec3f(0.0, 1.0, 0.0)
+      n3 = gmtl.Vec3f(0.0, 0.0, 1.0)
+      ex1 = gmtl.Point3f(-1.0, 1.0, 1.0)        # flipped about the surface
+      ex2 = gmtl.Point3f(3.0, -1.0, 2.0)
+      ex3 = gmtl.Point3f(4.0, 5.0, -1.0)
+      res = gmtl.Point3f()
+
+      eps = 0.001
+
+      gmtl.reflect(res, v1, n1)
+      assert gmtl.isEqual(res, ex1, eps)
+      gmtl.reflect(res, v2, n2)
+      assert gmtl.isEqual(res, ex2, eps)
+      gmtl.reflect(res, v3, n3)
+      assert gmtl.isEqual(res, ex3, eps)
+
+      v1 = gmtl.Vec3f(1.0, 1.0, 1.0)    # point or vec
+      v2 = gmtl.Vec3f(3.0, 1.0, 2.0)
+      v3 = gmtl.Vec3f(4.0, 5.0, 1.0)
+
+      gmtl.reflect(res, v1, n1)
+      assert gmtl.isEqual(res, ex1, eps)
+      gmtl.reflect(res, v2, n2)
+      assert gmtl.isEqual(res, ex2, eps)
+      gmtl.reflect(res, v3, n3)
+      assert gmtl.isEqual(res, ex3, eps)
+
+   def testDot(self):
+      v1 = gmtl.Vec3f(1.0, 0.0, 0.0)
+      v2 = gmtl.Vec3f(0.0, 1.0, 0.0)
+      v3 = gmtl.Vec3f(0.0, 0.0, 1.0)
+
+      # Base vectors
+      dot = gmtl.dot(v1, v2)
+      assert isEqual(0.0, gmtl.dot(v1, v2), 0.05)
+      assert isEqual(0.0, gmtl.dot(v1, v3), 0.05)
+      assert isEqual(0.0, gmtl.dot(v2, v3), 0.05)
+
+      # Other vectors
+      v1.set(13.45, -7.8, 0.056)
+      v2.set(0.777, 5.333, 12.21)
+      v3.set(3.4, -1.6, 0.23)
+
+      ans = -30.463
+      dot = gmtl.dot(v1, v2)
+      assert isNear(dot, ans, 0.01)
+      dot = gmtl.dot(v2, v1)
+      assert isNear(dot, ans, 0.01)
+      ans = -3.0827
+      dot = gmtl.dot(v2, v3)
+      assert isNear(dot, ans, 0.01)
+      dot = gmtl.dot(v3, v2)
+      assert isNear(dot, ans, 0.01)
+
+   def testLength(self):
+      v1 = gmtl.Vec3f(1.0, 0.0, 0.0)
+      v2 = gmtl.Vec3f(0.0, 1.0, 0.0)
+      v3 = gmtl.Vec3f(0.0, 0.0, 1.0)
+
+      # Base vectors.
+      assert isEqual(gmtl.length(v1), 1.0, 0.05)
+      assert isEqual(gmtl.length(v2), 1.0, 0.05)
+      assert isEqual(gmtl.length(v3), 1.0, 0.05)
+      assert isEqual(gmtl.lengthSquared(v1), 1.0, 0.05)
+      assert isEqual(gmtl.lengthSquared(v2), 1.0, 0.05)
+      assert isEqual(gmtl.lengthSquared(v3), 1.0, 0.05)
+
+      # Other vectors.
+      v1.set(2.0, 4.0, 5.0)
+      v2.set(12.0, -2.0, -4.0)
+
+      ans = 4.0 + 16.0 + 25.0
+      len = gmtl.lengthSquared(v1)
+      assert isNear(len, ans, 0.01)
+
+      ans = math.sqrt(ans)
+      len = gmtl.length(v1)
+      assert isNear(len, ans, 0.01)
+
+      ans = 144.0 + 4.0 + 16.0
+      len = gmtl.lengthSquared(v2)
+      assert isNear(len, ans, 0.01)
+
+      ans = math.sqrt(ans)
+      len = gmtl.length(v2)
+      assert isNear(len, ans, 0.01)
+
+   def testNormalize(self):
+      v1 = gmtl.Vec3f(1.0, 0.0, 0.0)
+
+      # Other vectors
+      v1.set(2.0, 4.0, 5.0)
+      v2 = gmtl.Vec3f(v1)
+      gmtl.normalize(v1)
+      temp = v1 * gmtl.length(v2)
+      assert gmtl.isEqual(v2, temp, 0.01)
+
+      v1.set(12.0, -2.0, -4.0)
+      v2 = gmtl.Vec3f(v1)
+      gmtl.normalize(v1)
+      assert gmtl.isEqual(v2, gmtl.Vec3f(v1 * gmtl.length(v2)), 0.01)
+
+   def testIsNormalized(self):
+      v1 = gmtl.Vec3f(1.0, 0.0, 0.0)
+      v2 = gmtl.Vec3f(0.0, 1.0, 0.0)
+      v3 = gmtl.Vec3f(0.0, 0.0, 1.0)
+      v4 = gmtl.Vec3f(2.0, 4.0, 5.0)
+
+      # No tolerance.
+      assert gmtl.isNormalized(v1)
+      assert gmtl.isNormalized(v2)
+      assert gmtl.isNormalized(v3)
+
+      assert not gmtl.isNormalized(v4)
+
+   def testIsNormalizedEps(self):
+      v1 = gmtl.Vec3f(1.0, 0.0, 0.0)
+      v2 = gmtl.Vec3f(v1)
+
+      eps = 0.0
+      while eps < 10.0:
+         assert gmtl.isNormalized(v1, eps)
+         eps += 0.5
+
+      v2.set(21.0, 0.0, 0.0)
+      assert not gmtl.isNormalized(v2, 15.0 * 15.0)
+      assert not gmtl.isNormalized(v2, 19.9 * 19.9)
+      assert gmtl.isNormalized(v2, 21.0 * 21.0 - 0.9)
+      assert gmtl.isNormalized(v2, 21.0 * 21.0 + 0.9)
+
+   def testCross(self):
+      v1 = gmtl.Vec3f(1.0, 0.0, 0.0)
+      v2 = gmtl.Vec3f(0.0, 1.0, 0.0)
+      v3 = gmtl.Vec3f(0.0, 0.0, 1.0)
+      cross = gmtl.Vec3f()
+
+      # Base vectors.
+      gmtl.cross(cross, v1, v2)
+      assert gmtl.isEqual(cross, v3, 0.01)
+      gmtl.cross(cross, v2, v1)
+      assert gmtl.isEqual(cross, -v3, 0.01)
+
+      v1.set(13.45, -7.8, 0.056)
+      v2.set(0.777, 5.333, 12.21)
+      v3.set(-95.537, -164.181, 77.789)
+
+      gmtl.cross(cross, v1, v2)
+      assert gmtl.isEqual(cross, v3, 0.01)
+      gmtl.cross(cross, v2, v1)
+      assert gmtl.isEqual(cross, -v3, 0.01)
+
+   def testLerp(self):
+      q1 = gmtl.Vec2f(2, 3)
+      q2 = gmtl.Vec2f(9.01, 8.4)
+      expected_result1 = gmtl.Vec2f(q1)
+      expected_result2 = gmtl.Vec2f(q2)
+
+      eps = 0.0001
+
+      res1 = gmtl.Vec2f()
+      res2 = gmtl.Vec2f()
+      gmtl.lerp(res1, 0.0, q1, q2)
+      gmtl.lerp(res2, 1.0, q1, q2)
+      assert gmtl.isEqual(expected_result1, res1, eps)
+      assert gmtl.isEqual(expected_result2, res2, eps)
+
+      # Test interpolated values.
+      q3 = gmtl.Vec2f(0.0, 0.0)
+      q4 = gmtl.Vec2f(1.0, 1.0)
+      expected_result1 = gmtl.Vec2f(0.35, 0.35)
+      expected_result2 = gmtl.Vec2f(0.69, 0.69)
+      res3 = gmtl.Vec2f()
+      res4 = gmtl.Vec2f()
+
+      gmtl.lerp(res3, 0.35, q3, q4)
+      gmtl.lerp(res4, 0.69, q3, q4)
+      assert gmtl.isEqual(expected_result1, res3, eps)
+      assert gmtl.isEqual(expected_result2, res4, eps)
+
+      q1 = gmtl.Vec3f(2.0, 3.0, 4.0)
+      q2 = gmtl.Vec3f(9.01, 8.4, 7.1)
+      expected_result1 = gmtl.Vec3f(q1)
+      expected_result2 = gmtl.Vec3f(q2)
+      res1 = gmtl.Vec3f()
+      res2 = gmtl.Vec3f()
+
+      gmtl.lerp(res1, 0.0, q1, q2)
+      gmtl.lerp(res2, 1.0, q1, q2)
+      assert gmtl.isEqual(expected_result1, res1, eps)
+      assert gmtl.isEqual(expected_result2, res2, eps)
+
+      # Test interpolated values.
+      q3 = gmtl.Vec3f(0.0, 0.0, 0.0)
+      q4 = gmtl.Vec3f(1.0, 1.0, 1.0)
+      expected_result3 = gmtl.Vec3f(0.35, 0.35, 0.35)
+      expected_result4 = gmtl.Vec3f(0.69, 0.69, 0.69)
+      res3 = gmtl.Vec3f()
+      res4 = gmtl.Vec3f()
+
+      gmtl.lerp(res3, 0.35, q3, q4)
+      gmtl.lerp(res4, 0.69, q3, q4)
+      assert gmtl.isEqual(expected_result3, res3, eps)
+      assert gmtl.isEqual(expected_result4, res4, eps)
+
+      q1 = gmtl.Vec4f(2.0, 3.0, 4.0, 5.0)
+      q2 = gmtl.Vec4f(9.01, 8.4, 7.1, 10009.0)
+      expected_result1 = gmtl.Vec4f(q1)
+      expected_result2 = gmtl.Vec4f(q2)
+      res1 = gmtl.Vec4f()
+      res2 = gmtl.Vec4f()
+
+      gmtl.lerp(res1, 0.0, q1, q2)
+      gmtl.lerp(res2, 1.0, q1, q2)
+      assert gmtl.isEqual(expected_result1, res1, eps)
+      assert gmtl.isEqual(expected_result2, res2, eps)
+
+      # Test interpolated values.
+      q3 = gmtl.Vec4f(0.0, 0.0, 0.0, 0.0)
+      q4 = gmtl.Vec4f(1.0, 1.0, 1.0, 1.0)
+      expected_result3 = gmtl.Vec4f(0.35, 0.35, 0.35, 0.35)
+      expected_result4 = gmtl.Vec4f(0.69, 0.69, 0.69, 0.69)
+      res3 = gmtl.Vec4f()
+      res4 = gmtl.Vec4f()
+
+      gmtl.lerp(res3, 0.35, q3, q4)
+      gmtl.lerp(res4, 0.69, q3, q4)
+      assert gmtl.isEqual(expected_result3, res3, eps)
+      assert gmtl.isEqual(expected_result4, res4, eps)
+
+class VecMetricTest(unittest.TestCase):
+   def testTimingCreation(self):
+      iters = 400000
+      use_value = 0.0
+
+      for iter in xrange(iters):
+         test_vec2 = gmtl.Vec2f()
+         test_vec2[0] = 1.0
+         test_vec3 = gmtl.Vec3f()
+         test_vec3[0] = 2.0
+         test_vec4 = gmtl.Vec4f()
+         test_vec4[0] = 3.0
+
+         use_value += test_vec2[0] + test_vec3[0] + test_vec4[0]
+
+      assert use_value > 0.0
+
+   def testTimingCopyConstruct(self):
+      test_vec2 = gmtl.Vec2f()
+      test_vec2[0] = 2.0
+      test_vec3 = gmtl.Vec3f()
+      test_vec3[0] = 2.0
+      test_vec4 = gmtl.Vec4f()
+      test_vec4[0] = 2.0
+
+      iters = 400000
+      use_value = 0.0
+
+      for iter in xrange(iters):
+         test_vec2_copy = gmtl.Vec2f(test_vec2)
+         use_value += test_vec2_copy[0]
+         test_vec3_copy = gmtl.Vec3f(test_vec3)
+         use_value += test_vec3_copy[0]
+         test_vec4_copy = gmtl.Vec4f(test_vec4)
+         use_value += test_vec4_copy[0]
+
+   def testTimingConstructors(self):
+      iters = 400000
+      use_value = 0.0
+
+      for iter in xrange(iters):
+         test_vec4 = gmtl.Vec4f(1.0, 2.0, 3.0, 4.0)
+         test_vec3 = gmtl.Vec3f(1.0, 2.0, 3.0)
+         test_vec2 = gmtl.Vec2f(1.0, 2.0)
+
+         use_value += test_vec4[3] + test_vec3[2] + test_vec2[1]
+
+   def testTimingSet(self):
+      test_vec4 = gmtl.Vec4f()
+      test_vec3 = gmtl.Vec3f()
+      test_vec2 = gmtl.Vec2f()
+
+      iters = 400000
+      use_value = 0.0
+
+      for iter in xrange(iters):
+         test_vec4.set(iters + 0, iters + 1, iters + 2, iters + 3)
+         test_vec3.set(iters + 0, iters + 1, iters + 2)
+         test_vec2.set(iters + 0, iters + 1)
+
+         use_value += test_vec4[3] + test_vec3[2] + test_vec2[1]
+
+      assert use_value > 0.0
+
+   def testTimingSetPtr(self):
+      data = [1.0, 2.0, 3.0, 4.0]
+      test_vec4 = gmtl.Vec4f()
+      test_vec3 = gmtl.Vec3f()
+      test_vec2 = gmtl.Vec2f()
+
+      iters = 400000
+      use_value = 0.0
+
+      for iter in xrange(iters):
+         data[0] += 1.0
+         data[1] += 2.0
+         data[2] += 3.0
+         data[3] += 4.0
+         test_vec4.set(data)
+         test_vec3.set(data)
+         test_vec2.set(data)
+
+         use_value += test_vec4[3] + test_vec3[2] + test_vec2[1]
+
+      assert use_value > 0.0
+
+   def testTimingEqualityCompare(self):
+      test_vec1 = gmtl.Vec4f(1.0, 2.0, 3.0, 4.0)
+      test_vec2 = gmtl.Vec4f(test_vec1)
+
+      iters = 400000
+      true_count = 0
+      false_count = 0
+
+      test_vec1.set(0.0, 0.0, 0.0, 2000.0)
+      test_vec2.set(0.0, 0.0, 0.0, 1000.0)
+
+      for iter in xrange(iters):
+         test_vec1[3] += 1.0
+         test_vec2[3] += 2.0
+         if test_vec1 == test_vec2:
+            true_count += 1
+
+      test_vec1.set(0.0, 0.0, 0.0, 2000.0)
+      test_vec2.set(0.0, 0.0, 0.0, 1000.0)
+
+      for iter in xrange(iters):
+         test_vec1[3] += 1.0
+         test_vec2[3] += 2.0
+         if test_vec1 != test_vec2:
+            false_count += 1
+
+   def testTimingIsEqual(self):
+      test_vec1 = gmtl.Vec4f(1.0, 2.0, 3.0, 4.0)
+      test_vec2 = gmtl.Vec4f(test_vec1)
+
+      iters = 400000
+      true_count = 0
+      false_count = 0
+
+      test_vec1.set(0.0, 0.0, 0.0, 2000.0)
+      test_vec2.set(0.0, 0.0, 0.0, 1000.0)
+
+      for iter in xrange(iters):
+         test_vec1[3] += 1.0
+         test_vec2[3] += 2.0
+         if gmtl.isEqual(test_vec1, test_vec2, 1.0):
+            true_count += 1
+         if gmtl.isEqual(test_vec1, test_vec2, 0.1):
+            true_count += 1
+         if gmtl.isEqual(test_vec1, test_vec2, 100000.0):
+            true_count += 1
+
+   def testTimingOpNegate(self):
+      test_vec1 = gmtl.Vec3f(1.0, 2.0, 3.0)
+      test_vec3 = gmtl.Vec3f(5.0, 7.0, 9.0)
+
+      iters = 400000
+
+      for iter in xrange(iters):
+         test_vec3.set(iter, iter + 1, iter + 2)
+         test_vec1 = -test_vec3
+
+   def testTimingOpPlusEq(self):
+      test_vec1 = gmtl.Vec3f(1.0, 2.0, 3.0)
+      test_vec2 = gmtl.Vec3f(2.0, 2.0, 2.0)
+      test_vec3 = gmtl.Vec3f(5.0, 7.0, 9.0)
+
+      iters = 400000
+
+      for iter in xrange(iters):
+         test_vec3.set(iter, iter + 1, iter + 2)
+         test_vec1 += test_vec3
+
+      test_vec2 = gmtl.Vec3f(test_vec1)
+
+   def testTimingOpPlus(self):
+      test_vec1 = gmtl.Vec3f(1.0, 2.0, 3.0)
+      test_vec2 = gmtl.Vec3f(2.0, 2.0, 2.0)
+      test_vec3 = gmtl.Vec3f(5.0, 7.0, 9.0)
+
+      iters = 400000
+
+      for iter in xrange(iters):
+         test_vec3.set(iter, iter + 1, iter + 2)
+         test_vec1 = (test_vec3 + test_vec2)
+
+      test_vec2 = gmtl.Vec3f(test_vec1)
+
+   def testTimingOpMinusEq(self):
+      test_vec1 = gmtl.Vec3f(1.0, 2.0, 3.0)
+      test_vec2 = gmtl.Vec3f(2.0, 2.0, 2.0)
+      test_vec3 = gmtl.Vec3f(5.0, 7.0, 9.0)
+
+      iters = 400000
+
+      for iter in xrange(iters):
+         test_vec3.set(iter, iter + 1, iter + 2)
+         test_vec1 -= test_vec3
+
+      test_vec2 = gmtl.Vec3f(test_vec1)
+
+   def testTimingOpPlus(self):
+      test_vec1 = gmtl.Vec3f(1.0, 2.0, 3.0)
+      test_vec2 = gmtl.Vec3f(2.0, 2.0, 2.0)
+      test_vec3 = gmtl.Vec3f(5.0, 7.0, 9.0)
+
+      iters = 400000
+
+      for iter in xrange(iters):
+         test_vec3.set(iter, iter + 1, iter + 2)
+         test_vec1 = (test_vec3 - test_vec2)
+
+      test_vec2 = gmtl.Vec3f(test_vec1)
+
+   def testTimingOpMultScalarEq(self):
+      test_vec1 = gmtl.Vec3f(1.0, 2.0, 3.0)
+
+      iters = 400000
+
+      for iter in xrange(iters):
+         test_vec1 *= 1.05
+
+   def testTimingOpMultScalar(self):
+      test_vec1 = gmtl.Vec3f(1.0, 2.0, 3.0)
+      test_vec2 = gmtl.Vec3f(1.0, 2.0, 3.0)
+
+      iters = 400000
+      test_vec3 = gmtl.Vec3f()
+      test_vec3.set(5.0, 7.0, 9.0)
+
+      for iter in xrange(iters):
+         test_vec1 = test_vec3 * 1.05
+         test_vec3 = gmtl.Vec3f(test_vec1)
+
+   def testTimingOpScalarVecMult(self):
+      test_vec1 = gmtl.Vec3f(1.0, 2.0, 3.0)
+      test_vec3 = gmtl.Vec3f(5.0, 7.0, 9.0)
+
+      iters = 400000
+      bogus_value = 0.0
+
+      for iter in xrange(iters):
+         test_vec1 = 1.05 * test_vec3
+         test_vec3 = gmtl.Vec3f(test_vec1)
+         bogus_value += test_vec1[0]
+
+      assert bogus_value > 5.0
+
+   def testTimingOpDivScalarEq(self):
+      test_vec1 = gmtl.Vec3f(12.0, 8.0, 4.0)
+
+      iters = 400000
+
+      for iter in xrange(iters):
+         test_vec1 /= 0.95
+
+   def testTimingOpDivScalar(self):
+      test_vec1 = gmtl.Vec3f(1.0, 2.0, 3.0)
+      test_vec2 = gmtl.Vec3f(5.0, 7.0, 9.0)
+
+      iters = 400000
+      test_vec3 = gmtl.Vec3f()
+      test_vec3.set(5.0, 7.0, 9.0)
+
+      for iter in xrange(iters):
+         test_vec1 = test_vec3 / 0.95
+         test_vec3 = gmtl.Vec3f(test_vec1)
+
+   def testTimingGroupedOps(self):
+      const_vec1 = gmtl.Vec4f(4.0, 5.0, 6.0, 7.0)
+      const_vec2 = gmtl.Vec4f(1.0, 2.0, 3.0, 4.0)
+      const_vec3 = gmtl.Vec4f(7.0, 11.0, 12.0, 24.0)
+
+      iters = 10000
+
+      vec1 = gmtl.Vec4f()
+      vec2 = gmtl.Vec4f()
+      vec3 = gmtl.Vec4f()
+      total_vec = gmtl.Vec4f()
+
+      vec1.set(1.0, 2.0, 3.0, 4.0)
+      vec2.set(3.0, 3.0, 3.0, 3.0)
+      vec3.set(12.0, 21.0, 75.0, 2.0)
+      total_vec.set(0.0, 0.0, 0.0, 0.0)
+
+      for iter in xrange(iters):
+         # Do some wotk to make the vectors change a little.
+         vec1.set(iter, iter + 1, iter + 2, iter + 3)
+         vec2 *= 0.00125
+         vec3 *= -0.000345
+
+         # Do the actual operation of interest.
+         res_vec = vec1 + vec2 + vec3
+         total_vec += res_vec
+
+      vec1.set(1.0, 2.0, 3.0, 4.0)
+      vec2.set(3.0, 3.0, 3.0, 3.0)
+      vec3.set(12.0, 21.0, 75.0, 2.0)
+      total_vec.set(0.0, 0.0, 0.0, 0.0)
+
+      for iter in xrange(iters):
+         # Do some wotk to make the vectors change a little.
+         vec1.set(iter, iter + 1, iter + 2, iter + 3)
+         vec2 *= 0.00125
+         vec3 *= -0.0000345
+
+         # Do the actual operation of interest.
+         res_rev = vec1 - vec2 - vec3
+         total_vec += res_vec
+
+      total_vec.set(0.0, 0.0, 0.0, 0.0)
+
+      for iter in xrange(iters):
+         res_rev = const_vec1 + const_vec2 + const_vec3
+         total_vec += res_vec
+
+      total_vec.set(0.0, 0.0, 0.0, 0.0)
+
+      for iter in xrange(iters):
+         res_rev = const_vec1 - const_vec2 - const_vec3
+         total_vec += res_vec
+
+      vec1.set(1.0, 2.0, 3.0, 4.0)
+      vec2.set(3.0, 3.0, 3.0, 3.0)
+      vec3.set(12.0, 21.0, 75.0, 2.0)
+      total_vec.set(0.0, 0.0, 0.0, 0.0)
+
+      for iter in xrange(iters):
+         # Do some wotk to make the vectors change a little.
+         vec1.set(iter, iter + 1, iter + 2, iter + 3)
+         vec2 *= 0.00125
+
+         # Do the actual operation of interest.
+         res_vec = (vec1 - const_vec1) + (vec2 + const_vec2) - (const_vec3 * 7.6)
+
+      vec1.set(1.0, 2.0, 3.0, 4.0)
+      vec2.set(3.0, 3.0, 3.0, 3.0)
+      vec3.set(12.0, 21.0, 75.0, 2.0)
+      total_vec.set(0.0, 0.0, 0.0, 0.0)
+
+      for iter in xrange(iters):
+         # Do some wotk to make the vectors change a little.
+         vec1.set(iter, iter + 1, iter + 2, iter + 3)
+         vec2 *= 0.00125
+
+         # Do the actual operation of interest.
+         res_vec = (vec1 * 7.0) + (vec2 * -1.0)
+         total_vec += res_vec
+
+      vec1.set(1.0, 2.0, 3.0, 4.0)
+      vec2.set(3.0, 3.0, 3.0, 3.0)
+      vec3.set(12.0, 21.0, 75.0, 2.0)
+      total_vec.set(0.0, 0.0, 0.0, 0.0)
+
+      for iter in xrange(iters):
+         # Do some wotk to make the vectors change a little.
+         res_vec = (const_vec1 * 3.0)
+         total_vec += res_vec
+
+      vec1.set(1.0, 2.0, 3.0, 4.0)
+      vec2.set(3.0, 3.0, 3.0, 3.0)
+      vec3.set(12.0, 21.0, 75.0, 2.0)
+      total_vec.set(0.0, 0.0, 0.0, 0.0)
+
+      for iter in xrange(iters):
+         # Do some wotk to make the vectors change a little.
+         vec1.set(iter, iter + 1, iter + 2, iter + 3)
+         vec2 *= 0.00125
+
+         # Do the actual operation of interest.
+         res_vec = (vec1 * gmtl.dot(const_vec1, vec2))
+         total_vec += res_vec
+
+      vec5 = gmtl.Vec3f(3.0, 3.0, 3.0)
+      vec6 = gmtl.Vec3f(12.0, 21.0, 75.0)
+      total_vec2 = gmtl.Vec3f()
+
+      for iter in xrange(iters):
+         # Do some work to make the vectors change a little.
+         vec5.set(iter + 1, iter + 2, iter + 3)
+         vec6 *= 0.00125
+
+         # Do the actual operation of interest.
+         res_vec2 = gmtl.makeCross(vec5, vec6) * 21.0
+         total_vec2 += res_vec2
+
+   def testTimingDot(self):
+      v1 = gmtl.Vec3f(1.0, 0.0, 0.0)
+      v2 = gmtl.Vec3f(0.0, 1.0, 0.0)
+
+      iters = 100000
+      val = 0.0
+
+      for iter in xrange(iters):
+         val += gmtl.dot(v1, v2)
+         v1 *= 1.0025
+
+   def testTimingLength(self):
+      v1 = gmtl.Vec3f(2.0, 4.0, 5.0)
+
+      iters = 100000
+      val = 0.0
+
+      for iter in xrange(iters):
+         val += gmtl.length(v1)
+         v1 *= 1.0025
+
+      val = 0.0
+      v1.set(1.0, 2.0, 3.0)
+
+      for iter in xrange(iters):
+         val += gmtl.lengthSquared(v1)
+         v1 *= 1.0025
+
+   def testTimingNormalize(self):
+      v1 = gmtl.Vec3f(12.0, 21.0, 75.0)
+      v2 = gmtl.Vec3f(0.0, 1.0, 0.0)
+
+      iters = 100000
+      val = 0.0
+
+      for iter in xrange(iters):
+         v1 *= 1.0025
+         v2 = gmtl.Vec3f(v1)
+         val += gmtl.normalize(v2)
+
+   def testTimingIsNormalized(self):
+      v4 = gmtl.Vec3f(0.5, 0.5, 0.5)
+
+      iters = 100000
+      true_count = 0
+
+      for iter in xrange(iters):
+         v4 *= 1.0025
+         if gmtl.isNormalized(v4):
+            true_count += 1
+
+   def testTimingIsNormalizedEps(self):
+      v2 = gmtl.Vec3f(0.5, 0.5, 0.5)
+
+      iters = 100000
+      true_count = 0
+      tol = 0.25
+
+      for iter in xrange(iters):
+         v2 *= 1.0025
+         if gmtl.isNormalized(v2, tol):
+            true_count += 1
+
+   def testTimingCross(self):
+      v1 = gmtl.Vec3f(12.0, 21.0, 75.0)
+      v2 = gmtl.Vec3f(0.0, 1.0, 0.0)
+      v3 = gmtl.Vec3f(0.0, 0.0, 1.0)
+      cross = gmtl.Vec3f()
+
+      iters = 100000
+
+      for iter in xrange(iters):
+         gmtl.cross(cross, v2, v1)
+         v1 *= 1.0025
+         v3 += cross
+
+   def testTimingLerp(self):
+      fromv = gmtl.Vec4f()
+      result = gmtl.Vec4f()
+      iters = 10000
+
+      for iter in xrange(iters):
+         gmtl.lerp(result, float(iter) / float(iters), fromv, result)
+
+      assert result[2] != 1234.5
+
+class XformTest(unittest.TestCase):
+   def testQuatVecXform(self):
+      eps = 0.0001
+      q1 = gmtl.Quatf()
+      q2 = gmtl.Quatf()
+      q3 = gmtl.Quatf()
+      vec  = gmtl.Vec3f(0.0, 0.0, 1.0)
+      vec2 = gmtl.Vec3f(2.0, 5.0, 10.0)
+
+      gmtl.setRot(q1, gmtl.AxisAnglef(gmtl.Math.deg2Rad(90.0), 0.0, 1.0, 0.0))
+      gmtl.setRot(q2, gmtl.AxisAnglef(gmtl.Math.deg2Rad(90.0), 1.0, 0.0, 0.0))
+      gmtl.setRot(q3, gmtl.makeNormal(gmtl.AxisAnglef(gmtl.Math.deg2Rad(35.0),
+                                                      1.0, 1.0, 0.0)))
+
+      ex1 = gmtl.Vec3f(1.0, 0.0, 0.0)
+      ex2 = gmtl.Vec3f(0.0, -1.0, 0.0)
+      ex3 = gmtl.Vec3f(0.40558, -0.40558, 0.819152)
+      ex4 = gmtl.Vec3f(6.32707, 0.67293, 9.40826)
+
+      res1 = gmtl.Vec3f()
+      res2 = gmtl.Vec3f()
+      res3 = gmtl.Vec3f()
+      res4 = gmtl.Vec3f()
+      resi = gmtl.Vec3f()
+      qident = gmtl.Quatf()
+
+      gmtl.xform(res1, q1, vec)
+      gmtl.xform(res2, q2, vec)
+      gmtl.xform(res3, q3, vec)
+      gmtl.xform(res4, q3, vec2)
+      gmtl.xform(resi, qident, vec)
+
+      assert gmtl.isEqual(vec, resi, eps)
+      assert gmtl.isEqual(ex1, res1, eps)
+      assert gmtl.isEqual(ex2, res2, eps)
+      assert gmtl.isEqual(ex3, res3, eps)
+      assert gmtl.isEqual(ex4, res4, eps)
+
+      res5 = q1 * vec
+      res6 = q2 * vec
+      res7 = q3 * vec
+      res8 = q3 * vec2
+      resi = qident * vec
+
+      assert gmtl.isEqual(vec, resi, eps)
+      assert gmtl.isEqual(ex1, res5, eps)
+      assert gmtl.isEqual(ex2, res6, eps)
+      assert gmtl.isEqual(ex3, res7, eps)
+      assert gmtl.isEqual(ex4, res8, eps)
+
+      mat = gmtl.Matrix44f()
+      gmtl.setRot(mat, gmtl.makeNormal(gmtl.AxisAnglef(gmtl.Math.deg2Rad(35.0),
+                                                       1.0, 1.0, 0.0)))
+      res8 = mat * vec2
+      assert gmtl.isEqual(ex4, res8, eps)
+
+      eps = 0.001
+      vec = gmtl.Vec3f(10.0, 100.0, 200.0)
+      expected = gmtl.Vec3f(10.0, -200.0, 100.0)
+      rot = gmtl.Quatf()
+      gmtl.setRot(rot, gmtl.AxisAnglef(gmtl.Math.deg2Rad(90.0), 1.0, 0.0, 0.0))
+
+      result = gmtl.Vec3f()
+      gmtl.xform(result, rot, vec)
+      assert gmtl.isEqual(expected, result, eps)
+
+   def testWeird_XformQuatVec_InvConj_SanityCheck(self):
+      # Just for sanity check, inv and conj should both work for the
+      # implementation of quat * vec (but conj is actually faster so we
+      # usually choose that).
+      # They both will work only in the case where quat is already normalized
+      # (a rotation quat).
+      eps = 0.001
+      vec = gmtl.Vec3f(10.0, -100.0, -2000.0)
+      expected = gmtl.Vec3f(10.0, 2000.0, -100.0)
+      rot = gmtl.Quatf()
+      gmtl.setRot(rot, gmtl.AxisAnglef(gmtl.Math.deg2Rad(90.0), 1.0, 0.0, 0.0))
+
+      result1 = gmtl.makeVec(rot * gmtl.makePure(vec) * gmtl.makeConj(rot))
+      assert gmtl.isEqual(expected, result1, eps)
+      result2 = gmtl.makeVec(rot * gmtl.makePure(vec) * gmtl.makeInvert(rot))
+      assert gmtl.isEqual(expected, result2, eps)
+      assert gmtl.isEqual(result1, result2, eps)
+
+      # Should be equal because the rotation is normalized.
+      assert gmtl.isEqual(gmtl.makeConj(rot), gmtl.makeInvert(rot), eps)
+
+      # Same, but without the expected value (just check that the two are
+      # equal).
+      eps = 0.001
+      vec = gmtl.Vec3f(123.0, -4.56, 78.910)
+      rot = gmtl.Quatf()
+      gmtl.setRot(rot, gmtl.AxisAnglef(gmtl.Math.deg2Rad(123.4556),
+                                       gmtl.makeNormal(gmtl.Vec3f(-79.0,
+                                                                  1000.0,
+                                                                  234.0))))
+
+      result1 = gmtl.makeVec(rot * gmtl.makePure(vec) * gmtl.makeConj(rot))
+      result2 = gmtl.makeVec(rot * gmtl.makePure(vec) * gmtl.makeInvert(rot))
+      assert gmtl.isEqual(result1, result2, eps)
+
+      # Should be equal because the rotation is normalized.
+      assert gmtl.isEqual(gmtl.makeConj(rot), gmtl.makeInvert(rot), eps)
+
+   def __testMatRayXform(self, rayType):
+      seg = rayType()
+      seg.setOrigin(gmtl.Point3f(1.0, 2.0, 3.0))
+      seg.setDir(gmtl.Vec3f(3.0, 95.0, 1.0))
+
+      matrix = gmtl.Matrix44f()
+      gmtl.setTrans(matrix, gmtl.Vec3f(9.0, 8.0, 7.0))
+      gmtl.setRot(matrix, gmtl.AxisAnglef(gmtl.Math.deg2Rad(90.0),
+                                          gmtl.Vec3f(0.0, 1.0, 0.0)))
+
+      expected = gmtl.LineSegf(gmtl.Point3f(12, 10, 6), gmtl.Vec3f(1, 95, -3))
+
+      # Test xform
+      result = rayType()
+      gmtl.xform(result, matrix, seg)
+      assert gmtl.isEqual(expected, result, 0.0001)
+
+      # Test operator*
+      result = matrix * seg
+      assert gmtl.isEqual(expected, result, 0.0001)
+
+      # Test operator*=
+      result = rayType(seg)
+      result *= matrix
+      assert gmtl.isEqual(expected, result, 0.0001)
+
+   def testMatLineSegXform(self):
+      self.__testMatRayXform(gmtl.LineSegf)
+
+   def testMatRayXform(self):
+      self.__testMatRayXform(gmtl.Rayf)
+
+   def testMatVecXform(self):
+      # Really simple mat44 * vec4 rotatiosn (hard coded matrix rotation)
+
+      # Transform a vector by a matrix.  Verify that the rotation worked.
+      eps = 0.0001
+      q1 = gmtl.Matrix44f()
+      q1.set(0.0, -1.0, 0.0, 0.0,       # twist 90 about Z
+             1.0, 0.0, 0.0, 0.0,
+             0.0, 0.0, 1.0, 0.0,
+             0.0, 0.0, 0.0, 1.0)
+      q2 = gmtl.Matrix44f()
+      q2.set(0.0, 0.0, 1.0, 0.0,        # twist 90 about Y
+             0.0, 1.0, 0.0, 0.0,
+             -1.0, 0.0, 0.0, 0.0,
+             0.0, 0.0, 0.0, 1.0)
+      q3 = gmtl.Matrix44f()
+      q3.set(1.0, 0.0, 0.0, 0.0,        # twist -90 about X
+             0.0, 0.0, 1.0, 0.0,
+             0.0, -1.0, 0.0, 0.0,
+             0.0, 0.0, 0.0, 1.0)
+      qident = gmtl.Matrix44f()
+      vec = gmtl.Vec4f(0.0, 0.0, 1.0, 0.0)
+      vec2 = gmtl.Vec4f(1.0, 1.0, -10.0, 0.0)
+      ex1 = gmtl.Vec4f(0.0, 0.0, 1.0, 0.0)
+      ex2 = gmtl.Vec4f(1.0, 0.0, 0.0, 0.0)
+      ex3 = gmtl.Vec4f(0.0, 1.0, 0.0, 0.0)
+      ex4 = gmtl.Vec4f(1.0, -10.0, -1.0, 0.0)
+
+      resi = gmtl.Vec4f()
+      res1 = gmtl.Vec4f()
+      res2 = gmtl.Vec4f()
+      res3 = gmtl.Vec4f()
+      res4 = gmtl.Vec4f()
+
+      gmtl.xform(resi, qident, vec)
+      gmtl.xform(res1, q1, vec)
+      gmtl.xform(res2, q2, vec)
+      gmtl.xform(res3, q3, vec)
+      gmtl.xform(res4, q3, vec2)
+
+      assert gmtl.isEqual(vec, resi, eps)
+      assert gmtl.isEqual(ex1, res1, eps)
+      assert gmtl.isEqual(ex2, res2, eps)
+      assert gmtl.isEqual(ex3, res3, eps)
+      assert gmtl.isEqual(ex4, res4, eps)
+
+      resi = qident * vec
+      res1 = q1 * vec
+      res2 = q2 * vec
+      res3 = q3 * vec
+      res4 = q3 * vec2
+
+      assert gmtl.isEqual(vec, resi, eps)
+      assert gmtl.isEqual(ex1, res1, eps)
+      assert gmtl.isEqual(ex2, res2, eps)
+      assert gmtl.isEqual(ex3, res3, eps)
+      assert gmtl.isEqual(ex4, res4, eps)
+
+      # More "interesting" rotations.
+      eps = 0.0001
+      vec = gmtl.Vec3f(2.0, 5.0, 10.0)
+      expected = gmtl.Vec3f(6.32707, 0.67293, 9.40826)
+      mat = gmtl.Matrix44f()
+      gmtl.setRot(mat, gmtl.makeNormal(gmtl.AxisAnglef(gmtl.Math.deg2Rad(35.0),
+                                                       1.0, 1.0, 0.0)))
+
+      # Transform a vectory by a matrix.  Verify the rotation worked.
+      result1 = gmtl.Vec3f()
+      gmtl.xform(result1, mat, vec)
+      assert gmtl.isEqual(expected, result1, eps)
+
+      # operator* should be the same.
+      result2 = mat * vec
+      assert gmtl.isEqual(expected, result2, eps)
+
+      # Make sure that transofmation by a quaternion yields the same result
+      # as transformation by a matrix.
+      quat = gmtl.Quatf()
+      gmtl.setRot(quat, gmtl.makeNormal(gmtl.AxisAnglef(gmtl.Math.deg2Rad(35.0),
+                                                        1.0, 1.0, 0.0)))
+      result3 = gmtl.Vec3f()
+      gmtl.xform(result3, quat, vec)
+      assert gmtl.isEqual(expected, result3, eps)
+
+      result4 = quat * vec
+      assert gmtl.isEqual(expected, result4, eps)
+
+      # 4x4 matrix: test out complete transformations with a weird vector.
+      eps = 0.0001
+      vec = gmtl.Vec4f(-100.0, 334.0, 455.0, -568.0)
+      expected = gmtl.Vec4f(-339.0, 145.0, 629.0, 1113.0)
+      mat = gmtl.Matrix44f()
+      mat.set(1.0, 2.0, 3.0, 4.0,
+              5.0, 6.0, 7.0, 8.0,
+              9.0, 10.0, 11.0, 12.0,
+              13.0, 14.0, 15.0, 16.0)
+
+      # Transform a vector by a matrix.  Verify that the transformation worked.
+      result1 = gmtl.Vec4f()
+      gmtl.xform(result1, mat, vec)
+      assert gmtl.isEqual(expected, result1, eps)
+
+      # operator* should be the same.
+      result2 = mat * vec
+      assert gmtl.isEqual(expected, result2, eps)
+
+      # 3x3 matrix: test out complete transformations with a weird vector.
+      eps = 0.0001
+      vec = gmtl.Vec3f(-100.0, 334.0, 455.0)
+      expected = gmtl.Vec3f(1933.0, 4689.0, 7445.0)
+      mat = gmtl.Matrix33f()
+      mat.set(1.0, 2.0, 3.0,
+              5.0, 6.0, 7.0,
+              9.0, 10.0, 11.0)
+
+      # Transform a vector by a matrix.  Verify that the transformation worked.
+      result1 = gmtl.Vec3f()
+      gmtl.xform(result1, mat, vec)
+      assert gmtl.isEqual(expected, result1, eps)
+
+      # operator* should be the same.
+      result2 = mat * vec
+      assert gmtl.isEqual(expected, result2, eps)
+
+      # 4x4 matrix: test out complete transformations with a weird vector.
+      eps = 0.0001
+      vec = gmtl.Vec4f(-100.0, 334.0, 455.0, 0.0)
+      expected = gmtl.Vec4f(1933.0, 4689.0, 7445.0, 10201.0)
+      partial_vec = gmtl.Vec3f(-100.0, 334.0, 455.0)
+      expected2 = gmtl.Vec3f(1933.0 / 10201.0, 4689.0 / 10201.0,
+                             7445.0 / 10201.0)
+      mat = gmtl.Matrix44f()
+      mat.set(1.0, 2.0, 3.0, 4.0,
+              5.0, 6.0, 7.0, 8.0,
+              9.0, 10.0, 11.0, 12.0,
+              13.0, 14.0, 15.0, 16.0)
+
+      # Transform a vector by a matrix.  Verify that the transformation worked.
+      result1 = gmtl.Vec4f()
+      gmtl.xform(result1, mat, vec)
+      assert gmtl.isEqual(expected, result1, eps)
+
+      # operator* should be the same.
+      result2 = mat * vec
+      assert gmtl.isEqual(expected, result2, eps)
+
+      # Transform a partially specified vector by a matrix.  Verify the
+      # transformation worked.
+      result3 = gmtl.Vec3f()
+      gmtl.xform(result3, mat, partial_vec)
+      assert gmtl.isEqual(expected2, result3, eps)
+
+      # operator* should be the same.
+      result4 = mat * partial_vec
+      assert gmtl.isEqual(expected2, result4, eps)
+
+      # 3x3 matrix: test out complete transformations with a weird vector.
+      eps = 0.0001
+      vec = gmtl.Vec3f(-100.0, 334.0, 0.0)
+      expected = gmtl.Vec3f(568.0, 1504.0, 2440.0)
+      partial_vec = gmtl.Vec2f(-100.0, 334.0)
+      expected2 = gmtl.Vec2f(568.0 / 2440.0, 1504.0 / 2440.0)
+      mat = gmtl.Matrix33f()
+      mat.set(1.0, 2.0, 3.0,
+              5.0, 6.0, 7.0,
+              9.0, 10.0, 11.0)
+
+      # Transform a vector by a matrix.  Verify that the transformation worked.
+      result1 = gmtl.Vec3f()
+      gmtl.xform(result1, mat, vec)
+      assert gmtl.isEqual(expected, result1, eps)
+
+      # operator* should be the same.
+      result2 = mat * vec
+      assert gmtl.isEqual(expected, result2, eps)
+
+      # Transform a partially specified vector by a matrix.  Verify that the
+      # transformation worked.
+      result3 = gmtl.Vec2f()
+      gmtl.xform(result3, mat, partial_vec)
+      assert gmtl.isEqual(expected2, result3, eps)
+
+      # operator* should be the same.
+      result4 = mat * partial_vec
+      assert gmtl.isEqual(expected2, result4, eps)
+
+class XformMetricTest(unittest.TestCase):
+   def __xformQuatVec3(self, quatType, vecType):
+      q1 = gmtl.makeNormal(quatType(1, 2, 3, 4))
+      v2 = vecType()
+      v2[0] = 1
+
+      iters = 25000
+
+      for iter in xrange(iters):
+         v2 = vecType(q1 * v2)
+
+      for iter in xrange(iters):
+         gmtl.xform(v2, q1, v2)
+
+      assert v2[0] != 13.045
+
+   def __xformMatByVecType(self, matType, vecType):
+      q1 = matType()
+
+      iters = 25000
+      v2 = vecType()
+      for iter in xrange(iters):
+         v2 = vecType(q1 * v2)
+
+      for iter in xrange(iters):
+         gmtl.xform(v2, q1, v2)
+
+      assert v2[0] != 1.0
+
+   def testTimingXformQuatVec3(self):
+      self.__xformQuatVec3(gmtl.Quatf, gmtl.Vec3f)
+      self.__xformQuatVec3(gmtl.Quatd, gmtl.Vec3d)
+
+   def testTimingXformMatVecComplete(self):
+      self.__xformMatByVecType(gmtl.Matrix33f, gmtl.Vec3f)
+      self.__xformMatByVecType(gmtl.Matrix44f, gmtl.Vec4f)
+
+   def testTimingXformMatVecPartial(self):
+      self.__xformMatByVecType(gmtl.Matrix33f, gmtl.Vec2f)
+      self.__xformMatByVecType(gmtl.Matrix44f, gmtl.Vec3f)
+
+   def testTimingXformMatVecComplete(self):
+      self.__xformMatByVecType(gmtl.Matrix33f, gmtl.Point3f)
+#      self.__xformMatByVecType(gmtl.Matrix44f, gmtl.Point4f)
+
+   def testTimingXformMatPointPartial(self):
+      self.__xformMatByVecType(gmtl.Matrix33f, gmtl.Point2f)
+      self.__xformMatByVecType(gmtl.Matrix44f, gmtl.Point3f)
+
 def isEqual(v0, v1, tolerance = 0.001):
    return math.fabs(v0 - v1) <= tolerance
+
+def isNear(v0, v1, tolerance = 0.001):
+   return math.fabs(v0 - v1) < tolerance
 
 def getTests(testCase):
    return [m for m in testCase.__dict__.keys() if m.startswith('test')]
@@ -4793,3 +9285,4 @@ for k in locals().keys():
 
 runner = unittest.TextTestRunner()
 runner.run(suite)
+#runner.run(metric_suite)
