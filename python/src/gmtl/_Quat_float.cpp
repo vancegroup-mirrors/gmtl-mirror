@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Quat_float.cpp,v $
- * Date modified: $Date: 2005-06-05 15:24:14 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2005-06-06 15:36:05 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -41,7 +41,7 @@ void _Export_Quat_float()
 {
     scope* gmtl_Quat_float_scope = new scope(
     class_< gmtl::Quat<float> >("Quatf", init<  >())
-        .def(init< const float, const float, const float, const float >())
+        .def(init< const float&, const float&, const float&, const float& >())
         .def(init< const gmtl::Quat<float> & >())
         .def("set", &gmtl::Quat<float>::set)
         .def("get", &gmtl::Quat<float>::get)
