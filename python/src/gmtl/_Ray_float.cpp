@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Ray_float.cpp,v $
- * Date modified: $Date: 2005-06-04 17:13:46 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2005-06-06 03:48:27 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -30,6 +30,7 @@
 #include <boost/python.hpp>
 #include <gmtl/Ray.h>
 #include <gmtl/RayOps.h>
+#include <gmtl/Xforms.h>
 #include <gmtl/Output.h>
 #include <gmtl-pickle.h>
 
@@ -51,6 +52,8 @@ void _Export_Ray_float()
         .def_pickle(gmtlPickle::Ray_pickle<double>())
         .def(self == self)
         .def(self != self)
+        .def(self *= gmtl::Matrix<float,3,3>())
+        .def(self *= gmtl::Matrix<float,4,4>())
         .def(self_ns::str(self))
     ;
 

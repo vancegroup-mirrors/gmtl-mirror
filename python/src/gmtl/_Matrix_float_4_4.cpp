@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Matrix_float_4_4.cpp,v $
- * Date modified: $Date: 2005-06-04 19:45:38 $
- * Version:       $Revision: 1.10 $
+ * Date modified: $Date: 2005-06-06 03:48:27 $
+ * Version:       $Revision: 1.11 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -58,7 +58,11 @@ void _Export_Matrix_float_4_4()
         .def_pickle(gmtlPickle::Matrix44_pickle<float>())
         .def(self * self)
         .def(self * gmtl::Point3f())
+        .def(self * gmtl::Point4f())
         .def(self * gmtl::Vec3f())
+        .def(self * gmtl::Vec4f())
+        .def(self * gmtl::LineSegf())
+        .def(self * gmtl::Rayf())
         .def(self *= self)
 //        .def(self * float())
         .def(self *= float())

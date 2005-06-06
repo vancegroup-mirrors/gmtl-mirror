@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Matrix_float_3_3.cpp,v $
- * Date modified: $Date: 2005-06-04 19:45:38 $
- * Version:       $Revision: 1.10 $
+ * Date modified: $Date: 2005-06-06 03:48:27 $
+ * Version:       $Revision: 1.11 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -56,8 +56,12 @@ void _Export_Matrix_float_3_3()
         .def("__call__", (float (*)(gmtl::Matrix<float,3,3>*, const unsigned int, const unsigned int))&gmtlWrappers::callable)
         .def_pickle(gmtlPickle::Matrix33_pickle<float>())
         .def(self * self)
+        .def(self * gmtl::Point2f())
         .def(self * gmtl::Point3f())
+        .def(self * gmtl::Vec2f())
         .def(self * gmtl::Vec3f())
+        .def(self * gmtl::LineSegf())
+        .def(self * gmtl::Rayf())
         .def(self *= self)
 //        .def(self * float())
         .def(self *= float())
