@@ -9,8 +9,8 @@
 #
 #  -----------------------------------------------------------------
 #  File:          $RCSfile: testsuite.py,v $
-#  Date modified: $Date: 2005-06-06 04:18:50 $
-#  Version:       $Revision: 1.9 $
+#  Date modified: $Date: 2005-06-06 13:53:52 $
+#  Version:       $Revision: 1.10 $
 #  -----------------------------------------------------------------
 #
 # ********************************************************** ggt-head end
@@ -35,11 +35,12 @@
 #
 # *********************************************************** ggt-cpr end
 
-import math
-import unittest
 import gmtl
+import math
 import random
+import sys
 import types
+import unittest
 
 
 class AABoxContainTest(unittest.TestCase):
@@ -9270,19 +9271,28 @@ def isNear(v0, v1, tolerance = 0.001):
 def getTests(testCase):
    return [m for m in testCase.__dict__.keys() if m.startswith('test')]
 
-random.seed()
+if __name__ == '__main__':
+   random.seed()
 
-suite = unittest.TestSuite()
-metric_suite = unittest.TestSuite()
+   # NOTE: This isn't exactly how PyUnit is supposed to be used, but I don't
+   # yet see how to keep it from pulling in every test case defined in this
+   # module without splitting this module into N pieces for N classes of
+   # test cases.
+   suite = unittest.TestSuite()
+   metric_suite = unittest.TestSuite()
 
-for k in locals().keys():
-   v = locals()[k]
-   if type(v) is types.ClassType:
-      if k.find('Metric') != -1:
-         metric_suite.addTests(map(v, getTests(v)))
-      else:
-         suite.addTests(map(v, getTests(v)))
+   for k in locals().keys():
+      v = locals()[k]
+      if type(v) is types.ClassType:
+         if k.find('Metric') != -1:
+            metric_suite.addTests(map(v, getTests(v)))
+         else:
+            suite.addTests(map(v, getTests(v)))
 
-runner = unittest.TextTestRunner()
-runner.run(suite)
-#runner.run(metric_suite)
+   runner = unittest.TextTestRunner()
+
+   if len(sys.argv) == 1 or 'noninteractive' in sys.argv:
+      runner.run(suite)
+
+   if 'metric' in sys.argv:
+      runner.run(metric_suite)
