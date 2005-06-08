@@ -238,7 +238,10 @@ def BuildWin32Environment():
    ver_str = cv_stderr.read()
 
    match_obj = ver_re.search(ver_str)
-   compiler_major_ver = int(match_obj.group(2))
+   if match_obj is None:
+      compiler_major_ver = 1300
+   else:
+      compiler_major_ver = int(match_obj.group(2))
 
    # We need exception handling support turned on for Boost.Python.
    env.Append(LINKFLAGS = ['/subsystem:console', '/incremental:no'])
