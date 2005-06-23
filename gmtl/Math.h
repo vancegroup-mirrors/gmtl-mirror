@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Math.h,v $
- * Date modified: $Date: 2004-08-19 16:50:21 $
- * Version:       $Revision: 1.39 $
+ * Date modified: $Date: 2005-06-23 21:13:28 $
+ * Version:       $Revision: 1.40 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -252,7 +252,7 @@ inline float aTan( float fValue )
 }
 //----------------------------------------------------------------------------
 template <typename T>
-inline T atan2( T fY, T fX );
+inline T aTan2( T fY, T fX );
 inline float aTan2( float fY, float fX )
 {
 #ifdef NO_ATAN2F
