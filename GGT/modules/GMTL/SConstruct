@@ -87,7 +87,7 @@ def BuildLinuxEnvironment():
 
    CXX = WhereIs('g++3') or 'g++'
    LINK = CXX
-   CXXFLAGS = ['-ftemplate-depth-256', '-Wall', '-pipe', '-DGMTL_NO_METAPROG']
+   CXXFLAGS = ['-ftemplate-depth-256', '-Wall', '-pipe']
    LINKFLAGS = []
 
    # Enable profiling?
@@ -119,7 +119,7 @@ def BuildCygwinEnvironment():
 
    CXX = 'g++'
    LINK = CXX
-   CXXFLAGS = ['-ftemplate-depth-256', '-Wall', '-pipe', '-DGMTL_NO_METAPROG']
+   CXXFLAGS = ['-ftemplate-depth-256', '-Wall', '-pipe']
    LINKFLAGS = []
 
    # Enable profiling?
@@ -156,7 +156,7 @@ def BuildDarwinEnvironment():
    LINK = CXX
    CXXFLAGS = ['-ftemplate-depth-256', '-DBOOST_PYTHON_DYNAMIC_LIB',
                '-Wno-long-double', '-no-cpp-precomp', '-Wall', framework_opt,
-               '-pipe', '-DGMTL_NO_METAPROG']
+               '-pipe']
 
    compiler_major_ver = int(match_obj.group(2))
 
@@ -199,7 +199,7 @@ def BuildIRIXEnvironment():
 
    CXX = 'CC'
    LINK = 'CC'
-   CXXFLAGS = ['-n32', '-mips3', '-LANG:std', '-w2', '-DGMTL_NO_METAPROG']
+   CXXFLAGS = ['-n32', '-mips3', '-LANG:std', '-w2']
    LINKFLAGS = CXXFLAGS
 
    # Enable profiling?
@@ -246,7 +246,7 @@ def BuildWin32Environment():
    # We need exception handling support turned on for Boost.Python.
    env.Append(LINKFLAGS = ['/subsystem:console', '/incremental:no'])
    env.Append(CXXFLAGS = ['/Zm800', '/EHsc', '/GR', '/Zc:wchar_t,forScope',
-                          '/DBOOST_PYTHON_DYNAMIC_LIB', '/DGMTL_NO_METAPROG'])
+                          '/DBOOST_PYTHON_DYNAMIC_LIB'])
 
    if compiler_major_ver < 14:
       env.Append(CXXFLAGS = '/Op')
