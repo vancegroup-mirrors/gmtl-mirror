@@ -1,5 +1,8 @@
 DATE       AUTHOR       CHANGE
 ---------- ------------ -------------------------------------------------------
+2005-06-23 allenb       Fixed spelling error in Math::aTan2
+                        NEW VERSION: 0.4.9
+2005-06-23 allenb       Fixed bug in Matrix to Euler decomposition.
 2005-06-05 patrickh     Completed work on fixing many bugs in and adding many
                         enhancements to PyGMTL.  Among other things, PyGMTL
                         now has a test suite that is nearly as comprehensive

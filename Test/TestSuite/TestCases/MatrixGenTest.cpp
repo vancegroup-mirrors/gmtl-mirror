@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixGenTest.cpp,v $
- * Date modified: $Date: 2005-06-23 14:49:25 $
- * Version:       $Revision: 1.20 $
+ * Date modified: $Date: 2005-06-23 21:16:39 $
+ * Version:       $Revision: 1.21 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -1004,7 +1004,7 @@ namespace gmtlTest
       {
          const float eps = 0.01f;
          const float angle_inc = 10.0f;
-         const float angle_range = 80.0f;
+         const float angle_range = 190.0f;
 
          for(float a = -angle_range; a != angle_range; a += angle_inc)
          {
