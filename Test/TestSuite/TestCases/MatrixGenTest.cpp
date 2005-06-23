@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixGenTest.cpp,v $
- * Date modified: $Date: 2005-06-05 15:29:03 $
- * Version:       $Revision: 1.19 $
+ * Date modified: $Date: 2005-06-23 14:49:25 $
+ * Version:       $Revision: 1.20 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -991,8 +991,55 @@ namespace gmtlTest
          CPPUNIT_ASSERT( gmtl::isEqual( gmtl::makeRot<gmtl::Matrix34f>( gmtl::EulerAngleZYXf( 0.1f, 2.3f, -2.1f ) ),
                                         expected_mat, eps ) );
       }
-
    }
+
+   template <typename EulerType>
+   class exhaustiveEulerGetSet
+   {
+   public:
+      /** Systematically set all possible euler angles and convert to matrix and back to check
+       * for "good" get of the values from the euler.
+       */
+      static void go()
+      {
+         const float eps = 0.01f;
+         const float angle_inc = 10.0f;
+         const float angle_range = 80.0f;
+
+         for(float a = -angle_range; a != angle_range; a += angle_inc)
+         {
+            for(float b = -angle_range; b != angle_range; b += angle_inc)
+            {
+               for(float c = -angle_range; c != angle_range; c += angle_inc)
+               {
+                  gmtl::Matrix44f mat1, mat2;
+                  EulerType euler2;
+
+                  EulerType euler1( gmtl::Math::deg2Rad(a), gmtl::Math::deg2Rad(b), gmtl::Math::deg2Rad(c));
+                  gmtl::set( mat1, euler1);
+
+                  gmtl::set( euler2, mat1);
+                  gmtl::set( mat2, euler2);
+
+                  if(!gmtl::isEqual(mat1,mat2,eps))
+                  {
+                     // CPPUNIT_ASSERT(gmtl::isEqual(mat1,mat2,eps));
+                     std::cout << "Failed euler get set: [" << typeid(EulerType).name()
+                               << "]: (" << a << "," << "," << b << "," << c << ")" << std::endl;
+                  }
+               }
+            }
+         }
+      }
+   };
+
+   void MatrixGenTest::testMatrixGetSetRotEuler()
+   {
+      exhaustiveEulerGetSet<gmtl::EulerAngleXYZf>::go();
+      exhaustiveEulerGetSet<gmtl::EulerAngleZXYf>::go();
+      exhaustiveEulerGetSet<gmtl::EulerAngleZYXf>::go();
+   }
+
 
    template <typename DATA_TYPE>
    class matMakeInverse
