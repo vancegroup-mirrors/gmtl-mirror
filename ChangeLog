@@ -1,5 +1,6 @@
 DATE       AUTHOR       CHANGE
 ---------- ------------ -------------------------------------------------------
+[0.4.9 released - 7.5.2005]====================================================
 2005-06-23 allenb       Fixed spelling error in Math::aTan2
                         NEW VERSION: 0.4.9
 2005-06-23 allenb       Fixed bug in Matrix to Euler decomposition.

@@ -1,6 +1,6 @@
 # Spec file for gmtl.
 %define name    gmtl
-%define version	0.4.7
+%define version	0.4.9
 %define release	1
 
 Name: %{name}
