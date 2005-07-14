@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Plane_double.cpp,v $
- * Date modified: $Date: 2005-06-04 17:13:46 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2005-07-14 02:48:22 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -50,6 +50,9 @@ void _Export_Plane_double()
         .def("setNormal", &gmtl::Plane<double>::setNormal)
         .def("getOffset", &gmtl::Plane<double>::getOffset, return_value_policy< copy_const_reference >())
         .def("setOffset", &gmtl::Plane<double>::setOffset)
+        .def("set",
+             (gmtl::Plane<double>& (gmtl::Plane<double>::*)(const gmtl::Plane<double>&)) &gmtl::Plane<double>::operator=,
+             return_internal_reference<1>())
         .def_pickle(gmtlPickle::Plane_pickle<double>())
         .def(self == self)
         .def(self != self)

@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Ray_double.cpp,v $
- * Date modified: $Date: 2005-06-06 03:48:27 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2005-07-14 02:48:22 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -49,6 +49,9 @@ void _Export_Ray_double()
         .def("setOrigin", &gmtl::Ray<double>::setOrigin)
         .def("getDir", &gmtl::Ray<double>::getDir, return_value_policy< copy_const_reference >())
         .def("setDir", &gmtl::Ray<double>::setDir)
+        .def("set",
+             (gmtl::Ray<double>& (gmtl::Ray<double>::*)(const gmtl::Ray<double>&)) &gmtl::Ray<double>::operator=,
+             return_internal_reference<1>())
         .def_pickle(gmtlPickle::Ray_pickle<double>())
         .def(self == self)
         .def(self != self)

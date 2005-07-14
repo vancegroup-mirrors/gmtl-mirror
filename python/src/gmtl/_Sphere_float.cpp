@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Sphere_float.cpp,v $
- * Date modified: $Date: 2005-06-04 17:13:46 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2005-07-14 02:48:22 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -48,6 +48,9 @@ void _Export_Sphere_float()
         .def("getRadius", &gmtl::Sphere<float>::getRadius, return_value_policy< copy_const_reference >())
         .def("setCenter", &gmtl::Sphere<float>::setCenter)
         .def("setRadius", &gmtl::Sphere<float>::setRadius)
+        .def("set",
+             (gmtl::Sphere<float>& (gmtl::Sphere<float>::*)(const gmtl::Sphere<float>&)) &gmtl::Sphere<float>::operator=,
+             return_internal_reference<1>())
         .def_pickle(gmtlPickle::Sphere_pickle<float>())
         .def(self == self)
         .def(self != self)

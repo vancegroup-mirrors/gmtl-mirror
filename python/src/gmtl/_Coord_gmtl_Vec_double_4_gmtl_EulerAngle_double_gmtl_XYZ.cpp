@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Coord_gmtl_Vec_double_4_gmtl_EulerAngle_double_gmtl_XYZ.cpp,v $
- * Date modified: $Date: 2005-06-04 17:13:46 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2005-07-14 02:48:22 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -47,6 +47,9 @@ void _Export_Coord_gmtl_Vec_double_4_gmtl_EulerAngle_double_gmtl_XYZ()
         .def_readwrite("rot", &gmtl::Coord<gmtl::Vec<double, 4>,gmtl::EulerAngle<double, gmtl::XYZ> >::mRot)
         .def("getPos", &gmtl::Coord<gmtl::Vec<double, 4>,gmtl::EulerAngle<double, gmtl::XYZ> >::getPos, return_internal_reference< 1 >())
         .def("getRot", &gmtl::Coord<gmtl::Vec<double, 4>,gmtl::EulerAngle<double, gmtl::XYZ> >::getRot, return_internal_reference< 1 >())
+        .def("set",
+             (gmtl::Coord<gmtl::Vec<double, 4>, gmtl::EulerAngle<double, gmtl::XYZ> >& (gmtl::Coord<gmtl::Vec<double, 4>, gmtl::EulerAngle<double, gmtl::XYZ> >::*)(const gmtl::Coord<gmtl::Vec<double, 4>, gmtl::EulerAngle<double, gmtl::XYZ> >&)) &gmtl::Coord<gmtl::Vec<double, 4>, gmtl::EulerAngle<double, gmtl::XYZ> >::operator=,
+             return_internal_reference<1>())
         .def_pickle(gmtlPickle::Coord_pickle< gmtl::Vec<double, 4>,gmtl::EulerAngle<double, gmtl::XYZ> >())
         .def(self == self)
         .def(self != self)
