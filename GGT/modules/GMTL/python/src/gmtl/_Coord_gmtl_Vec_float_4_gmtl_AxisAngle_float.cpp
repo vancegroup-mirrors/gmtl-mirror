@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Coord_gmtl_Vec_float_4_gmtl_AxisAngle_float.cpp,v $
- * Date modified: $Date: 2005-06-04 17:13:46 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2005-07-14 02:48:22 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -44,6 +44,9 @@ void _Export_Coord_gmtl_Vec_float_4_gmtl_AxisAngle_float()
         .def(init< const gmtl::Vec<float,4> &, const gmtl::AxisAngle<float> & >())
         .def_readwrite("pos", &gmtl::Coord<gmtl::Vec<float, 4>,gmtl::AxisAngle<float> >::mPos)
         .def_readwrite("rot", &gmtl::Coord<gmtl::Vec<float, 4>,gmtl::AxisAngle<float> >::mRot)
+        .def("set",
+             (gmtl::Coord<gmtl::Vec<float, 4>, gmtl::AxisAngle<float> >& (gmtl::Coord<gmtl::Vec<float, 4>, gmtl::EulerAngle<float, gmtl::ZYX> >::*)(const gmtl::Coord<gmtl::Vec<float, 4>, gmtl::EulerAngle<float, gmtl::ZYX> >&)) &gmtl::Coord<gmtl::Vec<float, 4>, gmtl::EulerAngle<float, gmtl::ZYX> >::operator=,
+             return_internal_reference<1>())
         .def_pickle(gmtlPickle::Coord_pickle< gmtl::Vec<float, 4>,gmtl::AxisAngle<float> >())
         .def(self == self)
         .def(self != self)

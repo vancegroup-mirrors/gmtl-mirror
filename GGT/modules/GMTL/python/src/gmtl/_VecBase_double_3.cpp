@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _VecBase_double_3.cpp,v $
- * Date modified: $Date: 2005-06-04 19:34:43 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2005-07-14 02:48:22 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -46,6 +46,9 @@ void _Export_VecBase_double_3()
         .def(init< const double &, const double &, const double & >())
         .def("set", (void (gmtl::VecBase<double,3>::*)(const double &, const double &, const double &) )&gmtl::VecBase<double,3>::set)
         .def("set", (void (*)(gmtl::VecBase<double,3>*, list))&gmtlWrappers::VecBase_set)
+        .def("set",
+             (gmtl::VecBase<double, 3>& (gmtl::VecBase<double, 3>::*)(const gmtl::VecBase<double, 3>&)) &gmtl::VecBase<double, 3>::operator=,
+             return_internal_reference<1>())
         .def("getData", (tuple (*)(gmtl::VecBase<double,3>*)) &gmtlWrappers::VecBase_3_getData)
         .add_property("data", (tuple (*)(gmtl::VecBase<double,3>*)) &gmtlWrappers::VecBase_3_getData)
         .def("__getitem__", (double& (gmtl::VecBase<double,3>::*)(const unsigned) ) &gmtl::VecBase<double,3>::operator[], return_value_policy<copy_non_const_reference>())

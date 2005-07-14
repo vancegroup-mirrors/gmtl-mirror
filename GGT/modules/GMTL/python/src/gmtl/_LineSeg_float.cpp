@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _LineSeg_float.cpp,v $
- * Date modified: $Date: 2005-06-06 03:48:27 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2005-07-14 02:48:22 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -45,6 +45,9 @@ void _Export_LineSeg_float()
         .def(init< const gmtl::LineSeg<float> & >())
         .def(init< const gmtl::Point<float,3> &, const gmtl::Point<float,3> & >())
         .def("getLength", &gmtl::LineSeg<float>::getLength)
+        .def("set",
+             (gmtl::LineSeg<float>& (gmtl::LineSeg<float>::*)(const gmtl::LineSeg<float>&)) &gmtl::LineSeg<float>::operator=,
+             return_internal_reference<1>())
         .def_pickle(gmtlPickle::LineSeg_pickle<float>())
         .def(self == self)
         .def(self != self)
