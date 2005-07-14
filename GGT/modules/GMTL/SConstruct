@@ -175,7 +175,7 @@ def BuildDarwinEnvironment():
 
    # Debug or optimize build?
    if optimize != 'no':
-      CXXFLAGS.extend(['-DNDEBUG', '-O2'])
+      CXXFLAGS.extend(['-DNDEBUG', '-O3'])
    else:
       CXXFLAGS.extend(['-D_DEBUG', '-g'])
 
