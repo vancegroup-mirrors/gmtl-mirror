@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecOps.h,v $
- * Date modified: $Date: 2005-06-05 22:19:09 $
- * Version:       $Revision: 1.32 $
+ * Date modified: $Date: 2005-08-23 16:40:37 $
+ * Version:       $Revision: 1.33 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -636,7 +636,7 @@ inline bool isEqual(const VecBase<DATA_TYPE, SIZE>& v1,
 
    for(unsigned i=0;i<SIZE;++i)
    {
-      if (fabs(v1[i] - v2[i]) > eps)
+      if ( gmtl::Math::abs(v1[i] - v2[i]) > eps )
       {
          return false;
       }
