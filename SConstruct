@@ -145,7 +145,7 @@ def BuildDarwinEnvironment():
    m = exp.search(distutils.sysconfig.get_config_var('prefix'))
    framework_opt = '-F' + m.group(1)
 
-   CXX = 'g++'
+   CXX = WhereIs('g++')
 
    ver_re = re.compile(r'gcc version ((\d+)\.(\d+)\.(\d+))')
    (gv_stdout, gv_stdin, gv_stderr) = os.popen3(CXX + ' -v')
