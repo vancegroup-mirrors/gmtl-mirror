@@ -293,7 +293,7 @@ def ValidateBoostVersion(key, value, environ):
    global boost_version
 
    if "BoostVersion" == key:
-      exp = re.compile('^(\d+\.\d+)\D*$')
+      exp = re.compile('^(\d+\.\d+(\.\d+)?)\D*$')
       match = exp.search(value)
       boost_version = match.group(1)
       print "Using Boost version", boost_version
@@ -377,6 +377,8 @@ def ValidateBoostOption(key, value, environ):
          boost_major_ver     = ver_num / 100000
 
          version = '-%d_%d' % (boost_major_ver, boost_minor_ver)
+         if boost_sub_minor_ver > 0:
+            version += '_%d' % boost_sub_minor_ver
          boost_python_lib_name = pj(value, 'lib',
                                     '%sboost_python%s%s%s.%s' % \
                                        (shlib_prefix, tool, threading,
