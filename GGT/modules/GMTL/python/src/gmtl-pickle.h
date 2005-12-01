@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-pickle.h,v $
- * Date modified: $Date: 2005-05-13 22:11:16 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2005-12-01 23:33:29 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -99,7 +99,13 @@ struct Coord_pickle : boost::python::pickle_suite
    static void setstate(gmtl::Coord<POS_TYPE, ROT_TYPE>& c,
                         boost::python::tuple state)
    {
+      // Work around a GCC 3.2 bug.
+#if defined(__GNUC__) && __GNUC__ == 3 && __GNUC_MINOR__ == 2
+      POS_TYPE temp = boost::python::extract<POS_TYPE>(state[0]);
+      c.mPos = temp;
+#else
       c.mPos = boost::python::extract<POS_TYPE>(state[0]);
+#endif
       c.mRot = boost::python::extract<ROT_TYPE>(state[1]);
    }
 };
