@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-pickle.h,v $
- * Date modified: $Date: 2005-12-02 00:16:56 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2005-12-02 00:36:55 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -66,8 +66,16 @@ struct AABox_pickle : boost::python::pickle_suite
 
    static void setstate(gmtl::AABox<T>& b, boost::python::tuple state)
    {
+      // Work around a GCC 3.2 bug.
+#if defined(__GNUC__) && __GNUC__ == 3 && __GNUC_MINOR__ == 2
+      gmtl::Point<T, 3> temp_pt0 = boost::python::extract< gmtl::Point<T, 3> >(state[0]);
+      gmtl::Point<T, 3> temp_pt1 = boost::python::extract< gmtl::Point<T, 3> >(state[1]);
+      b.mMin = temp_pt0;
+      b.mMax = temp_pt1;
+#else
       b.mMin = boost::python::extract< gmtl::Point<T, 3> >(state[0]);
       b.mMax = boost::python::extract< gmtl::Point<T, 3> >(state[1]);
+#endif
    }
 };
 
@@ -137,8 +145,16 @@ struct LineSeg_pickle : boost::python::pickle_suite
 
    static void setstate(gmtl::LineSeg<T>& l, boost::python::tuple state)
    {
+      // Work around a GCC 3.2 bug.
+#if defined(__GNUC__) && __GNUC__ == 3 && __GNUC_MINOR__ == 2
+      gmtl::Point<T, 3> temp_pt = boost::python::extract< gmtl::Point<T, 3> >(state[0]);
+      gmtl::Vec<T, 3> temp_vec  = boost::python::extract< gmtl::Vec<T, 3> >(state[1]);
+      l.mOrigin = temp_pt;
+      l.mDir    = temp_vec;
+#else
       l.mOrigin = boost::python::extract< gmtl::Point<T, 3> >(state[0]);
       l.mDir    = boost::python::extract< gmtl::Vec<T, 3> >(state[1]);
+#endif
    }
 };
 
@@ -193,7 +209,13 @@ struct Plane_pickle : boost::python::pickle_suite
 
    static void setstate(gmtl::Plane<T>& p, boost::python::tuple state)
    {
+      // Work around a GCC 3.2 bug.
+#if defined(__GNUC__) && __GNUC__ == 3 && __GNUC_MINOR__ == 2
+      gmtl::Vec<T, 3> temp = boost::python::extract< gmtl::Vec<T, 3> >(state[0]);
+      p.mNorm   = temp;
+#else
       p.mNorm   = boost::python::extract< gmtl::Vec<T, 3> >(state[0]);
+#endif
       p.mOffset = boost::python::extract<T>(state[1]);
    }
 };
@@ -256,8 +278,16 @@ struct Ray_pickle : boost::python::pickle_suite
 
    static void setstate(gmtl::Ray<T>& r, boost::python::tuple state)
    {
+      // Work around a GCC 3.2 bug.
+#if defined(__GNUC__) && __GNUC__ == 3 && __GNUC_MINOR__ == 2
+      gmtl::Point<T, 3> temp_pt = boost::python::extract< gmtl::Point<T, 3> >(state[0]);
+      gmtl::Vec<T, 3> temp_vec = boost::python::extract< gmtl::Vec<T, 3> >(state[1]);
+      r.mOrigin = temp_pt;
+      r.mDir    = temp_vec;
+#else
       r.mOrigin = boost::python::extract< gmtl::Point<T, 3> >(state[0]);
       r.mDir    = boost::python::extract< gmtl::Vec<T, 3> >(state[1]);
+#endif
    }
 };
 
@@ -271,7 +301,13 @@ struct Sphere_pickle : boost::python::pickle_suite
 
    static void setstate(gmtl::Sphere<T>& s, boost::python::tuple state)
    {
+      // Work around a GCC 3.2 bug.
+#if defined(__GNUC__) && __GNUC__ == 3 && __GNUC_MINOR__ == 2
+      gmtl::Point<T, 3> temp = boost::python::extract< gmtl::Point<T, 3> >(state[0]);
+      s.mCenter = temp;
+#else
       s.mCenter = boost::python::extract< gmtl::Point<T, 3> >(state[0]);
+#endif
       s.mRadius = boost::python::extract<T>(state[1]);
    }
 };
@@ -286,9 +322,19 @@ struct Tri_pickle : boost::python::pickle_suite
 
    static void setstate(gmtl::Tri<T>& t, boost::python::tuple state)
    {
+      // Work around a GCC 3.2 bug.
+#if defined(__GNUC__) && __GNUC__ == 3 && __GNUC_MINOR__ == 2
+      gmtl::Point<T, 3> temp0 = boost::python::extract< gmtl::Point<T, 3> >(state[0]);
+      gmtl::Point<T, 3> temp1 = boost::python::extract< gmtl::Point<T, 3> >(state[1]);
+      gmtl::Point<T, 3> temp2 = boost::python::extract< gmtl::Point<T, 3> >(state[2]);
+      t[0] = temp0;
+      t[1] = temp1;
+      t[2] = temp2;
+#else
       t[0] = boost::python::extract< gmtl::Point<T, 3> >(state[0]);
       t[1] = boost::python::extract< gmtl::Point<T, 3> >(state[1]);
       t[2] = boost::python::extract< gmtl::Point<T, 3> >(state[2]);
+#endif
    }
 };
 
