@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-pickle.h,v $
- * Date modified: $Date: 2005-12-01 23:33:29 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2005-12-02 00:16:56 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -194,7 +194,7 @@ struct Plane_pickle : boost::python::pickle_suite
    static void setstate(gmtl::Plane<T>& p, boost::python::tuple state)
    {
       p.mNorm   = boost::python::extract< gmtl::Vec<T, 3> >(state[0]);
-      p.mOffset = boost::python::extract<T>(state[3]);
+      p.mOffset = boost::python::extract<T>(state[1]);
    }
 };
 
