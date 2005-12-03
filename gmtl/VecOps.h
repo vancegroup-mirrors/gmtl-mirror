@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: VecOps.h,v $
- * Date modified: $Date: 2005-08-23 16:40:37 $
- * Version:       $Revision: 1.33 $
+ * Date modified: $Date: 2005-12-03 20:54:25 $
+ * Version:       $Revision: 1.34 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -465,7 +465,7 @@ DATA_TYPE normalize(Vec<DATA_TYPE, SIZE>& v1)
  */
 template< class DATA_TYPE, unsigned SIZE >
 bool isNormalized( const Vec<DATA_TYPE, SIZE>& v1,
-                   const DATA_TYPE eps = 0.0001f )
+                   const DATA_TYPE eps = (DATA_TYPE) 0.0001f )
 {
    return Math::isEqual( lengthSquared( v1 ), DATA_TYPE(1.0), eps );
 }
