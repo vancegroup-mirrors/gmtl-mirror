@@ -1,5 +1,11 @@
 DATE       AUTHOR       CHANGE
 ---------- ------------ -------------------------------------------------------
+[0.4.10 released - 4.13.2005]==================================================
+2005-12-01 patrickh     Fixed unpicking of gmtl.Plane objetcs.
+2005-12-01 patrickh     Fixed GCC 3.2 compile errors in PyGMTL.
+2005-07-13 patrickh     Provided access to the overloaded operator= in PyGMTL
+                        through the addition of a set() method overload.
+
 [0.4.9 released - 7.5.2005]====================================================
 2005-06-23 allenb       Fixed spelling error in Math::aTan2
                         NEW VERSION: 0.4.9
