@@ -30,7 +30,7 @@ rm -rf %{buildroot}
 
 %build
 # This needs to be fixed once we have a boost install.
-scons prefix=%{_prefix} #optimize=yes enable_python=yes BoostPythonDir=/home/aronb/linux-fc3 BoostVersion=1.32
+scons prefix=%{_prefix}
 
 %install
 scons install prefix=%{buildroot}%{_prefix}
