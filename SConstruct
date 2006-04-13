@@ -379,13 +379,38 @@ def ValidateBoostOption(key, value, environ):
          version = '-%d_%d' % (boost_major_ver, boost_minor_ver)
          if boost_sub_minor_ver > 0:
             version += '_%d' % boost_sub_minor_ver
-         boost_python_lib_name = pj(value, 'lib',
-                                    '%sboost_python%s%s%s.%s' % \
-                                       (shlib_prefix, tool, threading,
-                                        version, shlib_ext))
 
-         if not os.path.isfile(boost_python_lib_name):
-            print "[%s] not found." % boost_python_lib_name
+         bpl_found = False
+         libdirs = ['lib']
+
+         if os.uname()[4] == 'x86_64':
+            libdirs.append('lib64')
+
+         for l in libdirs:
+            boost_python_lib_name = pj(value, l,
+                                       '%sboost_python%s%s%s.%s' % \
+                                          (shlib_prefix, tool, threading,
+                                           version, shlib_ext))
+
+            print "Checking for '%s'" % boost_python_lib_name
+            if os.path.isfile(boost_python_lib_name):
+               print "Using '%s'" % boost_python_lib_name
+               bpl_found = True
+               break
+
+            # This handles the case of the lame Boost RPM.
+            boost_python_lib_name = pj(value, l,
+                                       '%sboost_python.%s' % \
+                                          (shlib_prefix, shlib_ext))
+
+            print "Checking for '%s'" % boost_python_lib_name
+            if os.path.isfile(boost_python_lib_name):
+               print "Using '%s'" % boost_python_lib_name
+               bpl_found = True
+               break
+
+         if not bpl_found:
+            print "No Boost.Python library was found in", libdirs
             Exit()
             return False
 
