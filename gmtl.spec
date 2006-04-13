@@ -1,4 +1,4 @@
-# Spec file for gmtl.
+# Spec file for GMTL.
 %define name    gmtl
 %define version	0.4.9
 %define release	1
@@ -9,7 +9,7 @@ Version: %{version}
 Release: %{release}
 Source: %{name}-%{version}.tar.gz
 URL: http://ggt.sourceforge.net/
-Group: System Environment/Libraries
+Group: Development/C++
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 License: LGPL
 BuildPrereq: scons >= 0.96.1
@@ -25,20 +25,20 @@ programmer several core math types and a rich library of graphics/math
 operations on those types.
 
 %prep
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 %setup -q
 
 %build
 # This needs to be fixed once we have a boost install.
-scons #optimize=yes enable_python=yes BoostPythonDir=/home/aronb/linux-fc3 BoostVersion=1.32
+scons prefix=%{_prefix} #optimize=yes enable_python=yes BoostPythonDir=/home/aronb/linux-fc3 BoostVersion=1.32
 
 %install
-scons install prefix=$RPM_BUILD_ROOT/usr
+scons install prefix=%{buildroot}%{_prefix}
 # Remove all stupid scons temp files
-find $RPM_BUILD_ROOT/usr -name .sconsign -exec rm {} \;
+find %{buildroot}%{_prefix} -name .sconsign -exec rm {} \;
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %pre
 
@@ -50,11 +50,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-, root, root)
-/usr/bin/gmtl-config
-/usr/include/gmtl
-#/usr/lib/*.a
+%{_bindir}/gmtl-config
+%{_includedir}/gmtl
 
-%doc AUTHORS ChangeLog COPYING
-#LICENSE README
+%doc AUTHORS ChangeLog COPYING LICENSE.addendum README
 
 %changelog
