@@ -641,7 +641,12 @@ if not has_help_flag:
          '@VERSION_PATCH@'             : str(GMTL_VERSION[2]),
       }
    env.ConfigBuilder('gmtl-config','gmtl-config.in',submap = gmtl_config_submap)
-   env.Depends('gmtl-config', Value(gmtl_config_submap))
+   # The following is commented out because it causes gmtl-config to be
+   # regenerated if the value of PREFIX changes between separate build and
+   # install invocations. This is a problem when building a GMTL RPM since
+   # the RPM is built from a GMTL installation made in a temporary location
+   # that is not the same as where it gets installed by an end user.
+#   env.Depends('gmtl-config', Value(gmtl_config_submap))
    installed_targets += env.Install(pj(PREFIX, 'bin'), 'gmtl-config')
 
    pkg.build()
