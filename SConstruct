@@ -359,6 +359,14 @@ def ValidateBoostOption(key, value, environ):
          else:
             threading = '-mt'
 
+         if optimize == 'no':
+            if platform == 'win32':
+               dbg = '-gd'
+            else:
+               dbg = '-d'
+         else:
+            dbg = ''
+
          if platform == 'win32':
             shlib_prefix = ''
             shlib_ext = 'dll'
@@ -386,28 +394,27 @@ def ValidateBoostOption(key, value, environ):
          if os.uname()[4] == 'x86_64':
             libdirs.append('lib64')
 
+         full_bpl = 'boost_python%s%s%s%s' % (tool, threading, dbg, version)
+         min_bpl  = 'boost_python'
+         names = [full_bpl, min_bpl]
+
+         # We would prefer to use the full Boost.Python name, but the search
+         # performed below will give us something valid.
+         bpl_name = full_bpl
+
          for l in libdirs:
-            boost_python_lib_name = pj(value, l,
-                                       '%sboost_python%s%s%s.%s' % \
-                                          (shlib_prefix, tool, threading,
-                                           version, shlib_ext))
+            for n in names:
+               boost_python_lib_name = pj(value, l,
+                                          '%s%s.%s' % (shlib_prefix, n,
+                                                       shlib_ext))
 
-            print "Checking for '%s'" % boost_python_lib_name
-            if os.path.isfile(boost_python_lib_name):
-               print "Using '%s'" % boost_python_lib_name
-               bpl_found = True
-               break
-
-            # This handles the case of the lame Boost RPM.
-            boost_python_lib_name = pj(value, l,
-                                       '%sboost_python.%s' % \
-                                          (shlib_prefix, shlib_ext))
-
-            print "Checking for '%s'" % boost_python_lib_name
-            if os.path.isfile(boost_python_lib_name):
-               print "Using '%s'" % boost_python_lib_name
-               bpl_found = True
-               break
+               print "Checking for '%s'" % boost_python_lib_name
+               if os.path.isfile(boost_python_lib_name):
+                  print "Using '%s'" % boost_python_lib_name
+                  bpl_libdir = l
+                  bpl_name   = n
+                  bpl_found  = True
+                  break
 
          if not bpl_found:
             print "No Boost.Python library was found in", libdirs
@@ -421,18 +428,8 @@ def ValidateBoostOption(key, value, environ):
          else:
             environ.Append(BoostCPPPATH = [pj(boost_inc_dir)])
 
-         environ.Append(BoostLIBPATH = [pj(value, 'lib')])
-
-         if optimize == 'no':
-            if platform == 'win32':
-               dbg = '-gd'
-            else:
-               dbg = '-d'
-         else:
-            dbg = ''
-
-         environ.Append(BoostLIBS = ['boost_python%s%s%s%s' % \
-                                        (tool, threading, dbg, version)])
+         environ.Append(BoostLIBPATH = [pj(value, bpl_libdir)])
+         environ.Append(BoostLIBS = [bpl_name])
 
    else:
       assert False, "Invalid Boost key"
