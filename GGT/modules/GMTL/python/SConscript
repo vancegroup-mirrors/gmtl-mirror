@@ -26,6 +26,9 @@ env = baseEnv.Copy()
 if env['CXX'][:3] == 'g++' and WhereIs('objcopy'):
    env['CXXCOM'] += " ; objcopy --set-section-flags .debug_str=contents,debug $TARGET"
    env['SHCXXCOM'] += " ; objcopy -v --set-section-flags .debug_str=contents,debug $TARGET $TARGET"
+   gcc_major_version = int(env["CXXVERSION"][:1])
+   if gcc_major_version >= 4:
+      env.Append(CXXFLAGS = ['-fvisibility=hidden',])   
 
 ApplyBoostOptions(env)
 ApplyPythonOptions(env)
