@@ -611,6 +611,7 @@ if not has_help_flag:
       ChangeLog
       COPYING
       gmtl-config.in
+      gmtl.pc.in
       SConstruct
       docs/Makefile
       docs/docbook.mk
@@ -670,6 +671,22 @@ if not has_help_flag:
    # that is not the same as where it gets installed by an end user.
 #   env.Depends('gmtl-config', Value(gmtl_config_submap))
    installed_targets += env.Install(pj(PREFIX, 'bin'), 'gmtl-config')
+
+   # Setup the builder for gmtl-config
+   env = baseEnv.Copy(BUILDERS = builders)
+   gmtl_pc_submap = {
+         '@prefix@'                    : PREFIX,
+         '@exec_prefix@'               : '${prefix}',
+         '@gmtl_cxxflags@'             : '',
+         '@includedir@'                : pj(PREFIX, 'include'),
+         '@gmtl_extra_cxxflags@'       : '',
+         '@gmtl_extra_include_dirs@'   : '',
+         '@version_major@'             : str(GMTL_VERSION[0]),
+         '@version_minor@'             : str(GMTL_VERSION[1]),
+         '@version_patch@'             : str(GMTL_VERSION[2]),
+      }
+   env.ConfigBuilder('gmtl.pc','gmtl.pc.in',submap = gmtl_pc_submap)
+   installed_targets += env.Install(pj(PREFIX, 'share', 'pkgconfig'), 'gmtl.pc')
 
    pkg.build()
    installed_targets += pkg.getInstalledTargets()
