@@ -32,8 +32,7 @@ $MAILADDRS = 'ggt-checkins@lists.sourceforge.net';
 @COMMIT_HOSTS = ();
 
 $MAIL_TRANSFORM = sub {
-   add_viewcvs_entry("http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/ggt",
-                     '', @_);
+   add_viewcvs_entry("http://ggt.cvs.sourceforge.net/ggt", '', @_);
 };
 
 sub add_viewcvs_entry
