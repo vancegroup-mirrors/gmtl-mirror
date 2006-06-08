@@ -1,6 +1,6 @@
 # Spec file for PyGMTL.
 %define name    pygmtl
-%define version	0.4.10
+%define version	0.4.11
 %define release	1
 
 Name: %{name}
