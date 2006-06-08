@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: IntersectionTest.cpp,v $
- * Date modified: $Date: 2005-06-05 15:29:02 $
- * Version:       $Revision: 1.11 $
+ * Date modified: $Date: 2006-06-08 20:59:58 $
+ * Version:       $Revision: 1.12 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -182,6 +182,635 @@ namespace gmtlTest
 
       // @todo, could use more rigorous testing here, test all sides of the box,
       //        in and out and on the edges...
+   }
+
+   void IntersectionTest::testIntersectAABoxLineSeg()
+   {
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+                          gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Unit line segment at the origin and pointing along the positive
+         // X-axis.
+         gmtl::LineSegf seg(gmtl::Point3f(0.0f, 0.0f, 0.0f),
+                            gmtl::Vec3f(1.0f, 0.0f, 0.0f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(gmtl::intersect(box, seg, num_hits, t_in, t_out));
+         CPPUNIT_ASSERT(num_hits == 1);
+         CPPUNIT_ASSERT(t_in == 0.5f);
+         CPPUNIT_ASSERT(t_in == t_out);
+      }
+
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+                          gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Unit line segment at the origin and pointing along the negative
+         // X-axis.
+         gmtl::LineSegf seg(gmtl::Point3f(0.0f, 0.0f, 0.0f),
+                            gmtl::Vec3f(-1.0f, 0.0f, 0.0f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(gmtl::intersect(box, seg, num_hits, t_in, t_out));
+         CPPUNIT_ASSERT(num_hits == 1);
+         CPPUNIT_ASSERT(t_in == 0.5f);
+         CPPUNIT_ASSERT(t_in == t_out);
+      }
+
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+                          gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Unit line segment at the origin and pointing along the positive
+         // Y-axis.
+         gmtl::LineSegf seg(gmtl::Point3f(0.0f, 0.0f, 0.0f),
+                            gmtl::Vec3f(0.0f, 1.0f, 0.0f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(gmtl::intersect(box, seg, num_hits, t_in, t_out));
+         CPPUNIT_ASSERT(num_hits == 1);
+         CPPUNIT_ASSERT(t_in == 0.5f);
+         CPPUNIT_ASSERT(t_in == t_out);
+      }
+
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+                          gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Unit line segment at the origin and pointing along the negative
+         // Y-axis.
+         gmtl::LineSegf seg(gmtl::Point3f(0.0f, 0.0f, 0.0f),
+                            gmtl::Vec3f(0.0f, -1.0f, 0.0f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(gmtl::intersect(box, seg, num_hits, t_in, t_out));
+         CPPUNIT_ASSERT(num_hits == 1);
+         CPPUNIT_ASSERT(t_in == 0.5f);
+         CPPUNIT_ASSERT(t_in == t_out);
+      }
+
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+                          gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Unit line segment at the origin and pointing along the positive
+         // Z-axis.
+         gmtl::LineSegf seg(gmtl::Point3f(0.0f, 0.0f, 0.0f),
+                            gmtl::Vec3f(0.0f, 0.0f, 1.0f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(gmtl::intersect(box, seg, num_hits, t_in, t_out));
+         CPPUNIT_ASSERT(num_hits == 1);
+         CPPUNIT_ASSERT(t_in == 0.5f);
+         CPPUNIT_ASSERT(t_in == t_out);
+      }
+
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+                          gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Unit line segment at the origin and pointing along the negative
+         // Z-axis.
+         gmtl::LineSegf seg(gmtl::Point3f(0.0f, 0.0f, 0.0f),
+                            gmtl::Vec3f(0.0f, 0.0f, -1.0f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(gmtl::intersect(box, seg, num_hits, t_in, t_out));
+         CPPUNIT_ASSERT(num_hits == 1);
+         CPPUNIT_ASSERT(t_in == 0.5f);
+         CPPUNIT_ASSERT(t_in == t_out);
+      }
+
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+                          gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Unit line segment with its origin on the right side of the box
+         // pointing away from the box perpendicular to the right side (along
+         // the positive X-axis).
+         gmtl::LineSegf seg(gmtl::Point3f(0.5f, 0.0f, 0.0f),
+                            gmtl::Vec3f(1.0f, 0.0f, 0.0f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(gmtl::intersect(box, seg, num_hits, t_in, t_out));
+         CPPUNIT_ASSERT(num_hits == 1);
+         CPPUNIT_ASSERT(t_in == 0.0f);
+         CPPUNIT_ASSERT(t_in == t_out);
+      }
+
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+                          gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Unit line segment with its origin on the right side of the box
+         // pointing into the box perpendicular to the right side (along the
+         // negative X-axis).
+         gmtl::LineSegf seg(gmtl::Point3f(0.5f, 0.0f, 0.0f),
+                            gmtl::Vec3f(-1.0f, 0.0f, 0.0f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(gmtl::intersect(box, seg, num_hits, t_in, t_out));
+         CPPUNIT_ASSERT(num_hits == 2);
+         CPPUNIT_ASSERT(t_in == 0.0f);
+         CPPUNIT_ASSERT(t_out == 1.0f);
+      }
+
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+                          gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Unit line segment with its origin on the top side of the box
+         // pointing away from the box perpendicular to the top side (along
+         // the positive Y-axis).
+         gmtl::LineSegf seg(gmtl::Point3f(0.0f, 0.5f, 0.0f),
+                            gmtl::Vec3f(0.0f, 1.0f, 0.0f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(gmtl::intersect(box, seg, num_hits, t_in, t_out));
+         CPPUNIT_ASSERT(num_hits == 1);
+         CPPUNIT_ASSERT(t_in == 0.0f);
+         CPPUNIT_ASSERT(t_in == t_out);
+      }
+
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+                          gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Unit line segment with its origin on the top side of the box
+         // pointing into the box perpendicular to the top side (along the
+         // negative Y-axis).
+         gmtl::LineSegf seg(gmtl::Point3f(0.0f, 0.5f, 0.0f),
+                            gmtl::Vec3f(0.0f, -1.0f, 0.0f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(gmtl::intersect(box, seg, num_hits, t_in, t_out));
+         CPPUNIT_ASSERT(num_hits == 2);
+         CPPUNIT_ASSERT(t_in == 0.0f);
+         CPPUNIT_ASSERT(t_out == 1.0f);
+      }
+
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+                          gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Unit line segment with its origin on the front side of the box
+         // pointing away from the box perpendicular to the front side (along
+         // the positive Z-axis).
+         gmtl::LineSegf seg(gmtl::Point3f(0.0f, 0.0f, 0.5f),
+                            gmtl::Vec3f(0.0f, 0.0f, 1.0f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(gmtl::intersect(box, seg, num_hits, t_in, t_out));
+         CPPUNIT_ASSERT(num_hits == 1);
+         CPPUNIT_ASSERT(t_in == 0.0f);
+         CPPUNIT_ASSERT(t_in == t_out);
+      }
+
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+                          gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Unit line segment with its origin on the front side of the box
+         // pointing into the box perpendicular to the front side (along the
+         // negative Z-axis).
+         gmtl::LineSegf seg(gmtl::Point3f(0.0f, 0.0f, 0.5f),
+                            gmtl::Vec3f(0.0f, 0.0f, -1.0f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(gmtl::intersect(box, seg, num_hits, t_in, t_out));
+         CPPUNIT_ASSERT(num_hits == 2);
+         CPPUNIT_ASSERT(t_in == 0.0f);
+         CPPUNIT_ASSERT(t_out == 1.0f);
+      }
+
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+                          gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Unit line segment with its origin outside the box on its right
+         // side pointing away from the box perpendicular to the right side
+         // (along the positive X-axis).
+         gmtl::LineSegf seg(gmtl::Point3f(1.0f, 0.0f, 0.0f),
+                            gmtl::Vec3f(1.0f, 0.0f, 0.0f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(! gmtl::intersect(box, seg, num_hits, t_in, t_out));
+         CPPUNIT_ASSERT(num_hits == 0);
+      }
+
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+                          gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Unit line segment with its origin outside the box on its right
+         // side pointing into the box perpendicular to the right side (along
+         // the positive X-axis).
+         gmtl::LineSegf seg(gmtl::Point3f(1.0f, 0.0f, 0.0f),
+                            gmtl::Vec3f(-1.0f, 0.0f, 0.0f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(gmtl::intersect(box, seg, num_hits, t_in, t_out));
+         CPPUNIT_ASSERT(num_hits == 1);
+         CPPUNIT_ASSERT(t_in == 0.5f);
+         CPPUNIT_ASSERT(t_out == t_in);
+      }
+
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+                          gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Unit line segment with its origin above the box pointing away from
+         // the box perpendicular to the top side (along the positive Y-axis).
+         gmtl::LineSegf seg(gmtl::Point3f(0.0f, 1.0f, 0.0f),
+                            gmtl::Vec3f(0.0f, 1.0f, 0.0f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(! gmtl::intersect(box, seg, num_hits, t_in, t_out));
+         CPPUNIT_ASSERT(num_hits == 0);
+      }
+
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+                          gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Unit line segment with its origin above the box pointing into the
+         // box perpendicular to the top side (along the positive Y-axis).
+         gmtl::LineSegf seg(gmtl::Point3f(0.0f, 1.0f, 0.0f),
+                            gmtl::Vec3f(0.0f, -1.0f, 0.0f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(gmtl::intersect(box, seg, num_hits, t_in, t_out));
+         CPPUNIT_ASSERT(num_hits == 1);
+         CPPUNIT_ASSERT(t_in == 0.5f);
+         CPPUNIT_ASSERT(t_out == t_in);
+      }
+
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+                          gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Unit line segment with its origin in front of the box pointing
+         // away from the box perpendicular to the front side (along the
+         // positive Z-axis).
+         gmtl::LineSegf seg(gmtl::Point3f(0.0f, 0.0f, 1.0f),
+                            gmtl::Vec3f(0.0f, 0.0f, 1.0f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(! gmtl::intersect(box, seg, num_hits, t_in, t_out));
+         CPPUNIT_ASSERT(num_hits == 0);
+      }
+
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+                          gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Unit line segment with its origin in front of the box pointing
+         // into the box perpendicular to the front side (along the positive
+         // Z-axis).
+         gmtl::LineSegf seg(gmtl::Point3f(0.0f, 0.0f, 1.0f),
+                        gmtl::Vec3f(0.0f, 0.0f, -1.0f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(gmtl::intersect(box, seg, num_hits, t_in, t_out));
+         CPPUNIT_ASSERT(num_hits == 1);
+         CPPUNIT_ASSERT(t_in == 0.5f);
+         CPPUNIT_ASSERT(t_out == t_in);
+      }
+
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+                          gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Unit line segment with its origin on the right edge of the box
+         // and its endpoint on the left edge of the box.
+         gmtl::LineSegf seg(gmtl::Point3f(0.5f, 0.0f, 0.0f),
+                            gmtl::Point3f(-0.5f, 0.0f, 0.0f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(gmtl::intersect(box, seg, num_hits, t_in, t_out));
+         CPPUNIT_ASSERT(num_hits == 2);
+         CPPUNIT_ASSERT(t_in == 0.0f);
+         CPPUNIT_ASSERT(t_out == 1.0f);
+      }
+
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+                          gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Unit line segment with its origin on the top edge of the box
+         // and its endpoint on the bottom edge of the box.
+         gmtl::LineSegf seg(gmtl::Point3f(0.0f, 0.5f, 0.0f),
+                            gmtl::Point3f(0.0f, -0.5f, 0.0f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(gmtl::intersect(box, seg, num_hits, t_in, t_out));
+         CPPUNIT_ASSERT(num_hits == 2);
+         CPPUNIT_ASSERT(t_in == 0.0f);
+         CPPUNIT_ASSERT(t_out == 1.0f);
+      }
+
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+                          gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Unit line segment with its origin on the front edge of the box
+         // and its endpoint on the back edge of the box.
+         gmtl::LineSegf seg(gmtl::Point3f(0.0f, 0.0f, 0.5f),
+                            gmtl::Point3f(0.0f, 0.0f, -0.5f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(gmtl::intersect(box, seg, num_hits, t_in, t_out));
+         CPPUNIT_ASSERT(num_hits == 2);
+         CPPUNIT_ASSERT(t_in == 0.0f);
+         CPPUNIT_ASSERT(t_out == 1.0f);
+      }
+   }
+
+   void IntersectionTest::testIntersectAABoxRay()
+   {
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+                          gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Ray at the origin and pointing along the positive X-axis.
+         gmtl::Rayf ray(gmtl::Point3f(0.0f, 0.0f, 0.0f),
+                        gmtl::Vec3f(1.0f, 0.0f, 0.0f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(gmtl::intersect(box, ray, num_hits, t_in, t_out));
+         CPPUNIT_ASSERT(num_hits == 1);
+         CPPUNIT_ASSERT(t_in == 0.5f);
+         CPPUNIT_ASSERT(t_in == t_out);
+      }
+
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+                          gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Ray at the origin and pointing along the negative X-axis.
+         gmtl::Rayf ray(gmtl::Point3f(0.0f, 0.0f, 0.0f),
+                        gmtl::Vec3f(-1.0f, 0.0f, 0.0f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(gmtl::intersect(box, ray, num_hits, t_in, t_out));
+         CPPUNIT_ASSERT(num_hits == 1);
+         CPPUNIT_ASSERT(t_in == 0.5f);
+         CPPUNIT_ASSERT(t_in == t_out);
+      }
+
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+                          gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Ray at the origin and pointing along the positive Y-axis.
+         gmtl::Rayf ray(gmtl::Point3f(0.0f, 0.0f, 0.0f),
+                        gmtl::Vec3f(0.0f, 1.0f, 0.0f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(gmtl::intersect(box, ray, num_hits, t_in, t_out));
+         CPPUNIT_ASSERT(num_hits == 1);
+         CPPUNIT_ASSERT(t_in == 0.5f);
+         CPPUNIT_ASSERT(t_in == t_out);
+      }
+
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+                          gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Ray at the origin and pointing along the negative Y-axis.
+         gmtl::Rayf ray(gmtl::Point3f(0.0f, 0.0f, 0.0f),
+                        gmtl::Vec3f(0.0f, -1.0f, 0.0f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(gmtl::intersect(box, ray, num_hits, t_in, t_out));
+         CPPUNIT_ASSERT(num_hits == 1);
+         CPPUNIT_ASSERT(t_in == 0.5f);
+         CPPUNIT_ASSERT(t_in == t_out);
+      }
+
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+                          gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Ray at the origin and pointing along the positive Z-axis.
+         gmtl::Rayf ray(gmtl::Point3f(0.0f, 0.0f, 0.0f),
+                        gmtl::Vec3f(0.0f, 0.0f, 1.0f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(gmtl::intersect(box, ray, num_hits, t_in, t_out));
+         CPPUNIT_ASSERT(num_hits == 1);
+         CPPUNIT_ASSERT(t_in == 0.5f);
+         CPPUNIT_ASSERT(t_in == t_out);
+      }
+
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+                          gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Ray at the origin and pointing along the negative Z-axis.
+         gmtl::Rayf ray(gmtl::Point3f(0.0f, 0.0f, 0.0f),
+                        gmtl::Vec3f(0.0f, 0.0f, -1.0f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(gmtl::intersect(box, ray, num_hits, t_in, t_out));
+         CPPUNIT_ASSERT(num_hits == 1);
+         CPPUNIT_ASSERT(t_in == 0.5f);
+         CPPUNIT_ASSERT(t_in == t_out);
+      }
+
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+                          gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Ray with its origin on the right side of the box pointing away
+         // from the box perpendicular to the right side (along the positive
+         // X-axis).
+         gmtl::Rayf ray(gmtl::Point3f(0.5f, 0.0f, 0.0f),
+                        gmtl::Vec3f(1.0f, 0.0f, 0.0f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(gmtl::intersect(box, ray, num_hits, t_in, t_out));
+         CPPUNIT_ASSERT(num_hits == 1);
+         CPPUNIT_ASSERT(t_in == 0.0f);
+         CPPUNIT_ASSERT(t_in == t_out);
+      }
+
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+                          gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Ray with its origin on the right side of the box pointing into
+         // the box perpendicular to the right side (along the negative
+         // X-axis).
+         gmtl::Rayf ray(gmtl::Point3f(0.5f, 0.0f, 0.0f),
+                        gmtl::Vec3f(-1.0f, 0.0f, 0.0f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(gmtl::intersect(box, ray, num_hits, t_in, t_out));
+         CPPUNIT_ASSERT(num_hits == 2);
+         CPPUNIT_ASSERT(t_in == 0.0f);
+         CPPUNIT_ASSERT(t_out == 1.0f);
+      }
+
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+                          gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Ray with its origin on the top side of the box pointing away
+         // from the box perpendicular to the top side (along the positive
+         // Y-axis).
+         gmtl::Rayf ray(gmtl::Point3f(0.0f, 0.5f, 0.0f),
+                        gmtl::Vec3f(0.0f, 1.0f, 0.0f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(gmtl::intersect(box, ray, num_hits, t_in, t_out));
+         CPPUNIT_ASSERT(num_hits == 1);
+         CPPUNIT_ASSERT(t_in == 0.0f);
+         CPPUNIT_ASSERT(t_in == t_out);
+      }
+
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+                          gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Ray with its origin on the top side of the box pointing into
+         // the box perpendicular to the top side (along the negative Y-axis).
+         gmtl::Rayf ray(gmtl::Point3f(0.0f, 0.5f, 0.0f),
+                        gmtl::Vec3f(0.0f, -1.0f, 0.0f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(gmtl::intersect(box, ray, num_hits, t_in, t_out));
+         CPPUNIT_ASSERT(num_hits == 2);
+         CPPUNIT_ASSERT(t_in == 0.0f);
+         CPPUNIT_ASSERT(t_out == 1.0f);
+      }
+
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+                          gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Ray with its origin on the front side of the box pointing away
+         // from the box perpendicular to the front side (along the positive
+         // Z-axis).
+         gmtl::Rayf ray(gmtl::Point3f(0.0f, 0.0f, 0.5f),
+                        gmtl::Vec3f(0.0f, 0.0f, 1.0f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(gmtl::intersect(box, ray, num_hits, t_in, t_out));
+         CPPUNIT_ASSERT(num_hits == 1);
+         CPPUNIT_ASSERT(t_in == 0.0f);
+         CPPUNIT_ASSERT(t_in == t_out);
+      }
+
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+                          gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Ray with its origin on the front side of the box pointing into
+         // the box perpendicular to the front side (along the negative
+         // Z-axis).
+         gmtl::Rayf ray(gmtl::Point3f(0.0f, 0.0f, 0.5f),
+                        gmtl::Vec3f(0.0f, 0.0f, -1.0f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(gmtl::intersect(box, ray, num_hits, t_in, t_out));
+         CPPUNIT_ASSERT(num_hits == 2);
+         CPPUNIT_ASSERT(t_in == 0.0f);
+         CPPUNIT_ASSERT(t_out == 1.0f);
+      }
+
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+                          gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Ray with its origin outside the box on its right side pointing away
+         // from the box perpendicular to the right side (along the positive
+         // X-axis).
+         gmtl::Rayf ray(gmtl::Point3f(1.0f, 0.0f, 0.0f),
+                        gmtl::Vec3f(1.0f, 0.0f, 0.0f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(! gmtl::intersect(box, ray, num_hits, t_in, t_out));
+         CPPUNIT_ASSERT(num_hits == 0);
+      }
+
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+                          gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Ray with its origin outside the box on its right side pointing into
+         // the box perpendicular to the right side (along the positive
+         // X-axis).
+         gmtl::Rayf ray(gmtl::Point3f(1.0f, 0.0f, 0.0f),
+                        gmtl::Vec3f(-1.0f, 0.0f, 0.0f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(gmtl::intersect(box, ray, num_hits, t_in, t_out));
+         CPPUNIT_ASSERT(num_hits == 2);
+         CPPUNIT_ASSERT(t_in == 0.5f);
+         CPPUNIT_ASSERT(t_out == 1.5f);
+      }
+
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+                          gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Ray with its origin above the box pointing away from the box
+         // perpendicular to the top side (along the positive Y-axis).
+         gmtl::Rayf ray(gmtl::Point3f(0.0f, 1.0f, 0.0f),
+                        gmtl::Vec3f(0.0f, 1.0f, 0.0f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(! gmtl::intersect(box, ray, num_hits, t_in, t_out));
+         CPPUNIT_ASSERT(num_hits == 0);
+      }
+
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+                          gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Ray with its origin above the box pointing into the box
+         // perpendicular to the top side (along the positive Y-axis).
+         gmtl::Rayf ray(gmtl::Point3f(0.0f, 1.0f, 0.0f),
+                        gmtl::Vec3f(0.0f, -1.0f, 0.0f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(gmtl::intersect(box, ray, num_hits, t_in, t_out));
+         CPPUNIT_ASSERT(num_hits == 2);
+         CPPUNIT_ASSERT(t_in == 0.5f);
+         CPPUNIT_ASSERT(t_out == 1.5f);
+      }
+
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+                          gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Ray with its origin in front of the box pointing away from the
+         // box perpendicular to the front side (along the positive Z-axis).
+         gmtl::Rayf ray(gmtl::Point3f(0.0f, 0.0f, 1.0f),
+                        gmtl::Vec3f(0.0f, 0.0f, 1.0f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(! gmtl::intersect(box, ray, num_hits, t_in, t_out));
+         CPPUNIT_ASSERT(num_hits == 0);
+      }
+
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+                          gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Ray with its origin in front of the box pointing into the box
+         // perpendicular to the front side (along the positive Z-axis).
+         gmtl::Rayf ray(gmtl::Point3f(0.0f, 0.0f, 1.0f),
+                        gmtl::Vec3f(0.0f, 0.0f, -1.0f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(gmtl::intersect(box, ray, num_hits, t_in, t_out));
+         CPPUNIT_ASSERT(num_hits == 2);
+         CPPUNIT_ASSERT(t_in == 0.5f);
+         CPPUNIT_ASSERT(t_out == 1.5f);
+      }
    }
 
    void IntersectionTest::testIntersectLineSegPlane()
