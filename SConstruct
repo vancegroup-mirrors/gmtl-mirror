@@ -6,6 +6,7 @@ SConsignFile()
 import os, string, sys
 import re
 import distutils.sysconfig
+import distutils.util
 import SCons
 import SCons.Util
 
@@ -573,7 +574,8 @@ baseEnv = BuildPlatformEnv()
 baseEnv['enable_python'] = False
 Export('baseEnv')
 
-opts = Options('options.cache')
+options_cache = 'options.cache.' + distutils.util.get_platform()
+opts = Options(options_cache)
 AddCppUnitOptions(opts)
 AddPythonOptions(opts)
 AddBoostOptions(opts)
@@ -583,7 +585,7 @@ if SCons.Util.WhereIs('distcc'):
 
 if not has_help_flag:
    opts.Update(baseEnv);
-   opts.Save('options.cache', baseEnv);
+   opts.Save(options_cache, baseEnv);
 
 help_text += "Platform: " + GetPlatform() + "\n";
 help_text += str(baseEnv["TOOLS"]) + "\n";
@@ -595,8 +597,9 @@ help_text += """\nOther Options:
 """
 help_text += """
 You can store configuration options in the file: options.custom
-This file will be loaded each time.  Note: Options are cached in the file: options.cache.
-"""
+This file will be loaded each time.  Note: Options are cached in the file
+%s
+""" % options_cache
 
 installed_targets = []   # List of targets in the install location
 Export('installed_targets')
