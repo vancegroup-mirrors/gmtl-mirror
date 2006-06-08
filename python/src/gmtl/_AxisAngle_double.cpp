@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _AxisAngle_double.cpp,v $
- * Date modified: $Date: 2005-07-14 02:48:22 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2004-10-27 19:01:32 $
+ * Version:       $Revision: 1.2 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -49,9 +49,6 @@ void _Export_AxisAngle_double()
         .def("setAngle", &gmtl::AxisAngle<double>::setAngle)
         .def("getAxis", &gmtl::AxisAngle<double>::getAxis)
         .def("getAngle", &gmtl::AxisAngle<double>::getAngle, return_value_policy< copy_const_reference >())
-        .def("set",
-             (gmtl::AxisAngle<double>& (gmtl::AxisAngle<double>::*)(const gmtl::AxisAngle<double>&)) &gmtl::AxisAngle<double>::operator=,
-             return_internal_reference<1>())
         .def_pickle(gmtlPickle::AxisAngle_pickle<double>())
         .def(self == self)
         .def(self != self)

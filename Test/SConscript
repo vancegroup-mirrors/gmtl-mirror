@@ -1,10 +1,9 @@
-import distutils.util
 import os
 pj = os.path.join
 
 Import('GetPlatform', 'optimize')
 
-builddir = "build." + distutils.util.get_platform()
+builddir = 'build.' + GetPlatform()
 if optimize != 'no':
    builddir = builddir + '.opt'
 BuildDir(builddir, 'TestSuite', duplicate=0)

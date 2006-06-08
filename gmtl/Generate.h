@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2006-04-24 14:33:04 $
- * Version:       $Revision: 1.91 $
+ * Date modified: $Date: 2005-05-12 19:01:56 $
+ * Version:       $Revision: 1.89 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -470,85 +470,32 @@ namespace gmtl
       gmtlASSERT( ROWS >= 3 && COLS >= 3 && ROWS <= 4 && COLS <= 4 &&
             "this is undefined for Matrix smaller than 3x3 or bigger than 4x4" );
 
+      DATA_TYPE sx;
+      DATA_TYPE cz;
+
       // @todo metaprogram this!
       const int& order = ROT_ORDER::ID;
       switch (order)
       {
       case XYZ::ID:
          {
-#if 0
             euler[2] = Math::aTan2( -mat(0,1), mat(0,0) );       // -(-cy*sz)/(cy*cz) - cy falls out
             euler[0] = Math::aTan2( -mat(1,2), mat(2,2) );       // -(sx*cy)/(cx*cy) - cy falls out
-            DATA_TYPE cz = Math::cos( euler[2] );
+            cz = Math::cos( euler[2] );
             euler[1] = Math::aTan2( mat(0,2), mat(0,0) / cz );   // (sy)/((cy*cz)/cz)
-#else
-            DATA_TYPE x(0), y(0), z(0);
-            y = Math::aSin( mat(0,2));
-            if (y < gmtl::Math::PI_OVER_2)
-            {
-               if(y > -gmtl::Math::PI_OVER_2)
-               {
-                  x = Math::aTan2(-mat(1,2),mat(2,2));
-                  z = Math::aTan2(-mat(0,1),mat(0,0));
-               }
-               else  // Non-unique (x - z constant)
-               {
-                  x = -Math::aTan2(mat(1,0), mat(1,1));
-                  z = 0;
-               }
-            }
-            else
-            {
-               // not unique (x + z constant)
-               x = Math::aTan2(mat(1,0), mat(1,1));
-               z = 0;
-            }
-            euler[0] = x;
-            euler[1] = y;
-            euler[2] = z;
-
-#endif
          }
          break;
       case ZYX::ID:
          {
-#if 0
             euler[0] = Math::aTan2( mat(1,0), mat(0,0) );        // (cy*sz)/(cy*cz) - cy falls out
             euler[2] = Math::aTan2( mat(2,1), mat(2,2) );        // (sx*cy)/(cx*cy) - cy falls out
-            DATA_TYPE sx = Math::sin( euler[2] );
+            sx = Math::sin( euler[2] );
             euler[1] = Math::aTan2( -mat(2,0), mat(2,1) / sx );  // -(-sy)/((sx*cy)/sx)
-#else
-            DATA_TYPE x(0), y(0), z(0);
-
-            y = Math::aSin(-mat(2,0));
-            if(y < Math::PI_OVER_2)
-            {
-               if(y>-Math::PI_OVER_2)
-               {
-                  z = Math::aTan2(mat(1,0), mat(0,0));
-                  x = Math::aTan2(mat(2,1), mat(2,2));
-               }
-               else  // not unique (x + z constant)
-               {
-                  z = Math::aTan2(-mat(0,1),-mat(0,2));
-                  x = 0;
-               }
-            }
-            else  // not unique (x - z constant)
-            {
-               z = -Math::aTan2(mat(0,1), mat(0,2));
-               x = 0;
-            }
-            euler[0] = z;
-            euler[1] = y;
-            euler[2] = x;
-#endif
          }
          break;
       case ZXY::ID:
          {
-#if 0
-         // Extract the rotation directly from the matrix
+            // Extract the rotation directly from the matrix
             DATA_TYPE x_angle;
             DATA_TYPE y_angle;
             DATA_TYPE z_angle;
@@ -587,32 +534,6 @@ namespace gmtl
             euler[1] = x_angle;
             euler[2] = y_angle;
             euler[0] = z_angle;
-#else
-            DATA_TYPE x,y,z;
-
-            x = Math::aSin(mat(2,1));
-            if(x < Math::PI_OVER_2)
-            {
-               if(x > -Math::PI_OVER_2)
-               {
-                  z = Math::aTan2(-mat(0,1), mat(1,1));
-                  y = Math::aTan2(-mat(2,0), mat(2,2));
-               }
-               else  // not unique (y - z constant)
-               {
-                  z = -Math::aTan2(mat(0,2), mat(0,0));
-                  y = 0;
-               }
-            }
-            else  // not unique (y + z constant)
-            {
-               z = Math::aTan2(mat(0,2), mat(0,0));
-               y = 0;
-            }
-            euler[0] = z;
-            euler[1] = x;
-            euler[2] = y;
-#endif
          }
          break;
       default:
@@ -1022,7 +943,7 @@ namespace gmtl
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
    inline DATA_TYPE makeZRot( const Matrix<DATA_TYPE, ROWS, COLS>& mat )
    {
-      const gmtl::Vec<DATA_TYPE, 3> forward_point(1.0f, 0.0f, 0.0f);   // +x
+      const gmtl::Vec<DATA_TYPE, 3> forward_point(0.0f, 0.0f, -1.0f);   // -Z
       const gmtl::Vec<DATA_TYPE, 3> origin_point(0.0f, 0.0f, 0.0f);
       gmtl::Vec<DATA_TYPE, 3> end_point, start_point;
 

@@ -1,22 +1,5 @@
 DATE       AUTHOR       CHANGE
 ---------- ------------ -------------------------------------------------------
-2006-06-08 patrickh     Added overloads of gmtl::intersect() for gmtl::AABox<T>
-                        that test for intersection with gmtl::LineSeg<T> and
-                        gmtl::Ray<T>.
-2006-06-08 dshipton     Version directories by default
-2006-06-02 dshipton     Allow for pkg-config use to obtain cxxflags
-                        NEW VERSION: 0.4.11
-
-[0.4.10 released - 4.13.2005]==================================================
-2005-12-01 patrickh     Fixed unpickling of gmtl.Plane objetcs.
-2005-12-01 patrickh     Fixed GCC 3.2 compile errors in PyGMTL.
-2005-07-13 patrickh     Provided access to the overloaded operator= in PyGMTL
-                        through the addition of a set() method overload.
-
-[0.4.9 released - 7.5.2005]====================================================
-2005-06-23 allenb       Fixed spelling error in Math::aTan2
-                        NEW VERSION: 0.4.9
-2005-06-23 allenb       Fixed bug in Matrix to Euler decomposition.
 2005-06-05 patrickh     Completed work on fixing many bugs in and adding many
                         enhancements to PyGMTL.  Among other things, PyGMTL
                         now has a test suite that is nearly as comprehensive
