@@ -36,6 +36,7 @@ scons prefix=%{_prefix}
 scons install prefix=%{buildroot}%{_prefix}
 # Remove all stupid scons temp files
 find %{buildroot}%{_prefix} -name .sconsign -exec rm {} \;
+chmod 644 %{buildroot}%{_datadir}/pkgconfig/gmtl.pc
 
 %clean
 rm -rf %{buildroot}
@@ -52,6 +53,7 @@ rm -rf %{buildroot}
 %defattr(-, root, root)
 %{_bindir}/gmtl-config
 %{_includedir}/gmtl
+%{_datadir}/pkgconfig
 
 %doc AUTHORS ChangeLog COPYING LICENSE.addendum README
 
