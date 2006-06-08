@@ -4,6 +4,7 @@ DATE       AUTHOR       CHANGE
                         that test for intersection with gmtl::LineSeg<T> and
                         gmtl::Ray<T>.
 2006-06-08 dshipton     Version directories by default
+                        NEW VERSION: 0.5.0
 2006-06-02 dshipton     Allow for pkg-config use to obtain cxxflags
                         NEW VERSION: 0.4.11
 
