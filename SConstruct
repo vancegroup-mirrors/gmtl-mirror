@@ -583,7 +583,6 @@ opts = Options(options_cache)
 AddCppUnitOptions(opts)
 AddPythonOptions(opts)
 AddBoostOptions(opts)
-opts.Add('versioning', 'If no then build headers without versioning', 'yes')
 
 if SCons.Util.WhereIs('distcc'):
    baseEnv.Prepend(CXX = "distcc ", CC = "distcc ")
@@ -645,15 +644,9 @@ if not has_help_flag:
       hdrs.extend( [pj(dirname,f) for f in flist if f.endswith('.h')])
    os.path.walk('gmtl',get_headers,gmtl_headers)
    #print "GMTL Headers:\n", gmtl_headers, "\n"
-
-   if baseEnv['versioning'] == 'yes':
-      INCLUDE_VERSION= "gmtl-%s.%s.%s" % GetGMTLVersion()
-      INCLUDE_DIR = pj('include', INCLUDE_VERSION)
-   else:
-      INCLUDE_DIR = 'include'
    
    for h in gmtl_headers:
-      installed_targets += baseEnv.InstallAs(pj(PREFIX, INCLUDE_DIR, h), h)
+      installed_targets += baseEnv.InstallAs(pj(PREFIX, 'include', h), h)
       pkg.addExtraDist([File(h)])
    
    # Process subdirectories
@@ -672,7 +665,7 @@ if not has_help_flag:
          '@prefix@'                    : PREFIX,
          '@exec_prefix@'               : '${prefix}',
          '@gmtl_cxxflags@'             : '',
-         '@includedir@'                : pj(PREFIX, INCLUDE_DIR),
+         '@includedir@'                : pj(PREFIX, 'include'),
          '@gmtl_extra_cxxflags@'       : '',
          '@gmtl_extra_include_dirs@'   : '',
          '@VERSION_MAJOR@'             : str(GMTL_VERSION[0]),
@@ -694,7 +687,7 @@ if not has_help_flag:
          '@prefix@'                    : PREFIX,
          '@exec_prefix@'               : '${prefix}',
          '@gmtl_cxxflags@'             : '',
-         '@includedir@'                : pj(PREFIX, INCLUDE_DIR),
+         '@includedir@'                : pj(PREFIX, 'include'),
          '@gmtl_extra_cxxflags@'       : '',
          '@gmtl_extra_include_dirs@'   : '',
          '@version_major@'             : str(GMTL_VERSION[0]),
