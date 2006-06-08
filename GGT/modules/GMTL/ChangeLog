@@ -1,5 +1,6 @@
 DATE       AUTHOR       CHANGE
 ---------- ------------ -------------------------------------------------------
+2006-06-08 dshipton     Version directories by default
 2006-06-02 dshipton     Allow for pkg-config use to obtain cxxflags
                         NEW VERSION: 0.4.11
 [0.4.10 released - 4.13.2005]==================================================
