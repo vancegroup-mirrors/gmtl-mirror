@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-intersect-wrappers.h,v $
- * Date modified: $Date: 2006-06-08 21:00:02 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2005-06-05 21:26:54 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -52,36 +52,6 @@ namespace gmtlWrappers
    tuple intersect(const gmtl::AABox<T>& b, const gmtl::Point<T, 3>& p)
    {
       return make_tuple(gmtl::intersect(b, p));
-   }
-
-   template<typename T>
-   tuple intersect(const gmtl::AABox<T>& b, const gmtl::LineSeg<T>& l)
-   {
-      unsigned int c;
-      T val1, val2;
-      bool result = gmtl::intersect(b, l, c, val1, val2);
-      return make_tuple(result, c, val1, val2);
-   }
-
-   template<typename T>
-   tuple intersect(const gmtl::LineSeg<T>& p, const gmtl::AABox<T>& b)
-   {
-      return intersect(b, p);
-   }
-
-   template<typename T>
-   tuple intersect(const gmtl::AABox<T>& b, const gmtl::Ray<T>& r)
-   {
-      unsigned int c;
-      T val1, val2;
-      bool result = gmtl::intersect(b, r, c, val1, val2);
-      return make_tuple(result, c, val1, val2);
-   }
-
-   template<typename T>
-   tuple intersect(const gmtl::Ray<T>& r, const gmtl::AABox<T>& b)
-   {
-      return intersect(b, r);
    }
 
    template<typename T>
@@ -204,16 +174,6 @@ namespace gmtlWrappers
                             const gmtl::AABoxf&, const gmtl::Vec3f&);
    template tuple intersect(const gmtl::AABoxd&, const gmtl::Vec3d&,
                             const gmtl::AABoxd&, const gmtl::Vec3d&);
-
-   template tuple intersect(const gmtl::AABoxf&, const gmtl::LineSegf&);
-   template tuple intersect(const gmtl::AABoxd&, const gmtl::LineSegd&);
-   template tuple intersect(const gmtl::LineSegf&, const gmtl::AABoxf&);
-   template tuple intersect(const gmtl::LineSegd&, const gmtl::AABoxd&);
-
-   template tuple intersect(const gmtl::AABoxf&, const gmtl::Rayf&);
-   template tuple intersect(const gmtl::AABoxd&, const gmtl::Rayd&);
-   template tuple intersect(const gmtl::Rayf&, const gmtl::AABoxf&);
-   template tuple intersect(const gmtl::Rayd&, const gmtl::AABoxd&);
 
    template tuple intersect(const gmtl::Spheref&, const gmtl::Vec3f&,
                             const gmtl::Spheref&, const gmtl::Vec3f&);

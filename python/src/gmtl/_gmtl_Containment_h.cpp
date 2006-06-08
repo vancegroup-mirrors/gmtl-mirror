@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _gmtl_Containment_h.cpp,v $
- * Date modified: $Date: 2005-12-02 00:36:55 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2005-06-05 21:26:16 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -52,12 +52,7 @@ void makeVolume(gmtl::Sphere<DATA_TYPE>& container, list pts)
 
    for ( unsigned int i = 0; i < size; ++i )
    {
-#if defined(__GNUC__) && __GNUC__ == 3 && __GNUC_MINOR__ == 2
-      gmtl::Point<DATA_TYPE, 3> temp = extract< gmtl::Point<DATA_TYPE, 3> >(pts[i]);
-      pt_vec[i] = temp;
-#else
       pt_vec[i] = extract< gmtl::Point<DATA_TYPE, 3> >(pts[i]);
-#endif
    }
 
    gmtl::makeVolume(container, pt_vec);

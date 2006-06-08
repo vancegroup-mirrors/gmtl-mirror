@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Sphere_double.cpp,v $
- * Date modified: $Date: 2005-07-14 02:48:22 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2005-06-04 17:13:46 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -48,9 +48,6 @@ void _Export_Sphere_double()
         .def("getRadius", &gmtl::Sphere<double>::getRadius, return_value_policy< copy_const_reference >())
         .def("setCenter", &gmtl::Sphere<double>::setCenter)
         .def("setRadius", &gmtl::Sphere<double>::setRadius)
-        .def("set",
-             (gmtl::Sphere<double>& (gmtl::Sphere<double>::*)(const gmtl::Sphere<double>&)) &gmtl::Sphere<double>::operator=,
-             return_internal_reference<1>())
         .def_pickle(gmtlPickle::Sphere_pickle<double>())
         .def(self == self)
         .def(self != self)

@@ -6,7 +6,6 @@ SConsignFile()
 import os, string, sys
 import re
 import distutils.sysconfig
-import distutils.util
 import SCons
 import SCons.Util
 
@@ -146,7 +145,7 @@ def BuildDarwinEnvironment():
    m = exp.search(distutils.sysconfig.get_config_var('prefix'))
    framework_opt = '-F' + m.group(1)
 
-   CXX = WhereIs('g++')
+   CXX = 'g++'
 
    ver_re = re.compile(r'gcc version ((\d+)\.(\d+)\.(\d+))')
    (gv_stdout, gv_stdin, gv_stderr) = os.popen3(CXX + ' -v')
@@ -176,7 +175,7 @@ def BuildDarwinEnvironment():
 
    # Debug or optimize build?
    if optimize != 'no':
-      CXXFLAGS.extend(['-DNDEBUG', '-O3'])
+      CXXFLAGS.extend(['-DNDEBUG', '-O2'])
    else:
       CXXFLAGS.extend(['-D_DEBUG', '-g'])
 
@@ -294,7 +293,7 @@ def ValidateBoostVersion(key, value, environ):
    global boost_version
 
    if "BoostVersion" == key:
-      exp = re.compile('^(\d+\.\d+(\.\d+)?)\D*$')
+      exp = re.compile('^(\d+\.\d+)\D*$')
       match = exp.search(value)
       boost_version = match.group(1)
       print "Using Boost version", boost_version
@@ -360,14 +359,6 @@ def ValidateBoostOption(key, value, environ):
          else:
             threading = '-mt'
 
-         if optimize == 'no':
-            if platform == 'win32':
-               dbg = '-gd'
-            else:
-               dbg = '-d'
-         else:
-            dbg = ''
-
          if platform == 'win32':
             shlib_prefix = ''
             shlib_ext = 'dll'
@@ -386,39 +377,13 @@ def ValidateBoostOption(key, value, environ):
          boost_major_ver     = ver_num / 100000
 
          version = '-%d_%d' % (boost_major_ver, boost_minor_ver)
-         if boost_sub_minor_ver > 0:
-            version += '_%d' % boost_sub_minor_ver
+         boost_python_lib_name = pj(value, 'lib',
+                                    '%sboost_python%s%s%s.%s' % \
+                                       (shlib_prefix, tool, threading,
+                                        version, shlib_ext))
 
-         bpl_found = False
-         libdirs = ['lib']
-
-         if os.uname()[4] == 'x86_64':
-            libdirs.append('lib64')
-
-         full_bpl = 'boost_python%s%s%s%s' % (tool, threading, dbg, version)
-         min_bpl  = 'boost_python'
-         names = [full_bpl, min_bpl]
-
-         # We would prefer to use the full Boost.Python name, but the search
-         # performed below will give us something valid.
-         bpl_name = full_bpl
-
-         for l in libdirs:
-            for n in names:
-               boost_python_lib_name = pj(value, l,
-                                          '%s%s.%s' % (shlib_prefix, n,
-                                                       shlib_ext))
-
-               print "Checking for '%s'" % boost_python_lib_name
-               if os.path.isfile(boost_python_lib_name):
-                  print "Using '%s'" % boost_python_lib_name
-                  bpl_libdir = l
-                  bpl_name   = n
-                  bpl_found  = True
-                  break
-
-         if not bpl_found:
-            print "No Boost.Python library was found in", libdirs
+         if not os.path.isfile(boost_python_lib_name):
+            print "[%s] not found." % boost_python_lib_name
             Exit()
             return False
 
@@ -429,8 +394,18 @@ def ValidateBoostOption(key, value, environ):
          else:
             environ.Append(BoostCPPPATH = [pj(boost_inc_dir)])
 
-         environ.Append(BoostLIBPATH = [pj(value, bpl_libdir)])
-         environ.Append(BoostLIBS = [bpl_name])
+         environ.Append(BoostLIBPATH = [pj(value, 'lib')])
+
+         if optimize == 'no':
+            if platform == 'win32':
+               dbg = '-gd'
+            else:
+               dbg = '-d'
+         else:
+            dbg = ''
+
+         environ.Append(BoostLIBS = ['boost_python%s%s%s%s' % \
+                                        (tool, threading, dbg, version)])
 
    else:
       assert False, "Invalid Boost key"
@@ -456,11 +431,7 @@ def ValidatePythonOption(key, value, environ):
    sys.stdout.write("checking for %s [%s]...\n" % (key, value))
 
    if "EnablePython" == key:
-      value = value.lower()
-      if value == 'true' or value == '1' or value == 'yes':
-         enable_python = True
-      else:
-         enable_python = False
+      enable_python = value
 
       if enable_python:
          required_version = 2.2
@@ -578,19 +549,17 @@ baseEnv = BuildPlatformEnv()
 baseEnv['enable_python'] = False
 Export('baseEnv')
 
-options_cache = 'options.cache.' + distutils.util.get_platform()
-opts = Options(options_cache)
+opts = Options('options.cache')
 AddCppUnitOptions(opts)
 AddPythonOptions(opts)
 AddBoostOptions(opts)
-opts.Add('versioning', 'If no then build headers without versioning', 'yes')
 
 if SCons.Util.WhereIs('distcc'):
    baseEnv.Prepend(CXX = "distcc ", CC = "distcc ")
 
 if not has_help_flag:
    opts.Update(baseEnv);
-   opts.Save(options_cache, baseEnv);
+   opts.Save('options.cache', baseEnv);
 
 help_text += "Platform: " + GetPlatform() + "\n";
 help_text += str(baseEnv["TOOLS"]) + "\n";
@@ -602,9 +571,8 @@ help_text += """\nOther Options:
 """
 help_text += """
 You can store configuration options in the file: options.custom
-This file will be loaded each time.  Note: Options are cached in the file
-%s
-""" % options_cache
+This file will be loaded each time.  Note: Options are cached in the file: options.cache.
+"""
 
 installed_targets = []   # List of targets in the install location
 Export('installed_targets')
@@ -619,7 +587,6 @@ if not has_help_flag:
       ChangeLog
       COPYING
       gmtl-config.in
-      gmtl.pc.in
       SConstruct
       docs/Makefile
       docs/docbook.mk
@@ -645,23 +612,15 @@ if not has_help_flag:
       hdrs.extend( [pj(dirname,f) for f in flist if f.endswith('.h')])
    os.path.walk('gmtl',get_headers,gmtl_headers)
    #print "GMTL Headers:\n", gmtl_headers, "\n"
-
-   if baseEnv['versioning'] == 'yes':
-      INCLUDE_VERSION= "gmtl-%s.%s.%s" % GetGMTLVersion()
-      INCLUDE_DIR = pj('include', INCLUDE_VERSION)
-   else:
-      INCLUDE_DIR = 'include'
    
    for h in gmtl_headers:
-      installed_targets += baseEnv.InstallAs(pj(PREFIX, INCLUDE_DIR, h), h)
+      installed_targets += baseEnv.InstallAs(pj(PREFIX, 'include', h), h)
       pkg.addExtraDist([File(h)])
    
    # Process subdirectories
    subdirs = []
    if enable_python:
-      build_dir = 'build.' + distutils.util.get_platform()
-      BuildDir(build_dir, 'python', duplicate = 0)
-      subdirs.append(build_dir)
+      subdirs.append('python')
    if have_cppunit:
       subdirs.append('Test')
    SConscript(dirs = subdirs)
@@ -672,7 +631,7 @@ if not has_help_flag:
          '@prefix@'                    : PREFIX,
          '@exec_prefix@'               : '${prefix}',
          '@gmtl_cxxflags@'             : '',
-         '@includedir@'                : pj(PREFIX, INCLUDE_DIR),
+         '@includedir@'                : pj(PREFIX, 'include'),
          '@gmtl_extra_cxxflags@'       : '',
          '@gmtl_extra_include_dirs@'   : '',
          '@VERSION_MAJOR@'             : str(GMTL_VERSION[0]),
@@ -680,29 +639,8 @@ if not has_help_flag:
          '@VERSION_PATCH@'             : str(GMTL_VERSION[2]),
       }
    env.ConfigBuilder('gmtl-config','gmtl-config.in',submap = gmtl_config_submap)
-   # The following is commented out because it causes gmtl-config to be
-   # regenerated if the value of PREFIX changes between separate build and
-   # install invocations. This is a problem when building a GMTL RPM since
-   # the RPM is built from a GMTL installation made in a temporary location
-   # that is not the same as where it gets installed by an end user.
-#   env.Depends('gmtl-config', Value(gmtl_config_submap))
+   env.Depends('gmtl-config', Value(gmtl_config_submap))
    installed_targets += env.Install(pj(PREFIX, 'bin'), 'gmtl-config')
-
-   # Setup the builder for gmtl-config
-   env = baseEnv.Copy(BUILDERS = builders)
-   gmtl_pc_submap = {
-         '@prefix@'                    : PREFIX,
-         '@exec_prefix@'               : '${prefix}',
-         '@gmtl_cxxflags@'             : '',
-         '@includedir@'                : pj(PREFIX, INCLUDE_DIR),
-         '@gmtl_extra_cxxflags@'       : '',
-         '@gmtl_extra_include_dirs@'   : '',
-         '@version_major@'             : str(GMTL_VERSION[0]),
-         '@version_minor@'             : str(GMTL_VERSION[1]),
-         '@version_patch@'             : str(GMTL_VERSION[2]),
-      }
-   env.ConfigBuilder('gmtl.pc','gmtl.pc.in',submap = gmtl_pc_submap)
-   installed_targets += env.Install(pj(PREFIX, 'share', 'pkgconfig'), 'gmtl.pc')
 
    pkg.build()
    installed_targets += pkg.getInstalledTargets()

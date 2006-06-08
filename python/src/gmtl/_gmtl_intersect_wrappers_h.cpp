@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _gmtl_intersect_wrappers_h.cpp,v $
- * Date modified: $Date: 2006-06-08 21:00:02 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2005-06-05 21:26:54 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -41,14 +41,6 @@ void _Export_gmtl_intersect_wrappers_h()
    def("intersect", (tuple (*)(const gmtl::AABox<float>&, const gmtl::Point<float,3>&)) &gmtlWrappers::intersect);
    def("intersect", (tuple (*)(const gmtl::AABox<double>&, const gmtl::Point<double,3>&)) &gmtlWrappers::intersect);
    def("intersect", (tuple (*)(const gmtl::AABox<float>&, const gmtl::Vec<float,3>&, const gmtl::AABox<float>&, const gmtl::Vec<float,3>&)) &gmtlWrappers::intersect);
-   def("intersect", (tuple (*)(const gmtl::AABox<float>&, const gmtl::LineSeg<float>&)) &gmtlWrappers::intersect);
-   def("intersect", (tuple (*)(const gmtl::AABox<double>&, const gmtl::LineSeg<double>&)) &gmtlWrappers::intersect);
-   def("intersect", (tuple (*)(const gmtl::LineSeg<float>&, const gmtl::AABox<float>&)) &gmtlWrappers::intersect);
-   def("intersect", (tuple (*)(const gmtl::LineSeg<double>&, const gmtl::AABox<double>&)) &gmtlWrappers::intersect);
-   def("intersect", (tuple (*)(const gmtl::AABox<float>&, const gmtl::Ray<float>&)) &gmtlWrappers::intersect);
-   def("intersect", (tuple (*)(const gmtl::AABox<double>&, const gmtl::Ray<double>&)) &gmtlWrappers::intersect);
-   def("intersect", (tuple (*)(const gmtl::Ray<float>&, const gmtl::AABox<float>&)) &gmtlWrappers::intersect);
-   def("intersect", (tuple (*)(const gmtl::Ray<double>&, const gmtl::AABox<double>&)) &gmtlWrappers::intersect);
    def("intersect", (tuple (*)(const gmtl::AABox<double>&, const gmtl::Vec<double,3>&, const gmtl::AABox<double>&, const gmtl::Vec<double,3>&)) &gmtlWrappers::intersect);
    def("intersect", (tuple (*)(const gmtl::Sphere<float>&, const gmtl::Vec<float,3>&, const gmtl::Sphere<float>&, const gmtl::Vec<float,3>&)) &gmtlWrappers::intersect);
    def("intersect", (tuple (*)(const gmtl::Sphere<double>&, const gmtl::Vec<double,3>&, const gmtl::Sphere<double>&, const gmtl::Vec<double,3>&)) &gmtlWrappers::intersect);
