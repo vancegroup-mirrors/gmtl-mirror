@@ -28,6 +28,12 @@ those types.
 
 %define py_ver %(python -c 'import sys;print(sys.version[0:3])')
 
+%ifarch i386 i486 i586
+%define pygmtl_arch i686
+%else
+%define pygmtl_arch %{_arch}
+%endif
+
 %prep
 rm -rf %{buildroot}
 %setup -q -n gmtl-%{version}
@@ -40,7 +46,7 @@ strip python/gmtl.so
 %install
 install_dir=`python -c 'import distutils.sysconfig as ds; print ds.get_python_lib(True)'`
 mkdir -p %{buildroot}$install_dir
-cp -p python/gmtl.so %{buildroot}$install_dir
+cp -p build.linux-%{pygmtl_arch}/gmtl.so %{buildroot}$install_dir
 
 %clean
 rm -rf %{buildroot}
