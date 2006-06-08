@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Ray_float.cpp,v $
- * Date modified: $Date: 2005-07-14 02:48:22 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2005-06-06 03:48:27 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -49,9 +49,6 @@ void _Export_Ray_float()
         .def("setOrigin", &gmtl::Ray<float>::setOrigin)
         .def("getDir", &gmtl::Ray<float>::getDir, return_value_policy< copy_const_reference >())
         .def("setDir", &gmtl::Ray<float>::setDir)
-        .def("set",
-             (gmtl::Ray<float>& (gmtl::Ray<float>::*)(const gmtl::Ray<float>&)) &gmtl::Ray<float>::operator=,
-             return_internal_reference<1>())
         .def_pickle(gmtlPickle::Ray_pickle<double>())
         .def(self == self)
         .def(self != self)

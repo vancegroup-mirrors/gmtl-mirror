@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Tri_double.cpp,v $
- * Date modified: $Date: 2005-07-14 02:48:22 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2005-06-05 22:19:45 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -46,9 +46,6 @@ void _Export_Tri_double()
         .def("edge", (gmtl::Vec<double, 3> (gmtl::Tri<double>::*)(int) const) &gmtl::Tri<double>::edge)
         .def("edge", (gmtl::Vec<double, 3> (gmtl::Tri<double>::*)(int, int) const) &gmtl::Tri<double>::edge)
         .def("set", &gmtl::Tri<double>::set)
-        .def("set",
-             (gmtl::Tri<double>& (gmtl::Tri<double>::*)(const gmtl::Tri<double>&)) &gmtl::Tri<double>::operator=,
-             return_internal_reference<1>())
         .def("__getitem__", (gmtl::Point<double, 3>& (gmtl::Tri<double>::*)(const unsigned)) &gmtl::Tri<double>::operator[], return_internal_reference< 1 >())
         .def("__setitem__", (void (*)(gmtl::Tri<double>*, const unsigned, const gmtl::Point<double, 3>&)) gmtlWrappers::setArrayElement)
         .def_pickle(gmtlPickle::Tri_pickle<double>())

@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Matrix_float_4_4.cpp,v $
- * Date modified: $Date: 2005-07-14 02:48:22 $
- * Version:       $Revision: 1.12 $
+ * Date modified: $Date: 2005-06-06 03:48:27 $
+ * Version:       $Revision: 1.11 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -48,9 +48,6 @@ void _Export_Matrix_float_4_4()
         .def_readwrite("state", &gmtl::Matrix<float,4,4>::mState)
         .def("set", (void (gmtl::Matrix<float,4,4>::*)(float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float) )&gmtl::Matrix<float,4,4>::set)
         .def("set", (void (*)(gmtl::Matrix<float,4,4>*,list))&gmtlWrappers::Matrix_set)
-        .def("set",
-             (gmtl::Matrix<float, 4, 4>& (gmtl::Matrix<float, 4, 4>::*)(const gmtl::Matrix<float, 4, 4>&)) &gmtl::Matrix<float, 4, 4>::operator=,
-             return_internal_reference<1>())
         .def("setTranspose", (void (*)(gmtl::Matrix<float,4,4>*,list))&gmtlWrappers::Matrix_setTranspose)
         .def("getData", (list (*)(gmtl::Matrix<float,4,4>*)) &gmtlWrappers::Matrix_4_4_getData)
         .add_property("data", (list (*)(gmtl::Matrix<float,4,4>*)) &gmtlWrappers::Matrix_4_4_getData)

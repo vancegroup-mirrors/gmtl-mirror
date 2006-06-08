@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Generate.h,v $
- * Date modified: $Date: 2006-04-24 14:33:04 $
- * Version:       $Revision: 1.91 $
+ * Date modified: $Date: 2005-06-23 21:14:36 $
+ * Version:       $Revision: 1.90 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -1022,7 +1022,7 @@ namespace gmtl
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
    inline DATA_TYPE makeZRot( const Matrix<DATA_TYPE, ROWS, COLS>& mat )
    {
-      const gmtl::Vec<DATA_TYPE, 3> forward_point(1.0f, 0.0f, 0.0f);   // +x
+      const gmtl::Vec<DATA_TYPE, 3> forward_point(0.0f, 0.0f, -1.0f);   // -Z
       const gmtl::Vec<DATA_TYPE, 3> origin_point(0.0f, 0.0f, 0.0f);
       gmtl::Vec<DATA_TYPE, 3> end_point, start_point;
 

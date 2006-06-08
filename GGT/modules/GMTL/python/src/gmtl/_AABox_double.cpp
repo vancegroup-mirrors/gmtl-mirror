@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _AABox_double.cpp,v $
- * Date modified: $Date: 2005-07-14 02:48:22 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2005-06-04 17:13:46 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -51,9 +51,6 @@ void _Export_AABox_double()
         .def("setMin", &gmtl::AABox<double>::setMin)
         .def("setMax", &gmtl::AABox<double>::setMax)
         .def("setEmpty", &gmtl::AABox<double>::setEmpty)
-        .def("set",
-             (gmtl::AABox<double>& (gmtl::AABox<double>::*)(const gmtl::AABox<double>&)) &gmtl::AABox<double>::operator=,
-             return_internal_reference<1>())
         .def_pickle(gmtlPickle::AABox_pickle<double>())
         .def(self == self)
         .def(self != self)

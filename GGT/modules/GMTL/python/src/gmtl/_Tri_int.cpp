@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Tri_int.cpp,v $
- * Date modified: $Date: 2005-07-14 02:48:22 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2005-06-05 22:19:45 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -46,9 +46,6 @@ void _Export_Tri_int()
         .def("edge", (gmtl::Vec<int, 3> (gmtl::Tri<int>::*)(int) const) &gmtl::Tri<int>::edge)
         .def("edge", (gmtl::Vec<int, 3> (gmtl::Tri<int>::*)(int, int) const) &gmtl::Tri<int>::edge)
         .def("set", &gmtl::Tri<int>::set)
-        .def("set",
-             (gmtl::Tri<int>& (gmtl::Tri<int>::*)(const gmtl::Tri<int>&)) &gmtl::Tri<int>::operator=,
-             return_internal_reference<1>())
         .def("__getitem__", (gmtl::Point<int, 3>& (gmtl::Tri<int>::*)(const unsigned)) &gmtl::Tri<int>::operator[], return_internal_reference< 1 >())
         .def("__setitem__", (void (*)(gmtl::Tri<int>*, const unsigned, const gmtl::Point<int, 3>&)) gmtlWrappers::setArrayElement)
         .def_pickle(gmtlPickle::Tri_pickle<int>())
