@@ -82,6 +82,29 @@ def CreateConfig(target, source, env):
       os.chmod(targets[0], 0755)
    return 0
 
+def CreatePkgConfig(target, source, env):
+   "Creates the .pc file users use to compile against this library"
+
+   targets = map(lambda x: str(x), target)
+   sources = map(lambda x: str(x), source)
+
+   submap = env['submap']
+
+   # Build each target from its source
+   for i in range(len(targets)):
+      print "Generating pkg-config file " + targets[i]
+      contents = open(sources[i], 'r').read()
+
+      # Go through the substitution dictionary and modify the contents read in
+      # from the source file
+      for key, value in submap.items():
+         contents = re.sub(re.escape(key), re.escape(value), contents)
+
+      # Write out the target file with the new contents
+      open(targets[0], 'w').write(contents)
+      os.chmod(targets[0], 0644)
+   return 0
+
 def BuildLinuxEnvironment():
    "Builds a base environment for other modules to build on set up for linux"
    global optimize, profile, builders
@@ -571,7 +594,8 @@ print "Install prefix: ", Prefix()
 # Create the extra builders
 # Define a builder for the gmtl-config script
 builders = {
-   'ConfigBuilder'   : Builder(action = CreateConfig)
+   'ConfigBuilder'   : Builder(action = CreateConfig),
+   'PkgConfigBuilder'   : Builder(action = CreatePkgConfig)
 }
    
 baseEnv = BuildPlatformEnv()
@@ -701,7 +725,7 @@ if not has_help_flag:
          '@version_minor@'             : str(GMTL_VERSION[1]),
          '@version_patch@'             : str(GMTL_VERSION[2]),
       }
-   env.ConfigBuilder('gmtl.pc','gmtl.pc.in',submap = gmtl_pc_submap)
+   env.PkgConfigBuilder('gmtl.pc','gmtl.pc.in',submap = gmtl_pc_submap)
    installed_targets += env.Install(pj(PREFIX, 'share', 'pkgconfig'), 'gmtl.pc')
 
    pkg.build()
