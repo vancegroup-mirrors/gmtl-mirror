@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: IntersectionTest.h,v $
- * Date modified: $Date: 2006-06-08 20:59:58 $
- * Version:       $Revision: 1.15 $
+ * Date modified: $Date: 2003-05-15 16:54:45 $
+ * Version:       $Revision: 1.14 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -48,8 +48,6 @@ namespace gmtlTest
 
       CPPUNIT_TEST(testIntersectAABoxAABox);
       CPPUNIT_TEST(testIntersectAABoxPoint);
-      CPPUNIT_TEST(testIntersectAABoxLineSeg);
-      CPPUNIT_TEST(testIntersectAABoxRay);
       CPPUNIT_TEST(testIntersectAABoxSphere);
 
       CPPUNIT_TEST(testIntersectAABoxSweep);
@@ -63,8 +61,6 @@ namespace gmtlTest
    public:
       void testIntersectAABoxAABox();
       void testIntersectAABoxPoint();
-      void testIntersectAABoxLineSeg();
-      void testIntersectAABoxRay();
       void testIntersectAABoxSphere();
 
       void testIntersectAABoxSweep();

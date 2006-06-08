@@ -7,8 +7,8 @@ dnl   Allen Bierbaum
 dnl
 dnl -----------------------------------------------------------------
 dnl File:          $RCSfile: gmtl.m4,v $
-dnl Date modified: $Date: 2006-04-13 21:49:39 $
-dnl Version:       $Revision: 1.16 $
+dnl Date modified: $Date: 2004-07-02 11:41:34 $
+dnl Version:       $Revision: 1.15 $
 dnl -----------------------------------------------------------------
 dnl
 dnl ************************************************************** ggt-head end
@@ -138,8 +138,6 @@ AC_DEFUN([GMTL_PATH],
       fi
 
       CPPFLAGS="$CPPFLAGS -I$ggt_gmtl_incdir"
-   else
-      ggt_gmtl_incdir="$GMTL_ROOT/include"
    fi
 
    AC_LANG_SAVE

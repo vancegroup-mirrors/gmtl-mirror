@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: MatrixGenTest.h,v $
- * Date modified: $Date: 2005-06-23 14:49:26 $
- * Version:       $Revision: 1.29 $
+ * Date modified: $Date: 2003-04-01 15:34:29 $
+ * Version:       $Revision: 1.28 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -54,7 +54,6 @@ namespace gmtlTest
       CPPUNIT_TEST(testMatrixsetRot);
       CPPUNIT_TEST(testMatrixsetRotEuler);
       CPPUNIT_TEST(testMatrixgetRotEuler);
-      CPPUNIT_TEST(testMatrixGetSetRotEuler);
       CPPUNIT_TEST(testMatrixmakeInverse);
 
       CPPUNIT_TEST_SUITE_END();
@@ -68,7 +67,6 @@ namespace gmtlTest
       void testMatrixsetRot();
       void testMatrixsetRotEuler();
       void testMatrixgetRotEuler();
-      void testMatrixGetSetRotEuler();
       void testMatrixmakeInverse();
    };
 

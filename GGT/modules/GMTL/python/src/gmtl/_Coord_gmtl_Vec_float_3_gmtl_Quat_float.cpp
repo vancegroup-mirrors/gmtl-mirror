@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Coord_gmtl_Vec_float_3_gmtl_Quat_float.cpp,v $
- * Date modified: $Date: 2005-07-14 02:48:22 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2005-06-04 17:13:46 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -47,9 +47,6 @@ void _Export_Coord_gmtl_Vec_float_3_gmtl_Quat_float()
         .def_readwrite("rot", &gmtl::Coord<gmtl::Vec<float, 3>,gmtl::Quat<float> >::mRot)
         .def("getPos", &gmtl::Coord<gmtl::Vec<float, 3>,gmtl::Quat<float> >::getPos, return_internal_reference< 1 >())
         .def("getRot", &gmtl::Coord<gmtl::Vec<float, 3>,gmtl::Quat<float> >::getRot, return_internal_reference< 1 >())
-        .def("set",
-             (gmtl::Coord<gmtl::Vec<float, 3>, gmtl::Quat<float> >& (gmtl::Coord<gmtl::Vec<float, 3>, gmtl::EulerAngle<float, gmtl::ZYX> >::*)(const gmtl::Coord<gmtl::Vec<float, 3>, gmtl::EulerAngle<float, gmtl::ZYX> >&)) &gmtl::Coord<gmtl::Vec<float, 3>, gmtl::EulerAngle<float, gmtl::ZYX> >::operator=,
-             return_internal_reference<1>())
         .def_pickle(gmtlPickle::Coord_pickle< gmtl::Vec<float, 3>,gmtl::Quat<float> >())
         .def(self == self)
         .def(self != self)

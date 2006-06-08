@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _Plane_float.cpp,v $
- * Date modified: $Date: 2005-07-14 02:48:22 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2005-06-04 17:13:46 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -50,9 +50,6 @@ void _Export_Plane_float()
         .def("setNormal", &gmtl::Plane<float>::setNormal)
         .def("getOffset", &gmtl::Plane<float>::getOffset, return_value_policy< copy_const_reference >())
         .def("setOffset", &gmtl::Plane<float>::setOffset)
-        .def("set",
-             (gmtl::Plane<float>& (gmtl::Plane<float>::*)(const gmtl::Plane<float>&)) &gmtl::Plane<float>::operator=,
-             return_internal_reference<1>())
         .def_pickle(gmtlPickle::Plane_pickle<float>())
         .def(self == self)
         .def(self != self)
