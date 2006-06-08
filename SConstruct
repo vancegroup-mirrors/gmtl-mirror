@@ -456,7 +456,11 @@ def ValidatePythonOption(key, value, environ):
    sys.stdout.write("checking for %s [%s]...\n" % (key, value))
 
    if "EnablePython" == key:
-      enable_python = value
+      value = value.lower()
+      if value == 'true' or value == '1' or value == 'yes':
+         enable_python = True
+      else:
+         enable_python = False
 
       if enable_python:
          required_version = 2.2
