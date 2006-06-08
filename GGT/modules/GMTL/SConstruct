@@ -659,7 +659,9 @@ if not has_help_flag:
    # Process subdirectories
    subdirs = []
    if enable_python:
-      subdirs.append('python')
+      build_dir = 'build.' + distutils.util.get_platform()
+      BuildDir(build_dir, 'python', duplicate = 0)
+      subdirs.append(build_dir)
    if have_cppunit:
       subdirs.append('Test')
    SConscript(dirs = subdirs)
