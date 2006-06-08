@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Intersection.h,v $
- * Date modified: $Date: 2004-09-16 19:40:35 $
- * Version:       $Revision: 1.23 $
+ * Date modified: $Date: 2006-06-08 20:59:59 $
+ * Version:       $Revision: 1.24 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -36,6 +36,7 @@
 #define _GMTL_INTERSECTION_H_
 
 #include <algorithm>
+#include <limits>
 #include <gmtl/AABox.h>
 #include <gmtl/Point.h>
 #include <gmtl/Sphere.h>
@@ -171,6 +172,196 @@ namespace gmtl
       // There could only have been a collision if the first overlap time
       // occurred before the second overlap time
       return firstContact <= secondContact;
+   }
+
+   /**
+    * Given an axis-aligned bounding box and a ray (or subclass thereof),
+    * returns whether the ray intersects the box, and if so, \p tIn and
+    * \p tOut are set to the parametric terms on the ray where the segment
+    * enters and exits the box respectively.
+    *
+    * The implementation of this function comes from the book
+    * <i>Geometric Tools for Computer Graphics</i>, pages 626-630.
+    *
+    * @note Internal function for performing an intersection test between an
+    *       axis-aligned bounding box and a ray. User code should not call this
+    *       function directly. It is used to capture the common code between
+    *       the gmtl::Ray<T> and gmtl::LineSeg<T> overloads of
+    *       gmtl::intersect() when intersecting with a gmtl::AABox<T>.
+    */
+   template<class DATA_TYPE>
+   bool intersectAABoxRay(const AABox<DATA_TYPE>& box,
+                          const Ray<DATA_TYPE>& ray, DATA_TYPE& tIn,
+                          DATA_TYPE& tOut)
+   {
+      tIn  = -std::numeric_limits<DATA_TYPE>::max();
+      tOut = std::numeric_limits<DATA_TYPE>::max();
+      DATA_TYPE t0, t1;
+      const DATA_TYPE epsilon(0.0000001);
+
+      // YZ plane.
+      if ( gmtl::Math::abs(ray.mDir[0]) < epsilon )
+      {
+         // Ray parallel to plane.
+         if ( ray.mOrigin[0] < box.mMin[0] || ray.mOrigin[0] > box.mMax[0] )
+         {
+            return false;
+         }
+      }
+
+      // XZ plane.
+      if ( gmtl::Math::abs(ray.mDir[1]) < epsilon )
+      {
+         // Ray parallel to plane.
+         if ( ray.mOrigin[1] < box.mMin[1] || ray.mOrigin[1] > box.mMax[1] )
+         {
+            return false;
+         }
+      }
+
+      // XY plane.
+      if ( gmtl::Math::abs(ray.mDir[2]) < epsilon )
+      {
+         // Ray parallel to plane.
+         if ( ray.mOrigin[2] < box.mMin[2] || ray.mOrigin[2] > box.mMax[2] )
+         {
+            return false;
+         }
+      }
+
+      for ( unsigned int i = 0; i < 3; ++i )
+      {
+         t0 = (box.mMin[i] - ray.mOrigin[i]) / ray.mDir[i];
+         t1 = (box.mMax[i] - ray.mOrigin[i]) / ray.mDir[i];
+
+         if ( t0 > t1 )
+         {
+            std::swap(t0, t1);
+         }
+
+         if ( t0 > tIn )
+         {
+            tIn = t0;
+         }
+         if ( t1 < tOut )
+         {
+            tOut = t1;
+         }
+
+         if ( tIn > tOut || tOut < DATA_TYPE(0) )
+         {
+            return false;
+         }
+      }
+
+      return true;
+   }
+
+   /**
+    * Given a line segment and an axis-aligned bounding box, returns whether
+    * the line intersects the box, and if so, \p tIn and \p tOut are set to
+    * the parametric terms on the line segment where the segment enters and
+    * exits the box respectively.
+    *
+    * @since 0.4.11
+    */
+   template<class DATA_TYPE>
+   bool intersect(const AABox<DATA_TYPE>& box, const LineSeg<DATA_TYPE>& seg,
+                  unsigned int& numHits, DATA_TYPE& tIn, DATA_TYPE& tOut)
+   {
+      numHits = 0;
+      bool result = intersectAABoxRay(box, seg, tIn, tOut);
+
+      if ( result )
+      {
+         // If tIn is less than 0, then the origin of the line segment is
+         // inside the bounding box (not on an edge)but the endpoint is
+         // outside.
+         if ( tIn < DATA_TYPE(0) )
+         {
+            numHits = 1;
+            tIn = tOut;
+         }
+         // If tIn is less than 0, then the origin of the line segment is
+         // outside the bounding box but the endpoint is inside (not on an
+         // edge).
+         else if ( tOut > DATA_TYPE(1) )
+         {
+            numHits = 1;
+            tOut = tIn;
+         }
+         // Otherwise, the line segement intersects the bounding box in two
+         // places. tIn and tOut reflect those points of intersection.
+         else
+         {
+            numHits = 2;
+         }
+      }
+
+      return result;
+   }
+
+   /**
+    * Given a line segment and an axis-aligned bounding box, returns whether
+    * the line intersects the box, and if so, \p tIn and \p tOut are set to
+    * the parametric terms on the line segment where the segment enters and
+    * exits the box respectively.
+    *
+    * @since 0.4.11
+    */
+   template<class DATA_TYPE>
+   bool intersect(const LineSeg<DATA_TYPE>& seg, const AABox<DATA_TYPE>& box,
+                  unsigned int& numHits, DATA_TYPE& tIn, DATA_TYPE& tOut)
+   {
+      return intersect(box, seg, numHits, tIn, tOut);
+   }
+
+   /**
+    * Given a ray and an axis-aligned bounding box, returns whether the ray
+    * intersects the box, and if so, \p tIn and \p tOut are set to the
+    * parametric terms on the ray where it enters and exits the box
+    * respectively.
+    *
+    * @since 0.4.11
+    */
+   template<class DATA_TYPE>
+   bool intersect(const AABox<DATA_TYPE>& box, const Ray<DATA_TYPE>& ray,
+                  unsigned int& numHits, DATA_TYPE& tIn, DATA_TYPE& tOut)
+   {
+      numHits = 0;
+
+      bool result = intersectAABoxRay(box, ray, tIn, tOut);
+
+      if ( result )
+      {
+         // Ray is inside the box.
+         if ( tIn < DATA_TYPE(0) )
+         {
+            tIn = tOut;
+            numHits = 1;
+         }
+         else
+         {
+            numHits = 2;
+         }
+      }
+
+      return result;
+   }
+
+   /**
+    * Given a ray and an axis-aligned bounding box, returns whether the ray
+    * intersects the box, and if so, \p tIn and \p tOut are set to the
+    * parametric terms on the ray where it enters and exits the box
+    * respectively.
+    *
+    * @since 0.4.11
+    */
+   template<class DATA_TYPE>
+   bool intersect(const Ray<DATA_TYPE>& ray, const AABox<DATA_TYPE>& box,
+                  unsigned int& numHits, DATA_TYPE& tIn, DATA_TYPE& tOut)
+   {
+      return intersect(box, ray, numHits, tIn, tOut);
    }
 
    /**
