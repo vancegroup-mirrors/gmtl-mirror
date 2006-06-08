@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Intersection.h,v $
- * Date modified: $Date: 2006-06-08 20:59:59 $
- * Version:       $Revision: 1.24 $
+ * Date modified: $Date: 2006-06-08 21:11:59 $
+ * Version:       $Revision: 1.25 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -229,29 +229,73 @@ namespace gmtl
          }
       }
 
-      for ( unsigned int i = 0; i < 3; ++i )
+      // YZ plane.
+      t0 = (box.mMin[0] - ray.mOrigin[0]) / ray.mDir[0];
+      t1 = (box.mMax[0] - ray.mOrigin[0]) / ray.mDir[0];
+
+      if ( t0 > t1 )
       {
-         t0 = (box.mMin[i] - ray.mOrigin[i]) / ray.mDir[i];
-         t1 = (box.mMax[i] - ray.mOrigin[i]) / ray.mDir[i];
+         std::swap(t0, t1);
+      }
 
-         if ( t0 > t1 )
-         {
-            std::swap(t0, t1);
-         }
+      if ( t0 > tIn )
+      {
+         tIn = t0;
+      }
+      if ( t1 < tOut )
+      {
+         tOut = t1;
+      }
 
-         if ( t0 > tIn )
-         {
-            tIn = t0;
-         }
-         if ( t1 < tOut )
-         {
-            tOut = t1;
-         }
+      if ( tIn > tOut || tOut < DATA_TYPE(0) )
+      {
+         return false;
+      }
 
-         if ( tIn > tOut || tOut < DATA_TYPE(0) )
-         {
-            return false;
-         }
+      // XZ plane.
+      t0 = (box.mMin[1] - ray.mOrigin[1]) / ray.mDir[1];
+      t1 = (box.mMax[1] - ray.mOrigin[1]) / ray.mDir[1];
+
+      if ( t0 > t1 )
+      {
+         std::swap(t0, t1);
+      }
+
+      if ( t0 > tIn )
+      {
+         tIn = t0;
+      }
+      if ( t1 < tOut )
+      {
+         tOut = t1;
+      }
+
+      if ( tIn > tOut || tOut < DATA_TYPE(0) )
+      {
+         return false;
+      }
+
+      // XY plane.
+      t0 = (box.mMin[2] - ray.mOrigin[2]) / ray.mDir[2];
+      t1 = (box.mMax[2] - ray.mOrigin[2]) / ray.mDir[2];
+
+      if ( t0 > t1 )
+      {
+         std::swap(t0, t1);
+      }
+
+      if ( t0 > tIn )
+      {
+         tIn = t0;
+      }
+      if ( t1 < tOut )
+      {
+         tOut = t1;
+      }
+
+      if ( tIn > tOut || tOut < DATA_TYPE(0) )
+      {
+         return false;
       }
 
       return true;
