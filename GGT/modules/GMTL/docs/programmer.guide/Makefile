@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.2 2002-04-23 22:06:06 subatomic Exp $
+# $Id: Makefile,v 1.3 2006-06-09 12:27:44 patrickh Exp $
 
 NAME =  guide
 MK_PATH=..
@@ -9,7 +9,7 @@ install-docs: install-html install-chunk-html install-pdf
 
 # Fill these in!!  Together, they make up the installation prefix.
 webroot=	$(HOME)/public_html
-instdir=	gmtl/0.0.3/programmer.guide
+instdir=	gmtl/$(PROJECT_NUMBER)/programmer.guide
 
 prefix = $(webroot)/$(instdir)
 INSTALL_FILES = $(webroot)/base_style.css *.png
@@ -30,3 +30,4 @@ ${NAME}.html: ${NAME}.xml
 ${NAME}.pdf:  ${NAME}.xml ${NAME}.fo # README.tex
 
 include ${MK_PATH}/docbook.mk
+include ${MK_PATH}/version.mk.doxy
