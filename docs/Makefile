@@ -5,19 +5,20 @@ all a: gh gp gt rh rm rp
 usage u help h:
 	@echo ""
 	@echo "Targets:"
-	@echo "- gmake guide      (for gmtl programmer guide: html, pdf, txt)"
-	@echo "- gmake guide-html (for gmtl programmer guide: html)"
-	@echo "- gmake guide-pdf  (for gmtl programmer guide: pdf)"
-	@echo "- gmake guide-txt  (for gmtl programmer guide: txt)"
-	@echo "- gmake man        (for man page reference)"
-	@echo "- gmake ref        (for html reference manual)"
-	@echo "- gmake ref-latex  (for latex reference manual)"
-	@echo "- gmake ref-pdf    (for pdf reference manual)"
-	@echo "- gmake clean      (remove everything that was built)"
+	@echo "- $(MAKE) guide      (for gmtl programmer guide: html, pdf, txt)"
+	@echo "- $(MAKE) guide-html (for gmtl programmer guide: html)"
+	@echo "- $(MAKE) guide-pdf  (for gmtl programmer guide: pdf)"
+	@echo "- $(MAKE) guide-txt  (for gmtl programmer guide: txt)"
+	@echo "- $(MAKE) man        (for man page reference)"
+	@echo "- $(MAKE) ref        (for html reference manual)"
+	@echo "- $(MAKE) ref-latex  (for latex reference manual)"
+	@echo "- $(MAKE) ref-pdf    (for pdf reference manual)"
+	@echo "- $(MAKE) clean      (remove everything that was built)"
 	@echo ""
 
 ref reference rh:
-	ex_builder.py ../examples/gmtlexamples.doxy.in ../examples/gmtlexamples.doxy
+	python ex_builder.py ../examples/gmtlexamples.doxy.in 	\
+           ../examples/gmtlexamples.doxy
 	doxygen gmtl.doxy
 
 ref-latex rl:
@@ -31,14 +32,14 @@ man ref-man rm manpage m:
 	doxygen gmtl.man.doxy
 
 guide g:
-	-cd programmer.guide && gmake
+	-cd programmer.guide && $(MAKE)
 
 guide-html gh:
-	-cd programmer.guide && gmake html
+	-cd programmer.guide && $(MAKE) html
 guide-pdf gp:
-	-cd programmer.guide && gmake pdf
+	-cd programmer.guide && $(MAKE) pdf
 guide-txt gt:
-	-cd programmer.guide && gmake txt
+	-cd programmer.guide && $(MAKE) txt
 
 # useful for creating a tree that can be tarred up and posted to a 
 # website for download.
@@ -66,7 +67,7 @@ tarball:
 clean c:
 	-rm -rf html man pdf latex installed $(tempdirname)
 	rm ../examples/gmtlexamples.doxy
-	-cd programmer.guide && gmake clean clobber
+	-cd programmer.guide && $(MAKE) clean clobber
 
 clobber: clean
 	-rm $(tarballname).tgz
