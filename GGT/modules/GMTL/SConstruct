@@ -415,7 +415,7 @@ def ValidateBoostOption(key, value, environ):
          bpl_found = False
          libdirs = ['lib']
 
-         if os.uname()[4] == 'x86_64':
+         if GetPlatform() != 'win32' and os.uname()[4] == 'x86_64':
             libdirs.append('lib64')
 
          full_bpl = 'boost_python%s%s%s%s' % (tool, threading, dbg, version)
