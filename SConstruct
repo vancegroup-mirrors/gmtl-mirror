@@ -251,32 +251,20 @@ def BuildIRIXEnvironment():
 def BuildWin32Environment():
    global optimize, compiler_major_ver
 
-   env = Environment(ENV = os.environ)
-
-   ver_re = re.compile(r'Compiler Version ((\d+)\.(\d+)\.(\d+))')
-
-   # CL.EXE does not actually have a /v option, but using /? would use the
-   # build to hang forever waiting on user input to page through the output.
-   # XXX: How can env['CXX'] be used in the call to os.popen3()?
-   (cv_stdout, cv_stdin, cv_stderr) = os.popen3('cl /v')
-   ver_str = cv_stderr.read()
-
-   match_obj = ver_re.search(ver_str)
-   if match_obj is None:
-      compiler_major_ver = 1300
-   else:
-      compiler_major_ver = int(match_obj.group(2))
-
+   env = Environment(ENV = os.environ)   
+   print "Using MSVS version: ", env["MSVS"]["VERSION"]
+   compiler_major_ver = env["MSVS"]["VERSION"]
+   
    # We need exception handling support turned on for Boost.Python.
    env.Append(LINKFLAGS = ['/subsystem:console', '/incremental:no'])
    env.Append(CXXFLAGS = ['/Zm800', '/EHsc', '/GR', '/Zc:wchar_t,forScope',
                           '/DBOOST_PYTHON_DYNAMIC_LIB'])
 
-   if compiler_major_ver < 14:
+   if compiler_major_ver < '8.0':
       env.Append(CXXFLAGS = '/Op')
 
    if optimize != 'no':
-      if compiler_major_ver < 14:
+      if compiler_major_ver < '8.0':
          env.Append(CXXFLAGS = '/Ogity')
       else:
          env.Append(CXXFLAGS = '/Oity')
@@ -328,27 +316,24 @@ def ValidateBoostOption(key, value, environ):
    "Validate the boost option settings"
    global enable_python, optimize, compiler_major_ver
    req_boost_version = 103100
-   sys.stdout.write("checking for %s [%s]...\n" % (key, value))
+   print "checking for %s [%s]...\n" % (key, value)
 
    if "BoostPythonDir" == key:
-      boost_inc_dir = pj(value, 'include')
+      version_dir = 'boost-' + re.sub(r'\.', '_', boost_version)   
+      boost_inc_dir = value    		# Default to 'boost' directly off base
+      potential_inc_paths = ["include",pj('include',version_dir)]
+      for pth in potential_inc_paths:
+         if os.path.isdir(pj(value,pth)):
+	    boost_inc_dir = pj(value,pth)	    
+	    break
+      print "   trying boost include dir: [%s]"%boost_inc_dir
 
       # Get the boost version.
       boost_ver_filename = pj(boost_inc_dir, 'boost', 'version.hpp')
       if not os.path.isfile(boost_ver_filename):
          sys.stdout.write("%s not found.\n" % boost_ver_filename)
-
-         # Try the versioned Boost include path.
-         version_dir = 'boost-' + re.sub(r'\.', '_', boost_version)
-         boost_inc_dir = pj(value, 'include', version_dir)
-         boost_ver_filename = pj(boost_inc_dir, 'boost', 'version.hpp')
-
-         sys.stdout.write("Trying %s\n" % boost_ver_filename)
-
-         if not os.path.isfile(boost_ver_filename):
-            sys.stdout.write("%s not found.\n" % boost_ver_filename)
-            enable_python = False
-            return False
+	 enable_python = False
+	 return False
 
       ver_file = file(boost_ver_filename)
 
@@ -366,8 +351,8 @@ def ValidateBoostOption(key, value, environ):
       if enable_python:
          platform = GetPlatform()
 
-         if platform == 'win32':
-            if compiler_major_ver < 14:
+         if platform == 'win32':	   
+            if compiler_major_ver == "7.1":
                tool = '-vc71'
             else:
                tool = '-vc80'
