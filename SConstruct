@@ -655,7 +655,7 @@ if not has_help_flag:
    os.path.walk('gmtl',get_headers,gmtl_headers)
    #print "GMTL Headers:\n", gmtl_headers, "\n"
 
-   if baseEnv['versioning'] == 'yes':
+   if baseEnv['versioning'] == 'yes' and not sys.platform.startswith("win"):
       INCLUDE_VERSION= "gmtl-%s.%s.%s" % GetGMTLVersion()
       INCLUDE_DIR = pj('include', INCLUDE_VERSION)
    else:
