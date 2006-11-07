@@ -1,11 +1,14 @@
 DATE       AUTHOR       CHANGE
 ---------- ------------ -------------------------------------------------------
+2006-11-07 patrickh     Do not install GMTL headers into a versioned directory
+                        on Windows.
+                        NEW VERSION: 0.5.1
 2006-06-08 patrickh     Added overloads of gmtl::intersect() for gmtl::AABox<T>
                         that test for intersection with gmtl::LineSeg<T> and
                         gmtl::Ray<T>.
-2006-06-08 dshipton     Version directories by default
+2006-06-08 dshipton     Version directories by default.
                         NEW VERSION: 0.5.0
-2006-06-02 dshipton     Allow for pkg-config use to obtain cxxflags
+2006-06-02 dshipton     Allow for pkg-config use to obtain cxxflags.
                         NEW VERSION: 0.4.11
 
 [0.4.10 released - 4.13.2005]==================================================
