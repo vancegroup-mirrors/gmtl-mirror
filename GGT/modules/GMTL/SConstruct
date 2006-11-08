@@ -98,7 +98,7 @@ def CreatePkgConfig(target, source, env):
       # Go through the substitution dictionary and modify the contents read in
       # from the source file
       for key, value in submap.items():
-         contents = re.sub(re.escape(key), re.escape(value), contents)
+         contents = re.sub(re.escape(key), value, contents)
 
       # Write out the target file with the new contents
       open(targets[0], 'w').write(contents)
