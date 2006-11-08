@@ -9,6 +9,5 @@ version_patch=@version_patch@
 Name: GMTL
 Version: ${version_major}.${version_minor}.${version_patch}
 Description: Generic Math Template Library
-URL: http://ggt.sf.net
 Requires:
-Cflags: -I${includedir} -I${cxxflags}
+Cflags: -I${includedir} ${cxxflags}
