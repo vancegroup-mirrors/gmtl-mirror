@@ -7,8 +7,8 @@ dnl   Allen Bierbaum
 dnl
 dnl -----------------------------------------------------------------
 dnl File:          $RCSfile: gmtl.m4,v $
-dnl Date modified: $Date: 2006-11-08 22:37:10 $
-dnl Version:       $Revision: 1.17 $
+dnl Date modified: $Date: 2006-11-09 21:38:48 $
+dnl Version:       $Revision: 1.18 $
 dnl -----------------------------------------------------------------
 dnl
 dnl ************************************************************** ggt-head end
@@ -54,12 +54,13 @@ AC_DEFUN([GMTL_PATH],
       AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
 
       if pkg-config --atleast-pkgconfig-version 0.7 ; then
-         :
+         QUERY_TOOL=$PKG_CONFIG
       else
          no_gmtl='yes'
          PKG_CONFIG='no'
       fi
    else
+      QUERY_TOOL=$FLAGPOLL
       req_fp_major='0'
       req_fp_minor='8'
       req_fp_micro='1'
@@ -100,21 +101,12 @@ AC_DEFUN([GMTL_PATH],
    min_gmtl_version=ifelse([$1], ,0.4.11,$1)
    AC_MSG_CHECKING([for GMTL version >= $min_gmtl_version])
 
-   if test "x$FLAGPOLL" != "xno" ; then
-      GMTL_VERSION=`$FLAGPOLL gmtl --modversion`
-      if $FLAGPOLL gmtl --atleast-version=$min_gmtl_version >/dev/null 2>&1
-      then
-         :
-      else
-         no_gmtl='yes'
-      fi
-   elif test "x$PKG_CONFIG" != "xno" ; then
-      GMTL_VERSION=`$PKG_CONFIG gmtl --modversion`
-      if $PKG_CONFIG --atleast-version $min_gmtl_version gmtl ; then
-         :
-      else
-         no_gmtl='yes'
-      fi
+   GMTL_VERSION=`$QUERY_TOOL gmtl --modversion`
+   if $QUERY_TOOL gmtl --atleast-version=$min_gmtl_version >/dev/null 2>&1
+   then
+      :
+   else
+      no_gmtl='yes'
    fi
 
    if test "x$no_gmtl" = "xyes" ; then
@@ -124,13 +116,8 @@ AC_DEFUN([GMTL_PATH],
    else
       AC_MSG_RESULT([yes ($GMTL_VERSION)])
 
-      if test "x$FLAGPOLL" != "xno" ; then
-         GMTL_CXXFLAGS=`$FLAGPOLL gmtl --cflags`
-         GMTL_INCLUDES=`$FLAGPOLL gmtl --cflags-only-I`
-      elif test "x$PKG_CONFIG" != "xno" ; then
-         GMTL_CXXFLAGS=`$PKG_CONFIG gmtl --cflags`
-         GMTL_INCLUDES=`$PKG_CONFIG gmtl --cflags-only-I`
-      fi
+      GMTL_CXXFLAGS=`$QUERY_TOOL gmtl --cflags`
+      GMTL_INCLUDES=`$QUERY_TOOL gmtl --cflags-only-I`
 
       ifelse([$2], , :, [$2])
    fi
