@@ -1,5 +1,8 @@
 DATE       AUTHOR       CHANGE
 ---------- ------------ -------------------------------------------------------
+[0.4.12 released - 11.10.2006]=================================================
+2006-11-09 allenb       Fixed problems with gmtl.pc.
+
 [0.4.11 released - 6.8.2006]===================================================
 2006-06-08 patrickh     Added overloads of gmtl::intersect() for gmtl::AABox<T>
                         that test for intersection with gmtl::LineSeg<T> and
