@@ -13,6 +13,7 @@ Group: Development/C++
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 License: LGPL
 BuildPrereq: scons >= 0.96.1
+BuildArch: noarch
 Obsoletes: gmtl <= %{version}
 Provides: gmtl = %{version}-%{release}
 
