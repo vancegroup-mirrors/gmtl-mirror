@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Intersection.h,v $
- * Date modified: $Date: 2006-06-08 21:11:59 $
- * Version:       $Revision: 1.25 $
+ * Date modified: $Date: 2006-12-09 03:44:44 $
+ * Version:       $Revision: 1.26 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -194,8 +194,8 @@ namespace gmtl
                           const Ray<DATA_TYPE>& ray, DATA_TYPE& tIn,
                           DATA_TYPE& tOut)
    {
-      tIn  = -std::numeric_limits<DATA_TYPE>::max();
-      tOut = std::numeric_limits<DATA_TYPE>::max();
+      tIn  = -(std::numeric_limits<DATA_TYPE>::max)();
+      tOut = (std::numeric_limits<DATA_TYPE>::max)();
       DATA_TYPE t0, t1;
       const DATA_TYPE epsilon(0.0000001);
 
