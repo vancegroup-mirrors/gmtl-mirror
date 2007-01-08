@@ -6,7 +6,7 @@
 Name: %{name}
 Summary: Python bindings for GMTL
 Version: %{version}
-Release: %{release}
+Release: %{release}%{?dist}
 Source: gmtl-%{version}.tar.gz
 URL: http://ggt.sourceforge.net/
 Group: Development/Python
