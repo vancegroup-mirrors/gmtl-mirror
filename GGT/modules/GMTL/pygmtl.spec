@@ -41,7 +41,7 @@ rm -rf %{buildroot}
 %build
 # This needs to be fixed once we have a boost install.
 scons EnablePython=True BoostPythonDir=/usr optimize=yes
-strip python/gmtl.so
+strip build.linux-%{pygmtl_arch}/gmtl.so
 
 %install
 install_dir=`python -c 'import distutils.sysconfig as ds; print ds.get_python_lib(True)'`
