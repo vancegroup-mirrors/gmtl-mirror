@@ -14,8 +14,6 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 License: LGPL
 BuildPrereq: scons >= 0.96.1
 BuildArch: noarch
-Obsoletes: gmtl <= %{version}
-Provides: gmtl = %{version}-%{release}
 
 %description
 The Generic Math Template Library (GMTL) is a high-performance, extensible,
@@ -38,6 +36,7 @@ scons install prefix=%{buildroot}%{_prefix}
 # Remove all stupid scons temp files
 find %{buildroot}%{_prefix} -name .sconsign -exec rm {} \;
 chmod 644 %{buildroot}%{_datadir}/pkgconfig/gmtl.pc
+find %{buildroot}%{_prefix}/include -name \*.h -exec chmod 644 {} \;
 
 %clean
 rm -rf %{buildroot}
@@ -59,3 +58,5 @@ rm -rf %{buildroot}
 %doc AUTHORS ChangeLog COPYING LICENSE.addendum README
 
 %changelog
+* Wed Jan 10 2007 Patrick Hartling <patrick@infiscape.com>
+- Fixed packaging errors

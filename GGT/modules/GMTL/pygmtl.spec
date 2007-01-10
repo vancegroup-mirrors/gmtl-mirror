@@ -14,8 +14,6 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 License: LGPL
 BuildPrereq: scons >= 0.96.1
 BuildPrereq: boost-devel >= 1.32
-Obsoletes: pygmtl <= %{version}
-Provides: pygmtl = %{version}-%{release}
 
 %description
 PyGMTL provides Python language bindings to the Generic Math Template Library
@@ -66,3 +64,5 @@ rm -rf %{buildroot}
 %doc AUTHORS ChangeLog COPYING LICENSE.addendum README README-PyGMTL
 
 %changelog
+* Wed Jan 10 2007 Patrick Hartling <patrick@infiscape.com>
+- Fixed packaging errors
