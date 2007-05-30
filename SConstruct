@@ -49,6 +49,12 @@ def GetPlatform():
       return 'linux'
    elif string.find(sys.platform, 'freebsd') != -1:
       return 'freebsd'
+   elif string.find(sys.platform, 'netbsd') != -1:
+      return 'netbsd'
+   elif string.find(sys.platform, 'openbsd') != -1:
+      return 'openbsd'
+   elif string.find(sys.platform, 'dragonfly') != -1:
+      return 'dragonfly'
    elif string.find(sys.platform, 'darwin') != -1:
       return 'darwin'
    elif string.find(sys.platform, 'cygwin') != -1:
@@ -269,19 +275,22 @@ def BuildWin32Environment():
 def BuildPlatformEnv():
    env = None
 
+   platform = GetPlatform()
+
    # Create and export the base environment
-   if GetPlatform() == 'irix':
+   if platform == 'irix':
       env = BuildIRIXEnvironment()
-   elif GetPlatform() == 'linux' or GetPlatform()[:7] == 'freebsd':
+   elif platform == 'linux' or platform.endswith('bsd') or \
+        platform == 'dragonfly':
       env = BuildLinuxEnvironment()
-   elif GetPlatform() == 'darwin':
+   elif platform == 'darwin':
       env = BuildDarwinEnvironment()
-   elif GetPlatform() == 'win32':
+   elif platform == 'win32':
       env = BuildWin32Environment()
-   elif GetPlatform() == 'cygwin':
+   elif platform == 'cygwin':
       env = BuildCygwinEnvironment()
    else:
-      print 'Unsupported build environment: ' + GetPlatform(), "Trying default"
+      print 'Unsupported build environment: ' + platform, "Trying default"
       env = Environment()
 
    return env
