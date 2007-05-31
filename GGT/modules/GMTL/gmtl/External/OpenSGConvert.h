@@ -19,7 +19,7 @@ namespace gmtl
  * @return     returns the equivalent GMTL matrix
  */
 inline
-Matrix44f& set( Matrix44f& mat, const osg::Matrix& osg_mat )
+Matrix44f& set( Matrix44f& mat, const OSG::Matrix& osg_mat )
 {
    mat.set(osg_mat.getValues());
    return mat;
@@ -31,7 +31,7 @@ Matrix44f& set( Matrix44f& mat, const osg::Matrix& osg_mat )
  * @return     returns the equivalent OpenSG matrix
  */
 inline
-osg::Matrix& set(osg::Matrix& osg_mat, const Matrix44f& mat)
+OSG::Matrix& set(OSG::Matrix& osg_mat, const Matrix44f& mat)
 {
    osg_mat.setValue( mat.getData() );
    return osg_mat;
