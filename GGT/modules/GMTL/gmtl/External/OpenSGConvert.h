@@ -1,10 +1,10 @@
 #ifndef GMTL_OPENSG_CONVERT_H_
 #define GMTL_OPENSG_CONVERT_H_
 
-/** @file OpenSGConvert.h GMTL to OpenSG conversion functions
-* 
-* methods to convert between gtml and opensg matrix classes
-*/
+/** @file OpenSGConvert.h GMTL/OpenSG conversion functions
+ * 
+ * Methods to convert between GTML and OpenSG matrix classes.
+ */
 
 #include <gmtl/Matrix.h>
 #include <gmtl/Generate.h>
@@ -13,31 +13,34 @@
 namespace gmtl
 {
 
-/** Convert an opensg matrix to a gmtl::Matrix
- * @param mat        the matrix to write the OpenSG matrix data into
- * @param osg_mat    the source OpenSG matrix
- * @return     returns the equivalent GMTL matrix
+/**
+ * Converts an OpenSG matrix to a gmtl::Matrix.
+ *
+ * @param mat        The matrix to write the OpenSG matrix data into.
+ * @param osgMat     The source OpenSG matrix.
+ *
+ * @return The equivalent GMTL matrix.
  */
-inline
-Matrix44f& set( Matrix44f& mat, const OSG::Matrix& osg_mat )
+inline Matrix44f& set(Matrix44f& mat, const OSG::Matrix& osgMat)
 {
-   mat.set(osg_mat.getValues());
+   mat.set(osgMat.getValues());
    return mat;
 }
 
-/** Convert a GMTL matrix to a OpenSG matrix
- * @param osg_mat     the matrix to write the GMTL matrix data into
- * @param mat         the source GMTL matrix
- * @return     returns the equivalent OpenSG matrix
+/**
+ * Converts a GMTL matrix to an OpenSG matrix.
+ *
+ * @param osgMat     The matrix to write the GMTL matrix data into.
+ * @param mat        The source GMTL matrix.
+*
+ * @return The equivalent OpenSG matrix.
  */
-inline
-OSG::Matrix& set(OSG::Matrix& osg_mat, const Matrix44f& mat)
+inline OSG::Matrix& set(OSG::Matrix& osgMat, const Matrix44f& mat)
 {
-   osg_mat.setValue( mat.getData() );
-   return osg_mat;
+   osgMat.setValue(mat.getData());
+   return osgMat;
 }
 
 }
 
 #endif
-
