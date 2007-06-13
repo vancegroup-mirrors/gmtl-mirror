@@ -624,8 +624,8 @@ if not has_help_flag:
       AUTHORS
       ChangeLog
       COPYING
-      gmtl-config.in
-      gmtl.pc.in
+      gmtl-config
+      gmtl.fpc.in
       SConstruct
       docs/Makefile
       docs/docbook.mk
