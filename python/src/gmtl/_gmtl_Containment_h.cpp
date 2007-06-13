@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _gmtl_Containment_h.cpp,v $
- * Date modified: $Date: 2005-12-02 00:36:55 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2007-06-13 23:17:26 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -92,6 +92,12 @@ void _Export_gmtl_Containment_h()
     def("isInVolume", (bool (*)(const gmtl::AABox<float> &, const gmtl::Point<float,3> &))&gmtl::isInVolume);
     def("isInVolume", (bool (*)(const gmtl::AABox<double> &, const gmtl::AABox<double> &))&gmtl::isInVolume);
     def("isInVolume", (bool (*)(const gmtl::AABox<float> &, const gmtl::AABox<float> &))&gmtl::isInVolume);
+    def("isInVolume", (bool (*)(const gmtl::Frustum<double> &, const gmtl::Sphere<double> &))&gmtl::isInVolume);
+    def("isInVolume", (bool (*)(const gmtl::Frustum<float> &, const gmtl::Sphere<float> &))&gmtl::isInVolume);
+    def("isInVolume", (bool (*)(const gmtl::Frustum<double> &, const gmtl::AABox<double> &))&gmtl::isInVolume);
+    def("isInVolume", (bool (*)(const gmtl::Frustum<float> &, const gmtl::AABox<float> &))&gmtl::isInVolume);
+    def("isInVolume", (bool (*)(const gmtl::Frustum<double> &, const gmtl::Tri<double> &))&gmtl::isInVolume);
+    def("isInVolume", (bool (*)(const gmtl::Frustum<float> &, const gmtl::Tri<float> &))&gmtl::isInVolume);
     def("isInVolumeExclusive", (bool (*)(const gmtl::AABox<double> &, const gmtl::Point<double,3> &))&gmtl::isInVolumeExclusive);
     def("isInVolumeExclusive", (bool (*)(const gmtl::AABox<float> &, const gmtl::Point<float,3> &))&gmtl::isInVolumeExclusive);
     def("isOnVolume", (bool (*)(const gmtl::Sphere<double> &, const gmtl::Point<double,3> &, const double &))&gmtl::isOnVolume, isOnVolume_overloads_2_3());
