@@ -1,6 +1,6 @@
 # Spec file for PyGMTL.
 %define name    pygmtl
-%define version	0.5.0
+%define version	0.5.1
 %define release	1
 
 Name: %{name}
@@ -38,7 +38,7 @@ rm -rf %{buildroot}
 
 %build
 # This needs to be fixed once we have a boost install.
-scons EnablePython=True BoostPythonDir=/usr optimize=yes
+scons EnablePython=True BoostPythonDir=/usr optimize=yes %{_smp_mflags}
 strip build.linux-%{pygmtl_arch}/gmtl.so
 
 %install
@@ -64,5 +64,8 @@ rm -rf %{buildroot}
 %doc AUTHORS ChangeLog COPYING LICENSE.addendum README README-PyGMTL
 
 %changelog
+* Wed Jun 13 2007 Patrick Hartling <patrick@infiscape.com> 0.5.1-1
+- Updated to version 0.5.1
+
 * Wed Jan 10 2007 Patrick Hartling <patrick@infiscape.com>
 - Fixed packaging errors
