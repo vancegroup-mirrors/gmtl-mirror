@@ -35,7 +35,6 @@ scons prefix=%{_prefix}
 scons install prefix=%{buildroot}%{_prefix}
 # Remove all stupid scons temp files
 find %{buildroot}%{_prefix} -name .sconsign -exec rm {} \;
-chmod 644 %{buildroot}%{_datadir}/pkgconfig/gmtl.pc
 find %{buildroot}%{_prefix}/include -name \*.h -exec chmod 644 {} \;
 
 %clean
@@ -53,10 +52,13 @@ rm -rf %{buildroot}
 %defattr(-, root, root)
 %{_bindir}/gmtl-config
 %{_includedir}/gmtl
-%{_datadir}/pkgconfig
+%{_datadir}/flagpoll
 
 %doc AUTHORS ChangeLog COPYING LICENSE.addendum README
 
 %changelog
+* Wed Jun 13 2007 Patrick Hartling <patrick@infiscape.com>
+- Updated for the use of Flagpoll rather than pkg-config
+
 * Wed Jan 10 2007 Patrick Hartling <patrick@infiscape.com>
 - Fixed packaging errors

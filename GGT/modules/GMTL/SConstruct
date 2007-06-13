@@ -59,52 +59,6 @@ def GetPlatform():
       return sys.platform
 Export('GetPlatform')
 
-def CreateConfig(target, source, env):
-   "Creates the xxx-config file users use to compile against this library"
-
-   targets = map(lambda x: str(x), target)
-   sources = map(lambda x: str(x), source)
-
-   submap = env['submap']
-
-   # Build each target from its source
-   for i in range(len(targets)):
-      print "Generating config file " + targets[i]
-      contents = open(sources[i], 'r').read()
-
-      # Go through the substitution dictionary and modify the contents read in
-      # from the source file
-      for key, value in submap.items():
-         contents = re.sub(re.escape(key), re.escape(value), contents)
-
-      # Write out the target file with the new contents
-      open(targets[0], 'w').write(contents)
-      os.chmod(targets[0], 0755)
-   return 0
-
-def CreatePkgConfig(target, source, env):
-   "Creates the .pc file users use to compile against this library"
-
-   targets = map(lambda x: str(x), target)
-   sources = map(lambda x: str(x), source)
-
-   submap = env['submap']
-
-   # Build each target from its source
-   for i in range(len(targets)):
-      print "Generating pkg-config file " + targets[i]
-      contents = open(sources[i], 'r').read()
-
-      # Go through the substitution dictionary and modify the contents read in
-      # from the source file
-      for key, value in submap.items():
-         contents = re.sub(re.escape(key), value, contents)
-
-      # Write out the target file with the new contents
-      open(targets[0], 'w').write(contents)
-      os.chmod(targets[0], 0644)
-   return 0
-
 def BuildLinuxEnvironment():
    "Builds a base environment for other modules to build on set up for linux"
    global optimize, profile, builders
@@ -252,7 +206,7 @@ def BuildWin32Environment():
    global optimize, compiler_major_ver
 
    env = Environment(ENV = os.environ)   
-   print "Using MSVS version: ", env["MSVS"]["VERSION"]
+   print "Using MSVS version:", env["MSVS"]["VERSION"]
    compiler_major_ver = env["MSVS"]["VERSION"]
    
    # We need exception handling support turned on for Boost.Python.
@@ -555,6 +509,52 @@ def AddCppUnitOptions(opts):
             help = 'CppUnit installation directory (cppunit dir must exist under this directory": default: CppUnitDir="/usr/local/include"',
             default = '/usr/local/include', validator = ValidateCppUnitOption)
 
+def CreateSubst(target, source, env):
+   """ Custom builder helpful for creating *-config scripts and just about anything
+       else that can be based on substitutability from a map.
+      
+      The builder works by pulling the variable 'submap' out of the environment
+      and then any place in the source where key from the map exists,
+      that content is replaced with the value of the key in the dictionary.
+      
+      Example:
+         submap = {
+         '@prefix@'                    : my_prefix,
+         '@version@'                   : version_str
+      }
+
+         my_file = env.SubstBuilder('file.out','file.in', submap=submap)
+         env.AddPostAction (my_file, Chmod('$TARGET', 0644))
+         env.Depends(my_file, 'version.h')
+   """
+   targets = map(lambda x: str(x), target)
+   sources = map(lambda x: str(x), source)
+
+   submap = env['submap']
+
+   # Build each target from its source
+   for i in range(len(targets)):
+      #print "Generating file " + targets[i]
+      contents = open(sources[i], 'r').read()
+
+      # Go through the substitution dictionary and modify the contents read in
+      # from the source file
+      for key, value in submap.items():
+         contents = contents.replace(key, value);
+
+      # Write out the target file with the new contents
+      open(targets[i], 'w').write(contents)
+      os.chmod(targets[i], 0755)
+
+def generate_builder_str(target, source, env):
+   builderStr = "generating: ";
+   for i in range(len(target)):
+      if i > 0:
+         builderStr += ", " + str(target)
+      else:
+         builderStr += str(target);
+   return builderStr
+
 Export('ApplyBoostOptions ApplyPythonOptions ApplyCppUnitOptions')
 
 #------------------------------------------------------------------------------
@@ -576,14 +576,11 @@ Export('PREFIX')
 Export('optimize')
 print "Install prefix: ", Prefix()
 
-# Create the extra builders
-# Define a builder for the gmtl-config script
-builders = {
-   'ConfigBuilder'   : Builder(action = CreateConfig),
-   'PkgConfigBuilder'   : Builder(action = CreatePkgConfig)
-}
-   
 baseEnv = BuildPlatformEnv()
+baseEnv["BUILDERS"]["SubstBuilder"] = \
+   SCons.Builder.Builder(action = SCons.Action.Action(CreateSubst,
+                                                      generate_builder_str,
+                                                      varlist = ['submap',]))
 baseEnv['enable_python'] = False
 Export('baseEnv')
 
@@ -655,14 +652,26 @@ if not has_help_flag:
    os.path.walk('gmtl',get_headers,gmtl_headers)
    #print "GMTL Headers:\n", gmtl_headers, "\n"
 
-   if baseEnv['versioning'] == 'yes' and not sys.platform.startswith("win"):
-      INCLUDE_VERSION= "gmtl-%s.%s.%s" % GetGMTLVersion()
-      INCLUDE_DIR = pj('include', INCLUDE_VERSION)
+   # --- Setup installation paths --- #
+   base_inst_paths = {}
+   base_inst_paths['base'] = os.path.abspath(PREFIX)
+   base_inst_paths['lib'] = pj(base_inst_paths['base'], 'lib')
+   base_inst_paths['share'] = pj(base_inst_paths['base'], 'share')
+   base_inst_paths['flagpoll'] = pj(base_inst_paths['share'], 'flagpoll')
+   base_inst_paths['bin'] = pj(base_inst_paths['base'], 'bin')
+   include_dir = pj(base_inst_paths['base'], 'include')
+
+   if baseEnv['versioning'] and not sys.platform.startswith("win"):
+      include_version = "gmtl-%s.%s.%s" % GetGMTLVersion()
+      include_dir = pj('include', include_version)
    else:
-      INCLUDE_DIR = 'include'
-   
+      include_dir = 'include'
+
+   base_inst_paths['include'] = include_dir
+   print "using prefix:", base_inst_paths['base']         
+      
    for h in gmtl_headers:
-      installed_targets += baseEnv.InstallAs(pj(PREFIX, INCLUDE_DIR, h), h)
+      installed_targets += baseEnv.InstallAs(pj(PREFIX, include_dir, h), h)
       pkg.addExtraDist([File(h)])
    
    # Process subdirectories
@@ -675,43 +684,42 @@ if not has_help_flag:
       subdirs.append('Test')
    SConscript(dirs = subdirs)
 
-   # Setup the builder for gmtl-config
-   env = baseEnv.Copy(BUILDERS = builders)
-   gmtl_config_submap = {
-         '@prefix@'                    : PREFIX,
-         '@exec_prefix@'               : '${prefix}',
-         '@gmtl_cxxflags@'             : '',
-         '@includedir@'                : pj(PREFIX, INCLUDE_DIR),
-         '@gmtl_extra_cxxflags@'       : '',
-         '@gmtl_extra_include_dirs@'   : '',
-         '@VERSION_MAJOR@'             : str(GMTL_VERSION[0]),
-         '@VERSION_MINOR@'             : str(GMTL_VERSION[1]),
-         '@VERSION_PATCH@'             : str(GMTL_VERSION[2]),
-      }
-   env.ConfigBuilder('gmtl-config','gmtl-config.in',submap = gmtl_config_submap)
-   # The following is commented out because it causes gmtl-config to be
-   # regenerated if the value of PREFIX changes between separate build and
-   # install invocations. This is a problem when building a GMTL RPM since
-   # the RPM is built from a GMTL installation made in a temporary location
-   # that is not the same as where it gets installed by an end user.
-#   env.Depends('gmtl-config', Value(gmtl_config_submap))
-   installed_targets += env.Install(pj(PREFIX, 'bin'), 'gmtl-config')
+   env = baseEnv.Copy()
 
-   # Setup the builder for gmtl-config
-   env = baseEnv.Copy(BUILDERS = builders)
-   gmtl_pc_submap = {
-         '@prefix@'                    : PREFIX,
-         '@exec_prefix@'               : '${prefix}',
-         '@gmtl_cxxflags@'             : '',
-         '@includedir@'                : pj(PREFIX, INCLUDE_DIR),
-         '@gmtl_extra_cxxflags@'       : '',
-         '@gmtl_extra_include_dirs@'   : '',
-         '@version_major@'             : str(GMTL_VERSION[0]),
-         '@version_minor@'             : str(GMTL_VERSION[1]),
-         '@version_patch@'             : str(GMTL_VERSION[2]),
-      }
-   env.PkgConfigBuilder('gmtl.pc','gmtl.pc.in',submap = gmtl_pc_submap)
-   installed_targets += env.Install(pj(PREFIX, 'share', 'pkgconfig'), 'gmtl.pc')
+   # Build up the provides vars for the .fpc files
+   provides = "gmtl"
+   # XXX: provides data
+   #if combo["type"] != "optimized":
+   #   provides += "_%s"%combo["type"]
+
+   arch = "noarch"
+   gmtl_version_str = "%i.%i.%i" % GMTL_VERSION
+
+   # - Define a builder for the gmtl.fpc file
+   # ------------------ Build .fpc file ------------------ #
+   # Build up substitution map
+   submap = {
+      '@provides@'                : provides,
+      '@prefix@'                  : base_inst_paths['base'],
+      '@exec_prefix@'             : '${prefix}',
+      '@gmtl_cxxflags@'           : '',
+      '@includedir@'              : base_inst_paths['include'],
+      '@gmtl_extra_cxxflags@'     : '',
+      '@gmtl_extra_include_dirs@' : '',
+      '@arch@'                    : arch,
+      '@version@'                 : gmtl_version_str
+   }
+
+   # Setup the builder for gmtl.fpc
+   name_parts = ['gmtl', gmtl_version_str, arch]
+   fpc_filename = "-".join(name_parts) + ".fpc"
+   gmtl_fpc = env.SubstBuilder(pj(base_inst_paths['flagpoll'], fpc_filename), 
+                               'gmtl.fpc.in', submap = submap)
+   env.AddPostAction(gmtl_fpc, Chmod('$TARGET', 0644))
+   env.Depends(gmtl_fpc, 'gmtl/Version.h')
+
+   installed_targets += env.Install(base_inst_paths['bin'], 'gmtl-config')
+   installed_targets += gmtl_fpc
 
    pkg.build()
    installed_targets += pkg.getInstalledTargets()
