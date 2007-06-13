@@ -1,6 +1,6 @@
 # Spec file for GMTL.
 %define name    gmtl
-%define version	0.5.0
+%define version	0.5.1
 %define release	1
 
 Name: %{name}
@@ -36,6 +36,7 @@ scons install prefix=%{buildroot}%{_prefix}
 # Remove all stupid scons temp files
 find %{buildroot}%{_prefix} -name .sconsign -exec rm {} \;
 find %{buildroot}%{_prefix}/include -name \*.h -exec chmod 644 {} \;
+sed -i -e 's|%{buildroot}||g' %{buildroot}%{_datadir}/flagpoll/*.fpc
 
 %clean
 rm -rf %{buildroot}
@@ -51,12 +52,18 @@ rm -rf %{buildroot}
 %files
 %defattr(-, root, root)
 %{_bindir}/gmtl-config
-%{_includedir}/gmtl
+%{_includedir}/gmtl-%{version}
 %{_datadir}/flagpoll
 
 %doc AUTHORS ChangeLog COPYING LICENSE.addendum README
 
 %changelog
+* Wed Jun 13 2007 Patrick Hartling <patrick@infiscape.com> 0.5.1-1
+- Updated to version 0.5.1
+- Fixed bad path in the GMTL .fpc file caused by the build not handling the
+  staging root correctly
+- Package versioned header directory
+
 * Wed Jun 13 2007 Patrick Hartling <patrick@infiscape.com>
 - Updated for the use of Flagpoll rather than pkg-config
 
