@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Containment.h,v $
- * Date modified: $Date: 2007-06-13 17:04:49 $
- * Version:       $Revision: 1.19 $
+ * Date modified: $Date: 2007-06-13 19:39:56 $
+ * Version:       $Revision: 1.20 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -594,17 +594,19 @@ inline bool isInVolume(const Frustum<T>& f, const AABox<T>& box)
 template<typename T>
 inline bool isInVolume(const Frustum<T>& f, const Tri<T>& tri)
 {
-   if ( isInVolume(f, tri[0]) )
+   unsigned int junk;
+
+   if ( isInVolume(f, tri[0], junk) )
    {
       return true;
    }
 
-   if ( isInVolume(f, tri[1]) )
+   if ( isInVolume(f, tri[1], junk) )
    {
       return true;
    }
 
-   if ( isInVolume(f, tri[2]) )
+   if ( isInVolume(f, tri[2], junk) )
    {
       return true;
    }
