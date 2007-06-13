@@ -1,5 +1,6 @@
 DATE       AUTHOR       CHANGE
 ---------- ------------ -------------------------------------------------------
+2007-06-13 patrickh     Switched from pkg-config to Flagpoll.
 2007-03-02 patrickh     Added gmtl::Frustum. Submitted by Benjamin Schulz.
 2006-11-07 patrickh     Do not install GMTL headers into a versioned directory
                         on Windows.
