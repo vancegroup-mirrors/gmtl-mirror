@@ -32,7 +32,7 @@ if env['CXX'][:3] == 'g++' and WhereIs('objcopy'):
 
 ApplyBoostOptions(env)
 ApplyPythonOptions(env)
-env.Append(CPPPATH   = ['#', '#python/src'])
+env.Prepend(CPPPATH   = ['#', '#python/src'])
 env.Append(CXXFLAGS = ['-DGMTL_NO_METAPROG',])
 
 python_module = 'gmtl'
