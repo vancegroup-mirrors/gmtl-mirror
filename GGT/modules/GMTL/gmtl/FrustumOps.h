@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: FrustumOps.h,v $
- * Date modified: $Date: 2007-06-13 16:38:15 $
- * Version:       $Revision: 1.2 $
+ * Date modified: $Date: 2007-06-13 17:04:49 $
+ * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -42,8 +42,6 @@
 
 namespace gmtl
 {
-	const unsigned int IN_FRONT_OFF_ALL_PLANES = 6;
-
 	template<class DATA_TYPE>
 	void normalize(Frustum<DATA_TYPE>& f)
 	{

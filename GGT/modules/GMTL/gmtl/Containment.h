@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Containment.h,v $
- * Date modified: $Date: 2007-06-13 16:38:14 $
- * Version:       $Revision: 1.18 $
+ * Date modified: $Date: 2007-06-13 17:04:49 $
+ * Version:       $Revision: 1.19 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -40,6 +40,7 @@
 #include <gmtl/Sphere.h>
 #include <gmtl/AABox.h>
 #include <gmtl/Frustum.h>
+#include <gmtl/Tri.h>
 #include <gmtl/VecOps.h>
 
 // old stuff
@@ -518,6 +519,8 @@ void makeVolume(AABox<DATA_TYPE>& box, const Sphere<DATA_TYPE>& sph)
 // Frustum
 //-----------------------------------------------------------------------------
 
+const unsigned int IN_FRONT_OF_ALL_PLANES = 6;
+
 template<typename T>
 inline bool isInVolume(const Frustum<T>& f, const Point<T, 3>& p,
                        unsigned int& idx /*out*/)
@@ -532,7 +535,7 @@ inline bool isInVolume(const Frustum<T>& f, const Point<T, 3>& p,
       }
    }
      
-   idx = IN_FRONT_OFF_ALL_PLANES;
+   idx = IN_FRONT_OF_ALL_PLANES;
    return true;
 }
 
@@ -554,17 +557,17 @@ inline bool isInVolume(const Frustum<T>& f, const Sphere<T>& s)
 template<typename T>
 inline bool isInVolume(const Frustum<T>& f, const AABox<T>& box)
 {
-   const Point3f& min = box.getMin();
-   const Point3f& max = box.getMax();
-   Point3f p[8];
+   const Point<T, 3>& min = box.getMin();
+   const Point<T, 3>& max = box.getMax();
+   Point<T, 3> p[8];
    p[0] = min;
    p[1] = max;
-   p[2] = Point3f(max[0], min[1], min[2]);
-   p[3] = Point3f(min[0], max[1], min[2]);
-   p[4] = Point3f(min[0], min[1], max[2]);
-   p[5] = Point3f(max[0], max[1], min[2]);
-   p[6] = Point3f(min[0], max[1], max[2]);
-   p[7] = Point3f(max[0], min[1], max[2]);
+   p[2] = Point<T, 3>(max[0], min[1], min[2]);
+   p[3] = Point<T, 3>(min[0], max[1], min[2]);
+   p[4] = Point<T, 3>(min[0], min[1], max[2]);
+   p[5] = Point<T, 3>(max[0], max[1], min[2]);
+   p[6] = Point<T, 3>(min[0], max[1], max[2]);
+   p[7] = Point<T, 3>(max[0], min[1], max[2]);
 
    unsigned int idx = 6;
 
