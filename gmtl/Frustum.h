@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Frustum.h,v $
- * Date modified: $Date: 2007-06-13 19:42:29 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2007-06-13 23:16:48 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -84,7 +84,7 @@ public:
     * @param projMatrix The projection matrix of your camera or light etc. to
     *                   construct the planes from.
     */
-   Frustum(const gmtl::Matrix44f& projMatrix)
+   Frustum(const gmtl::Matrix<DATA_TYPE, 4, 4>& projMatrix)
    {
       extractPlanes(projMatrix);
    }
@@ -104,8 +104,8 @@ public:
     * @param projMatrix      The projection matrix of your camera or light or
     *                        whatever.
     */
-   Frustum(const gmtl::Matrix44f& modelviewMatrix,
-           const gmtl::Matrix44f& projMatrix)
+   Frustum(const gmtl::Matrix<DATA_TYPE, 4, 4>& modelviewMatrix,
+           const gmtl::Matrix<DATA_TYPE, 4, 4>& projMatrix)
    {
       extractPlanes(modelviewMatrix, projMatrix);
    }
@@ -116,8 +116,8 @@ public:
     * @param projMatrix The projection matrix of you camera or light or
     *                   what ever.
     */
-   void extractPlanes(const gmtl::Matrix44f& modelviewMatrix,
-                      const gmtl::Matrix44f& projMatrix)
+   void extractPlanes(const gmtl::Matrix<DATA_TYPE, 4, 4>& modelviewMatrix,
+                      const gmtl::Matrix<DATA_TYPE, 4, 4>& projMatrix)
    {
       extractPlanes(projMatrix * modelviewMatrix);
    }
@@ -137,39 +137,39 @@ public:
     * @param projMatrix      The projection matrix of you camera or light etc.
     *                        to construct the planes from.
     */
-   void extractPlanes(const gmtl::Matrix44f& projMatrix)
+   void extractPlanes(const gmtl::Matrix<DATA_TYPE, 4, 4>& projMatrix)
    {
-      const gmtl::Matrix44f& m = projMatrix;
+      const gmtl::Matrix<DATA_TYPE, 4, 4>& m = projMatrix;
 
       //left
-      mPlanes[PLANE_LEFT].setNormal(gmtl::Vec3f(m[3][0] + m[0][0],
-                                                m[3][1] + m[0][1],
-                                                m[3][2] + m[0][2]));
+      mPlanes[PLANE_LEFT].setNormal(gmtl::Vec<DATA_TYPE, 3>(m[3][0] + m[0][0],
+                                                            m[3][1] + m[0][1],
+                                                            m[3][2] + m[0][2]));
       mPlanes[PLANE_LEFT].setOffset(m[3][3] + m[0][3]);
       //right
-      mPlanes[PLANE_RIGHT].setNormal(gmtl::Vec3f(m[3][0] - m[0][0],
-                                                 m[3][1] - m[0][1],
-                                                 m[3][2] - m[0][2]));
+      mPlanes[PLANE_RIGHT].setNormal(gmtl::Vec<DATA_TYPE, 3>(m[3][0] - m[0][0],
+                                                             m[3][1] - m[0][1],
+                                                             m[3][2] - m[0][2]));
       mPlanes[PLANE_RIGHT].setOffset(m[3][3] - m[0][3]);
       //bottom
-      mPlanes[PLANE_BOTTOM].setNormal(gmtl::Vec3f(m[3][0] + m[1][0],
-                                                  m[3][1] + m[1][1],
-                                                  m[3][2] + m[1][2]));
+      mPlanes[PLANE_BOTTOM].setNormal(gmtl::Vec<DATA_TYPE, 3>(m[3][0] + m[1][0],
+                                                              m[3][1] + m[1][1],
+                                                              m[3][2] + m[1][2]));
       mPlanes[PLANE_BOTTOM].setOffset(m[3][3] + m[1][3]);
       //top
-      mPlanes[PLANE_TOP].setNormal(gmtl::Vec3f(m[3][0] - m[1][0],
-                                               m[3][1] - m[1][1],
-                                               m[3][2] - m[1][2]));
+      mPlanes[PLANE_TOP].setNormal(gmtl::Vec<DATA_TYPE, 3>(m[3][0] - m[1][0],
+                                                           m[3][1] - m[1][1],
+                                                           m[3][2] - m[1][2]));
       mPlanes[PLANE_TOP].setOffset(m[3][3] - m[1][3]);
       //near
-      mPlanes[PLANE_NEAR].setNormal(gmtl::Vec3f(m[3][0] + m[2][0],
-                                                m[3][1] + m[2][1],
-                                                m[3][2] + m[2][2]));
+      mPlanes[PLANE_NEAR].setNormal(gmtl::Vec<DATA_TYPE, 3>(m[3][0] + m[2][0],
+                                                            m[3][1] + m[2][1],
+                                                            m[3][2] + m[2][2]));
       mPlanes[PLANE_NEAR].setOffset(m[2][3] + m[3][3]);
       //far
-      mPlanes[PLANE_FAR].setNormal(gmtl::Vec3f(m[3][0] - m[2][0],
-                                               m[3][1] - m[2][1],
-                                               m[3][2] - m[2][2]));
+      mPlanes[PLANE_FAR].setNormal(gmtl::Vec<DATA_TYPE, 3>(m[3][0] - m[2][0],
+                                                           m[3][1] - m[2][1],
+                                                           m[3][2] - m[2][2]));
       mPlanes[PLANE_FAR].setOffset(m[3][3] - m[2][3]);
    }
 
