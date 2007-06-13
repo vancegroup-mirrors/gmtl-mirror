@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl.cpp,v $
- * Date modified: $Date: 2005-06-06 03:57:41 $
- * Version:       $Revision: 1.10 $
+ * Date modified: $Date: 2007-06-13 23:17:26 $
+ * Version:       $Revision: 1.11 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -81,6 +81,8 @@ void _Export_AxisAngle_double();
 void _Export_AxisAngle_float();
 void _Export_LineSeg_double();
 void _Export_LineSeg_float();
+void _Export_Frustum_double();
+void _Export_Frustum_float();
 void _Export_Point_double_2();
 void _Export_Point_double_3();
 void _Export_Point_float_2();
@@ -108,11 +110,13 @@ void _Export_gmtl_RayOps_h();
 void _Export_gmtl_TriOps_h();
 void _Export_gmtl_QuatOps_h();
 void _Export_gmtl_VecOps_h();
+void _Export_gmtl_FrustumOps_h();
 void _Export_gmtl_intersect_wrappers_h();
+void _Export_gmtl_containment_wrappers_h();
 void _Export_gmtl_LineSegOps_h();
+void _Export_gmtl_PlaneOps_h();
 void _Export_gmtl_Containment_h();
 void _Export_gmtl_Generate_h();
-void _Export_gmtl_PlaneOps_h();
 void _Export_gmtl_Xforms_h();
 void _Export_gmtl_wrappers_h();
 
@@ -172,6 +176,8 @@ BOOST_PYTHON_MODULE(gmtl)
     _Export_AxisAngle_float();
     _Export_LineSeg_double();
     _Export_LineSeg_float();
+    _Export_Frustum_double();
+    _Export_Frustum_float();
     _Export_Point_double_2();
     _Export_Point_double_3();
     _Export_Point_float_2();
@@ -200,7 +206,9 @@ BOOST_PYTHON_MODULE(gmtl)
     _Export_gmtl_QuatOps_h();
     _Export_gmtl_VecOps_h();
     _Export_gmtl_intersect_wrappers_h();
+    _Export_gmtl_containment_wrappers_h();
     _Export_gmtl_LineSegOps_h();
+    _Export_gmtl_FrustumOps_h();
     _Export_gmtl_Containment_h();
     _Export_gmtl_Generate_h();
     _Export_gmtl_PlaneOps_h();

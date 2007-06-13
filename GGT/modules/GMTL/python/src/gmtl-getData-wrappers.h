@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-getData-wrappers.h,v $
- * Date modified: $Date: 2005-06-04 20:13:09 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2007-06-13 23:17:25 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -32,6 +32,9 @@
 #include <gmtl/Matrix.h>
 #include <gmtl/VecBase.h>
 #include <gmtl/Quat.h>
+#include <gmtl/EulerAngle.h>
+#include <gmtl/Frustum.h>
+
 
 namespace gmtlWrappers
 {
@@ -92,6 +95,14 @@ namespace gmtlWrappers
       return boost::python::make_tuple(ang->getData()[0], ang->getData()[1],
                                        ang->getData()[2]);
    }
+
+   template<typename TYPE>
+   boost::python::tuple Frustum_getPlanes(gmtl::Frustum<TYPE>* f)
+   {
+      return boost::python::make_tuple(f->mPlanes[0], f->mPlanes[1],
+                                       f->mPlanes[2], f->mPlanes[3],
+                                       f->mPlanes[4], f->mPlanes[5]);
+   }
 }
 
 #if ! defined(__APPLE__)
@@ -119,6 +130,9 @@ namespace gmtlWrappers
    template boost::python::tuple EulerAngle_getData(gmtl::EulerAngleXYZf*);
    template boost::python::tuple EulerAngle_getData(gmtl::EulerAngleZYXf*);
    template boost::python::tuple EulerAngle_getData(gmtl::EulerAngleZXYf*);
+
+   template boost::python::tuple Frustum_getPlanes(gmtl::Frustumf*);
+   template boost::python::tuple Frustum_getPlanes(gmtl::Frustumd*);
 }
 #endif
 

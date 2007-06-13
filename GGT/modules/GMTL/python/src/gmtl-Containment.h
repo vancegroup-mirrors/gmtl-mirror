@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-Containment.h,v $
- * Date modified: $Date: 2005-06-04 20:13:09 $
- * Version:       $Revision: 1.3 $
+ * Date modified: $Date: 2007-06-13 23:17:25 $
+ * Version:       $Revision: 1.4 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -85,6 +85,15 @@ namespace gmtl
 
    template void makeVolume(gmtl::AABoxf&, const gmtl::Spheref&);
    template void makeVolume(gmtl::AABoxd&, const gmtl::Sphered&);
+
+   template bool isInVolume(const Frustumf&, const Spheref&);
+   template bool isInVolume(const Frustumd&, const Sphered&);
+
+   template bool isInVolume(const Frustumf&, const AABoxf&);
+   template bool isInVolume(const Frustumd&, const AABoxd&);
+
+   template bool isInVolume(const Frustumf&, const Trif&);
+   template bool isInVolume(const Frustumd&, const Trid&);
 }
 #endif
 

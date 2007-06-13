@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-pickle.h,v $
- * Date modified: $Date: 2005-12-02 00:36:55 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2007-06-13 23:17:25 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -42,6 +42,7 @@
 #include <gmtl/AxisAngle.h>
 #include <gmtl/Coord.h>
 #include <gmtl/EulerAngle.h>
+#include <gmtl/Frustum.h>
 #include <gmtl/LineSeg.h>
 #include <gmtl/Matrix.h>
 #include <gmtl/Plane.h>
@@ -431,6 +432,27 @@ struct Vec4_pickle : boost::python::pickle_suite
       v[1] = boost::python::extract<T>(state[1]);
       v[2] = boost::python::extract<T>(state[2]);
       v[3] = boost::python::extract<T>(state[3]);
+   }
+};
+
+template<typename T>
+struct Frustum_pickle : boost::python::pickle_suite
+{
+   static boost::python::tuple getstate(const gmtl::Frustum<T>& f)
+   {
+      return boost::python::make_tuple(f.mPlanes[0], f.mPlanes[1],
+                                       f.mPlanes[2], f.mPlanes[3],
+                                       f.mPlanes[4], f.mPlanes[5]);
+   }
+
+   static void setstate(gmtl::Frustum<T>& f, boost::python::tuple state)
+   {
+      f.mPlanes[0] = boost::python::extract< gmtl::Plane<T> >(state[0]);
+      f.mPlanes[1] = boost::python::extract< gmtl::Plane<T> >(state[1]);
+      f.mPlanes[2] = boost::python::extract< gmtl::Plane<T> >(state[2]);
+      f.mPlanes[3] = boost::python::extract< gmtl::Plane<T> >(state[3]);
+      f.mPlanes[4] = boost::python::extract< gmtl::Plane<T> >(state[4]);
+      f.mPlanes[5] = boost::python::extract< gmtl::Plane<T> >(state[5]);
    }
 };
 
