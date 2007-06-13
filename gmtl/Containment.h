@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Containment.h,v $
- * Date modified: $Date: 2007-06-13 19:39:56 $
- * Version:       $Revision: 1.20 $
+ * Date modified: $Date: 2007-06-13 19:42:29 $
+ * Version:       $Revision: 1.21 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -527,7 +527,7 @@ inline bool isInVolume(const Frustum<T>& f, const Point<T, 3>& p,
 {
    for ( unsigned int i = 0; i < 6; ++i )
    {
-      T dist = dot(f.m_planes[i].mNorm, static_cast< Vec<T, 3> >(p)) + f.m_planes[i].mOffset;
+      T dist = dot(f.mPlanes[i].mNorm, static_cast< Vec<T, 3> >(p)) + f.mPlanes[i].mOffset;
       if (dist < T(0.0) )
       {
          idx = i;
@@ -544,7 +544,7 @@ inline bool isInVolume(const Frustum<T>& f, const Sphere<T>& s)
 {
    for ( unsigned int i = 0; i < 6; ++i )
    {
-      T dist = dot(f.m_planes[i].mNorm, static_cast< Vec<T, 3> >(s.getCenter())) + f.m_planes[i].mOffset;
+      T dist = dot(f.mPlanes[i].mNorm, static_cast< Vec<T, 3> >(s.getCenter())) + f.mPlanes[i].mOffset;
       if ( dist <= -T(s.getRadius()) )
       {
          return false;
@@ -581,7 +581,7 @@ inline bool isInVolume(const Frustum<T>& f, const AABox<T>& box)
 
    for ( unsigned int i = 1; i < 8; ++i )
    {
-      T dist = dot(f.m_planes[idx].mNorm, static_cast< Vec<T, 3> >(p[i])) + f.m_planes[idx].mOffset;      
+      T dist = dot(f.mPlanes[idx].mNorm, static_cast< Vec<T, 3> >(p[i])) + f.mPlanes[idx].mOffset;      
       if ( dist > T(0.0) )
       {
          return true;
