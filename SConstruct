@@ -275,7 +275,7 @@ def ValidateBoostOption(key, value, environ):
    if "BoostPythonDir" == key:
       version_dir = 'boost-' + re.sub(r'\.', '_', boost_version)   
       boost_inc_dir = value    		# Default to 'boost' directly off base
-      potential_inc_paths = ["include",pj('include',version_dir)]
+      potential_inc_paths = [pj('include', version_dir), "include"]
       for pth in potential_inc_paths:
          if os.path.isdir(pj(value,pth)):
 	    boost_inc_dir = pj(value,pth)	    
