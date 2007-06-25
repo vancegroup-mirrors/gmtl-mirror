@@ -14,6 +14,7 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 License: LGPL
 BuildPrereq: scons >= 0.96.1
 BuildArch: noarch
+Requires: flagpoll >= 0.8.1
 
 %description
 The Generic Math Template Library (GMTL) is a high-performance, extensible,
