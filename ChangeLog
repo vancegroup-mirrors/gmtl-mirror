@@ -1,5 +1,9 @@
 DATE       AUTHOR       CHANGE
 ---------- ------------ -------------------------------------------------------
+[0.5.2 released - 6.25.2007]===================================================
+2007-06-25 patrickh     Fixed a bug in the include path written to gmtl.fpc.
+                        NEW VERSION: 0.5.2
+
 [0.5.1 released - 6.25.2007]===================================================
 2007-06-25 patrickh     Added gmtl::convertTo<...>() in the new header file
                         gmtl/Misc/MatrixConvert.h. This file relies on Boost.
