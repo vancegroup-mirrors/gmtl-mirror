@@ -1,6 +1,6 @@
 # Spec file for GMTL.
 %define name    gmtl
-%define version	0.5.2
+%define version	0.5.3
 %define release	1
 
 Name: %{name}
@@ -59,6 +59,9 @@ rm -rf %{buildroot}
 %doc AUTHORS ChangeLog COPYING LICENSE.addendum README
 
 %changelog
+* Mon Jun 25 2007 Patrick Hartling <patrick@infiscape.com> 0.5.3-1
+- Updated version to 0.5.3
+
 * Mon Jun 25 2007 Patrick Hartling <patrick@infiscape.com> 0.5.2-1
 - Updated version to 0.5.2
 
