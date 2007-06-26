@@ -663,9 +663,7 @@ if not has_help_flag:
 
    if baseEnv['versioning'] and not sys.platform.startswith("win"):
       include_version = "gmtl-%s.%s.%s" % GetGMTLVersion()
-      include_dir = pj('include', include_version)
-   else:
-      include_dir = 'include'
+      include_dir = pj(include_dir, include_version)
 
    base_inst_paths['include'] = include_dir
    print "using prefix:", base_inst_paths['base']         
