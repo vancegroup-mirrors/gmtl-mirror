@@ -1,2 +1,0 @@
-#!/bin/sh
-./cvs-gather.pl --target=JugglerBaseStuff --target=Doozer --target=Boost_cppcompat
