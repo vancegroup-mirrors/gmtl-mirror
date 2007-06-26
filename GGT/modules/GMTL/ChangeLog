@@ -1,5 +1,9 @@
 DATE       AUTHOR       CHANGE
 ---------- ------------ -------------------------------------------------------
+[0.5.3 released - 6.26.2007]===================================================
+2007-06-26 patrickh     Fixed a bug in gmtl-config.
+                        NEW VERSION: 0.5.3
+
 [0.5.2 released - 6.25.2007]===================================================
 2007-06-25 patrickh     Fixed a bug in the include path written to gmtl.fpc.
                         NEW VERSION: 0.5.2
