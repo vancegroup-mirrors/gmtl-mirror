@@ -9,8 +9,8 @@
 #
 # -----------------------------------------------------------------
 # File:          $RCSfile: gmtl-config,v $
-# Date modified: $Date: 2007-06-13 15:09:19 $
-# Version:       $Revision: 1.1 $
+# Date modified: $Date: 2007-06-26 19:04:10 $
+# Version:       $Revision: 1.2 $
 # -----------------------------------------------------------------
 #
 # ********************************************************** ggt-head end
@@ -64,11 +64,9 @@ if options.prefix:
    command_flags += " --get-prefix"
 elif options.version:
    command_flags += " --modversion"
-elif options.cxxflags or options.libs:
+elif options.cxxflags:
    if options.cxxflags:
       command_flags += " --cflags"
-   if options.libs:
-      command_flags += " --libs"
    if not options.all:
       command_flags += " --no-deps"
 else:
