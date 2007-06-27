@@ -1,7 +1,7 @@
 # Spec file for GMTL.
 %define name    gmtl
 %define version	0.5.3
-%define release	2
+%define release	3
 
 Name: %{name}
 Summary: The GMTL Headers
@@ -23,6 +23,18 @@ experts in the field of computer graphics and virtual reality, culminating the
 efforts of many previous math library efforts. GMTL gives the graphics
 programmer several core math types and a rich library of graphics/math
 operations on those types.
+
+%package config
+Summary: The gmtl-config script that calls flagpoll
+Group: Development/C++
+Requires: gmtl
+Requires: flagpoll >= 0.8.1
+Requires: python
+
+%description config
+The gmtl-config Python script that provides backwards compability for older
+packages not using Flagpoll for getting compiler options necessary for
+building against GMTL.
 
 %prep
 rm -rf %{buildroot}
@@ -51,13 +63,20 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-, root, root)
-%{_bindir}/gmtl-config
+%dir %{_includedir}/gmtl-%{version}/
+%dir %{_includedir}/gmtl-%{version}/gmtl/
 %{_includedir}/gmtl-%{version}
 %{_datadir}/flagpoll
-
 %doc AUTHORS ChangeLog COPYING LICENSE.addendum README
 
+%files config
+%{_bindir}/gmtl-config
+
 %changelog
+* Wed Jun 27 2007 Patrick Hartling <patrick@infiscape.com> 0.5.3-3
+- Package gmtl-config separately so that multiple versions of the gmtl
+  package can be installed in parallel.
+
 * Wed Jun 27 2007 Patrick Hartling <patrick@infiscape.com> 0.5.3-2
 - The .fpc file now uses a relative path, so it is not necessary to perform
   post processing on it to remove the staging area path..
