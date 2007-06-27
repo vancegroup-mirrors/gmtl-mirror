@@ -1,7 +1,7 @@
 # Spec file for GMTL.
 %define name    gmtl
-%define version	0.5.3
-%define release	4
+%define version	0.5.4
+%define release	1
 
 Name: %{name}
 Summary: The GMTL Headers
@@ -102,6 +102,9 @@ done
 %doc %{_docdir}/gmtl-%{version}/man
 
 %changelog
+* Wed Jun 27 2007 Patrick Hartling <patrick@infiscape.com> 0.5.4-1
+- Updated version to 0.5.4
+
 * Wed Jun 27 2007 Patrick Hartling <patrick@infiscape.com> 0.5.3-4
 - Package documentation in HTML and man page forms.
 

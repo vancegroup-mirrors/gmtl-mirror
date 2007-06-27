@@ -1,6 +1,6 @@
 # Spec file for PyGMTL.
 %define name    pygmtl
-%define version	0.5.3
+%define version	0.5.4
 %define release	1
 
 Name: %{name}
@@ -64,6 +64,9 @@ rm -rf %{buildroot}
 %doc AUTHORS ChangeLog COPYING LICENSE.addendum README README-PyGMTL
 
 %changelog
+* Wed Jun 27 2007 Patrick Hartling <patrick@infiscape.com> 0.5.4-1
+- Updated version to 0.5.4
+
 * Mon Jun 25 2007 Patrick Hartling <patrick@infiscape.com> 0.5.3-1
 - Updated version to 0.5.3
 

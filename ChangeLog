@@ -1,5 +1,6 @@
 DATE       AUTHOR       CHANGE
 ---------- ------------ -------------------------------------------------------
+[0.5.4 released - 6.27.2007]===================================================
 2007-06-27 patrickh     Package gmtl-config separately so that its presence
                         does not prevent parallel installation of multiple
                         GMTL versions.
