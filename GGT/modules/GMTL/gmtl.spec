@@ -58,7 +58,7 @@ rm -rf %{buildroot}
 %doc AUTHORS ChangeLog COPYING LICENSE.addendum README
 
 %changelog
-* Mon Jun 26 2007 Patrick Hartling <patrick@infiscape.com> 0.5.3-2
+* Wed Jun 27 2007 Patrick Hartling <patrick@infiscape.com> 0.5.3-2
 - The .fpc file now uses a relative path, so it is not necessary to perform
   post processing on it to remove the staging area path..
 
