@@ -660,12 +660,14 @@ if not has_help_flag:
    base_inst_paths['flagpoll'] = pj(base_inst_paths['share'], 'flagpoll')
    base_inst_paths['bin'] = pj(base_inst_paths['base'], 'bin')
    include_dir = pj(base_inst_paths['base'], 'include')
+   base_inst_paths['include'] = include_dir
 
    if baseEnv['versioning'] and not sys.platform.startswith("win"):
       include_version = "gmtl-%s.%s.%s" % GetGMTLVersion()
       include_dir = pj(include_dir, include_version)
+      base_inst_paths['include'] = pj('${fp_file_cwd}' ,'..' ,'..', 'include',
+                                      include_version)
 
-   base_inst_paths['include'] = include_dir
    print "using prefix:", base_inst_paths['base']         
       
    for h in gmtl_headers:
@@ -698,7 +700,7 @@ if not has_help_flag:
    # Build up substitution map
    submap = {
       '@provides@'                : provides,
-      '@prefix@'                  : base_inst_paths['base'],
+      '@prefix@'                  : pj('${fp_file_cwd}', '..', '..'),
       '@exec_prefix@'             : '${prefix}',
       '@gmtl_cxxflags@'           : '',
       '@includedir@'              : base_inst_paths['include'],
