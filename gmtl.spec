@@ -1,7 +1,7 @@
 # Spec file for GMTL.
 %define name    gmtl
 %define version	0.5.3
-%define release	3
+%define release	4
 
 Name: %{name}
 Summary: The GMTL Headers
@@ -36,6 +36,15 @@ The gmtl-config Python script that provides backwards compability for older
 packages not using Flagpoll for getting compiler options necessary for
 building against GMTL.
 
+%package doc
+Summary: GMTL API documentation
+Group: Development/C++
+BuildPrereq: doxygen
+BuildPrereq: graphviz
+
+%description doc
+GMTL API documentation in HTML form and as man pages.
+
 %prep
 rm -rf %{buildroot}
 %setup -q
@@ -43,15 +52,25 @@ rm -rf %{buildroot}
 %build
 # This needs to be fixed once we have a boost install.
 scons prefix=%{_prefix}
+cd docs && make ref man
+cd ..
 
 %install
+[ -z %{buildroot} ] || rm -rf %{buildroot}
+
 scons install prefix=%{buildroot}%{_prefix}
 # Remove all stupid scons temp files
 find %{buildroot}%{_prefix} -name .sconsign -exec rm {} \;
 find %{buildroot}%{_prefix}/include -name \*.h -exec chmod 644 {} \;
+mkdir -p %{buildroot}%{_docdir}/gmtl-%{version}
+mv docs/html %{buildroot}%{_docdir}/gmtl-%{version}
+mv docs/man %{buildroot}%{_docdir}/gmtl-%{version}
+for f in README AUTHORS ChangeLog COPYING LICENSE.addendum ; do
+   cp $f %{buildroot}%{_docdir}/gmtl-%{version}
+done
 
 %clean
-rm -rf %{buildroot}
+[ -z %{buildroot} ] || rm -rf %{buildroot}
 
 %pre
 
@@ -67,12 +86,25 @@ rm -rf %{buildroot}
 %dir %{_includedir}/gmtl-%{version}/gmtl/
 %{_includedir}/gmtl-%{version}
 %{_datadir}/flagpoll
-%doc AUTHORS ChangeLog COPYING LICENSE.addendum README
+%dir %{_docdir}/gmtl-%{version}/
+%doc %{_docdir}/gmtl-%{version}/AUTHORS
+%doc %{_docdir}/gmtl-%{version}/ChangeLog
+%doc %{_docdir}/gmtl-%{version}/COPYING
+%doc %{_docdir}/gmtl-%{version}/LICENSE.addendum
+%doc %{_docdir}/gmtl-%{version}/README
 
 %files config
 %{_bindir}/gmtl-config
 
+%files doc
+%dir %{_docdir}/gmtl-%{version}/
+%doc %{_docdir}/gmtl-%{version}/html
+%doc %{_docdir}/gmtl-%{version}/man
+
 %changelog
+* Wed Jun 27 2007 Patrick Hartling <patrick@infiscape.com> 0.5.3-4
+- Package documentation in HTML and man page forms.
+
 * Wed Jun 27 2007 Patrick Hartling <patrick@infiscape.com> 0.5.3-3
 - Package gmtl-config separately so that multiple versions of the gmtl
   package can be installed in parallel.
