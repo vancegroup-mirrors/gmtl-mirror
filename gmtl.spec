@@ -1,7 +1,7 @@
 # Spec file for GMTL.
 %define name    gmtl
 %define version	0.5.3
-%define release	1
+%define release	2
 
 Name: %{name}
 Summary: The GMTL Headers
@@ -37,7 +37,6 @@ scons install prefix=%{buildroot}%{_prefix}
 # Remove all stupid scons temp files
 find %{buildroot}%{_prefix} -name .sconsign -exec rm {} \;
 find %{buildroot}%{_prefix}/include -name \*.h -exec chmod 644 {} \;
-sed -i -e 's|%{buildroot}||g' %{buildroot}%{_datadir}/flagpoll/*.fpc
 
 %clean
 rm -rf %{buildroot}
@@ -59,6 +58,10 @@ rm -rf %{buildroot}
 %doc AUTHORS ChangeLog COPYING LICENSE.addendum README
 
 %changelog
+* Mon Jun 26 2007 Patrick Hartling <patrick@infiscape.com> 0.5.3-2
+- The .fpc file now uses a relative path, so it is not necessary to perform
+  post processing on it to remove the staging area path..
+
 * Mon Jun 25 2007 Patrick Hartling <patrick@infiscape.com> 0.5.3-1
 - Updated version to 0.5.3
 
