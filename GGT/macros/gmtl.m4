@@ -7,8 +7,8 @@ dnl   Allen Bierbaum
 dnl
 dnl -----------------------------------------------------------------
 dnl File:          $RCSfile: gmtl.m4,v $
-dnl Date modified: $Date: 2006-11-09 21:38:48 $
-dnl Version:       $Revision: 1.18 $
+dnl Date modified: $Date: 2007-07-15 19:26:23 $
+dnl Version:       $Revision: 1.19 $
 dnl -----------------------------------------------------------------
 dnl
 dnl ************************************************************** ggt-head end
@@ -49,60 +49,14 @@ dnl                          not found.  This argument is optional.
 dnl ---------------------------------------------------------------------------
 AC_DEFUN([GMTL_PATH],
 [
-   AC_PATH_PROG(FLAGPOLL, flagpoll, no)
-   if test "x$FLAGPOLL" = "xno" ; then
-      AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
-
-      if pkg-config --atleast-pkgconfig-version 0.7 ; then
-         QUERY_TOOL=$PKG_CONFIG
-      else
-         no_gmtl='yes'
-         PKG_CONFIG='no'
-      fi
-   else
-      QUERY_TOOL=$FLAGPOLL
-      req_fp_major='0'
-      req_fp_minor='8'
-      req_fp_micro='1'
-      req_fp_version="$req_fp_major.$req_fp_minor.$req_fp_micro"
-
-      AC_MSG_CHECKING([whether flagpoll version is >= $req_fp_version])
-
-      flagpoll_version=`$FLAGPOLL --version`
-      fp_major=`echo $flagpoll_version | \
-                  sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\1/'`
-      fp_minor=`echo $flagpoll_version | \
-                  sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\2/'`
-      fp_micro=`echo $flagpoll_version | \
-                  sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\3/'`
-
-      ok='no'
-      if test "$fp_major" -gt "$req_major"; then
-        ok='yes'
-      else 
-        if test "$fp_major" -eq "$req_fp_major"; then
-            if test "$fp_minor" -ge "$req_fp_minor"; then
-               if test "$fp_micro" -ge "$req_fp_micro"; then
-                  ok='yes'
-               fi
-            fi
-        fi
-      fi
-
-      AC_MSG_RESULT([$ok ($fp_major.$fp_minor.$fp_micro)])
-
-      if test "x$ok" != "xyes" ; then
-         AC_MSG_WARN([*** Flagpoll version is too old; version $req_fp_versio or better required. ***])
-         no_gmtl='yes'
-         FLAGPOLL='no'
-      fi
-   fi
+   AM_PATH_FLAGPOLL([0.8.1], ,
+                    [AC_MSG_ERROR(*** Flagpoll required for GMTL flags ***)])
 
    min_gmtl_version=ifelse([$1], ,0.4.11,$1)
    AC_MSG_CHECKING([for GMTL version >= $min_gmtl_version])
 
-   GMTL_VERSION=`$QUERY_TOOL gmtl --modversion`
-   if $QUERY_TOOL gmtl --atleast-version=$min_gmtl_version >/dev/null 2>&1
+   GMTL_VERSION=`$FLAGPOLL gmtl --modversion`
+   if $FLAGPOLL gmtl --atleast-version=$min_gmtl_version >/dev/null 2>&1
    then
       :
    else
@@ -116,8 +70,8 @@ AC_DEFUN([GMTL_PATH],
    else
       AC_MSG_RESULT([yes ($GMTL_VERSION)])
 
-      GMTL_CXXFLAGS=`$QUERY_TOOL gmtl --cflags`
-      GMTL_INCLUDES=`$QUERY_TOOL gmtl --cflags-only-I`
+      GMTL_CXXFLAGS=`$FLAGPOLL gmtl --cflags`
+      GMTL_INCLUDES=`$FLAGPOLL gmtl --cflags-only-I`
 
       ifelse([$2], , :, [$2])
    fi
