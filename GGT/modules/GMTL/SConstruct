@@ -216,6 +216,10 @@ def BuildWin32Environment():
 
    if compiler_major_ver < '8.0':
       env.Append(CXXFLAGS = '/Op')
+   else:
+      env['SHLINKCOM'] = \
+         [env['SHLINKCOM'],
+          'mt.exe -manifest ${TARGET}.manifest -outputresource:$TARGET;2']
 
    if optimize != 'no':
       if compiler_major_ver < '8.0':
