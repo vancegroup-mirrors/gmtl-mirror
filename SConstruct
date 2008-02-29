@@ -26,8 +26,13 @@ boost_version      = '1.31'
 have_cppunit       = False
 compiler_major_ver = 0
 
-try: has_help_flag = SCons.Script.Main.options.help_msg
-except AttributeError: has_help_flag = SCons.Script.options.help_msg
+try:
+   has_help_flag = SCons.Script.Main.options.help_msg
+except AttributeError:
+   try:
+      has_help_flag = SCons.Script.options.help_msg
+   except AttributeError:
+      has_help_flag = has_help_flag = SCons.Script.GetOption("help")
 
 #------------------------------------------------------------------------------
 # Define some generally useful functions
@@ -223,9 +228,9 @@ def BuildWin32Environment():
 
    if optimize != 'no':
       if compiler_major_ver < '8.0':
-         env.Append(CXXFLAGS = '/Ogity')
+         env.Append(CXXFLAGS = ['/Ogity'])
       else:
-         env.Append(CXXFLAGS = '/Oity')
+         env.Append(CXXFLAGS = ['/Oity'])
 
       env.Append(CXXFLAGS = '/O2 /Gs /Ob2 /MD /D_OPT /DNDEBUG'.split())
       env.Append(LINKFLAGS = ['/RELEASE'])
@@ -310,10 +315,8 @@ def ValidateBoostOption(key, value, environ):
          platform = GetPlatform()
 
          if platform == 'win32':	   
-            if compiler_major_ver == "7.1":
-               tool = '-vc71'
-            else:
-               tool = '-vc80'
+            major, minor = compiler_major_ver.split(".")
+            tool = "-vc%s%s" % (major, minor)
          elif platform == 'irix':
             tool = '-mp'
          elif platform == 'darwin':
