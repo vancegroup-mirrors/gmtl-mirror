@@ -210,7 +210,30 @@ def BuildIRIXEnvironment():
 def BuildWin32Environment():
    global optimize, compiler_major_ver
 
-   env = Environment(ENV = os.environ)   
+   if ARGUMENTS.has_key("MSVS_VERSION"):
+      # Python extension modules can only be built using Visual C++ 7.1 or
+      # 9.0.
+      msvs_ver = ARGUMENTS["MSVS_VERSION"]
+      if msvs_ver not in ("7.1", "9.0"):
+         print "Cannot build Python extensions using MSVS version %s" % \
+                  msvs_ver
+         sys.exit(1)
+
+      python_ver = sys.version[:3]
+      if msvs_ver == "7.1" and python_ver not in ("2.4", "2.5"):
+         print "Python 2.4 or 2.5 must be used with Visual C++ 7.1"
+         sys.exit(1)
+      elif msvs_ver == "9.0" and python_ver not in ("2.6"):
+         print "Python 2.6 must be used with Visual C++ 9.0"
+         sys.exit(1)
+
+      env = Environment(MSVS_VERSION = msvs_ver)
+      # Use the following line instead of the preceding when building with
+      # Visual C++ 9.0. SCons does not know how to find the VC++ 9.0 paths.
+      #env = Environment(MSVS_VERSION = msvs_ver, ENV = os.environ)
+   else:
+      env = Environment(ENV = os.environ)
+
    print "Using MSVS version:", env["MSVS"]["VERSION"]
    compiler_major_ver = env["MSVS"]["VERSION"]
    
