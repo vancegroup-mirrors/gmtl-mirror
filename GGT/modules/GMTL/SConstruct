@@ -346,6 +346,8 @@ def ValidateBoostOption(key, value, environ):
             tool = ''
          else:
             tool = '-gcc'
+            if boost_version >= '1.34':
+               tool += "".join(environ["CXXVERSION"].split('.')[:2])
 
          if platform == 'darwin':
             threading = ''
