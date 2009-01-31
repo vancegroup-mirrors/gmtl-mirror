@@ -343,14 +343,20 @@ def ValidateBoostOption(key, value, environ):
          elif platform == 'irix':
             tool = '-mp'
          elif platform == 'darwin':
-            tool = ''
+            if boost_version >= '1.37':
+               tool = '-xgcc' + "".join(environ["CXXVERSION"].split('.')[:2])
+            else:
+               tool = ''
          else:
             tool = '-gcc'
             if boost_version >= '1.34':
                tool += "".join(environ["CXXVERSION"].split('.')[:2])
 
          if platform == 'darwin':
-            threading = ''
+            if boost_version >= '1.35':
+               threading = '-mt'
+            else:
+               threading = ''
          else:
             threading = '-mt'
 
