@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Tri.h,v $
- * Date modified: $Date: 2004-11-12 01:28:44 $
- * Version:       $Revision: 1.13 $
+ * Date modified: $Date: 2009-02-12 21:44:47 $
+ * Version:       $Revision: 1.14 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -159,7 +159,7 @@ public:
       mVerts[2] = p3;
    }
 
-private:
+public:
    /**
     * The vertices of the triangle.
     */
