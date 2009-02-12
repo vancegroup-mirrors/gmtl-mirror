@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-intersect-wrappers.h,v $
- * Date modified: $Date: 2009-02-12 23:04:40 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2009-02-12 23:35:29 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -163,6 +163,14 @@ namespace gmtlWrappers
    }
 
    template<typename T>
+   tuple intersectDoubleSided(const gmtl::Tri<T>& t, const gmtl::Ray<T>& r)
+   {
+      T val1, val2, val3;
+      bool result = gmtl::intersectDoubleSided(t, r, val1, val2, val3);
+      return make_tuple(result, val1, val2, val3);
+   }
+
+   template<typename T>
    tuple intersect(const gmtl::Tri<T>& t, const gmtl::LineSeg<T>& l)
    {
       float val1, val2, val3;
@@ -243,6 +251,9 @@ namespace gmtlWrappers
 
    template tuple intersect(const gmtl::Trif&, const gmtl::Rayf&);
    template tuple intersect(const gmtl::Trid&, const gmtl::Rayd&);
+
+   template tuple intersectDoubleSided(const gmtl::Trif&, const gmtl::Rayf&);
+   template tuple intersectDoubleSided(const gmtl::Trid&, const gmtl::Rayd&);
 
    template tuple intersect(const gmtl::Trif&, const gmtl::LineSegf&);
    template tuple intersect(const gmtl::Trid&, const gmtl::LineSegd&);
