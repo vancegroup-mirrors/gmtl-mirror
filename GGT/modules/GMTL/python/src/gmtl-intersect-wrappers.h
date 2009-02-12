@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: gmtl-intersect-wrappers.h,v $
- * Date modified: $Date: 2006-06-08 21:00:02 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2009-02-12 23:04:40 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -124,7 +124,7 @@ namespace gmtlWrappers
    tuple intersect(const gmtl::Sphere<T>& s, const gmtl::Ray<T>& r)
    {
       int c;
-      float val1, val2;
+      T val1, val2;
       bool result = gmtl::intersect(s, r, c, val1, val2);
       return make_tuple(result, c, val1, val2);
    }
@@ -133,7 +133,7 @@ namespace gmtlWrappers
    tuple intersect(const gmtl::Sphere<T>& s, const gmtl::LineSeg<T>& l)
    {
       int c;
-      float val1, val2;
+      T val1, val2;
       bool result = gmtl::intersect(s, l, c, val1, val2);
       return make_tuple(result, c, val1, val2);
    }
@@ -175,7 +175,7 @@ namespace gmtlWrappers
                          const gmtl::LineSeg<T>& lineseg)
    {
       int num_hits;
-      float t0, t1;
+      T t0, t1;
       bool result = gmtl::intersectVolume(sphere, lineseg, num_hits, t0, t1);
       return make_tuple(result, num_hits, t0, t1);
    }
@@ -185,7 +185,7 @@ namespace gmtlWrappers
                          const gmtl::Ray<T>& ray)
    {
       int num_hits;
-      float t0, t1;
+      T t0, t1;
       bool result = gmtl::intersectVolume(sphere, ray, num_hits, t0, t1);
       return make_tuple(result, num_hits, t0, t1);
    }
