@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Math.h,v $
- * Date modified: $Date: 2005-06-23 21:13:28 $
- * Version:       $Revision: 1.40 $
+ * Date modified: $Date: 2009-02-12 22:36:11 $
+ * Version:       $Revision: 1.41 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -39,6 +39,7 @@
 #include <stdlib.h>
 #include <gmtl/Defines.h>
 #include <gmtl/Util/Assert.h>
+#include <gmtl/Util/StaticAssert.h>
 
 namespace gmtl
 {
@@ -378,20 +379,48 @@ inline double sqrt( double fValue )
  */
 inline float fastInvSqrt(float x)
 {
+   GMTL_STATIC_ASSERT(sizeof(float) == sizeof(int),
+                      Union_type_sizes_do_not_match);
+
+   // Use an approach to data type reinterpretation that is safe with GCC
+   // strict aliasing enabled. This is called type-punning, and it is valid
+   // when done with a union where the value read (int_value) is different
+   // than the one most recently written to (float_value).
+   union
+   {
+      float float_value;
+      int   int_value;
+   } data;
+
    const float xhalf(0.5f*x);
-   long i = *(long*)&x;
-   i = 0x5f3759df - (i>>1);    // This hides a good amount of math
-   x = *(float*)&i;
+   data.float_value = x;
+   // This hides a good amount of math
+   data.int_value = 0x5f3759df - (data.int_value >> 1);
+   x = data.float_value;
    x = x*(1.5f - xhalf*x*x);   // Repeat for more accuracy
    return x;
 }
 
 inline float fastInvSqrt2(float x)
 {
+   GMTL_STATIC_ASSERT(sizeof(float) == sizeof(int),
+                      Union_type_sizes_do_not_match);
+
+   // Use an approach to data type reinterpretation that is safe with GCC
+   // strict aliasing enabled. This is called type-punning, and it is valid
+   // when done with a union where the value read (int_value) is different
+   // than the one most recently written to (float_value).
+   union
+   {
+      float float_value;
+      int   int_value;
+   } data;
+
    const float xhalf(0.5f*x);
-   long i = *(long*)&x;
-   i = 0x5f3759df - (i>>1);    // This hides a good amount of math
-   x = *(float*)&i;
+   data.float_value = x;
+   // This hides a good amount of math
+   data.int_value = 0x5f3759df - (data.int_value >> 1);
+   x = data.float_value;
    x = x*(1.5f - xhalf*x*x);   // Repeat for more accuracy
    x = x*(1.5f - xhalf*x*x);
    return x;
@@ -399,10 +428,24 @@ inline float fastInvSqrt2(float x)
 
 inline float fastInvSqrt3(float x)
 {
+   GMTL_STATIC_ASSERT(sizeof(float) == sizeof(int),
+                      Union_type_sizes_do_not_match);
+
+   // Use an approach to data type reinterpretation that is safe with GCC
+   // strict aliasing enabled. This is called type-punning, and it is valid
+   // when done with a union where the value read (int_value) is different
+   // than the one most recently written to (float_value).
+   union
+   {
+      float float_value;
+      int   int_value;
+   } data;
+
    const float xhalf(0.5f*x);
-   long i = *(long*)&x;
-   i = 0x5f3759df - (i>>1);    // This hides a good amount of math
-   x = *(float*)&i;
+   data.float_value = x;
+   // This hides a good amount of math
+   data.int_value = 0x5f3759df - (data.int_value >> 1);
+   x = data.float_value;
    x = x*(1.5f - xhalf*x*x);   // Repeat for more accuracy
    x = x*(1.5f - xhalf*x*x);
    x = x*(1.5f - xhalf*x*x);
