@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Intersection.h,v $
- * Date modified: $Date: 2009-02-12 23:39:55 $
- * Version:       $Revision: 1.29 $
+ * Date modified: $Date: 2009-02-12 23:41:30 $
+ * Version:       $Revision: 1.30 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -315,7 +315,10 @@ namespace gmtl
    {
       numHits = 0;
       bool result = intersectAABoxRay(box, seg, tIn, tOut);
-
+      if (tIn < 0.0 || tOut > 1.0)
+      {
+	  return false;
+      }
       if ( result )
       {
          // If tIn is less than 0, then the origin of the line segment is
