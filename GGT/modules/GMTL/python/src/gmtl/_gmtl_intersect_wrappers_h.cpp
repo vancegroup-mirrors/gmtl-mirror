@@ -19,8 +19,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: _gmtl_intersect_wrappers_h.cpp,v $
- * Date modified: $Date: 2006-06-08 21:00:02 $
- * Version:       $Revision: 1.5 $
+ * Date modified: $Date: 2009-02-12 23:35:29 $
+ * Version:       $Revision: 1.6 $
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.pl END do not edit this line> ***************/
@@ -67,7 +67,9 @@ void _Export_gmtl_intersect_wrappers_h()
    def("intersect", (tuple (*)(const gmtl::Plane<float>&, const gmtl::LineSeg<float>&)) &gmtlWrappers::intersect);
    def("intersect", (tuple (*)(const gmtl::Plane<double>&, const gmtl::LineSeg<double>&)) &gmtlWrappers::intersect);
    def("intersect", (tuple (*)(const gmtl::Tri<float>&, const gmtl::Ray<float>&)) &gmtlWrappers::intersect);
-   def("intersect", (tuple (*)(const gmtl::Tri<double>&, const gmtl::Ray<double>&)) &gmtlWrappers::intersect);
+   def("intersect", (tuple (*)(const gmtl::Tri<float>&, const gmtl::Ray<float>&)) &gmtlWrappers::intersect);
+   def("intersectDoubleSided", (tuple (*)(const gmtl::Tri<double>&, const gmtl::Ray<double>&)) &gmtlWrappers::intersectDoubleSided);
+   def("intersectDoubleSided", (tuple (*)(const gmtl::Tri<double>&, const gmtl::Ray<double>&)) &gmtlWrappers::intersectDoubleSided);
    def("intersect", (tuple (*)(const gmtl::Tri<float>&, const gmtl::LineSeg<float>&)) &gmtlWrappers::intersect);
    def("intersect", (tuple (*)(const gmtl::Tri<double>&, const gmtl::LineSeg<double>&)) &gmtlWrappers::intersect);
    def("intersectVolume", (tuple (*)(const gmtl::Sphere<float>&, const gmtl::Ray<float>&)) &gmtlWrappers::intersectVolume);

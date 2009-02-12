@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Intersection.h,v $
- * Date modified: $Date: 2009-02-12 23:04:39 $
- * Version:       $Revision: 1.27 $
+ * Date modified: $Date: 2009-02-12 23:35:29 $
+ * Version:       $Revision: 1.28 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -343,6 +343,75 @@ namespace gmtl
       }
 
       return result;
+   }
+
+   /**
+    * Tests if the given triangle intersects with the given ray, from both sides.
+    *
+    * @param tri The triangle (ccw ordering).
+    * @param ray The ray.
+    * @param u Tangent space u-coordinate of the intersection.
+    * @param v Tangent space v-coordinate of the intersection.
+    * @param t An indicator of the intersection location.
+    *
+    * @post \p t gives you the intersection point:
+    *       \code isect = ray.dir * t + ray.origin \endcode
+    *
+    * @return true if the ray intersects the triangle.
+    *
+    * @see from http://www.acm.org/jgt/papers/MollerTrumbore97/code.html
+    */
+   template<class DATA_TYPE>
+   bool intersectDoubleSided(const Tri<DATA_TYPE>& tri, const Ray<DATA_TYPE>& ray,
+                             DATA_TYPE& u, DATA_TYPE& v, DATA_TYPE& t)
+   {
+      const DATA_TYPE EPSILON = (DATA_TYPE)0.00001f;
+      Vec<DATA_TYPE, 3> edge1, edge2, tvec, pvec, qvec;
+      DATA_TYPE det, inv_det;
+
+      // Find vectors for two edges sharing vert0.
+      edge1 = tri[1] - tri[0];
+      edge2 = tri[2] - tri[0];
+
+      // Begin calculating determinant - also used to calculate U parameter.
+      gmtl::cross(pvec, ray.getDir(), edge2);
+
+      // If determinant is near zero, ray lies in plane of triangle.
+      det = gmtl::dot( edge1, pvec );
+
+      if ( det < EPSILON && det > -EPSILON )
+      {
+         return false;
+      }
+
+      // calculate distance from vert0 to ray origin>
+      tvec = ray.getOrigin() - tri[0];
+
+      // Calc inverse deteriminant.
+      inv_det = ((DATA_TYPE)1.0) / det; 
+
+      // Calculate U parameter and test bounds.
+      u =  inv_det * gmtl::dot(tvec, pvec);
+      if ( u < 0.0 || u > 1.0 )
+      {
+         return false;
+      }
+
+      // Prepare to test V parameter.
+      gmtl::cross(qvec, tvec, edge1);
+
+      // Calculate V parameter and test bounds.
+      v = inv_det * gmtl::dot(ray.getDir(), qvec);
+      if (v < 0.0 || u + v > 1.0)
+      {
+         return false;
+      }
+
+      // Calculate t, scale parameters, ray intersects triangle.
+      t = inv_det * gmtl::dot(edge2, qvec);
+
+      // Test if t is within the ray boundary (when t >= 0).
+      return t >= (DATA_TYPE)0;
    }
 
    /**
