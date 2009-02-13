@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: LineSegOps.h,v $
- * Date modified: $Date: 2004-09-16 21:21:09 $
- * Version:       $Revision: 1.8 $
+ * Date modified: $Date: 2009-02-13 20:13:46 $
+ * Version:       $Revision: 1.9 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -54,7 +54,7 @@ Point<DATA_TYPE, 3> findNearestPt( const LineSeg<DATA_TYPE>& lineseg,
 {
    // result = origin + dir * dot((pt-origin), dir)
    return ( lineseg.mOrigin + lineseg.mDir *
-            dot(pt - lineseg.mOrigin, lineseg.mDir) );
+            dot(pt - lineseg.mOrigin, lineseg.mDir) / lengthSquared(lineseg.mDir) );
 }
 
 /**

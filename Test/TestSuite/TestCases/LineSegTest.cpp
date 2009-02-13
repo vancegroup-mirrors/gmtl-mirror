@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: LineSegTest.cpp,v $
- * Date modified: $Date: 2004-09-16 19:40:32 $
- * Version:       $Revision: 1.9 $
+ * Date modified: $Date: 2009-02-13 20:13:46 $
+ * Version:       $Revision: 1.10 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -39,6 +39,7 @@
 
 #include <gmtl/LineSegOps.h>
 #include <gmtl/Intersection.h>
+#include <gmtl/Output.h>
 
 namespace gmtlTest
 {
@@ -715,28 +716,32 @@ namespace gmtlTest
       CPPUNIT_ASSERT_METRIC_TIMING_LE("PlaneTest/WhichSideOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
    }
 */
-   /*
    void LineSegTest::testFindNearestPt()
    {
       gmtl::Point<float, 3> answer, test_point, correct_result;
-      gmtl::Plane<float> xy_plane( gmtl::Vec<float, 3>( 0,1,0 ), 0 );
-      float dist;
+      gmtl::LineSeg<float> unit_line_seg(
+         gmtl::Point<float, 3>(0.0f, 0.0f, 0.0f),
+         gmtl::Vec<float, 3>(1.0f, 0.0f, 0.0f)
+      );
+      gmtl::LineSeg<float> test_line_seg(
+         gmtl::Point<float, 3>(0.0f, 0.0f, 0.0f),
+         gmtl::Vec<float, 3>(5.0f, 4.0f, 3.0f)
+      );
 
-      // XY dist to point off origin
-      test_point = gmtl::Point<float, 3>(0.0,0.0,1.0);
-      CPPUNIT_ASSERT(gmtl::distance(xy_plane, test_point) == gmtl::findNearestPt(xy_plane, test_point, answer));
-      CPPUNIT_ASSERT(answer == origin);
+      test_point = gmtl::Point<float, 3>(0.0f, 0.0f, 1.0f);
+      correct_result = gmtl::Point<float, 3>(0.0f, 0.0f, 0.0f);
+      answer = gmtl::findNearestPt(unit_line_seg, test_point);
+      CPPUNIT_ASSERT(answer == correct_result);
 
-      // XY dist to point at 12,21
-      test_point = gmtl::Point<float, 3>(12.0,-21.0,-13.0);
-      correct_result = gmtl::Point<float, 3>(12.0,-21.0,0.0);
-      CPPUNIT_ASSERT( gmtl::distance(xy_plane, test_point) == gmtl::findNearestPt(xy_plane, test_point, answer));
-      CPPUNIT_ASSERT( answer == correct_result);
+      test_point = gmtl::Point<float, 3>(0.4f, 0.0f, 0.0f);
+      correct_result = gmtl::Point<float, 3>(0.4f, 0.0f, 0.0f);
+      answer = gmtl::findNearestPt(unit_line_seg, test_point);
+      CPPUNIT_ASSERT(answer == correct_result);
 
-      // XY dist to point on plane at -17.05, 0.334
-      test_point = gmtl::Point<float, 3>(-17.05,0.334,0.0);
-      CPPUNIT_ASSERT( gmtl::distance(xy_plane, test_point) == gmtl::findNearestPt(xy_plane, test_point, answer));
-      CPPUNIT_ASSERT( answer == test_point);
+      test_point = gmtl::Point<float, 3>(0.0f, 0.0f, 1.0f);
+      correct_result = gmtl::Point<float, 3>(0.3f, 0.24f, 0.18f);
+      answer = gmtl::findNearestPt(test_line_seg, test_point);
+      CPPUNIT_ASSERT(answer == correct_result);
 
       // Test findNearestPt performance
       const long iters(400000);
@@ -745,14 +750,15 @@ namespace gmtlTest
       // -- Equality
       CPPUNIT_METRIC_START_TIMING();
 
-      for( long iter=0; iter<iters; ++iter)
+      for ( long iter = 0; iter < iters; ++iter )
       {
-         dist = gmtl::findNearestPt(xy_plane, test_point, answer);
-         use_value = use_value + dist + answer[0];
+         answer = gmtl::findNearestPt(test_line_seg, test_point);
+         use_value = use_value + answer[0];
       }
 
       CPPUNIT_METRIC_STOP_TIMING();
-      CPPUNIT_ASSERT_METRIC_TIMING_LE("PlaneTest/FindNearestPtOverhead", iters, 0.075f, 0.1f);  // warn at 7.5%, error at 10%
+      // warn at 7.5%, error at 10%
+      CPPUNIT_ASSERT_METRIC_TIMING_LE("LineSegTest/FindNearestPtOverhead",
+                                      iters, 0.075f, 0.1f);
    }
-   */
 }
