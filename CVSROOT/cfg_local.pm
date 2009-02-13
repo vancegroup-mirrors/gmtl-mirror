@@ -23,7 +23,7 @@
 
 @LOG_FILE_MAP = ();
 
-$MAILCMD = "/usr/sbin/sendmail -odb -oem";
+$MAILCMD = "/usr/sbin/sendmail -odb -oem -t";
 $MAIL_BRANCH_HDR = "X-GGT-CVS-Branch:";
 $ADD_TO_LINE = 1;
 
