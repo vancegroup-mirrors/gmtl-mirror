@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: IntersectionTest.cpp,v $
- * Date modified: $Date: 2006-06-08 20:59:58 $
- * Version:       $Revision: 1.12 $
+ * Date modified: $Date: 2009-02-13 16:42:26 $
+ * Version:       $Revision: 1.13 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -524,6 +524,19 @@ namespace gmtlTest
          CPPUNIT_ASSERT(num_hits == 2);
          CPPUNIT_ASSERT(t_in == 0.0f);
          CPPUNIT_ASSERT(t_out == 1.0f);
+      }
+
+      {
+         // Unit box centered at the origin.
+         gmtl::AABoxf box(gmtl::Point3f(-0.5f, -0.5f, -0.5f),
+         gmtl::Point3f(0.5f, 0.5f, 0.5f));
+         // Unit line segment with its origin on the front edge of the box
+         // and its endpoint on the back edge of the box.
+         gmtl::LineSegf seg(gmtl::Point3f(0.0f, 0.0f, 0.0f),
+         gmtl::Point3f(0.1f, 0.0f, -0.0f));
+         unsigned int num_hits;
+         float t_in, t_out;
+         CPPUNIT_ASSERT(!gmtl::intersect(box, seg, num_hits, t_in, t_out));
       }
    }
 
