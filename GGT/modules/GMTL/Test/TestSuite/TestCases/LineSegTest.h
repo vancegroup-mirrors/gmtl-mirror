@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: LineSegTest.h,v $
- * Date modified: $Date: 2003-02-25 22:28:09 $
- * Version:       $Revision: 1.15 $
+ * Date modified: $Date: 2009-02-13 20:45:31 $
+ * Version:       $Revision: 1.16 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -70,7 +70,7 @@ namespace gmtlTest
 
 //      CPPUNIT_TEST(testDistance);
 //      CPPUNIT_TEST(testWhichSide);
-//      CPPUNIT_TEST(testFindNearestPt);
+      CPPUNIT_TEST(testFindNearestPt);
 
       CPPUNIT_TEST_SUITE_END();
 
@@ -101,7 +101,7 @@ namespace gmtlTest
 
 //      void testDistance();
 //      void testWhichSide();
-//      void testFindNearestPt();
+      void testFindNearestPt();
 
    protected:
       gmtl::Point<float, 3> origin;
