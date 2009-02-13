@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Containment.h,v $
- * Date modified: $Date: 2007-06-13 19:42:29 $
- * Version:       $Revision: 1.21 $
+ * Date modified: $Date: 2009-02-13 14:16:14 $
+ * Version:       $Revision: 1.22 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -399,17 +399,16 @@ bool isInVolume(const AABox<DATA_TYPE>& container,
    {
       return false;
    }
-
-   // Test that the boxes are not overlapping on any axis
-   if (container.mMax[0] < box.mMin[0] || container.mMin[0] > box.mMax[0] ||
-       container.mMax[1] < box.mMin[1] || container.mMin[1] > box.mMax[1] ||
-       container.mMax[2] < box.mMin[2] || container.mMin[2] > box.mMax[2])
+ 
+   if (container.mMin[0] <= box.mMin[0] && container.mMax[0] >= box.mMax[0] &&
+       container.mMin[1] <= box.mMin[1] && container.mMax[1] >= box.mMax[1] &&
+       container.mMin[2] <= box.mMin[2] && container.mMax[2] >= box.mMax[2])
    {
-      return false;
+      return true;
    }
    else
    {
-      return true;
+      return false;
    }
 }
 

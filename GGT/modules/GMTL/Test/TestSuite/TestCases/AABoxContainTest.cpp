@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: AABoxContainTest.cpp,v $
- * Date modified: $Date: 2004-12-08 22:29:44 $
- * Version:       $Revision: 1.6 $
+ * Date modified: $Date: 2009-02-13 14:16:14 $
+ * Version:       $Revision: 1.7 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -103,7 +103,7 @@ namespace gmtlTest
       // Test overlapping valid boxes
       gmtl::AABoxf box3(gmtl::Point3f(35,35,35), gmtl::Point3f(37,37,37));
       CPPUNIT_ASSERT(gmtl::isInVolume(box2, box3));
-      CPPUNIT_ASSERT(gmtl::isInVolume(box3, box2));
+      CPPUNIT_ASSERT(! gmtl::isInVolume(box3, box2));
 
       // Test valid box against itself
       CPPUNIT_ASSERT(gmtl::isInVolume(box, box));
