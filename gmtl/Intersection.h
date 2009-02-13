@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: Intersection.h,v $
- * Date modified: $Date: 2009-02-12 23:41:30 $
- * Version:       $Revision: 1.30 $
+ * Date modified: $Date: 2009-02-13 16:42:26 $
+ * Version:       $Revision: 1.31 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -315,7 +315,7 @@ namespace gmtl
    {
       numHits = 0;
       bool result = intersectAABoxRay(box, seg, tIn, tOut);
-      if (tIn < 0.0 || tOut > 1.0)
+      if (tIn < 0.0 && tOut > 1.0)
       {
 	  return false;
       }
