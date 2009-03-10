@@ -1,5 +1,8 @@
 DATE       AUTHOR       CHANGE
 ---------- ------------ -------------------------------------------------------
+[0.6.0 released - 3.10.2009]===================================================
+2009-03-11 patrickh     Allow Mac OS X users to set the compiler using the $CXX
+                        environment variable.
 2009-02-12 patrickh     Added gmtl::intersectDoubleSided() for ray/triangle
                         intersection tests.
                         Submitted by Sebasttian Messerschmidt.
