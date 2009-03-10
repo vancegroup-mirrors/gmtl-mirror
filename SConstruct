@@ -128,7 +128,7 @@ def BuildDarwinEnvironment():
    m = exp.search(distutils.sysconfig.get_config_var('prefix'))
    framework_opt = '-F' + m.group(1)
 
-   CXX = WhereIs('g++')
+   CXX = os.environ.get("CXX", WhereIs('g++'))
 
    ver_re = re.compile(r'gcc version ((\d+)\.(\d+)\.(\d+))')
    (gv_stdout, gv_stdin, gv_stderr) = os.popen3(CXX + ' -v')
@@ -138,14 +138,18 @@ def BuildDarwinEnvironment():
 
    LINK = CXX
    CXXFLAGS = ['-ftemplate-depth-256', '-DBOOST_PYTHON_DYNAMIC_LIB',
-               '-Wno-long-double', '-no-cpp-precomp', '-Wall', framework_opt,
-               '-pipe']
+               '-Wall', framework_opt, '-pipe']
 
+   compiler_ver       = match_obj.group(1)
    compiler_major_ver = int(match_obj.group(2))
+   compiler_minor_ver = int(match_obj.group(3))
 
    # GCC 4.0 in Mac OS X 10.4 and newer does not have -fcoalesce-templates.
    if compiler_major_ver < 4:
       CXXFLAGS.append('-fcoalesce-templates')
+   else:
+      if compiler_minor_ver < 2:
+         CXXFLAGS += ['-Wno-long-double', '-no-cpp-precomp']
 
    SHLIBSUFFIX = distutils.sysconfig.get_config_var('SO')
    SHLINKFLAGS = ['-bundle', framework_opt, '-framework', 'Python']
@@ -167,6 +171,7 @@ def BuildDarwinEnvironment():
 
       CXX         = CXX,
       CXXFLAGS    = CXXFLAGS,
+      CXXVERSION  = compiler_ver,
       LINK        = LINK,
       LINKFLAGS   = LINKFLAGS,
       CPPPATH     = [],
