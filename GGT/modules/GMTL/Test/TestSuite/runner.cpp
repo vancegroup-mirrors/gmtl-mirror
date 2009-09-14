@@ -7,8 +7,8 @@
  *
  * -----------------------------------------------------------------
  * File:          $RCSfile: runner.cpp,v $
- * Date modified: $Date: 2003-09-24 00:02:16 $
- * Version:       $Revision: 1.4 $
+ * Date modified: $Date: 2009-09-14 15:27:14 $
+ * Version:       $Revision: 1.5 $
  * -----------------------------------------------------------------
  *
  *********************************************************** ggt-head end */
@@ -40,6 +40,7 @@
 //
 //------------------------------------------------------
 #include <stdexcept>
+#include <cstring>
 
 #include <cppunit/BriefTestProgressListener.h>
 #include <cppunit/CompilerOutputter.h>
@@ -152,7 +153,7 @@ std::string getHostname(void)
    if ( uname(&buffer) == 0 )
    {
       char* temp;
-      temp = strchr(buffer.nodename, '.');
+      temp = std::strchr(buffer.nodename, '.');
 
       // If the node name contains the full host, dots and all, truncate it
       // at the first dot.
