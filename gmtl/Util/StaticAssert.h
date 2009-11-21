@@ -1,3 +1,8 @@
+// GMTL is (C) Copyright 2001-2009 by Allen Bierbaum
+// Distributed under the GNU Lesser General Public License 2.1 with an
+// addendum covering inlined code. (See accompanying files LICENSE and
+// LICENSE.addendum or http://www.gnu.org/copyleft/lesser.txt)
+
 /** Static assertion macros 
 * Borrowed from boost and Loki.
 */
