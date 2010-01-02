@@ -1,9 +1,9 @@
-#ifndef _GMTL_GMTL_H_
-// GMTL is (C) Copyright 2001-2009 by Allen Bierbaum
+// GMTL is (C) Copyright 2001-2010 by Allen Bierbaum
 // Distributed under the GNU Lesser General Public License 2.1 with an
 // addendum covering inlined code. (See accompanying files LICENSE and
 // LICENSE.addendum or http://www.gnu.org/copyleft/lesser.txt)
 
+#ifndef _GMTL_GMTL_H_
 #define _GMTL_GMTL_H_
 
 #include <gmtl/AABox.h>

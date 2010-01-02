@@ -1,4 +1,4 @@
-dnl GMTL is (C) Copyright 2001-2009 by Allen Bierbaum
+dnl GMTL is (C) Copyright 2001-2010 by Allen Bierbaum
 dnl Distributed under the GNU Lesser General Public License 2.1 with an
 dnl addendum covering inlined code. (See accompanying files LICENSE and
 dnl LICENSE.addendum or http://www.gnu.org/copyleft/lesser.txt)
