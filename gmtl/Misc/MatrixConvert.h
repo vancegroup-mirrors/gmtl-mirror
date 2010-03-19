@@ -49,7 +49,7 @@ convertTo(const gmtl::Matrix<DATA_TYPE_IN, ROWS, COLS>& in)
 
    // This relies on implicit casting between data types.
    boost::mpl::for_each< boost::mpl::range_c<unsigned int, 0, ROWS * COLS> >(
-      *(out_data + _1) = *(in_data + _1)
+      *(out_data + boost::lambda::_1) = *(in_data + boost::lambda::_1)
    );
 
    return out;
