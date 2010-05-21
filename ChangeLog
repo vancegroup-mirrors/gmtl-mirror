@@ -1,5 +1,10 @@
 DATE       AUTHOR       CHANGE
 ---------- ------------ -------------------------------------------------------
+[0.6.1 released - 5.20.2010]===================================================
+2010-05-20 patrickh     Added gmtl::ParametericCurve, gmtl::LinearCurve,
+                        gmtl::QuadraticCurve, and gmtl::CubicCurve.
+                        Submitted by Gao Yang
+
 [0.6.0 released - 3.10.2009]===================================================
 2009-03-11 patrickh     Allow Mac OS X users to set the compiler using the $CXX
                         environment variable.
