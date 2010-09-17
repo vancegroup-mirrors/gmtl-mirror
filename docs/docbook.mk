@@ -1,6 +1,6 @@
 # ************** <auto-copyright.pl BEGIN do not edit this line> **************
 #
-# VR Juggler is (C) Copyright 1998-2006 by Iowa State University
+# VR Juggler is (C) Copyright 1998-2010 by Iowa State University
 #
 # Original Authors:
 #   Allen Bierbaum, Christopher Just,
@@ -38,10 +38,10 @@
 .SUFFIXES: .html .xml .pdf .tex .fo .txt
 
 # Software and stylesheet versions.
-DOCBOOK_XSL_VERSION?=	1.70.1
+DOCBOOK_XSL_VERSION?=	1.76.0
 XALAN_VERSION?=		2_7_0
 SAXON_VERSION?=		6.5.5
-FOP_VERSION?=		0.20.5
+FOP_VERSION?=		1.0
 BATIK_VERSION?=		1.5.1
 
 ifeq ($(FOP_VERSION), 0.20.5)
