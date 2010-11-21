@@ -1,5 +1,7 @@
 DATE       AUTHOR       CHANGE
 ---------- ------------ -------------------------------------------------------
+2010-11-21 patrickh     gmtl.pc is once again generated for pkg-config usage.
+
 [0.6.1 released - 5.20.2010]===================================================
 2010-05-20 patrickh     Added gmtl::ParametericCurve, gmtl::LinearCurve,
                         gmtl::QuadraticCurve, and gmtl::CubicCurve.

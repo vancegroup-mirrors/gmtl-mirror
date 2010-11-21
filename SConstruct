@@ -701,14 +701,15 @@ if not has_help_flag:
    base_inst_paths['lib'] = pj(base_inst_paths['base'], 'lib')
    base_inst_paths['share'] = pj(base_inst_paths['base'], 'share')
    base_inst_paths['flagpoll'] = pj(base_inst_paths['share'], 'flagpoll')
+   base_inst_paths['pkgconfig'] = pj(base_inst_paths['lib'], 'pkgconfig')
    base_inst_paths['bin'] = pj(base_inst_paths['base'], 'bin')
    include_dir = pj(base_inst_paths['base'], 'include')
-   base_inst_paths['include'] = pj('${fp_file_cwd}' ,'..' ,'..', 'include')
+   base_inst_paths['include'] = pj(base_inst_paths['base'], 'include')
 
    if baseEnv['versioning'] == 'yes' and not sys.platform.startswith("win"):
       include_version = "gmtl-%s.%s.%s" % GetGMTLVersion()
       include_dir = pj(include_dir, include_version)
-      base_inst_paths['include'] = pj('${fp_file_cwd}' ,'..' ,'..', 'include',
+      base_inst_paths['include'] = pj(base_inst_paths['base'], 'include',
                                       include_version)
 
    print "using prefix:", base_inst_paths['base']         
@@ -743,7 +744,7 @@ if not has_help_flag:
    # Build up substitution map
    submap = {
       '@provides@'                : provides,
-      '@prefix@'                  : pj('${fp_file_cwd}', '..', '..'),
+      '@prefix@'                  : base_inst_paths['base'],
       '@exec_prefix@'             : '${prefix}',
       '@gmtl_cxxflags@'           : '',
       '@includedir@'              : base_inst_paths['include'],
@@ -760,9 +761,14 @@ if not has_help_flag:
                                'gmtl.fpc.in', submap = submap)
    env.AddPostAction(gmtl_fpc, Chmod('$TARGET', 0644))
    env.Depends(gmtl_fpc, 'gmtl/Version.h')
+   gmtl_pc = env.SubstBuilder(pj(base_inst_paths['pkgconfig'], "gmtl.pc"), 
+                               'gmtl.fpc.in', submap = submap)
+   env.AddPostAction(gmtl_pc, Chmod('$TARGET', 0644))
+   env.Depends(gmtl_pc, 'gmtl/Version.h')
 
    installed_targets += env.Install(base_inst_paths['bin'], 'gmtl-config')
    installed_targets += gmtl_fpc
+   installed_targets += gmtl_pc
 
    pkg.build()
    installed_targets += pkg.getInstalledTargets()
