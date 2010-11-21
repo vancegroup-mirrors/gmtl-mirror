@@ -106,6 +106,6 @@ public:
 typedef Sphere<float>   Spheref;
 typedef Sphere<double>  Sphered;
 
-};
+}
 
 #endif
