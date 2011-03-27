@@ -1,5 +1,9 @@
 DATE       AUTHOR       CHANGE
 ---------- ------------ -------------------------------------------------------
+2011-03-27 patrickh     Added an overload of gmtl::intersectDoubleSided() for
+                        Tri/LineSeg intersection that ignores the triangle
+                        winding.
+                        Submitted by Sebastian Messerschmidt
 2011-03-27 patrickh     Added a new Sphere/Sphere intersection function.
                         Submitted by Sebastian Messerschmidt
 2010-11-21 patrickh     gmtl.pc is once again generated for pkg-config usage.

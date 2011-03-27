@@ -928,6 +928,45 @@ namespace gmtl
       else
       {  return false; }
    }
+
+   /**
+    * Tests if the given triangle intersects with the given ray, from both
+    * sides.
+    *
+    * @param tri     The triangle (ccw ordering).
+    * @param lineseg The line segment
+    * @param u       Tangent space u-coordinate of the intersection.
+    * @param v       Tangent space v-coordinate of the intersection.
+    * @param t       An indicator of the intersection location.
+    *
+    * @post \p t gives you the intersection point:
+    *       \code sect = lineseg.getDir() * t + lineseg.getOrigin() \endcode
+    *
+    * @return true if the lineseg intersects the triangle.
+    *
+    * @see from http://www.acm.org/jgt/papers/MollerTrumbore97/code.html
+    *
+    * @since 0.7.0
+    */
+   template<class DATA_TYPE>
+   bool intersectDoubleSided(const Tri<DATA_TYPE>& tri,
+                             const LineSeg<DATA_TYPE>& lineseg,
+                             DATA_TYPE& u, DATA_TYPE& v, DATA_TYPE& t)
+   {
+      const DATA_TYPE eps = static_cast<DATA_TYPE>(0.0001010101);
+      const DATA_TYPE l = length(lineseg.getDir());
+
+      if (eps < l)
+      {
+         Ray<DATA_TYPE> temp(lineseg.getOrigin(), lineseg.getDir());
+         const bool result = intersectDoubleSided(tri, temp, u, v, t);
+         return result && t <= static_cast<DATA_TYPE>(1.0);
+      }
+      else
+      {
+         return false;
+      }
+   }
 }
 
 
