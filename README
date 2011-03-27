@@ -27,10 +27,11 @@ o------------------------------------------------------------------------------o
     * A standards comformant C++ compiler with good template support
     * SCons 0.96
 
-  If you wish to compile and use the tests in GMTL, you will also need the
-  following:
+  If you wish to compile and use the tests in GMTL, you will also need CppUnit.
+  GMTL uses a patched version of CppUnit, the most recent version of which is
+  available from teh VR Juggler Subversion respository:
 
-    * CppUnit 1.9.11
+    http://code.google.com/p/vrjuggler/source/browse/#svn%2Fvendor%2Fcppunit%2F1.12.0
 
 
 o------------------------------------------------------------------------------o
