@@ -132,22 +132,22 @@ namespace gmtl
       }
 
       // Find the possible first and last times of overlap along each axis
-      for (int i=0; i<3; ++i)
+      for (int i = 0; i < 3; ++i)
       {
-         if ((box1.getMax()[i] < box2.getMin()[i]) && (path[i] < DATA_TYPE(0)))
+         if (box1.getMax()[i] < box2.getMin()[i] && path[i] < DATA_TYPE(0))
          {
             overlap1[i] = (box1.getMax()[i] - box2.getMin()[i]) / path[i];
          }
-         else if ((box2.getMax()[i] < box1.getMin()[i]) && (path[i] > DATA_TYPE(0)))
+         else if (box2.getMax()[i] < box1.getMin()[i] && path[i] > DATA_TYPE(0))
          {
             overlap1[i] = (box1.getMin()[i] - box2.getMax()[i]) / path[i];
          }
 
-         if ((box2.getMax()[i] > box1.getMin()[i]) && (path[i] < DATA_TYPE(0)))
+         if (box2.getMax()[i] > box1.getMin()[i] && path[i] < DATA_TYPE(0))
          {
             overlap2[i] = (box1.getMin()[i] - box2.getMax()[i]) / path[i];
          }
-         else if ((box1.getMax()[i] > box2.getMin()[i]) && (path[i] > DATA_TYPE(0)))
+         else if (box1.getMax()[i] > box2.getMin()[i] && path[i] > DATA_TYPE(0))
          {
             overlap2[i] = (box1.getMax()[i] - box2.getMin()[i]) / path[i];
          }
