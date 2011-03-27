@@ -736,7 +736,7 @@ if not has_help_flag:
       subdirs.append('Test')
    SConscript(dirs = subdirs)
 
-   env = baseEnv.Copy()
+   env = baseEnv.Clone()
 
    # Build up the provides vars for the .fpc files
    provides = "gmtl"

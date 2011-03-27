@@ -14,7 +14,7 @@ testcases_sources = map(lambda n: pj('TestCases', n), testcases_sources)
 sources.extend(testcases_sources)
 
 # Setup the runtests executable target
-env = baseEnv.Copy()
+env = baseEnv.Clone()
 ApplyCppUnitOptions(env)
 env.Append(CPPPATH = Split('#Test/TestSuite #'))
 

@@ -109,7 +109,7 @@ class _Assembly:
 
       # Clone the base environment if we have one
       if baseEnv:
-         self.data['env'] = baseEnv.Copy()
+         self.data['env'] = baseEnv.Clone()
       else:
          self.data['env'] = Environment()
 
@@ -378,7 +378,7 @@ def MakeSourceDist(package, baseEnv = None):
    """
    # Clone the base environment if we have one
    if baseEnv:
-      env = baseEnv.Copy()
+      env = baseEnv.Clone()
    else:
       env = Environment()
 
