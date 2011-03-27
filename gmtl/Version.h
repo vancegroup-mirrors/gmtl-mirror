@@ -21,8 +21,8 @@
  */
 // The major/minor/patch version (up to 3 digits each).
 #define GMTL_VERSION_MAJOR    0
-#define GMTL_VERSION_MINOR    6
-#define GMTL_VERSION_PATCH    2
+#define GMTL_VERSION_MINOR    7
+#define GMTL_VERSION_PATCH    0
 
 //--------------------------------------------------------------------------
 //--------------------------------------------------------------------------
