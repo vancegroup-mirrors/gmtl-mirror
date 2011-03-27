@@ -42,8 +42,10 @@ public:
     */
    Point()
    {
-      for (unsigned i = 0; i < SIZE; ++i)
-         this->mData[i] = (DATA_TYPE)0;
+      for (unsigned int i = 0; i < SIZE; ++i)
+      {
+         this->mData[i] = static_cast<DATA_TYPE>(0);
+      }
    }
 
    /** @name Value constructors

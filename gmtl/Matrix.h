@@ -216,12 +216,16 @@ public:
       for (unsigned int r = 0; r < ROWS; ++r)
       {
          for (unsigned int c = 0; c < COLS; ++c)
-         {   this->operator()( r, c ) = (DATA_TYPE)0.0; }
+         {
+            this->operator()(r, c) = static_cast<DATA_TYPE>(0.0);
+         }
       }
 
       /** @todo mp */
-      for (unsigned int x = 0; x < Math::Min( COLS, ROWS ); ++x)
-      {  this->operator()( x, x ) = (DATA_TYPE)1.0; }
+      for (unsigned int x = 0; x < Math::Min(COLS, ROWS); ++x)
+      {
+         this->operator()(x, x) = static_cast<DATA_TYPE>(1.0);
+      }
 
       /** @todo Set initial state to IDENTITY and test other stuff */
       mState = IDENTITY;
@@ -458,7 +462,10 @@ public:
    /** Gets a DATA_TYPE pointer to the matrix data.
     * @return Returns a pointer to the head of the matrix data.
     */
-   const DATA_TYPE*  getData() const { return (DATA_TYPE*)mData; }
+   const DATA_TYPE* getData() const
+   {
+      return mData;
+   }
 
    bool isError()
    {
@@ -469,8 +476,10 @@ public:
       mState |= XFORM_ERROR;
    }
 
-   void setState(int state)
-   { mState = state; }
+   void setState(const int state)
+   {
+      mState = state;
+   }
 
 public:
    /** Column major.  In other words {Column1, Column2, Column3, Column4} in memory

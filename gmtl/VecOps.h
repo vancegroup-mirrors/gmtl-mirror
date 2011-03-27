@@ -182,9 +182,9 @@ template<class DATA_TYPE, unsigned SIZE, class SCALAR_TYPE>
 VecBase<DATA_TYPE, SIZE>& operator *=(VecBase<DATA_TYPE, SIZE>& v1,
                                       const SCALAR_TYPE& scalar)
 {
-   for(unsigned i=0;i<SIZE;++i)
+   for (unsigned int i = 0; i < SIZE; ++i)
    {
-      v1[i] *= (DATA_TYPE)scalar;
+      v1[i] *= static_cast<DATA_TYPE>(scalar);
    }
 
    return v1;
@@ -435,10 +435,10 @@ DATA_TYPE normalize(Vec<DATA_TYPE, SIZE>& v1)
  * @return  true if the vector is normalized, false otherwise
  */
 template< class DATA_TYPE, unsigned SIZE >
-bool isNormalized( const Vec<DATA_TYPE, SIZE>& v1,
-                   const DATA_TYPE eps = (DATA_TYPE) 0.0001f )
+bool isNormalized(const Vec<DATA_TYPE, SIZE>& v1,
+                  const DATA_TYPE eps = static_cast<DATA_TYPE>(0.0001))
 {
-   return Math::isEqual( lengthSquared( v1 ), DATA_TYPE(1.0), eps );
+   return Math::isEqual(lengthSquared(v1), DATA_TYPE(1.0), eps);
 }
 
 /**
@@ -492,7 +492,7 @@ VecBase<DATA_TYPE, SIZE>& reflect( VecBase<DATA_TYPE, SIZE>& result, const
                            VecBase<DATA_TYPE, SIZE>& vec,
                            const Vec<DATA_TYPE, SIZE>& normal )
 {
-   result = vec - (DATA_TYPE( 2.0 ) * (dot( (Vec<DATA_TYPE, SIZE>)vec, normal ) * normal));
+   result = vec - (DATA_TYPE(2.0) * (dot(static_cast<Vec<DATA_TYPE, SIZE> >(vec), normal) * normal));
    return result;
 }
 

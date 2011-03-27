@@ -39,8 +39,10 @@ public:
    
    /** default constructor. initializes to identity rotation (no rotation). */
    AxisAngle() : 
-      VecBase<DATA_TYPE, 4>( (DATA_TYPE)0.0, (DATA_TYPE)1.0, 
-                             (DATA_TYPE)0.0, (DATA_TYPE)0.0 )
+      VecBase<DATA_TYPE, 4>(static_cast<DATA_TYPE>(0.0),
+                            static_cast<DATA_TYPE>(1.0),
+                            static_cast<DATA_TYPE>(0.0),
+                            static_cast<DATA_TYPE>(0.0))
    {
    }
    

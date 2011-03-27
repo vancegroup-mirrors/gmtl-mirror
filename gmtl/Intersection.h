@@ -696,9 +696,10 @@ namespace gmtl
     * @return numhits, t0, t1 are undefined if return value is false
     */
    template<typename T>
-   inline bool intersectVolume( const Sphere<T>& sphere, const Ray<T>& ray, int& numhits, T& t0, T& t1 )
+   inline bool intersectVolume(const Sphere<T>& sphere, const Ray<T>& ray,
+                               int& numhits, T& t0, T& t1)
    {
-      bool result = intersect( sphere, ray, numhits, t0, t1 );
+      bool result = intersect(sphere, ray, numhits, t0, t1);
       if (result && numhits == 2)
       {
          return true;
@@ -707,7 +708,7 @@ namespace gmtl
       {
          const T rsq = sphere.getRadius() * sphere.getRadius();
          const Vec<T, 3> dist = ray.getOrigin() - sphere.getCenter();
-         const T a = lengthSquared( dist ) - rsq;
+         const T a = lengthSquared(dist) - rsq;
 
          bool inside = a <= T( 0 );
 
@@ -735,24 +736,29 @@ namespace gmtl
     *  @note If ray is parallel to plane: t=0, ret:true -> on plane, ret:false -> No hit
     */
    template<class DATA_TYPE>
-   bool intersect( const Plane<DATA_TYPE>& plane, const Ray<DATA_TYPE>& ray, DATA_TYPE& t )
+   bool intersect(const Plane<DATA_TYPE>& plane, const Ray<DATA_TYPE>& ray,
+                  DATA_TYPE& t)
    {
-      const DATA_TYPE eps(0.00001f);
+      const DATA_TYPE eps(static_cast<DATA_TYPE>(0.00001));
 
       // t = -(n·P + d)
-      Vec<DATA_TYPE, 3> N( plane.getNormal() );
-      DATA_TYPE denom( dot(N,ray.getDir()) );
-      if(gmtl::Math::abs(denom) < eps)    // Ray parallel to plane
+      Vec<DATA_TYPE, 3> N(plane.getNormal());
+      DATA_TYPE denom(dot(N,ray.getDir()));
+      if (gmtl::Math::abs(denom) < eps)    // Ray parallel to plane
       {
          t = 0;
-         if(distance(plane, ray.mOrigin) < eps)     // Test for ray on plane
-         { return true; }
+         if (distance(plane, ray.mOrigin) < eps)     // Test for ray on plane
+         {
+            return true;
+         }
          else
-         { return false; }
+         {
+            return false;
+         }
       }
       t = dot( N, Vec<DATA_TYPE,3>(N * plane.getOffset() - ray.getOrigin()) ) / denom;
 
-      return (DATA_TYPE)0 <= t;
+      return static_cast<DATA_TYPE>(0) <= t;
    }
 
    /**
@@ -766,10 +772,11 @@ namespace gmtl
     *  @return true if the lineseg intersects the plane.
     */
    template<class DATA_TYPE>
-   bool intersect( const Plane<DATA_TYPE>& plane, const LineSeg<DATA_TYPE>& seg, DATA_TYPE& t )
+   bool intersect(const Plane<DATA_TYPE>& plane,
+                  const LineSeg<DATA_TYPE>& seg, DATA_TYPE& t )
    {
       bool res(intersect(plane, static_cast<Ray<DATA_TYPE> >(seg), t));
-      return res && t <= (DATA_TYPE)1.0;
+      return res && t <= static_cast<DATA_TYPE>(1.0);
    }
 
    /**
@@ -785,10 +792,10 @@ namespace gmtl
     *  @see from http://www.acm.org/jgt/papers/MollerTrumbore97/code.html
     */
    template<class DATA_TYPE>
-   bool intersect( const Tri<DATA_TYPE>& tri, const Ray<DATA_TYPE>& ray,
-                        float& u, float& v, float& t )
+   bool intersect(const Tri<DATA_TYPE>& tri, const Ray<DATA_TYPE>& ray,
+                  float& u, float& v, float& t)
    {
-      const float EPSILON = (DATA_TYPE)0.00001f;
+      const float EPSILON = static_cast<DATA_TYPE>(0.00001);
       Vec<DATA_TYPE, 3> edge1, edge2, tvec, pvec, qvec;
       float det,inv_det;
 
@@ -800,36 +807,42 @@ namespace gmtl
       gmtl::cross( pvec, ray.getDir(), edge2 );
 
       /* if determinant is near zero, ray lies in plane of triangle */
-      det = gmtl::dot( edge1, pvec );
+      det = gmtl::dot(edge1, pvec);
 
       if (det < EPSILON)
+      {
          return false;
+      }
 
       /* calculate distance from vert0 to ray origin */
       tvec = ray.getOrigin() - tri[0];
 
       /* calculate U parameter and test bounds */
-      u = gmtl::dot( tvec, pvec );
+      u = gmtl::dot(tvec, pvec);
       if (u < 0.0 || u > det)
+      {
          return false;
+      }
 
       /* prepare to test V parameter */
-      gmtl::cross( qvec, tvec, edge1 );
+      gmtl::cross(qvec, tvec, edge1);
 
       /* calculate V parameter and test bounds */
       v = gmtl::dot( ray.getDir(), qvec );
       if (v < 0.0 || u + v > det)
+      {
          return false;
+      }
 
       /* calculate t, scale parameters, ray intersects triangle */
       t = gmtl::dot( edge2, qvec );
-      inv_det = ((DATA_TYPE)1.0) / det;
+      inv_det = static_cast<DATA_TYPE>(1.0) / det;
       t *= inv_det;
       u *= inv_det;
       v *= inv_det;
 
       // test if t is within the ray boundary (when t >= 0)
-      return t >= (DATA_TYPE)0;
+      return t >= static_cast<DATA_TYPE>(0);
    }
 
    /**
@@ -849,10 +862,11 @@ namespace gmtl
     * @see from http://www.acm.org/jgt/papers/MollerTrumbore97/code.html
     */
    template<class DATA_TYPE>
-   bool intersectDoubleSided(const Tri<DATA_TYPE>& tri, const Ray<DATA_TYPE>& ray,
+   bool intersectDoubleSided(const Tri<DATA_TYPE>& tri,
+                             const Ray<DATA_TYPE>& ray,
                              DATA_TYPE& u, DATA_TYPE& v, DATA_TYPE& t)
    {
-      const DATA_TYPE EPSILON = (DATA_TYPE)0.00001f;
+      const DATA_TYPE EPSILON = static_cast<DATA_TYPE>(0.00001);
       Vec<DATA_TYPE, 3> edge1, edge2, tvec, pvec, qvec;
       DATA_TYPE det, inv_det;
 
@@ -875,7 +889,7 @@ namespace gmtl
       tvec = ray.getOrigin() - tri[0];
 
       // Calc inverse deteriminant.
-      inv_det = ((DATA_TYPE)1.0) / det; 
+      inv_det = static_cast<DATA_TYPE>(1.0) / det; 
 
       // Calculate U parameter and test bounds.
       u =  inv_det * gmtl::dot(tvec, pvec);
@@ -898,7 +912,7 @@ namespace gmtl
       t = inv_det * gmtl::dot(edge2, qvec);
 
       // Test if t is within the ray boundary (when t >= 0).
-      return t >= (DATA_TYPE)0;
+      return t >= static_cast<DATA_TYPE>(0);
    }
 
    /**
@@ -917,16 +931,19 @@ namespace gmtl
    bool intersect( const Tri<DATA_TYPE>& tri, const LineSeg<DATA_TYPE>& lineseg,
                    DATA_TYPE& u, DATA_TYPE& v, DATA_TYPE& t )
    {
-      const DATA_TYPE eps = (DATA_TYPE)0.0001010101;
-      DATA_TYPE l = length( lineseg.getDir() );
+      const DATA_TYPE eps = static_cast<DATA_TYPE>(0.0001010101);
+      const DATA_TYPE l = length(lineseg.getDir());
+
       if (eps < l)
       {
-         Ray<DATA_TYPE> temp( lineseg.getOrigin(), lineseg.getDir() );
-         bool result = intersect( tri, temp, u, v, t );
-         return result && t <= (DATA_TYPE)1.0;
+         Ray<DATA_TYPE> temp(lineseg.getOrigin(), lineseg.getDir());
+         const bool result = intersect(tri, temp, u, v, t);
+         return result && t <= static_cast<DATA_TYPE>(1.0);
       }
       else
-      {  return false; }
+      {
+         return false;
+      }
    }
 
    /**

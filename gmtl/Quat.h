@@ -58,7 +58,8 @@ public:
     *  NOTE: the addition identity is [0,0,0,0]
     */
    Quat()
-      : mData( (DATA_TYPE)0.0, (DATA_TYPE)0.0, (DATA_TYPE)0.0, (DATA_TYPE)1.0 )
+      : mData(static_cast<DATA_TYPE>(0.0), static_cast<DATA_TYPE>(0.0),
+              static_cast<DATA_TYPE>(0.0), static_cast<DATA_TYPE>(1.0))
    {
    }
    
@@ -138,7 +139,10 @@ public:
    /** Get a DATA_TYPE pointer to the quat internal data.
     * @post Returns a ptr to the head of the quat data
     */
-   const DATA_TYPE*  getData() const { return (DATA_TYPE*)mData.getData();}
+   const DATA_TYPE* getData() const
+   {
+      return mData.getData();
+   }
 
 public:
    // Order x, y, z, w
