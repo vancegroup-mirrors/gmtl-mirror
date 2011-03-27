@@ -1,5 +1,7 @@
 DATE       AUTHOR       CHANGE
 ---------- ------------ -------------------------------------------------------
+2011-03-27 patrickh     Added a new Sphere/Sphere intersection function.
+                        Submitted by Sebastian Messerschmidt
 2010-11-21 patrickh     gmtl.pc is once again generated for pkg-config usage.
 
 [0.6.1 released - 5.20.2010]===================================================

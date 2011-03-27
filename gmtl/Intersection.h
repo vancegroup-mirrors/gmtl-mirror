@@ -48,6 +48,25 @@ namespace gmtl
    }
 
    /**
+    * Tests if the given spheres intersect or touch.
+    *
+    * @param sphere1  first sphere
+    * @param sphere2  second sphere
+    *
+    * @return  true if the spheres intersect or touch
+    *
+    * @since 0.7.0
+    */
+   template <class DATA_TYPE>
+   bool intersect(const Sphere<DATA_TYPE>& sphere1,
+                  const Sphere<DATA_TYPE>& sphere2)
+   {
+      Vec<DATA_TYPE, 3> relativePosition(sphere1.mCenter - sphere2.mCenter);
+      DATA_TYPE distance = lengthSquared(relativePosition);
+      return distance <= (sphere1.mRadius + sphere2.mRadius) * (sphere1.mRadius + sphere2.mRadius);
+   }
+
+   /**
     * Tests if the given AABox and point intersect with each other. On an edge IS
     * considered intersection by this algorithm.
     *
