@@ -1,5 +1,8 @@
 DATE       AUTHOR       CHANGE
 ---------- ------------ -------------------------------------------------------
+2011-03-27 patrickh     Added an overload of gmtl::findClosestPt() for use with
+                        gmtl::Tri<T> and gmtl::Point<T, 3>.
+                        Submitted by Sebastian Messerschmidt
 2011-03-27 patrickh     Added an overload of gmtl::intersectDoubleSided() for
                         Tri/LineSeg intersection that ignores the triangle
                         winding.
