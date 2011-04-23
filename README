@@ -31,7 +31,7 @@ o------------------------------------------------------------------------------o
   GMTL uses a patched version of CppUnit, the most recent version of which is
   available from teh VR Juggler Subversion respository:
 
-    http://code.google.com/p/vrjuggler/source/browse/#svn%2Fvendor%2Fcppunit%2F1.12.0
+    http://vrjuggler.googlecode.com/svn/cppunit/trunk/
 
 
 o------------------------------------------------------------------------------o
