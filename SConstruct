@@ -676,6 +676,8 @@ if not has_help_flag:
       ChangeLog
       COPYING
       gmtl-config
+      gmtl-config.cmake.in
+      gmtl-config-version.cmake.in
       gmtl.fpc.in
       SConstruct
       docs/Makefile
@@ -710,6 +712,7 @@ if not has_help_flag:
    base_inst_paths['share'] = pj(base_inst_paths['base'], 'share')
    base_inst_paths['flagpoll'] = pj(base_inst_paths['share'], 'flagpoll')
    base_inst_paths['pkgconfig'] = pj(base_inst_paths['lib'], 'pkgconfig')
+   base_inst_paths['cmake'] = pj(base_inst_paths['share'], 'cmake/gmtl')
    base_inst_paths['bin'] = pj(base_inst_paths['base'], 'bin')
    include_dir = pj(base_inst_paths['base'], 'include')
    base_inst_paths['include'] = pj(base_inst_paths['base'], 'include')
@@ -773,10 +776,21 @@ if not has_help_flag:
                                'gmtl.fpc.in', submap = submap)
    env.AddPostAction(gmtl_pc, Chmod('$TARGET', 0644))
    env.Depends(gmtl_pc, 'gmtl/Version.h')
+   # setup builder for cmake find_package support:
+   gmtl_cmake = env.SubstBuilder(pj(base_inst_paths['cmake'], "gmtl-config.cmake"), 
+                               'gmtl-config.cmake.in', submap = submap)
+   env.AddPostAction(gmtl_cmake, Chmod('$TARGET', 0644))
+   env.Depends(gmtl_cmake, 'gmtl/Version.h')
+   gmtl_cmakeversion = env.SubstBuilder(pj(base_inst_paths['cmake'], "gmtl-config-version.cmake"), 
+                               'gmtl-config-version.cmake.in', submap = submap)
+   env.AddPostAction(gmtl_cmakeversion, Chmod('$TARGET', 0644))
+   env.Depends(gmtl_cmakeversion, 'gmtl/Version.h')
 
    installed_targets += env.Install(base_inst_paths['bin'], 'gmtl-config')
    installed_targets += gmtl_fpc
    installed_targets += gmtl_pc
+   installed_targets += gmtl_cmake
+   installed_targets += gmtl_cmakeversion
 
    pkg.build()
    installed_targets += pkg.getInstalledTargets()
