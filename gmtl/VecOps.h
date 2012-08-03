@@ -467,6 +467,42 @@ Vec<DATA_TYPE,3>& cross( Vec<DATA_TYPE,3>& result, const Vec<DATA_TYPE, 3>& v1,
 }
 
 /**
+ * Compute the cross product between v1 and v2 and return the result
+ * implemented as a binary ^ operator. Use this to initialize a new
+ * Vec with the cross product of two Vecs, for example, or to increase
+ * code readability in implementations of algebraic formulae. Note
+ * this operation applies only to 3-dimensional vectors.
+ *
+ * Example:
+ * @code
+ *     Vec3f b(1.,0.,0.), c(0.,1.,0.);
+ *     Vec3f a( b ^ c );
+ * @endcode
+ * This is equivalent to:
+ * @code
+ *     Vec3f b(1.,0.,0.), c(0.,1.,0.);
+ *     Vec3f a;
+ *     cross( a, b, c );
+ * @endcode
+ * 
+ * @pre v1 and v2 are 3-D vectors
+ *
+ * @param v1   the first vector
+ * @param v2   the second vector
+ *
+ * @return  the cross product ( v1 ^ v2 ) as a new Vec.
+ */
+template<class DATA_TYPE>
+inline Vec<DATA_TYPE, 3> operator^( const Vec<DATA_TYPE, 3>& v1,
+                         const Vec<DATA_TYPE, 3>& v2 )
+{
+    Vec<DATA_TYPE, 3> result;
+    cross( result, v1, v2 );
+    return( result );
+}
+
+
+/**
  * Reflect a vector about a normal.
  *
  * This method reflects the given vector around the normal vector given.  It is similar to if the normal vector was

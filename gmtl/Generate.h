@@ -715,6 +715,45 @@ namespace gmtl
       return setFrustum( result, -right, top, right, -top, nr, fr );
    }
 
+   /** Configure a matrix from view parameters.
+    * 
+    * Functionally equivalent to gluLookAt(), this function configures
+    * @c result as a view matrix with the viewer positioned at @c eye,
+    * looking towards @c center, with the specified @c up orientation.
+    * Results are undefined if (center-eye) == 0 or (center-eye) is
+    * coincident with +/-up. @c result can be used to transform point
+    * data from world to OpenGL eye coordinates. @c result.mData can
+    * be passed to an OpenGL GLSL shader as uniform mat4 data.
+    *
+    * @pre (center-eye) has non-zero length
+    * @pre (center-eye) not coincident with +/-up
+    *
+    * @param result the matrix to be configured as a view matrix.
+    * @param eye the position of the viewer.
+    * @param center a target location to look at. The view direction is
+    *   computed as @c center - @c eye.
+    * @param up the viewer's up orientation.
+    * @return a reference to @c result for convenience.
+    */
+    template <typename T>
+    inline Matrix<T, 4,4>& setLookAt( Matrix<T, 4,4>& result,
+        const Point<T, 3>& eye, const Point<T, 3>& center, const Vec<T, 3>& up )
+    {
+        Vec<T, 3> f( center-eye ); normalize( f );
+        Vec<T, 3> s( f ^ up ); normalize( s );
+        Vec<T, 3> u( s ^ f ); normalize( u );
+
+        Matrix<T, 4,4> orient;
+        zero( orient );
+        orient(0,0) = s[0]; orient(1,0) = u[0]; orient(2,0) = -f[0];
+        orient(0,1) = s[1]; orient(1,1) = u[1]; orient(2,1) = -f[1];
+        orient(0,2) = s[2]; orient(1,2) = u[2]; orient(2,2) = -f[2];
+        orient(3,3) = T(1.);
+
+        result = orient * makeTrans< Matrix<T, 4,4> >( -eye );
+        result.mState = Matrix<T, 4,4>::AFFINE;
+        return( result );
+    }
 
    /*
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS, unsigned SIZE, typename REP >
