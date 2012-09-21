@@ -121,12 +121,15 @@ public:
 
 // --- helper types --- //
 typedef Point<int,2> Point2i;
+typedef Point<unsigned int,2> Point2ui;
 typedef Point<float,2> Point2f;
 typedef Point<double,2> Point2d;
 typedef Point<int, 3> Point3i;
+typedef Point<unsigned int, 3> Point3ui;
 typedef Point<float,3> Point3f;
 typedef Point<double,3> Point3d;
 typedef Point<int, 4> Point4i;
+typedef Point<unsigned int, 4> Point4ui;
 typedef Point<float,4> Point4f;
 typedef Point<double,4> Point4d;
 

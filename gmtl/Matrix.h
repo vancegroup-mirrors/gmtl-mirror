@@ -501,10 +501,18 @@ typedef Matrix<float, 2, 2> Matrix22f;
 typedef Matrix<double, 2, 2> Matrix22d;
 typedef Matrix<float, 2, 3> Matrix23f;
 typedef Matrix<double, 2, 3> Matrix23d;
+typedef Matrix<float, 2, 4> Matrix24f;
+typedef Matrix<double, 2, 4> Matrix24d;
+typedef Matrix<float, 3, 2> Matrix32f;
+typedef Matrix<double, 3, 2> Matrix32d;
 typedef Matrix<float, 3, 3> Matrix33f;
 typedef Matrix<double, 3, 3> Matrix33d;
 typedef Matrix<float, 3, 4> Matrix34f;
 typedef Matrix<double, 3, 4> Matrix34d;
+typedef Matrix<float, 4, 2> Matrix42f;
+typedef Matrix<double, 4, 2> Matrix42d;
+typedef Matrix<float, 4, 3> Matrix43f;
+typedef Matrix<double, 4, 3> Matrix43d;
 typedef Matrix<float, 4, 4> Matrix44f;
 typedef Matrix<double, 4, 4> Matrix44d;
 
@@ -514,11 +522,23 @@ const Matrix22f MAT_IDENTITY22F = Matrix22f();
 /** 64bit floating point 2x2 identity matrix */
 const Matrix22d MAT_IDENTITY22D = Matrix22d();
 
-/** 32bit floating point 2x2 identity matrix */
+/** 32bit floating point 2x3 identity matrix */
 const Matrix23f MAT_IDENTITY23F = Matrix23f();
 
-/** 64bit floating point 2x2 identity matrix */
+/** 64bit floating point 2x3 identity matrix */
 const Matrix23d MAT_IDENTITY23D = Matrix23d();
+
+/** 32bit floating point 2x4 identity matrix */
+const Matrix24f MAT_IDENTITY24F = Matrix24f();
+
+/** 64bit floating point 2x4 identity matrix */
+const Matrix24d MAT_IDENTITY24D = Matrix24d();
+
+/** 32bit floating point 3x2 identity matrix */
+const Matrix32f MAT_IDENTITY32F = Matrix32f();
+
+/** 64bit floating point 3x2 identity matrix */
+const Matrix32d MAT_IDENTITY32D = Matrix32d();
 
 /** 32bit floating point 3x3 identity matrix */
 const Matrix33f MAT_IDENTITY33F = Matrix33f();
@@ -531,6 +551,18 @@ const Matrix34f MAT_IDENTITY34F = Matrix34f();
 
 /** 64bit floating point 3x4 identity matrix */
 const Matrix34d MAT_IDENTITY34D = Matrix34d();
+
+/** 32bit floating point 4x2 identity matrix */
+const Matrix42f MAT_IDENTITY42F = Matrix42f();
+
+/** 64bit floating point 4x2 identity matrix */
+const Matrix42d MAT_IDENTITY42D = Matrix42d();
+
+/** 32bit floating point 4x3 identity matrix */
+const Matrix43f MAT_IDENTITY43F = Matrix43f();
+
+/** 64bit floating point 4x3 identity matrix */
+const Matrix43d MAT_IDENTITY43D = Matrix43d();
 
 /** 32bit floating point 4x4 identity matrix */
 const Matrix44f MAT_IDENTITY44F = Matrix44f();
