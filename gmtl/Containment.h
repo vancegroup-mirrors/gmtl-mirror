@@ -45,7 +45,8 @@ bool isInVolume( const Sphere<DATA_TYPE>& container,
    // the sphere to the point has a magnitude less than or equal to the radius
    // of the sphere.
    // |pt - center| <= radius
-   return ( length(gmtl::Vec<DATA_TYPE,3>(pt - container.mCenter)) <= container.mRadius );
+   // Compare squares to avoid sqrt() call.
+   return ( lengthSquared(gmtl::Vec<DATA_TYPE,3>(pt - container.mCenter)) <= ( container.mRadius * container.mRadius ) );
 }
 
 /**
