@@ -28,7 +28,7 @@ public:
     * Constructs a sphere centered at the origin with a radius of 0.
     */
    Sphere()
-      : mRadius( 0 )
+      : mRadius( 0 ), mInitialized( false )
    {}
 
    /**
@@ -38,7 +38,7 @@ public:
     * @param radius     the radius of the sphere
     */
    Sphere( const Point<DATA_TYPE, 3>& center, const DATA_TYPE& radius )
-      : mCenter( center ), mRadius( radius )
+      : mCenter( center ), mRadius( radius ), mInitialized( true )
    {}
 
    /**
@@ -47,7 +47,7 @@ public:
     * @param sphere     the sphere to make a copy of
     */
    Sphere( const Sphere<DATA_TYPE>& sphere )
-      : mCenter( sphere.mCenter ), mRadius( sphere.mRadius )
+      : mCenter( sphere.mCenter ), mRadius( sphere.mRadius ), mInitialized( sphere.mInitialized )
    {}
 
    /**
@@ -71,6 +71,17 @@ public:
    }
 
    /**
+    * Tests if this sphere is initialized. An initialized sphere could have
+    * zero volume but would contain one point.
+    *
+    * @return  true if the sphere is initialized, false otherwise
+    */
+   bool isInitialized() const
+   {
+      return mInitialized;
+   }
+
+   /**
     * Sets the center point of the sphere.
     *
     * @param center     the new point at which to center the sphere
@@ -90,6 +101,18 @@ public:
       mRadius = radius;
    }
 
+
+   /**
+    * Marks a sphere as initialized. Spheres that are initialized (isInitialized()==true)
+    * but have zero volume (getRadius()==0.0) contain exactly one point.
+    *
+    * @param initialized  true to mark the sphere as initialized, false otherwise
+    */
+   void setInitialized(bool initialized=true)
+   {
+      mInitialized = initialized;
+   }
+
 public:
    /**
     * The center of the sphere.
@@ -100,6 +123,11 @@ public:
     * The radius of the sphere.
     */
    DATA_TYPE mRadius;
+
+   /**
+    * Initialization flag. False initially, true if the sphere is initialized.
+    */
+   bool mInitialized;
 };
 
 // --- helper types --- //

@@ -79,27 +79,36 @@ template< class DATA_TYPE >
 void extendVolume( Sphere<DATA_TYPE>& container,
                    const Point<DATA_TYPE, 3>& pt )
 {
-   // check if we already contain the point
-   if ( isInVolume( container, pt ) )
+   if (container.isInitialized())
    {
-      return;
-   }
+      // check if we already contain the point
+      if ( isInVolume( container, pt ) )
+      {
+         return;
+      }
 
-   // make a vector pointing from the center of the sphere to pt. this is the
-   // direction in which we need to move the sphere's center
-   Vec<DATA_TYPE, 3> dir = pt - container.mCenter;
-   DATA_TYPE len = normalize( dir );
+      // make a vector pointing from the center of the sphere to pt. this is the
+      // direction in which we need to move the sphere's center
+      Vec<DATA_TYPE, 3> dir = pt - container.mCenter;
+      DATA_TYPE len = normalize( dir );
 
-   // compute what the new radius should be
-   DATA_TYPE newRadius = (len + container.mRadius) * static_cast<DATA_TYPE>(0.5);
+      // compute what the new radius should be
+      DATA_TYPE newRadius = (len + container.mRadius) * static_cast<DATA_TYPE>(0.5);
 
-   // compute the new center for the sphere
-   Point<DATA_TYPE, 3> newCenter = container.mCenter +
+      // compute the new center for the sphere
+      Point<DATA_TYPE, 3> newCenter = container.mCenter +
                                    (dir * (newRadius - container.mRadius));
 
-   // modify container to its new values
-   container.mCenter = newCenter;
-   container.mRadius = newRadius;
+      // modify container to its new values
+      container.mCenter = newCenter;
+      container.mRadius = newRadius;
+   }
+   else
+   {
+      container.mCenter = pt;
+      container.mRadius = (DATA_TYPE)0.0;
+      container.mInitialized = true;
+   }
 }
 
 /**
@@ -112,28 +121,43 @@ template< class DATA_TYPE >
 void extendVolume( Sphere<DATA_TYPE>& container,
                    const Sphere<DATA_TYPE>& sphere )
 {
-   // check if we already contain the sphere
-   if ( isInVolume( container, sphere ) )
+   // Can't extend by an empty sphere
+   if (! sphere.isInitialized())
    {
       return;
    }
 
-   // make a vector pointing from the center of container to sphere. this is the
-   // direction in which we need to move container's center
-   Vec<DATA_TYPE, 3> dir = sphere.mCenter - container.mCenter;
-   DATA_TYPE len = normalize( dir );
+   if (container.isInitialized())
+   {
+      // check if we already contain the sphere
+      if ( isInVolume( container, sphere ) )
+      {
+         return;
+      }
 
-   // compute what the new radius should be
-   DATA_TYPE newRadius = (len + sphere.mRadius + container.mRadius) *
+      // make a vector pointing from the center of container to sphere. this is the
+      // direction in which we need to move container's center
+      Vec<DATA_TYPE, 3> dir = sphere.mCenter - container.mCenter;
+      DATA_TYPE len = normalize( dir );
+
+      // compute what the new radius should be
+      DATA_TYPE newRadius = (len + sphere.mRadius + container.mRadius) *
                          static_cast<DATA_TYPE>(0.5);
 
-   // compute the new center for container
-   Point<DATA_TYPE, 3> newCenter = container.mCenter +
+      // compute the new center for container
+      Point<DATA_TYPE, 3> newCenter = container.mCenter +
                                    (dir * (newRadius - container.mRadius));
 
-   // modify container to its new values
-   container.mCenter = newCenter;
-   container.mRadius = newRadius;
+      // modify container to its new values
+      container.mCenter = newCenter;
+      container.mRadius = newRadius;
+   }
+   else
+   {
+       container.mCenter = sphere.mCenter;
+       container.mRadius = sphere.mRadius;
+       container.mInitialized = true;
+   }
 }
 
 /**
@@ -305,7 +329,7 @@ template< class DATA_TYPE>
 bool isInVolume(const AABox<DATA_TYPE>& container,
                 const Point<DATA_TYPE, 3>& pt)
 {
-   if (! container.isEmpty())
+   if (container.isInitialized())
    {
       return ( pt[0] >= container.mMin[0] &&
                pt[1] >= container.mMin[1] &&
@@ -334,7 +358,7 @@ template< class DATA_TYPE>
 bool isInVolumeExclusive(const AABox<DATA_TYPE>& container,
                 const Point<DATA_TYPE, 3>& pt)
 {
-   if (! container.isEmpty())
+   if (container.isInitialized())
    {
       return ( pt[0] > container.mMin[0] &&
                pt[1] > container.mMin[1] &&
@@ -366,7 +390,7 @@ bool isInVolume(const AABox<DATA_TYPE>& container,
                 const AABox<DATA_TYPE>& box)
 {
    // Empty boxes don't overlap
-   if (container.isEmpty() || box.isEmpty())
+   if (!container.isInitialized() || !box.isInitialized())
    {
       return false;
    }
@@ -393,7 +417,7 @@ template< class DATA_TYPE >
 void extendVolume(AABox<DATA_TYPE>& container,
                   const Point<DATA_TYPE, 3>& pt)
 {
-   if (! container.isEmpty())
+   if (container.isInitialized())
    {
       // X coord
       if (pt[0] > container.mMax[0])
@@ -445,13 +469,13 @@ void extendVolume(AABox<DATA_TYPE>& container,
                   const AABox<DATA_TYPE>& box)
 {
    // Can't extend by an empty box
-   if (box.isEmpty())
+   if (! box.isInitialized())
    {
       return;
    }
 
    // An empty container is extended to be the box
-   if (container.isEmpty())
+   if (! container.isInitialized())
    {
       container = box;
    }
